@@ -115,7 +115,7 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        // dd($request->location);
+        //
     }
 
     /**

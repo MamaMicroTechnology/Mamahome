@@ -34,3 +34,4 @@ web.config
 webpack.mix.js
 .htaccess
 vendor
+/vendor/

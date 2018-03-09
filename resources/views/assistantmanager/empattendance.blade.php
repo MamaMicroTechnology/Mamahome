@@ -177,6 +177,7 @@ class Calendar {
      
 }?>
 <div class="col-md-6 col-md-offset-3">
+	<center>{{ count($attendances) }}</center>
     <div class="alert alert-success text-center">Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;
     Department &nbsp;:&nbsp; {{ $user->department->dept_name }} &nbsp;|&nbsp;
     Designation &nbsp;:&nbsp; {{ $user->group->group_name }}

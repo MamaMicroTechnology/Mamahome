@@ -209,6 +209,11 @@
 					    @endif
 						</td>
 					</tr>
+					<tr>
+						<td>Total Kilometers (TL)</td>
+						<td>:</td>
+						<td>{{ $logintimes->total_kilometers }}</td>
+					</tr>
 					@if($logintimes->AmGrade == NULL && $logintimes->AmRemarks == NULL)
 					{{ csrf_field() }}
 					<tr>

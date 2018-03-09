@@ -1,8 +1,8 @@
 @extends('layouts.amheader')
 @section('content')
     <div class="col-md-2">
-        <div class="panel panel-primary" style="overflow-x:scroll">
-            <div class="panel-heading text-center">
+        <div class="panel panel-default" style="overflow-x:scroll;border-color:green">
+            <div class="panel-heading text-center" style="background-color:green">
                 <b style="color:white">Custom Daily Slot</b>
             </div>
             <div class="panel-body">
@@ -43,16 +43,16 @@
                                 <a class="btn bn-md btn-success" style="width:100%" onclick="showrecordsle()">Get Date Range Details</a>
                             </td>
                         </tr>
-                        <!--<tr class="text-center">-->
-                        <!--    <td>-->
-                        <!--        <a class="btn bn-md btn-primary" style="width:100%" onclick="showtodayrecordsle()">Get Date Details</a>-->
-                        <!--    </td>-->
-                        <!--</tr>-->
+                        <tr class="text-center">
+                            <td>
+                                <a class="btn bn-md btn-primary" style="width:100%" onclick="showtodayrecordsle()">Get Date Details</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="panel panel-default" styke="border-color:green">
+        <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading text-center" style="background-color:green">
                 <b style="color:white">Mini Report (Today)</b>
             </div>
@@ -62,22 +62,21 @@
         </div>
     </div>
     <div class="col-md-10" >
-        <div class="panel panel-primary" style="overflow-x:scroll">
-            <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ $date }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
-                <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+        <div class="panel panel-default" style="border-color:#f4811f" >
+            <div class="panel-heading" id="panelhead" style="background-color:#f4811f">
+                <b style="font-size:1.2em;color:white">Daily Listings For The Date : <b>{{ $date }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></b>
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">
                     <thead>
                         <tr>
-                            <th style="text-align:center">Ward No.</th>
                             <th style="text-align:center">ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Site Engineer Contact Number</th>
                             <th style="text-align:center">Procurement Contact Number</th>
                             <th style="text-align:center">Consultant Contact Number</th>
                             <th style="text-align:center">Contractor Contact Number</th>
+                            <th style="text-align:center;display:none">Sub Ward Name</th>
                             <th style="text-align:center">Listing Engineer</th>
                             <!--<th style="text-align:center">Verification</th>-->
                         </tr>
@@ -85,17 +84,14 @@
                     <tbody id="mainPanel">
                         @foreach($projects as $project)
                         <tr>
-                            <td style="text-align:center">{{ $project->sub_ward_name }}</td>
-                            <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
+                            <td style="text-align:center"><a href="{{ URL::to('/') }}/amadmindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>
                             <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
                             <td style="text-align:center">{{$project->procurement_contact_no}}</td>
                             <td style="text-align:center">{{$project->consultant_contact_no}}</td>
                             <td style="text-align:center">{{$project->contractor_contact_no}}</td>
-                            <td style="text-align:center" id="listname-{{$project->project_id}}">
-                                {{$project->name}}
-                                <input type="hidden" id="hiddeninp-{{$project->project_id}}" value="{{$project->listing_engineer_id}}" />
-                            </td>
+                            <td style="display:none;text-align:center" id="subward-{{$project->project_id}}">{{$project->sub_ward_name}}</td>
+                            <td style="text-align:center" id="listname-{{$project->project_id}}">{{$project->name}}</td>
                             <!--<td style="text-align:center"><a onclick="" class="btn btn-sm btn-danger">Verify</a></td>-->
                         </tr>
                         @endforeach
@@ -108,18 +104,18 @@
     <script type='text/javascript'>
         $( document ).ready(function() {
             var arr = new Array();
-            var ids = new Array();
+            var subwards = new Array();
             for(var i=0; i<10000; i++)
             {
                 if(document.getElementById('listname-'+i))
                 {
-                    arr[i] = document.getElementById('listname-'+i).innerText; //Pulling all names in arr array 
-                    ids[i] = document.getElementById('hiddeninp-'+i).value;
+                    arr[i] = document.getElementById('listname-'+i).innerText + '<br> (' + document.getElementById('subward-'+i).innerText + ')'; //Pulling all names in arr array 
                 }
             }
             var unique = arr.filter(function(item, i, ar){ return ar.indexOf(item) === i; }); //Filtering out unique names from arr array
-            var uniqueids = ids.filter(function(item, i, ar){ return ar.indexOf(item) === i; }); //Filtering out unique IDs from ids array
+            
             var ans = new Array();
+            var anssw  = new Array();
             for(var i=0;i<unique.length;i++)
             {
                 var x = unique[i];
@@ -132,13 +128,13 @@
                     }
                 }
             }
-            for (var k in ans){
-                if (ans.hasOwnProperty(k)) {
-                     document.getElementById('minireport').innerHTML += "<br><label style='color:black'>"+ k + " : "+ans[k];
-                     //alert("Key is " + k + ", value is" + ans[k]);
+            for (var k in ans)
+            {
+                if (ans.hasOwnProperty(k)) 
+                {
+                     document.getElementById('minireport').innerHTML += "<hr><label style='color:black'>"+ k + " : "+ans[k];
                 }
             }
-            
         });
         function showrecordsle()
         {
@@ -146,9 +142,7 @@
             var le_id = e.options[e.selectedIndex].value;
             var from_date = document.getElementById('fromdate').value;
             var to_date = document.getElementById('todate').value;
-            if(to_date==""){
-                showtodayrecordsle();
-            }else if(!le_id || !from_date){
+            if(!le_id || !from_date || !to_date){
                 alert('Incomplete Details ! Please Select All Three Fields !!');
                 return false;
             }
@@ -173,9 +167,7 @@
                         for(var i=0; i<response[0].length;i++)
                         {
                             document.getElementById('mainPanel').innerHTML += 
-                            "<tr><td>"
-                                +response[0][i].sub_ward_name+
-                            "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"'>"
+                            "<tr><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
                                 +response[0][i].owner_contact_no+
@@ -225,9 +217,7 @@
                         for(var i=0; i<response[0].length;i++)
                         {
                             document.getElementById('mainPanel').innerHTML += 
-                            "<tr><td>"
-                                +response[0][i].sub_ward_name+
-                            "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"'>"
+                            "<tr><td><a href='{{URL::to('/')}}/amadmindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
                                 +response[0][i].owner_contact_no+
@@ -239,7 +229,7 @@
                                 +response[0][i].consultant_contact_no+
                             "</td><td>"
                                 +response[0][i].contractor_contact_no+
-                            "</td><td><a href='{{URL::to('/')}}/dailyslots?userId="+response[0][i].id+"'>"
+                            "</td><td><a href='{{URL::to('/')}}/amdailyslots?userId="+response[0][i].id+"'>"
                                 +response[0][i].name+
                             "</a></td></tr>";
                         }

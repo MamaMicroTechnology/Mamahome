@@ -1,5 +1,5 @@
 @extends('layouts.amheader')
-@section('title','KRA')
+
 @section('content')
 
 <!-- Modal -->
@@ -68,33 +68,28 @@
     </div>
 </form>
 
-<div class="col-md-10 col-md-offset-1">
+<div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default" style="border-color:#f4811f">
-        <div class="panel-heading" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">KRA List</b> <button class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#addKRA">Add</button></div>
+        <div class="panel-heading" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">KRA List</b> <button class="btn btn-md btn-success pull-right" data-toggle="modal" data-target="#addKRA">Add</button></div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
                 <thead>
-                    <th style="text-align: center;width:5%">Department Name</th>
-                    <th style="text-align: center;width:5%">Designation</th>
-                    <th style="text-align: center;width:20%">Role</th>
-                    <th style="text-align: center;width:15%">Goal</th>
-                    <th style="text-align: center;width:15%">Key Result Area</th>
-                    <th style="text-align: center;width:20%">Key Performance Area</th>
-                    <th style="text-align: center;width:20%">Action</th>
+                    <th>Department Name</th>
+                    <th>Designation</th>
+                    <th>Role</th>
+                    <th>Goal</th>
+                    <th>Key Result Area</th>
+                    <th>Key Performance Area</th>
                 </thead>
                 <tbody>
                     @foreach($kras as $kra)
                     <tr>
-                        <td style="text-align: center;">{{ $kra->dept_name }}</td>
-                        <td style="text-align: center;">{{ $kra->group_name }}</td>
+                        <td>{{ $kra->dept_name }}</td>
+                        <td>{{ $kra->group_name }}</td>
                         <td>{{ $kra->role }}</td>
                         <td>{{ $kra->goal }}</td>
                         <td>{{ $kra->key_result_area }}</td>
                         <td>{{ $kra->key_performance_area }}</td>
-                        <td style="text-align:center" colspan="2">
-                            <a href="{{URL::to('/')}}/editkra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}" class="btn btn-sm btn-success">Edit</a>
-                            <a href="{{URL::to('/')}}/deletekra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}" class="btn btn-sm btn-danger">Delete</a>
-                        </td>    
                     </tr>
                     @endforeach
                 </tbody>

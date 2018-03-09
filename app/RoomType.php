@@ -8,3 +8,4 @@ class RoomType extends Model
 {
     protected $table = 'room_types';
 }
+

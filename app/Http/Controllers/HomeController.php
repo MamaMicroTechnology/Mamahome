@@ -63,19 +63,19 @@ class HomeController extends Controller
         date_default_timezone_set("Asia/Kolkata");
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
         if(count($check)==0){
-            $login = New loginTime;
-            $login->user_id = Auth::user()->id;
-            $login->logindate = date('Y-m-d');
-            $login->loginTime = date('H:i A');
-            $login->logoutTime = "N/A";
-            $login->save();
-        }
+                $login = New loginTime;
+                $login->user_id = Auth::user()->id;
+                $login->logindate = date('Y-m-d');
+                $login->loginTime = date('H:i A');
+                $login->logoutTime = "N/A";
+                $login->save();
+            }
         return redirect('/home');
     }
     public function authlogout(Request $request)
     {
         date_default_timezone_set("Asia/Kolkata");
-        
+        //loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['logoutTime'=>date('H:i A')]);
         Auth()->logout();
         $request->session()->invalidate();
         return redirect('/');
@@ -84,7 +84,7 @@ class HomeController extends Controller
     {
         return view('inputview');
     }
-    public function inputdata(Request $request)
+public function inputdata(Request $request)
     {
         $x = DB::table('record_data')->insert(['rec_project'    =>$request->selectprojects,
                                                 'rec_date'      =>$request->edate,
@@ -169,7 +169,7 @@ class HomeController extends Controller
             return redirect('salesTL');
         }else if($group == "Sales Engineer" && $dept == "Sales"){
             return redirect('salesEngineer');
-        }else if($dept == "Management"){
+        }else if($group == "Asst. Manager" && $dept == "Management"){
             return redirect('amdashboard');
         }else if($group == "Logistic Co-ordinator (Sales)"){
             return redirect('lcodashboard');
@@ -196,13 +196,8 @@ class HomeController extends Controller
         $fake = ProjectDetails::where('quality',"FAKE")->count();
         $notConfirmed = ProjectDetails::where('quality',null)->count();
         $le = User::where('group_id','6')->get();
-        $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
-        $count = array();
-        foreach($notes as $note){
-            $count[$note] = ProjectDetails::where('with_cont',$note)->count();
-        }
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
-        return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
+        return view('Qualityproj', ['le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
     }
     
     public function getquality(Request $request)
@@ -325,14 +320,7 @@ class HomeController extends Controller
     }
     public function teamLeadHome(){
         $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
-        $users = User::where('group_id',$group)
-                        ->join('ward_assignments','ward_assignments.user_id','=','users.id')
-                        ->join('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
-                        ->join('wards','wards.id','=','sub_wards.ward_id' )
-                        ->where('department_id','!=','10')
-                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id')
-                        ->get();
-
+        $users = User::where('group_id',$group)->where('department_id','!=','10')->get();
         $subwardsAssignment = WardAssignment::all();
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
         $wards = Ward::all();
@@ -356,10 +344,6 @@ class HomeController extends Controller
     }
     public function leDashboard()
     {
-        $ordersInitiated = Requirement::where('generated_by',Auth::user()->id)
-                            ->count();
-        $ordersConfirmed = Requirement::where('generated_by',Auth::user()->id)
-                            ->where('status','Order Confirmed')->count();
         $check = loginTime::where('user_id',Auth::user()->id)
             ->where('logindate',date('Y-m-d'))->first();
         if(count($check)==0){
@@ -386,23 +370,9 @@ class HomeController extends Controller
         $numbercount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)->get());
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        $projects = ProjectDetails::join('site_addresses','project_details.project_id','=','site_addresses.project_id')
-                        ->leftJoin('requirements','project_details.project_id','=','requirements.project_id')
-                        ->where('project_details.sub_ward_id',$wardsAssigned)
-                        ->select('requirements.status','site_addresses.address','site_addresses.latitude','site_addresses.longitude','project_details.project_name','project_details.project_id','project_details.created_at','project_details.updated_at')
-                        ->get();
+        $projects = ProjectDetails::where('sub_ward_id',$wardsAssigned)->get();
         $prices = CategoryPrice::all();
-        return view('listingEngineerDashboard',['prices'=>$prices,
-                                                'subwards'=>$subwards,
-                                                'projects'=>$projects,
-                                                'numbercount'=>$numbercount,
-                                                'ldate'=>$ldate,
-                                                'lodate'=>$lodate,
-                                                'outtime'=>$outtime,
-                                                'total'=>$totalLists,
-                                                'ordersInitiated'=>$ordersInitiated,
-                                                'ordersConfirmed'=>$ordersConfirmed
-                                                ]);
+        return view('listingEngineerDashboard',['prices'=>$prices,'subwards'=>$subwards,'projects'=>$projects,'numbercount'=>$numbercount,'ldate'=>$ldate,'lodate'=>$lodate,'outtime'=>$outtime,'total'=>$totalLists]);
     }
     public function projectList()
     {
@@ -434,15 +404,10 @@ class HomeController extends Controller
         $projectCount = array();
         
         foreach($roads as $road){
-            $genuine = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality','Genuine')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->count();
-            $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->count();
-            $projectCount[$road] = $genuine + $null;
+            $projectCount[$road] = ProjectDetails::where('road_name',$road)
+					->where('quality','!=','Fake')
+					->where('sub_ward_id',$assignment)
+					->count();
         }
         return view('roads',['roads'=>$roads,'projectCount'=>$projectCount]);
     }
@@ -450,8 +415,9 @@ class HomeController extends Controller
     {
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $projectlist = ProjectDetails::where('road_name',$request->road)
-                    ->where('sub_ward_id',$assignment)
-                    ->get();
+        ->where('quality','!=','Fake')
+	->where('sub_ward_id',$assignment)
+	->get();
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
     }
     public function getMyReports(Request $request)
@@ -500,15 +466,10 @@ class HomeController extends Controller
         $projectCount = array();
         
         foreach($roads as $road){
-            $genuine = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality','Genuine')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->count();
-            $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->count();
-            $projectCount[$road] = $null + $genuine;
+            $projectCount[$road] = ProjectDetails::where('road_name',$road)
+					->where('quality','!=','Fake')
+                                        ->where('sub_ward_id',$assignment)
+					->count();
         }
         return view('requirementsroad',['roads'=>$roads,'projectCount'=>$projectCount]);
     }
@@ -516,13 +477,14 @@ class HomeController extends Controller
     {
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $projectlist = ProjectDetails::where('road_name',$request->road)
-        ->where('sub_ward_id',$assignment)
+	    ->where('quality','!=','Fake')
+            ->where('sub_ward_id',$assignment)
             ->get();
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements"]);
     }
     public function getRequirements(Request $request)
     {
-        $requirements = Requirement::where('project_id',$request->projectID)->get();
+        $requirements = Requirement::where('project_id',$request->projectId)->get();
         $category = Category::all();
         return view('requirements',['category'=>$category, 'requirements'=>$requirements,'id'=>$request->projectId]);
     }
@@ -644,57 +606,26 @@ class HomeController extends Controller
         Mail::to($request->email)->send(new invoice($id));
         return redirect('/requirementsroads');
     }
-    public function completethis(Request $id)
-    {   
-        salesassignment::where('user_id',$id->userid)->update(['status'=>'Completed']);
-        return back();
-    }
     // sales
     public function getSalesTL(){
         $id = Department::where('dept_name',"Sales")->pluck('id')->first();
-        $users = User::where('department_id',$id)
-                        ->leftjoin('salesassignments','salesassignments.user_id','=','users.id')
-                        ->select('salesassignments.*','users.employeeId','users.name','users.id')
-                        ->get();
-        $subwardsAssignment = salesassignment::where('status','Not Completed')->get();
-
-        return view('salestl',['users'=>$users,'subwardsAssignment'=>$subwardsAssignment,'pageName'=>'Assign']);
+        $users = User::where('department_id',$id)->get();
+        $subwardsAssignment = salesassignment::all();
+        $subwards = SubWard::all();
+        $wards = Ward::all();
+        $projects = ProjectDetails::all();
+        $dates = loginTime::distinct()->orderBy('logindate','DESC')->get(['logindate']);
+        return view('salestl',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'pageName'=>'Assign','wards'=>$wards,'projects'=>$projects,'dates'=>$dates]);
     }
     public function getSalesEngineer()
     {
-        $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
         $assignment = salesassignment::where('user_id',Auth::user()->id)->pluck('assigned_date')->first();
         $projects = ProjectDetails::where('created_at','like',$assignment.'%')->paginate(10);
-        $calls = ProjectDetails::where('call_attended_by',Auth::user()->id)->count();
-        $followups = ProjectDetails::where('follow_up_by',Auth::user()->id)->count();
-        $ordersinitiate = Requirement::where('generated_by',Auth::user()->id)
-                            ->where('status','Order Initiated')
-                            ->count();
-        $ordersConfirmed = Requirement::where('generated_by',Auth::user()->id)
-                            ->where('status','Order Confirmed')
-                            ->count();
-        $fakeProjects = ProjectDetails::where('quality','Fake')
-                                ->where('call_attended_by',Auth::user()->id)
-                                ->count();
-        $genuineProjects = ProjectDetails::where('quality','Genuine')
-                                ->where('call_attended_by',Auth::user()->id)
-                                ->count();
-        $total = $fakeProjects + $genuineProjects;
+        // $subwards = Subward::where('id',$assignment)->pluck('sub_ward_name')->first();
         $prices = CategoryPrice::all();
-        return view('salesdashboard',[
-            'projects'=>$projects,
-            'reqcount'=>$reqcount,
-            'assignment'=>$assignment,
-            'prices'=>$prices,
-            'calls'=>$calls,
-            'followups'=>$followups,
-            'ordersinitiate'=>$ordersinitiate,
-            'ordersConfirmed'=>$ordersConfirmed,
-            'fakeProjects'=>$fakeProjects,
-            'genuineProjects'=>$genuineProjects
-        ]);
+        return view('salesdashboard',['projects'=>$projects, 'reqcount'=>$reqcount, 'assignment'=>$assignment,'prices'=>$prices]);
     }
     public function printLPO($id, Request $request)
     {
@@ -1096,16 +1027,16 @@ class HomeController extends Controller
         foreach($departments as $department){
             $depts[$department->dept_name] = User::where('department_id',$department->id)->count();
         }
-        $depts["FormerEmployees"] = User::where('department_id',10)->count();
+	$depts["FormerEmployees"] = User::where('department_id',10)->count();
         return view('humanresource',['departments'=>$departments,'groups'=>$groups,'page'=>"hr",'depts'=>$depts]);
     }
     public function getHRDept($dept, Request $request){
-        if($dept == "Formeremployee"){
-            $users = User::where('department_id',10)->get();
-        }else{
-            $deptId = Department::where('dept_name',$dept)->pluck('id')->first();
-            $users = User::where('department_id',$deptId)->get();
-        }
+	if($dept == "Formeremployee"){
+		$users = User::where('department_id',10)->get();
+	}else{
+        	$deptId = Department::where('dept_name',$dept)->pluck('id')->first();
+        	$users = User::where('department_id',$deptId)->get();
+	}
         return view('hremp',['users'=>$users,'dept'=>$dept, 'page'=>$request->page]);
     }
     public function getFinance()
@@ -1324,15 +1255,15 @@ class HomeController extends Controller
         return view('changepassword');
     }
     public function hrAttendance($id, Request $request){
-        if($request->month != null){
-            $today = $request->year."-".$request->month;
-        }else{
-            $today = date('Y-m');
-        }
+	if($request->month != null){
+		$today = $request->year."-".$request->month;
+	}else{
+		$today = date('Y-m');
+	}
         $user = User::where('employeeId',$id)->first();
         $attendances = attendance::where('empId',$id)
-                    ->where('created_at','LIKE',$today.'%')
-                    ->get();
+			->where('created_at','LIKE',$today.'%')
+			->get();
         return view('empattendance',['attendances'=>$attendances,'userid'=>$id,'user'=>$user]);
     }
     public function forgotPw(){
@@ -1349,9 +1280,7 @@ class HomeController extends Controller
         return view('viewdailyreport',['reports'=>$reports,'date'=>$date,'user'=>$user,'attendance'=>$attendance]);
     }
     public function followup(){
-        $projects = ProjectDetails::where('followup',"Yes")
-            ->where('follow_up_by',Auth::user()->id)
-            ->paginate(10);
+        $projects = ProjectDetails::where('followup',"Yes")->paginate(10);
         return view('followup',['projects'=>$projects]);
     }
     public function confirmedProject(Request $request){
@@ -1412,25 +1341,25 @@ class HomeController extends Controller
         return view('mhOrders',['invoices'=>$invoices]);
     }
     public function getAnR(){
-        $departments = Department::all();
+         $departments = Department::all();
         $groups = Group::all();
         return view('anr',['departments'=>$departments,'groups'=>$groups,'page'=>"anr"]);
     }
-    public function getSalesStatistics(){
-        $initiate = Requirement::where('status',"Order Initiated")->count();
-        $confirmed = Requirement::where('status',"Order Confirmed")->count();
-        $placed = Requirement::where('status',"Order Placed")->count();
-        $cancelled = Requirement::where('status',"Order cancelled")->count();
-        return view('salesstats',[
-            'initiate'=>$initiate,
-            'confirmed'=>$confirmed,
-            'placed'=>$placed,
-            'cancelled'=>$cancelled
-            ]);
-    }
-    public function postapprove(Request $request)
-    {
-        User::where('id',$request->id)->update(['confirmation'=>2]);
-        return back();
-    }
+	public function getSalesStatistics(){
+		$initiate = Requirement::where('status',"Order Initiated")->count();
+		$confirmed = Requirement::where('status',"Order Confirmed")->count();
+		$placed = Requirement::where('status',"Order Placed")->count();
+		$cancelled = Requirement::where('status',"Order cancelled")->count();
+		return view('salesstats',[
+			'initiate'=>$initiate,
+			'confirmed'=>$confirmed,
+			'placed'=>$placed,
+			'cancelled'=>$cancelled
+		]);
+	}
+	public function postapprove(Request $request)
+	{
+		User::where('id',$request->id)->update(['confirmation'=>2]);
+		return back();
+	}
 }

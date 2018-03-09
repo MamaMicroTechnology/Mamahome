@@ -4,13 +4,13 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-warning">
-                <div class="panel-heading text-center" style="background-color: #f68121; color:white;"><b style="font-size:1.4em">MAMA HOME LOGIN</b></div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Login</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
-                        <input type="hidden" id="loc" name="location">
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
@@ -38,14 +38,27 @@
                                 @endif
                             </div>
                         </div>
-                        <br><br>
-                        <div class="text-center">
-                                <button style="width:30%" type="submit" class="btn btn-success">
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
                                     Login
                                 </button>
-                                <button style="width:30%" type="reset" class="btn btn-danger">
-                                    Reset
-                                </button>
+
+                                <!--<a class="btn btn-link" href="{{ route('password.request') }}">-->
+                                <!--    Forgot Your Password?-->
+                                <!--</a>-->
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -53,68 +66,4 @@
         </div>
     </div>
 </div>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
-<script type="text/javascript" charset="utf-8">
-  $( document ).ready(function(){
-      console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayCurrentLocation,
-        displayError,
-        {
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-      //console.log("Exiting getLocation()");
-  });
-    
-    function displayCurrentLocation(position){
-      //console.log("Entering displayCurrentLocation");
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
-      getAddressFromLatLang(latitude,longitude);
-      //console.log("Exiting displayCurrentLocation");
-    }
-   
-  function  displayError(error){
-    console.log("Entering ConsultantLocator.displayError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLang(lat,lng){
-    //console.log("Entering getAddressFromLatLang()");
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        document.getElementById("loc").value = results[0].formatted_address;
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-    //console.log("Entering getAddressFromLatLang()");
-  }
-</script>
-
- -->
 @endsection

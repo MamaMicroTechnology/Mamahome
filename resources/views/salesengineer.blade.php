@@ -150,9 +150,8 @@
                 						        <td>
                 						            <select class="form-control" id="contract-{{$project->project_id}}" name="contract">
                 						                <option value="null" disabled selected>--- Select ---</option>
-                						                <option value="With Labour Contractor">With Labour Contractor</option>
-														<option value="With Material Contractor">With Material Contractor</option>
-														<option value="Without Contractor">Without Contractor</option>
+                						                <option value="With Contractor" {{ $project->contract == 'With Contractor'? 'selected':''}}>With Contractor</option>
+                						                <option value="Without Contractor" {{ $project->contract == 'Without Contractor'? 'selected':''}}>Without Contractor</option>
                 						            </select>
                 						        </td>
                 						    </tr>
