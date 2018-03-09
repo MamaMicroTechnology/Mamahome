@@ -705,7 +705,7 @@
                                                         "<option value=\"5BHK\">5BHK</option>"+
                                                         "<option value=\"6BHK\">6BHK</option>"+
                                                     "</select>";
-        cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
+        cell2.innerHTML = "<input required name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
         
     }
 </script>
