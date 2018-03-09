@@ -248,17 +248,19 @@ class mamaController extends Controller
                                                 ->count();
 
                     
-                        $confirmcount[$user->id] = ProjectDetails::leftjoin('requirements','requirements.project_id','=','project_details.project_id')
+                        $confirmcount[$user->id] = ProjectDetails::join('users','project_details.listing_engineer_id','=','users.id')
+                                                ->leftjoin('requirements','requirements.project_id','=','project_details.project_id')
                                                 ->where('project_details.created_at','>',$fromdate)
                                                 ->where('project_details.created_at','<',$todate)
-                                                ->where('project_details.listing_engineer_id', $user->id)
+                                                ->where('users.id', $user->id)
                                                 ->where('requirements.status','Order Confirmed')
                                                 ->count();
 
-                        $initiatedcount[$user->id] = ProjectDetails::leftjoin('requirements','requirements.project_id','=','project_details.project_id')
+                        $initiatedcount[$user->id] = ProjectDetails::join('users','project_details.listing_engineer_id','=','users.id')
+                                        ->leftjoin('requirements','requirements.project_id','=','project_details.project_id')
                                         ->where('project_details.created_at','>',$fromdate)
                                         ->where('project_details.created_at','<',$todate)
-                                        ->where('project_details.listing_engineer_id', $user->id)
+                                        ->where('users.id',$user->id)
                                         ->where('requirements.status','Order Initiated')
                                         ->count();
                     }     

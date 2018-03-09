@@ -75,7 +75,7 @@ class HomeController extends Controller
     public function authlogout(Request $request)
     {
         date_default_timezone_set("Asia/Kolkata");
-        
+        //loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['logoutTime'=>date('H:i A')]);
         Auth()->logout();
         $request->session()->invalidate();
         return redirect('/');

@@ -1,0 +1,521 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Auth;
+use DB;
+use App\Ward;
+use App\Country;
+use App\SubWard;
+use App\Zone;
+use App\CategoryPrice;
+use App\Category;
+use App\Requirement;
+use App\ProjectDetails;
+use App\Vendor;
+use App\Department;
+use App\loginTime;
+use App\User;
+use App\Group;
+use App\EmployeeDetails;
+use App\BankDetails;
+use App\Asset;
+use App\AssetInfo;
+use App\Certificate;
+use App\SubCategory;
+use App\Report;
+use App\attendance;
+use App\ManufacturerDetail;
+use App\KeyResult;
+use App\MhInvoice;
+
+class amController extends Controller
+{
+    public function getAMDashboard(){
+        $prices = CategoryPrice::all();
+        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home']);
+    }
+    public function getPricing(){
+        $prices = CategoryPrice::all();
+        $categories = Category::all();
+        return view('assistantmanager.pricing',['prices'=>$prices,'pageName'=>'Price','categories'=>$categories]);
+    }
+    public function amgetSubCatPrices(Request $request){
+        $cat = $request->cat;
+        $category = Category::where('id',$cat)->first();
+        $subcat = SubCategory::leftJoin('category_price','category_sub.id','=','category_price.category_sub_id')
+            ->select('category_sub.*','category_price.price')
+            ->where('category_sub.category_id',$cat)
+            ->get();
+        $res = array();
+        $res[0] = $category;
+        $res[1] = $subcat;
+        return response()->json($res);   
+    }
+    public function filter(Request $request)
+    {
+        
+        if($records)
+        {
+            return response()->json($records);
+        }
+        else
+        {
+            return response()->json('Error !!!');
+        }
+    }
+    public function enquirysheet()
+    {
+        $records = DB::table('record_data')->join('project_details','project_details.project_id','=','record_data.rec_project')->get();
+        return view('assistantmanager.amenquirysheet',['records'=>$records,'pageName'=>'Enquiry']);
+    }
+    public function amorders(Request $request)
+    {
+        if(!$request->filterorder)
+        {
+            if(!$request->fromdate && !$request->todate ) //No input whatsoever
+            {
+                $view = Requirement::orderby('project_id','DESC')
+                        ->leftJoin('users','requirements.generated_by','=','users.id')
+                        ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                        ->paginate(25);
+            }
+            else
+            {
+                $date1 = $request->fromdate;
+                $date2 = $request->todate;
+                $records = '';
+                if($date1 == $date2) //No filter but same date
+                {
+                    $view = Requirement::orderBy('project_id','DESC')
+                            ->leftJoin('users','requirements.generated_by','=','users.id')
+                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                            ->where('requirements.requirement_date','like',$date1.'%')
+                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                            ->paginate(25);       
+                }
+                else
+                {
+                    $date1 .= ' 00:00:00';
+                    $date2 .= ' 23:59:59'; //No filter but different dates
+                    $view = Requirement::orderBy('project_id','DESC')
+                            ->leftJoin('users','requirements.generated_by','=','users.id')
+                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                            ->where('requirements.requirement_date','>',$date1)
+                            ->where('requirements.requirement_date','<',$date2)
+                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                            ->paginate(25);      
+                }
+            }
+        }
+        else
+        {
+            $filter = $request->filterorder;
+            if(!$request->fromdate && !$request->todate ) 
+            {
+                $view = Requirement::orderby('project_id','DESC')
+                        ->leftJoin('users','requirements.generated_by','=','users.id')
+                        ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->where('requirements.status',$filter)
+                        ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                        ->paginate(25);    
+            }
+            else
+            {
+                $date1 = $request->fromdate;
+                $date2 = $request->todate;
+                $records = '';
+                if($date1 == $date2)
+                {
+                    $view = Requirement::orderBy('project_id','DESC')
+                            ->leftJoin('users','requirements.generated_by','=','users.id')
+                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                            ->where('requirements.requirement_date','like',$date1.'%')
+                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                            ->paginate(25);        
+                }
+                else
+                {
+                    $date1 .= ' 00:00:00';
+                    $date2 .= ' 23:59:59'; //All three different values
+                    $view = Requirement::orderBy('project_id','DESC')
+                            ->leftJoin('users','requirements.generated_by','=','users.id')
+                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                            ->where('requirements.requirement_date','>',$date1)
+                            ->where('requirements.requirement_date','<',$date2)
+                            ->where('requirements.status',$filter)
+                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                            ->paginate(25);       
+                }
+            }
+        }
+        
+        return view('assistantmanager.amorders',['view' => $view,'pageName'=>'Orders']);        
+    }
+    
+    //Siddharth's block
+    public function updatepay(Request $request)
+    {
+        $id = $request->id;
+        $update = $request->payment;
+        $x = Requirement::where('id', $id)->update(['payment_status' => $update]);
+        if($x)
+        {
+            return response()->json($update);
+        }
+        else
+        {
+            return response()->json('Error');
+        }
+    }
+    public function updatedispatch(Request $request)
+    {
+        $id = $request->id;
+        $update = $request->dispatch;
+        $x = Requirement::where('id', $id)->update(['dispatch_status' => $update]);
+        if($x)
+        {
+            return response()->json($update);
+        }
+        else
+        {
+            return response()->json('Error');
+        }
+    }
+    //End Siddharth's block
+    
+    public function amshowProjectDetails(Request $id)
+    {
+        $rec = ProjectDetails::where('project_id',$id->projectId)->first();
+        return view('assistantmanager.amprojectdetails',['rec' => $rec,'pageName'=>'Orders']);
+    }
+     public function getamFinance()
+    {
+        $departments = Department::all();
+        return view('assistantmanager.amfinance',['departments'=>$departments,'pageName'=>'Finance']);
+    }
+    public function getamEmpDetails(Request $request)
+    {
+        $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
+        $users = User::where('department_id',$deptId)->get();
+        if($request->dept == 'Operation'){
+            if($request->from){
+                return $request->from;
+            }
+            $start_date = date("Y-m-d", strtotime("-1 week"));
+            $end_date = date("Y-m-d");
+            // $this->db->where("store_date >= '" . $start_date . "' AND store_date <= '" . $end_date . "'");
+            
+            $previous_week = strtotime("-1 week +1 day");
+    
+            $start_week = strtotime("last sunday midnight",$previous_week);
+            $end_week = strtotime("next saturday",$start_week);
+            
+            $start_week = date("Y-m-d",$start_week);
+            $end_week = date("Y-m-d",$end_week);
+            
+            $expenses = loginTime::where('logindate','>=',$start_date)->where('logindate','<',$end_date)->get();
+            $disp = "<div class='panel-body' style='background-color:white'><div class='col-md-4'>From :<input id='from' type='date' class='form-control'></div>".
+                    "<div class='col-md-4'>To :<input id='to' type='date' class='form-control'></div><br>".
+                    "<div class='col-md-4'><button type='button' id='date' class='form-control btn-default' style='background-color:green;color:white'>Fetch</button></div></div>".
+                    "<br><br>";
+            echo $disp;
+        }else{
+            $expenses = "Null";
+        }
+        return view('assistantmanager.amempdetails',['users'=>$users,'dept'=>$request->dept,'expenses'=>$expenses,'pageName'=>'Finance']);
+    }
+    public function getamHRPage(){
+        $departments = Department::all();
+        $groups = Group::all();
+        return view('assistantmanager.amhumanresource',['departments'=>$departments,'groups'=>$groups,'pageName'=>'HR']);
+    }
+    public function confirmamOrder(Request $request)
+    {
+        $id = $request->id;
+        $x = Requirement::where('id', $id)->update(['status' => 'Order Confirmed']);
+        if($x)
+        {
+            return response()->json('Success !!!');
+        }
+        else
+        {
+            return response()->json('Error !!!');
+        }
+    }
+    public function cancelamOrder(Request $request)
+    {
+        $id = $request->id;
+        $x = Requirement::where('id', $id)->update(['status' => 'Order Cancelled']);
+        if($x)
+        {
+            return response()->json('Success !!!');
+        }
+        else
+        {
+            return response()->json('Error !!!');
+        }
+    }
+    public function printLPO(Request $request)
+    {
+        $rec = ProjectDetails::where('project_id', $request->id)->first();
+        $requirements = Requirement::find($request->reqId);
+        $invoice = MhInvoice::where('requirement_id',$request->reqId)->first();
+        return view('assistantmanager.printLPO', ['requirements'=>$requirements,'rec' => $rec,'pageName'=>'Orders','invoice'=>$invoice]);
+    }
+    public function getHRDept(Request $request){
+        if($request->dept == "FormerEmployees"){
+            $users = User::where('department_id',10)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->get();
+        return view('assistantmanager.formeremployees',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        }
+        $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
+        $users = User::where('department_id',$deptId)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status')
+                ->get();
+        return view('assistantmanager.hremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+    }
+    public function amreportdates(Request $request){
+        if($request->month != null){
+            $today = $request->year."-".$request->month;
+        }else{
+            $today = date('Y-m');
+        }
+        $dates = loginTime::where('user_id',$request->uid)->where('logindate','like',$today.'%')->get();
+        $user = User::where('id',$request->uid)->first();
+        return view('assistantmanager.choosedates',['dates'=>$dates,'uid'=>$request->uid,'pageName'=>'HR','user'=>$user]);
+    }
+    public function editEmployee(Request $request){
+        $user = User::where('employeeId', $request->UserId)->first();
+        $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
+        $bankDetails = BankDetails::where('employeeId',$request->UserId)->first();
+        $assets = Asset::all();
+        $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();
+        return view('assistantmanager.editEmployee',['user'=>$user,'employeeDetails'=>$employeeDetails,'bankDetails'=>$bankDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'pageName'=>'HR']);
+    }
+    public function viewEmployee(Request $id)
+    {
+        $user = User::where('employeeId',$id->UserId)->first();
+        $details = EmployeeDetails::Where('employee_id',$id->UserId)->first();
+        $bankdetails = BankDetails::where('employeeId',$id->UserId)->first();
+        $assets = AssetInfo::where('employeeId',$id->UserId)->get();
+        $certificates = Certificate::where('employeeId',$id->UserId)->get();
+        return view('assistantmanager.viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates,'pageName'=>'HR']);
+    }
+    public function hrAttendance(Request $request){
+        $user = User::where('employeeId',$request->userId)->first();
+        if($request->month){
+            $date = $request->year.'-'.$request->month;
+            $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->get();
+        }else{
+            $attendances = attendance::where('empId',$request->userId)->get();
+        }
+        return view('assistantmanager.empattendance',['attendances'=>$attendances,'userid'=>$request->userId,'user'=>$user,'pageName'=>'HR']);
+    }
+    public function viewDailyReport(Request $request){
+        $uId = $request->userId;
+        $date = $request->date;
+        $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
+        $user = User::where('employeeId',$uId)->first();
+        $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
+        return view('assistantmanager.viewdailyreport',['reports'=>$reports,'date'=>$date,'user'=>$user,'attendance'=>$attendance,'pageName'=>'HR']);
+    }
+    public function addvendortype()
+    {
+        $vendors = DB::table('vendor')->select('vendor.*')->get();
+        return view('assistantmanager.amaddvendortype',['vendor'=>$vendors, 'pageName'=>'Vendor Details']);
+    }
+    public function vendorDetails(){
+        $mfdetails = ManufacturerDetail::leftJoin('vendor','vendor.id','=','manufacturer_details.vendortype')->get();
+        $category = ManufacturerDetail::groupBy('category')->pluck('category');
+        $categories = Category::all();
+        $vendor = DB::table('vendor')->select('vendor.*')->get();
+        return view('assistantmanager.manufacturerdetails',['mfdetails'=>$mfdetails,'category'=>$category,'vendor' => $vendor,'categories'=>$categories,'pageName'=>'Vendor Details']);
+    }
+    public function amdailyslots(Request $request)
+    {
+        if($request->userId){
+            $date = date('Y-m-d');
+            $projects = ProjectDetails::where('created_at','like',$date[0].'%')->where('listing_engineer_id',$request->userId)->get();
+            $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+            $projects = DB::table('project_details')
+                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+                ->join('users','users.id','=','project_details.listing_engineer_id')
+                ->join('sub_wards','sub_wards.id','=','project_details.sub_ward_id')
+                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
+                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
+                ->where('project_details.created_at','like',$date.'%')->where('listing_engineer_id',$request->userId)
+                ->select('project_details.*','sub_wards.sub_ward_name','procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name')
+                ->get();
+            $projcount = count($projects); 
+        }else{
+            $date = date('Y-m-d');
+            $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
+            $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+            $projects = DB::table('project_details')
+                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+                ->join('users','users.id','=','project_details.listing_engineer_id')
+                ->join('sub_wards','sub_wards.id','=','project_details.sub_ward_id')
+                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
+                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
+                ->where('project_details.created_at','like',$date.'%')
+                ->select('project_details.*','sub_wards.sub_ward_name', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name')
+                ->get();
+            $projcount = count($projects);  
+        }
+        return view('assistantmanager.dailyslots', ['date' => $date, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le,'pageName'=>'dailyslots']);
+    }
+    public function amprojectadmin(Request $id){
+        $details = projectDetails::where('project_id',$id->projectId)->first();
+        return view('assistantmanager.viewDailyProjects',['details'=>$details,'pageName'=>'dailyslots']);
+    }
+    public function getViewReports(Request $request)
+    {
+        $id=$request->id;
+        $date= $request->date;
+        $user = User::where('id',$id)->first();
+        $logintimes = loginTime::where('user_id',$id)->where('logindate',$date)->first();
+        return view('assistantmanager.amreport',['logintimes'=>$logintimes,'user'=>$user,'date'=>$date,'pageName'=>'HR']);
+    }
+    public function amKRA(){
+        $departments = Department::all();
+        $groups = Group::all();
+        $kras = DB::table('key_results')
+            ->join('departments', 'key_results.department_id', '=', 'departments.id')
+            ->join('groups', 'key_results.group_id', '=', 'groups.id')
+            ->select('key_results.*', 'departments.dept_name', 'groups.group_name')
+            ->get();
+        return view('assistantmanager.keyresultarea',['departments'=>$departments,'groups'=>$groups,'kras'=>$kras,'pageName'=>'KRA']);
+    }
+    public function addKRA(Request $request){
+        $kra = new KeyResult;
+        $kra->department_id = $request->department;
+        $kra->group_id = $request->group;
+        $kra->role = $request->role;
+        $kra->goal = $request->goal;
+        $kra->key_result_area = $request->kra;
+        $kra->key_performance_area = $request->kpa;
+        $kra->save();
+        return back()->with('Success','You have added KRA successfully');
+    }
+    public function editkra(Request $request)
+    {
+        $groupid = $request->groupid;
+        $deptid = $request->deptid;
+        $rec = DB::table('key_results')->join('departments', 'key_results.department_id', '=', 'departments.id')
+                    ->join('groups', 'key_results.group_id', '=', 'groups.id')
+                    ->select('key_results.*', 'departments.dept_name', 'groups.group_name')
+                    ->where('key_results.group_id',$groupid)
+                    ->where('key_results.department_id',$deptid)
+                    ->get();           
+        return view('assistantmanager.keyresultedit',['kra'=>$rec,'pageName' => 'KRA']);
+    }
+    public function deletekra(Request $request)
+    { 
+        $groupid = $request->groupid;
+        $deptid = $request->deptid;
+        $rec = DB::table('key_results')->where('department_id',$deptid)->where('group_id',$groupid)->delete();
+        return back();
+    }
+    public function updatekra(Request $request)
+    {
+        $groupid= $request->groupid;
+        $deptid = $request->deptid;
+        $role = $request->role;
+        $goal = $request->goal;
+        $result = $request->result;
+        $perf = $request->perf;
+
+        $x = DB::table('key_results')
+                ->where('group_id',$groupid)
+                ->where('department_id',$deptid)
+                ->update(['role'=>$role, 'goal'=>$goal,'key_result_area'=>$result,'key_performance_area' => $perf]);
+        if($x)
+        {
+            return back()->with('success','Updated Successfully !!!');
+        }        
+        else
+        {
+            return back()->with('success','Error !!!');
+        }
+    }
+    public function confirmDelivery(Request $request){
+        $requirement = Requirement::where('id',$request->id)->first();
+        $project = ProjectDetails::where('project_id',$request->projectId)->first();
+        $subward = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
+        return view('assistantmanager.confirmDelivery',['pageName'=>'Orders','requirement'=>$requirement,'project'=>$project,'subward'=>$subward]);
+    }
+    public function postconfirmDelivery(Request $request){
+        $invoiceCount = count(MhInvoice::all()) + 1;
+        $no = sprintf("%04d", $invoiceCount);
+        $project = ProjectDetails::where('project_id',$request->projectId)->first();
+        $subward = SubWard::where('id',$project->sub_ward_id)->first();
+        $ward = Ward::where('id',$subward->ward_id)->first();
+        $country = Country::where('id',$ward->country_id)->first();
+        $zone = Zone::where('id',$ward->zone_id)->first();
+        $invoiceNo = "MH_".$country->country_code."_".$zone->zone_number."_".date('Y')."_".$country->country_code.$no;
+        $invoice = new MhInvoice;
+        $invoice->project_id = $request->projectId;
+        $invoice->requirement_id = $request->requiremntId;
+        $invoice->customer_name = $request->customerName;
+        $invoice->deliver_location = $request->location;
+        $invoice->sub_ward = $request->subward;
+        $invoice->invoice_number = $invoiceNo;
+        $invoice->amount_received = $request->amount;
+        $invoice->receive_date = $request->rDate;
+        $invoice->payment_method = $request->paymentMethod;
+        $invoice->transactional_details = $request->transactionNo;
+        $invoice->save();
+        Requirement::where('id',$request->requiremntId)->update(['delivery_status'=>"Delivered"]);
+        return back();
+    }
+    public function updateUser(Request $request){
+        $check = EmployeeDetails::where('employee_id',$request->userId)->first();
+        if($check->verification_status == "Pending"){
+            EmployeeDetails::where('employee_id',$request->userId)->update(['verification_status'=>"Verified"]);
+        }else{
+            EmployeeDetails::where('employee_id',$request->userId)->update(['verification_status'=>"Pending"]);
+        }
+        $text = "Updated Successfully !!!";
+        return response()->json($text);
+    }
+    public function placeOrder(Request $request)
+    {
+        $id = $request->id;
+        $x = Requirement::where('id', $id)->update(['status' => 'Order Placed','dispatch_status' => 'Not yet dispatched']);
+        if($x)
+        {
+            return response()->json('Success !!!');
+        }
+        else
+        {
+            return response()->json('Error !!!');
+        }
+    }
+    public function addvendor(Request $request){
+        $vendor = new Vendor;
+        $vendor->vendor_type = $request->vendor;
+        $vendor->save();
+        return back()->with('Success','Vendor type added successfully');
+    }
+    public function inactiveEmployee(Request $request){
+        User::where('employeeId',$request->id)->update(['department_id'=>10]);
+        return back()->with('Success','Employee marked as inactive');
+    }
+    public function savePetrolExpenses(Request $request){
+        $count = count($request->id);
+        for($i = 0; $i < $count; $i++){
+            loginTime::where('id',$request->id[$i])->update(['total_kilometers'=>$request->exp[$i]]);
+        }
+        return back()->with('Success','Petrol Expense Updated Successfully');
+    }
+}
