@@ -295,10 +295,10 @@
                     </tr>
                 </tbody>
             </table> 
-            @endif
+        @endif
         </div>
+@endif
     </div>
 </div>
 </div>
-@endif
 @endsection

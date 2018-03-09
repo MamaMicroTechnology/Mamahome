@@ -416,7 +416,7 @@ div#calendar{
             <li class="{{ $pageName == 'dailyslots'?'active':''}}"><a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a></li>
             <li class="{{ $pageName == 'KRA'?'active':''}}"><a href="{{ URL::to('/') }}/amkra">KRA</a></li>
             <li class="{{ $pageName == 'Assign'?'active':''}}"><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
-            <li class="{{ $pageName == 'Enquiry'?'active':''}}"><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+            <li class="{{ $pageName == 'Enquiry'?'active':''}}"><a href="{{ URL::to('/') }}/amenquirysheet">Enquiry Sheet</a>
             <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
             @endif
         @endif
@@ -490,4 +490,3 @@ div#calendar{
     </script>
 </body>
 </html>
-

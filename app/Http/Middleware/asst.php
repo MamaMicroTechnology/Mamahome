@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 use App\User;
-use App\Group;
+use App\Department;
 
 class asst
 {
@@ -19,8 +19,8 @@ class asst
     public function handle($request, Closure $next)
     {
         if(Auth::check()){
-            $group = Group::where('id',Auth::user()->group_id)->pluck('group_name')->first();
-            if($group != "Asst. Manager"){
+            $group = Department::where('id',Auth::user()->department_id)->pluck('dept_name')->first();
+            if($group != "Management"){
                 if($group != "Admin"){
                     return response()->view('errors.403error');
                 }

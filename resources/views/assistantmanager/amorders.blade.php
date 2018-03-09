@@ -8,28 +8,41 @@
 		</div>
 		<div class="panel-body">
 		    <form method="GET" action="{{URL::to('/')}}/amorderss">
-		    <table class="table table-responsive table-hover" style="width:70%">
+		    <table class="table table-responsive table-hover" style="width:100%">
 		        <tbody>
 		            <tr>
-		                <td style="width:15%">
+		                <td style="width:10%;text-align: center">
 		                    From Date : 
 		                </td>
-		                <td style="width:25%">
+		                <td style="width:15%">
 		                    <input type="date" class="form-control" id="fromdate" name="fromdate"/>
 		                </td>
-		                <td style="width:15%">
+		                <td style="width:10%;text-align: center">
 		                    To Date :
 		                </td>
-		                <td style="width:25%">
+		                <td style="width:15%">
 		                    <input type="date" class="form-control" id="todate" name="todate" />
 		                </td>
+		                <td style="width:15%;text-align: center">
+		                	Filter By :
+		                </td>
 		                <td style="width:20%">
-		                    <input type="submit" class="btn btn-md btn-primary" id="filter" style="width:100%" name="filter" value="Filter" />
+		                	<select id='filterorder' name="filterorder" class="form-control">
+			    				<option value="" selected>---SELECT---</option>
+			    				<option value="Not Processed">Not Processed</option>
+			    				<option value="Order Confirmed">Order Confirmed</option>
+			    				<option value="Order Placed">Order Placed</option>
+			    				<option value="Order Initiated">Order Initiated</option>
+			    				<option value="Order Cancelled">Order Cancelled</option>
+			    			</select>
+		                </td>
+		                <td style="width:20%">
+		                    <input type="submit" class="btn btn-md btn-primary" style="width:100%" value="Filter" />
 		                </td>
 		            </tr>        
 		        </tbody>
 		    </table>
-		    </form>
+		    </form>				
 		    <table class="table table-responsive table-striped" border="1" id='table'>
 				<thead>
 				    <th style="text-align:center">Project ID</th>
@@ -41,12 +54,12 @@
 					<th style="text-align:center">Quantity</th>
 					<th style="text-align:center">Status</th>
 					<th style="text-align:center">Requirement Date</th>
+					<th style="text-align:center">Action</th>
 					@if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)
 					<!--<th style="text-align:center">Payment Status</th>-->
 					<th style="text-align:center">Dispatch Status</th>
-					<th style="text-align:center">Delivery Status</th>
-					<th style="text-align:center">Print</th>
-					<th style="text-align:center">Action</th>
+					<th style="text-align:center">Actions</th>
+					
 					@endif
 				</thead>
 				<tbody>
@@ -66,7 +79,7 @@
 						<td style="text-align:center">{{$rec->sub_category}}</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
 						<td style="text-align:center">{{$rec->status}}</td>
-						<td style="text-align:center" id="tddate{{$rec->id}}">{{$rec -> requirement_date}}</td>
+						<td style="text-align:center" id="tddate{{$rec->id}}">{{ $newDateFormat2 = date('d/m/Y', strtotime($rec -> requirement_date)) }}</td>
 						@if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)
                         <!--<td style="text-align:center" id="paymenttd-{{$rec->id}}">-->
                         <!--    <select id="selectPayment-{{$rec->id}}" class="form-control" name="selectPayment-{{$rec->id}}" onchange="pay('{{$rec->id}}')">-->
@@ -157,6 +170,9 @@
 	{
 	    var date1 = document.getElementById('fromdate').value;
 	    var date2 = document.getElementById('todate').value;
+	    var filters = document.getElementById('filterorder');
+	    var sel = filters.options[filters.selectedIndex].value;
+	    alert(sel);
 	    if(date2 < date1)
 	    {
 	        alert('To Date value should not be less than From Date !!!');
@@ -167,7 +183,7 @@
 	        $.ajax({
 	            type:'GET',
 	            url: "{{URL::to('/')}}/filter",
-	            data: {date1: date1, date2: date2},
+	            data: {date1: date1, date2: date2, sel:sel},
 	            async: false,
 	            success: function(response)
 	            {

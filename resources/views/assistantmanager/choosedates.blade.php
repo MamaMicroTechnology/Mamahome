@@ -9,10 +9,18 @@
     <?php array_push($datess,"$attendance->logindate"); ?>
 @endforeach
 @foreach($dates as $attendance)
+@if(Auth::user()->group_id != 14)
 <?php
-    $text = "In: ".$attendance->login_time_in_ward."<br>Out: ".$attendance->logoutTime."<br><a href=\"/webapp/amviewreports?date=".$attendance->logindate."&id=".$_GET['uid']."\">Report</a>";
+    $text = "In: ".$attendance->login_time_in_ward."<br>Out: ".$attendance->logoutTime."<br>
+                <a href=\"/amviewreports?date=".$attendance->logindate."&id=".$_GET['uid']."\">Report</a>";
     array_push($logintimes,$text);
 ?>
+@else
+<?php
+    $text = "In: ".$attendance->login_time_in_ward."<br>Out: ".$attendance->logoutTime;
+    array_push($logintimes,$text);
+?>
+@endif
 @endforeach
 <?php
 class Calendar {

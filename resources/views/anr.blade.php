@@ -11,7 +11,7 @@
                     @foreach($departments as $department)
                         <a id="{{ $department->dept_name }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
                     @endforeach
-			<a id="Formeremployee" class="list-group-item" href="#">Former Employees</a>
+                    <a id="Formeremployee" class="list-group-item" href="#">Former Employees</a>
                 </div>
             </div>
         </div>

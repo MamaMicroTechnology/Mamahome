@@ -39,10 +39,10 @@
                                    <td>:</td>
                                    <td id="x">
                                     <div class="col-sm-6">
-                                        <input placeholder="Longitude" class="form-control input-sm" required type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
+                                        <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input placeholder="latitude" class="form-control input-sm" required type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                        <input placeholder="latitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
                                     </div>
                                    </td>
                                </tr>
@@ -54,7 +54,7 @@
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Address</td>
                                    <td>:</td>
-                                   <td><input id="address" required type="text" placeholder="Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
+                                   <td><input readonly id="address" required type="text" placeholder="Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
                                </tr>
                                <tr>
                                    <td>Municipal Approval</td>
@@ -100,7 +100,7 @@
                                           <b style="font-size: 20px; text-align: center">+</b>
                                         </div>
                                       <div class="col-md-3">
-                                        <input value="{{ old('ground') }}" onkeyup="check('ground');" autocomplete="off" name="ground" id="ground" type="text" class="form-control" placeholder="Ground">
+                                        <input value="{{ old('ground') }}" onkeyup="check('ground');" autocomplete="off" name="ground" id="ground" type="text" class="form-control" placeholder="Floor">
                                       </div>
                                       <div class="col-md-3">
                                         <p id="total"></p>
@@ -122,6 +122,35 @@
                                    <td>Project Image</td>
                                    <td>:</td>
                                    <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()"><p id="errormsg"></p></td>
+                               </tr>
+                               <tr>
+                                    <td>Room Types</td>
+                                    <td>:</td>
+                                    <td>
+                                        <table id="bhk" class="table table-responsive">
+                                            <tr>
+                                                <td>
+                                                    <select name="roomType[]" id="" class="form-control">
+                                                        <option value="1RK">1RK</option>
+                                                        <option value="1BHK">1BHK</option>
+                                                        <option value="2BHK">2BHK</option>
+                                                        <option value="3BHK">3BHK</option>
+                                                        <option value="4BHK">4BHK</option>
+                                                        <option value="5BHK">5BHK</option>
+                                                        <option value="6BHK">6BHK</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of rooms">
+                                                </td>
+                                                </tr>
+                                            <tr>
+                                                <td colspan=3>
+                                                    <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add more</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                </tr>
                            </table>
                        </div>
@@ -489,9 +518,9 @@
         // console.log("After getting address");
         // console.log(results);
     if (status == google.maps.GeocoderStatus.OK) {
-      if (results[1]) {
-        //console.log(results[1]);
-        document.getElementById("address").value = results[1].formatted_address;
+      if (results[0]) {
+        // console.log(results);
+        document.getElementById("address").value = results[0].formatted_address;
       }
     }else{
         alert("Geocode was not successful for the following reason: " + status);
@@ -661,12 +690,12 @@
 
     return false;
   }
-function addRow() {
+  function addRow() {
         var table = document.getElementById("bhk");
-        var row = table.insertRow(-1);
+        var row = table.insertRow(0);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
+        
         cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
                                                         "<option value=\"1RK\">1RK</option>"+
                                                         "<option value=\"1BHK\">1BHK</option>"+
@@ -676,8 +705,8 @@ function addRow() {
                                                         "<option value=\"5BHK\">5BHK</option>"+
                                                         "<option value=\"6BHK\">6BHK</option>"+
                                                     "</select>";
-        cell2.innerHTML = "<input required name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
-        cell3.innerHTML = "<button onclick=\"addRow(); this.className='hidden';\" type=\"button\" class=\"btn btn-primary\">Add</button>";
+        cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
+        
     }
 </script>
 @endsection

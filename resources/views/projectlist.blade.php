@@ -15,6 +15,7 @@
         </thead>
         <tbody>
           @foreach($projectlist as $project)
+          @if($project->quality == NULL || $project->quality == 'Genuine')
             <tr>
               <td>{{ $project->project_name }}</td>
               <td>
@@ -23,14 +24,16 @@
               <td>{{ $project->project_status }}</td>
               <td>{{ $project->procurementdetails->procurement_name }}</td>
               <td>{{ $project->procurementdetails->procurement_contact_no }}</td>
+              <td>{{ $project->room_types }}</td>
               <td>
-                 @if($pageName == "Update")
+              @if($pageName == "Update")
                 <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-default input-sm">Edit</a>
               @else
                 <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-default input-sm">View</a>
               @endif
               </td>
             </tr>
+            @endif
           @endforeach
         </tbody>
       </table>

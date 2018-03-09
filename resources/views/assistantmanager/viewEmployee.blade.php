@@ -12,9 +12,7 @@
                 </div>
                 <div class="panel-body">
                     <center>
-                       <div style="border-radius:50%; height: 150px; width:150px; overflow:hidden">
-                        <img style="height:150px;" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}">
-                        </div>
+                        <img style="border-radius:50%; height:150px; width:150px;" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}">
                     </center>
                     <table class="table table-responsive">
                         <tr>

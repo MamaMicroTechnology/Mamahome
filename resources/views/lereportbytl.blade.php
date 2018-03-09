@@ -28,6 +28,20 @@
 					</div>
 				</form>
 			</div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<form method="POST" action="{{ URL::to('/') }}/markLeave">
+						{{ csrf_field() }}
+						<input type="hidden" name="id" value="{{ $username->id }}">
+						<div class="radio">
+							<label><input name="leave" type="radio" value="Leave">Leave</label>
+						</div><div class="radio">
+							<label><input name="leave" type="radio" value="Half Day">Half Day</label>
+						</div>
+						<input type="submit" value="Save" class="form-control btn btn-success">
+					</form>
+				</div>
+			</div>
 			<br>
 			@if($loginTimes)
 			<label>Morning</label>
@@ -248,16 +262,6 @@
 						@endif</td>
 				</tr>
 				<tr>
-					<td>Evening Meter Reading</td>
-					<td>:</td>
-					<td>{{ $loginTimes->afternoonMeter }}</td>
-				</tr>
-				<tr>
-					<td>Evening Data Reading</td>
-					<td>:</td>
-					<td>{{ $loginTimes->afternoonRemarks }}</td>
-				</tr>
-				<tr>
 					<td>Evening Km from ward to home</td>
 					<td>:</td>
 					<td>
@@ -296,7 +300,7 @@
 					<td>:</td>
 					<td>{{ $loginTimes->totalProjectsUpdated }}</td>
 				</tr>
-				<tr>
+					<tr>
 						<td>Logout Time</td>
 						<td>:</td>
 						<td>
