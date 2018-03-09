@@ -176,16 +176,13 @@ class Calendar {
      
 }?>
 <div class="col-md-6 col-md-offset-3">
-<center>{{ count($dates) }}</center>
-    <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}">
-        <div class="alert alert-success text-center">
-                Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;
-                @if($user->department_id != 10)
-                Department &nbsp;:&nbsp; {{ $user->department->dept_name }} &nbsp;|&nbsp;
-                @endif
-                Designation &nbsp;:&nbsp; {{ $user->group->group_name }}
-        </div>
-    </a>
+	<center>{{ count($dates) }}</center>
+    <div class="alert alert-success text-center">Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;
+       @if($user->department_id != 10)
+	 Department &nbsp;:&nbsp; {{ $user->department->dept_name }} &nbsp;|&nbsp;
+	@endif
+        Designation &nbsp;:&nbsp; {{ $user->group->group_name }}
+    </div>
     <?php
     $calendar = new Calendar($datess,$logintimes);
      

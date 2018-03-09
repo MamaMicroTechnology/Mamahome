@@ -250,7 +250,7 @@
         <div class="panel-heading">Certificates</div>
         <div class="panel-body">
             <button onclick="addCertificateRow()">+</button>
-            <form method="POST" action="{{ URL::to('/') }}/edit/uploadCertificates" enctype="multipart/form-data">
+            <form method="POST" action="{{ URL::to('/') }}/amedit/uploadCertificates" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" value="{{ $user->employeeId }}" name="userId">
             <table class="table table-responsive" id="Certificate">

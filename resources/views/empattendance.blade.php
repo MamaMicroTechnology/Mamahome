@@ -176,14 +176,12 @@ class Calendar {
      
 }?>
 <div class="col-md-6 col-md-offset-3">
-<center>{{ count($attendances) }}</center>
-<br>
-    <div class="alert alert-success text-center">
-    Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;
-    @if($user->department_id != 10)
-    Department &nbsp;:&nbsp; {{ $user->department->dept_name }} &nbsp;|&nbsp;
+	<center>{{ count($attendances) }}</center>
+    <div class="alert alert-success text-center">Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;
+    @if($user->department != NULL)
+	Department &nbsp;:&nbsp; {{ $user->department->dept_name }} &nbsp;|&nbsp;
     @endif
-    Designation &nbsp;:&nbsp; {{ $user->group->group_name }}
+	Designation &nbsp;:&nbsp; {{ $user->group->group_name }}
     </div>
 <?php
 $calendar = new Calendar($dates,$logintimes);

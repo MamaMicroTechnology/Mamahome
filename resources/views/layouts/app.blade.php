@@ -285,7 +285,6 @@ div#calendar{
                         @if(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
                         <li><a href="{{ URL::to('/') }}/amorderss">Orders</a></li>
                         <li><a href="{{ URL::to('/') }}/kra">KRA</a></li>
-                        <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a></li>
                         @endif
                         @endif
                     </ul>
@@ -333,7 +332,7 @@ div#calendar{
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders</a>
         <div id="orders" class="collapse">
-            <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
+		<a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
             <a href="{{ URL::to('/amorders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
             <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a>
         </div>

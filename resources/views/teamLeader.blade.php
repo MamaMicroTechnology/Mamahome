@@ -1,63 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-12">
+<div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="panel panel-primary">
-                <div class="panel-heading" style="color:white">Listing Engineers
+            <div class="panel panel-default">
+                <div class="panel-heading">Listing Engineers
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
                 </div>
                 <div class="panel-body">
-                    <table class="table table-responsive table-striped">
+                    <table class="table">
                         <thead>
-                            <th style="text-align: center;">Employee Id</th>
-                            <th style="text-align: center;">Name</th>
-                            <th style="text-align: center;">Ward Assigned</th>
-                            <th style="text-align: center;">Previous Assigned Ward</th>  
-                            <th style="text-align: center;">Images</th>
-                            <th style="text-align: center;">Action</th>
+                            <th>Employee Id</th>
+                            <th>Name</th>
+                            <th>Wards Assigned</th>
+                            <th>Images</th>
+                            <th>Action</th>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
+                            <div class="hidden">{{ $true = 0 }}</div>
                             <tr>
-                                <td  style="text-align: center;">{{$user->employeeId}}</td>
-                               
-                                <td  style="text-align: center;">{{$user->name}}</td>
-                                <!-- Assign Ward Button -->
-                                @if($user->status == 'Completed')
-                                    <td style="text-align:center;">
-                                        <a data-toggle="modal" data-target="#assignWards{{ $user->id }}" class="btn btn-sm btn-primary">
-                                            <b>Assign Slots</b>
-                                        </a>
-                                    </td>
-                                @else
-                                    <td style="text-align:center">{{$user->sub_ward_name}}</td>
-                                @endif
-                                <td style="text-align: center;">
-                                    @foreach($subwards as $subward)
-                                        @if($subward->id == $user->prev_subward_id)
-                                            {{$subward->sub_ward_name}}
-                                        @endif
+                                <td>{{ $user->employeeId }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>
+                                    @foreach($subwardsAssignment as $subward)
+                                    @if($user->id == $subward->user_id)
+                                        {{ $subward->subward->sub_ward_name}}
+                                        <div class="hidden">{{ $true = 1 }}</div>
+                                    @endif
+                                    @endforeach
+                                    @if($true == 0)
+                                    <a href="#" data-toggle="modal" data-target="#assignWards{{ $user->id }}">Assign Wards</a>
+                                    @endif
+                                </td>
+                                <td>
+                                    @foreach($subwardsAssignment as $subward)
+                                    @if($user->id == $subward->user_id)
+                                    <a href="{{ URL::to('/') }}/public/subWardImages/{{ $subward->subward->sub_ward_image }}">Click here to view image</a>
+                                    @endif
                                     @endforeach
                                 </td>
-                                <td style="text-align:center">
-                                    <a href="{{ URL::to('/')}}/subwardImages/{{$user->sub_ward_image}}" target="_blank">Click Here To View Image
-                                    </a>
-                                </td>            
-                                <!--Completed Button -->
-                                @if($user->status == 'Completed')
-                                    <td style="text-align:center;"></td>
-                                @else
-                                    <td style="text-align:center">
-                                        <div class="btn-group">
-                                            <a href="{{URL::to('/')}}/completedAssignment?id={{$user->id}}" class="btn btn-sm btn-success"><b>Completed</b></a>
-                                            <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
-                                        </div>
-                                    </td>
-                                @endif 
+                                <td><a href="{{ URL::to('/') }}/viewReport?UserId={{ $user->id }}" class="btn btn-primary btn-xs">View</a></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -66,19 +52,19 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-default" style="border-color: green">
-                <div class="panel-heading" style="color:white;background-color: green">Main Wards</div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Main Wards</div>
                 <div class="panel-body">
                     <table class="table">
                         <thead>
-                            <th style="text-align: center;">Ward Name</th>
-                            <th style="text-align: center;">Ward Image</th>
+                            <th>Ward Name</th>
+                            <th>Ward Image</th>
                         </thead>
                         <tbody>
                             @foreach($wards as $ward)
                             <tr>
-                                <td style="text-align: center;">{{ $ward->ward_name }}</td>
-                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}">Image</a></td>
+                                <td>{{ $ward->ward_name }}</td>
+                                <td><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}">Image</a></td>
                             </tr>
                             @endforeach
                         </tbody>

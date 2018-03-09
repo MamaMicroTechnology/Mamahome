@@ -3,52 +3,37 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default" style="border-color:#f4811f">
-                <div class="panel-heading text-center" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">Listing Engineers</b>
+                <div class="panel-heading" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">Listing Engineers</b>
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                <a href="{{url()->previous()}}" class="btn btn-sm btn-danger pull-right">Back</a>    
                 </div>
                 <div class="panel-body">
-                  
-                    <table class="table table-responsive table-striped table-hover">
+                    <table class="table">
                         <thead>
-                            <th style="width:15%">Employee Id</th>
-                            <th style="width:20%;">Name</th>
-                            <th style="width:22.5%;text-align:center">Dates Assigned</th>
-                            <th style="width:27.5%;text-align:center;">Previously Assigned Date</th>
-                            <th style="text-align:center">Action</th>
+                            <th>Employee Id</th>
+                            <th>Name</th>
+                            <th>Dates Assigned</th>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
+                            <div class="hidden">{{ $true = 0 }}</div>
                             <tr>
                                 <td>{{ $user->employeeId }}</td>
-                                <td style="text-align:left">{{ $user->name }}</td>
-                                <td style="text-align: center">
-                                    @if($user->status == 'Not Completed')
-                                      {{date("d / m / Y", strtotime($user->assigned_date))}}
-                                    @else
-                                      <a data-toggle="modal" data-target="#assignWards{{ $user->id }}" class="btn btn-sm btn-primary">Assign Slots</a>
+                                <td>{{ $user->name }}</td>
+                                <td>
+                                    @foreach($subwardsAssignment as $subward)
+                                    @if($user->id == $subward->user_id)
+                                        {{ date('d-M-Y',strtotime($subward->assigned_date )) }}
+                                        <div class="hidden">{{ $true = 1 }}</div>
+                                    @endif
+                                    @endforeach
+                                    @if($true == 0)
+                                    <a href="#" data-toggle="modal" data-target="#assignWards{{ $user->id }}">Assign Daily Slots</a>
                                     @endif
                                 </td>
-                                <td style="text-align:center">
-                                  @if($user->status == 'Not Completed')
-                                    {{date("d / m / Y", strtotime($user->updated_at))}}
-                                  @else
-                                    {{date("d / m / Y", strtotime($user->assigned_date))}}
-                                  @endif
-                                </td><!-- Previous date -->
-                                
-                                <td style="text-align:center"> 
-                                  @if($user->status == 'Not Completed')
-                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success">Completed</a>
-                                  @else
-                                    Completed
-                                  @endif
-                                </td>
-                            
                             </tr>
                             @endforeach
                         </tbody>
@@ -80,7 +65,7 @@
 
 @foreach($users as $user)
 <!-- Modal -->
-<form method="POST" action="{{ URL::to('/') }}/{{ $user->id }}/assignthisSlot">
+<form method="POST" action="{{ URL::to('/') }}/{{ $user->id }}/assignDailySlots">
 {{ csrf_field() }}    
     <div id="assignWards{{ $user->id }}" class="modal fade" role="dialog">
       <div class="modal-dialog modal-sm">

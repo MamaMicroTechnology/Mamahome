@@ -2,9 +2,6 @@
 
 @section('content')
 
-<?php
-	$id = $_GET['projectId'];
-?>
 <div class="col-md-6 col-md-offset-3">
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -14,7 +11,7 @@
 	</div>
 	<div class="panel-body">
 		<div id="add" class="hidden">
-			<form method="POST" action="{{ URL::to('/') }}/addRequirement?pId={{ $id }}" enctype="multipart/form-data">
+			<form method="POST" action="{{ URL::to('/') }}/{{$id}}/addRequirement" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">
 					<label>Requirement Sheet</label>
@@ -162,7 +159,7 @@
     		</div>
     	</div>
     </div>
-<script src="http://code.jquery.com/jquery-3.3.1.js"></script> 
+    
 <script type="text/javascript">
 
     function check(){
@@ -220,13 +217,13 @@
             success: function(response)
             {
                document.getElementById('uPrice').value = response.price;
-				if(cat == "22"){
-					$('#sandmodal').modal('show');
-				}
+		if(cat == "27"){
+			$('#sandmodal').modal('show');
+		}
             }
         });   
     }
-    function func_sand(){
+	function func_sand(){
 		var price = parseInt(document.getElementById('uPrice').value);
 		var quantity = parseInt(document.getElementById('i1').value);
 		var distance = parseInt(document.getElementById('i2').value);
@@ -241,6 +238,7 @@
 		document.getElementById('i1').value="";
 		document.getElementById('i2').value="";
 	}
+    
     function getSubCat()
     {
         var e = document.getElementById("mCategory");

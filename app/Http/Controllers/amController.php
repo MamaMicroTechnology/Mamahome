@@ -66,93 +66,44 @@ class amController extends Controller
             return response()->json('Error !!!');
         }
     }
-    public function enquirysheet()
-    {
-        $records = DB::table('record_data')->join('project_details','project_details.project_id','=','record_data.rec_project')->get();
-        return view('assistantmanager.amenquirysheet',['records'=>$records,'pageName'=>'Enquiry']);
-    }
     public function amorders(Request $request)
     {
-        if(!$request->filterorder)
+        if(!$request->fromdate && !$request->todate )
         {
-            if(!$request->fromdate && !$request->todate ) //No input whatsoever
+            $view = Requirement::orderby('project_id','DESC')
+                    ->leftJoin('users','requirements.generated_by','=','users.id')
+                    ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                    ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
+                    ->paginate(25);
+            
+        }
+        else
+        {
+            $date1 = $request->fromdate;
+            $date2 = $request->todate;
+            $records = '';
+            if($date1 == $date2)
             {
-                $view = Requirement::orderby('project_id','DESC')
+                $view = Requirement::orderBy('project_id','DESC')
                         ->leftJoin('users','requirements.generated_by','=','users.id')
                         ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->where('requirements.requirement_date','like',$date1.'%')
                         ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
                         ->paginate(25);
             }
             else
             {
-                $date1 = $request->fromdate;
-                $date2 = $request->todate;
-                $records = '';
-                if($date1 == $date2) //No filter but same date
-                {
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','like',$date1.'%')
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);       
-                }
-                else
-                {
-                    $date1 .= ' 00:00:00';
-                    $date2 .= ' 23:59:59'; //No filter but different dates
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','>',$date1)
-                            ->where('requirements.requirement_date','<',$date2)
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);      
-                }
-            }
-        }
-        else
-        {
-            $filter = $request->filterorder;
-            if(!$request->fromdate && !$request->todate ) 
-            {
-                $view = Requirement::orderby('project_id','DESC')
+                $date1 .= ' 00:00:00';
+                $date2 .= ' 23:59:59';
+                $view = Requirement::orderBy('project_id','DESC')
                         ->leftJoin('users','requirements.generated_by','=','users.id')
                         ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->where('requirements.status',$filter)
+                        ->where('requirements.requirement_date','>',$date1)
+                        ->where('requirements.requirement_date','<',$date2)
                         ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                        ->paginate(25);    
-            }
-            else
-            {
-                $date1 = $request->fromdate;
-                $date2 = $request->todate;
-                $records = '';
-                if($date1 == $date2)
-                {
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','like',$date1.'%')
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);        
-                }
-                else
-                {
-                    $date1 .= ' 00:00:00';
-                    $date2 .= ' 23:59:59'; //All three different values
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','>',$date1)
-                            ->where('requirements.requirement_date','<',$date2)
-                            ->where('requirements.status',$filter)
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);       
-                }
+                        ->paginate(25);
             }
         }
-        
         return view('assistantmanager.amorders',['view' => $view,'pageName'=>'Orders']);        
     }
     
@@ -281,7 +232,7 @@ class amController extends Controller
         return view('assistantmanager.hremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
     }
     public function amreportdates(Request $request){
-        if($request->month != null){
+         if($request->month != null){
             $today = $request->year."-".$request->month;
         }else{
             $today = date('Y-m');
@@ -406,47 +357,6 @@ class amController extends Controller
         $kra->key_performance_area = $request->kpa;
         $kra->save();
         return back()->with('Success','You have added KRA successfully');
-    }
-    public function editkra(Request $request)
-    {
-        $groupid = $request->groupid;
-        $deptid = $request->deptid;
-        $rec = DB::table('key_results')->join('departments', 'key_results.department_id', '=', 'departments.id')
-                    ->join('groups', 'key_results.group_id', '=', 'groups.id')
-                    ->select('key_results.*', 'departments.dept_name', 'groups.group_name')
-                    ->where('key_results.group_id',$groupid)
-                    ->where('key_results.department_id',$deptid)
-                    ->get();           
-        return view('assistantmanager.keyresultedit',['kra'=>$rec,'pageName' => 'KRA']);
-    }
-    public function deletekra(Request $request)
-    { 
-        $groupid = $request->groupid;
-        $deptid = $request->deptid;
-        $rec = DB::table('key_results')->where('department_id',$deptid)->where('group_id',$groupid)->delete();
-        return back();
-    }
-    public function updatekra(Request $request)
-    {
-        $groupid= $request->groupid;
-        $deptid = $request->deptid;
-        $role = $request->role;
-        $goal = $request->goal;
-        $result = $request->result;
-        $perf = $request->perf;
-
-        $x = DB::table('key_results')
-                ->where('group_id',$groupid)
-                ->where('department_id',$deptid)
-                ->update(['role'=>$role, 'goal'=>$goal,'key_result_area'=>$result,'key_performance_area' => $perf]);
-        if($x)
-        {
-            return back()->with('success','Updated Successfully !!!');
-        }        
-        else
-        {
-            return back()->with('success','Error !!!');
-        }
     }
     public function confirmDelivery(Request $request){
         $requirement = Requirement::where('id',$request->id)->first();

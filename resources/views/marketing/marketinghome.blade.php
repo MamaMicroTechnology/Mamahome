@@ -32,7 +32,7 @@
                         <br><br>
                         <table class="table table-hover">
                             @foreach($categories as $category)
-                            <tr id="current{{ $category->id }}">
+                      		<tr id="current{{ $category->id }}">
                                 <td>{{ $category->category_name }}</td>
                                 <td>
                                 <form method="POST" action="{{ URL::to('/') }}/deleteCategory">

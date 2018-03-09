@@ -161,7 +161,7 @@ class mamaController extends Controller
         return back();
 
     }
-    public function salesreport()
+public function salesreport()
     {
         $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
         $users = User::where('group_id',$group)
@@ -248,17 +248,19 @@ class mamaController extends Controller
                                                 ->count();
 
                     
-                        $confirmcount[$user->id] = ProjectDetails::leftjoin('requirements','requirements.project_id','=','project_details.project_id')
+                        $confirmcount[$user->id] = ProjectDetails::join('users','project_details.listing_engineer_id','=','users.id')
+                                                ->leftjoin('requirements','requirements.project_id','=','project_details.project_id')
                                                 ->where('project_details.created_at','>',$fromdate)
                                                 ->where('project_details.created_at','<',$todate)
-                                                ->where('project_details.listing_engineer_id', $user->id)
+                                                ->where('users.id', $user->id)
                                                 ->where('requirements.status','Order Confirmed')
                                                 ->count();
 
-                        $initiatedcount[$user->id] = ProjectDetails::leftjoin('requirements','requirements.project_id','=','project_details.project_id')
+                        $initiatedcount[$user->id] = ProjectDetails::join('users','project_details.listing_engineer_id','=','users.id')
+                                        ->leftjoin('requirements','requirements.project_id','=','project_details.project_id')
                                         ->where('project_details.created_at','>',$fromdate)
                                         ->where('project_details.created_at','<',$todate)
-                                        ->where('project_details.listing_engineer_id', $user->id)
+                                        ->where('users.id',$user->id)
                                         ->where('requirements.status','Order Initiated')
                                         ->count();
                     }     
@@ -333,21 +335,32 @@ class mamaController extends Controller
     }
     public function assignWards($id,Request $request)
     {
-        $assigned = WardAssignment::where('user_id',$id)->first();
-        if($assigned != NULL){
-            $assigned->prev_subward_id = $assigned->subward_id;
-            $assigned->subward_id = $request->subward;
-            $assigned->status = "Not Completed";
-            $assigned->save();
-        }else{
-            $assignWard = new WardAssignment;
-            $assignWard->user_id = $id;
-            $assignWard->subward_id = $request->subward;
-            $assignWard->prev_subward_id = '';
-            $assignWard->status = 'Not Completed';
-            $assignWard->save();
+        $check = WardAssignment::where('user_id',$id)->get();
+        if(count($check) != 0){
+            return back()->with('Error','The employee has been already assigned to ward');
         }
-        return back()->with('error','Assigned Successfully');
+        $wardsassignment = New WardAssignment;
+        $wardsassignment->user_id = $id;
+        $wardsassignment->subward_id = $request->subward;
+        if($wardsassignment->save()){
+            $first = loginTime::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+            if(count($first)!=0){
+                $assigned = subWard::where('id',$request->subward)->pluck('sub_ward_name')->first();
+                if($first->allocatedWard == NULL){
+                loginTime::where('user_id',$id)->where('logindate',date('Y-m-d'))->update([
+                    'allocatedWard' => $assigned,
+                    ]);
+                }else{
+                    $oldassignment = $first->allocatedWard.', '.$assigned;
+                    loginTime::where('user_id',$id)->where('logindate',date('Y-m-d'))->update([
+                        'allocatedWard' => $oldassignment,
+                    ]);
+                }
+            }
+            return back();
+        }else{
+            return back()->with('Error','Some problem in the connection');
+        }
     }
     public function addProject(Request $request)
     {
@@ -357,73 +370,73 @@ class mamaController extends Controller
             'ground' => 'required',
             'pName' => 'required',
             'rName' => 'required',
-            ]);
-            if ($validator->fails()) {
-                return back()
-                ->with('Error','Please check some of the fields again')
-                ->withErrors($validator)
-                ->withInput();
-            }
-            $basement = $request->basement;
-            $ground = $request->ground;
-            $floor = $basement + $ground + 1;
-            
-            if($request->mApprove != NULL){
-                $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
-                $request->mApprove->move(public_path('projectImages'),$imageName1);
-            }else{
-                $imageName1 = "N/A";
-            }
-            if($request->oApprove != NULL){ 
-                $imageName2 = time().'.'.request()->oApprove->getClientOriginalExtension();
-                $request->oApprove->move(public_path('projectImages'),$imageName2);
-            }else{
-                $imageName2 = "N/A";
-            }
-            $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
-            $request->pImage->move(public_path('projectImages'),$imageName3);
-            
-            $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-            $projectdetails = New ProjectDetails;
-            $projectdetails->sub_ward_id = $ward;
-            $projectdetails->project_name = $request->pName;
-            $projectdetails->road_name = $request->rName;
-            $projectdetails->municipality_approval = $imageName1;
-            $projectdetails->other_approvals = $imageName2;
-            $projectdetails->project_status = $request->status;
-            $projectdetails->basement = $basement;
-            $projectdetails->ground = $ground;
-            $projectdetails->project_type = $floor;
-            $projectdetails->project_size = $request->pSize;
-            $projectdetails->budget = $request->budget;
-            $projectdetails->image = $imageName3;
-            $projectdetails->listing_engineer_id = Auth::user()->id;
-            $projectdetails->remarks = $request->remarks;
-            $projectdetails->contract = $request->contract;
-            $projectdetails->save();
-            
-            $room_types = $request->roomType[0]." (".$request->number[0].")";
-            $count = count($request->roomType);
-            for($i = 0;$i<$count;$i++){
-                $roomtype = new RoomType;
-                $roomtype->type = $request->roomType[$i];
-                $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->id;
-                $roomtype->save();
-            }
+        ]);
+        if ($validator->fails()) {
+            return back()
+                    ->with('Error','Please check some of the fields again')
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+        $basement = $request->basement;
+        $ground = $request->ground;
+        $floor = $basement + $ground + 1;
 
-            $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
-            $siteaddress->latitude = $request->latitude;
-            $siteaddress->longitude = $request->longitude;
-            $siteaddress->address = $request->address;
-            $siteaddress->save();
-            
-            $ownerDetails = New OwnerDetails;
-            $ownerDetails->project_id = $projectdetails->id;
-            $ownerDetails->owner_name = $request->oName;
-            $ownerDetails->owner_email = $request->oEmail;
-            $ownerDetails->owner_contact_no = $request->oContact;
+        if($request->mApprove != NULL){
+            $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
+            $request->mApprove->move(public_path('projectImages'),$imageName1);
+        }else{
+            $imageName1 = "N/A";
+        }
+        if($request->oApprove != NULL){ 
+            $imageName2 = time().'.'.request()->oApprove->getClientOriginalExtension();
+            $request->oApprove->move(public_path('projectImages'),$imageName2);
+        }else{
+            $imageName2 = "N/A";
+        }
+        $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
+        $request->pImage->move(public_path('projectImages'),$imageName3);
+
+        $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+        $projectdetails = New ProjectDetails;
+        $projectdetails->sub_ward_id = $ward;
+        $projectdetails->project_name = $request->pName;
+        $projectdetails->road_name = $request->rName;
+        $projectdetails->municipality_approval = $imageName1;
+        $projectdetails->other_approvals = $imageName2;
+        $projectdetails->project_status = $request->status;
+        $projectdetails->basement = $basement;
+        $projectdetails->ground = $ground;
+        $projectdetails->project_type = $floor;
+        $projectdetails->project_size = $request->pSize;
+        $projectdetails->budget = $request->budget;
+        $projectdetails->image = $imageName3;
+        $projectdetails->listing_engineer_id = Auth::user()->id;
+        $projectdetails->remarks = $request->remarks;
+        $projectdetails->contract = $request->contract;
+        $projectdetails->save();
+
+	//$room_types = $request->roomType[0]." (".$request->number[0].")";
+          //  $count = count($request->roomType);
+           // for($i = 0;$i<$count;$i++){
+            //    $roomtype = new RoomType;
+            //    $roomtype->room_type = $request->roomType[$i];
+            //    $roomtype->no_of_rooms = $request->number[$i];
+            //    $roomtype->project_id = $projectdetails->id;
+            //    $roomtype->save();
+           // }
+	
+        $siteaddress = New SiteAddress;
+        $siteaddress->project_id = $projectdetails->id;
+        $siteaddress->latitude = $request->latitude;
+        $siteaddress->longitude = $request->longitude;
+        $siteaddress->address = $request->address;
+        $siteaddress->save();
+
+        $ownerDetails = New OwnerDetails;
+        $ownerDetails->project_id = $projectdetails->id;
+        $ownerDetails->owner_name = $request->oName;
+        $ownerDetails->owner_email = $request->oEmail;
+        $ownerDetails->owner_contact_no = $request->oContact;
         $ownerDetails->save();
 
         $contractorDetails = New ContractorDetails;
@@ -535,7 +548,6 @@ class mamaController extends Controller
             'project_status' => $request->status,
             'basement' => $basement,
             'ground' => $ground,
-            'quality' => $request->quality,
             'project_type' => $floor,
             'project_size' => $request->pSize,
             'budget' => $request->budget
@@ -705,10 +717,10 @@ class mamaController extends Controller
         ]);
         return back();
     }
-    public function addRequirement(Request $request)
+    public function addRequirement(Request $request,$id)
     {
         $requirement = New Requirement;
-        $requirement->project_id = $request->pId;
+        $requirement->project_id = $id;
         $categoryname = Category::where('id',$request->mCategory)->pluck('category_name')->first();
         $requirement->main_category = $categoryname;
         $subcategoryname = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
@@ -887,31 +899,13 @@ class mamaController extends Controller
         $password = User::where('id',$request->id)->update(['password'=>bcrypt($request->newpassword)]);
         return back();
     }
-    public function assignthisSlot($id, Request $request){
-        $x = salesassignment::where('user_id',$id)->get();
-        if(count($x) > 0)
-        {
-            salesassignment::where('user_id',$id)->update(['status'=>'Not Completed','assigned_date' => $request->date]);
-            return back();
-        }
-        else
-        {
-            $user = User::where('id',$request->id)->first();
-            $assignment = new salesassignment;
-            $assignment->user_id = $id;
-            $assignment->assigned_date = $request->date;
-            $assignment->status = 'Not Completed';
-            dd($assignment);
-            $assignment->save();
-            return back()->with('Success','Daily Slot assigned to '.$user->name);
-        }
-    }
-    public function completedAssignment( Request $request)
-    {
-        $id = $request->id;
-        $sub = WardAssignment::where('user_id',$id)->first();
-        WardAssignment::where('user_id',$id)->update(['status' => 'Completed','prev_subward_id'=> $sub->subward_id]);
-        return back();
+    public function assignDailySlots($id,Request $request){
+        $user = User::where('id',$request->id)->first();
+        $assignment = new salesassignment;
+        $assignment->user_id = $id;
+        $assignment->assigned_date = $request->date;
+        $assignment->save();
+        return back()->with('Success','Daily Slot assigned to '.$user->name);
     }
     public function editMorninRemarks($id, Request $request){
         loginTime::where('id',$id)->update(['morningRemarks'=>$request->remark]);
@@ -930,8 +924,7 @@ class mamaController extends Controller
             'quality'=>$request->quality,
             'contract'=>$request->contract,
             'note'=>$request->note,
-            'follow_up_by'=>Auth::user()->id,
-            'call_attended_by'=>Auth::user()->id
+            'follow_up_by'=>Auth::user()->id
             ]);
         siteAddress::where('project_id',$id)->update([
             'address'=>$request->address
@@ -1130,9 +1123,5 @@ class mamaController extends Controller
     {
         loginTime::where('id',$request->id)->update(['logoutTime'=>$request->logoutTime]);
         return back()->with('Success','Logout time updated');
-    }
-    public function markLeave(Request $request){
-        loginTime::where('id',$request->id)->update(['']);
-        return back();
     }
 }
