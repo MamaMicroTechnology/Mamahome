@@ -196,8 +196,13 @@ class HomeController extends Controller
         $fake = ProjectDetails::where('quality',"FAKE")->count();
         $notConfirmed = ProjectDetails::where('quality',null)->count();
         $le = User::where('group_id','6')->get();
+        $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
+        $count = array();
+        foreach($notes as $note){
+            $count[$note] = ProjectDetails::where('with_cont',$note)->count();
+        }
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
-        return view('Qualityproj', ['le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
+        return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
     }
     
     public function getquality(Request $request)
