@@ -1,49 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="col-md-12">
     <div class="row">
         <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">Listing Engineers
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="color:white">Listing Engineers
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
                 </div>
                 <div class="panel-body">
-                    <table class="table">
+                    <table class="table table-responsive table-striped">
                         <thead>
-                            <th>Employee Id</th>
-                            <th>Name</th>
-                            <th>Wards Assigned</th>
-                            <th>Images</th>
-                            <th>Action</th>
+                            <th style="text-align: center;">Employee Id</th>
+                            <th style="text-align: center;">Name</th>
+                            <th style="text-align: center;">Ward Assigned</th>
+                            <th style="text-align: center;">Previous Assigned Ward</th>  
+                            <th style="text-align: center;">Images</th>
+                            <th style="text-align: center;">Action</th>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
-                            <div class="hidden">{{ $true = 0 }}</div>
                             <tr>
-                                <td>{{ $user->employeeId }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>
-                                    @foreach($subwardsAssignment as $subward)
-                                    @if($user->id == $subward->user_id)
-                                        {{ $subward->subward->sub_ward_name}}
-                                        <div class="hidden">{{ $true = 1 }}</div>
-                                    @endif
+                                <td  style="text-align: center;">{{$user->employeeId}}</td>
+                               
+                                <td  style="text-align: center;">{{$user->name}}</td>
+                                <!-- Assign Ward Button -->
+                                @if($user->status == 'Completed')
+                                    <td style="text-align:center;">
+                                        <a data-toggle="modal" data-target="#assignWards{{ $user->id }}" class="btn btn-sm btn-primary">
+                                            <b>Assign Wards</b>
+                                        </a>
+                                    </td>
+                                @else
+                                    <td style="text-align:center">{{$user->sub_ward_name}}</td>
+                                @endif
+                                <td style="text-align: center;">
+                                    @foreach($subwards as $subward)
+                                        @if($subward->id == $user->prev_subward_id)
+                                            {{$subward->sub_ward_name}}
+                                        @endif
                                     @endforeach
-                                    @if($true == 0)
-                                    <a href="#" data-toggle="modal" data-target="#assignWards{{ $user->id }}">Assign Wards</a>
-                                    @endif
                                 </td>
-                                <td>
-                                    @foreach($subwardsAssignment as $subward)
-                                    @if($user->id == $subward->user_id)
-                                    <a href="{{ URL::to('/') }}/public/subWardImages/{{ $subward->subward->sub_ward_image }}">Click here to view image</a>
-                                    @endif
-                                    @endforeach
-                                </td>
-                                <td><a href="{{ URL::to('/') }}/viewReport?UserId={{ $user->id }}" class="btn btn-primary btn-xs">View</a></td>
+                                <td style="text-align:center">
+                                    <a href="{{ URL::to('/')}}/public/subwardImages/{{$user->sub_ward_image}}" target="_blank">Click Here To View Image
+                                    </a>
+                                </td>            
+                                <!--Completed Button -->
+                                @if($user->status == 'Completed')
+                                    <td style="text-align:center;">
+                                        <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
+                                    </td>
+                                @else
+                                    <td style="text-align:center">
+                                        <div class="btn-group">
+                                            <a href="{{URL::to('/')}}/completedAssignment?id={{$user->id}}" class="btn btn-sm btn-success"><b>Completed</b></a>
+                                            <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
+                                        </div>
+                                    </td>
+                                @endif 
                             </tr>
                             @endforeach
                         </tbody>
@@ -52,19 +68,19 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Main Wards</div>
+            <div class="panel panel-default" style="border-color: green">
+                <div class="panel-heading" style="color:white;background-color: green">Main Wards</div>
                 <div class="panel-body">
                     <table class="table">
                         <thead>
-                            <th>Ward Name</th>
-                            <th>Ward Image</th>
+                            <th style="text-align: center;">Ward Name</th>
+                            <th style="text-align: center;">Ward Image</th>
                         </thead>
                         <tbody>
                             @foreach($wards as $ward)
                             <tr>
-                                <td>{{ $ward->ward_name }}</td>
-                                <td><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}">Image</a></td>
+                                <td style="text-align: center;">{{ $ward->ward_name }}</td>
+                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}">Image</a></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -88,13 +104,18 @@
             <h4 class="modal-title">Assign Wards</h4>
           </div>
           <div class="modal-body">
-            Choose Wards:<br>
-            <select name="subward" class="form-control">
-                <option value="">--Select--</option>
-                @foreach($subwards as $subward)
-                <option value="{{ $subward->id }}">{{ $subward->sub_ward_name }}</option>
-                @endforeach
-            </select>
+            <label>Choose Ward :</label><br>
+                <select name="ward" class="form-control" id="ward{{ $user->id }}" onchange="loadsubwards('{{ $user->id }}')">
+                    <option value="">--Select--</option>
+                    @foreach($wards as $ward)
+                    <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
+                    @endforeach
+                </select>
+                <br>
+                
+                <label>Choose Subward :</label><br>
+                <select name="subward" class="form-control" id="subward{{ $user->id }}">
+                </select>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-success pull-left">Assign</button>
@@ -105,4 +126,40 @@
     </div>
 </form>
 @endforeach
+
+
+<script type="text/javascript">
+    function loadsubwards(arg)
+    {
+        var x = document.getElementById('ward'+arg);
+        var sel = x.options[x.selectedIndex].value;
+        if(sel)
+        {
+            $.ajax({
+                type: "GET",
+                url: "{{URL::to('/')}}/loadsubwards",
+                data: { ward_id: sel },
+                async: false,
+                success: function(response)
+                {
+                    if(response == 'No Sub Wards Found !!!')
+                    {
+                        document.getElementById('error'+arg).innerHTML = '<h4>No Sub Wards Found !!!</h4>';
+                        document.getElementById('error'+arg).style,display = 'initial';
+                    }
+                    else
+                    {
+                        var html = "<option value='' disabled selected>---Select---</option>";
+                        for(var i=0; i< response.length; i++)
+                        {
+                            html += "<option value='"+response[i].id+"'>"+response[i].sub_ward_name+"</option>";
+                        }
+                        document.getElementById('subward'+arg).innerHTML = html;
+                    }
+                    
+                }
+            });
+        }
+    }
+</script>
 @endsection
