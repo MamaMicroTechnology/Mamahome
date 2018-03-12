@@ -35,7 +35,17 @@
     					</table>
     				</div>
     				<div class="panel-footer">
+                        @if(Auth::user()->group_id == 7)
     					<center>{{ $projects->links() }}</center>
+                        @else
+                        <center>
+                             <ul class="pagination">
+                                @for($i = 0; $i<count($links);$i++)
+                                      <li><a href="{{ URL::to('/') }}/wardsforle?next={{$i}}">{{ $i }}</a></li>
+                                @endfor
+                            </ul> 
+                        </center>
+                        @endif
     				</div>
     			</div>
     		</div>
@@ -150,8 +160,9 @@
                 						        <td>
                 						            <select class="form-control" id="contract-{{$project->project_id}}" name="contract">
                 						                <option value="null" disabled selected>--- Select ---</option>
-                						                <option value="With Contractor" {{ $project->contract == 'With Contractor'? 'selected':''}}>With Contractor</option>
-                						                <option value="Without Contractor" {{ $project->contract == 'Without Contractor'? 'selected':''}}>Without Contractor</option>
+                						                <option value="With Labour Contractor">With Labour Contractor</option>
+														<option value="With Material Contractor">With Material Contractor</option>
+														<option value="Without Contractor">Without Contractor</option>
                 						            </select>
                 						        </td>
                 						    </tr>
@@ -167,7 +178,8 @@
         				            </form>
             			            <br>
             			            <h4 style="text-align:center;font-weight:bold">Buyer Details</h4>
-            			            <div class="panel-group">
+                                    <div class="panel-group">
+                			            @if($project->ownerdetails != NULL)
                                         <div class="panel panel-default">
                                             <div class="panel-heading"  style="color:white;background-color:#158942;">
                                                 <h4 class="panel-title">
@@ -200,6 +212,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
+                                        @if($project->consultantdetails != NULL)
                                         <div class="panel panel-default">
                                             <div class="panel-heading" style="background-color:#F57F1B;color:white">
                                                 <h4 class="panel-title">
@@ -231,6 +245,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
+                                        @if($project->contractordetails != NULL)
                                         <div class="panel panel-default">
                                             <div class="panel-heading" style="background-color:#158942;color:white">
                                                 <h4 class="panel-title">
@@ -262,37 +278,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--<div class="panel panel-default">-->
-                                        <!--    <div class="panel-heading" style="background-color:#F57F1B;color:white">-->
-                                        <!--        <h4 class="panel-title">-->
-                                        <!--           <b>Procurement Details</b>-->
-                                        <!--        </h4>-->
-                                        <!--    </div>-->
-                                        <!--    <div>-->
-                                        <!--        <div class="panel-body">-->
-                                        <!--            <table class="table table-responsive table-striped table-hover">-->
-                                        <!--                <tbody>-->
-                                        <!--                    <tr>-->
-                                        <!--                        <td><b>Name : </b></td>-->
-                                        <!--                        <td><input type="text" class="form-control" id="procurementname-{{$project->project_id}}" value="" /></td>-->
-                                        <!--                    </tr>-->
-                                        <!--                    <tr>-->
-                                        <!--                        <td><b>Phone : </b></td>-->
-                                        <!--                        <td><input type="text" maxlength="10" class="form-control" id="procurementphone-{{$project->project_id}}" value="" /></td>-->
-                                        <!--                    </tr>-->
-                                        <!--                    <tr>-->
-                                        <!--                        <td><b>Email : </b></td>-->
-                                        <!--                        <td><input type="text" class="form-control" id="procurementemail-{{$project->project_id}}" value="" /></td>-->
-                                        <!--                    </tr>-->
-                                        <!--                </tbody>-->
-                                        <!--            </table>-->
-                                        <!--            <div class="text-center">-->
-                                        <!--                <a onclick="updateProcurement({{$project->project_id}})" class="btn btn-sm btn-success" name="procurementsubmit-{{$project->project_id}}" id="procurementsubmit-{{$project->project_id}}" >Submit</a>-->
-                                        <!--                <a onclick="clearProcurement({{$project->project_id}})" class="btn btn-sm btn-danger" name="procurementclear-{{$project->project_id}}" id="procurementclear-{{$project->project_id}}" >Clear</a>-->
-                                        <!--            </div>-->
-                                        <!--        </div>-->
-                                        <!--    </div>-->
-                                        <!--</div>-->
+                                        @endif
                                     </div>
     				            </div>
     				        @endforeach

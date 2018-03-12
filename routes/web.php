@@ -285,3 +285,4 @@ Route::post('/deleteCategory','marketingController@deleteCategory');
 Route::post('/deleteSubCategory','marketingController@deleteSubCategory');
 Route::post('/updateCategory','marketingController@updateCategory');
 Route::post('/updateSubCategory','marketingController@updateSubCategory');
+Route::get('/wardsforle','HomeController@wardsForLe');
