@@ -7,10 +7,6 @@
         <div class="panel panel-danger">
             <div class="panel-heading">
                 Details
-                
-                 
-                 <button class="pull-right btn-sm btn btn-primary" data-toggle="modal" data-target="#addManufacturer"> Click Here To Add New Manufacturer </span></button>
-                
                   <a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
             </div>
             <div style="overflow-x: scroll;" class="panel-body">
@@ -135,10 +131,6 @@
                     <div class="col-md-4">Quality Department</div>
                     <div class="col-md-8"><input type="text" placeholder="Quality Department" name="qualityDept" class="form-control input-sm"></div>
                 </div><br>
-          </div>
-          <div class="modal-footer">
-              <button type="submit" class="btn btn-success">Save</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
     

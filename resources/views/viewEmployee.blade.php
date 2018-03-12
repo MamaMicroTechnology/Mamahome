@@ -11,22 +11,21 @@
                 </div>
                 <div class="panel-body">
                     <center>
-			<div style="border-radius:50%; height: 150px; width:150px; overflow:hidden;">
-                        <img style="height:150px;" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" class="img img-responsive">
-                    	</div>
-			<br>
-			@if($user->confirmation == 0)
-				<p>User has not accepted the terms and policies</p>
-			@elseif($user->confirmation == 1)
-				<form method="POST" action="{{ URL::to('/') }}/approve">
-					{{ csrf_field() }}
-					<input type="hidden" name="id" value="{{ $user->id }}">
-					<input type="submit" value="Approve" class="btn btn-success">
-				</form>
-			@else
-				<p>User has been approved</p>
-			@endif
-			</center>
+                        <img style="border-radius:50%; height:150px; width:150px;" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}">
+                        <br>
+                        @if($user->confirmation == 0)
+                            <p>User has not accepted the terms & policies</p>
+                        @elseif($user->confirmation == 1)
+                            <form method="POST" action="{{ URL::to('/') }}/approve">
+                            {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ $user->id }}">
+                                <input type="submit" value="Approve" class="btn btn-success">
+                            </form>
+                        @else
+                            <p>User has been approved</p>
+                        @endif
+                    </center>
+                    <br><br>
                     <table class="table table-responsive">
                         <tr>
                             <td>Name</td>

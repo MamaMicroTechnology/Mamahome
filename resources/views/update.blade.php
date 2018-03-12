@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
+      <?php $id = $_GET['projectId']; ?>
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -13,7 +14,22 @@
                 </div>
                 <div class="panel-body">
                     <center>
-                    <label>Project Details</label>
+                      <label>Project Details</label>
+                    </center>
+                    @if($projectdetails->quality == NULL)
+                      <form method="POST" action="{{ URL::to('/') }}/markProject">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="id" value="{{ $id }}">
+                        <div class="radio">
+                          <label><input name="quality" type="radio" value="Fake">Fake</label>
+                        </div><div class="radio">
+                          <label><input name="quality" type="radio" value="Genuine">Genuine</label>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Save">
+                      </form>
+                      @else
+                      {{ $projectdetails->quality }}
+                      @endif
                     <br>
                    <form method="POST" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <div id="first">
@@ -56,189 +72,20 @@
                                    <td>:</td>
                                    <td>
                                        <select id="status"  name="status" class="form-control input-sm">
-                                           <option value="">--Select--</option>
-                                           @if($projectdetails->project_status == "Planning")
-                                          <option selected value="Planning">Planning</option>
-                                          <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Digging")
-                                           <option value="Planning">Planning</option>
-                                           <option selected value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Foundation")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option selected value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Pillars")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option selected value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Walls")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option selected value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Roofing")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option selected value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Electrical &amp; Plumbing")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option selected value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Plastering")
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option selected value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Flooring")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option selected value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Carpentry")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option selected value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Painting")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option selected value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Fixtures")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option selected value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                           @elseif($projectdetails->project_status == "Completion")
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option selected value="Completion">Completion</option>
-                                           @endif
+                                           <option value="">--Select--</option>)
+                                           <option  {{ $projectdetails->project_status == "Planning" ? 'selected' : ''}} value="Planning">Planning</option>
+                                           <option  {{ $projectdetails->project_status == "Digging" ? 'selected' : ''}} value="Digging">Digging</option>
+                                           <option  {{ $projectdetails->project_status == "Foundation" ? 'selected' : ''}} value="Foundation">Foundation</option>
+                                           <option  {{ $projectdetails->project_status == "Pillars" ? 'selected' : ''}} value="Pillars">Pillars</option>
+                                           <option  {{ $projectdetails->project_status == "Walls" ? 'selected' : ''}} value="Walls">Walls</option>
+                                           <option  {{ $projectdetails->project_status == "Roofing" ? 'selected' : ''}} value="Roofing">Roofing</option>
+                                           <option  {{ $projectdetails->project_status == "Electrical & Plumbing" ? 'selected' : ''}} value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
+                                           <option  {{ $projectdetails->project_status == "Plastering" ? 'selected' : ''}} value="Plastering">Plastering</option>
+                                           <option  {{ $projectdetails->project_status == "Flooring" ? 'selected' : ''}} value="Flooring">Flooring</option>
+                                           <option  {{ $projectdetails->project_status == "Carpentry" ? 'selected' : ''}} value="Carpentry">Carpentry</option>
+                                           <option  {{ $projectdetails->project_status == "Paintings" ? 'selected' : ''}} value="Paintings">Paintings</option>
+                                           <option  {{ $projectdetails->project_status == "Fixtures" ? 'selected' : ''}} value="Fixtures">Fixtures</option>
+                                           <option  {{ $projectdetails->project_status == "Completion" ? 'selected' : ''}} value="Completion">Completion</option>
                                        </select>
                                    </td>
                                </tr>
@@ -281,6 +128,35 @@
                                       <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
                                    </td>
+                               </tr>
+                               <tr>
+                                    <td>Room Types</td>
+                                    <td>:</td>
+                                    <td>
+                                        <table id="bhk" class="table table-responsive">
+                                            <tr>
+                                                <td>
+                                                    <select name="roomType[]" id="" class="form-control">
+                                                        <option value="1RK">1RK</option>
+                                                        <option value="1BHK">1BHK</option>
+                                                        <option value="2BHK">2BHK</option>
+                                                        <option value="3BHK">3BHK</option>
+                                                        <option value="4BHK">4BHK</option>
+                                                        <option value="5BHK">5BHK</option>
+                                                        <option value="6BHK">6BHK</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of rooms">
+                                                </td>
+                                                </tr>
+                                            <tr>
+                                                <td colspan=3>
+                                                    <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add more</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                </tr>
                            </table>
                        </div>
@@ -385,7 +261,26 @@
                            </table>
                        </div> 
                        <div id="seventh" class="hidden">
+                        <table class="table">
+                        <tr>
+                            <td><b>Quality</b></td>
+                            <td>
+                                <select class="form-control" name="quality">
+                                    <option value="null" disabled selected>--- Select ---</option>
+                                    <option value="Genuine">Genuine</option>
+                                    <option value="Fake">Fake</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        </table>
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
+                            <label>With / Without Contractor ? </label><select class="form-control" name="contract" id="contract" required>
+                                <option value="" disabled selected>--- Select ---</option>
+                                <option value="With Labour Contractor">With Labour Contractor</option>
+                                <option value="With Material Contractor">With Material Contractor</option>
+                                <option value="Without Contractor">Without Contractor</option>
+                            </select><br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>
                        </div>                        
                        <ul class="pager">
@@ -603,6 +498,24 @@ function sum(){
         }else{
             document.getElementById("next").className = "disabled";
         }
+    }
+    function addRow() {
+        var table = document.getElementById("bhk");
+        var row = table.insertRow(0);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        
+        cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+                                                        "<option value=\"1RK\">1RK</option>"+
+                                                        "<option value=\"1BHK\">1BHK</option>"+
+                                                        "<option value=\"2BHK\">2BHK</option>"+
+                                                        "<option value=\"3BHK\">3BHK</option>"+
+                                                        "<option value=\"4BHK\">4BHK</option>"+
+                                                        "<option value=\"5BHK\">5BHK</option>"+
+                                                        "<option value=\"6BHK\">6BHK</option>"+
+                                                    "</select>";
+        cell2.innerHTML = "<input required name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
+        
     }
 </script>
 @endsection

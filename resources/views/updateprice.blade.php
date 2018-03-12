@@ -63,7 +63,7 @@
 	    document.getElementById('measure').value = measure;
 	    document.getElementById('id').value = arg;
 	}
-	function getSubs()
+function getSubs()
     {
         var e = document.getElementById('category');
         var cat = e.options[e.selectedIndex].value;

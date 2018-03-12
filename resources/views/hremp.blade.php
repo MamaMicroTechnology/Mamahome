@@ -6,22 +6,24 @@
     <th>Emp Id</th>
     <th>Name</th>
     <th>Dept.</th>
+    <th>Office Phone
     <th>Designation</th>
 </thead>
 <tbody>
 @foreach($users as $user)
     <tr>
         <td>{{ $user->employeeId}}</td>
-        <td>{{ $user->name}}</td>
+        <td><a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}">{{ $user->name}}</a></td>
         <td>
-		@if($user->department != NULL)
-			{{ $user->department->dept_name }}
-		@endif
-		</td>
+            @if($user->department != NULL)
+                {{ $user->department->dept_name }}
+            @endif
+        </td>
         <td>{{ $user->group->group_name }}</td>
+        <td>{{ $user->office_phone }}</td>
         @if($page == "anr")
         <td>
-	@if($user->department_id != 10)
+        @if($user->department_id != 10)
             @if($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
             <a href="{{ URL::to('/') }}/{{ $user->id }}/date">
                 Report
@@ -31,17 +33,17 @@
                 Attendance
             </a>
             @endif
-	@else
-		@if($user->group->group_name == "Listing Engineer")
-		<a href="{{ URL::to('/') }}/{{ $user->id }}/date">
-			Report
-		</a>
-		@else
-		<a href="{{ URL::to('/') }}/{{ $user->employeeId }}/attendance">
-			Attendance
-		</a>
-		@endif
-	@endif
+        @else
+            @if($user->group->group_name == "Listing Engineer")
+            <a href="{{ URL::to('/') }}/{{ $user->id }}/date">
+                Report
+            </a>
+            @else
+            <a href="{{ URL::to('/') }}/{{ $user->employeeId }}/attendance">
+                Attendance
+            </a>
+            @endif
+        @endif
         </td>
         @endif
         @if($page == "hr" && $user->department != NULL)

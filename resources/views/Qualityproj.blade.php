@@ -1,19 +1,19 @@
 @extends('layouts.app')
 @section('content')
-<?php
-    $total = $genuine + $fake + $notConfirmed;
-    $genuinePercent = ($genuine/$total)*100;
-    $fakePercent = ($fake/$total)*100;
-    $notConfirmedPercent = ($notConfirmed/$total)*100;
-?>
-<div class="col-md-4">
-    <div class="panel panel-warning">
-        <div class="panel-heading">Quality Of Projects</div>
-        <div id="piechart" class="panel-body">
-            
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Call records</div>
+            <div class="panel-body">
+                @foreach($notes as $note)
+                @if($note == null)
+                Without note - {{ $count[$note] }}<br>
+                @else
+                {{ $note }} - {{ $count[$note] }}<br>
+                @endif
+                @endforeach
+            </div>
         </div>
     </div>
-</div>
 <div class="col-md-8">
     <div class='col-md-12'>
         <div class="panel panel-default">
@@ -67,10 +67,6 @@
         </div>
     </div>
 </div>
-    <div class="col-md-12">
-        <div id="piechart"></div>
-    </div>
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">

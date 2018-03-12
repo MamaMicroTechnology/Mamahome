@@ -64,6 +64,7 @@ input:checked + .slider:before {
     <th>Name</th>
     <th>Dept.</th>
     <th>Designation</th>
+    <th>Contact</th>
     <th>Attendance/Reports</th>
     <th>Emp. Details</th>
     <th>Verification</th>
@@ -76,6 +77,7 @@ input:checked + .slider:before {
         <td>{{ $user->name}}</td>
         <td>{{ $user->department->dept_name }}</td>
         <td>{{ $user->group->group_name }}</td>
+        <td>{{ $user->office_phone }}</td>
         <td>
             @if($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
             <a href="{{ URL::to('/') }}/amdate?uid={{ $user->id }}">

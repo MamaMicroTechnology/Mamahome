@@ -8,9 +8,7 @@
 		<div class="panel-body">
 			<ul class="list-group">
 				@foreach($roads as $road)
-				@if($projectCount[$road]>0)
-				<li class="list-group-item"><a href="{{ URL::to('/') }}/projectrequirement?road={{ $road }}">{{ $road }} ({{ $projectCount[$road] }} projects)</a></li>
-				@endif
+				<li class="list-group-item {{ $projectCount[$road]==0?'hidden':'' }}"><a href="{{ URL::to('/') }}/projectrequirement?road={{ $road }}">{{ $road }} ({{ $projectCount[$road] }} projects)</a></li>
 				@endforeach
 			</ul>
 		</div>
