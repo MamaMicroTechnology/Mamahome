@@ -220,7 +220,7 @@
             success: function(response)
             {
                document.getElementById('uPrice').value = response.price;
-				if(cat == "22"){
+				if(cat == "27"){
 					$('#sandmodal').modal('show');
 				}
             }
