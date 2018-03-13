@@ -44,7 +44,7 @@
                                     @endforeach
                                 </td>
                                 <td style="text-align:center">
-                                    <a href="{{ URL::to('/')}}/public/subwardImages/{{$user->sub_ward_image}}" target="_blank">Click Here To View Image
+                                    <a href="{{ URL::to('/')}}/public/subWardImages/{{$user->sub_ward_image}}" target="_blank">Click Here To View Image
                                     </a>
                                 </td>            
                                 <!--Completed Button -->
