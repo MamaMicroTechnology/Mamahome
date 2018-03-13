@@ -508,6 +508,11 @@ class mamaController extends Controller
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
+        $activity->save();
         return back()->with('Success','Project added successfully');
     }
     public function updateProject($id, Request $request)
@@ -621,6 +626,11 @@ class mamaController extends Controller
                     'totalProjectsUpdated' => $number2 + 1
                 ]);
         }
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A');
+        $activity->save();
         return back()->with('Success','Updated Successfully');
     }
     // uses gtracing column to store morning meter reading
@@ -747,6 +757,11 @@ class mamaController extends Controller
         }
         $requirement->generated_by = Auth::user()->id;
         $requirement->save();
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->pId." at ".date('H:i A');
+        $activity->save();
         return back();
     }
     public function placeOrder($id, Request $request)
@@ -948,6 +963,11 @@ class mamaController extends Controller
         siteAddress::where('project_id',$id)->update([
             'address'=>$request->address
             ]);
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A')." with data - Status: ".$request->status.", Remarks: ".$request->materials.", Question: ".$request->qstn.", Followup: ".$request->follow.", Quality: ".$request->quality.", With contractor: ".$request->contract.", Note: ".$request->note;
+        $activity->save();
         return back();
     }
     public function gradetoEmp(Request $request){
