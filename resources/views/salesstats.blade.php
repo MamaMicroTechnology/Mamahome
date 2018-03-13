@@ -28,6 +28,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
   ['Quality', 'In percentage'],
+  ['Pipelined : {{ $notProcessed }}', {{ $notProcessed }}],
   ['Initiated : {{ $initiate }} ', {{ $initiate }}],
   ['Placed : {{ $placed }}', {{ $placed }}],
   ['Confirmed : {{ $confirmed }}', {{ $confirmed }}],

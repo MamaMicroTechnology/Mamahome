@@ -1465,6 +1465,7 @@ class HomeController extends Controller
 //		return back();
 //	}
     public function getSalesStatistics(){
+        $notProcessed = Requirement::where('status',"Not Processed")->count();
         $initiate = Requirement::where('status',"Order Initiated")->count();
         $confirmed = Requirement::where('status',"Order Confirmed")->count();
         $placed = Requirement::where('status',"Order Placed")->count();
@@ -1477,7 +1478,8 @@ class HomeController extends Controller
             'confirmed'=>$confirmed,
             'placed'=>$placed,
             'cancelled'=>$cancelled,
-            'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed
+            'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed,
+            'notProcessed'=>$notProcessed
             ]);
     }
     public function postapprove(Request $request)
