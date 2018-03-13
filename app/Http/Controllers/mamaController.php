@@ -901,7 +901,7 @@ class mamaController extends Controller
             $assignment->user_id = $id;
             $assignment->assigned_date = $request->date;
             $assignment->status = 'Not Completed';
-            dd($assignment);
+            
             $assignment->save();
             return back()->with('Success','Daily Slot assigned to '.$user->name);
         }
