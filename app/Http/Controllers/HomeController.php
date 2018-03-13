@@ -164,7 +164,7 @@ class HomeController extends Controller
     public function index()
     {
         if(Auth::user()->confirmation == 0){
-            return view('userAccept');
+            return view('companypolicy');
         }
         $group = Group::where('id',Auth::user()->group_id)->pluck('group_name')->first();
         $dept = Department::where('id',Auth::user()->department_id)->pluck('dept_name')->first();

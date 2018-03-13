@@ -6,7 +6,8 @@
     <th>Emp Id</th>
     <th>Name</th>
     <th>Dept.</th>
-    <th>Office Phone
+    <th>Office Phone</th>
+    <th>Acceptance</th>
     <th>Designation</th>
 </thead>
 <tbody>
@@ -18,6 +19,15 @@
             @if($user->department != NULL)
                 {{ $user->department->dept_name }}
             @endif
+        </td>
+        <td>
+            @if($user->confirmation == 0)
+             User has not accepted the company policy.
+             @elseif($user->confirmation == 1)
+             User has accepted company policy<br>but waiting for admin's approval.
+             @else
+             User has accepted company policy<br>and has been approved by admin.
+             @endif
         </td>
         <td>{{ $user->group->group_name }}</td>
         <td>{{ $user->office_phone }}</td>
