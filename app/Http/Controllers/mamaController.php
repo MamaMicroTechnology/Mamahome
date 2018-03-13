@@ -902,8 +902,18 @@ class mamaController extends Controller
         $old = User::where('id',Auth::user()->id)->pluck('password')->first();
         if (Hash::check($request->oldPwd, $old)) {
             User::where('id',Auth::user()->id)->update(['password'=>bcrypt($request->newPwd)]);
+            $activity = new ActivityLog;
+            $activity->time = date('Y-m-d H:i A');
+            $activity->employee_id = Auth::user()->employeeId;
+            $activity->activity = Auth::user()->name." has changed the password.";
+            $activity->save();
             return redirect('/home');
         }else{
+            $activity = new ActivityLog;
+            $activity->time = date('Y-m-d H:i A');
+            $activity->employee_id = Auth::user()->employeeId;
+            $activity->activity = Auth::user()->name." attempted to change password but failed.";
+            $activity->save();
             return back()->with('Error','Invalid password');
         }
     }
@@ -919,6 +929,11 @@ class mamaController extends Controller
         if(count($x) > 0)
         {
             salesassignment::where('user_id',$id)->update(['status'=>'Not Completed','assigned_date' => $request->date]);
+            $activity = new ActivityLog;
+            $activity->time = date('Y-m-d H:i A');
+            $activity->employee_id = Auth::user()->employeeId;
+            $activity->activity = Auth::user()->name." has assigned ".$id." to a daily slot for the date ".$request->date;
+            $activity->save();
             return back();
         }
         else
@@ -928,8 +943,12 @@ class mamaController extends Controller
             $assignment->user_id = $id;
             $assignment->assigned_date = $request->date;
             $assignment->status = 'Not Completed';
-            
             $assignment->save();
+            $activity = new ActivityLog;
+            $activity->time = date('Y-m-d H:i A');
+            $activity->employee_id = Auth::user()->employeeId;
+            $activity->activity = Auth::user()->name." has assigned ".$id." to a daily slot for the date ".$request->date;
+            $activity->save();
             return back()->with('Success','Daily Slot assigned to '.$user->name);
         }
     }
@@ -938,6 +957,11 @@ class mamaController extends Controller
         $id = $request->id;
         $sub = WardAssignment::where('user_id',$id)->first();
         WardAssignment::where('user_id',$id)->update(['status' => 'Completed','prev_subward_id'=> $sub->subward_id]);
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has marked ".$id."'s assignment as completed.";
+        $activity->save();
         return back();
     }
     public function editMorninRemarks($id, Request $request){
@@ -1055,6 +1079,11 @@ class mamaController extends Controller
             }
             $check->save();
         }
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has updated ".$request->userid." details.";
+        $activity->save();
         return back();
     }
     public function saveBankDetails(Request $request){
@@ -1180,6 +1209,11 @@ class mamaController extends Controller
     public function markProject(Request $request)
     {
         ProjectDetails::where('project_id',$request->id)->update(['quality'=>$request->quality]);
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has marked project ".$request->id." as ".$request->quality;
+        $activity->save();
         return back();
     }
 }
