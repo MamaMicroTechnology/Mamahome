@@ -406,7 +406,7 @@ class mamaController extends Controller
             $count = count($request->roomType);
             for($i = 0;$i<$count;$i++){
                 $roomtype = new RoomType;
-                $roomtype->type = $request->roomType[$i];
+                $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
                 $roomtype->project_id = $projectdetails->id;
                 $roomtype->save();
