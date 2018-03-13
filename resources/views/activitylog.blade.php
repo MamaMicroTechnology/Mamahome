@@ -12,5 +12,8 @@
 			@endforeach
 		</table>
 	</div>
+	<div class="panel-footer">
+		{{ $activities->links() }}
+	</div>
 </div>
 @endsection
