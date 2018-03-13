@@ -40,6 +40,7 @@ use App\CategoryPrice;
 use App\ManufacturerDetail;
 use App\Certificate;
 use App\MhInvoice;
+use App\ActivityLog;
 
 class HomeController extends Controller
 {
@@ -70,12 +71,21 @@ class HomeController extends Controller
             $login->logoutTime = "N/A";
             $login->save();
         }
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has logged in to the system at ".date('H:i A');
+        $activity->save();
         return redirect('/home');
     }
     public function authlogout(Request $request)
     {
         date_default_timezone_set("Asia/Kolkata");
-        
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has logged out of the system at ".date('H:i A');
+        $activity->save();
         Auth()->logout();
         $request->session()->invalidate();
         return redirect('/');
@@ -537,7 +547,7 @@ class HomeController extends Controller
     }
     public function getRequirements(Request $request)
     {
-        $requirements = Requirement::where('project_id',$request->projectID)->get();
+        $requirements = Requirement::where('project_id',$request->projectId)->get();
         $category = Category::all();
         return view('requirements',['category'=>$category, 'requirements'=>$requirements,'id'=>$request->projectId]);
     }

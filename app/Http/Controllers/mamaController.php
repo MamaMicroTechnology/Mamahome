@@ -40,7 +40,9 @@ use App\SubCategory;
 use App\CategoryPrice;
 use App\ManufacturerDetail;
 use App\RoomType;
+use App\ActivityLog;
 
+date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
 {
     public function addDepartment(Request $request)
@@ -48,8 +50,18 @@ class mamaController extends Controller
     	$department = New Department;
     	$department->dept_name = $request->dept_name;
     	if($department->save()){
-    		return back()->with('Success','New Department Added');
-    	}else{
+            $activity = new ActivityLog;
+            $activity->time = date('Y-m-d H:i A');
+            $activity->employee_id = Auth::user()->employeeId;
+            $activity->activity = Auth::user()->name." has added a new department named ".$request->dept_name." at ".date('H:i A');
+            $activity->save();
+            return back()->with('Success','New Department Added');
+        }else{
+            $activity = new ActivityLog;
+            $activity->time = date('Y-m-d H:i A');
+            $activity->employee_id = Auth::user()->employeeId;
+            $activity->activity = Auth::user()->name." has tried to add a new department on ".date('H:i A')." but failed";
+            $activity->save();
     		return back()->with('Error','Seems there is some problem in the input');
     	}
     }
