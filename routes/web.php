@@ -86,6 +86,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/updateamdispatch','HomeController@updateamdispatch');
     Route::get('/mhOrders','HomeController@getMhOrders');
     Route::get('/salesStatistics','HomeController@getSalesStatistics');
+    Route::get('/activitylog','HomeController@activityLog');
 });
     Route::get('/getSubCatPrices','HomeController@getSubCatPrices');
 

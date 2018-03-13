@@ -1509,4 +1509,9 @@ class HomeController extends Controller
         }
         return view('salesengineer',['projects'=>$projects,'subwards'=>$assignment,'projectscount'=>$projectscount,'links'=>$subward]);
     }
+    public function activityLog()
+    {
+        $activities = ActivityLog::orderby('time','DESC')->get();
+        return view('activitylog',['activities'=>$activities]);
+    }
 }

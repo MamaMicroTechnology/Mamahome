@@ -352,6 +352,7 @@ div#calendar{
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/enquirysheet') }}">Enquiry</a>
+    <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
 </div>
 @endif
 @endif
