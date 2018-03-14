@@ -1218,4 +1218,14 @@ class mamaController extends Controller
         $activity->save();
         return back();
     }
+    public function editEnquiry(Request $request)
+    {
+        Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note;
+        $activity->save();
+        return back();
+    }
 }

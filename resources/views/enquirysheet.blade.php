@@ -50,7 +50,14 @@
 									{{$enquiry -> status}}
 								@endif
 							</td>
-							<td style="text-align: center">{{$enquiry->notes}}</td>
+							<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
+								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
+									{{ csrf_field() }}
+									<input type="hidden" value="{{$enquiry->id}}" name="id">
+									<input name="note" id="next{{ $enquiry->id }}" type="text" class="hidden" value="{{ $enquiry->notes }}"> 
+									<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
+								</form>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -109,5 +116,10 @@
 		</div>
 	</div>
 </div>
-
+<script type="text/javascript">
+	function edit(arg){
+		document.getElementById('now'+arg).className = "hidden";
+		document.getElementById('next'+arg).className = "form-control";
+	}
+</script>
 @endsection
