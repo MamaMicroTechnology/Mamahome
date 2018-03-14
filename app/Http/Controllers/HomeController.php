@@ -158,8 +158,24 @@ class HomeController extends Controller
     }
     public function enquirysheet()
     {
-        $records = DB::table('record_data')->get();
-        return view('enquirysheet',['records'=>$records]);
+        $subwards = array();
+        $subwards2 = array();
+        $records = DB::table('record_data')
+                    ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
+                    ->select('project_details.sub_ward_id','record_data.*')
+                    ->get();
+        $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                    ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                    ->paginate(25);
+        foreach($records as $record){
+            $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
+        }
+        foreach($enquiries as $enquiry){
+            $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+        }
+        return view('enquirysheet',['records'=>$records,'subwards'=>$subwards,'subwards2'=>$subwards2,'enquiries'=>$enquiries]);
     }
     public function index()
     {
@@ -1518,5 +1534,14 @@ class HomeController extends Controller
     {
         $pipelines = Requirement::where('status','Not Processed')->get();
         return view('eqpipeline',['pipelines'=>$pipelines]);
+    }
+    public function employeereports()
+    {
+        $users = User::leftJoin('departments','departments.id','=','users.department_id')
+                    ->leftjoin('groups','groups.id','=','users.group_id')
+                    ->where('users.department_id','!=','0')
+                    ->select('users.*','departments.dept_name','groups.group_name')
+                    ->get();
+        return view('employeereports',['users'=>$users]);
     }
 }

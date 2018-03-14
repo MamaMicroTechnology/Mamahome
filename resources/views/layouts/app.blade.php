@@ -330,28 +330,29 @@ div#calendar{
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/mapping">Mapping</a>
+    <a href="{{ URL::to('/getprojectsize') }}">Listed Project Sizes</a>
+    <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
+        <div id="projects" class="collapse">
+            <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
+            <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; - Daily Slots</a>
+        </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
-    <a href="#" data-toggle="collapse" data-target="#orders">Orders</a>
+    <a href="{{ URL::to('/enquirysheet') }}">Enquiry</a>
+    <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
             <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
             <a href="{{ URL::to('/amorders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
             <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a>
         </div>
-    <a href="#" data-toggle="collapse" data-target="#projects">Projects</a>
-        <div id="projects" class="collapse">
-            <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
-            <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; - Daily Slots</a>
-            <a href="{{ URL::to('/getprojectsize') }}">&nbsp;&nbsp;&nbsp; - List Project Sizes</a>
-        </div>
-    <a href="#" data-toggle="collapse" data-target="#demo">Human Resource</a>
+    <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
-        <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Attendance & Reports</a>
+        <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Attendance</a>
     </div>
-    <a href="{{ URL::to('/amdept') }}">Departments & Designations</a>
+    <a href="{{ URL::to('/employeereports') }}">Reports</a>
+    <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
-    <a href="{{ URL::to('/enquirysheet') }}">Enquiry</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
 </div>
 @endif

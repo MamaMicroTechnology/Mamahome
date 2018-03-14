@@ -52,7 +52,7 @@
                             <td>{{ $detail->cin }}</td>
                             <td>{{ $detail->gst }}</td>
                             <td>{{ $detail->registered_office }}</td>
-                            <td>{{ $detail->pan }}</td>
+                            <td>@if($detail->pan != NULL) <a href="{{ URL::to('/') }}/pan/{{ $detail->pan }}">View</a>@endif</td>
                             <td>{{ $detail->production_capacity }}</td>
                             <td>{{ $detail->factory_location }}</td>
                             <td>{{ $detail->ware_house_location }}</td>
@@ -70,7 +70,7 @@
 </div>
 </div>
 <!-- Modal -->
-<form method="POST" action="{{ URL::to('/') }}/addmanufacturer">
+<form method="POST" action="{{ URL::to('/') }}/addmanufacturer" enctype="multipart/form-data">
     <div id="addManufacturer" class="modal fade" role="dialog">
       <div class="modal-dialog modal-md">
     
@@ -122,7 +122,7 @@
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">PAN</div>
-                    <div class="col-md-8"><input type="text" placeholder="PAN" name="pan" class="form-control input-sm"></div>
+                    <div class="col-md-8"><input type="file" placeholder="PAN" name="pan" class="form-control input-sm"></div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">Production Capacity</div>

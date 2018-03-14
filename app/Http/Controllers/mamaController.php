@@ -1160,6 +1160,8 @@ class mamaController extends Controller
         return back();
     }
     public function addManufacturer(Request $request){
+        $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
+        $request->pan->move(public_path('pan'),$pan);
         $manufacturer = new ManufacturerDetail;
         $manufacturer->vendortype = $request->vendortype;
         $manufacturer->company_name = $request->companyName;
@@ -1167,7 +1169,7 @@ class mamaController extends Controller
         $manufacturer->cin = $request->cin;
         $manufacturer->gst = $request->gst;
         $manufacturer->registered_office = $request->regOffice;
-        $manufacturer->pan = $request->pan;
+        $manufacturer->pan = $pan;
         $manufacturer->production_capacity = $request->productionCapacity;
         $manufacturer->factory_location = $request->factoryLocation;
         $manufacturer->ware_house_location = $request->warehouselocation;
