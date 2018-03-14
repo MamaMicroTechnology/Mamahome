@@ -409,7 +409,7 @@ class HomeController extends Controller
         $totalLists = $loginTimes->TotalProjectsListed;
         
         $numbercount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)->get());
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         $projects = ProjectDetails::join('site_addresses','project_details.project_id','=','site_addresses.project_id')
                         ->leftJoin('requirements','project_details.project_id','=','requirements.project_id')

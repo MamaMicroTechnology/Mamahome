@@ -137,7 +137,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
 	Route::get('/updateContractor','HomeController@updateContractor');
 	Route::get('/updateConsultant','HomeController@updateConsultant');
 	Route::get('/updateProcurement','HomeController@updateProcurement');
- 	Route::get('/completed','HomeController@updateAssignment');
+ 	Route::get('/completed','mamaController@completedAssignment');
 	Route::get('/requirementsroads','HomeController@getRequirementRoads');
 	Route::get('/projectrequirement','HomeController@projectRequirement');
     Route::get('/changequality','HomeController@changequality');
