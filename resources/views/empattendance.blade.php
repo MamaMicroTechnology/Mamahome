@@ -176,7 +176,7 @@ class Calendar {
      
 }?>
 <div class="col-md-6 col-md-offset-3">
-<center>{{ count($attendances) }}</center>
+<center>No. of Days Worked : {{ count($attendances) }}</center>
 <br>
     <div class="alert alert-success text-center">
     Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;

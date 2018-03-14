@@ -176,7 +176,7 @@ class Calendar {
      
 }?>
 <div class="col-md-6 col-md-offset-3">
-<center>{{ count($dates) }}</center>
+<center>No. of Days Worked : {{ count($dates) }}</center>
     <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}">
         <div class="alert alert-success text-center">
                 Name &nbsp;:&nbsp; {{ $user->name }} &nbsp;|&nbsp;
