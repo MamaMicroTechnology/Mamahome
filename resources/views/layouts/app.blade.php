@@ -349,7 +349,7 @@ div#calendar{
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Attendance</a>
     </div>
-    <a href="{{ URL::to('/employeereports') }}">Reports</a>
+    <!-- <a href="{{ URL::to('/employeereports') }}">Reports</a> -->
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
