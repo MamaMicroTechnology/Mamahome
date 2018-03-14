@@ -305,3 +305,4 @@ Route::post('/updateSubCategory','marketingController@updateSubCategory');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::post('/editEnquiry','mamaController@editEnquiry');
+Route::post('/editManualEnquiry','mamaController@editManualEnquiry');

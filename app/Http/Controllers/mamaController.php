@@ -41,6 +41,7 @@ use App\CategoryPrice;
 use App\ManufacturerDetail;
 use App\RoomType;
 use App\ActivityLog;
+use App\RecordData;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1225,6 +1226,16 @@ class mamaController extends Controller
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note;
+        $activity->save();
+        return back();
+    }
+    public function editManualEnquiry(Request $request)
+    {
+        RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has updated enquiry id: ".$request->id." as ".$request->note;
         $activity->save();
         return back();
     }

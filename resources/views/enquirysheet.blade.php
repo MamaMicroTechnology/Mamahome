@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="col-md-12 col-sm-12">
+<div class="{{ Auth::user()->department_id == 0 ? 'col-md-12 col-sm-12':'hidden' }}">
 	<div class="col-md-10 col-md-offset-1">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
@@ -107,7 +107,14 @@
 							<td style="text-align: center">{{$record -> rec_product}}</td>
 							<td style="text-align: center">{{$subwards[$record->rec_project]}}</td>
 							<td style="text-align: center">{{$record -> rec_quantity}}</td>
-							<td style="text-align: center">{{$record->rec_remarks}}</td>
+							<td style="text-align: center" onclick="editm('{{ $record->id }}')">
+								<form method="POST" action="{{ URL::to('/') }}/editManualEnquiry">
+									{{ csrf_field() }}
+									<input type="hidden" value="{{$record->id}}" name="id">
+									<input name="note" id="nextt{{ $record->id }}" type="text" class="hidden" value="{{ $record->rec_remarks }}"> 
+									<p id="noww{{ $record->id }}">{{$record->rec_remarks}}</p>
+								</form>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -120,6 +127,10 @@
 	function edit(arg){
 		document.getElementById('now'+arg).className = "hidden";
 		document.getElementById('next'+arg).className = "form-control";
+	}
+	function editm(arg){
+		document.getElementById('noww'+arg).className = "hidden";
+		document.getElementById('nextt'+arg).className = "form-control";
 	}
 </script>
 @endsection
