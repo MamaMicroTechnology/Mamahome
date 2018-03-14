@@ -1,4 +1,4 @@
-@extends('layouts.leheader')
+@extends('layouts.sales')
 @section('content')
 <div class="container">
     <div class="row">

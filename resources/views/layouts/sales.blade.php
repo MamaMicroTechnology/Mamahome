@@ -200,6 +200,7 @@ div#calendar{
                         @endif
                         @endif
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
+                        <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
                     </ul>
                 
                     <!-- Right Side Of Navbar -->
@@ -236,26 +237,11 @@ div#calendar{
                 </div>
             </div>
         </nav>
-@if(Auth::check())
-@if(Auth::user()->group_id == 1)
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/masterData">Master Data</a>
-    <a href="{{ URL::to('/amreports') }}">Reports</a>
-    <a href="{{ URL::to('/ampricing') }}">Pricing</a>
-    <a href="{{ URL::to('/amorders')  }}">Orders</a>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/finance') }}">Finance</a>
-     <a href="{{ URL::to('/getprojectsize') }}">List Project Sizes</a>
-    <a href="{{ URL::to('/humanresources') }}">Human Resource</a>
-</div>
-@endif
-@endif
         @yield('content')
     </div>
 
     <!-- Scripts -->
- 
+ <script src="{{ asset('js/app.js') }}"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";

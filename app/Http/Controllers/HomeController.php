@@ -1514,4 +1514,9 @@ class HomeController extends Controller
         $activities = ActivityLog::orderby('time','DESC')->paginate(50);
         return view('activitylog',['activities'=>$activities]);
     }
+    public function eqpipeline()
+    {
+        $pipelines = Requirement::where('status','Not Processed')->get();
+        return view('eqpipeline',['pipelines'=>$pipelines]);
+    }
 }

@@ -208,6 +208,7 @@ Route::post('/addmanufacturer','mamaController@addManufacturer');
     Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
     Route::post('/confirmedProject','HomeController@confirmedProject');
     Route::get('/kra','HomeController@getKRA');
+    Route::get('/eqpipeline','HomeController@eqpipeline');
 
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
