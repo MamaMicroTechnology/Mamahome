@@ -71,7 +71,7 @@
 </div>
 
 
-<div class="col-md-12 col-sm-12">
+<div class="{{ Auth::user()->department_id != 0 ? 'col-md-12 col-sm-12':'hidden' }}">
 	<div class="col-md-10 col-md-offset-1">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">

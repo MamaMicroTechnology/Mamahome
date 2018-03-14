@@ -749,7 +749,11 @@ class HomeController extends Controller
     }
     public function amorders()
     {
-        $view = Requirement::orderby('project_id','DESC')->leftJoin('users','requirements.generated_by','=','users.id')->select('requirements.*','users.name','users.group_id')->paginate(25);
+        $view = Requirement::orderby('project_id','DESC')
+                ->leftJoin('users','requirements.generated_by','=','users.id')
+                ->where('requirements.status','Order Confirmed')
+                ->select('requirements.*','users.name','users.group_id')
+                ->paginate(25);
         return view('ordersadmin',['view' => $view]);
     }
     public function getSubCat(Request $request)
