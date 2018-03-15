@@ -1512,21 +1512,8 @@ class HomeController extends Controller
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $ward = SubWard::where('id',$assignment)->pluck('ward_id')->first();
         $subward = Subward::where('ward_id',$ward)->pluck('id');
-        if($request->next){
-            $projects = ProjectDetails::where('sub_ward_id',$subward[$request->next])->orderBy('created_at', 'desc')->get();
-        	$projectscount = ProjectDetails::where('sub_ward_id',$subward[$request->next])->count();
-	}else{
-            $projects = ProjectDetails::where('sub_ward_id',$subward[0])->orderBy('created_at', 'desc')->get();
-        	$projectscount = ProjectDetails::where('sub_ward_id',$subward[0])->count();
-	}
-        $count = count($subward);
-        if($request->next){
-            $projects = ProjectDetails::where('sub_ward_id',$subward[$request->next])->orderBy('created_at', 'desc')->get();
-            $projectscount = ProjectDetails::where('sub_ward_id',$subward[$request->next])->count();
-        }else{
-            $projects = ProjectDetails::where('sub_ward_id',$subward[0])->orderBy('created_at', 'desc')->get();
-            $projectscount = ProjectDetails::where('sub_ward_id',$subward[0])->count();
-        }
+        $projects = ProjectDetails::where('quality','Genuine')->where('project_status','Roofing')->paginate(10);
+    	$projectscount = ProjectDetails::where('quality','Genuine')->count();
         return view('salesengineer',['projects'=>$projects,'subwards'=>$assignment,'projectscount'=>$projectscount,'links'=>$subward]);
     }
     public function activityLog()

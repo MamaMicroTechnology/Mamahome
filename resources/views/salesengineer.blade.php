@@ -40,9 +40,7 @@
                         @else
                         <center>
                              <ul class="pagination">
-                                @for($i = 0; $i<count($links);$i++)
-                                      <li><a href="{{ URL::to('/') }}/wardsforle?next={{$i}}">{{ $i }}</a></li>
-                                @endfor
+                                {{ $projects->links() }}
                             </ul> 
                         </center>
                         @endif
