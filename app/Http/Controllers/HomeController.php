@@ -1518,7 +1518,7 @@ class HomeController extends Controller
     }
     public function activityLog()
     {
-        $activities = ActivityLog::orderby('time','DESC')->paginate(50);
+        $activities = ActivityLog::orderby('time','DESC')->get();
         return view('activitylog',['activities'=>$activities]);
     }
     public function eqpipeline()

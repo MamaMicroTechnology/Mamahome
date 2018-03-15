@@ -109,11 +109,18 @@
 		        <div class="modal-content">
 		          <div class="modal-header">
 		            <button type="button" class="close" data-dismiss="modal">&times;</button>
-		            <h4 class="modal-title">Assign Wards</h4>
+		            <h4 class="modal-title">Sand Price Calculator</h4>
 		          </div>
 		          <div class="modal-body">
+		          	<div class="radio">
+					  <label><input id="type" type="radio" name="optradio">Thriveni Earth Movers P. Ltd.</label>
+					</div>
+					<div class="radio">
+					  <label><input id="type2" type="radio" name="optradio">Stona Sand P. Ltd.</label>
+					</div>
 		            Quantity : <input type="text" name="" id='i1' class="form-control" placeholder="Quantity" />
 		            Distance : <input type="text" id="i2" name="" class="form-control" placeholder="Distance" />
+		            <br>
 		            <button onclick="func_sand()" class="btn btn-md btn-primary text-center">Submit</button>
 		          </div>
 		          <div class="modal-footer">
@@ -227,19 +234,40 @@
         });   
     }
     function func_sand(){
+    	var concrete = 583;
+    	var plastering = 1060;
+    	var dry = 810;
+    	var type = document.getElementById('type');
 		var price = parseInt(document.getElementById('uPrice').value);
 		var quantity = parseInt(document.getElementById('i1').value);
 		var distance = parseInt(document.getElementById('i2').value);
-		var total = (price * quantity) + ((distance + 25) * 3.8 * quantity) + (20 * quantity);
-		var gst = 0.05 * total;
-		var totalPrice = total + gst;
-		var ppt = totalPrice / quantity;
+		if(type.checked == true){
+			var total = (price * quantity) + ((distance + 25) * 3.8 * quantity) + (20 * quantity);
+			var gst = 0.05 * total;
+			var totalPrice = total + gst;
+			var ppt = totalPrice / quantity;
+		}else{
+			var distance2 = distance + 10;
+			if(document.getElementById('sCategory').value == 63){
+				price = dry;
+			}else if(document.getElementById('sCategory').value == 62){
+				price = concrete;
+			}else if(document.getElementById('sCategory').value == 61){
+				price = plastering;
+			}
+			var total = (price * quantity) + (distance2 * 5 * quantity) + (80 * quantity);
+			var gst = 0.05 * total;
+			var totalPrice = total + gst;
+			var ppt = totalPrice / quantity;
+		}
 		$('#sandmodal').modal('toggle');
 		document.getElementById('total').value = totalPrice;
 		document.getElementById('quantity').value = quantity;
 		document.getElementById('uPrice').value = ppt;
 		document.getElementById('i1').value="";
 		document.getElementById('i2').value="";
+		document.getElementById('type').checked = false;
+		document.getElementById('type2').checked = false;
 	}
     function getSubCat()
     {
