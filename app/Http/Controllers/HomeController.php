@@ -88,7 +88,7 @@ class HomeController extends Controller
         $activity->save();
         Auth()->logout();
         $request->session()->invalidate();
-        return redirect('/');
+        return redirect('/login');
     }
     public function inputview()
     {
