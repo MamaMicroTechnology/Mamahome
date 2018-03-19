@@ -1512,7 +1512,7 @@ class HomeController extends Controller
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $ward = SubWard::where('id',$assignment)->pluck('ward_id')->first();
         $subward = Subward::where('ward_id',$ward)->pluck('id');
-        $projects = ProjectDetails::where('quality','Genuine')->where('project_status','Roofing')->paginate(10);
+        $projects = ProjectDetails::where('quality','Genuine')->where('project_status','Walls')->paginate(10);
     	$projectscount = ProjectDetails::where('quality','Genuine')->count();
         return view('salesengineer',['projects'=>$projects,'subwards'=>$assignment,'projectscount'=>$projectscount,'links'=>$subward]);
     }
