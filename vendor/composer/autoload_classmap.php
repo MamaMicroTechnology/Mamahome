@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\ActivityLog' => $baseDir . '/app/ActivityLog.php',
     'App\\Asset' => $baseDir . '/app/Asset.php',
     'App\\AssetInfo' => $baseDir . '/app/AssetInfo.php',
     'App\\BankDetails' => $baseDir . '/app/BankDetails.php',
@@ -64,6 +65,7 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\RecordData' => $baseDir . '/app/RecordData.php',
     'App\\Report' => $baseDir . '/app/Report.php',
     'App\\Requirement' => $baseDir . '/app/Requirement.php',
     'App\\RoomType' => $baseDir . '/app/RoomType.php',
@@ -79,6 +81,7 @@ return array(
     'App\\WardAssignment' => $baseDir . '/app/WardAssignment.php',
     'App\\Zone' => $baseDir . '/app/Zone.php',
     'App\\attendance' => $baseDir . '/app/attendance.php',
+    'App\\brand' => $baseDir . '/app/brand.php',
     'App\\loginTime' => $baseDir . '/app/loginTime.php',
     'App\\salesassignment' => $baseDir . '/app/salesassignment.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',

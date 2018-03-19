@@ -1526,13 +1526,39 @@ class HomeController extends Controller
         $pipelines = Requirement::where('status','Not Processed')->get();
         return view('eqpipeline',['pipelines'=>$pipelines]);
     }
-    public function employeereports()
+    public function employeereports(Request $request)
     {
-        $users = User::leftJoin('departments','departments.id','=','users.department_id')
-                    ->leftjoin('groups','groups.id','=','users.group_id')
-                    ->where('users.department_id','!=','0')
-                    ->select('users.*','departments.dept_name','groups.group_name')
-                    ->get();
-        return view('employeereports',['users'=>$users]);
+        $users = User::all();
+        $attendances = attendance::orderby('date','ASC')->get();
+        $today = date('Y-m');
+        $text = "";
+        $year = date('Y');
+        $month = date('m');
+        $ofdays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        foreach($users as $user){
+            $lists = 1;
+            $text .= "<tr><td>".$user->employeeId."</td><td>".$user->name."</td>";
+            foreach($attendances as $attendance){
+                if($lists < 10){
+                    $date = $today."-0".$lists;
+                }else{
+                    $date = $today."-".$lists;
+                }
+
+                if($user->employeeId == $attendance->empId){
+                    $text .= "<td>".$attendance->inTIme." - ".$attendance->outTime."</td>";
+                }else{
+                    $text .= "<td>Leave</td>";
+                }
+
+                if($lists >= $ofdays){
+                    $lists = 1;
+                }else{
+                    $lists++;
+                }
+            }
+            $text .= "</tr>";
+        }
+        return view('employeereports',['text'=>$text]);
     }
 }

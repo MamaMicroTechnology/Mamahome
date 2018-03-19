@@ -3,8 +3,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="col-md-6">
+        <div class="col-md-12">
+            <div class="col-md-4">
                 <div class="panel panel-danger">
                     <div class="panel-heading">Category</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
@@ -38,8 +38,9 @@
                                 <form method="POST" action="{{ URL::to('/') }}/deleteCategory">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $category->id }}" name="id">
-                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button></td>
+                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                                 </form>
+                                </td>
                                 <td>
                                     <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit</button>
                                 </td>
@@ -53,17 +54,18 @@
                                     <div class="input-group">
                                         <input type="text" name="name" value="{{ $category->category_name }}" class="form-control input-sm">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-success" type="submit">Save</button></td>
+                                            <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>
                                     </div>
                                 </form>
+                                </td>
                             </tr>
                             @endforeach
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="panel panel-danger">
                     <div class="panel-heading">Sub Category</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
@@ -94,9 +96,9 @@
                                     <form method="POST" action="{{ URL::to('/') }}/deleteSubCategory">
                                         {{ csrf_field() }}
                                         <input type="hidden" value="{{ $subcategory->id }}" name="id">
-                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button></td>
+                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                                     </form>
-                                <td>
+                                </td>
                                 <td><button class="btn btn-sm btn-primary" onclick="editsubcategory('{{ $subcategory->id }}')">Edit</button></td>
                             </tr>
                             <tr id="editsub{{ $subcategory->id }}" class="hidden">
@@ -107,17 +109,41 @@
                                     <div class="input-group">
                                         <input type="text" name="name" value="{{ $subcategory->sub_cat_name }}" class="form-control input-sm">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-success" type="submit">Save</button></td>
+                                            <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>
                                     </div>
                                 </form>
-                                <td>
+                                </td>
                             </tr>
                             @endforeach
                         </table>
                     </div>
                 </div>
             </div>
+            <!-- <div class="col-md-4">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">Brand</div>
+                    <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
+                        <form method="post" action="{{ URL::to('/') }}/addBrand">
+                            {{ csrf_field() }}
+                            <div class="col-md-8">
+                                <input required type="text" placeholder="Brand" name="brand" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="submit" value="Save" class="form-control btn btn-primary">
+                            </div>
+                        </form>
+                        <br><br>
+                        <table class="table table-hover">
+                            @foreach($brands as $brand)
+                            <tr>
+                                <td>{{ $brand->brand }}</td>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
 </div>

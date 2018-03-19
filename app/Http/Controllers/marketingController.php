@@ -40,13 +40,15 @@ use App\CategoryPrice;
 use App\ManufacturerDetail;
 use App\Certificate;
 use App\MhInvoice;
+use App\brand;
 
 class marketingController extends Controller
 {
     public function getHome(){
         $categories = Category::all();
         $subcategories = SubCategory::all();
-        return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories]);
+        $brands = brand::all();
+        return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
     }
     public function addCategory(Request $request){
         $category = new Category;
@@ -85,5 +87,12 @@ class marketingController extends Controller
         SubCategory::where('id',$request->id)
         ->update(['sub_cat_name'=>$request->name]);
         return back()->with('Success','Sub-Category has been updated');
+    }
+    public function addBrand(Request $request)
+    {
+        $brand = new brand;
+        $brand->brand = $request->brand;
+        $brand->save();
+        return back();
     }
 }

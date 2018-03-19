@@ -298,6 +298,7 @@ Route::group(['middleware'=>['Logistics']],function(){
 Route::get('/marketing','marketingController@getHome');
 Route::post('/addCategory','marketingController@addCategory');
 Route::post('/addSubCategory','marketingController@addSubCategory');
+Route::post('/addBrand','marketingController@addBrand');
 Route::post('/deleteCategory','marketingController@deleteCategory');
 Route::post('/deleteSubCategory','marketingController@deleteSubCategory');
 Route::post('/updateCategory','marketingController@updateCategory');

@@ -300,6 +300,7 @@ class ComposerStaticInit10c017b1f7b559c88c6aeb9561030af3
     );
 
     public static $classMap = array (
+        'App\\ActivityLog' => __DIR__ . '/../..' . '/app/ActivityLog.php',
         'App\\Asset' => __DIR__ . '/../..' . '/app/Asset.php',
         'App\\AssetInfo' => __DIR__ . '/../..' . '/app/AssetInfo.php',
         'App\\BankDetails' => __DIR__ . '/../..' . '/app/BankDetails.php',
@@ -358,6 +359,7 @@ class ComposerStaticInit10c017b1f7b559c88c6aeb9561030af3
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\RecordData' => __DIR__ . '/../..' . '/app/RecordData.php',
         'App\\Report' => __DIR__ . '/../..' . '/app/Report.php',
         'App\\Requirement' => __DIR__ . '/../..' . '/app/Requirement.php',
         'App\\RoomType' => __DIR__ . '/../..' . '/app/RoomType.php',
@@ -373,6 +375,7 @@ class ComposerStaticInit10c017b1f7b559c88c6aeb9561030af3
         'App\\WardAssignment' => __DIR__ . '/../..' . '/app/WardAssignment.php',
         'App\\Zone' => __DIR__ . '/../..' . '/app/Zone.php',
         'App\\attendance' => __DIR__ . '/../..' . '/app/attendance.php',
+        'App\\brand' => __DIR__ . '/../..' . '/app/brand.php',
         'App\\loginTime' => __DIR__ . '/../..' . '/app/loginTime.php',
         'App\\salesassignment' => __DIR__ . '/../..' . '/app/salesassignment.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
