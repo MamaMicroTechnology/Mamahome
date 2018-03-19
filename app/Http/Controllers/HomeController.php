@@ -168,7 +168,7 @@ class HomeController extends Controller
                     ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                     ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                    ->paginate(25);
+                    ->get();
         foreach($records as $record){
             $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
         }

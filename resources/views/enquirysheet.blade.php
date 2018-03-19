@@ -64,7 +64,7 @@
 				</table>
 			</div>
 			<div class="panel-footer">
-				<center>{{ $enquiries->links() }}</center>
+				
 			</div>
 		</div>
 	</div>
