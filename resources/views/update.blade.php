@@ -125,7 +125,7 @@
                                    <td>
                                     <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage"><br>
                                     <div id="imagediv">
-                                      <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/pubilc/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
+                                      <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
                                    </td>
                                </tr>
