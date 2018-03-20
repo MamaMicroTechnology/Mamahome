@@ -13,7 +13,20 @@
                 <div class="panel-body">
                     <center>
                         <img style="border-radius:50%; height:150px; width:150px;" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}">
+                        <form method="POST" action="{{ URL::to('/') }}/uploadProfilePicture" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="input-group col-md-6">
+                        <input type="hidden" value="{{ $user->employeeId }}" name="userid">
+                        <input oninput="display()" id="pp" required type="file" class="form-control" name="pp" accept="image/*">
+                        <div class="input-group-btn">
+                          <button class="btn btn-default" type="submit">
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                     </center>
+                    <br>
                     <table class="table table-responsive">
                         <tr>
                             <td>Name</td>

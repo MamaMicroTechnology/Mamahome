@@ -929,7 +929,15 @@ class mamaController extends Controller
         $x = salesassignment::where('user_id',$id)->get();
         if(count($x) > 0)
         {
-            salesassignment::where('user_id',$id)->update(['status'=>'Not Completed','assigned_date' => $request->date]);
+            $assignment = salesassignment::where('user_id',$id)->first();
+            $ward = Ward::where('id',$assignment->assigned_date)->first();
+            if($ward != null){
+                $assignment->prev_assign = $ward->ward_name;
+            }
+            $assignment->assigned_date = $request->date;
+            $assignment->status = 'Not Completed';
+            $assignment->save();
+            // salesassignment::where('user_id',$id)->update(['status'=>'Not Completed','assigned_date' => $request->date]);
             $activity = new ActivityLog;
             $activity->time = date('Y-m-d H:i A');
             $activity->employee_id = Auth::user()->employeeId;
@@ -1040,6 +1048,11 @@ class mamaController extends Controller
                 $request->cv->move(public_path('employeeImages'),$cvv);
                 $empDetails->curriculum_vite = $cvv;
             }
+            if($request->cfa != NULL){
+                $cfa = time().'.'.request()->cfa->getClientOriginalExtension();
+                $request->cfa->move(public_path('employeeAudios'),$cfa);
+                $empDetails->confirmation_call = $cfa;
+            }
             $empDetails->save();
         }else{
             $check->employee_id = $request->userid;
@@ -1077,6 +1090,11 @@ class mamaController extends Controller
                 $cvv = time().'.'.request()->cv->getClientOriginalExtension();
                 $request->cv->move(public_path('employeeImages'),$cvv);
                 $check->curriculum_vite = $cvv;
+            }
+            if($request->cfa != NULL){
+                $cfa = time().'.'.request()->cfa->getClientOriginalExtension();
+                $request->cfa->move(public_path('employeeAudios'),$cfa);
+                $check->confirmation_call = $cfa;
             }
             $check->save();
         }

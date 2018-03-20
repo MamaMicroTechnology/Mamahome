@@ -296,7 +296,8 @@ class amController extends Controller
         $bankDetails = BankDetails::where('employeeId',$request->UserId)->first();
         $assets = Asset::all();
         $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();
-        return view('assistantmanager.editEmployee',['user'=>$user,'employeeDetails'=>$employeeDetails,'bankDetails'=>$bankDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'pageName'=>'HR']);
+        $certificates = Certificate::where('employeeId',$request->UserId)->get();
+        return view('assistantmanager.editEmployee',['certificates'=>$certificates,'user'=>$user,'employeeDetails'=>$employeeDetails,'bankDetails'=>$bankDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'pageName'=>'HR']);
     }
     public function viewEmployee(Request $id)
     {

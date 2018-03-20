@@ -361,7 +361,7 @@ class HomeController extends Controller
 
         $subwardsAssignment = WardAssignment::all();
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
-        $wards = Ward::all();
+        $wards = Ward::orderby('ward_name','ASC')->get();
         return view('teamLeader',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards]);
     }
     public function loadSubWards(Request $request)
@@ -687,7 +687,12 @@ class HomeController extends Controller
     }
     public function completethis(Request $id)
     {   
-        salesassignment::where('user_id',$id->userid)->update(['status'=>'Completed']);
+        $assignment = salesassignment::where('user_id',$id->userid)->first();
+        $ward = Ward::where('id',$assignment->assigned_date)->first();
+        $assignment->prev_assign = $ward->ward_name;
+        $assignment->status = 'Completed';
+        $assignment->save();
+        // salesassignment::where('user_id',$id->userid)->update(['status'=>'Completed']);
         return back();
     }
     // sales
@@ -695,11 +700,12 @@ class HomeController extends Controller
         $id = Department::where('dept_name',"Sales")->pluck('id')->first();
         $users = User::where('department_id',$id)
                         ->leftjoin('salesassignments','salesassignments.user_id','=','users.id')
-                        ->select('salesassignments.*','users.employeeId','users.name','users.id')
+                        ->leftjoin('wards','salesassignments.assigned_date','=','wards.id')
+                        ->select('salesassignments.*','users.employeeId','users.name','users.id','wards.ward_name')
                         ->get();
         $subwardsAssignment = salesassignment::where('status','Not Completed')->get();
-
-        return view('salestl',['users'=>$users,'subwardsAssignment'=>$subwardsAssignment,'pageName'=>'Assign']);
+        $wards = Ward::all();
+        return view('salestl',['users'=>$users,'subwardsAssignment'=>$subwardsAssignment,'pageName'=>'Assign','wards'=>$wards]);
     }
     public function getSalesEngineer()
     {
@@ -1007,8 +1013,10 @@ class HomeController extends Controller
     public function projectsUpdate()
     {
         $assignment = salesassignment::where('user_id',Auth::user()->id)->pluck('assigned_date')->first();
-        $projectscount = count(ProjectDetails::where('created_at','like',$assignment.'%')->get());
-        $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
+        $subwards = SubWard::where('ward_id',$assignment)->pluck('id');
+        $projects = ProjectDetails::whereIn('sub_ward_id', $subwards)->paginate(15);
+        $projectscount = count(ProjectDetails::whereIn('sub_ward_id', $subwards)->get());
+        // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
         return view('salesengineer',['projects'=>$projects,'subwards'=>$assignment,'projectscount'=>$projectscount]);
     }
     public function dailyslots(Request $request)
@@ -1455,8 +1463,13 @@ class HomeController extends Controller
     public function postMyProfile(Request $request){
         $imageName1 = Auth::user()->name.time().'.'.request()->pp->getClientOriginalExtension();
         $request->pp->move(public_path('profilePic'),$imageName1);
-        User::where('id',Auth::user()->id)->update(['profilepic'=>$imageName1]);
-        return redirect('/home')->with('Success','Profile picture added successfully');
+        if($request->userid){
+            User::where('employeeId',$request->userid)->update(['profilepic'=>$imageName1]);
+            return back()->with('Success','Profile picture added successfully');
+        }else{
+            User::where('id',Auth::user()->id)->update(['profilepic'=>$imageName1]);
+            return redirect('/home')->with('Success','Profile picture added successfully');
+        }
     }
     public function getMhOrders(){
         $invoices = MhInvoice::leftJoin('requirements','mh_invoice.requirement_id','=','requirements.id')->get();
@@ -1467,23 +1480,6 @@ class HomeController extends Controller
         $groups = Group::all();
         return view('anr',['departments'=>$departments,'groups'=>$groups,'page'=>"anr"]);
     }
-//	public function getSalesStatistics(){
-//		$initiate = Requirement::where('status',"Order Initiated")->count();
-//		$confirmed = Requirement::where('status',"Order Confirmed")->count();
-//		$placed = Requirement::where('status',"Order Placed")->count();
-//		$cancelled = Requirement::where('status',"Order cancelled")->count();
-//		return view('salesstats',[
-//			'initiate'=>$initiate,
-//			'confirmed'=>$confirmed,
-//			'placed'=>$placed,
-//			'cancelled'=>$cancelled
-//		]);
-//	}
-//	public function postapprove(Request $request)
-//	{
-//		User::where('id',$request->id)->update(['confirmation'=>2]);
-//		return back();
-//	}
     public function getSalesStatistics(){
         $notProcessed = Requirement::where('status',"Not Processed")->count();
         $initiate = Requirement::where('status',"Order Initiated")->count();

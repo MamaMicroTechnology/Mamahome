@@ -116,6 +116,20 @@
                             @endif
                         </td>
                     </tr>
+                    <tr>
+                        <td>Convirmation Call Audio</td>
+                        <td>
+                            @if($employeeDetails != NULL)
+                            @if($employeeDetails->confirmation_call != NULL)
+                                <audio controls>
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call }}" type="audio/ogg">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call }}" type="audio/mpeg">
+                                </audio>
+                            @endif
+                            @endif
+                            <input type="file" name="cfa" class="form-control input-sm" accept=".mp3">
+                        </td>
+                    </tr>
                 </table>
                 <input type="submit" class="btn btn-primary form-control" value="Save">
             </form>
@@ -250,7 +264,7 @@
         <div class="panel-heading">Certificates</div>
         <div class="panel-body">
             <button onclick="addCertificateRow()">+</button>
-            <form method="POST" action="{{ URL::to('/') }}/edit/uploadCertificates" enctype="multipart/form-data">
+            <form method="POST" action="{{ URL::to('/') }}/amedit/uploadCertificates" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" value="{{ $user->employeeId }}" name="userId">
             <table class="table table-responsive" id="Certificate">
@@ -267,6 +281,22 @@
             </table>
             <input type="submit" value="Save" class="form-control btn btn-success">
             </form>
+            @if($certificates != NULL)
+                        <table class="table table-responsive">
+                            <thead>
+                                <th>Type</th>
+                                <th>Details</th>
+                            </thead>
+                            <tbody>
+                                @foreach($certificates as $certificate)
+                                <tr>
+                                    <td>{{ $certificate->type }}</td>
+                                    <td>{{ $certificate->location }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endif
         </div>
     </div>
 </div>

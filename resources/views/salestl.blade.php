@@ -28,16 +28,16 @@
                                 <td style="text-align:left">{{ $user->name }}</td>
                                 <td style="text-align: center">
                                     @if($user->status == 'Not Completed')
-                                      {{date("d / m / Y", strtotime($user->assigned_date))}}
+                                      {{ $user->ward_name }}
                                     @else
                                       <a data-toggle="modal" data-target="#assignWards{{ $user->id }}" class="btn btn-sm btn-primary">Assign Slots</a>
                                     @endif
                                 </td>
                                 <td style="text-align:center">
                                   @if($user->status == 'Not Completed')
-                                    {{date("d / m / Y", strtotime($user->updated_at))}}
+                                    {{ $user->prev_assign}}
                                   @else
-                                    {{date("d / m / Y", strtotime($user->assigned_date))}}
+                                    {{ $user->prev_assign}}
                                   @endif
                                 </td><!-- Previous date -->
                                 
@@ -91,8 +91,14 @@
             <h4 class="modal-title"><b style="color:white;font-size:1.3em">Assign Daily Slots</b></h4>
           </div>
           <div class="modal-body">
-            Choose Dates:<br>
-            <input type="date" name="date" class="form-control">
+            Choose Wards:<br>
+            <select name="date" class="form-control">
+              <option value="">--Select--</option>
+              @foreach($wards as $ward)
+              <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
+              @endforeach
+            </select>
+            <!-- <input type="date" name="date" class="form-control"> -->
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-success pull-left">Assign</button>
