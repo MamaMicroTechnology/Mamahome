@@ -1391,6 +1391,7 @@ class HomeController extends Controller
         $user = User::where('employeeId',$id)->first();
         $attendances = attendance::where('empId',$id)
                     ->where('created_at','LIKE',$today.'%')
+                    ->orderby('date')
                     ->get();
         return view('empattendance',['attendances'=>$attendances,'userid'=>$id,'user'=>$user]);
     }
