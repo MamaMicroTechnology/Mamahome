@@ -71,7 +71,7 @@
             <div class="content">
                 <div class="title m-b-md">
                     <img src="logo.png" height="60" width="70%">
-                    <br> Management Technology <br>
+                    <br> Mama Micro Technology <br>
             @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/home') }}" class="btn btn-success btn-lg" role="button">Home</a>
