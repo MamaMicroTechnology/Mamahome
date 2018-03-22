@@ -163,6 +163,8 @@
                 						                <option value="With Labour Contractor">With Labour Contractor</option>
 														<option value="With Material Contractor">With Material Contractor</option>
 														<option value="Without Contractor">Without Contractor</option>
+                                                        <option value="Contractor With Owner">Contractor With Owner</option>
+                                                        <option value="Both Material and Labor Contractor">Both Material and Labor Contractor</option>
                 						            </select>
                 						        </td>
                 						    </tr>

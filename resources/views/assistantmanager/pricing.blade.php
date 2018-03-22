@@ -23,11 +23,21 @@
 										<label> Category </label>
 									</td>
 									<td style="width:80%">
-									    <select onchange="getSubcats()" class="form-control" name="id" id="category">
+									    <select onchange="getBrands()" class="form-control" name="id" id="category">
 									        <option value="">--Select--</option>
 									        @foreach($categories as $category)
 									        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
 									        @endforeach
+									    </select>
+									</td>
+								</tr>
+								<tr style="border-top-style: hidden">
+									<td style="width:20%">
+										<label> Brands </label>
+									</td>
+									<td style="width:80%">
+									    <select onchange="getSubcats()" class="form-control" name="id" id="brand">
+									        
 									    </select>
 									</td>
 								</tr>
@@ -56,6 +66,30 @@
 									</td>
 									<td style="width:80%">
 										<input type="text" onkeyup="check('price')" name="price" id="price" class="form-control" placeholder="Amount" />
+									</td>
+								</tr>
+								<tr style="border-top-style: hidden">
+									<td style="width:20%">
+										<label> GST </label>
+									</td>
+									<td style="width:80%">
+										<input type="text" name="gst" id="gst" class="form-control" placeholder="GST" />
+									</td>
+								</tr>
+								<tr style="border-top-style: hidden">
+									<td style="width:20%">
+										<label> Transportation Cost </label>
+									</td>
+									<td style="width:80%">
+										<input type="text" name="tc" id="tc" class="form-control" placeholder="Transportation Cost" />
+									</td>
+								</tr>
+								<tr style="border-top-style: hidden">
+									<td style="width:20%">
+										<label> Royalty </label>
+									</td>
+									<td style="width:80%">
+										<input type="text" name="royalty" id="royalty" class="form-control" placeholder="Roylaty (If any)" />
 									</td>
 								</tr>	
 							</table>
@@ -86,15 +120,23 @@
                 <table class="table table-responsive table-striped">
                     <tbody>
                         <tr>
-                            <td style="width:30%">
-                                <label>Select Sub Category : </label>
+                            <td style="width:20%">
+                                <label>Select Category : </label>
                             </td>
-                            <td style="width:70%">
-                                <select id="category1" onchange="getSubs()" class="form-control">
+                            <td style="width:30%">
+                                <select id="category2" onchange="brands()" class="form-control">
                                     <option>--Select Category--</option>
                                     @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                     @endforeach
+                                </select>
+                            </td>
+                            <td style="width:20%">
+                                <label>Select Brand : </label>
+                            </td>
+                            <td style="width:30%">
+                                <select id="brands2" onchange="Subs()" class="form-control">
+                                    
                                 </select>
                             </td>
                         </tr>
@@ -109,7 +151,7 @@
                             <th>Price</th>
                         </tr>
                     </thead>
-                    <tbody id="sub">
+                    <tbody id="sub2">
 
                     </tbody>
                 </table>
@@ -152,26 +194,95 @@
 	    document.getElementById('measure').value = measure;
 	    document.getElementById('id').value = arg;
 	}
-	function getSubcats()
+	function Subs()
 	{
-	    var e = document.getElementById('category');
+	    var e = document.getElementById('category2');
+	    var f = document.getElementById('brands2');
 	    var cat = e.options[e.selectedIndex].value;
-	    $("html body").css("cursor", "progress");
+	    var brand = f.options[f.selectedIndex].value;
 	    $.ajax({
             type:'GET',
             url:"{{URL::to('/')}}/getSubCatPrices",
             async:false,
-            data:{cat : cat},
+            data:{cat : cat, brand : brand},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "";
+                for(var i=0;i<response[1].length;i++)
+                {
+                    ans += "<tr><td>"+response[1][i].sub_cat_name+"</td><td>"+response[0].measurement_unit+"</td><td>"+response[1][i].price+"</td></tr>";
+                }
+                document.getElementById('sub2').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+	}
+	function getSubcats()
+	{
+	    var e = document.getElementById('category');
+	    var f = document.getElementById('brand');
+	    var cat = e.options[e.selectedIndex].value;
+	    var brand = f.options[f.selectedIndex].value;
+	    $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getSubCatPrices",
+            async:false,
+            data:{cat : cat, brand : brand},
             success: function(response)
             {
                 console.log(response);
                 document.getElementById('measure').value = response[0].measurement_unit;
-                var ans = '';
+                var ans = "<option value=''>--Select--</option>";
                 for(var i=0;i<response[1].length;i++)
                 {
                     ans += "<option value='"+response[1][i].id+"'>"+response[1][i].sub_cat_name+"</option>";
                 }
                 document.getElementById('subcategory').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+	}
+	function getBrands(){
+		var e = document.getElementById('category');
+	    var cat = e.options[e.selectedIndex].value;
+	    $("html body").css("cursor", "progress");
+	    $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
+                {
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                }
+                document.getElementById('brand').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+	}
+	function brands(){
+		var e = document.getElementById('category2');
+	    var cat = e.options[e.selectedIndex].value;
+	    $("html body").css("cursor", "progress");
+	    $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
+                {
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                }
+                document.getElementById('brands2').innerHTML = ans;
                 $("body").css("cursor", "default");
             }
         });
@@ -190,6 +301,9 @@
             success: function(response)
             {
                 document.getElementById('price').value = response.price;
+                document.getElementById('gst').value = response.gst;
+                document.getElementById('tc').value = response.transportation_cost;
+                document.getElementById('royalty').value = response.royalty;
             }
 	    });
 	    return false;
@@ -212,12 +326,13 @@
                 var text = "";
                 for(var i=0; i < response[1].length; i++)
                 {
-                    text += "<tr><td>"+response[1][i].sub_cat_name+"</td><td>"+response[0].measurement_unit+"</td><td>"+response[1][i].price+"</td></tr>";
+                    text += "<tr><td>"+response[1][i].sub_cat_name+"</td><td>"+response[0].measurement_unit+"</td><td>"+response[1][i].price+"</td><td>"+response[1][i].gst+"</td><td>"+response[1][i].transportation_cost+"</td><td>"+response[1][i].royalty+"</td></tr>";
                 }
                 document.getElementById('sub').innerHTML = text;
                 $("body").css("cursor", "default");
             }
         });    
     }
+
 </script>
 @endsection

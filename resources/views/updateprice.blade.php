@@ -9,11 +9,16 @@
             </div>
             <div class="panel-body">
                 <div class="col-md-4">
-                    <select id="category" onchange="getSubs()" class="form-control">
+                    <select id="category2" onchange="brands()" class="form-control">
                         <option>--Select Category--</option>
                         @foreach($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                         @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="brands2" onchange="Subs()" class="form-control">
+                        
                     </select>
                 </div>
                 <table class="table table-hover table-striped">
@@ -24,7 +29,7 @@
                             <th>Price</th>
                         </tr>
                     </thead>
-                    <tbody id="sub">
+                    <tbody id="sub2">
 
                     </tbody>
                 </table>
@@ -63,28 +68,51 @@
 	    document.getElementById('measure').value = measure;
 	    document.getElementById('id').value = arg;
 	}
-function getSubs()
-    {
-        var e = document.getElementById('category');
+function brands(){
+        var e = document.getElementById('category2');
         var cat = e.options[e.selectedIndex].value;
-        document.getElementById('sub').innerHTML = "Loading subcategories...";
         $("html body").css("cursor", "progress");
         $.ajax({
             type:'GET',
-            url:"{{URL::to('/')}}/getSubCatPrices",
+            url:"{{URL::to('/')}}/getBrands",
             async:false,
             data:{cat : cat},
             success: function(response)
             {
-                var text = "";
-                for(var i=0; i < response[1].length; i++)
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
                 {
-                    text += "<tr><td>"+response[1][i].sub_cat_name+"</td><td>"+response[0].measurement_unit+"</td><td>"+response[1][i].price+"</td></tr>";
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
                 }
-                document.getElementById('sub').innerHTML = text;
+                document.getElementById('brands2').innerHTML = ans;
                 $("body").css("cursor", "default");
             }
-        });    
+        });
+    }
+function Subs()
+    {
+        var e = document.getElementById('category2');
+        var f = document.getElementById('brands2');
+        var cat = e.options[e.selectedIndex].value;
+        var brand = f.options[f.selectedIndex].value;
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getSubCatPrices",
+            async:false,
+            data:{cat : cat, brand : brand},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "";
+                for(var i=0;i<response[1].length;i++)
+                {
+                    ans += "<tr><td>"+response[1][i].sub_cat_name+"</td><td>"+response[0].measurement_unit+"</td><td>"+response[1][i].price+"</td></tr>";
+                }
+                document.getElementById('sub2').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
     }
 </script>
 @endsection

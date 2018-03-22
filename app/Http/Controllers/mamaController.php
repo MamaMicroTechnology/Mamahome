@@ -1053,6 +1053,11 @@ class mamaController extends Controller
                 $request->cfa->move(public_path('employeeAudios'),$cfa);
                 $empDetails->confirmation_call = $cfa;
             }
+            if($request->cfa2 != NULL){
+                $cfa2 = $request->emergencyName2.time().'.'.request()->cfa2->getClientOriginalExtension();
+                $request->cfa2->move(public_path('employeeAudios'),$cfa2);
+                $empDetails->confirmation_call2 = $cfa2;
+            }
             $empDetails->save();
         }else{
             $check->employee_id = $request->userid;
@@ -1095,6 +1100,11 @@ class mamaController extends Controller
                 $cfa = time().'.'.request()->cfa->getClientOriginalExtension();
                 $request->cfa->move(public_path('employeeAudios'),$cfa);
                 $check->confirmation_call = $cfa;
+            }
+            if($request->cfa2 != NULL){
+                $cfa2 = $request->emergencyName2.time().'.'.request()->cfa2->getClientOriginalExtension();
+                $request->cfa2->move(public_path('employeeAudios'),$cfa2);
+                $check->confirmation_call2 = $cfa2;
             }
             $check->save();
         }
@@ -1175,7 +1185,13 @@ class mamaController extends Controller
         return back();
     }
     public function insertCat(Request $request){
-        CategoryPrice::where('category_sub_id',$request->subcategory)->update(['price'=>$request->price]);
+        CategoryPrice::where('category_sub_id',$request->subcategory)
+            ->update([
+                'price'=>$request->price,
+                'gst'=>$request->gst,
+                'transportation_cost'=>$request->tc,
+                'royalty'=>$request->royalty
+            ]);
         return back();
     }
     public function addManufacturer(Request $request){
@@ -1239,11 +1255,15 @@ class mamaController extends Controller
     }
     public function editEnquiry(Request $request)
     {
-        Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+        if($request->note != null){
+            Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+        }elseif($request->status != null){
+            Requirement::where('id',$request->id)->update(['status'=>$request->status]);
+        }
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note;
+        $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note.$request->status;
         $activity->save();
         return back();
     }

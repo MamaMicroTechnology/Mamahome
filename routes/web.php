@@ -31,6 +31,7 @@ Route::post('/postchangepassword','mamaController@postChangePassword');
 Route::get('/forgotpassword','mamaController@forgotPw');
 Route::post('/forgot','mamaController@forgot');
 Route::get('/accept','HomeController@acceptConfidentiality');
+Route::get('/getBrands','amController@getBrands');
 
 // Admin
 Route::group(['middleware' => ['admin']],function(){
@@ -273,6 +274,8 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/addKRA','amController@addKRA');
     Route::post('/confirmDelivery','amController@postconfirmDelivery');
     Route::post('/inactiveEmployee','amController@inactiveEmployee');
+    Route::post('/deleteAsset','amController@deleteAsset');
+    Route::post('/deleteCertificate','amController@deleteCertificate');
     
     // not working
 });

@@ -22,11 +22,20 @@
 						<td>Main Category</td>
 						<td>:</td>
 						<td>
-							<select name="mCategory" id="mCategory" required class="form-control input-sm" onchange="getSubCat()">
+							<select name="mCategory" id="mCategory" required class="form-control input-sm" onchange="getBrands()">
 								<option value="" disabled selected>--Select--</option>
 								    @foreach($category as $cat)
 								    <option value="{{$cat->id}}">{{$cat->category_name}}</option>
 								    @endforeach
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Brnads</td>
+						<td>:</td>
+						<td>
+							<select name="brand" id="brand" required class="form-control input-sm" onchange="getSubCat()">
+								
 							</select>
 						</td>
 					</tr>
@@ -109,19 +118,16 @@
 		        <div class="modal-content">
 		          <div class="modal-header">
 		            <button type="button" class="close" data-dismiss="modal">&times;</button>
-		            <h4 class="modal-title">Sand Price Calculator</h4>
+		            <h4 class="modal-title">Price Calculator</h4>
 		          </div>
 		          <div class="modal-body">
-		          	<div class="radio">
-					  <label><input id="type" type="radio" name="optradio">Thriveni Earth Movers P. Ltd.</label>
-					</div>
-					<div class="radio">
-					  <label><input id="type2" type="radio" name="optradio">Stona Sand P. Ltd.</label>
-					</div>
+		          	<input type="text" readonly="true" id="tc">
+		          	<input type="text" readonly="true" id="gst">
+		          	<input type="text" readonly="true" id="royalty">
 		            Quantity : <input type="text" name="" id='i1' class="form-control" placeholder="Quantity" />
 		            Distance : <input type="text" id="i2" name="" class="form-control" placeholder="Distance" />
 		            <br>
-		            <button onclick="func_sand()" class="btn btn-md btn-primary text-center">Submit</button>
+		            <button onclick="func_sand()" class="btn btn-md btn-primary text-center" data-dismiss="modal">Submit</button>
 		          </div>
 		          <div class="modal-footer">
 		            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -171,7 +177,6 @@
     </div>
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script> 
 <script type="text/javascript">
-
     function check(){
 	    var input = document.getElementById('quantity').value;
 	    if(isNaN(input)){
@@ -226,53 +231,114 @@
             data: {cat : cat, subcat: subcat},
             success: function(response)
             {
-               document.getElementById('uPrice').value = response.price;
-				if(cat == "27"){
-					$('#sandmodal').modal('show');
-				}
+               	document.getElementById('uPrice').value = response.price;
+               	if(response.transportation_cost != null){
+					document.getElementById('tc').value = response.transportation_cost;
+               	}
+               	if(response.royalty != null){
+               		document.getElementById('royalty').value = response.transportation_cost;
+               	}
+				document.getElementById('gst').value = response.gst;
+				$('#sandmodal').modal('show');
             }
         });   
     }
     function func_sand(){
-    	var concrete = 583;
-    	var plastering = 1060;
-    	var dry = 810;
-    	var type = document.getElementById('type');
+    	var elt = document.getElementById("brand");
+		var category = elt.options[elt.selectedIndex].text;
 		var price = parseInt(document.getElementById('uPrice').value);
 		var quantity = parseInt(document.getElementById('i1').value);
 		var distance = parseInt(document.getElementById('i2').value);
-		if(type.checked == true){
-			var total = (price * quantity) + ((distance + 25) * 3.8 * quantity) + (20 * quantity);
-			var gst = 0.05 * total;
-			var totalPrice = total + gst;
-			var ppt = totalPrice / quantity;
-		}else{
-			var distance2 = distance + 10;
-			if(document.getElementById('sCategory').value == 63){
-				price = dry;
-			}else if(document.getElementById('sCategory').value == 62){
-				price = concrete;
-			}else if(document.getElementById('sCategory').value == 61){
-				price = plastering;
-			}
-			var total = (price * quantity) + (distance2 * 5 * quantity) + (80 * quantity);
-			var gst = 0.05 * total;
-			var totalPrice = total + gst;
-			var ppt = totalPrice / quantity;
+		var gst = parseInt(document.getElementById('gst').value);
+		var tc = parseInt(document.getElementById('tc').value);
+		var royalty = parseInt(document.getElementById('royalty').value);
+		switch(category){
+			case "Chettinad":
+					// cement
+					var tPrice = (price*quantity) + (gst*quantity*price) + tc;
+					var cpb = tPrice/quantity;
+					var gstpb = cpb/tc;
+					var tcpb = cpb + gstpb;
+					var totalPrice = tcpb + quantity;
+					var ppt = totalPrice/quantity;
+					document.getElementById('total').value = totalPrice;
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = ppt;
+					document.getElementById('i1').value="";
+					document.getElementById('i2').value="";
+					break;
+			case "Dalmia":
+					// cement
+					if(quantity <= 100){
+						var totalPrice = quantity * price;
+						var ppt = price;
+					}else if(quantity > 100 && quantity < 250){
+						var totalPrice = quantity * price;
+						var ppt = price;
+					}else if(quantity > 250){
+						var totalPrice = quantity * price;
+						var ppt = price;
+					}
+					document.getElementById('total').value = totalPrice;
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = ppt;
+					document.getElementById('i1').value="";
+					document.getElementById('i2').value="";
+					break;
+			case "Tirumala":
+					// steel
+					var totalPrice = (price*quantity) + (gst*price*quantity);
+					var ppt = totalPrice/quantity;
+					document.getElementById('total').value = totalPrice;
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = ppt;
+					document.getElementById('i1').value="";
+					document.getElementById('i2').value="";
+					break;
+			case "Sunvik":
+					// Steel
+					var totalPrice = quantity*price;
+					var ppt = totalPrice/quantity;
+					document.getElementById('total').value = totalPrice;
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = ppt;
+					document.getElementById('i1').value="";
+					document.getElementById('i2').value="";
+					break;
+			case "Thriveni":
+					// sand
+					var total = (price * quantity) + ((distance + 25) * 3.8 * quantity) + (20 * quantity);
+					var gst = 0.05 * total;
+					var totalPrice = total + gst;
+					var ppt = totalPrice / quantity;		
+					document.getElementById('total').value = totalPrice;
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = ppt;
+					document.getElementById('i1').value="";
+					document.getElementById('i2').value="";
+					break;
+			case "Stona":
+					// sand
+					var distance2 = distance + 10;
+					var total = (price * quantity) + (distance2 * 5 * quantity) + (80 * quantity);
+					var gst = 0.05 * total;
+					var totalPrice = total + gst;
+					var ppt = totalPrice / quantity;
+					document.getElementById('total').value = totalPrice;
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = ppt;
+					document.getElementById('i1').value="";
+					document.getElementById('i2').value="";
+					break;
+			default:
+					alert("This is a test");
 		}
-		$('#sandmodal').modal('toggle');
-		document.getElementById('total').value = totalPrice;
-		document.getElementById('quantity').value = quantity;
-		document.getElementById('uPrice').value = ppt;
-		document.getElementById('i1').value="";
-		document.getElementById('i2').value="";
-		document.getElementById('type').checked = false;
-		document.getElementById('type2').checked = false;
 	}
     function getSubCat()
     {
         var e = document.getElementById("mCategory");
         var cat = e.options[e.selectedIndex].value;
+        var brand = document.getElementById("brand").value;
         if(e.options[e.selectedIndex].text == 'Sand')
         {
             document.getElementById('truck').innerHTML = "<td>Type of Truck</td><td>:</td><td><select class='form-control' id='truckvalue' required><option disabled selected>-- SELECT --</option><option value='6'>6 - Wheeler Truck (18 to 22)</option><option value='10'>10 - Wheeler Truck (24 to 32)</option></select></td>";
@@ -286,7 +352,7 @@
             type:'GET',
             url:"{{URL::to('/')}}/getSubCat",
             async:false,
-            data:{cat : cat},
+            data:{cat : cat, brand: brand},
             success: function(response)
             {
                 var text = "<option value='' disabled selected>----Select----</option>";
@@ -377,6 +443,28 @@
 	 	document.getElementById("req").className = "";
 		document.getElementById("btn1").className = "pull-right btn btn-sm btn-success";
 		document.getElementById("btn2").className = "hidden";
+	}
+	function getBrands(){
+		var e = document.getElementById('mCategory');
+	    var cat = e.options[e.selectedIndex].value;
+	    $("html body").css("cursor", "progress");
+	    $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
+                {
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                }
+                document.getElementById('brand').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
 	}
 </script>
 @endsection

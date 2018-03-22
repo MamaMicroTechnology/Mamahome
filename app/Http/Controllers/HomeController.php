@@ -766,7 +766,7 @@ class HomeController extends Controller
     {
         $cat = $request->cat; 
         $category = Category::where('id',$cat)->first();
-        $subcat = SubCategory::where('category_id',$cat)->get();
+        $subcat = SubCategory::where('category_id',$cat)->where('brand_id',$request->brand)->get();
         $res = array();
         $res[0] = $category;
         $res[1] = $subcat;
@@ -774,10 +774,12 @@ class HomeController extends Controller
     }
     public function getSubCatPrices(Request $request){
         $cat = $request->cat;
+        $brand = $request->brand;
         $category = Category::where('id',$cat)->first();
         $subcat = SubCategory::leftJoin('category_price','category_sub.id','=','category_price.category_sub_id')
             ->select('category_sub.*','category_price.price')
             ->where('category_sub.category_id',$cat)
+           ->where('category_sub.brand_id',$brand)
             ->get();
         $res = array();
         $res[0] = $category;

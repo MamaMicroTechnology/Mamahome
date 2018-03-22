@@ -16,7 +16,7 @@
                    {{ session('NotAdded') }}
                 </div>
             @endif
-            <button class="btn btn-default form-control"data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee</button>
+            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee</button>
             <br><br>
             <div class="panel panel-default" style="border-color:#f4811f">
                 <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Departments</b></div>

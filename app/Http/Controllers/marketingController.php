@@ -47,7 +47,7 @@ class marketingController extends Controller
     public function getHome(){
         $categories = Category::all();
         $subcategories = SubCategory::all();
-        $brands = brand::all();
+        $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
         return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
     }
     public function addCategory(Request $request){
@@ -60,6 +60,7 @@ class marketingController extends Controller
     public function addSubCategory(Request $request){
         $subcat = new SubCategory;
         $subcat->category_id = $request->category;
+        $subcat->brand_id = $request->brand;
         $subcat->sub_cat_name = $request->subcategory;
         $subcat->save();
         $cprice = new CategoryPrice;
@@ -91,8 +92,9 @@ class marketingController extends Controller
     public function addBrand(Request $request)
     {
         $brand = new brand;
+        $brand->category_id = $request->cat;
         $brand->brand = $request->brand;
         $brand->save();
-        return back();
+        return back()->with('Success','Brand added');
     }
 }

@@ -86,6 +86,20 @@
                             <td>{{ $details->emergency_contact_no }}</td>
                         </tr>
                         <tr>
+                            <td>Call Confirmation Audio</td>
+                            <td><audio controls style="width:100%;">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $details->confirmation_call }}" type="audio/ogg">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $details->confirmation_call }}" type="audio/mpeg">
+                                </audio>
+                            </td>
+                            <td>Call Confirmation Audio 2</td>
+                            <td><audio controls style="width:100%;">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $details->confirmation_call2 }}" type="audio/ogg">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $details->confirmation_call2 }}" type="audio/mpeg">
+                                </audio>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Emergency Contact 2 Name</td>
                             <td>{{ $details->emergency_contact2_name }}</td>
                             <td>Emergency Contact 2 No.</td>

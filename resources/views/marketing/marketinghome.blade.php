@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="panel panel-danger">
                     <div class="panel-heading">Category</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
@@ -65,28 +65,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="panel panel-danger">
-                    <div class="panel-heading">Sub Category</div>
+                    <div class="panel-heading">Sub Category
+                        <button class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target="#addCategory"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
-                        <form method="post" action="{{ URL::to('/') }}/addSubCategory">
-                            {{ csrf_field() }}
-                            <div class="col-md-4">
-                                <select class="form-control" required name="category">
-                                    <option value="">-Select-</option>
-                                    @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <input required type="text" placeholder="Sub Category" name="subcategory" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <input type="submit" value="Save" class="form-control btn btn-primary">
-                            </div>
-                        </form>
-                        <br><br>
                         <table class="table table-hover">
                             @foreach($subcategories as $subcategory)
                             <tr id="currentsub{{ $subcategory->id }}">
@@ -120,13 +104,21 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="panel panel-danger">
                     <div class="panel-heading">Brand</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
                         <form method="post" action="{{ URL::to('/') }}/addBrand">
                             {{ csrf_field() }}
-                            <div class="col-md-8">
+                            <div class="col-md-4">
+                                <select name="cat" class="form-control">
+                                    <option value="">--Category--</option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <input required type="text" placeholder="Brand" name="brand" class="form-control">
                             </div>
                             <div class="col-md-4">
@@ -137,16 +129,48 @@
                         <table class="table table-hover">
                             @foreach($brands as $brand)
                             <tr>
+                                <td>{{ $brand->category_name }}</td>
                                 <td>{{ $brand->brand }}</td>
                             </tr>
                             @endforeach
                         </table>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </div>
+<form method="post" action="{{ URL::to('/') }}/addSubCategory">
+    {{ csrf_field() }}
+  <div class="modal fade" id="addCategory" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#f4811f;color:white;fon-weight:bold">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Category</h4>
+        </div>
+        <div class="modal-body">
+            <select class="form-control" required name="category" onchange="getBrands()" id="category">
+                <option value="">-Select-</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                @endforeach
+            </select><br>
+            <select class="form-control" required name="brand" id="brand">
+                
+            </select><br>
+            <input required type="text" placeholder="Sub Category" name="subcategory" class="form-control">
+            
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Add</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 <div class='b'></div>
 <div class='bb'></div>
 <div class='message'>
@@ -173,6 +197,28 @@
     function editsubcategory(arg){
         document.getElementById('currentsub'+arg).className = "hidden";
         document.getElementById('editsub'+arg).className = "";
+    }
+    function getBrands(){
+        var e = document.getElementById('category');
+        var cat = e.options[e.selectedIndex].value;
+        $("html body").css("cursor", "progress");
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
+                {
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                }
+                document.getElementById('brand').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
     }
 </script>
 @endsection

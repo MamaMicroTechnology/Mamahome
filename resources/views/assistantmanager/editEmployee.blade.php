@@ -99,25 +99,7 @@
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact_no:'' }}" name="emergencyContact" class="form-control input-sm" placeholder="Emergency Contact No."></td>
                     </tr>
                     <tr>
-                        <td>Emergency Contact 2 Name (Friend)</td>
-                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact2_name:'' }}" name="emergencyName2" class="form-control input-sm" placeholder="Emergency Contact Name"></td>
-                    </tr>
-                    <tr>
-                        <td>Emergency Contact 2 No.</td>
-                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact2_no:'' }}" name="emergencyContact2" class="form-control input-sm" placeholder="Emergency Contact No."></td>
-                    </tr>
-                    <tr>
-                        <td>Curriculum Vite (CV)</td>
-                        <td><input type="file" name="cv" class="form-control input-sm">
-                            @if($employeeDetails != NULL)
-                            @if($employeeDetails->curriculum_vite != NULL)
-                                <img height="200" width="200" class="img img-responsive" src="{{ URL::to('/') }}/public/employeeImages/{{ $employeeDetails->curriculum_vite }}">
-                            @endif
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Convirmation Call Audio</td>
+                        <td>Confirmation Call Audio</td>
                         <td>
                             @if($employeeDetails != NULL)
                             @if($employeeDetails->confirmation_call != NULL)
@@ -128,6 +110,38 @@
                             @endif
                             @endif
                             <input type="file" name="cfa" class="form-control input-sm" accept=".mp3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Emergency Contact 2 Name (Friend)</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact2_name:'' }}" name="emergencyName2" class="form-control input-sm" placeholder="Emergency Contact Name"></td>
+                    </tr>
+                    <tr>
+                        <td>Emergency Contact 2 No.</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact2_no:'' }}" name="emergencyContact2" class="form-control input-sm" placeholder="Emergency Contact No."></td>
+                    </tr>
+                    <tr>
+                        <td>Confirmation Call Audio 2</td>
+                        <td>
+                            @if($employeeDetails != NULL)
+                            @if($employeeDetails->confirmation_call2 != NULL)
+                                <audio controls>
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call2 }}" type="audio/ogg">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call2 }}" type="audio/mpeg">
+                                </audio>
+                            @endif
+                            @endif
+                            <input type="file" name="cfa2" class="form-control input-sm" accept=".mp3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Curriculum Vite (CV)</td>
+                        <td><input type="file" name="cv" class="form-control input-sm">
+                            @if($employeeDetails != NULL)
+                            @if($employeeDetails->curriculum_vite != NULL)
+                                <img height="200" width="200" class="img img-responsive" src="{{ URL::to('/') }}/public/employeeImages/{{ $employeeDetails->curriculum_vite }}">
+                            @endif
+                            @endif
                         </td>
                     </tr>
                 </table>
@@ -225,6 +239,13 @@
                                 <tr>
                                     <td>{{ $assetInfo->asset_type }}</td>
                                     <td>{{ $assetInfo->description }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ URL::to('/') }}/deleteAsset">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="id" value="{{ $assetInfo->id }}">
+                                            <input type="submit" value="Delete" class="btn btn-xs btn-danger">
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -291,7 +312,16 @@
                                 @foreach($certificates as $certificate)
                                 <tr>
                                     <td>{{ $certificate->type }}</td>
-                                    <td>{{ $certificate->location }}</td>
+                                    <td>
+                                        <img onclick="display('certificate{{$certificate->id}}')" id="certificate{{$certificate->id}}" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/public/employeeImages/{{ $certificate->location }}">
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{{ URL::to('/') }}/deleteCertificate">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="id" value="{{ $certificate->id }}">
+                                            <input type="submit" value="Delete" class="btn btn-xs btn-danger">
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -300,13 +330,24 @@
         </div>
     </div>
 </div>
+<div id="myModal" class="imgModal">
+
+  <!-- The Close Button -->
+  <span class="imgClose">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="imgModal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div>
 <script>
     function addRow() {
             var table = document.getElementById("asset");
             var row = table.insertRow(-1);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
-            cell1.innerHTML = "<select required class=\"form-control\" name=\"type[]\"><option value=\"\">--Select--</option>@foreach($assets as $asset)<option value=\"{{$asset->id}}\">{{ $asset->type }}</option>@endforeach </select>";
+            cell1.innerHTML = "<select required class=\"form-control\" name=\"type[]\"><option value=\"\">--Select--</option>@foreach($assets as $asset)<option value=\"{{$asset->type}}\">{{ $asset->type }}</option>@endforeach </select>";
             cell2.innerHTML = "<textarea required class=\"form-control\" placeholder=\"Asset description\" name=\"details[]\"></textarea>";
         }
         function deleteRow() {

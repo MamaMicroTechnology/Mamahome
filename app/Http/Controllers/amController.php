@@ -30,6 +30,7 @@ use App\attendance;
 use App\ManufacturerDetail;
 use App\KeyResult;
 use App\MhInvoice;
+use App\brand;
 
 class amController extends Controller
 {
@@ -44,9 +45,10 @@ class amController extends Controller
     }
     public function amgetSubCatPrices(Request $request){
         $cat = $request->cat;
+        $brand = $request->brand;
         $category = Category::where('id',$cat)->first();
         $subcat = SubCategory::leftJoin('category_price','category_sub.id','=','category_price.category_sub_id')
-            ->select('category_sub.*','category_price.price')
+            ->select('category_sub.*','category_price.price','category_price.gst','category_price.transportation_cost','category_price.royalty')
             ->where('category_sub.category_id',$cat)
             ->get();
         $res = array();
@@ -54,9 +56,16 @@ class amController extends Controller
         $res[1] = $subcat;
         return response()->json($res);   
     }
+    public function getBrands(Request $request){
+        $res[0] = brand::where('category_id',$request->cat)->get();
+        return response()->json($res);
+    }
+    public function getAmBrands(Request $request){
+        $res[0] = brand::all();
+        return response()->json($res);
+    }
     public function filter(Request $request)
     {
-        
         if($records)
         {
             return response()->json($records);
@@ -518,5 +527,15 @@ class amController extends Controller
             loginTime::where('id',$request->id[$i])->update(['total_kilometers'=>$request->exp[$i]]);
         }
         return back()->with('Success','Petrol Expense Updated Successfully');
+    }
+    public function deleteAsset(Request $request)
+    {
+        AssetInfo::find($request->id)->delete();
+        return back();
+    }
+    public function deleteCertificate(Request $request)
+    {
+        Certificate::find($request->id)->delete();
+        return back();
     }
 }
