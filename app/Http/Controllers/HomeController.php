@@ -160,10 +160,7 @@ class HomeController extends Controller
     {
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
-        $initiators = Requirement::leftjoin('users','requirements.generated_by','=','users.id')
-                        ->select('requirements.generated_by','users.name','users.id')
-                        ->groupBy('requirements.generated_by')
-                        ->get();
+        $initiators = User::where('group_id',6)->orwhere('group_id',7)->get();
         $subwards = array();
         $subwards2 = array();
         if($request->from && $request->to && !$request->initiator && !$request->category && !$request->ward){
