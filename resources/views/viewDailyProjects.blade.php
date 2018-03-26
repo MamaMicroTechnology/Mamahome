@@ -4,7 +4,9 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-heading">
-               <b style="color:white">Project Details</b> 
+               <b style="color:white">Project Details
+                <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
+               </b> 
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
@@ -87,6 +89,12 @@
                                 @else
                                 N/A
                                 @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Budget (Cr.)</b></td>
+                            <td>
+                                {{ $details->budget }} Cr.
                             </td>
                         </tr>
                         <tr>

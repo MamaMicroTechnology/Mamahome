@@ -260,7 +260,6 @@
                                 <option value="" disabled selected>--- Select ---</option>
                                 <option value="With Labour Contractor">With Labour Contractor</option>
                                 <option value="With Material Contractor">With Material Contractor</option>
-                                <option value="Without Contractor">Without Contractor</option>
                             </select>
                             <br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>

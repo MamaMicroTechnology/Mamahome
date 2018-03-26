@@ -35,9 +35,15 @@
                                 <td style="width:40%;"><b>Project Image</b></td>
                                 <td><img onclick="display('projectImage')" id="projectImage" class="img img-responsive myImg" src="{{URL::to('/')}}/public/projectImages/{{$rec->image}}" /></td>
                             </tr>
+                            @if($rec->contractor)
                             <tr>
                                 <td style="width:40%;"><b>With Contractor</b></td>
                                 <td>{{ $rec->contract }}</td>
+                            </tr>
+                            @endif
+                            <tr>
+                                <td style="width:40%;"><b>Budget (Cr.)</b></td>
+                                <td>{{ $rec->budget }} Cr.</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Remarks</b></td>
@@ -71,7 +77,7 @@
                                 <td>{{$rec->consultantdetails->consultant_name}}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Consultant Contact No/b></td>
+                                <td style="width:40%;"><b>Consultant Contact No</b></td>
                                 <td>{{$rec->consultantdetails->consultant_contact_no}}</td>
                             </tr>
                             <tr>

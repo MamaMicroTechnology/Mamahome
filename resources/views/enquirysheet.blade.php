@@ -23,6 +23,7 @@
 							<label>Wards</label>
 							<select class="form-control" name="ward">
 								<option value="">--Select--</option>
+								<option value="">All</option>
 								@foreach($wards as $ward)
 								<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
 								@endforeach
@@ -32,6 +33,7 @@
 							<label>Initiator</label>
 							<select class="form-control" name="initiator">
 								<option value="">--Select--</option>
+								<option value="">All</option>
 								@foreach($initiators as $initiator)
 								<option value="{{ $initiator->id }}">{{ $initiator->name }}</option>
 								@endforeach
@@ -41,6 +43,7 @@
 							<label>Category:</label>
 							<select class="form-control" name="category">
 								<option value="">--Select--</option>
+								<option value="">All</option>
 								@foreach($category as $category)
 								<option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
 								@endforeach
@@ -97,7 +100,7 @@
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
 									<input type="hidden" value="{{$enquiry->id}}" name="id">
-									<input onblur="this.className='hidden'; document.getElementById('now{{ $enquiry->id }}').className='';" name="note" id="next{{ $enquiry->id }}" type="text" maxlength="6" size="35" class="hidden" value="{{ $enquiry->notes }}"> 
+									<input onblur="this.className='hidden'; document.getElementById('now{{ $enquiry->id }}').className='';" name="note" id="next{{ $enquiry->id }}" type="text" size="35" class="hidden" value="{{ $enquiry->notes }}"> 
 									<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
 								</form>
 							</td>

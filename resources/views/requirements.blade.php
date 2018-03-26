@@ -331,7 +331,9 @@
 					document.getElementById('i2').value="";
 					break;
 			default:
-					alert("This is a test");
+					document.getElementById('quantity').value = quantity;
+					document.getElementById('uPrice').value = price;
+					document.getElementById('total').value = quantity * price;
 		}
 	}
     function getSubCat()

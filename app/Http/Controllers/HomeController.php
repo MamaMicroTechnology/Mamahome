@@ -42,6 +42,7 @@ use App\Certificate;
 use App\MhInvoice;
 use App\ActivityLog;
 
+date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
     /**
@@ -92,19 +93,28 @@ class HomeController extends Controller
     }
     public function inputview()
     {
-        return view('inputview');
+        $category = Category::all();
+        $users = User::where('group_id',6)->orwhere('group_id',7)->get();
+        return view('inputview',['category'=>$category,'users'=>$users]);
     }
     public function inputdata(Request $request)
     {
-        $x = DB::table('record_data')->insert(['rec_project'    =>$request->selectprojects,
-                                                'rec_date'      =>$request->edate,
-                                                'rec_name'      =>$request->ename,
-                                                'rec_contact'   =>$request->econtact,
-                                                'rec_email'     =>$request->eemail,
-                                                'rec_product'   =>$request->eproduct,
-                                                'rec_location'  =>$request->elocation,
-                                                'rec_quantity'  =>$request->equantity,
-                                                'rec_remarks'   =>$request->eremarks
+        $category = Category::find($request->mCategory);
+        $subcategory = SubCategory::find($request->sCategory);
+        $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
+                                                'main_category' =>$category->category_name,
+                                                'sub_category'  =>$subcategory->sub_cat_name,
+                                                'material_spec' =>'',
+                                                'referral_image1'   =>'',
+                                                'referral_image2'   =>'',
+                                                'requirement_date'  =>$request->edate,
+                                                'measurement_unit'  =>$request->measure != null?$request->measure:'',
+                                                'unit_price'   =>$request->econtact,
+                                                'quantity'     =>$request->equantity,
+                                                'total'   =>0,
+                                                'notes'  =>$request->eremarks,
+                                                'created_at' => date('Y-m-d H:i:s'),
+                                                'updated_at' => date('Y-m-d H:i:s')
                                         ]);
         if($x)
         {
@@ -160,7 +170,7 @@ class HomeController extends Controller
     {
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
-        $initiators = User::where('group_id',6)->orwhere('group_id',7)->get();
+        $initiators = User::where('group_id',6)->orwhere('group_id',7)->where('department_id','!=',10)->get();
         $subwards = array();
         $subwards2 = array();
         if($request->from && $request->to && !$request->initiator && !$request->category && !$request->ward){
@@ -351,6 +361,29 @@ class HomeController extends Controller
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
+        }elseif($request->from && $request->to && !$request->initiator && $request->category && $request->ward){
+            // from, to, wards and category
+            $from = $request->from;
+            $to = $request->to;
+            $records = DB::table('record_data')
+                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
+                        ->select('project_details.sub_ward_id','record_data.*')
+                        ->get();
+            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                        ->where('requirements.main_category','=',$request->category)
+                        ->where('project_details.sub_ward_id','=',$request->ward)
+                        ->where('requirements.created_at','>',$from)
+                        ->where('requirements.created_at','<',$to)
+                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        ->get();
+            foreach($records as $record){
+                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
+            }
+            foreach($enquiries as $enquiry){
+                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+            }
         }else{
             // no selection
             $records = DB::table('record_data')
@@ -361,6 +394,7 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        // ->orderby('requirement_date','DESC')
                         ->get();
             foreach($records as $record){
                 $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -1761,5 +1795,10 @@ class HomeController extends Controller
             $text .= "</tr>";
         }
         return view('employeereports',['text'=>$text]);
+    }
+    public function getAddress(Request $request)
+    {
+        $address = SiteAddress::where('project_id',$request->projectId)->first();
+        return response()->json($address);   
     }
 }

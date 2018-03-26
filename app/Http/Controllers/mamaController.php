@@ -556,7 +556,8 @@ class mamaController extends Controller
             'quality' => $request->quality,
             'project_type' => $floor,
             'project_size' => $request->pSize,
-            'budget' => $request->budget
+            'budget' => $request->budget,
+            'contract'=>$request->contract,
         ]);
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,

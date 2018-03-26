@@ -286,6 +286,7 @@ div#calendar{
                         <li><a href="{{ URL::to('/') }}/amorderss">Orders</a></li>
                         <li><a href="{{ URL::to('/') }}/kra">KRA</a></li>
                         <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a></li>
+                        <li><a href="{{ URL::to('/dailyslots') }}">Daily Slots</a></li>
                         @endif
                         @endif
                     </ul>

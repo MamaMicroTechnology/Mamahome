@@ -50,7 +50,7 @@
                                 <!--Completed Button -->
                                 @if($user->status == 'Completed')
                                     <td style="text-align:center;">
-                                        <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
+                                        <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary form-control"><b>Report</b></a>
                                     </td>
                                 @else
                                     <td style="text-align:center">
