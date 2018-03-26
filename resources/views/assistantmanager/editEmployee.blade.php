@@ -303,30 +303,30 @@
             <input type="submit" value="Save" class="form-control btn btn-success">
             </form>
             @if($certificates != NULL)
-                        <table class="table table-responsive">
-                            <thead>
-                                <th>Type</th>
-                                <th>Details</th>
-                            </thead>
-                            <tbody>
-                                @foreach($certificates as $certificate)
-                                <tr>
-                                    <td>{{ $certificate->type }}</td>
-                                    <td>
-                                        <img onclick="display('certificate{{$certificate->id}}')" id="certificate{{$certificate->id}}" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/public/employeeImages/{{ $certificate->location }}">
-                                    </td>
-                                    <td>
-                                        <form method="POST" action="{{ URL::to('/') }}/deleteCertificate">
-                                            {{ csrf_field() }}
-                                            <input type="hidden" name="id" value="{{ $certificate->id }}">
-                                            <input type="submit" value="Delete" class="btn btn-xs btn-danger">
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @endif
+            <table class="table table-responsive">
+                <thead>
+                    <th>Type</th>
+                    <th>Details</th>
+                </thead>
+                <tbody>
+                    @foreach($certificates as $certificate)
+                    <tr>
+                        <td>{{ $certificate->type }}</td>
+                        <td>
+                            <img onclick="display('certificate{{$certificate->id}}')" id="certificate{{$certificate->id}}" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/public/employeeImages/{{ $certificate->location }}">
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ URL::to('/') }}/deleteCertificate">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ $certificate->id }}">
+                                <input type="submit" value="Delete" class="btn btn-xs btn-danger">
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            @endif
         </div>
     </div>
 </div>

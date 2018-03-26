@@ -57,7 +57,12 @@
         </td>
         @endif
         @if($page == "hr" && $user->department != NULL)
-        <td><a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}">View</a></td>
+        <td>
+            <div class="btn-group">
+                <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" class="btn btn-sm btn-primary">View</a>
+                <a href="{{ URL::to('/') }}/editEmployee?UserId={{ $user->employeeId }}" class="btn btn-sm btn-success">Edit</a>
+            </div>
+        </td>
         @endif
     </tr>
 @endforeach

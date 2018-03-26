@@ -274,11 +274,11 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/addKRA','amController@addKRA');
     Route::post('/confirmDelivery','amController@postconfirmDelivery');
     Route::post('/inactiveEmployee','amController@inactiveEmployee');
-    Route::post('/deleteAsset','amController@deleteAsset');
-    Route::post('/deleteCertificate','amController@deleteCertificate');
     
     // not working
 });
+Route::post('/deleteAsset','amController@deleteAsset');
+Route::post('/deleteCertificate','amController@deleteCertificate');
 Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::get('/accountExecutive','aeController@getAccountExecutive');
     Route::post('/addBuilderDetails','aeController@postBuilderDetails');

@@ -31,7 +31,9 @@ use App\ManufacturerDetail;
 use App\KeyResult;
 use App\MhInvoice;
 use App\brand;
+use App\ActivityLog;
 
+date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
 {
     public function getAMDashboard(){
@@ -515,10 +517,20 @@ class amController extends Controller
         $vendor = new Vendor;
         $vendor->vendor_type = $request->vendor;
         $vendor->save();
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added new vendor".$request->vendor." at ".date('H:i A');
+        $activity->save();
         return back()->with('Success','Vendor type added successfully');
     }
     public function inactiveEmployee(Request $request){
         User::where('employeeId',$request->id)->update(['department_id'=>10]);
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has marked ".$request->id." as inactive at ".date('H:i A');
+        $activity->save();
         return back()->with('Success','Employee marked as inactive');
     }
     public function savePetrolExpenses(Request $request){
@@ -530,12 +542,26 @@ class amController extends Controller
     }
     public function deleteAsset(Request $request)
     {
+        $userid = Certificate::find($request->id);
+        $username = User::where('employeeId',$userid->employeeId)->pluck('name')->first();
         AssetInfo::find($request->id)->delete();
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has deleted ".$username."'s asset at ".date('H:i A');
+        $activity->save();
         return back();
     }
     public function deleteCertificate(Request $request)
     {
+        $userid = Certificate::find($request->id);
+        $username = User::where('employeeId',$userid->employeeId)->pluck('name')->first();
         Certificate::find($request->id)->delete();
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has deleted ".$username."'s certificate at ".date('H:i A');
+        $activity->save();
         return back();
     }
 }

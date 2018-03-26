@@ -91,12 +91,48 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Emergency Contact Name</td>
+                        <td>Emergency Contact 1 Name (Blood Relative) </td>
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact_name:'' }}" name="emergencyName" class="form-control input-sm" placeholder="Emergency Contact Name"></td>
                     </tr>
                     <tr>
-                        <td>Emergency Contact No.</td>
+                        <td>Emergency Contact 1 No. </td>
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact_no:'' }}" name="emergencyContact" class="form-control input-sm" placeholder="Emergency Contact No."></td>
+                    </tr>
+                    <tr>
+                        <td>Confirmation Call Audio</td>
+                        <td>
+                            @if($employeeDetails != NULL)
+                            @if($employeeDetails->confirmation_call != NULL)
+                                <audio controls>
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call }}" type="audio/ogg">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call }}" type="audio/mpeg">
+                                </audio>
+                            @endif
+                            @endif
+                            <input type="file" name="cfa" class="form-control input-sm" accept=".mp3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Emergency Contact 2 Name (Friend)</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact2_name:'' }}" name="emergencyName2" class="form-control input-sm" placeholder="Emergency Contact Name"></td>
+                    </tr>
+                    <tr>
+                        <td>Emergency Contact 2 No.</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->emergency_contact2_no:'' }}" name="emergencyContact2" class="form-control input-sm" placeholder="Emergency Contact No."></td>
+                    </tr>
+                    <tr>
+                        <td>Confirmation Call Audio 2</td>
+                        <td>
+                            @if($employeeDetails != NULL)
+                            @if($employeeDetails->confirmation_call2 != NULL)
+                                <audio controls>
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call2 }}" type="audio/ogg">
+                                    <source src="{{ URL::to('/') }}/public/employeeAudios/{{ $employeeDetails->confirmation_call2 }}" type="audio/mpeg">
+                                </audio>
+                            @endif
+                            @endif
+                            <input type="file" name="cfa2" class="form-control input-sm" accept=".mp3">
+                        </td>
                     </tr>
                     <tr>
                         <td>Curriculum Vite (CV)</td>
@@ -203,6 +239,13 @@
                                 <tr>
                                     <td>{{ $assetInfo->asset_type }}</td>
                                     <td>{{ $assetInfo->description }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ URL::to('/') }}/deleteAsset">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="id" value="{{ $assetInfo->id }}">
+                                            <input type="submit" value="Delete" class="btn btn-xs btn-danger">
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -259,6 +302,31 @@
             </table>
             <input type="submit" value="Save" class="form-control btn btn-success">
             </form>
+            @if($certificates != NULL)
+            <table class="table table-responsive">
+                <thead>
+                    <th>Type</th>
+                    <th>Details</th>
+                </thead>
+                <tbody>
+                    @foreach($certificates as $certificate)
+                    <tr>
+                        <td>{{ $certificate->type }}</td>
+                        <td>
+                            <img onclick="display('certificate{{$certificate->id}}')" id="certificate{{$certificate->id}}" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/public/employeeImages/{{ $certificate->location }}">
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ URL::to('/') }}/deleteCertificate">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ $certificate->id }}">
+                                <input type="submit" value="Delete" class="btn btn-xs btn-danger">
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            @endif
         </div>
     </div>
 </div>

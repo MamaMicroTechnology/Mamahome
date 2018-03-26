@@ -121,9 +121,9 @@
 		            <h4 class="modal-title">Price Calculator</h4>
 		          </div>
 		          <div class="modal-body">
-		          	<input type="text" readonly="true" id="tc">
-		          	<input type="text" readonly="true" id="gst">
-		          	<input type="text" readonly="true" id="royalty">
+		          	<input type="hidden" readonly="true" id="tc">
+		          	<input type="hidden" readonly="true" id="gst">
+		          	<input type="hidden" readonly="true" id="royalty">
 		            Quantity : <input type="text" name="" id='i1' class="form-control" placeholder="Quantity" />
 		            Distance : <input type="text" id="i2" name="" class="form-control" placeholder="Distance" />
 		            <br>

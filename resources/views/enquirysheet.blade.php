@@ -9,6 +9,50 @@
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
+				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
+					<div class="col-md-12">
+						<div class="col-md-2">
+							<label>From (Enquiry Date)</label>
+							<input type="date" class="form-control" name="from">
+						</div>
+						<div class="col-md-2">
+							<label>To (Enquiry Date)</label>
+							<input type="date" class="form-control" name="to">
+						</div>
+						<div class="col-md-2">
+							<label>Wards</label>
+							<select class="form-control" name="ward">
+								<option value="">--Select--</option>
+								@foreach($wards as $ward)
+								<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col-md-2">
+							<label>Initiator</label>
+							<select class="form-control" name="initiator">
+								<option value="">--Select--</option>
+								@foreach($initiators as $initiator)
+								<option value="{{ $initiator->id }}">{{ $initiator->name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col-md-2">
+							<label>Category:</label>
+							<select class="form-control" name="category">
+								<option value="">--Select--</option>
+								@foreach($category as $category)
+								<option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col-md-2">
+							<label></label>
+							<input type="submit" value="Fetch" class="form-control btn btn-primary">
+						</div>
+					</div>
+				</form>
+				<br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
@@ -63,8 +107,6 @@
 									<input type="hidden" value="{{$enquiry->id}}" name="id">
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>
-										<option>Order Initiated</option>
-										<option>Order Proessed</option>
 										<option>Order Confirmed</option>
 										<option>Order Closed</option>
 										<option>Order Cancelled</option>
@@ -122,22 +164,22 @@
 	    $('#myTable').DataTable( {
 	        dom: 'Bfrtip',
 	        "paging":   true,
-	        "searching": true,
+	        "searching": false,
         	"ordering": true,
         	"info":     true,
 	        buttons: [ 
-	            {
-	                extend: 'excelHtml5',
-	                title: 'Sales Report - '+format,
-	                className: 'btn btn-md btn-success hidden',
-	                text: 'Export To Excel'
-	            },
-	            {
-	            	extend: 'pdf',
-	            	title: 'Sales Report - '+format,
-	            	className: 'btn btn-md btn-primary hidden',
-	            	text: 'Export To PDF' 
-	            },            
+	            // {
+	            //     extend: 'excelHtml5',
+	            //     title: 'Sales Report - '+format,
+	            //     className: 'btn btn-md btn-success hidden',
+	            //     text: 'Export To Excel'
+	            // },
+	            // {
+	            // 	extend: 'pdf',
+	            // 	title: 'Sales Report - '+format,
+	            // 	className: 'btn btn-md btn-primary hidden',
+	            // 	text: 'Export To PDF' 
+	            // },            
 	        ]
 	    } );
 	} );
