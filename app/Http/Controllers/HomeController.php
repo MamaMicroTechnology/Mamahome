@@ -114,7 +114,10 @@ class HomeController extends Controller
                                                 'total'   =>0,
                                                 'notes'  =>$request->eremarks,
                                                 'created_at' => date('Y-m-d H:i:s'),
-                                                'updated_at' => date('Y-m-d H:i:s')
+                                                'updated_at' => date('Y-m-d H:i:s'),
+                                                'status' => "Order Initiated",
+                                                'dispatch_status' => "Not yet dispatched",
+                                                'generated_by' => $request->initiator
                                         ]);
         if($x)
         {
@@ -170,7 +173,8 @@ class HomeController extends Controller
     {
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
-        $initiators = User::where('group_id',6)->orwhere('group_id',7)->where('department_id','!=',10)->get();
+        $depart = [6,7];
+        $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards = array();
         $subwards2 = array();
         if($request->from && $request->to && !$request->initiator && !$request->category && !$request->ward){

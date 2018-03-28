@@ -70,7 +70,7 @@
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>
-									<select class="form-control">
+									<select class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
 										<option value="{{ $user->id }}">{{ $user->name }}</option>
