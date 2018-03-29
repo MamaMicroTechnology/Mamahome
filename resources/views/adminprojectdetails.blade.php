@@ -13,7 +13,6 @@
                 </div>
                 <div class="panel-body">
                     <h3>Project Details</h3>
-                        <center style="font-size: 15px;"><i><b>*This project is added by {{ $username->name }}*</b></i></center>
                     <table class="table table-responsive">
                         <tbody>
                             <tr>
