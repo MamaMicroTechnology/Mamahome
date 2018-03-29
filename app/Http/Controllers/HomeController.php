@@ -94,7 +94,8 @@ class HomeController extends Controller
     public function inputview()
     {
         $category = Category::all();
-        $users = User::where('group_id',6)->orwhere('group_id',7)->get();
+        $depart = [6,7];
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         return view('inputview',['category'=>$category,'users'=>$users]);
     }
     public function inputdata(Request $request)
@@ -177,7 +178,43 @@ class HomeController extends Controller
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards = array();
         $subwards2 = array();
-        if($request->from && $request->to && !$request->initiator && !$request->category && !$request->ward){
+        if($request->status){
+            if($request->status != "all"){
+                $records = DB::table('record_data')
+                            ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
+                            ->select('project_details.sub_ward_id','record_data.*')
+                            ->get();
+                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                            ->where('status','like','%'.$request->status)
+                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                            ->get();
+                foreach($records as $record){
+                    $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
+                }
+                foreach($enquiries as $enquiry){
+                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+                }
+            }else{
+                $records = DB::table('record_data')
+                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
+                        ->select('project_details.sub_ward_id','record_data.*')
+                        ->get();
+            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                        // ->where('status','like','%'.$request->status)
+                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        ->get();
+            foreach($records as $record){
+                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
+            }
+            foreach($enquiries as $enquiry){
+                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+            }
+            }
+        }elseif($request->from && $request->to && !$request->initiator && !$request->category && !$request->ward){
             // only from and to
             $from = $request->from;
             $to = $request->to;
@@ -594,8 +631,9 @@ class HomeController extends Controller
                         ->join('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->join('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
                         ->join('wards','wards.id','=','sub_wards.ward_id' )
+                        ->join('employee_details','users.employeeId','=','employee_details.employee_id')
                         ->where('department_id','!=','10')
-                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
 
         $subwardsAssignment = WardAssignment::all();
@@ -927,8 +965,8 @@ class HomeController extends Controller
     public function completethis(Request $id)
     {   
         $assignment = salesassignment::where('user_id',$id->userid)->first();
-        $ward = Ward::where('id',$assignment->assigned_date)->first();
-        $assignment->prev_assign = $ward->ward_name;
+        $ward = SubWard::where('id',$assignment->assigned_date)->first();
+        $assignment->prev_assign = $ward->sub_ward_name;
         $assignment->status = 'Completed';
         $assignment->save();
         // salesassignment::where('user_id',$id->userid)->update(['status'=>'Completed']);
@@ -939,8 +977,8 @@ class HomeController extends Controller
         $id = Department::where('dept_name',"Sales")->pluck('id')->first();
         $users = User::where('department_id',$id)
                         ->leftjoin('salesassignments','salesassignments.user_id','=','users.id')
-                        ->leftjoin('wards','salesassignments.assigned_date','=','wards.id')
-                        ->select('salesassignments.*','users.employeeId','users.name','users.id','wards.ward_name')
+                        ->leftjoin('sub_wards','salesassignments.assigned_date','=','sub_wards.id')
+                        ->select('salesassignments.*','users.employeeId','users.name','users.id','sub_wards.sub_ward_name')
                         ->get();
         $subwardsAssignment = salesassignment::where('status','Not Completed')->get();
         $wards = Ward::all();
@@ -1029,7 +1067,8 @@ class HomeController extends Controller
     {
         $id = $request->id;
         $rec = ProjectDetails::where('project_id',$id)->first();
-        return view('adminprojectdetails',['rec' => $rec]);
+        $username = User::where('id',$rec->listing_engineer_id)->first();
+        return view('adminprojectdetails',['rec' => $rec,'username'=>$username]);
     }
     public function confirmOrder(Request $request)
     {
@@ -1254,11 +1293,11 @@ class HomeController extends Controller
     public function projectsUpdate()
     {
         $assignment = salesassignment::where('user_id',Auth::user()->id)->pluck('assigned_date')->first();
-        $subwards = SubWard::where('ward_id',$assignment)->pluck('id');
-        $projects = ProjectDetails::whereIn('sub_ward_id', $subwards)->paginate(15);
-        $projectscount = count(ProjectDetails::whereIn('sub_ward_id', $subwards)->get());
+        $subwards = SubWard::where('id',$assignment)->pluck('sub_ward_name')->first();
+        $projects = ProjectDetails::where('sub_ward_id', $assignment)->paginate(10);
+        $projectscount = ProjectDetails::where('sub_ward_id', $assignment)->count();
         // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
-        return view('salesengineer',['projects'=>$projects,'subwards'=>$assignment,'projectscount'=>$projectscount]);
+        return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
     }
     public function dailyslots(Request $request)
     {

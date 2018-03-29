@@ -270,11 +270,10 @@ div#calendar{
                     @if(Auth::check())
                     @if(Auth::user()->group_id == 1)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                    @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <!--<img class="text-center" style="height: 25px; width: 170px;" src="{{ URL::to('/') }}/logo.png">-->
-                    </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -282,12 +281,6 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        @if(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
-                        <li><a href="{{ URL::to('/') }}/amorderss">Orders</a></li>
-                        <li><a href="{{ URL::to('/') }}/kra">KRA</a></li>
-                        <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a></li>
-                        <li><a href="{{ URL::to('/dailyslots') }}">Daily Slots</a></li>
-                        @endif
                         @endif
                     </ul>
                 
@@ -355,6 +348,13 @@ div#calendar{
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
+</div>
+@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
+    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
 </div>
 @endif
 @endif

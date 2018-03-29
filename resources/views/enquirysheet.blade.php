@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+	$user = Auth::user()->group_id;
+	$ext = ($user == 4? "layouts.amheader":"layouts.app");
+?>
+@extends($ext)
 
 @section('content')
 
@@ -6,6 +10,15 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
+				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
+					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
+					<select required name="status" onchange="this.form.submit();" style="width:100px;" class="form-control input-sm pull-right">
+						<option value="">--Select--</option>
+						<option value="all">All</option>
+						<option value="Confirmed">Enquiry Confirmed</option>
+						<option value="Cancelled">Enquiry Cancelled</option>
+					</select>
+				</form>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
@@ -110,9 +123,8 @@
 									<input type="hidden" value="{{$enquiry->id}}" name="id">
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>
-										<option>Order Confirmed</option>
-										<option>Order Closed</option>
-										<option>Order Cancelled</option>
+										<option>Enquiry Confirmed</option>
+										<option>Enquiry Cancelled</option>
 									</select>
 								</form>
 							</td>

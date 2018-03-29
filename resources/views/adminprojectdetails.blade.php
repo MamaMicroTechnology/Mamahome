@@ -1,14 +1,19 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 4? "layouts.amheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
     <div class="col-md-12">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-primary" style="overflow-x:scroll">
                 <div class="panel-heading text-center">
                     <b style="color:white;font-size:1.4em">Project Details</b>
-                    <a href="{{URL::to('/')}}/amorders" class="btn btn-sm btn-danger pull-right">Back</a>
+                    <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $rec->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                 </div>
                 <div class="panel-body">
                     <h3>Project Details</h3>
+                        <center style="font-size: 15px;"><i><b>*This project is added by {{ $username->name }} ({{ $username->department->dept_name }} department)*</b></i></center>
                     <table class="table table-responsive">
                         <tbody>
                             <tr>
@@ -30,6 +35,18 @@
                             <tr>
                                 <td style="width:40%;"><b>Project Size</b></td>
                                 <td>{{$rec->project_size}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Project Quality</b></td>
+                                <td>{{$rec->quality==null?"Unverified":$rec->Quality}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Basement</b></td>
+                                <td>{{$rec->basement}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Ground</b></td>
+                                <td>{{$rec->ground}}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Project Image</b></td>

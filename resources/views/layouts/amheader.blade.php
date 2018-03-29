@@ -403,20 +403,20 @@ div#calendar{
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
           @if(Auth::check())
-            <li class="{{ $pageName == 'Home'?'active':''}}"><a href="{{ URL::to('/home') }}">Home</a></li>
+            <li><a href="{{ URL::to('/home') }}">Home</a></li>
         @if(Auth::user()->group_id == 14)
-            <li class="{{ $pageName == 'HR'?'active':''}}"><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
+            <li><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
         @else
-            <li class="{{ $pageName == 'Orders'?'active':''}}"><a href="{{ URL::to('/amorderss') }}">Orders</a></li>
+            <li><a href="{{ URL::to('/amorderss') }}">Orders</a></li>
             @if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)
-            <li class="{{ $pageName == 'Price'?'active':''}}"><a href="{{ URL::to('/pricing') }}">Pricing</a></li>
-            <li class="{{ $pageName == 'Finance'?'active':''}}"><a href="{{ URL::to('/') }}/amfinance">Finance</a></li>
-            <li class="{{ $pageName == 'HR'?'active':''}}"><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
-            <li class="{{ $pageName == 'Vendor Details'?'active':''}}"><a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a></li>
-            <li class="{{ $pageName == 'dailyslots'?'active':''}}"><a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a></li>
-            <li class="{{ $pageName == 'KRA'?'active':''}}"><a href="{{ URL::to('/') }}/amkra">KRA</a></li>
-            <li class="{{ $pageName == 'Assign'?'active':''}}"><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
-            <li class="{{ $pageName == 'Enquiry'?'active':''}}"><a href="{{ URL::to('/') }}/amenquirysheet">Enquiry Sheet</a>
+            <li><a href="{{ URL::to('/pricing') }}">Pricing</a></li>
+            <li><a href="{{ URL::to('/') }}/amfinance">Finance</a></li>
+            <li><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
+            <li><a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a></li>
+            <li><a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a></li>
+            <li><a href="{{ URL::to('/') }}/amkra">KRA</a></li>
+            <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
+            <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
             <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
             @endif
         @endif

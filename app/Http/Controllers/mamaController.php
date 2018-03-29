@@ -935,7 +935,7 @@ class mamaController extends Controller
             if($ward != null){
                 $assignment->prev_assign = $ward->ward_name;
             }
-            $assignment->assigned_date = $request->date;
+            $assignment->assigned_date = $request->subward;
             $assignment->status = 'Not Completed';
             $assignment->save();
             // salesassignment::where('user_id',$id)->update(['status'=>'Not Completed','assigned_date' => $request->date]);
@@ -951,7 +951,7 @@ class mamaController extends Controller
             $user = User::where('id',$request->id)->first();
             $assignment = new salesassignment;
             $assignment->user_id = $id;
-            $assignment->assigned_date = $request->date;
+            $assignment->assigned_date = $request->subward;
             $assignment->status = 'Not Completed';
             $assignment->save();
             $activity = new ActivityLog;

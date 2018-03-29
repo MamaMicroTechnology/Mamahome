@@ -28,7 +28,7 @@
                                 <td style="text-align:left">{{ $user->name }}</td>
                                 <td style="text-align: center">
                                     @if($user->status == 'Not Completed')
-                                      {{ $user->ward_name }}
+                                      {{ $user->sub_ward_name }}
                                     @else
                                       <a data-toggle="modal" data-target="#assignWards{{ $user->id }}" class="btn btn-sm btn-primary">Assign Slots</a>
                                     @endif
@@ -91,13 +91,16 @@
             <h4 class="modal-title"><b style="color:white;font-size:1.3em">Assign Daily Slots</b></h4>
           </div>
           <div class="modal-body">
-            Choose Wards:<br>
-            <select name="date" class="form-control">
-              <option value="">--Select--</option>
-              @foreach($wards as $ward)
-              <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
-              @endforeach
-            </select>
+            <label>Choose Ward :</label><br>
+                <select name="ward" class="form-control" id="ward{{ $user->id }}" onchange="loadsubwards('{{ $user->id }}')">
+                    <option value="">--Select--</option>
+                    @foreach($wards as $ward)
+                    <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
+                    @endforeach
+                </select>
+            <label>Choose Subward :</label><br>
+                <select name="subward" class="form-control" id="subward{{ $user->id }}">
+                </select>
             <!-- <input type="date" name="date" class="form-control"> -->
           </div>
           <div class="modal-footer">
@@ -109,4 +112,38 @@
     </div>
 </form>
 @endforeach
+<script type="text/javascript">
+    function loadsubwards(arg)
+    {
+        var x = document.getElementById('ward'+arg);
+        var sel = x.options[x.selectedIndex].value;
+        if(sel)
+        {
+            $.ajax({
+                type: "GET",
+                url: "{{URL::to('/')}}/loadsubwards",
+                data: { ward_id: sel },
+                async: false,
+                success: function(response)
+                {
+                    if(response == 'No Sub Wards Found !!!')
+                    {
+                        document.getElementById('error'+arg).innerHTML = '<h4>No Sub Wards Found !!!</h4>';
+                        document.getElementById('error'+arg).style,display = 'initial';
+                    }
+                    else
+                    {
+                        var html = "<option value='' disabled selected>---Select---</option>";
+                        for(var i=0; i< response.length; i++)
+                        {
+                            html += "<option value='"+response[i].id+"'>"+response[i].sub_ward_name+"</option>";
+                        }
+                        document.getElementById('subward'+arg).innerHTML = html;
+                    }
+                    
+                }
+            });
+        }
+    }
+</script>
 @endsection

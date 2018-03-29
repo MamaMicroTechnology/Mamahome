@@ -18,6 +18,7 @@
                             <th style="text-align: center;">Ward Assigned</th>
                             <th style="text-align: center;">Previous Assigned Ward</th>  
                             <th style="text-align: center;">Images</th>
+                            <th style="text-align: center;">Contact No.</th>
                             <th style="text-align: center;">Action</th>
                         </thead>
                         <tbody>
@@ -44,8 +45,11 @@
                                     @endforeach
                                 </td>
                                 <td style="text-align:center">
-                                    <a href="{{ URL::to('/')}}/public/subWardImages/{{$user->sub_ward_image}}" target="_blank">Click Here To View Image
+                                    <a href="{{ URL::to('/')}}/public/subWardImages/{{$user->sub_ward_image}}" target="_blank">View Image
                                     </a>
+                                </td>
+                                <td style="text-align:center">
+                                    {{ $user->office_phone }}
                                 </td>            
                                 <!--Completed Button -->
                                 @if($user->status == 'Completed')

@@ -143,18 +143,18 @@
         	"ordering": false,
         	"info":     false,
 	        buttons: [ 
-	            {
-	                extend: 'excelHtml5',
-	                title: 'Sales Report - '+format,
-	                className: 'btn btn-md btn-success',
-	                text: 'Export To Excel'
-	            },
-	            {
-	            	extend: 'pdf',
-	            	title: 'Sales Report - '+format,
-	            	className: 'btn btn-md btn-primary',
-	            	text: 'Export To PDF' 
-	            },            
+	            // {
+	            //     extend: 'excelHtml5',
+	            //     title: 'Sales Report - '+format,
+	            //     className: 'btn btn-md btn-success',
+	            //     text: 'Export To Excel'
+	            // },
+	            // {
+	            // 	extend: 'pdf',
+	            // 	title: 'Sales Report - '+format,
+	            // 	className: 'btn btn-md btn-primary',
+	            // 	text: 'Export To PDF' 
+	            // },            
 	        ]
 	    } );
 	} );

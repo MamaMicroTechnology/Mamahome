@@ -1,4 +1,8 @@
-@extends('layouts.marketingheader')
+<?php
+  $user = Auth::user()->group_id;
+  $ext = ($user == 4? "layouts.amheader":"layouts.marketingheader");
+?>
+@extends($ext)
 @section('content')
 
 <div class="container">
