@@ -135,11 +135,11 @@ class ContractorController extends Controller
               $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
               $blocks6[$i] = 1.25*$Total_Area;
               $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = 
-              $steel10[$i] = 
-              $steel12[$i] = 
-              $steel18[$i] = 
-              $steel20[$i] = 
+              // $steel8[$i] = 
+              // $steel10[$i] = 
+              // $steel12[$i] = 
+              // $steel18[$i] = 
+              // $steel20[$i] = 
             break;
           case 'Digging':
               $cement_requirement = 100;
