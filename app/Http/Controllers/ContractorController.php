@@ -72,7 +72,7 @@ class ContractorController extends Controller
         <th>Total Material</th><th>MRP</th><th>TOTAL</th><th>MHP</th></tr>";
       $projectIds = ContractorDetails::where('contractor_contact_no',$request->no)->pluck('project_id');
       $projects = ProjectDetails::whereIn('project_id',$projectIds)->get();
-      $roomTypes = RoomType::where('project_id',$projectIds)->get();
+      $roomTypes = RoomType::whereIn('project_id',$projectIds)->get();
       foreach($roomTypes as $type){
         $size = ProjectDetails::where('project_id',$type->project_id)->pluck('project_size')->first();
         $cases = $type->room_type;
@@ -688,23 +688,11 @@ class ContractorController extends Controller
         $table .="<tr><td></td><td>OPC</td><td>Bags</td>
                 <td>".round($totalcementPPC)."</td>
                 <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td>M-Sand</td><td>Concrete</td><td>Cft</td>
-                <td>".round($totalmSandConcreteCft)."</td><td rowspan='2'>".round($totalmSandPlasteringCft+$totalmSandConcreteCft)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Plastering</td><td>Cft</td>
-                <td>".round($totalmSandPlasteringCft)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td>M-Sand</td><td>Concrete</td><td>Tons</td>
                 <td>".round($totalmSandConcreteTons)."</td><td rowspan='2'>".round($totalmSandPlasteringTons+$totalmSandConcreteTons)."</td>
                 <td>380</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Plastering</td><td>Tons</td>
                 <td>".round($totalmSandPlasteringTons)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td>Jelly</td><td>12mm</td><td>Cft</td>
-                <td>".round($totaljelly12mmCft)."</td><td rowspan='2'>".round($totaljelly12mmCft+$totaljelly20mmCft)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>20mm</td><td>Cft</td>
-                <td>".round($totaljelly20mmCft)."</td>
                 <td>380</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td>Jelly</td><td>12mm</td><td>Tons</td>
                 <td>".round($totaljelly12mmTons)."</td><td rowspan='2'>".round($totaljelly12mmTons+$totaljelly20mmTons)."</td>

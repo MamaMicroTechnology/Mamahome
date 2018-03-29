@@ -15,6 +15,7 @@
 					<select required name="status" onchange="this.form.submit();" style="width:100px;" class="form-control input-sm pull-right">
 						<option value="">--Select--</option>
 						<option value="all">All</option>
+						<option value="Process">On Process</option>
 						<option value="Confirmed">Enquiry Confirmed</option>
 						<option value="Cancelled">Enquiry Cancelled</option>
 					</select>
@@ -123,6 +124,7 @@
 									<input type="hidden" value="{{$enquiry->id}}" name="id">
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>
+										<option>Enquiry On Process</option>
 										<option>Enquiry Confirmed</option>
 										<option>Enquiry Cancelled</option>
 									</select>
