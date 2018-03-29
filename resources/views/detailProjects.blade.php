@@ -25,16 +25,10 @@
 		</div>
 	</div>
 </div>
-{!! $summary !!}
-<div class="col-md-12">
-	<div class="panel panel-primary">
-		<div class="panel-heading">Project Estimation</div>
-		<div class="panel-body">
-			<table class="table table-responsive">
-				{!! $estimation !!}
-			</table>
-		</div>
-	</div>
+<div class="col-md-8 col-md-offset-2">
+	<table class="table table-responsive" border="1">
+		{!! $table !!}
+	</table>
 </div>
 
 @endsection
