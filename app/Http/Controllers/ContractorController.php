@@ -36,15 +36,22 @@ class ContractorController extends Controller
    		}
    		return response()->json($tab);
    	}
-   	public function getNoOfProjects()
+   	public function getNoOfProjects(Request $request)
    	{
-   		$contractors = ContractorDetails::groupby('contractor_contact_no')->pluck('contractor_contact_no');
-   		$conName = ContractorDetails::wherein('contractor_contact_no',$contractors)->paginate(10);
-      $projects = array();
-   		foreach($conName as $contractor){
-        $projectIds = ContractorDetails::where('contractor_contact_no',$contractor->contractor_contact_no)->pluck('project_id');
-   			$projects[$contractor->contractor_contact_no] = ProjectDetails::whereIn('project_id',$projectIds)->count();
-   		}
+      if($request->phone){
+        $conName = ContractorDetails::where('contractor_contact_no',$request->phone)->first();
+        $projects = array();
+        $projectIds = ContractorDetails::where('contractor_contact_no',$request->phone)->pluck('project_id');
+        $projects[$conName->contractor_contact_no] = ProjectDetails::whereIn('project_id',$projectIds)->count();
+      }else{
+        $contractors = ContractorDetails::groupby('contractor_contact_no')->pluck('contractor_contact_no');
+        $conName = ContractorDetails::wherein('contractor_contact_no',$contractors)->paginate(10);
+        $projects = array();
+        foreach($conName as $contractor){
+          $projectIds = ContractorDetails::where('contractor_contact_no',$contractor->contractor_contact_no)->pluck('project_id');
+          $projects[$contractor->contractor_contact_no] = ProjectDetails::whereIn('project_id',$projectIds)->count();
+        }
+      }
    		return view('contractorProjects',['projects'=>$projects,'conName'=>$conName]);
    	}
     public function viewProjects(Request $request)
@@ -684,34 +691,34 @@ class ContractorController extends Controller
       }
         $table .="<tr><td>Cement</td><td>OPC</td><td>Bags</td>
                 <td>".round($totalcementOPC)."</td><td rowspan='2'>".round($totalcementPPC+$totalcementOPC)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>OPC</td><td>Bags</td>
+                <td>380</td><td rowspan='2'>".(round($totalcementPPC+$totalcementOPC)*380)."</td><td rowspan='2'>".((round($totalcementPPC+$totalcementOPC)*380)*0.8)."</td></tr>";
+        $table .="<tr><td></td><td>PPC</td><td>Bags</td>
                 <td>".round($totalcementPPC)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>375</td></tr>";
         $table .="<tr><td>M-Sand</td><td>Concrete</td><td>Tons</td>
                 <td>".round($totalmSandConcreteTons)."</td><td rowspan='2'>".round($totalmSandPlasteringTons+$totalmSandConcreteTons)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>900</td><td rowspan='2'>".(round($totalmSandPlasteringTons+$totalmSandConcreteTons)*900)."</td><td rowspan='2'>".((round($totalmSandPlasteringTons+$totalmSandConcreteTons)*900)*0.8)."</td></tr>";
         $table .="<tr><td></td><td>Plastering</td><td>Tons</td>
                 <td>".round($totalmSandPlasteringTons)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>1500</td></tr>";
         $table .="<tr><td>Jelly</td><td>12mm</td><td>Tons</td>
                 <td>".round($totaljelly12mmTons)."</td><td rowspan='2'>".round($totaljelly12mmTons+$totaljelly20mmTons)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>400</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td></td><td>20mm</td><td>Tons</td>
                 <td>".round($totaljelly20mmTons)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>400</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td>Steel</td><td>8mm</td><td>Tons</td>
                 <td>".round($totalsteel8)."</td><td rowspan='5'>".round($totalSteel)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>54000</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td></td><td>10mm</td><td>Tons</td>
                 <td>".round($totalsteel10)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>53000</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td></td><td>12mm</td><td>Tons</td>
                 <td>".round($totalsteel12)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>53000</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td></td><td>16mm</td><td>Tons</td>
                 <td>".round($totalsteel18)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>53000</td><td>0</td><td>0</td></tr>";
         $table .="<tr><td></td><td>20mm</td><td>Tons</td>
                 <td></td>
                 <td>380</td><td>0</td><td>0</td></tr>";
