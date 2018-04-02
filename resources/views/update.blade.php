@@ -123,9 +123,16 @@
                                    <td><input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize"></td>
                                </tr>
                                <tr>
-                                   <td>Budget</td>
+                                   <td>Budget (in Cr.)</td>
                                    <td>:</td>
-                                   <td><input id="budget" value="{{ $projectdetails->budget }}"  placeholder="Budget" type="text" class="form-control input-sm" onkeyup="check('budget')" name="budget"></td>
+                                   <td>
+                                    <div class="col-md-4">
+                                      <input id="budget" value="{{ $projectdetails->budget }}"  placeholder="Budget" type="text" class="form-control input-sm" onkeyup="check('budget')" name="budget">
+                                    </div>
+                                    <div class="col-md-8">
+                                      {{ $projectdetails->budget }}Cr. / {{ $projectdetails->project_size }} =  {{ round((10000000 * $projectdetails->budget)/$projectdetails->project_size,3) }}
+                                    </div>
+                                  </td>
                                </tr>
                                <tr>
                                    <td>Project Image</td>

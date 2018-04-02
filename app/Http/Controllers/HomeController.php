@@ -1806,36 +1806,48 @@ class HomeController extends Controller
     }
     public function employeereports(Request $request)
     {
-        $users = User::all();
-        $attendances = attendance::orderby('date','ASC')->get();
-        $today = date('Y-m');
-        $text = "";
-        $year = date('Y');
-        $month = date('m');
+        $depts = [10,100];
+        $users = User::where('group_id','!=',10)->where('department_id','!=',100)->orderBy('department_id','ASC')->get();
+        if($request->month){
+            $year = $request->year;
+            $month = ($request->month < 10 ? "0".$request->month : $request->month);
+            $today = $year."-".$month;
+            $text = "";
+        }else{
+            $today = date('Y-m');
+            $text = "";
+            $year = date('Y');
+            $month = date('m');
+        }
         $ofdays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         foreach($users as $user){
-            $lists = 1;
-            $text .= "<tr><td>".$user->employeeId."</td><td>".$user->name."</td>";
-            foreach($attendances as $attendance){
-                if($lists < 10){
-                    $date = $today."-0".$lists;
+            $count = 0;
+            $text .= "<tr><td>".$user->employeeId."</td><td>".$user->name."<br>(".($user->Group != null ? $user->Group->group_name: '').")</td>";
+            for($i = 1;$i<=$ofdays;$i++){
+                if($i < 10){
+                    $date = $today."-0".$i;
                 }else{
-                    $date = $today."-".$lists;
+                    $date = $today."-".$i;
                 }
-
-                if($user->employeeId == $attendance->empId){
-                    $text .= "<td>".$attendance->inTIme." - ".$attendance->outTime."</td>";
+                if($user->group_id == "6"){
+                    $att = loginTime::where('user_id',$user->id)->where('logindate',$date)->first();
+                    if($att == null){
+                        $text .= "<td style='background-color:rgba(999,111,021,0.3); color:black;'>Leave</td>";
+                    }else{
+                        $text .= "<td style='background-color:green; color:white;'>".$att->loginTime."<br>".$att->logoutTime."</td>";
+                        $count++;
+                    }
                 }else{
-                    $text .= "<td>Leave</td>";
-                }
-
-                if($lists >= $ofdays){
-                    $lists = 1;
-                }else{
-                    $lists++;
+                    $att = attendance::where('empId',$user->employeeId)->where('date',$date)->first();
+                    if($att == null){
+                        $text .= "<td style='background-color:rgba(999,111,021,0.3); color:black;'>Leave</td>";
+                    }else{
+                        $text .= "<td style='background-color:green; color:white;'>".$att->inTIme."<br>".$att->outTime."</td>";
+                        $count++;
+                    }
                 }
             }
-            $text .= "</tr>";
+            $text .= "<td>".$count."</td></tr>";
         }
         return view('employeereports',['text'=>$text]);
     }
@@ -1843,5 +1855,16 @@ class HomeController extends Controller
     {
         $address = SiteAddress::where('project_id',$request->projectId)->first();
         return response()->json($address);   
+    }
+    public function viewallProjects(Request $request)
+    {
+        $wards = Ward::all();
+        if($request->subward){
+            $projects = ProjectDetails::where('sub_ward_id',$request->subward)->get();
+        }else{
+            $projects = "None";
+        }
+        $users = User::all();
+        return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
 }

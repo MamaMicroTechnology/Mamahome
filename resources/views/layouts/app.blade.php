@@ -9,6 +9,7 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -328,6 +329,7 @@ div#calendar{
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
+            <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
             <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; - Daily Slots</a>
         </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
@@ -341,9 +343,9 @@ div#calendar{
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
-        <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Attendance</a>
+        <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
     </div>
-    <!-- <a href="{{ URL::to('/employeereports') }}">Reports</a> -->
+    <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>

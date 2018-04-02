@@ -418,6 +418,7 @@ div#calendar{
             <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
             <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
             <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
+            <li><a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             @endif
         @endif
         @endif

@@ -136,6 +136,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/salesStatistics','HomeController@getSalesStatistics');
     Route::get('/activitylog','HomeController@activityLog');
     Route::get('/employeereports','HomeController@employeereports');
+    Route::get('/viewallProjects','HomeController@viewallProjects');
     
     Route::post('/addDepartment','mamaController@addDepartment');
     Route::post('/deleteDepartment','mamaController@deleteDepartment');
@@ -249,6 +250,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/amenquirysheet','amController@enquirysheet');
     Route::get('/addvendortype','amController@addvendortype');
     Route::get('/salesreport','mamaController@salesreport');
+    Route::get('/amviewattendance','HomeController@employeereports');
     
     Route::get('/updatepay','amController@updatepay');
     Route::get('/updatedispatch','amController@updatedispatch');
