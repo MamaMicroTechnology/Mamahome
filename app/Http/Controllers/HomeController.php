@@ -1806,8 +1806,8 @@ class HomeController extends Controller
     }
     public function employeereports(Request $request)
     {
-        $depts = [10,100];
-        $users = User::where('group_id','!=',10)->where('department_id','!=',100)->orderBy('department_id','ASC')->get();
+        $depts = [1,2,3,4,5];
+        $users = User::whereIn('department_id',$depts)->orderBy('department_id','ASC')->get();
         if($request->month){
             $year = $request->year;
             $month = ($request->month < 10 ? "0".$request->month : $request->month);
