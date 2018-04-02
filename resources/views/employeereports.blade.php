@@ -57,7 +57,7 @@
 			break;
 	}
 ?>
-<div class="col-md-12" style="font-size: 10px;">
+<div class="col-md-12" style="font-size: 11px;">
 	<div class="panel panel-default">
 		<div class="panel-heading">Employee Attendance for the month of <?php print($current." ".$year); ?>
 			<div class="pull-right btn-group">
@@ -131,12 +131,12 @@
         	"ordering": true,
         	"info":     false,
 	        buttons: [ 
-	            {
-	                extend: 'excelHtml5',
-	                title: 'Employee Attendance - '+format,
-	                className: 'btn btn-xs btn-success',
-	                text: 'Export To Excel'
-	            },
+	            // {
+	            //     extend: 'excelHtml5',
+	            //     title: 'Employee Attendance - '+format,
+	            //     className: 'btn btn-xs btn-success',
+	            //     text: 'Export To Excel'
+	            // },
 	            // {
 	            // 	extend: 'pdf',
 	            // 	title: 'Employee Attendance - '+format,
