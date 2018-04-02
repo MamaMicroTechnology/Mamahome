@@ -419,6 +419,17 @@ div#calendar{
             <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
             <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
             <li><a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+            @elseif(Auth::user()->group_id == 1)
+            <li><a href="{{ URL::to('/pricing') }}">Pricing</a></li>
+            <li><a href="{{ URL::to('/') }}/amfinance">Finance</a></li>
+            <li><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
+            <li><a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a></li>
+            <li><a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a></li>
+            <li><a href="{{ URL::to('/') }}/amkra">KRA</a></li>
+            <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
+            <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+            <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
+            <li><a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             @endif
         @endif
         @endif

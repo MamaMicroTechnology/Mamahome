@@ -1278,4 +1278,15 @@ class mamaController extends Controller
         $activity->save();
         return back();
     }
+    public function deleteProject(Request $request)
+    {
+        ProjectDetails::where('project_id',$request->projectId)->delete();
+        ContractorDetails::where('project_id',$request->projectId)->delete();
+        ProcurementDetails::where('project_id',$request->projectId)->delete();
+        SiteAddress::where('project_id',$request->projectId)->delete();
+        SiteEngineerDetails::where('project_id',$request->projectId)->delete();
+        OwnerDetails::where('project_id',$request->projectId)->delete();
+        ConsultantDetails::where('project_id',$request->projectId)->delete();
+        return back();
+    }
 }

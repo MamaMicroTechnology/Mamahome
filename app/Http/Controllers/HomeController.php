@@ -100,11 +100,19 @@ class HomeController extends Controller
     }
     public function inputdata(Request $request)
     {
-        $category = Category::find($request->mCategory);
-        $subcategory = SubCategory::find($request->sCategory);
+        if($request->mCategory == "All"){
+            $category = "All";
+        }else{
+            $category = Category::find($request->mCategory)->pluck('category_name')->first();
+        }
+        if($request->sCategory == "All"){
+            $subcategory = "All";
+        }else{
+            $subcategory = SubCategory::find($request->sCategory)->pluck('sub_cat_name');
+        }
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
-                                                'main_category' =>$category->category_name,
-                                                'sub_category'  =>$subcategory->sub_cat_name,
+                                                'main_category' =>$category,
+                                                'sub_category'  =>$subcategory,
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
                                                 'referral_image2'   =>'',
@@ -452,6 +460,20 @@ class HomeController extends Controller
             'category'=>$category,
             'initiators'=>$initiators
         ]);
+    }
+    public function editEnq(Request $request)
+    {
+        $category = Category::all();
+        $depart = [6,7];
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $enq = Requirement::where('requirements.id',$request->reqId)
+                    ->leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                    ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
+                    ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
+                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address')
+                    ->first();
+        return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
     }
     public function index()
     {
@@ -1858,13 +1880,41 @@ class HomeController extends Controller
     }
     public function viewallProjects(Request $request)
     {
+        $details = array();
         $wards = Ward::all();
+        $users = User::all();
+        if($request->phNo)
+        {
+            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id')->first();
+            $projects = ProjectDetails::whereIn('project_id',$details)->get();
+            return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+        }
         if($request->subward){
             $projects = ProjectDetails::where('sub_ward_id',$request->subward)->get();
         }else{
             $projects = "None";
         }
-        $users = User::all();
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+    }
+    public function projectDetailsForTL(Request $request)
+    {
+        $details = array();
+        $wards = Ward::all();
+        $users = User::all();
+        if($request->phNo){
+            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id')->first();
+            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id')->first();
+            $projects = ProjectDetails::whereIn('project_id',$details)->get();
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+        }else{
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
+        }
     }
 }

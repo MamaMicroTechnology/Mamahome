@@ -44,6 +44,7 @@ Route::get('/inputview','HomeController@inputview');
 Route::get('/getProjects','HomeController@getProjects');
 Route::get('/showThisProject','HomeController@showProjectDetails');
 Route::get('/enquirysheet','HomeController@enquirysheet');
+Route::get('/editenq','HomeController@editEnq');
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
@@ -137,6 +138,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/activitylog','HomeController@activityLog');
     Route::get('/employeereports','HomeController@employeereports');
     Route::get('/viewallProjects','HomeController@viewallProjects');
+    Route::get('/deleteProject','mamaController@deleteProject');
     
     Route::post('/addDepartment','mamaController@addDepartment');
     Route::post('/deleteDepartment','mamaController@deleteDepartment');
@@ -172,6 +174,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/{id}/deleteReportImage5','HomeController@deleteReportImage5');
     Route::get('/{id}/deleteReportImage6','HomeController@deleteReportImage6');
     Route::get('/completedAssignment','mamaController@completedAssignment');
+    Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
         
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');

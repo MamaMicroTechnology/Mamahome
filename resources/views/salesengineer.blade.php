@@ -1,4 +1,8 @@
-@extends('layouts.sales')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 7? "layouts.sales":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 		<div class="col-md-12">
 		    <div class="col-md-6">

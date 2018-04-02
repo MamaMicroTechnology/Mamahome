@@ -19,8 +19,8 @@
               <td>{{ $project->project_id }}</td>
               <td>{{ $project->project_name }}</td>
               <td>{{ $project->project_status }}</td>
-              <td>{{ $project->procurementdetails->procurement_name }}</td>
-              <td>{{ $project->procurementdetails->procurement_contact_no }}</td>
+              <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_name:'' }}</td>
+              <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no:'' }}</td>
               <td><a href="{{ URL::to('/') }}/{{ $project->project_id }}/viewDetails" class="btn btn-default input-sm">Details</a></td>
             </tr>
           @endforeach

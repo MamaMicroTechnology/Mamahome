@@ -48,16 +48,49 @@
                                 <td>{{$rec->ground}}</td>
                             </tr>
                             <tr>
+                                <td style="width:40%;"><b>Project Type</b></td>
+                                <td>
+                                    Ground({{ $rec->ground }}) + Basement({{ $rec->basement}}) + 1 = 
+                                    {{$rec->project_type}}
+                                </td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%;"><b>Project Image</b></td>
                                 <td><img class="img img-responsive" src="{{URL::to('/')}}/public/projectImages/{{$rec->image}}" style="height:200px;width:200px" /></td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Contractor</b></td>
-                                @if($rec->contract != '')
-                                    <td>{{ $rec->contract }}</td>
-                                @else
-                                    <td> -- Unspecified -- </td>
-                                @endif
+                                <td style="width:40%;"><b>Municipality Approval</b></td>
+                                <td>
+                                    @if($rec->municipality_approval != "N/A")
+                                    <img class="img img-responsive" src="{{URL::to('/')}}/public/projectImages/{{$rec->municipality_approval}}" style="height:200px;width:200px" />
+                                    @else
+                                        {{ $rec->municipality_approval }}
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Contract</b></td>
+                                    <td>
+                                        @if($rec->contract == "With Material Contractor")
+                                            Material Contractor
+                                        @elseif($rec->contract == "With Labour Contractor")
+                                            Labour Contractor
+                                        @else
+                                            {{ $rec->contract }}
+                                        @endif
+                                    </td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Budget</b></td>
+                                <td>{{$rec->budget}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Remarks</b></td>
+                                <td>{{$rec->remarks}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Note</b></td>
+                                <td>{{$rec->note}}</td>
                             </tr>
                         </tbody>
                     </table>

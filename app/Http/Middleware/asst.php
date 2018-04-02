@@ -21,7 +21,7 @@ class asst
         if(Auth::check()){
             $group = Department::where('id',Auth::user()->department_id)->pluck('dept_name')->first();
             if($group != "Management"){
-                if($group != "Admin"){
+                if(Auth::user()->group_id != 1){
                     return response()->view('errors.403error');
                 }
             }

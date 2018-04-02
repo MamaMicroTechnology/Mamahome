@@ -23,7 +23,9 @@ class TeamLeaderOperation
             $group = Group::where('id',Auth::user()->group_id)->pluck('group_name')->first();
             $department = Department::where('id',Auth::user()->department_id)->pluck('dept_name')->first();
             if($department != "Operation" && $group != "Team Lead"){
-                return redirect()->back();
+                if($group != "Admin"){
+                    return redirect()->back();
+                }
             }
         }
         return $next($request);

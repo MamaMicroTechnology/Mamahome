@@ -4,6 +4,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Project Details</div>
 			<div class="panel-body" style="overflow-x: scroll;">
+				@if(Auth::user()->group_id == 1)
 				<form method="GET" action="{{ URL::to('/') }}/viewallProjects">
 					<div class="col-md-6">
 						<div class="col-md-4">
@@ -21,6 +22,17 @@
 						</div>
 						<div class="col-md-4">
 							<input type="submit" class="form-control" value="Fetch">
+						</div>
+					</div>
+				</form>
+				@endif
+				<form method="GET" action="{{ URL::to('/') }}/{{Auth::user()->group_id == 1 ? 'viewallProjects':'projectDetailsForTL'}}">
+					<div class="col-md-4 pull-right">
+						<div class="input-group">
+							<input type="text" name="phNo" class="form-control" placeholder="Phone number search">
+							<div class="input-group-btn">
+								<input type="submit" class="form-control" value="Search">
+							</div>
 						</div>
 					</div>
 				</form>
@@ -81,6 +93,11 @@
 								{{ date('d/M/Y', strtotime($project->updated_at)) }}
 								<br><small>({{ $project->updated_at->diffForHumans() }})</small>
 							</td>
+							@if(Auth::user()->group_id == 1)
+							<td>
+								<a class="btn btn-xs btn-danger" href="{{ URL::to('/') }}/deleteProject?projectId={{ $project->project_id }}">Delete</a>
+							</td>
+							@endif
 						</tr>
 						@endforeach
 						@endif

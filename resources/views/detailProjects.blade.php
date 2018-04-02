@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-8 col-md-offset-2">
 	<div class="panel panel-primary">
 		<div class="panel-heading">Projects</div>
 		<div class="panel-body">
@@ -19,6 +19,10 @@
 								Quality Not Specified
 							@endif
 						</td>
+						<td>Ground: {{ $project->ground }}</td>
+						<td>Basement: {{ $project->basement }}</td>
+						<td>Size: {{ $project->project_size }}</td>
+						<td>Status: {{ $project->project_status }}</td>
 					</tr>
 				@endforeach
 			</table>

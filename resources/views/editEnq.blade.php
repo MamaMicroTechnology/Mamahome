@@ -11,7 +11,7 @@
 				<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
 			</div>
 			<div class="panel-body">
-				<form method="POST" action="{{URL::to('/')}}/inputdata">
+				<form method="POST" action="{{URL::to('/')}}/editinputdata">
 					{{csrf_field()}}
 					@if(SESSION('success'))
 					<div class="text-center alert alert-success">
@@ -22,11 +22,11 @@
 						<tbody>
 							<tr>
 								<td style="width:30%"><label>Date* : </label></td>
-								<td style="width:70%"><input required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
+								<td style="width:70%"><input value="{{ $enq->requirement_date }}" required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr>
 								<td><label>Contact Number* : </label></td>
-								<td><input required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div></td>
+								<td><input value="{{ $enq->procurement_contact_no }}" required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div></td>
 							</tr>
 							<!-- <tr>
 								<td><label>Name* : </label></td>
@@ -35,15 +35,14 @@
 							<tr>
 								<td><label>Project* : </label></td>
 								<td>
-									<select required class="form-control" id='selectprojects' name="selectprojects" onchange="getAddress()">
-									</select>
+									{{ $enq->project_name }}
 								</td>
 							</tr>	
 							<tr>
 								<td><label>Main Category* :</label></td>
 								<td>
 									<select name="mCategory" id="mCategory" required class="form-control" onchange="getBrands()">
-										<option value="" disabled selected>--Select--</option>
+										<option value="" disabled selected>{{ $enq->main_category }}</option>
 										<option value="All">All</option>
 										    @foreach($category as $cat)
 										    <option value="{{$cat->id}}">{{$cat->category_name}}</option>
@@ -63,8 +62,7 @@
 								<td><label>Sub Category* :</label></td>
 								<td>
 									<select name="sCategory" id="sCategory" class="form-control" onchange="getPrice()">
-										
-										
+										<option>{{ $enq->sub_category }}</option>
 									</select>
 								</td>
 							</tr>
@@ -78,23 +76,23 @@
 									<select class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
-										<option value="{{ $user->id }}">{{ $user->name }}</option>
+										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
 										@endforeach
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td><label>Location* : </label></td>
-								<td><input type="text" name="elocation" id="elocation" class="form-control" /></td>
+								<td><input value="{{ $enq->address }}" type="text" name="elocation" id="elocation" class="form-control" /></td>
 							</tr>
 							<tr>
 								<td><label>Quantity* : </label></td>
-								<td><input type="text" name="equantity" id="equantity" class="form-control" /></td>
+								<td><input type="text" value="{{ $enq->quantity }}" name="equantity" id="equantity" class="form-control" /></td>
 							</tr>
 							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>
-									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
+									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" />{{ $enq->notes }}</textarea>
 								</td>
 							</tr>
 						</tbody>

@@ -1,4 +1,8 @@
-@extends('layouts.leheader')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 6? "layouts.leheader":"layouts.app");
+?>
+@extends($ext)
 
 @section('content')
 

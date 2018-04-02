@@ -345,6 +345,14 @@ div#calendar{
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
     </div>
+    <a href="#" data-toggle="collapse" data-target="#ap">All Pages &#x21F2;</a>
+    <div id="ap" class="collapse">
+        <a href="{{ URL::to('/leDashboard') }}">&nbsp;&nbsp;&nbsp; - Operation (LE)</a>
+        <a href="{{ URL::to('/teamLead') }}">&nbsp;&nbsp;&nbsp; - Operation (TL)</a>
+        <a href="{{ URL::to('/salesEngineer') }}">&nbsp;&nbsp;&nbsp; - Sales Engineer</a>
+        <a href="{{ URL::to('/marketing') }}">&nbsp;&nbsp;&nbsp; - Marketing</a>
+        <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Asst. Manager</a>
+    </div>
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
     <a href="{{ URL::to('/finance') }}">Finance</a>
@@ -357,6 +365,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/kra">KRA</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
 </div>
 @endif
 @endif
