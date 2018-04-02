@@ -4,7 +4,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Project Details</div>
 			<div class="panel-body" style="overflow-x: scroll;">
-				<form method="GET" action="/viewallProjects">
+				<form method="GET" action="{{ URL::to('/') }}/viewallProjects">
 					<div class="col-md-6">
 						<div class="col-md-4">
 							<select name="ward" onchange="getSubwards()" id="ward" class="form-control">
