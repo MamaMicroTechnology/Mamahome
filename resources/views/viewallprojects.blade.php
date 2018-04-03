@@ -13,7 +13,7 @@
 					<div class="col-md-6">
 						<div class="col-md-4">
 							<select name="ward" onchange="getSubwards()" id="ward" class="form-control">
-								<option>--SELECT--</option>
+								<option value="">--SELECT--</option>
 								@foreach($wards as $ward)
 								<option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
 								@endforeach
@@ -133,7 +133,7 @@
 	            data:{ward_id : ward},
 	            success: function(response)
 	            {
-	                document.getElementById('subward').innerHTML = "<option value='null' disabled selected>----Select----</option>";
+	                document.getElementById('subward').innerHTML = "<option value='' disabled selected>----Select----</option>";
 	                for(var i=0; i < response.length; i++)
 	                {
 	                    document.getElementById('subward').innerHTML += "<option value="+response[i].id+">"+response[i].sub_ward_name+"</option>";

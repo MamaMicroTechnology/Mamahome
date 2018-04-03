@@ -108,7 +108,7 @@ class HomeController extends Controller
         if($request->sCategory == "All"){
             $subcategory = "All";
         }else{
-            $subcategory = SubCategory::find($request->sCategory)->pluck('sub_cat_name');
+            $subcategory = SubCategory::find($request->sCategory)->pluck('sub_cat_name')->first();
         }
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' =>$category,
@@ -1750,6 +1750,7 @@ class HomeController extends Controller
     public function followup(){
         $projects = ProjectDetails::where('followup',"Yes")
             ->where('follow_up_by',Auth::user()->id)
+            ->where('deleted',0)
             ->paginate(10);
         return view('followup',['projects'=>$projects]);
     }
@@ -1827,8 +1828,8 @@ class HomeController extends Controller
         $confirmed = Requirement::where('status',"Order Confirmed")->count();
         $placed = Requirement::where('status',"Order Placed")->count();
         $cancelled = Requirement::where('status',"Order cancelled")->count();
-        $genuine = ProjectDetails::where('quality',"GENUINE")->count();
-        $fake = ProjectDetails::where('quality',"FAKE")->count();
+        $genuine = ProjectDetails::where('quality',"GENUINE")->where('deleted',0)->count();
+        $fake = ProjectDetails::where('quality',"FAKE")->where('deleted',0)->count();
         $notConfirmed = ProjectDetails::where('quality',null)->count();
         return view('salesstats',[
             'initiate'=>$initiate,
@@ -1932,15 +1933,26 @@ class HomeController extends Controller
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
                             ->get();
             return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }
-        if($request->subward){
+        if($request->subward && $request->ward){
             $projects = ProjectDetails::where('project_details.sub_ward_id',$request->subward)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
+                            ->get();
+        }elseif(!$request->subward && $request->ward){
+            $subwards = SubWard::where('ward_id',$request->ward)->get()->pluck('id');
+            $projects = ProjectDetails::whereIn('project_details.sub_ward_id',$subwards)
+                            ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+                            ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+                            ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
                             ->get();
         }else{
             $projects = "None";
@@ -1958,7 +1970,7 @@ class HomeController extends Controller
             $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id')->first();
             $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id')->first();
             $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id')->first();
-            $projects = ProjectDetails::whereIn('project_id',$details)->get();
+            $projects = ProjectDetails::whereIn('project_id',$details)->where('deleted',0)->get();
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
