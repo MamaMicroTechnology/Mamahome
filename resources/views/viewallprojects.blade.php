@@ -2,7 +2,11 @@
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Project Details</div>
+			<div class="panel-heading">Project Details 
+				@if($projects != "None")
+					({{ count($projects) }} projects selected)
+				@endif
+			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
 				@if(Auth::user()->group_id == 1)
 				<form method="GET" action="{{ URL::to('/') }}/viewallProjects">
@@ -40,19 +44,18 @@
 					<thead>
 						<th>Project Id</th>
 						<th>Project Name</th>
-						<th>Road</th>
-						<th>Municipal Approval</th>
+						<th>Sub-Ward</th>
 						<th>Project Status</th>
 						<th>Quality</th>
 						<th>Address</th>
-						<th>Basement</th>
-						<th>Ground</th>
+						<th>Floors</th>
 						<th>Project Size</th>
 						<th>Budget</th>
 						<th>Image</th>
 						<th>Remarks</th>
 						<th>Listed By</th>
 						<th>Called By</th>
+						<th>Listed On</th>
 						<th>Last update</th>
 					</thead>
 					<tbody>
@@ -63,31 +66,25 @@
 								<a target="_none" href="{{ URL::to('/') }}/ameditProject?projectId={{ $project->project_id }}">{{ $project->project_id }}</a>
 							</td>
 							<td>{{ $project->project_name }}</td>
-							<td>{{ $project->road_name }}</td>
-							<td>{{ $project->municipality_approval }}</td>
+							<td>{{ $project->sub_ward_name }}</td>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
-							<td>{{ $project->siteaddress->address }}</td>
-							<td>{{ $project->basement }}</td>
-							<td>{{ $project->ground }}</td>
+							<td>{{ $project->address }}</td>
+							<td>B({{ $project->basement}})+G({{ $project->ground }})+1={{ $project->basement + $project->ground + 1 }}</td>
 							<td>{{ $project->project_size }}</td>
 							<td>{{ $project->budget }}</td>
-							<td>
-								<a href="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">{{ $project->image }}</a></td>
+							<td><a href="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">{{ $project->image }}</a></td>
 							<td>{{ $project->remarks }}</td>
-							<td>
-								@foreach($users as $user)
-								@if($project->listing_engineer_id == $user->id)
-								{{ $user->name }}
-								@endif
-								@endforeach
-							</td>
+							<td>{{ $project->name }}</td>
 							<td>
 								@foreach($users as $user)
 								@if($project->call_attended_by == $user->id)
 								{{ $user->name }}
 								@endif
 								@endforeach
+							</td>
+							<td>
+								{{ date('d/M/Y',strtotime($project->created_at))}}
 							</td>
 							<td>
 								{{ date('d/M/Y', strtotime($project->updated_at)) }}

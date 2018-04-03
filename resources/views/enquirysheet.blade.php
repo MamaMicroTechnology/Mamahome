@@ -12,37 +12,31 @@
 			<div class="panel-heading text-center">
 				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
-					<select required name="status" onchange="this.form.submit();" style="width:100px;" class="form-control input-sm pull-right">
-						<option value="">--Select--</option>
-						<option value="all">All</option>
-						<option value="Process">On Process</option>
-						<option value="Confirmed">Enquiry Confirmed</option>
-						<option value="Cancelled">Enquiry Cancelled</option>
-					</select>
+					
 				</form>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
 				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
 					<div class="col-md-12">
-						<div class="col-md-2">
-							<label>From (Enquiry Date)</label>
-							<input type="date" class="form-control" name="from">
-						</div>
-						<div class="col-md-2">
-							<label>To (Enquiry Date)</label>
-							<input type="date" class="form-control" name="to">
-						</div>
-						<div class="col-md-2">
-							<label>Wards</label>
-							<select class="form-control" name="ward">
-								<option value="">--Select--</option>
-								<option value="">All</option>
-								@foreach($wards as $ward)
-								<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
-								@endforeach
-							</select>
-						</div>
+							<div class="col-md-2">
+								<label>From (Enquiry Date)</label>
+								<input type="date" class="form-control" name="from">
+							</div>
+							<div class="col-md-2">
+								<label>To (Enquiry Date)</label>
+								<input type="date" class="form-control" name="to">
+							</div>
+							<div class="col-md-2">
+								<label>Wards</label>
+								<select class="form-control" name="ward">
+									<option value="">--Select--</option>
+									<option value="">All</option>
+									@foreach($wards as $ward)
+									<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
+									@endforeach
+								</select>
+							</div>
 						<div class="col-md-2">
 							<label>Initiator</label>
 							<select class="form-control" name="initiator">
@@ -63,13 +57,39 @@
 								@endforeach
 							</select>
 						</div>
+<!-- 						<div class="col-md-4">
+							<label>Status:</label>
+							<select name="status" class="form-control">
+								<option value="">--Select--</option>
+								<option value="all">All</option>
+								<option value="Process">On Process</option>
+								<option value="Confirmed">Enquiry Confirmed</option>
+								<option value="Cancelled">Enquiry Cancelled</option>
+							</select>
+						</div> -->
+						<!-- </div> -->
 						<div class="col-md-2">
 							<label></label>
 							<input type="submit" value="Fetch" class="form-control btn btn-primary">
 						</div>
 					</div>
 				</form>
-				<br>
+				
+				<br><br><br><br>
+				<div class="col-md-6">
+					<div class="col-md-2">
+						Status:
+					</div>
+					<div class="col-md-4">
+						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
+							<option value="">--Select--</option>
+							<option value="all">All</option>
+							<option value="Process">On Process</option>
+							<option value="Confirmed">Enquiry Confirmed</option>
+							<option value="Cancelled">Enquiry Cancelled</option>
+						</select>
+					</div>
+				</div>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
@@ -85,6 +105,7 @@
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
 							<th style="text-align: center">Update Status</th>
+							<!-- <th style="text-align: center">Edit</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -130,9 +151,9 @@
 									</select>
 								</form>
 							</td>
-							<td>
+							<!-- <td>
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
-							</td>
+							</td> -->
 						</tr>
 						@endforeach
 					</tbody>
@@ -183,7 +204,7 @@
 		$.noConflict();
 	    $('#myTable').DataTable( {
 	        dom: 'Bfrtip',
-	        "paging":   true,
+	        "paging":   false,
 	        "searching": false,
         	"ordering": true,
         	"info":     true,
@@ -221,8 +242,8 @@
 		$.noConflict();
 	    $('#myTable2').DataTable( {
 	        dom: 'Bfrtip',
-	        "paging":   true,
-	        "searching": true,
+	        "paging":   false,
+	        "searching": false,
         	"ordering": true,
         	"info":     true,
 	        buttons: [ 
@@ -230,5 +251,33 @@
 	        ]
 	    } );
 	} );
+</script>
+<script type="text/javascript">
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  // Loop through all table rows, and hide those who don't match the search query
+  
+  if(filter == "ALL"){
+  	for (i = 0; i < tr.length; i++) {
+        tr[i].style.display = "";
+	  }
+	}else{
+		for (i = 0; i < tr.length; i++) {
+	    td = tr[i].getElementsByTagName("td")[9];
+	    if (td) {
+	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+	        tr[i].style.display = "";
+	      } else {
+	        tr[i].style.display = "none";
+	      }
+	    }
+	  }
+	}
+}
 </script>
 @endsection
