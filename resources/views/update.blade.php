@@ -241,17 +241,17 @@
                                <tr>
                                    <td>Site Engineer Name</td>
                                    <td>:</td>
-                                   <td><input value="{{ $projectdetails->siteengineerdetails->site_engineer_name }}" type="text" placeholder="Site Engineer Name" class="form-control input-sm" id="eName" name="eName"></td>
+                                   <td><input value="{{ $projectdetails->siteengineerdetails != null ? $projectdetails->siteengineerdetails->site_engineer_name:'' }}" type="text" placeholder="Site Engineer Name" class="form-control input-sm" id="eName" name="eName"></td>
                                </tr>
                                <tr>
                                    <td>Site Engineer Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ $projectdetails->siteengineerdetails->site_engineer_email }}" placeholder="Site Engineer Email" type="email" onblur="checkmail('eEmail')" class="form-control input-sm" id="eEmail" name="eEmail"></td>
+                                   <td><input value="{{ $projectdetails->siteengineerdetails != null ? $projectdetails->siteengineerdetails->site_engineer_email : '' }}" placeholder="Site Engineer Email" type="email" onblur="checkmail('eEmail')" class="form-control input-sm" id="eEmail" name="eEmail"></td>
                                </tr>
                                <tr>
                                    <td>Site Engineer Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ $projectdetails->siteengineerdetails->site_engineer_contact_no }}" placeholder="Site Engineer Contact No." type="text" maxlength="10" onkeyup="check('eContact')" minlength="10" class="form-control input-sm" name="eContact" id="eContact"></td>
+                                   <td><input value="{{ $projectdetails->siteengineerdetails != null ? $projectdetails->siteengineerdetails->site_engineer_contact_no : '' }}" placeholder="Site Engineer Contact No." type="text" maxlength="10" onkeyup="check('eContact')" minlength="10" class="form-control input-sm" name="eContact" id="eContact"></td>
                                </tr>
                            </table>
                        </div> 
