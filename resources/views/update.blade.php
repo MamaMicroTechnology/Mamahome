@@ -289,7 +289,7 @@
                         </tr>
                         
                         </table>
-                            <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
+                            <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea><br>
                             <label>With / Without Contractor ? </label><select class="form-control" name="contract" id="contract" required>
                                 <option value="" disabled selected>--- Select ---</option>
                                 <option {{ $projectdetails->contract == "With Labour Contractor" ? 'selected' : ''}} value="With Labour Contractor">With Labour Contractor</option>
