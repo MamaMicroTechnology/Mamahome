@@ -53,6 +53,7 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 
 Route::post('/uploadProfilePicture','HomeController@postMyProfile');
+Route::post('/editinputdata','mamaController@editinputdata');
 Route::post('/authlogout','HomeController@authlogout')->name('authlogout');
 Route::post('/posting','mamaController@postOrder');
 Route::post('/payment/response','HomeController@getPaymentResponse');

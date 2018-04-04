@@ -1283,4 +1283,11 @@ class mamaController extends Controller
         ProjectDetails::where('project_id',$request->projectId)->update(['deleted'=>1]);
         return back();
     }
+    public function editinputdata(Request $request)
+    {
+        Requirement::where('id',$request->reqId)->update([
+
+        ]);
+        return back();
+    }
 }

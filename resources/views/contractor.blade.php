@@ -23,6 +23,7 @@
 					<th>Status</th>
 					<th>Quality</th>
 					<th>Action</th>
+					<th>Update</th>
 				</thead>
 				<tbody id="details">
 					@foreach($projects as $project)
@@ -38,6 +39,7 @@
    						<td>
    							<a target='_blank' href="{{ URL::to('/') }}/ameditProject?projectId={{$project->project_id}}" class='btn btn-primary btn-sm'>Edit</a>
    						</td>
+   						<td>{{ $project->updated_at->diffForHumans() }}</td>
    					</tr>
    					@endforeach
 				</tbody>

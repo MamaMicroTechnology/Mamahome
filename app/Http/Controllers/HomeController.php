@@ -522,14 +522,18 @@ class HomeController extends Controller
     public function editEnq(Request $request)
     {
         $category = Category::all();
-        $depart = [6,7];
+        $depart = [2,4,6,7,8];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                     ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
+                    ->leftjoin('contractor_details','requirements.project_id','contractor_details.project_id')
+                    ->leftjoin('owner_details','requirements.project_id','owner_details.project_id')
+                    ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
+                    ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
-                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address')
+                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
         return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
     }

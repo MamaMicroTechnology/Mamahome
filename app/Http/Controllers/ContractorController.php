@@ -10,8 +10,10 @@ use App\OwnerDetails;
 use DB;
 use Auth;
 
+date_default_timezone_set("Asia/Kolkata");
 class ContractorController extends Controller
 {
+
     public function getUpdates()
     {
       if(Auth::user()->employeeId == "MH398"){

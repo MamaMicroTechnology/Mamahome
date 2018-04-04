@@ -13,6 +13,7 @@
 			<div class="panel-body">
 				<form method="POST" action="{{URL::to('/')}}/editinputdata">
 					{{csrf_field()}}
+					<input type="hidden" value="{{ $req->id }}" name="reqId">
 					@if(SESSION('success'))
 					<div class="text-center alert alert-success">
 						<h3 style="font-size:1.8em">{{SESSION('success')}}</h3>
@@ -26,7 +27,11 @@
 							</tr>
 							<tr>
 								<td><label>Contact Number* : </label></td>
-								<td><input value="{{ $enq->procurement_contact_no }}" required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div></td>
+								<td>
+									{{ $enq->procurement_contact_no }} {{ $enq->contractor_contact_no }} {{ $enq->site_engineer_contact_no }}
+									{{ $enq->owner_contact_no }} {{ $enq->consultant_contact_no }}
+									<!-- <input value="" required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div> -->
+								</td>
 							</tr>
 							<!-- <tr>
 								<td><label>Name* : </label></td>
@@ -83,7 +88,7 @@
 							</tr>
 							<tr>
 								<td><label>Location* : </label></td>
-								<td><input value="{{ $enq->address }}" type="text" name="elocation" id="elocation" class="form-control" /></td>
+								<td>{{ $enq->address }}</td>
 							</tr>
 							<tr>
 								<td><label>Quantity* : </label></td>
