@@ -61,6 +61,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Employee Attendance for the month of <?php print($current." ".$year); ?>
 			<div class="pull-right btn-group">
+				@if(Auth::user()->group_id == 1)
 				<a href="{{ URL::to('/') }}/employeereports?month={{ $prevMonth }}&year={{ $prevYear }}" class="btn btn-default btn-sm">
 					<span class="glyphicon glyphicon-backward"></span></a>
 				<a href="{{ URL::to('/') }}/employeereports" class="btn btn-default btn-sm">
@@ -69,6 +70,16 @@
 				<a href="{{ URL::to('/') }}/employeereports?month={{ $nextMonth }}&year={{ $nextYear }}" class="btn btn-default btn-sm {{ $month == $thismonth ? 'disabled' : ''}}">
 					<span class="glyphicon glyphicon-forward"></span></a>
 				</a>
+				@else
+					<a href="{{ URL::to('/') }}/amviewattendance?month={{ $prevMonth }}&year={{ $prevYear }}" class="btn btn-default btn-sm">
+					<span class="glyphicon glyphicon-backward"></span></a>
+					<a href="{{ URL::to('/') }}/amviewattendance" class="btn btn-default btn-sm">
+						<span class="glyphicon glyphicon-refresh"></span></a>
+					</a>
+					<a href="{{ URL::to('/') }}/amviewattendance?month={{ $nextMonth }}&year={{ $nextYear }}" class="btn btn-default btn-sm {{ $month == $thismonth ? 'disabled' : ''}}">
+						<span class="glyphicon glyphicon-forward"></span></a>
+					</a>
+				@endif
 			</div>
 			<br><small><i>'Total' column at the end represents the total no. of working days by the individual employee</i></small>
 		</div>
@@ -131,12 +142,12 @@
         	"ordering": true,
         	"info":     false,
 	        buttons: [ 
-	            // {
-	            //     extend: 'excelHtml5',
-	            //     title: 'Employee Attendance - '+format,
-	            //     className: 'btn btn-xs btn-success',
-	            //     text: 'Export To Excel'
-	            // },
+	            {
+	                extend: 'excelHtml5',
+	                title: 'Employee Attendance - '+format,
+	                className: 'btn btn-xs btn-success',
+	                text: 'Export To Excel'
+	            },
 	            // {
 	            // 	extend: 'pdf',
 	            // 	title: 'Employee Attendance - '+format,
