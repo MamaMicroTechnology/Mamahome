@@ -30,7 +30,7 @@ class ContractorController extends Controller
     }
     public function getContractorDetails()
     {
-      $projectIds = OwnerDetails::where('owner_name','!=',null)->pluck('project_id');
+      $projectIds = OwnerDetails::where('owner_contact_no')->pluck('project_id');
       $stages = ["Planning","Foundation"];
       $projects = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('project_status',$stages)->paginate(30);
     	return view('contractor',['projects'=>$projects]);
