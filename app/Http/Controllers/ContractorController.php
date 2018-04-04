@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ContractorDetails;
 use App\ProjectDetails;
 use App\RoomType;
+use App\OwnerDetails;
 use DB;
 use Auth;
 
@@ -19,10 +20,17 @@ class ContractorController extends Controller
         return redirect('contractorDetails');
       }
     }
+    public function getWhatYouWant()
+    {
+      $projectIds = OwnerDetails::where('owner_name','!=',null)->pluck('project_id');
+      $projects = ProjectDetails::whereIn('project_id',$projectIds)->get();
+      return view('owners',['projects'=>$projects]);
+    }
     public function getContractorDetails()
     {
-      $projectIds = ContractorDetails::where('contractor_name','!=',null)->pluck('project_id');
-      $projects = ProjectDetails::whereIn('project_id',$projectIds)->paginate(30);
+      $projectIds = OwnerDetails::where('owner_name','!=',null)->pluck('project_id');
+      $stages = ["Planning","Foundation"];
+      $projects = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('project_status',$stages)->paginate(30);
     	return view('contractor',['projects'=>$projects]);
     }
    	public function getProjects(Request $request)

@@ -94,7 +94,7 @@ class HomeController extends Controller
     public function inputview()
     {
         $category = Category::all();
-        $depart = [6,7];
+        $depart = [2,4,8,6,7];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         return view('inputview',['category'=>$category,'users'=>$users]);
     }

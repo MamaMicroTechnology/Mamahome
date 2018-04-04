@@ -6,12 +6,12 @@
 	<div class="panel panel-warning">
 		<div class="panel-heading">Search for contractor (Based on phone no.)</div>
 		<div class="panel-body">
-			<div class="input-group">
+			<!-- <div class="input-group">
 				<input type="text" name="phone" id="phone" class="form-control" placeholder="Enter Contractor Phone Number">
 				<div class="input-group-btn">
 					<button type="button" class="btn btn-primary" onclick="contractors()">Search</button>
 				</div>
-			</div>
+			</div> -->
 			<table id="condetails" class="table table-hover">
 				<thead>
 					<th>Name</th>

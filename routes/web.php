@@ -35,6 +35,7 @@ Route::get('/viewProjects','ContractorController@viewProjects');
 Route::get('/ameditProject','HomeController@editProject');
 Route::get('/getSubCatPrices','HomeController@getSubCatPrices');
 Route::get('/loadsubwards','HomeController@loadSubWards');
+Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
