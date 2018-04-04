@@ -14,8 +14,10 @@ class ContractorController extends Controller
 {
     public function getUpdates()
     {
-      if(Auth::user()->name == "MHadmin"){
-        return redirect('contractorDetails?page=6');
+      if(Auth::user()->employeeId == "MH398"){
+        return redirect('contractorDetails?page=2');
+      }elseif(Auth::user()->employeeId == "MH401"){
+        return redirect('contractorDetails?page=1');
       }else{
         return redirect('contractorDetails');
       }
