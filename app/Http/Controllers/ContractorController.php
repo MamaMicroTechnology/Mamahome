@@ -7,12 +7,23 @@ use App\ContractorDetails;
 use App\ProjectDetails;
 use App\RoomType;
 use DB;
+use Auth;
 
 class ContractorController extends Controller
 {
+    public function getUpdates()
+    {
+      if(Auth::user()->name == "MHadmin"){
+        return redirect('contractorDetails?page=6');
+      }else{
+        return redirect('contractorDetails');
+      }
+    }
     public function getContractorDetails()
     {
-    	return view('contractor');
+      $projectIds = ContractorDetails::where('contractor_name','!=',null)->pluck('project_id');
+      $projects = ProjectDetails::whereIn('project_id',$projectIds)->paginate(30);
+    	return view('contractor',['projects'=>$projects]);
     }
    	public function getProjects(Request $request)
    	{

@@ -24,7 +24,23 @@
 					<th>Quality</th>
 					<th>Action</th>
 				</thead>
-				<tbody id="details"></tbody>
+				<tbody id="details">
+					@foreach($projects as $project)
+					<tr>
+						<td>{{$project->contractordetails->contractor_name}}</td>
+   						<td>{{$project->contractordetails->contractor_contact_no}}</td>
+   						<td>{{$project->contractordetails->contractor_email}}</td>
+   						<td>{{$project->siteaddress->address}}</td>
+   						<td>{{$project->budget }}Cr.</td>
+   						<td>{{$project->project_size}} Sqm</td>
+   						<td>{{$project->project_status}}</td>
+   						<td>{{$project->quality}}</td>
+   						<td>
+   							<a target='_blank' href="{{ URL::to('/') }}/ameditProject?projectId={{$project->project_id}}" class='btn btn-primary btn-sm'>Edit</a>
+   						</td>
+   					</tr>
+   					@endforeach
+				</tbody>
 			</table>
 		</div>
 	</div>

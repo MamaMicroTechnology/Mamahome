@@ -28,6 +28,7 @@ Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
+Route::get('/updateContractors','ContractorController@getUpdates');
 Route::get('/getContractorProjects','ContractorController@getProjects');
 Route::get('/contractor_with_no_of_projects','ContractorController@getNoOfProjects');
 Route::get('/viewProjects','ContractorController@viewProjects');
