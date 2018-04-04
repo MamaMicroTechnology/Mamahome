@@ -13,7 +13,7 @@
 			<div class="panel-body">
 				<form method="POST" action="{{URL::to('/')}}/editinputdata">
 					{{csrf_field()}}
-					<input type="hidden" value="{{ $req->id }}" name="reqId">
+					<input type="hidden" value="{{ $enq->id }}" name="reqId">
 					@if(SESSION('success'))
 					<div class="text-center alert alert-success">
 						<h3 style="font-size:1.8em">{{SESSION('success')}}</h3>
@@ -47,7 +47,7 @@
 								<td><label>Main Category* :</label></td>
 								<td>
 									<select name="mCategory" id="mCategory" required class="form-control" onchange="getBrands()">
-										<option value="" disabled selected>{{ $enq->main_category }}</option>
+										<option value="{{ $enq->main_category }}" selected>{{ $enq->main_category }}</option>
 										<option value="All">All</option>
 										    @foreach($category as $cat)
 										    <option value="{{$cat->id}}">{{$cat->category_name}}</option>
@@ -58,7 +58,7 @@
 							<tr>
 								<td><label>Brnads* :</label></td>
 								<td>
-									<select name="brand" id="brand" required class="form-control" onchange="getSubCat()">
+									<select name="brand" id="brand" class="form-control" onchange="getSubCat()">
 										
 									</select>
 								</td>

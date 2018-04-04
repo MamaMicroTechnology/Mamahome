@@ -20,6 +20,10 @@ class ContractorController extends Controller
         return redirect('contractorDetails?page=2');
       }elseif(Auth::user()->employeeId == "MH401"){
         return redirect('contractorDetails?page=1');
+      }elseif(Auth::user()->employeeId == "MH296"){
+        return redirect('contractorDetails?page=3');
+      }elseif(Auth::user()->employeeId == "MH390"){
+        return redirect('contractorDetails?page=4');
       }else{
         return redirect('contractorDetails');
       }

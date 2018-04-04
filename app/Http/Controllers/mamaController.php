@@ -1017,7 +1017,7 @@ class mamaController extends Controller
             $empDetails->date_of_joining = $request->doj;
             $empDetails->adhar_no = $request->aadhar;
             if($request->aadharImg != NULL){
-                $aadhar = time().'.'.request()->aadharImg->getClientOriginalExtension();
+                $aadhar = "aadhar".time().'.'.request()->aadharImg->getClientOriginalExtension();
                 $request->aadharImg->move(public_path('employeeImages'),$aadhar);
                 $empDetails->aadhar_image = $aadhar;
             }
@@ -1030,13 +1030,13 @@ class mamaController extends Controller
             $empDetails->office_phone = $request->office;
             $empDetails->permanent_address = $request->perAdd;
             if($request->permanenAddressProof != NULL){
-                $address = time().'.'.request()->permanenAddressProof->getClientOriginalExtension();
+                $address = "address1".time().'.'.request()->permanenAddressProof->getClientOriginalExtension();
                 $request->permanenAddressProof->move(public_path('employeeImages'),$address);
                 $empDetails->permanent_address_proof = $address;
             }
             $empDetails->temporary_address = $request->preAdd;
             if($request->presentAddressProof != NULL){
-                $present = time().'.'.request()->presentAddressProof->getClientOriginalExtension();
+                $present = "address2".time().'.'.request()->presentAddressProof->getClientOriginalExtension();
                 $request->presentAddressProof->move(public_path('employeeImages'),$present);
                 $empDetails->temporary_address_proof = $present;
             }
@@ -1045,7 +1045,7 @@ class mamaController extends Controller
             $empDetails->emergency_contact2_name = $request->emergencyName2;
             $empDetails->emergency_contact2_no = $request->emergencyContact2;
             if($request->cv != NULL){
-                $cvv = time().'.'.request()->cv->getClientOriginalExtension();
+                $cvv = "cv".time().'.'.request()->cv->getClientOriginalExtension();
                 $request->cv->move(public_path('employeeImages'),$cvv);
                 $empDetails->curriculum_vite = $cvv;
             }
@@ -1065,7 +1065,7 @@ class mamaController extends Controller
             $check->date_of_joining = $request->doj;
             $check->adhar_no = $request->aadhar;
             if($request->aadharImg != NULL){
-                $aadhar = time().'.'.request()->aadharImg->getClientOriginalExtension();
+                $aadhar = "aadhar".time().'.'.request()->aadharImg->getClientOriginalExtension();
                 $request->aadharImg->move(public_path('employeeImages'),$aadhar);
                 $check->aadhar_image = $aadhar;
             }
@@ -1078,13 +1078,13 @@ class mamaController extends Controller
             $check->office_phone = $request->office;
             $check->permanent_address = $request->perAdd;
             if($request->permanenAddressProof != NULL){
-                $address = time().'.'.request()->permanenAddressProof->getClientOriginalExtension();
+                $address = "address1".time().'.'.request()->permanenAddressProof->getClientOriginalExtension();
                 $request->permanenAddressProof->move(public_path('employeeImages'),$address);
                 $check->permanent_address_proof = $address;
             }
             $check->temporary_address = $request->preAdd;
             if($request->presentAddressProof != NULL){
-                $present = time().'.'.request()->presentAddressProof->getClientOriginalExtension();
+                $present = "address2".time().'.'.request()->presentAddressProof->getClientOriginalExtension();
                 $request->presentAddressProof->move(public_path('employeeImages'),$present);
                 $check->temporary_address_proof = $present;
             }
@@ -1093,7 +1093,7 @@ class mamaController extends Controller
             $check->emergency_contact2_name = $request->emergencyName2;
             $check->emergency_contact2_no = $request->emergencyContact2;
             if($request->cv != NULL){
-                $cvv = time().'.'.request()->cv->getClientOriginalExtension();
+                $cvv = "cv".time().'.'.request()->cv->getClientOriginalExtension();
                 $request->cv->move(public_path('employeeImages'),$cvv);
                 $check->curriculum_vite = $cvv;
             }
@@ -1286,6 +1286,12 @@ class mamaController extends Controller
     public function editinputdata(Request $request)
     {
         Requirement::where('id',$request->reqId)->update([
+            'main_category' => $request->mCategory,
+            'sub_category' => $request->sCategory,
+            'generated_by' => $request->initiator,
+            'notes' => $request->eremarks,
+            'quantity' => $request->equantity,
+            'requirement_date' => $request->edate
 
         ]);
         return back();
