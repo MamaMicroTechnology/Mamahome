@@ -142,12 +142,12 @@
         	"ordering": true,
         	"info":     false,
 	        buttons: [ 
-	            {
-	                extend: 'excelHtml5',
-	                title: 'Employee Attendance - '+format,
-	                className: 'btn btn-xs btn-success',
-	                text: 'Export To Excel'
-	            },
+	            // {
+	            //     extend: 'excelHtml5',
+	            //     title: 'Employee Attendance - '+format,
+	            //     className: 'btn btn-xs btn-success',
+	            //     text: 'Export To Excel'
+	            // },
 	            // {
 	            // 	extend: 'pdf',
 	            // 	title: 'Employee Attendance - '+format,
