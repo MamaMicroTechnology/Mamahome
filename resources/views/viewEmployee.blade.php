@@ -79,6 +79,12 @@
                             <td>: {{ $details->temporary_address }}</td>
                         </tr>
                         <tr>
+                            <td>Permanent Address Proof</td>
+                            <td>: <img onclick="display('address1')" id="address1" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/employeeImages/{{ $details->permanent_address_proof }}"></td>
+                            <td>Present Address Proof</td>
+                            <td>: <img onclick="display('address2')" id="address2" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/employeeImages/{{ $details->temporary_address_proof }}"></td>
+                        </tr>
+                        <tr>
                             <td>Emergency Contact Name</td>
                             <td>{{ $details->emergency_contact_name }}</td>
                             <td>Emergency Contact No.</td>
