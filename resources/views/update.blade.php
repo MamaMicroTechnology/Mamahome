@@ -292,8 +292,9 @@
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea><br>
                             <label>With / Without Contractor ? </label><select class="form-control" name="contract" id="contract" required>
                                 <option value="" disabled selected>--- Select ---</option>
-                                <option {{ $projectdetails->contract == "With Labour Contractor" ? 'selected' : ''}} value="With Labour Contractor">With Labour Contractor</option>
-                                <option {{ $projectdetails->contract == "With Material Contractor" ? 'selected' : ''}} value="With Material Contractor">With Material Contractor</option>
+                                <option {{ $projectdetails->contract == "Labour Contractor" ? 'selected' : ''}} value="Labour Contractor">Labour Contractor</option>
+                                <option {{ $projectdetails->contract == "Material Contractor" ? 'selected' : ''}} value="Material Contractor">Material Contractor</option>
+                                <!-- <option {{ $projectdetails->contract == "None ? 'selected' : ''}} value="None">None</option> -->
                             </select><br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>
                        </div>                        
