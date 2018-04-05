@@ -365,6 +365,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/kra">KRA</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a></li>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
 </div>
 @endif

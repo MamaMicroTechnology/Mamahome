@@ -4,7 +4,7 @@
 
 <div class="col-md-8 col-md-offset-2">
 	<div class="panel panel-warning">
-		<div class="panel-heading">Search for contractor (Based on phone no.)</div>
+		<div class="panel-heading">Names and phone numbers are of owners</div>
 		<div class="panel-body">
 			<!-- <div class="input-group">
 				<input type="text" name="phone" id="phone" class="form-control" placeholder="Enter Contractor Phone Number">
@@ -28,9 +28,9 @@
 				<tbody id="details">
 					@foreach($projects as $project)
 					<tr>
-						<td>{{$project->contractordetails->contractor_name}}</td>
-   						<td>{{$project->contractordetails->contractor_contact_no}}</td>
-   						<td>{{$project->contractordetails->contractor_email}}</td>
+						<td>{{$project->ownerdetails->owner_name}}</td>
+   						<td>{{$project->ownerdetails->owner_contact_no}}</td>
+   						<td>{{$project->ownerdetails->owner_email}}</td>
    						<td>{{$project->siteaddress->address}}</td>
    						<td>{{$project->budget }}Cr.</td>
    						<td>{{$project->project_size}} Sqm</td>
