@@ -99,6 +99,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Emergency Contact 2 Name</td>
+                            <td>{{ $details->emergency_contact2_name }}</td>
+                            <td>Emergency Contact 2 No.</td>
+                            <td>{{ $details->emergency_contact2_no }}</td>
+                        </tr>
+                        <tr>
                             <td>Curriculum Vite</td>
                             <td>
                                 @if($details->curriculum_vite != NULL)
