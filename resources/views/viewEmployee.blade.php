@@ -114,8 +114,7 @@
                             <td>Curriculum Vite</td>
                             <td>
                                 @if($details->curriculum_vite != NULL)
-                                <a href="https://view.officeapps.live.com/op/embed.aspx?src={{ URL('/') }}/public/employeeImages/{{ $details->curriculum_vite }}" target="_blank">View Doc</a>
-                                <img onclick="display('cv')" id="cv" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/public/employeeImages/{{ $details->curriculum_vite }}">
+                                <a href="https://view.officeapps.live.com/op/embed.aspx?src={{ URL('/') }}/public/employeeImages/{{ $details->curriculum_vite }}" class="btn btn-success btn-xs" target="_blank">Click Here To View CV</a>
                                 @else
                                 <i>*No CV provided*</i>
                                 @endif

@@ -109,7 +109,7 @@
                             <td>Curriculum Vite</td>
                             <td>
                                 @if($details->curriculum_vite != NULL)
-                                <a href="https://view.officeapps.live.com/op/embed.aspx?src={{ URL('/') }}/public/employeeImages/{{ $details->curriculum_vite }}" target="_blank">View Doc</a>
+                                <a href="https://view.officeapps.live.com/op/embed.aspx?src={{ URL('/') }}/public/employeeImages/{{ $details->curriculum_vite }}" class="btn btn-success btn-xs" target="_blank">Click Here To View CV</a>
                                 
                                 @else
                                 <i>*No CV provided*</i>
