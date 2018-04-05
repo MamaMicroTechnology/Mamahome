@@ -34,7 +34,11 @@
         @if($page == "anr")
         <td>
         @if($user->department_id != 10)
-            @if($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
+            @if($user->id == 85)
+            <a href="{{ URL::to('/') }}/{{ $user->employeeId }}/attendance">
+                Attendance
+            </a>
+            @elseif($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
             <a href="{{ URL::to('/') }}/{{ $user->id }}/date">
                 Report
             </a>

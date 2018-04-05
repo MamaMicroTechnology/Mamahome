@@ -79,7 +79,11 @@ input:checked + .slider:before {
         <td>{{ $user->group->group_name }}</td>
         <td>{{ $user->office_phone }}</td>
         <td>
-            @if($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
+            @if($user->id == 85)
+            <a href="{{ URL::to('/') }}/amattendance?userId={{ $user->employeeId }}">
+                Attendance
+            </a>
+            @elseif($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
             <a href="{{ URL::to('/') }}/amdate?uid={{ $user->id }}">
                 Report
             </a>
