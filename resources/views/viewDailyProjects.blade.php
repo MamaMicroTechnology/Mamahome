@@ -35,17 +35,9 @@
                             <td><b>Owner Contact</b></td>
                             <td>{{ $details->ownerdetails->owner_contact_no }}</td>
                         </tr>
-                        <tr>
-                            <td><b>Basement</b></td>
-                            <td>{{ $details->basement }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Ground</b></td>
-                            <td>{{ $details->ground }}</td>
-                        </tr>
                             <tr>
                             <td><b>Project Type</b></td>
-                            <td>{{ $details->project_type }}</td>
+                            <td>B({{ $details->basement }}) + ({{ $details->ground }}) + G = {{ $details->basement + $details->ground + 1 }}</td>
                         </tr>
                             <tr>
                             <td><b>Project Size</b></td>
