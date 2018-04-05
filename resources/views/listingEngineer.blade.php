@@ -256,10 +256,10 @@
                        </div> 
                        <div id="seventh" class="hidden">
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
-                            <label>With / Without Contractor ? </label><select class="form-control" name="contract" id="contract" required>
+                            <label>With / Without Contract ? </label><select class="form-control" name="contract" id="contract" required>
                                 <option value="" disabled selected>--- Select ---</option>
-                                <option value="With Labour Contractor">With Labour Contractor</option>
-                                <option value="With Material Contractor">With Material Contractor</option>
+                                <option value="Labour Contract">Labour Contract</option>
+                                <option value="Material Contract">Material Contract</option>
                             </select>
                             <br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>

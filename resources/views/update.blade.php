@@ -66,10 +66,15 @@
                                    <td><input id="road" value="{{ $projectdetails->road_name }}"  type="text" placeholder="Road Name" class="form-control input-sm" name="rName"></td>
                                </tr>
                                <tr>
+                                 <td>Sub Ward</td>
+                                 <td>:</td>
+                                 <td>{{ $projectward }}</td>
+                               </tr>
+                               <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
-                               </tr>
+                               </tr> -->
                                <tr>
                                    <td>Other Approvals</td>
                                    <td>:</td>
@@ -103,16 +108,22 @@
                                    <td>
                                     <div class="row">
                                         <div class="col-md-3">
+                                          <label>Basement</label>
                                           <input value="{{ $projectdetails->basement }}" onkeyup="check('basement')" id="basement" name="basement" type="number" autocomplete="off" class="form-control input-sm" placeholder="Basement">
                                         </div>
                                         <div class="col-md-2">
+                                          <br>
                                           <b style="font-size: 20px; text-align: center">+</b>
                                         </div>
                                       <div class="col-md-3">
+                                        <label>Ground</label>
                                         <input value="{{ $projectdetails->ground }}" oninput="check('ground')" autocomplete="off" name="ground" id="ground" type="number" class="form-control input-sm" placeholder="Ground">
                                       </div>
                                       <div class="col-md-3">
-                                        <p id="total"></p>
+                                        <br>
+                                        <p id="total">
+                                          B({{ $projectdetails->basement }}) + G + {{ $projectdetails->ground }} = {{ $projectdetails->basement + $projectdetails->ground + 1 }}
+                                        </p>
                                       </div>
                                     </div>
                                     </td>
@@ -123,14 +134,14 @@
                                    <td><input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize"></td>
                                </tr>
                                <tr>
-                                   <td>Budget (in Cr.)</td>
+                                   <td>Total Budget (in Cr.)</td>
                                    <td>:</td>
                                    <td>
                                     <div class="col-md-4">
                                       <input id="budget" value="{{ $projectdetails->budget }}"  placeholder="Budget" type="text" class="form-control input-sm" onkeyup="check('budget')" name="budget">
                                     </div>
                                     <div class="col-md-8">
-                                      {{ $projectdetails->budget }}Cr. / {{ $projectdetails->project_size }} =  {{ round((10000000 * $projectdetails->budget)/$projectdetails->project_size,3) }}
+                                      Budget (per sq.ft) {{ round((10000000 * $projectdetails->budget)/$projectdetails->project_size,3) }}
                                     </div>
                                   </td>
                                </tr>
@@ -280,7 +291,7 @@
                         <tr>
                             <td><b>Quality</b></td>
                             <td>
-                                <select class="form-control" name="quality">
+                                <select id="quality" onchange="fake()" class="form-control" name="quality">
                                     <option value="null" disabled selected>--- Select ---</option>
                                     <option {{ $projectdetails->quality == "Genuine" ? 'selected':''}} value="Genuine">Genuine</option>
                                     <option {{ $projectdetails->quality == "Fake" ? 'selected':''}} value="Fake">Fake</option>
@@ -290,10 +301,11 @@
                         
                         </table>
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea><br>
-                            <label>With / Without Contractor ? </label><select class="form-control" name="contract" id="contract" required>
+                            <label>With / Without Contract ? </label><select class="form-control" name="contract" id="contract" required>
                                 <option value="" disabled selected>--- Select ---</option>
-                                <option {{ $projectdetails->contract == "Labour Contractor" ? 'selected' : ''}} value="Labour Contractor">Labour Contractor</option>
-                                <option {{ $projectdetails->contract == "Material Contractor" ? 'selected' : ''}} value="Material Contractor">Material Contractor</option>
+                                <option {{ $projectdetails->contract == "Labour Contract" ? 'selected' : ''}} value="Labour Contract">Labour Contract</option>
+                                <option {{ $projectdetails->contract == "Material Contract" ? 'selected' : ''}} value="Material Contract">Material Contract</option>
+                                <option {{ $projectdetails->contract == "None" ? 'selected' : ''}} value="None">None</option>
                             </select><br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>
                        </div>                        
@@ -311,6 +323,12 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <!--This line by Siddharth -->
 <script type="text/javascript">
+  function fake(){
+    $check = document.getElementById('quality').value;
+    if($check == "Fake"){
+      document.getElementById('contract').innerHTML = "<option value='None'>Fake</option>";
+    }
+  }
   function checklength(arg){
     var a = document.getElementById(arg).value;
     if(a.length !== 10){

@@ -84,7 +84,7 @@
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
 							<option value="">--Select--</option>
 							<option value="all">All</option>
-							<option value="Process">On Process</option>
+							<option value="Process">Enquiry On Process</option>
 							<option value="Confirmed">Enquiry Confirmed</option>
 							<option value="Cancelled">Enquiry Cancelled</option>
 						</select>
@@ -110,6 +110,7 @@
 					</thead>
 					<tbody>
 						@foreach($enquiries as $enquiry)
+						@if($enquiry->status != "Not Processed")
 						<tr>
 							<td style="text-align: center">
 								<a href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
@@ -125,11 +126,7 @@
 							<td style="text-align: center">{{$enquiry -> quantity}}</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
-								@if($enquiry->status == "Not Processed")
-								Pipelined
-								@else
 								{{ $enquiry->status}}
-								@endif
 							</td>
 							<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
@@ -155,6 +152,7 @@
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
 							</td> -->
 						</tr>
+						@endif
 						@endforeach
 					</tbody>
 				</table>

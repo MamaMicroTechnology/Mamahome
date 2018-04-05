@@ -98,9 +98,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><b>Type of Contractor</b></td>
+                            <td><b>Type of Contract</b></td>
                             <td>
-                                {{ $details->contract }}
+                                @if($details->contract == "With Material Contractor")
+                                    Material Contract
+                                @elseif($details->contract == "With Labour Contractor")
+                                    Labour Contract
+                                @else
+                                    {{ $details->contract }}
+                                @endif
                             </td>
                         </tr>
                         <tr>

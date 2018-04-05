@@ -46,6 +46,7 @@ Route::get('/inputview','HomeController@inputview');
 Route::get('/getProjects','HomeController@getProjects');
 Route::get('/showThisProject','HomeController@showProjectDetails');
 Route::get('/enquirysheet','HomeController@enquirysheet');
+Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq');
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
@@ -168,6 +169,7 @@ Route::group(['middleware' => ['admin']],function(){
 
 // Team Leader
 Route::group(['middleware' => ['operationTL']],function(){
+    Route::get('/assignDailySlots','HomeController@getSalesTL');
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
     Route::get('/{id}/deleteReportImage2','HomeController@deleteReportImage2');
@@ -178,6 +180,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/{id}/deleteReportImage6','HomeController@deleteReportImage6');
     Route::get('/completedAssignment','mamaController@completedAssignment');
     Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
+    Route::get('/completethis','HomeController@completethis');
         
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');
@@ -189,6 +192,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::post('/{id}/editEveningRemarks','mamaController@editEveningRemarks');
     Route::post('/updateLogoutTime','mamaController@updateLogoutTime');
     Route::post('/markLeave','mamaController@markLeave');
+    Route::post('/{id}/assignthisSlot','mamaController@assignthisSlot');
 });
 
 // Listing Engineer
@@ -241,8 +245,6 @@ Route::group(['middleware' => ['Buyer']],function(){
 
 Route::group(['middleware'=>['asst']],function(){
     // main links
-	Route::get('/assignDailySlots','HomeController@getSalesTL');
-    Route::get('/completethis','HomeController@completethis');
     Route::get('/amdashboard','amController@getAMDashboard');
     Route::get('/pricing','amController@getPricing');
     Route::get('/amfinance','amController@getamFinance');
@@ -282,7 +284,6 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/updateUser','amController@updateUser');
     
     // post functions
-	Route::post('/{id}/assignthisSlot','mamaController@assignthisSlot');
     Route::post('/updatekra','amController@updatekra');
     Route::post('/amaddvendor','amController@addvendor');
     Route::post('/getSalesReport','mamaController@getSalesReport');

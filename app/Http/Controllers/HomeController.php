@@ -184,49 +184,35 @@ class HomeController extends Controller
         $category = Category::all();
         $depart = [6,7];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
-        $subwards = array();
         $subwards2 = array();
         if($request->status && !$request->category){
             if($request->status != "all"){
-                $records = DB::table('record_data')
-                            ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                            ->select('project_details.sub_ward_id','record_data.*')
-                            ->get();
+                
                 $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('status','like','%'.$request->status)
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                foreach($records as $record){
-                    $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
             }else{
-                $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                        ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+                
+                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                            ->get();
+                
+                foreach($enquiries as $enquiry){
+                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+                }
             }
         }elseif($request->status && $request->category){
             if($request->status != "all"){
-                $records = DB::table('record_data')
-                            ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                            ->select('project_details.sub_ward_id','record_data.*')
-                            ->get();
+                
                 $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -234,27 +220,19 @@ class HomeController extends Controller
                             ->where('requirements.main_category',$request->category)
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                foreach($records as $record){
-                    $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
             }else{
-                $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
+                
                 $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                            // ->where('status','like','%'.$request->status)
                             ->where('requirements.main_category',$request->category)
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                foreach($records as $record){
-                    $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -263,10 +241,7 @@ class HomeController extends Controller
             // only from and to
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
+            
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -274,63 +249,39 @@ class HomeController extends Controller
                         ->where('requirements.created_at','<',$to)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }elseif(!$request->from && !$request->to && !$request->initiator && !$request->category && $request->ward){
             // only ward
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('project_details.sub_ward_id',$request->ward)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward){
             // only category
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('requirements.main_category',$request->category)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }elseif(!$request->from && !$request->to && $request->initiator && !$request->category && !$request->ward){
             // only initiator
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('requirements.generated_by',$request->initiator)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -338,10 +289,6 @@ class HomeController extends Controller
             // everything
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -352,9 +299,6 @@ class HomeController extends Controller
                         ->where('requirements.main_category',$request->category)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -362,10 +306,6 @@ class HomeController extends Controller
             // from, to and ward
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -374,9 +314,6 @@ class HomeController extends Controller
                         ->where('requirements.created_at','<',$to)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -384,10 +321,6 @@ class HomeController extends Controller
             // from, to and initiator
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -396,9 +329,6 @@ class HomeController extends Controller
                         ->where('requirements.created_at','<',$to)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -406,10 +336,6 @@ class HomeController extends Controller
             // from, to and category
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -418,9 +344,6 @@ class HomeController extends Controller
                         ->where('requirements.created_at','<',$to)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -428,10 +351,6 @@ class HomeController extends Controller
             // from, to, initiator and category
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -441,9 +360,6 @@ class HomeController extends Controller
                         ->where('requirements.created_at','<',$to)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -451,10 +367,6 @@ class HomeController extends Controller
             // from, to, wards and category
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -464,9 +376,6 @@ class HomeController extends Controller
                         ->where('requirements.created_at','<',$to)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -474,10 +383,6 @@ class HomeController extends Controller
             //initiator and category
             $from = $request->from;
             $to = $request->to;
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -485,33 +390,45 @@ class HomeController extends Controller
                         ->where('requirements.generated_by','=',$request->initiator)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }else{
             // no selection
-            $records = DB::table('record_data')
-                        ->leftjoin('project_details','record_data.rec_project','=','project_details.project_id')
-                        ->select('project_details.sub_ward_id','record_data.*')
-                        ->get();
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                        // ->orderby('requirement_date','DESC')
                         ->get();
-            foreach($records as $record){
-                $subwards[$record->rec_project] = SubWard::where('id',$record->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }
-        return view('enquirysheet',['records'=>$records,
-            'subwards'=>$subwards,
+        return view('enquirysheet',[
+            'subwards2'=>$subwards2,
+            'enquiries'=>$enquiries,
+            'wards'=>$wards,
+            'category'=>$category,
+            'initiators'=>$initiators
+        ]);
+    }
+    public function myenquirysheet()
+    {
+        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
+        $category = Category::all();
+        $depart = [6,7];
+        $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $subwards2 = array();
+        $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                    ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                    ->where('requirements.generated_by',Auth::user()->id)
+                    ->get();
+        foreach($enquiries as $enquiry){
+            $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+        }
+        return view('enquirysheet',[
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
             'wards'=>$wards,
@@ -816,7 +733,8 @@ class HomeController extends Controller
         $projectdetails = ProjectDetails::where('project_id',$request->projectId)->first();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('update',['subwards'=>$subwards,'projectdetails'=>$projectdetails]);
+        $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();
+        return view('update',['subwards'=>$subwards,'projectdetails'=>$projectdetails,'projectward'=>$projectward]);
     }
     public function viewAll()
     {

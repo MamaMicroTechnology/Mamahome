@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
-                <div class="panel-heading">Report of {{ $user->name }} for {{ date('d-m-Y') }}
+                <div class="panel-heading">Report of {{ $user->name }} for {{ date('d-M-Y',strtotime($date)) }}
                 </div>
                 <div class="panel-body">
                     <form method=POST action="{{ URL::to('/')}}/grade">
