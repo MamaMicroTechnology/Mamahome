@@ -31,7 +31,7 @@
                         <tr>
                             <td>Name</td>
                             <td>: {{ $user->name }}</td>
-                            <td>Email</td>
+                            <td>User Id of MMT</td>
                             <td>: {{ $user->email }}</td>
                         </tr>
                         <tr>
@@ -110,7 +110,7 @@
                             <td>
                                 @if($details->curriculum_vite != NULL)
                                 <a href="https://view.officeapps.live.com/op/embed.aspx?src={{ URL('/') }}/public/employeeImages/{{ $details->curriculum_vite }}" target="_blank">View Doc</a>
-                                <img onclick="display('cv')" id="cv" height="200" width="200" alt="{{ $user->name }}" class="img img-responsive myImg" src="{{ URL::to('/') }}/public/employeeImages/{{ $details->curriculum_vite }}">
+                                
                                 @else
                                 <i>*No CV provided*</i>
                                 @endif
