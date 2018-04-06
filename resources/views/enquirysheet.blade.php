@@ -84,9 +84,9 @@
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
 							<option value="">--Select--</option>
 							<option value="all">All</option>
-							<option value="Process">Enquiry On Process</option>
-							<option value="Confirmed">Enquiry Confirmed</option>
-							<option value="Cancelled">Enquiry Cancelled</option>
+							<option value="Enquiry On Process">Enquiry On Process</option>
+							<option value="Enquiry Confirmed">Enquiry Confirmed</option>
+							<option value="Enquiry Cancelled">Enquiry Cancelled</option>
 						</select>
 					</div>
 				</div>
