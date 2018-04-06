@@ -37,8 +37,12 @@ class ContractorController extends Controller
     public function getContractorDetails()
     {
       $projectIds = OwnerDetails::whereNotNull('owner_contact_no')->orderby('owner_contact_no')->pluck('project_id');
-      $stages = ["Planning","Foundation"];
-      $projects = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('project_status',$stages)->paginate(30);
+      if(Auth::user()->employeeId == "MH296" || Auth::user()->employeeId == "MH390" || Auth::user()->employeeId == "MH404"){
+        $projects = ProjectDetails::whereIn('project_id',$projectIds)->where('project_status',"Plastering")->paginate(30);
+      }else{
+        $stages = ["Planning","Foundation"];
+        $projects = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('project_status',$stages)->paginate(30);
+      }
     	return view('contractor',['projects'=>$projects]);
     }
    	public function getProjects(Request $request)
