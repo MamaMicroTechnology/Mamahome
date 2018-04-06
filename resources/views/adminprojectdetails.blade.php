@@ -39,14 +39,14 @@
                                 <td style="width:40%;"><b>Project Quality</b></td>
                                 <td>{{$rec->quality==null?"Unverified":$rec->Quality}}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td style="width:40%;"><b>Basement</b></td>
                                 <td>{{$rec->basement}}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Ground</b></td>
                                 <td>{{$rec->ground}}</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td style="width:40%;"><b>Project Type</b></td>
                                 <td>
@@ -81,8 +81,12 @@
                                     </td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Budget</b></td>
-                                <td>{{$rec->budget}}</td>
+                                <td style="width:40%;"><b>Total Budget (in Cr.)</b></td>
+                                <td>{{$rec->budget}} Cr.</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Budget (per sq.ft)</b></td>
+                                <td>{{ round((10000000 * $rec->budget)/$rec->project_size,3) }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Remarks</b></td>
