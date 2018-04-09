@@ -16,6 +16,22 @@
                     <table class="table table-responsive">
                         <tbody>
                             <tr>
+                                <td style="width:40%"><b>Listed On</b></td>
+                                <td>{{ date('d-M-Y h:i:s A',strtotime($rec->created_at)) }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Updated On</b></td>
+                                <td>{{ date('d-M-Y h:i:s A',strtotime($rec->updated_at)) }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Followup</b></td>
+                                <td>{{ $rec->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Call Attended By</b></td>
+                                <td>{{ $callAttendedBy != null ? $callAttendedBy->name: '' }}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%;"><b>Project ID</b></td>
                                 <td>{{$rec->project_id}}</td>
                             </tr>
@@ -58,7 +74,7 @@
                                 <td style="width:40%;"><b>Project Image</b></td>
                                 <td><img class="img img-responsive" src="{{URL::to('/')}}/public/projectImages/{{$rec->image}}" style="height:200px;width:200px" /></td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td style="width:40%;"><b>Municipality Approval</b></td>
                                 <td>
                                     @if($rec->municipality_approval != "N/A")
@@ -67,14 +83,14 @@
                                         {{ $rec->municipality_approval }}
                                     @endif
                                 </td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td style="width:40%;"><b>Contract</b></td>
                                     <td>
                                         @if($rec->contract == "With Material Contractor")
-                                            Material Contractor
+                                            Material Contract
                                         @elseif($rec->contract == "With Labour Contractor")
-                                            Labour Contractor
+                                            Labour Contract
                                         @else
                                             {{ $rec->contract }}
                                         @endif
@@ -96,6 +112,24 @@
                                 <td style="width:40%;"><b>Note</b></td>
                                 <td>{{$rec->note}}</td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <h3>Room Types</h3>
+                    <table class="table table-responsive">
+                         <thead>
+                            <th>Floor No.</th>
+                            <th>Room Types</th>
+                            <th>Quantity</th>
+                         </thead>
+                         <tbody>
+                         @foreach($roomtypes as $roomtype)
+                            <tr>
+                                <td>Floor {{ $roomtype->floor_no }}</td>
+                                <td>{{ $roomtype->room_type }}</td>
+                                <td>{{ $roomtype->no_of_rooms }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <br>

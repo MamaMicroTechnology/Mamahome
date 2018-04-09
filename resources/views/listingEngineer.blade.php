@@ -130,6 +130,11 @@
                                         <table id="bhk" class="table table-responsive">
                                             <tr>
                                                 <td>
+                                                  <select class="form-control" name="floorNo[]" id="floorNo">
+                                                    
+                                                  </select>
+                                                </td>
+                                                <td>
                                                     <select name="roomType[]" id="" class="form-control">
                                                         <option value="1RK">1RK</option>
                                                         <option value="1BHK">1BHK</option>
@@ -141,7 +146,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of rooms">
+                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of houses">
                                                 </td>
                                                 </tr>
                                             <tr>
@@ -675,13 +680,20 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
+      var opts = "<option value=''>--Floor--</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         floor       += sum;
         
         if(document.getElementById("total").innerHTML != null)
+        {
           document.getElementById("total").innerHTML = floor;
+          for(var i = 1; i<=sum; i++){
+            opts += "<option value='"+i+"'>Floor "+i+"</option>";
+          }
+          document.getElementById("floorNo").innerHTML = opts;
+        }
         else
           document.getElementById("total").innerHTML = '';
       }
@@ -692,9 +704,11 @@
   function addRow() {
         var table = document.getElementById("bhk");
         var row = table.insertRow(0);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        
+        var cell3 = row.insertCell(0);
+        var cell1 = row.insertCell(1);
+        var cell2 = row.insertCell(2);
+        var existing = document.getElementById('floorNo').innerHTML;
+        cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
         cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
                                                         "<option value=\"1RK\">1RK</option>"+
                                                         "<option value=\"1BHK\">1BHK</option>"+
@@ -704,7 +718,7 @@
                                                         "<option value=\"5BHK\">5BHK</option>"+
                                                         "<option value=\"6BHK\">6BHK</option>"+
                                                     "</select>";
-        cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
+        cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         
     }
 </script>

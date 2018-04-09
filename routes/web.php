@@ -53,6 +53,7 @@ Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
+Route::get('/deleteRoomType','HomeController@deleteRoomType');
 
 Route::post('/uploadProfilePicture','HomeController@postMyProfile');
 Route::post('/editinputdata','mamaController@editinputdata');
