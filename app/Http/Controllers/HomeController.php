@@ -42,7 +42,6 @@ use App\ManufacturerDetail;
 use App\Certificate;
 use App\MhInvoice;
 use App\ActivityLog;
-use App\RoomType;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
