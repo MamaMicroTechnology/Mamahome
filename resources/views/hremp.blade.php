@@ -6,9 +6,9 @@
     <th>Emp Id</th>
     <th>Name</th>
     <th>Dept.</th>
-    <th>Office Phone</th>
     <th>Acceptance</th>
     <th>Designation</th>
+    <th>Office Phone</th>
 </thead>
 <tbody>
 @foreach($users as $user)

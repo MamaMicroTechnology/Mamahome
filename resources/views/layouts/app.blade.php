@@ -333,12 +333,17 @@ div#calendar{
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
         </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
-    <a href="{{ URL::to('/enquirysheet') }}">Enquiry</a>
+    <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
+    <div id="enquiry" class="collapse">
+            <a href="{{ URL::to('/enquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
+            <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
+           
+        </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
             <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
-            <a href="{{ URL::to('/amorders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
-            <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a>
+            <!-- <a href="{{ URL::to('/amorders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
+            <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
@@ -365,7 +370,8 @@ div#calendar{
     <a href="{{ URL::to('/') }}/kra">KRA</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a></li>
+    <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
+    <a href="{{ URL::to('/') }}/assignListSlots">Assign Lists Engineers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
 </div>
 @endif

@@ -151,12 +151,30 @@ class mamaController extends Controller
         if(count($check) != 0){
             return back()->with('ErrorZone','Zone Name exists. Try another name');
         }
+        $imageName1 = time().'.'.request()->image->getClientOriginalExtension();
+        $request->image->move(public_path('zoneimages'),$imageName1);
+        
     	$zone = New Zone;
     	$zone->country_id = $request->sId;
     	$zone->zone_name = $request->zone_name;
     	$zone->zone_number = $request->zone_no;
+        $zone->zone_image = $imageName1;
     	$zone->save();
     	return back();
+    }
+     
+     public function view_zone(Request $id){
+    
+        $zone = Zone::where('id',$id->zoneId)->first();
+        return view('viewzone',['zone'=>$zone]);
+    }
+    public function save_edit(Request $request){
+
+        Zone::where('id',$request->zoneId)->update([
+            'zone_name'=> $request->zone_name,
+            'zone_number' => $request->zone_no
+        ]);
+        return redirect()->back()->with('Success','zone updated sucessfully');
     }
     public function addWard(Request $request)
     {

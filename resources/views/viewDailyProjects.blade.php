@@ -102,6 +102,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <tr>
+                                <td><b>Room Type</b></td>
+                                <td>
+                                    {{ $roomdetails->room_type }}
+                                </td>
+                            </tr>
                             <td><b>Remarks</b></td>
                             <td>
                                 {{ $details->remarks }}

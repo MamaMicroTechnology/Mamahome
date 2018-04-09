@@ -28,6 +28,7 @@ use App\attendance;
 use App\ContractorDetails;
 use App\salesassignment;
 use App\Report;
+use App\RoomType;
 use Auth;
 use DB;
 use App\EmployeeDetails;
@@ -185,6 +186,7 @@ class HomeController extends Controller
         $depart = [6,7];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
+
         if($request->status && !$request->category){
             if($request->status != "all"){
                 
@@ -192,8 +194,11 @@ class HomeController extends Controller
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('status','like','%'.$request->status)
+                           
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+
+
                 
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -399,12 +404,40 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        ->where('requirements.status','!=',"Enquiry cancelled")
                         ->get();
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }
         return view('enquirysheet',[
+            'subwards2'=>$subwards2,
+            'enquiries'=>$enquiries,
+            'wards'=>$wards,
+            'category'=>$category,
+            'initiators'=>$initiators
+        ]);
+    }
+    public function enquiryCancell(Request $request)
+    {
+        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
+        $category = Category::all();
+        $depart = [6,7];
+        $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $subwards2 = array();
+        $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        ->where('requirements.status',"Enquiry Cancelled")
+
+
+                        ->get();
+            foreach($enquiries as $enquiry){
+                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+            }
+        
+        return view('enquiryCancell',[
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
             'wards'=>$wards,
@@ -627,7 +660,11 @@ class HomeController extends Controller
         return view('viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates]);
     }
     public function teamLeadHome(){
-        $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
+         
+         return view('/teamLeader');
+    }
+    public function assignListSlots(){          
+    $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
         $users = User::where('group_id',$group)
                         ->join('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->join('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
@@ -636,12 +673,14 @@ class HomeController extends Controller
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
+    
 
         $subwardsAssignment = WardAssignment::all();
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
         $wards = Ward::orderby('ward_name','ASC')->get();
-        return view('teamLeader',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards]);
+        return view('assignListSlots',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards]);
     }
+
     public function loadSubWards(Request $request)
     {
         $subwards = Subward::where('ward_id',$request->ward_id)
@@ -1712,7 +1751,8 @@ class HomeController extends Controller
     }
     public function projectadmin(Request $id){
         $details = projectDetails::where('project_id',$id->projectId)->first();
-        return view('viewDailyProjects',['details'=>$details]);
+        $roomdetails = RoomType::where('project_id',$id->projectId)->first();
+        return view('viewDailyProjects',['details'=>$details,'roomdetails' => $roomdetails]);
     }
     public function editEmployee(Request $request){
         $user = User::where('employeeId', $request->UserId)->first();
