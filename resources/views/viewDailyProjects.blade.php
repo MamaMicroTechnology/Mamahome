@@ -12,6 +12,22 @@
                 <table class="table table-responsive table-striped table-hover">
                     <tbody>
                         <tr>
+                            <td style="width:40%"><b>Listed On</b></td>
+                            <td>{{ date('d-M-Y h:i:s A',strtotime($details->created_at)) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%"><b>Updated On</b></td>
+                            <td>{{ date('d-M-Y h:i:s A',strtotime($details->updated_at)) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%"><b>Followup</b></td>
+                            <td>{{ $details->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%"><b>Call Attended By</b></td>
+                            <td>{{ $callAttendedBy != null ? $callAttendedBy->name: '' }}</td>
+                        </tr>
+                        <tr>
                             <td style="width:40%"><b>Project Id</b></td>
                             <td>{{ $details->project_id }}</td>
                         </tr>
@@ -46,7 +62,7 @@
                         <tr>
                             <td><b>Listing Engineer</b></td>
                             <td>
-                                <?php echo $_GET['lename']; ?>
+                                {{ $listedby != null ? $listedby->name : '' }}
                             </td>
                         </tr>
                         <tr>
@@ -63,7 +79,7 @@
                                 <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td><b>Municipality Approval</b></td>
                             <td>
                                 @if($details->municipality_approval != "N/A")
@@ -72,8 +88,8 @@
                                 N/A
                                 @endif
                             </td>
-                        </tr>
-                        <tr>
+                        </tr> -->
+                        <!-- <tr>
                             <td><b>Other Approval</b></td>
                             <td>
                                 @if($details->other_approvals != "N/A")
@@ -82,7 +98,7 @@
                                 N/A
                                 @endif
                             </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td><b>Budget (Cr.)</b></td>
                             <td>
@@ -109,6 +125,33 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Room Types</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Floor No.</th>
+                        <th>Room Type</th>
+                        <th>No. Of House</th>
+                    </thead>
+                    <tbody>
+                        @foreach($roomtypes as $roomtype)
+                        <tr>
+                            <td>Floor {{ $roomtype->floor_no }}</td>
+                            <td>{{ $roomtype->room_type }}</td>
+                            <td>{{ $roomtype->no_of_rooms }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>        
             </div>
         </div>
     </div>

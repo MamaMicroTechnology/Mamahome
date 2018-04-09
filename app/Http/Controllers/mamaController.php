@@ -419,6 +419,7 @@ class mamaController extends Controller
             $count = count($request->roomType);
             for($i = 0;$i<$count;$i++){
                 $roomtype = new RoomType;
+                $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
                 $roomtype->project_id = $projectdetails->id;
@@ -627,6 +628,16 @@ class mamaController extends Controller
                 loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
                     'totalProjectsUpdated' => $number2 + 1
                 ]);
+        }
+        $room_types = $request->roomType[0]." (".$request->number[0].")";
+        $count = count($request->roomType);
+        for($i = 0;$i<$count;$i++){
+            $roomtype = new RoomType;
+            $roomtype->floor_no = $request->floorNo[$i];
+            $roomtype->room_type = $request->roomType[$i];
+            $roomtype->no_of_rooms = $request->number[$i];
+            $roomtype->project_id = $id;
+            $roomtype->save();
         }
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');

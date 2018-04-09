@@ -116,7 +116,7 @@
                                           <b style="font-size: 20px; text-align: center">+</b>
                                         </div>
                                       <div class="col-md-3">
-                                        <label>Ground</label>
+                                        <label>Floor</label>
                                         <input value="{{ $projectdetails->ground }}" oninput="check('ground')" autocomplete="off" name="ground" id="ground" type="number" class="form-control input-sm" placeholder="Ground">
                                       </div>
                                       <div class="col-md-3">
@@ -161,6 +161,14 @@
                                     <td>
                                         <table id="bhk" class="table table-responsive">
                                             <tr>
+                                              <td>
+                                                <select id="floorNo" name="floorNo[]" class="form-control">
+                                                  <option value="">--Floor--</option>
+                                                  @for($i = 1;$i<=$projectdetails->project_type;$i++)
+                                                    <option value="{{ $i }}">Floor {{ $i }}</option>
+                                                  @endfor
+                                                </select>
+                                              </td>
                                                 <td>
                                                     <select name="roomType[]" id="" class="form-control">
                                                         <option value="1RK">1RK</option>
@@ -173,7 +181,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of rooms">
+                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of houses">
                                                 </td>
                                                 </tr>
                                             <tr>
@@ -181,6 +189,37 @@
                                                     <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add more</button>
                                                 </td>
                                             </tr>
+                                            @foreach($roomtypes as $roomtype)
+                                            <tr>
+                                              <td>Floor {{ $roomtype->floor_no }}</td>
+                                              <td>{{ $roomtype->room_type }}</td>
+                                              <td>{{ $roomtype->no_of_rooms }}</td>
+                                              <td>
+                                                <button type="button" data-toggle="modal" data-target="#delete{{ $roomtype->id }}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                                                <!-- Modal -->
+                                                <div id="delete{{ $roomtype->id }}" class="modal fade" role="dialog">
+                                                  <div class="modal-dialog modal-sm">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Confirm delete</h4>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        <p>Are you sure you want to delete?</p>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <a class="pull-left btn btn-danger" href="{{ URL::to('/') }}/deleteRoomType?roomId={{ $roomtype->id }}">Yes</a>
+                                                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">No</button>
+                                                      </div>
+                                                    </div>
+
+                                                  </div>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                            @endforeach
                                         </table>
                                     </td>
                                </tr>
@@ -371,13 +410,20 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
+      var opts = "<option value=''>--Floor--</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         floor       += sum;
       
         if(document.getElementById("total").innerHTML != null)
+        {
           document.getElementById("total").innerHTML = floor;
+          for(var i = 1; i<=sum; i++){
+            opts += "<option value='"+i+"'>Floor "+i+"</option>";
+          }
+          document.getElementById("floorNo").innerHTML = opts;
+        }
         else
           document.getElementById("total").innerHTML = '';
       }
@@ -534,9 +580,16 @@ function sum(){
     function addRow() {
         var table = document.getElementById("bhk");
         var row = table.insertRow(0);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        
+        var cell3 = row.insertCell(0);
+        var cell1 = row.insertCell(1);
+        var cell2 = row.insertCell(2);
+        var no = {{ $projectdetails->project_type }};
+        var floors = "<select name='floorNo[]' class='form-control'><option value=''>--Floor--</option>";
+        for(var i = 1; i<=no;i++){
+          floors += "<option value='"+i+"'>Floor "+i+"</option>";
+        }
+        floors += "</select>";
+        cell3.innerHTML = floors;
         cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
                                                         "<option value=\"1RK\">1RK</option>"+
                                                         "<option value=\"1BHK\">1BHK</option>"+

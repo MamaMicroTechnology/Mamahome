@@ -30,7 +30,7 @@
                         <tr>
                             <td>Name</td>
                             <td>: {{ $user->name }}</td>
-                            <td>Email</td>
+                            <td>User Id Of Mama</td>
                             <td>: {{ $user->email }}</td>
                         </tr>
                         <tr>
@@ -43,13 +43,13 @@
                         </tr>
                         @if($details != NULL)
                         <tr>
-                            <td>Date of Joining</td>
+                            <td>Date Of Joining</td>
                             <td>: {{ $details->date_of_joining }}</td>
                             <td>Aadhar No.</td>
                             <td>: {{ $details->adhar_no }}</td>
                         </tr>
                         <tr>
-                            <td>Date of Birth</td>
+                            <td>Date Of Birth</td>
                             <td>: {{ $details->dob }}</td>
                             <td>Blood Group</td>
                             <td>: {{ $details->blood_group }}</td>

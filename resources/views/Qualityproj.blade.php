@@ -2,11 +2,11 @@
 @section('content')
 <div class="col-md-4">
     <div class="panel panel-primary">
-        <div class="panel-heading">Call records</div>
+        <div class="panel-heading">Call Records</div>
         <div class="panel-body">
             @foreach($notes as $note)
             @if($note == null)
-            Without note - {{ $count[$note] }}<br>
+            WITHOUT NOTE - {{ $count[$note] }}<br>
             @else
             {{ $note }} - {{ $count[$note] }}<br>
             @endif
@@ -90,7 +90,7 @@ function drawChart() {
 ]);
 
   // Optional; add a title and set the width and height of the chart
-  var options = {'title':'Quality In Percentage', 'width':500, 'height':350};
+  var options = {'title':'Quality In Percentage', 'width':550, 'height':350};
 
   // Display the chart inside the <div> element with id="piechart"
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -127,9 +127,9 @@ function drawChart() {
                 {
                     var result = "<div class='panel panel-primary'><div class='panel-heading' style='font-size:1.2em'>";
                     var times = new Array();
-                    result += "<b>"+qualityproj + "</b> Projects - <b>"+le_name+"</b> From Date : <b>"+date1+"<b> To Date : <b>"+date2+"</b>";
+                    result += "<b>"+qualityproj + "</b> Projects - <b>"+le_name+"</b> From Date : <b>"+response[3]+"<b> To Date : <b>"+response[4]+"</b>";
                     result += "</b><b class='pull-right'>Total Count : "+response[2]+"</b></div>";
-                    result += "<div class='panel-body'><label>Filter By Date : </label><select id='filtertime' class='form-control' name='filtertime' onchange='datefilter()'></select><br><table class='table table-responsive table-hover' id='prjectTable'><thead><tr><th style='text-align:center;width:10%'>Project ID</th><th style='text-align:center;width:30%'>Ward Name</th><th style='text-align:center;width:20%'>Date</th><th style='text-align:center;width:20%'>Time</th><th style='text-align:center;width:20%'>Contractor</th></tr><tbody>";
+                    result += "<div class='panel-body'><label>Filter By Date : </label><select id='filtertime' class='form-control' name='filtertime' onchange='datefilter()'></select><br><table class='table table-responsive table-hover' id='prjectTable'><thead><tr><th style='text-align:center;width:10%'>Project ID</th><th style='text-align:center;width:30%'>Ward Name</th><th style='text-align:center;width:20%'>Date</th><th style='text-align:center;width:20%'>Time</th><th style='text-align:center;width:20%'>Contract</th></tr><tbody>";
                     for(var i=0; i<response[0].length;i++)
                     {
                         if(response[0][i].contract == null){

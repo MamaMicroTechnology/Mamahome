@@ -5,7 +5,7 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-success">
     <div class="panel-heading">
-        Total No of Projects In Zone 1 : {{$totalProjects}}
+        Total No Of Projects In Zone 1 : {{$totalProjects}}
     </div>
     <div class="panel-body">
         <div class="col-md-6">
@@ -13,6 +13,7 @@
             <form method="GET" action="{{ URL::to('/') }}/getprojectsize">
                 <select required class="form-control" name="ward">
                     <option value="">--Select--</option>
+                    <option value="All">All</option>
                 @foreach($wards as $ward)
                     <option value="{{ $ward->id}}" {{ $ward->id == $wardId? 'selected':'' }}>{{ $ward->ward_name }}</option>
                 @endforeach
@@ -24,8 +25,8 @@
                 <p class="alert alert-error">{{ session('Error') }}</p>
             @endif
             @if($planningCount != NULL)
-            Total Project sizes under {{ $wardname->ward_name}} (based on stages)<br>
-            Total No. of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount}}
+            Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
+            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount}}
             Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize}}</b>
             <table class="table table-hover" border="1">
                 <thead>
@@ -104,7 +105,7 @@
             @endif
         </div>
 
-        @if($subwards != NULL)
+        @if($subwards != NULL && $_GET['ward'] != "All")
         <div class="col-md-6">
             <center>Sub Ward</center>
             <form method="GET" action="{{ URL::to('/') }}/getprojectsize">
@@ -121,80 +122,10 @@
             @if(session('Error'))
                 <p class="alert alert-error">{{ session('Error') }}</p>
             @endif
-            @if($planning != NULL)
-            
-            <!--Counting project size-->
-            <?php $planC = 0; ?>
-            @foreach($planning as $plan)
-                <?php $planC += $plan->project_size; ?>
-            @endforeach
-            
-            <?php $digC = 0; ?>
-            @foreach($digging as $dig)
-                <?php $digC += $dig->project_size; ?>
-            @endforeach
-            
-            <?php $foundC = 0; ?>
-            @foreach($foundation as $found)
-                <?php $foundC += $found->project_size; ?>
-            @endforeach
-            
-            <?php $pillarC = 0; ?>
-            @foreach($pillars as $pillar)
-                <?php $pillarC += $pillar->project_size; ?>
-            @endforeach
-            
-            <?php $wallsC = 0; ?>
-            @foreach($walls as $wall)
-                <?php $wallsC += $wall->project_size; ?>
-            @endforeach
-            
-            <?php $roofC = 0; ?>
-            @foreach($roofing as $roof)
-                <?php $roofC += $roof->project_size; ?>
-            @endforeach
-            
-            <?php $enpC = 0; ?>
-            @foreach($enp as $el)
-                <?php $enpC += $el->project_size; ?>
-            @endforeach
-            
-            <?php $plasterC = 0; ?>
-            @foreach($plastering as $plaster)
-                <?php $plasterC += $plaster->project_size; ?>
-            @endforeach
-            
-            <?php $floorC = 0; ?>
-            @foreach($flooring as $floor)
-                <?php $floorC += $floor->project_size; ?>
-            @endforeach
-            
-            <?php $carpC = 0; ?>
-            @foreach($carpentry as $carp)
-                <?php $carpentryC += $carp->project_size; ?>
-            @endforeach
-            
-            <?php $paintC = 0; ?>
-            @foreach($painting as $paint)
-                <?php $paintC += $paint->project_size; ?>
-            @endforeach
-            
-            <?php $fixC = 0; ?>
-            @foreach($fixtures as $fix)
-                <?php $fixC += $fix->project_size; ?>
-            @endforeach
-            
-            <?php $completeC = 0; ?>
-            @foreach($completion as $complete)
-                <?php $completeC += $complete->project_size; ?>
-            @endforeach
-            
-            <!--Project size counting ends-->
-            
-            
-            Total Project sizes under {{ $subwardName}} (based on stages)<br>
-            Total No. of Projects : {{ count($planning) + count($digging) + count($foundation) + count($pillars) + count($walls) + count($roofing) + count($enp) + count($completion) + count($fixtures) + count($painting) + count($carpentry) + count($flooring) + count($plastering) }}
-            Total Sizes : <b>{{ $planC + $digC + $foundC + $pillarC + $completeC + $fixC + $paintC + $carpC + $floorC + $plasterC + $enpC + $roofC + $wallsC }}</b>
+            @if(isset($_GET['subward']))
+            Total Project Sizes Under {{ $subwardName}} (based on stages)<br>
+            Total No. of Projects : @if($total) {{ $total }} @endif
+            Total Sizes : <b>@if($totalsubward) {{ $totalsubward }} @endif</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -204,100 +135,111 @@
                 <tbody>
                     <tr>
                         <td>Planning</td>
-                        <td class="text-center"> {{ count($planning) }} </td>
+                        <td class="text-center">{{ $Cplanning }}</td>
                         <td>
-                            {{ $planC }}
+                             
+                              {{ $planning }} 
                         </td>
                     </tr>
                     <tr>
                         <td>Digging</td>
-                        <td class="text-center">{{ count($digging) }}</td>
+                        <td class="text-center">{{ $Cdigging }}</td>
                         <td>
-                            {{ $digC }}
+                            
+                            {{ $digging }}
                         </td>
                     </tr>
                     <tr>
                         <td>Foundation</td>
-                        <td class="text-center">{{ count($foundation) }}</td>
+                        <td class="text-center">{{ $Cfoundation }}</td>
                         <td>
-                            {{ $foundC }}    
+                            {{ $foundation }}
                         </td>
                     </tr>
                     <tr>
                         <td>Pillars</td>
-                        <td class="text-center">{{ count($pillars) }}</td>
+                        <td class="text-center">{{ $Cpillars }}</td>
                         <td>
-                            {{ $pillarC }}    
+                            
+                            {{ $pillars }}
                         </td>
                     </tr>
                     <tr>
                         <td>Walls</td>
-                        <td class="text-center">{{ count($walls) }}</td>
+                        <td class="text-center">{{ $Cwalls }}</td>
                         <td>
-                            {{ $wallsC }}
+                            
+                            {{ $walls }}
                         </td>
                     </tr>
                     <tr>
                         <td>Roofing</td>
-                        <td class="text-center">{{ count($roofing) }}</td>
+                        <td class="text-center">{{ $Croofing }}</td>
                         <td>
-                            {{ $roofC }}    
+                            {{ $roofing }}
                         </td>
                     </tr>
                     <tr>
                         <td>Electrical &amp; Plumbing</td>
-                        <td class="text-center">{{ count($enp) }}</td>
+                        <td class="text-center">{{ $Cenp }}</td>
                         <td>
-                            {{ $enpC }}
+                            
+                            {{ $enp }}
                         </td>
                     </tr>
                     <tr>
                         <td>Plastering</td>
-                        <td class="text-center">{{ count($plastering) }}</td>
+                        <td class="text-center">{{ $Cplastering }}</td>
                         <td>
-                            {{ $plasterC }}
+                            
+                            {{ $plastering }}
                         </td>
                     </tr>
                     <tr>
                         <td>Flooring</td>
-                        <td class="text-center">{{ count($flooring) }}</td>
+                        <td class="text-center">{{ $Cflooring }}</td>
                         <td>
-                            {{ $floorC }}
+                            
+                            {{ $flooring }}
                         </td>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
-                        <td class="text-center">{{ count($carpentry) }}</td>
+                        <td class="text-center">{{ $Ccarpentry }}</td>
                         <td>
-                            {{ $carpC }}
+                            
+                            {{ $carpentry }}
                         </td>
                     </tr>
                     <tr>
                         <td>Paintings</td>
-                        <td class="text-center">{{ count($painting) }}</td>
+                        <td class="text-center">{{ $Cpainting }}</td>
                         <td>
-                            {{ $paintC }}
+                            
+                            {{ $painting }}
                         </td>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
-                        <td class="text-center">{{ count($fixtures) }}</td>
+                        <td class="text-center">{{ $Cfixtures }}</td>
                         <td>
-                            {{ $fixC }}
+                            
+                            {{ $fixtures }}
                         </td>
                     </tr>
                     <tr>
                         <td>Completion</td>
-                        <td class="text-center">{{ count($completion) }}</td>
+                        <td class="text-center">{{ $Ccompletion }}</td>
                         <td>
-                            {{ $completeC }}
+                            
+                            {{ $completion }}
                         </td>
                     </tr>
                 </tbody>
             </table> 
         @endif
         </div>
-@endif
+    @endif
     </div>
 </div>
 </div>
