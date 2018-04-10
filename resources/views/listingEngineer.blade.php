@@ -56,11 +56,11 @@
                                    <td>:</td>
                                    <td><input readonly id="address" required type="text" placeholder="Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
                                </tr>
-                               <tr>
+                               <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
-                               </tr>
+                               </tr> -->
                                <tr>
                                    <td>Other Approvals</td>
                                    <td>:</td>
