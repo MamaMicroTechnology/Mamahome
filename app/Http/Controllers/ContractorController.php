@@ -17,9 +17,9 @@ class ContractorController extends Controller
     public function getUpdates()
     {
       if(Auth::user()->employeeId == "MH398"){
-        return redirect('contractorDetails?page=2');
-      }elseif(Auth::user()->employeeId == "MH401"){
         return redirect('contractorDetails?page=1');
+      }elseif(Auth::user()->employeeId == "MH401"){
+        return redirect('contractorDetails?page=2');
       }elseif(Auth::user()->employeeId == "MH296"){
         return redirect('contractorDetails?page=3');
       }elseif(Auth::user()->employeeId == "MH390"){
@@ -40,8 +40,7 @@ class ContractorController extends Controller
       if(Auth::user()->employeeId == "MH296" || Auth::user()->employeeId == "MH390" || Auth::user()->employeeId == "MH404"){
         $projects = ProjectDetails::whereIn('project_id',$projectIds)->where('project_status',"Plastering")->paginate(30);
       }else{
-        $stages = ["Planning","Foundation"];
-        $projects = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('project_status',$stages)->paginate(30);
+        $projects = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('project_status',"Roofing")->paginate(30);
       }
     	return view('contractor',['projects'=>$projects]);
     }
