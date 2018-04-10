@@ -79,26 +79,6 @@
                                 <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
                             </td>
                         </tr>
-                        <!-- <tr>
-                            <td><b>Municipality Approval</b></td>
-                            <td>
-                                @if($details->municipality_approval != "N/A")
-                                <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->municipality_approval }}">
-                                @else
-                                N/A
-                                @endif
-                            </td>
-                        </tr> -->
-                        <!-- <tr>
-                            <td><b>Other Approval</b></td>
-                            <td>
-                                @if($details->other_approvals != "N/A")
-                                <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->other_approvals }}">
-                                @else
-                                N/A
-                                @endif
-                            </td>
-                        </tr> -->
                         <tr>
                             <td><b>Budget (Cr.)</b></td>
                             <td>
@@ -171,9 +151,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $details->procurementdetails->procurement_name }}</td>
-                            <td>{{ $details->procurementdetails->procurement_contact_no }}</td>
-                            <td>{{ $details->procurementdetails->procurement_email }}</td>
+                            <td>{{ $details->procurementdetails != null ? $details->procurementdetails->procurement_name : '' }}</td>
+                            <td>{{ $details->procurementdetails != null ? $details->procurementdetails->procurement_contact_no : '' }}</td>
+                            <td>{{ $details->procurementdetails != null ? $details->procurementdetails->procurement_email : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        
@@ -196,9 +176,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $details->siteengineerdetails->site_engineer_name }}</td>
-                            <td>{{ $details->siteengineerdetails->site_engineer_contact_no }}</td>
-                            <td>{{ $details->siteengineerdetails->site_engineer_email }}</td>
+                            <td>{{ $details->siteengineerdetails != null ? $details->siteengineerdetails->site_engineer_name : '' }}</td>
+                            <td>{{ $details->siteengineerdetails != null ? $details->siteengineerdetails->site_engineer_contact_no : '' }}</td>
+                            <td>{{ $details->siteengineerdetails != null ? $details->siteengineerdetails->site_engineer_email : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        
@@ -221,9 +201,9 @@
                     </thead>    
                     <tbody>
                         <tr>
-                            <td>{{ $details->contractordetails->contractor_name }}</td>
-                            <td>{{ $details->contractordetails->contractor_email }}</td>
-                            <td>{{ $details->contractordetails->contractor_contact_no }}</td>
+                            <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_name : '' }}</td>
+                            <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_email : '' }}</td>
+                            <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_contact_no : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        
@@ -246,9 +226,9 @@
                     </thead>    
                     <tbody>
                         <tr>
-                            <td>{{ $details->consultantdetails->consultant_name }}</td>
-                            <td>{{ $details->consultantdetails->consultant_email }}</td>
-                            <td>{{ $details->consultantdetails->consultant_contact_no }}</td>
+                            <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_name : '' }}</td>
+                            <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_email : '' }}</td>
+                            <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_contact_no : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        

@@ -2010,47 +2010,87 @@ class HomeController extends Controller
     }
     public function salesreports(Request $request)
     {
-        $users = User::where('group_id','7')->where('department_id',2)->get();
-        if($request->userId && !$request->date){
-            $selected = User::where('employeeId',$request->userId)->first();
-            $wardassigned = salesassignment::where('user_id',$selected->id)->first();
-            $subward = SubWard::where('id',$wardassigned->assigned_date)->pluck('sub_ward_name')->first();
-            $followups = ActivityLog::where('employee_id',$request->userId)->where('activity','LIKE','%Followup: Yes,%')->count();
-            $ordersinitiate = Requirement::where('generated_by',$selected->id)->count();
-            $genuine = ActivityLog::where('employee_id',$request->userId)->where('activity','LIKE','%Quality: Genuine,%')->count();
-            $fake = ActivityLog::where('employee_id',$request->userId)->where('activity','LIKE','%Quality: Fake,%')->count();
-            $calls = ProjectDetails::where('call_attended_by',$selected->id)->count();
-            $ordersconfirmed = Requirement::where('generated_by',$selected->id)->where('status','Enquiry Confirmed')->count();
-            return view('salesReport',['users'=>$users,'followups'=>$followups,'subward'=>$subward,'ordersinitiate'=>$ordersinitiate,'genuine'=>$genuine,'fake'=>$fake,'calls'=>$calls,'ordersConfirmed'=>$ordersconfirmed,'name'=>$selected->name]);
-        }elseif($request->userId && $request->date){
-            $selected = User::where('employeeId',$request->userId)->first();
-            $wardassigned = salesassignment::where('user_id',$selected->id)->first();
-            
-            $subward = SubWard::where('id',$wardassigned->assigned_date)->pluck('sub_ward_name')->first();
-            $followups = ActivityLog::where('employee_id',$request->userId)
-                            ->where('activity','LIKE','%Followup: Yes,%')
-                            ->where('time','LIKE',$request->date.'%')
-                            ->count();
-            $ordersinitiate = Requirement::where('generated_by',$selected->id)
-                                ->where('created_at','LIKE',$request->date.'%')
-                                ->count();
-            $genuine = ActivityLog::where('employee_id',$request->userId)
-                                ->where('activity','LIKE','%Quality: Genuine,%')
-                                ->where('time','LIKE',$request->date.'%')
-                                ->count();
-            $fake = ActivityLog::where('employee_id',$request->userId)
-                        ->where('activity','LIKE','%Quality: Fake,%')
-                        ->where('time','LIKE',$request->date.'%')
-                        ->count();
-            $calls = ProjectDetails::where('call_attended_by',$selected->id)
-                        ->where('updated_at','LIKE',$request->date.'%')
-                        ->count();
-            $ordersconfirmed = Requirement::where('generated_by',$selected->id)
-                                    ->where('status','Enquiry Confirmed')
-                                    ->where('updated_at','LIKE',$request->date.'%')
-                                    ->count();
-            return view('salesReport',['users'=>$users,'followups'=>$followups,'subward'=>$subward,'ordersinitiate'=>$ordersinitiate,'genuine'=>$genuine,'fake'=>$fake,'calls'=>$calls,'ordersConfirmed'=>$ordersconfirmed,'name'=>$selected->name]);
+        if($request->se == "ALL" && $request->fromdate && !$request->todate){
+            $date = $request->fromdate;
+            $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
+        }elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
+            $date = $request->fromdate;
+            $str = ActivityLog::where('time','LIKE',$request->fromdate.'%')
+                    ->where('employee_id',$request->se)
+                    ->where('activity','LIKE','%Updated a project%')->get();
+        }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
+            $date = $request->fromdate;
+            $str = ActivityLog::where('time','>',$request->fromdate)
+                    ->where('time','<',$request->todate)
+                    ->where('activity','LIKE','%Updated a project%')->get();
+        }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
+            $date = $request->fromdate;
+            $str = ActivityLog::where('time','>',$request->fromdate)
+                    ->where('time','<',$request->todate)
+                    ->where('employee_id',$request->se)
+                    ->where('activity','LIKE','%Updated a project%')->get();
+        }else{
+            $date = date('Y-m-d');
+            $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
         }
-        return view('salesReport',['users'=>$users]);
+        $today = date('Y-m-d');
+        $exploded = array();
+        $projectIds = array();
+        foreach($str as $strings){
+            array_push($exploded,explode(" ",$strings->activity));
+        }
+        for($i = 0;$i<count($exploded);$i++){
+            $key = array_search("id:", $exploded[$i]);
+            $name = array_search("has", $exploded[$i]);
+            $quality = array_search("Quality:", $exploded[$i]);
+            $projectIds[$i]['projectId'] = $exploded[$i][$key+1];
+            if($name == 3){
+                $projectIds[$i]['updater'] = $exploded[$i][$name-3]." ".$exploded[$i][$name-2]." ".$exploded[$i][$name-1];
+            }elseif($name == 2){
+                $projectIds[$i]['updater'] = $exploded[$i][$name-2]." ".$exploded[$i][$name-1];
+            }else{
+                $projectIds[$i]['updater'] = $exploded[$i][$name-1];
+            }
+            $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->first();
+            $projectIds[$i]['quality'] = $project->quality;
+            $projectIds[$i]['followup'] = $project->followup;
+            $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
+            $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
+            $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
+            $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
+            $projectIds[$i]['enquiryInitiatedBy'] = Requirement::where('requirements.project_id',$projectIds[$i]['projectId'])
+                                                        ->leftjoin('users','requirements.generated_by','users.id')
+                                                        ->select('users.name','requirements.id')
+                                                        ->get();                                       
+        }
+        $noOfCalls = array();
+        $users = User::where('group_id','7')->where('department_id',2)
+                    ->leftjoin('salesassignments','salesassignments.user_id','users.id')
+                    ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
+        foreach($users as $user){
+            $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
+                                        ->where('call_attended_by',$user->id)
+                                        ->count();
+            $noOfCalls[$user->id]['fake'] = ActivityLog::where('time','LIKE',$today.'%')
+                                        ->where('employee_id',$user->employeeId)
+                                        ->where('activity','LIKE','%Quality: Fake%')
+                                        ->count();
+            $noOfCalls[$user->id]['genuine'] = ActivityLog::where('time','LIKE',$today.'%')
+                                        ->where('employee_id',$user->employeeId)
+                                        ->where('activity','LIKE','%Quality: Genuine%')
+                                        ->count();
+            $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
+                                                    ->where('generated_by',$user->id)
+                                                    ->count();
+        }
+        $projectsCount = count($projectIds);
+        return view('salesReport',['users'=>$users,
+                'date'=>$date,
+                'projectsCount'=>$projectsCount,
+                'noOfCalls'=>$noOfCalls,
+                'projectIds'=>$projectIds
+            ]);
     }
 }
