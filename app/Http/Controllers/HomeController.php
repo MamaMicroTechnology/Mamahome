@@ -649,8 +649,8 @@ class HomeController extends Controller
             
         }
         $records[1] = $id.' '.$quality.' '.$date1.' '.$date2;
-        $records[3] = date('d-M-Y',strtotime($date1));
-        $records[4] = date('d-M-Y',strtotime($date2));
+        $records[4] = date('d-m-Y',strtotime($date2));
+        $records[3] = date('d-m-Y',strtotime($date1));
         return response()->json($records);
     }
     public function viewEmployee(Request $id)

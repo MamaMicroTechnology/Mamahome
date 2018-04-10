@@ -84,7 +84,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
   ['Quality', 'In percentage'],
-  ['Unverified : {{ $notConfirmed }} ', {{ $notConfirmed }}],
+  ['Unverified :{{ $notConfirmed }} ', {{ $notConfirmed }}],
   ['Fake : {{ $fake }}', {{ $fake }}],
   ['Genuine : {{ $genuine }}', {{ $genuine }}]
 ]);
@@ -197,7 +197,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
   ['Quality', 'In percentage'],
-  ['Unverified : {{ $notConfirmed }} ', {{ $notConfirmed }}],
+  ['Unverified:{{$notConfirmed }} ', {{ $notConfirmed }}],
   ['Fake : {{ $fake }}', {{ $fake }}],
   ['Genuine : {{ $genuine }}', {{ $genuine }}]
 ]);

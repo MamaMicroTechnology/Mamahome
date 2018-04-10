@@ -373,7 +373,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers</a>
+    <a href="{{ URL::to('/') }}/assignListSlots">Assign and Reports</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
 </div>
