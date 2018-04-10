@@ -170,10 +170,15 @@ class mamaController extends Controller
     }
     public function save_edit(Request $request){
 
+         $zoneimage = time().'.'.request()->image->getClientOriginalExtension();
+        $request->image->move(public_path('zoneimages'),$zoneimage);
+
         Zone::where('id',$request->zoneId)->update([
             'zone_name'=> $request->zone_name,
-            'zone_number' => $request->zone_no
+            'zone_number' => $request->zone_no,
+             'zone_image' => $zoneimage,
         ]);
+
         return redirect()->back()->with('Success','zone updated sucessfully');
     }
     public function addWard(Request $request)

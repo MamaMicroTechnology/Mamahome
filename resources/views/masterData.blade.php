@@ -91,15 +91,20 @@
           <h4 class="modal-title">Modal Header</h4>
         </div>
         <div class="modal-body">
-          <form method="POST" action="{{ URL::to('/') }}/saveEdit">
+          <form method="POST" action="{{ URL::to('/') }}/saveEdit" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            <input type="hidden" value="{{ $zone->id }}" name="zoneId">
+                            <input type="hidden" value="{{ $zone->id }}" name="zoneId" >
                             <table class="table">
                                 <tr>
                                     <!--  -->
                                     <td><input type="text" name="zone_name" required class="form-control input-sm" value="{{ $zone->zone_name}}" ></td>
                                     <td><input type="text" name="zone_no" required class="form-control input-sm" value="{{ $zone->zone_number}}" ></td>
-                                    
+                                    <td>
+                                         <input type="file" name="image" required class="form-control input-sm" accept="image/*" value="{{ $zone->zone_image }}" >
+                                         <img  height="500" class="img img-responsive" width="500" src= "{{ URL::to('/') }}/public/zoneimages/{{ $zone->zone_image }}"/>
+                                     </td>
+
+
                                     <td><button type="submit" class="btn btn-success input-sm">Save</button></td>
                                 </tr>
                             </table>
