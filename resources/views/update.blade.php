@@ -231,17 +231,17 @@
                                <tr>
                                    <td>Owner Name</td>
                                    <td>:</td>
-                                   <td><input value="{{ $projectdetails->ownerdetails->owner_name }}" type="text" placeholder="Owner Name" class="form-control input-sm" id="oName" name="oName"></td>
+                                   <td><input value="{{ $projectdetails->ownerdetails != null ? $projectdetails->ownerdetails->owner_name : '' }}" type="text" placeholder="Owner Name" class="form-control input-sm" id="oName" name="oName"></td>
                                </tr>
                                <tr>
                                    <td>Owner Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ $projectdetails->ownerdetails->owner_email }}" placeholder="Owner Email" type="email" class="form-control input-sm" onblur="checkmail('oEmail')" id="oEmail" name="oEmail"></td>
+                                   <td><input value="{{ $projectdetails->ownerdetails != null ? $projectdetails->ownerdetails->owner_email : '' }}" placeholder="Owner Email" type="email" class="form-control input-sm" onblur="checkmail('oEmail')" id="oEmail" name="oEmail"></td>
                                </tr>
                                <tr>
                                    <td>Owner Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ $projectdetails->ownerdetails->owner_contact_no }}" onkeyup="check('oContact')" placeholder="Owner Contact No." type="text" class="form-control input-sm" maxlength="10" minlength="10" name="oContact" id="oContact"></td>
+                                   <td><input value="{{ $projectdetails->ownerdetails != null ? $projectdetails->ownerdetails->owner_contact_no : '' }}" onkeyup="check('oContact')" placeholder="Owner Contact No." type="text" class="form-control input-sm" maxlength="10" minlength="10" name="oContact" id="oContact"></td>
                                </tr>
                            </table>
                        </div>
