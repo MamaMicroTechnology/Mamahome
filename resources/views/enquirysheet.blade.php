@@ -148,9 +148,9 @@
 									</select>
 								</form>
 							</td>
-							<!-- <td>
+							<td>
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
-							</td> -->
+							</td>
 						</tr>
 						@endif
 						@endforeach

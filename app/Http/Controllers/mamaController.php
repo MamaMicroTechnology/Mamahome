@@ -1314,9 +1314,11 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
+        $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
+        $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
         Requirement::where('id',$request->reqId)->update([
-            'main_category' => $request->mCategory,
-            'sub_category' => $request->sCategory,
+            'main_category' => $category,
+            'sub_category' => $subcategory,
             'generated_by' => $request->initiator,
             'notes' => $request->eremarks,
             'quantity' => $request->equantity,

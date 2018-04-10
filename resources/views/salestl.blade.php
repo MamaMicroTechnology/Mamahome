@@ -1,4 +1,4 @@
-@extends('layouts.amheader')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -59,7 +59,7 @@
     </div>
 </div>
 
-<div class='b'></div>
+<!-- <div class='b'></div>
 <div class='bb'></div>
 <div class='message'>
   <div class='check'>
@@ -76,7 +76,7 @@
   <button id='ok'>
     OK
   </button>
-</div>
+</div> -->
 
 @foreach($users as $user)
 <!-- Modal -->

@@ -1534,7 +1534,7 @@ class HomeController extends Controller
     {
         $wards = Ward::all();
         $projects = ProjectDetails::all();
-        $totalProjects = count($projects);
+        $totalProjects = ProjectDetails::all()->count();
         if($request->ward && !$request->subward){
             if($request->ward == "All"){
                 $wardsselect = Ward::pluck('id');
@@ -2007,5 +2007,50 @@ class HomeController extends Controller
     {
         RoomType::findOrFail($request->roomId)->delete();
         return back()->with('Success','Room type deleted');
+    }
+    public function salesreports(Request $request)
+    {
+        $users = User::where('group_id','7')->where('department_id',2)->get();
+        if($request->userId && !$request->date){
+            $selected = User::where('employeeId',$request->userId)->first();
+            $wardassigned = salesassignment::where('user_id',$selected->id)->first();
+            $subward = SubWard::where('id',$wardassigned->assigned_date)->pluck('sub_ward_name')->first();
+            $followups = ActivityLog::where('employee_id',$request->userId)->where('activity','LIKE','%Followup: Yes,%')->count();
+            $ordersinitiate = Requirement::where('generated_by',$selected->id)->count();
+            $genuine = ActivityLog::where('employee_id',$request->userId)->where('activity','LIKE','%Quality: Genuine,%')->count();
+            $fake = ActivityLog::where('employee_id',$request->userId)->where('activity','LIKE','%Quality: Fake,%')->count();
+            $calls = ProjectDetails::where('call_attended_by',$selected->id)->count();
+            $ordersconfirmed = Requirement::where('generated_by',$selected->id)->where('status','Enquiry Confirmed')->count();
+            return view('salesReport',['users'=>$users,'followups'=>$followups,'subward'=>$subward,'ordersinitiate'=>$ordersinitiate,'genuine'=>$genuine,'fake'=>$fake,'calls'=>$calls,'ordersConfirmed'=>$ordersconfirmed,'name'=>$selected->name]);
+        }elseif($request->userId && $request->date){
+            $selected = User::where('employeeId',$request->userId)->first();
+            $wardassigned = salesassignment::where('user_id',$selected->id)->first();
+            
+            $subward = SubWard::where('id',$wardassigned->assigned_date)->pluck('sub_ward_name')->first();
+            $followups = ActivityLog::where('employee_id',$request->userId)
+                            ->where('activity','LIKE','%Followup: Yes,%')
+                            ->where('time','LIKE',$request->date.'%')
+                            ->count();
+            $ordersinitiate = Requirement::where('generated_by',$selected->id)
+                                ->where('created_at','LIKE',$request->date.'%')
+                                ->count();
+            $genuine = ActivityLog::where('employee_id',$request->userId)
+                                ->where('activity','LIKE','%Quality: Genuine,%')
+                                ->where('time','LIKE',$request->date.'%')
+                                ->count();
+            $fake = ActivityLog::where('employee_id',$request->userId)
+                        ->where('activity','LIKE','%Quality: Fake,%')
+                        ->where('time','LIKE',$request->date.'%')
+                        ->count();
+            $calls = ProjectDetails::where('call_attended_by',$selected->id)
+                        ->where('updated_at','LIKE',$request->date.'%')
+                        ->count();
+            $ordersconfirmed = Requirement::where('generated_by',$selected->id)
+                                    ->where('status','Enquiry Confirmed')
+                                    ->where('updated_at','LIKE',$request->date.'%')
+                                    ->count();
+            return view('salesReport',['users'=>$users,'followups'=>$followups,'subward'=>$subward,'ordersinitiate'=>$ordersinitiate,'genuine'=>$genuine,'fake'=>$fake,'calls'=>$calls,'ordersConfirmed'=>$ordersconfirmed,'name'=>$selected->name]);
+        }
+        return view('salesReport',['users'=>$users]);
     }
 }

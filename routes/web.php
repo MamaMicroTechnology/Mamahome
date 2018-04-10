@@ -145,6 +145,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/employeereports','HomeController@employeereports');
     Route::get('/viewallProjects','HomeController@viewallProjects');
     Route::get('/deleteProject','mamaController@deleteProject');
+    Route::get('/salesreports','HomeController@salesreports');
     
     Route::post('/saveEdit','mamaController@save_edit');
 
@@ -188,6 +189,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/completedAssignment','mamaController@completedAssignment');
     Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
     Route::get('/completethis','HomeController@completethis');
+    Route::get('/tlsalesreports','HomeController@salesreports');
         
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');

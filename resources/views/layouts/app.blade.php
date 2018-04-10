@@ -326,6 +326,7 @@ div#calendar{
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/mapping">Mapping</a>
     <a href="{{ URL::to('/getprojectsize') }}">Listed Project & Sizes</a>
+    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
@@ -371,8 +372,9 @@ div#calendar{
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign Lists Engineers</a>
+    <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
+    <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
 </div>
 @endif
 @endif
