@@ -28,9 +28,9 @@
 				<tbody id="details">
 					@foreach($projects as $project)
 					<tr>
-						<td>{{$project->ownerdetails->owner_name}}</td>
-   						<td>{{$project->ownerdetails->owner_contact_no}}</td>
-   						<td>{{$project->ownerdetails->owner_email}}</td>
+						<td>{{$project->procurementdetails->procurement_name}}</td>
+   						<td>{{$project->procurementdetails->procurement_contact_no}}</td>
+   						<td>{{$project->procurementdetails->procurement_email}}</td>
    						<td>{{$project->siteaddress->address}}</td>
    						<td>{{$project->budget }}Cr.</td>
    						<td>{{$project->project_size}} Sqm</td>
