@@ -66,7 +66,7 @@
                             <tr>
                                 <td style="width:40%;"><b>Project Type</b></td>
                                 <td>
-                                    Ground({{ $rec->ground }}) + Basement({{ $rec->basement}}) + 1 = 
+                                    B{{ $rec->basement}} + G + {{ $rec->ground }}= 
                                     {{$rec->project_type}}
                                 </td>
                             </tr>

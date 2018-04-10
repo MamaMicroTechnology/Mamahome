@@ -53,7 +53,7 @@
                         </tr>
                             <tr>
                             <td><b>Project Type</b></td>
-                            <td>B({{ $details->basement }}) + ({{ $details->ground }}) + G = {{ $details->basement + $details->ground + 1 }}</td>
+                            <td>B{{ $details->basement }} + G + {{ $details->ground }} = {{ $details->basement + $details->ground + 1 }}</td>
                         </tr>
                             <tr>
                             <td><b>Project Size</b></td>
