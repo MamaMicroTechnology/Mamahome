@@ -350,6 +350,7 @@ div#calendar{
     <div id="demo" class="collapse">
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
+        <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Checklist</a>
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Pages &#x21F2;</a>
     <div id="ap" class="collapse">

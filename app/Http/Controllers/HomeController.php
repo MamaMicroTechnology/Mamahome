@@ -18,6 +18,7 @@ use App\SiteAddress;
 use App\Territory;
 use App\State;
 use App\Zone;
+use App\Checklist;
 use App\loginTime;
 use App\Requirement;
 use App\ProcurementDetails;
@@ -1849,6 +1850,32 @@ class HomeController extends Controller
         $groups = Group::all();
         return view('anr',['departments'=>$departments,'groups'=>$groups,'page'=>"anr"]);
     }
+    public function getCheck(Request $request)
+    { 
+        $lists = Checklist::all();
+        return view('getCheck',['lists'=>$lists]);
+    }
+    public function uploadfile(Request $request){
+        $extension = request()->upload->getClientOriginalExtension();
+        $files = time().'.'.strtoupper($extension);
+        $request->upload->move(public_path('hrfiles'),$files);
+        $list = New Checklist;
+        $list->id=$request->id;
+        $list->name= $request->name;
+        $list->upload= $files;
+        $list->save();
+        return back();
+
+    }
+    public function deletelist(Request $id)
+    {
+        
+
+        Checklist::where('id',$id->id)->delete();
+        return back();
+
+    }
+    
     public function getSalesStatistics(){
         $notProcessed = Requirement::where('status',"Not Processed")->count();
         $initiate = Requirement::where('status',"Order Initiated")->count();

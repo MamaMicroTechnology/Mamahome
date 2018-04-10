@@ -146,8 +146,10 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/viewallProjects','HomeController@viewallProjects');
     Route::get('/deleteProject','mamaController@deleteProject');
     Route::get('/salesreports','HomeController@salesreports');
-    
     Route::post('/saveEdit','mamaController@save_edit');
+    Route::get('/check','HomeController@getCheck');
+    Route::post('/uploadfile','HomeController@uploadfile');
+    Route::get('/deletelist','HomeController@deletelist');
 
     
     Route::post('/addDepartment','mamaController@addDepartment');
