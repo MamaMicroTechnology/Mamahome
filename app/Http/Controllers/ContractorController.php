@@ -38,7 +38,7 @@ class ContractorController extends Controller
     {
       $projectIds = OwnerDetails::whereNotNull('owner_contact_no')->orderby('owner_contact_no')->pluck('project_id');
       if(Auth::user()->employeeId == "MH296" || Auth::user()->employeeId == "MH390" || Auth::user()->employeeId == "MH404"){
-        $projects = ProjectDetails::where('project_status',"Roofing")->paginate(30);
+        $projects = ProjectDetails::where('project_status',"Plastering")->paginate(30);
       }else{
         $projects = ProjectDetails::where('project_status',"Roofing")->paginate(30);
       }
