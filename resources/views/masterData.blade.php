@@ -77,7 +77,7 @@
                                             <td>{{ $zone->country->country_name }} </td>
                                             <td>{{ $zone->zone_name }}</td>
                                             <td>{{ $zone->zone_number }}</td>
-                                            <td style="width:10%"><center><a href="{{ URL::to('/')}}/zoneimages/{{ $zone->zone_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
+                                            <td style="width:10%"><center><a href="{{ URL::to('/')}}/public/zoneimages/{{ $zone->zone_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
   <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal{{ $zone->id }}">Edit</button>
 
   <!-- Modal -->
