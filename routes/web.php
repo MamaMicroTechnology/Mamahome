@@ -150,6 +150,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/check','HomeController@getCheck');
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
+    Route::get('/vedio','HomeController@trainingVedio');
 
     
     Route::post('/addDepartment','mamaController@addDepartment');

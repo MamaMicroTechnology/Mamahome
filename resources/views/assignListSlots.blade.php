@@ -3,21 +3,21 @@
 @section('content')
 <div class="col-md-12">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading" style="color:white">Listing Engineers
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style=" height:500px;max-height:500px;overflow-y:scroll; overflow-x: hidden;">
                     <table class="table table-responsive table-striped">
                         <thead>
                             <th style="text-align: center;">Employee Id</th>
                             <th style="text-align: center;">Name</th>
                             <th style="text-align: center;">Ward Assigned</th>
                             <th style="text-align: center;">Previous Assigned Ward</th>  
-                            <th style="text-align: center;">Images</th>
+                            <th style="text-align: center;">Ward Images</th>
                             <th style="text-align: center;">Contact No.</th>
                             <th style="text-align: center;">Action</th>
                         </thead>
@@ -71,10 +71,44 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default" style="border-color:green">
+                <div class="panel-heading" style="color:white;background-color:green">Zones
+                    @if(session('ErrorZone'))
+                        <div class="alert-danger pull-right">{{ session('ErrorZone' )}}</div>
+                    @endif 
+                </div>
+                <div class="panel-body" style=" height: 500px; max-height: 500px; overflow-y:scroll; overflow-x: hidden;">
+        
+                        <table class="table">
+                            <thead>       
+                                    <th style="padding-left: 50px;">Zone Name</th>
+                                    <th style="padding-right: 50px;">Zone No</th>
+                                    <th  >Zone Image</th>   
+                            </thead>
+                            <tbody>
+                                    @foreach($zones as $zone)
+                                        <tr>
+                                           <td style="text-align: left;padding-left:70px">{{ $zone->zone_name }}</td>
+                                            <td >{{ $zone->zone_number }}</td>
+                                            <td ><a href="{{ URL::to('/')}}/public/zoneimages/{{ $zone->zone_image}}"  target="_blank">View image</a></td>
+                                        </tr>
+                                        @endforeach
+                            </tbody>
+                              
+                        </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            
             <div class="panel panel-default" style="border-color: green">
                 <div class="panel-heading" style="color:white;background-color: green">Main Wards</div>
-                <div class="panel-body">
+                <div class="panel-body" style=" height: 500px; max-height: 500px; overflow-y:scroll; overflow-x: hidden;">
                     <table class="table">
                         <thead>
                             <th style="text-align: center;">Ward Name</th>
@@ -94,6 +128,7 @@
         </div>
     </div>
 </div>
+
 
 @foreach($users as $user)
 <!-- Modal -->

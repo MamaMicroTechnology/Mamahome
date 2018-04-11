@@ -1062,6 +1062,8 @@ class mamaController extends Controller
             $empDetails->spouse_name = $request->spouseName;
             $empDetails->alt_phone = $request->altPh;
             $empDetails->office_phone = $request->office;
+            $empDetails->official_email = $request->official_email;
+            $empDetails->personal_email = $request->personal_email;
             $empDetails->permanent_address = $request->perAdd;
             if($request->permanenAddressProof != NULL){
                 $address = "address1".time().'.'.request()->permanenAddressProof->getClientOriginalExtension();
@@ -1110,6 +1112,8 @@ class mamaController extends Controller
             $check->spouse_name = $request->spouseName;
             $check->alt_phone = $request->altPh;
             $check->office_phone = $request->office;
+            $check->official_email = $request->official_email;
+            $check->personal_email = $request->personal_email;
             $check->permanent_address = $request->perAdd;
             if($request->permanenAddressProof != NULL){
                 $address = "address1".time().'.'.request()->permanenAddressProof->getClientOriginalExtension();

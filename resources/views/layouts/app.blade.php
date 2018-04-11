@@ -351,6 +351,7 @@ div#calendar{
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Checklist</a>
+       <!--  <a href="{{ URL::to('/vedio') }}">&nbsp;&nbsp;&nbsp; - Training Vedio</a> -->
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Pages &#x21F2;</a>
     <div id="ap" class="collapse">
@@ -373,7 +374,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign and Reports</a>
+    <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
 </div>

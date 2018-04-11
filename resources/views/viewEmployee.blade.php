@@ -73,6 +73,12 @@
                             <td>: {{ $details->alt_phone }}</td>
                         </tr>
                         <tr>
+                            <td>Official Email-id</td>
+                            <td>: {{ $details->official_email }}</td>
+                            <td>Personal Email-id</td>
+                            <td>: {{ $details->personal_email }}</td>
+                        </tr>
+                        <tr>
                             <td>Permanent Address</td>
                             <td>: {{ $details->permanent_address }}</td>
                             <td>Present Address</td>

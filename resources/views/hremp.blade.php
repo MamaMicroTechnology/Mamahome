@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-<div class="panel-heading">Employees On {{ $dept }}</div>
+<div class="panel panel-default" style="border-color:green">
+<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees On {{ $dept }}</div>
 <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
 <table class="table table-hover">
 <thead>
@@ -9,6 +9,7 @@
     <th>Acceptance</th>
     <th>Designation</th>
     <th>Office Phone</th>
+    <th>Action</th>
 </thead>
 <tbody>
 @foreach($users as $user)
@@ -63,9 +64,18 @@
         @if($page == "hr" && $user->department != NULL)
         <td>
             <div class="btn-group">
-                <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" class="btn btn-sm btn-primary">View</a>
-                <a href="{{ URL::to('/') }}/editEmployee?UserId={{ $user->employeeId }}" class="btn btn-sm btn-success">Edit</a>
+                <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >View</a>
+                <a href="{{ URL::to('/') }}/editEmployee?UserId={{ $user->employeeId }}" >Edit</a>
             </div>
+        </td>
+        <td>
+            <form method="post" action="{{ URL::to('/') }}/inactiveEmployee">
+                {{ csrf_field() }}
+                <input type="hidden" name="id" value="{{ $user->employeeId }}">
+                <input type="submit" value="Mark Inactive" class="btn btn-sm btn-danger">
+            </form>
+
+
         </td>
         @endif
     </tr>

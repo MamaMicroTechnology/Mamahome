@@ -403,33 +403,34 @@ div#calendar{
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
           @if(Auth::check())
-            <li><a href="{{ URL::to('/home') }}">Home</a></li>
+            <a href="{{ URL::to('/home') }}">Home</a>
         @if(Auth::user()->group_id == 14)
-            <li><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
+            <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
+            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
         @else
-            <li><a href="{{ URL::to('/amorderss') }}">Orders</a></li>
+           <a href="{{ URL::to('/amorderss') }}">Orders</a>
             @if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)
-            <li><a href="{{ URL::to('/pricing') }}">Pricing</a></li>
-            <li><a href="{{ URL::to('/') }}/amfinance">Finance</a></li>
-            <li><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
-            <li><a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a></li>
-            <li><a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a></li>
-            <li><a href="{{ URL::to('/') }}/amkra">KRA</a></li>
-            <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
-            <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
-            <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
-            <li><a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+           <a href="{{ URL::to('/pricing') }}">Pricing</a>
+           <a href="{{ URL::to('/') }}/amfinance">Finance</a>
+           <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
+           <a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a>
+           <a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a>
+           <a href="{{ URL::to('/') }}/amkra">KRA</a>
+           <a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a>
+           <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+           <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
+           <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             @elseif(Auth::user()->group_id == 1)
-            <li><a href="{{ URL::to('/pricing') }}">Pricing</a></li>
-            <li><a href="{{ URL::to('/') }}/amfinance">Finance</a></li>
-            <li><a href="{{ URL::to('/') }}/amhumanresources">HR</a></li>
-            <li><a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a></li>
-            <li><a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a></li>
-            <li><a href="{{ URL::to('/') }}/amkra">KRA</a></li>
-            <li><a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a></li>
-            <li><a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
-            <li><a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
-            <li><a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+           <a href="{{ URL::to('/pricing') }}">Pricing</a>
+           <a href="{{ URL::to('/') }}/amfinance">Finance</a>
+           <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
+           <a href="{{ URL::to('/') }}/amvendordetails">Vendor details</a>
+           <a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a>
+           <a href="{{ URL::to('/') }}/amkra">KRA</a>
+           <a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a>
+           <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+           <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
+           <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             @endif
         @endif
         @endif

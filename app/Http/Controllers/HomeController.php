@@ -681,7 +681,8 @@ class HomeController extends Controller
         $subwardsAssignment = WardAssignment::all();
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
         $wards = Ward::orderby('ward_name','ASC')->get();
-        return view('assignListSlots',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards]);
+        $zones = Zone::all();
+        return view('assignListSlots',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards,'zones'=>$zones]);
     }
 
     public function loadSubWards(Request $request)
@@ -1854,6 +1855,12 @@ class HomeController extends Controller
     { 
         $lists = Checklist::all();
         return view('getCheck',['lists'=>$lists]);
+    }
+    public function trainingVedio()
+    { 
+        $depts = Department::all();
+        $grps = Group::all();
+        return view('trainingVedio',['depts'=>$depts,'grps'=>$grps]);
     }
     public function uploadfile(Request $request){
         $extension = request()->upload->getClientOriginalExtension();

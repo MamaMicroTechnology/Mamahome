@@ -55,8 +55,8 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 </style>
-<div class="panel panel-default">
-<div class="panel-heading">{{ $dept }}</div>
+<div class="panel panel-default" style="border-color:green">
+<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white" >Employees on {{ $dept }}</div>
 <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
 <table class="table table-hover">
 <thead>
