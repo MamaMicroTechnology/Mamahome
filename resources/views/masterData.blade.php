@@ -88,7 +88,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Edit Zone</h4>
         </div>
         <div class="modal-body">
           <form method="POST" action="{{ URL::to('/') }}/saveEdit" enctype="multipart/form-data">
@@ -99,9 +99,14 @@
                                     <!--  -->
                                     <td><input type="text" name="zone_name" required class="form-control input-sm" value="{{ $zone->zone_name}}" ></td>
                                     <td><input type="text" name="zone_no" required class="form-control input-sm" value="{{ $zone->zone_number}}" ></td>
+
                                     <td>
+
                                          <input type="file" name="image" required class="form-control input-sm" accept="image/*" value="{{ $zone->zone_image }}" >
-                                         <img  height="500" class="img img-responsive" width="500" src= "{{ URL::to('/') }}/public/zoneimages/{{ $zone->zone_image }}"/>
+                                       @if($zone->zone_image!=NULL) 
+                        <img  height="500" class="img img-responsive" width="500" src= "{{ URL::to('/') }}/public/zoneimages/{{ $zone->zone_image }}">
+
+                                         @endif
                                      </td>
 
 
