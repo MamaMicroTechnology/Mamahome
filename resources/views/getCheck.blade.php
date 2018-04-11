@@ -38,11 +38,11 @@
                         		<td >{{ $list->name }} </td>
                         		<td >
                         		
-                        				<a href="{{ URL::to('/')}}/public/hrfiles/{{ strtolower($list->upload)}} " class="btn btn-sm btn-primary" target="_blank">View file</a>
+                        				<a href="{{ URL::to('/')}}/public/hrfiles/{{ $list->upload }} " class="btn btn-sm btn-primary" target="_blank">View file</a>
                         			
                         		</td>
                         		<td>
-                        			<a href="{{ URL::to('/')}}/public/hrfiles/{{ $list->upload}} " class="btn btn-sm btn-success" target="_blank">Download</a>
+                        			<a href="{{ URL::to('/')}}/public/hrfiles/{{ $list->upload}} " class="btn btn-sm btn-success" target="_blank" download>Download</a>
                         		</td>
                         		<td>
                         			<a href="{{ URL::to('/')}}/deletelist?id={{ $list->id }}" class="btn btn-sm btn-danger" >Delete</a>
