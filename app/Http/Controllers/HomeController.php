@@ -126,7 +126,7 @@ class HomeController extends Controller
                                                 'notes'  =>$request->eremarks,
                                                 'created_at' => date('Y-m-d H:i:s'),
                                                 'updated_at' => date('Y-m-d H:i:s'),
-                                                'status' => "Order Initiated",
+                                                'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator
                                         ]);
