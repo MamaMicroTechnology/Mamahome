@@ -43,6 +43,7 @@ use App\ManufacturerDetail;
 use App\Certificate;
 use App\MhInvoice;
 use App\ActivityLog;
+use App\Order;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -105,15 +106,22 @@ class HomeController extends Controller
         if($request->mCategory == "All"){
             $category = "All";
         }else{
-            $category = Category::find($request->mCategory)->pluck('category_name')->first();
+            $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
         }
         if($request->sCategory == "All"){
             $subcategory = "All";
         }else{
-            $subcategory = SubCategory::find($request->sCategory)->pluck('sub_cat_name')->first();
+            $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
+        }
+
+        if($request->brand == "All"){
+            $brand = "All";
+        }else{
+            $brand = DB::table('brands')->where('id',$request->brand)->pluck('brand')->first();
         }
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' =>$category,
+                                                'brand' => $brand,
                                                 'sub_category'  =>$subcategory,
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
@@ -1073,8 +1081,9 @@ class HomeController extends Controller
     }
     public function printLPO($id, Request $request)
     {
-        $rec = ProjectDetails::where('project_id', $id)->first();
-        return view('printLPO', ['rec' => $rec]);
+        $order = Order::where('id',$id)->first();
+        $rec = ProjectDetails::where('project_id', $order->project_id)->first();
+        return view('printLPO', ['rec' => $rec,'order'=>$order,'id'=>$id]);
     }
     public function ampricing(Request $request){
         $prices = CategoryPrice::all();
@@ -1083,10 +1092,9 @@ class HomeController extends Controller
     }
     public function amorders()
     {
-        $view = Requirement::orderby('project_id','DESC')
-                ->leftJoin('users','requirements.generated_by','=','users.id')
-                ->where('requirements.status','Order Confirmed')
-                ->select('requirements.*','users.name','users.group_id')
+        $view = Order::orderby('project_id','DESC')
+                ->leftJoin('users','orders.generated_by','=','users.id')
+                ->select('orders.*','orders.id as orderid','users.name','users.group_id')
                 ->paginate(25);
         return view('ordersadmin',['view' => $view]);
     }
@@ -1133,7 +1141,7 @@ class HomeController extends Controller
     public function confirmOrder(Request $request)
     {
         $id = $request->id;
-        $x = Requirement::where('id', $id)->update(['status' => 'Order Confirmed']);
+        $x = Order::where('id', $id)->update(['status' => 'Order Confirmed','payment_status'=>'Payment Pending']);
         if($x)
         {
             return response()->json('Success !!!');
@@ -1146,7 +1154,7 @@ class HomeController extends Controller
     public function cancelOrder(Request $request)
     {
         $id = $request->id;
-        $x = Requirement::where('id', $id)->update(['status' => 'Order Cancelled']);
+        $x = Order::where('id', $id)->update(['status' => 'Order Cancelled']);
         if($x)
         {
             return response()->json('Success !!!');
@@ -1232,7 +1240,7 @@ class HomeController extends Controller
     {
         $id = $request->id;
         $update = $request->payment;
-        $x = Requirement::where('id', $id)->update(['payment_status' => $update]);
+        $x = Order::where('id', $id)->update(['payment_status' => $update]);
         if($x)
         {
             return response()->json($update);
@@ -1245,11 +1253,23 @@ class HomeController extends Controller
     public function updateamdispatch(Request $request)
     {
         $id = $request->id;
-        $update = $request->dispatch;
-        $x = Requirement::where('id', $id)->update(['dispatch_status' => $update]);
+        $x = Order::where('id', $id)->update(['dispatch_status' => "Yes",'delivery_status'=>'Not Delivered']);
         if($x)
         {
-            return response()->json($update);
+            return response()->json("Updated");
+        }
+        else
+        {
+            return response()->json('Error');
+        }
+    }
+    public function deliverOrder(Request $request)
+    {
+        $id = $request->id;
+        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered']);
+        if($x)
+        {
+            return response()->json("Updated");
         }
         else
         {

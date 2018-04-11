@@ -20,6 +20,10 @@
                                 <td>{{ date('d-M-Y h:i:s A',strtotime($rec->created_at)) }}</td>
                             </tr>
                             <tr>
+                                <td style="width:40%"><b>Listed By</b></td>
+                                <td>{{ $username->name }}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%"><b>Updated On</b></td>
                                 <td>{{ date('d-M-Y h:i:s A',strtotime($rec->updated_at)) }}</td>
                             </tr>
@@ -28,7 +32,7 @@
                                 <td>{{ $rec->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
                             </tr>
                             <tr>
-                                <td style="width:40%"><b>Call Attended By</b></td>
+                                <td style="width:40%"><b>Updated By</b></td>
                                 <td>{{ $callAttendedBy != null ? $callAttendedBy->name: '' }}</td>
                             </tr>
                             <tr>
@@ -40,8 +44,10 @@
                                 <td>{{$rec->project_name}}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Road Name</b></td>
-                                <td>{{$rec->road_name}}</td>
+                                <td style="width:40%;"><b>Address</b></td>
+                                <td>
+                                    <a target="_blank" href="https://maps.google.com?q={{$rec->siteaddress != null ? $rec->siteaddress->address : ''}}">{{$rec->siteaddress != null ? $rec->siteaddress->address : ''}}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Project Status</b></td>

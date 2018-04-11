@@ -27,6 +27,7 @@ use App\attendance;
 use App\ManufacturerDetail;
 use App\KeyResult;
 use App\MhInvoice;
+use App\Order;
 
 class logisticsController extends Controller
 {
@@ -64,12 +65,12 @@ class logisticsController extends Controller
     
     public function orders()
     {
-        $view = Requirement::orderBy('project_id','DESC')
-                ->leftJoin('users','requirements.generated_by','=','users.id')
-                ->select('requirements.*','users.name','users.group_id')
+        $view = Order::orderBy('project_id','DESC')
+                ->leftJoin('users','orders.generated_by','=','users.id')
+                ->select('orders.*','orders.id as orderid','users.name','users.group_id')
                 ->where('status','Order Confirmed')
                 ->paginate(25);
-        $countview = count(Requirement::where('dispatch_status','No')->orWhere('dispatch_status','Not Yet Dispatched')->get());
+        $countview = Order::where('status',"Order Confirmed")->count();
         return view('logistics.orders',['view' => $view,'count' => $countview]);
     }
     
@@ -110,8 +111,12 @@ class logisticsController extends Controller
     }
     public function deliveredorders()
     {
-        $rec = Requirement::where('delivery_status','Yes')->orWhere('delivery_status','Delivered')->get();
+        $rec = Order::where('delivery_status','Yes')->orWhere('delivery_status','Delivered')->get();
         $countrec = count($rec);
         return view('logistics.deliveredorders',['rec'=>$rec,'countrec'=>$countrec]);
+    }
+    public function takesignature()
+    {
+        return view('logistics.takesignature');
     }
 }

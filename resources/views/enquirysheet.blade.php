@@ -86,7 +86,6 @@
 							<option value="all">All</option>
 							<option value="Enquiry On Process">Enquiry On Process</option>
 							<option value="Enquiry Confirmed">Enquiry Confirmed</option>
-							<option value="Enquiry Cancelled">Enquiry Cancelled</option>
 						</select>
 					</div>
 				</div>
@@ -105,7 +104,7 @@
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
 							<th style="text-align: center">Update Status</th>
-							<!-- <th style="text-align: center">Edit</th> -->
+							<th style="text-align: center">Edit</th>
 						</tr>
 					</thead>
 					<tbody>
