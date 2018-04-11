@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-12">
+<div class="col-md-6 col-md-offset-3">
 	<div class="panel panel-default" style="border-color:black">
 		<div class="panel-heading" style="background-color:#f58120" id="panelhead">
             <label style="color:white;font-size:1.6em">Invoice for {{ $rec->project_name }}</label>
@@ -21,19 +21,43 @@
 			        <tr>
 			            <td style="width:30%"><b>BILL TO</b></td>
 			            <td style="width:30%"><b>SHIP TO</b></td>
-			            <td style="width:40%;text-align:center">Invoice No: <b>MH_91_Z1_2018_IN001</b></td>
+			            <td style="width:40%;text-align:center">Invoice No: <b>{{ $id }}</b></td>
 			        </tr>
 			        <tr>
-			            <td>{{ $rec->project_name }}<br>{{ $rec->road_name }}<br>{{ $rec->siteaddress->address }}</td>
-			            <td>{{ $rec->project_name }}<br>{{ $rec->road_name }}<br>{{ $rec->siteaddress->address }}</td>
+			            <td>{{ $rec->project_name }},<br>{{ $rec->siteaddress->address }}</td>
+			            <td>{{ $rec->project_name }},<br>{{ $rec->siteaddress->address }}</td>
 			            <td></td>
 			        </tr>
 			    </tbody>
 			</table>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<table class="table table-responsive" border="1">
+						<thead>
+							<th>Item Name</th>
+							<th>Quantity</th>
+							<th>Price</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ $order->main_category }}:<br>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									{{ $order->sub_category }}
+									@if($order->brand != null)
+										({{ $order->brand }})
+									@endif
+								</td>
+								<td><br>{{ $order->quantity }}</td>
+								<td><br>{{ $order->unit_price * $order->quantity }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 			<br><br>
 			<p><b>GST : </b>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
 			<p><b>CIN : </b>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			<br><br><br>
 			<div class="col-md-12">
 			    <p>Terms and Conditions</p>
 			</div>

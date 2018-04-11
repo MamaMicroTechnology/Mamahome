@@ -61,7 +61,9 @@
                         </tr>
                         <tr>
                             <td><b>Address</b></td>
-                            <td>{{ $details->siteaddress->address }}</td>
+                            <td>
+                                <a target="_blank" href="https://maps.google.com?q={{$details->siteaddress != null ? $details->siteaddress->address : ''}}">{{$details->siteaddress != null ? $details->siteaddress->address : ''}}</a>
+                            </td>
                         </tr>
                         <tr>
                             <td><b>Project Image</b></td>

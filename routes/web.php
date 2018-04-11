@@ -55,6 +55,14 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 
+// Orders
+Route::get('/orders','HomeController@amorders');
+Route::get('/updateampay','HomeController@updateampay');
+Route::get('/confirmOrder','HomeController@confirmOrder');
+Route::get('/cancelOrder','HomeController@cancelOrder');
+Route::get('/updateamdispatch','HomeController@updateamdispatch');
+Route::get('/deliverOrder','HomeController@deliverOrder');
+
 Route::post('/uploadProfilePicture','HomeController@postMyProfile');
 Route::post('/editinputdata','mamaController@editinputdata');
 Route::post('/authlogout','HomeController@authlogout')->name('authlogout');
@@ -129,16 +137,12 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
-    Route::get('/amorders','HomeController@amorders');
-    Route::get('/confirmOrder','HomeController@confirmOrder');
-    Route::get('/cancelOrder','HomeController@cancelOrder');
+    
     Route::get('/{id}/printLPO','HomeController@printLPO');
     Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
     Route::get('/editEmployee','HomeController@editEmployee');
     Route::get('/manufacturerdetails','HomeController@manufacturerDetails');
-    Route::get('/updateampay','HomeController@updateampay');
-    Route::get('/updateamdispatch','HomeController@updateamdispatch');
     Route::get('/mhOrders','HomeController@getMhOrders');
     Route::get('/salesStatistics','HomeController@getSalesStatistics');
     Route::get('/activitylog','HomeController@activityLog');
@@ -330,4 +334,5 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/confirmDelivery','logisticsController@confirmDelivery');
     Route::post('/confirmDelivery','logisticsController@postconfirmDelivery');
     Route::get('/deliveredorders','logisticsController@deliveredorders');
+    Route::get('/takesignature','logisticsController@takesignature');
 });
