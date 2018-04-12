@@ -8,7 +8,7 @@
 			<b style="color:white;font-size:1.4em">Orders</b>
 			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
-		<div id="orders" class="panel-body">
+		<div id="myordertable" class="panel-body">
 			<table class="table table-responsive table-striped" border="1">
 				<thead>
 					<tr>
@@ -134,7 +134,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
-    	           $("#orders").load(location.href + " #orders>*", "");
+    	           $("#myordertable").load(location.href + " #myordertable>*", "");
     	       }
     	    });
 	    }    
@@ -153,7 +153,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
-    	           $("#orders").load(location.href + " #orders>*", "");
+    	           $("#myordertable").load(location.href + " #myordertable>*", "");
     	       }
     	    });
 	    }
