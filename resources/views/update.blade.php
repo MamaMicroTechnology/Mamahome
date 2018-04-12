@@ -141,7 +141,10 @@
                                       <input id="budget" value="{{ $projectdetails->budget }}"  placeholder="Budget" type="text" class="form-control input-sm" onkeyup="check('budget')" name="budget">
                                     </div>
                                     <div class="col-md-8">
-                                      Budget (per sq.ft) {{ round((10000000 * $projectdetails->budget)/$projectdetails->project_size,3) }}
+                                      Budget (per sq.ft) :
+                                      @if($projectdetails->project_size != 0)
+                                       {{ round((10000000 * $projectdetails->budget)/$projectdetails->project_size,3) }}
+                                      @endif
                                     </div>
                                   </td>
                                </tr>
