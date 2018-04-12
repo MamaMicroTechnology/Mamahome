@@ -160,15 +160,15 @@
                 						        </td>
                 						    </tr>
                 						    <tr>
-                						        <td><b>Contractor Presence </b></td>
+                						        <td><b>Contract</b></td>
                 						        <td>
                 						            <select class="form-control" id="contract-{{$project->project_id}}" name="contract">
                 						                <option value="null" disabled selected>--- Select ---</option>
-                						                <option value="With Labour Contractor">With Labour Contractor</option>
-														<option value="With Material Contractor">With Material Contractor</option>
-														<option value="Without Contractor">Without Contractor</option>
-                                                        <option value="Contractor With Owner">Contractor With Owner</option>
-                                                        <option value="Both Material and Labor Contractor">Both Material and Labor Contractor</option>
+                						                <option value="Labour Contract">Labour Contract</option>
+														<option value=" Material Contrac"> Material Contract</option>
+														
+                                                        <option value=" None">None</option>
+                                                        
                 						            </select>
                 						        </td>
                 						    </tr>
