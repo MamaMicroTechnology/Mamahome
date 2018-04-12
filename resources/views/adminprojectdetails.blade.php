@@ -21,7 +21,7 @@
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Listed By</b></td>
-                                <td>{{ $username->name }}</td>
+                                <td>{{ $username != null ? $username->name : '' }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Updated On</b></td>

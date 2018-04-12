@@ -65,10 +65,10 @@
                             <td><b>Project Size</b></td>
                             <td>{{ $details->project_size }}</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td><b>Road</b></td>
                             <td>{{ $details->road_name }}</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td><b>Address</b></td>
                             <td>
@@ -87,6 +87,14 @@
                                 {{ $details->budget }} Cr.
                             </td>
                         </tr>
+                        <tr>
+                                <td style="width:40%;"><b>Budget (per sq.ft)</b></td>
+                                <td>
+                                    @if($details->project_size != 0)
+                                        {{ round((10000000 * $details->budget)/$details->project_size,3) }}
+                                    @endif
+                                </td>
+                            </tr>
                         <tr>
                             <td><b>Type of Contract</b></td>
                             <td>
