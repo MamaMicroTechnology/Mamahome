@@ -32,6 +32,7 @@ use App\KeyResult;
 use App\MhInvoice;
 use App\brand;
 use App\ActivityLog;
+use App\Order;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -84,86 +85,10 @@ class amController extends Controller
     }
     public function amorders(Request $request)
     {
-        if(!$request->filterorder)
-        {
-            if(!$request->fromdate && !$request->todate ) //No input whatsoever
-            {
-                $view = Requirement::orderby('project_id','DESC')
-                        ->leftJoin('users','requirements.generated_by','=','users.id')
-                        ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                        ->paginate(25);
-            }
-            else
-            {
-                $date1 = $request->fromdate;
-                $date2 = $request->todate;
-                $records = '';
-                if($date1 == $date2) //No filter but same date
-                {
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','like',$date1.'%')
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);       
-                }
-                else
-                {
-                    $date1 .= ' 00:00:00';
-                    $date2 .= ' 23:59:59'; //No filter but different dates
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','>',$date1)
-                            ->where('requirements.requirement_date','<',$date2)
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);      
-                }
-            }
-        }
-        else
-        {
-            $filter = $request->filterorder;
-            if(!$request->fromdate && !$request->todate ) 
-            {
-                $view = Requirement::orderby('project_id','DESC')
-                        ->leftJoin('users','requirements.generated_by','=','users.id')
-                        ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->where('requirements.status',$filter)
-                        ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                        ->paginate(25);    
-            }
-            else
-            {
-                $date1 = $request->fromdate;
-                $date2 = $request->todate;
-                $records = '';
-                if($date1 == $date2)
-                {
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','like',$date1.'%')
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);        
-                }
-                else
-                {
-                    $date1 .= ' 00:00:00';
-                    $date2 .= ' 23:59:59'; //All three different values
-                    $view = Requirement::orderBy('project_id','DESC')
-                            ->leftJoin('users','requirements.generated_by','=','users.id')
-                            ->leftJoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->where('requirements.requirement_date','>',$date1)
-                            ->where('requirements.requirement_date','<',$date2)
-                            ->where('requirements.status',$filter)
-                            ->select('requirements.*','users.name','users.group_id','procurement_details.procurement_name')
-                            ->paginate(25);       
-                }
-            }
-        }
-        
+        $view = Order::orderby('project_id','DESC')
+                ->leftJoin('users','orders.generated_by','=','users.id')
+                ->select('orders.*','orders.id as orderid','users.name','users.group_id')
+                ->paginate(25);
         return view('assistantmanager.amorders',['view' => $view,'pageName'=>'Orders']);        
     }
     
@@ -247,7 +172,7 @@ class amController extends Controller
     public function confirmamOrder(Request $request)
     {
         $id = $request->id;
-        $x = Requirement::where('id', $id)->update(['status' => 'Order Confirmed']);
+        $x = Order::where('id', $id)->update(['status' => 'Order Confirmed']);
         if($x)
         {
             return response()->json('Success !!!');
@@ -260,7 +185,7 @@ class amController extends Controller
     public function cancelamOrder(Request $request)
     {
         $id = $request->id;
-        $x = Requirement::where('id', $id)->update(['status' => 'Order Cancelled']);
+        $x = Order::where('id', $id)->update(['status' => 'Order Cancelled']);
         if($x)
         {
             return response()->json('Success !!!');
@@ -351,6 +276,12 @@ class amController extends Controller
     }
     public function amdailyslots(Request $request)
     {
+        $totalListing = array();
+        $users = User::where('department_id','1')->where('group_id','6')
+                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
+                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
         if($request->userId){
             $date = date('Y-m-d');
             $projects = ProjectDetails::where('created_at','like',$date[0].'%')->where('listing_engineer_id',$request->userId)->get();
@@ -384,7 +315,12 @@ class amController extends Controller
                 ->get();
             $projcount = count($projects);  
         }
-        return view('assistantmanager.dailyslots', ['date' => $date, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le,'pageName'=>'dailyslots']);
+        foreach($users as $user){
+                $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+            }
+        return view('assistantmanager.dailyslots', ['date' => $date,'users'=>$users, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le,'pageName'=>'dailyslots', 'totalListing'=>$totalListing]);
     }
     public function amprojectadmin(Request $id){
         $details = projectDetails::where('project_id',$id->projectId)->first();

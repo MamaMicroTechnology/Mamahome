@@ -45,13 +45,13 @@
                         @if($details != NULL)
                         <tr>
                             <td>Date of Joining</td>
-                            <td>: {{ $details->date_of_joining }}</td>
+                            <td>: {{ date('d-m-Y',strtotime($details->date_of_joining)) }}</td>
                             <td>Aadhar No.</td>
                             <td>: {{ $details->adhar_no }}</td>
                         </tr>
                         <tr>
                             <td>Date of Birth</td>
-                            <td>: {{ $details->dob }}</td>
+                            <td>: {{ date('d-m-Y',strtotime($details->dob)) }}</td>
                             <td>Blood Group</td>
                             <td>: {{ $details->blood_group }}</td>
                         </tr>

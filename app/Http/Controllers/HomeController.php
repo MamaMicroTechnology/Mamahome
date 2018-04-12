@@ -1942,8 +1942,16 @@ class HomeController extends Controller
     }
     public function eqpipeline()
     {
-        $pipelines = Requirement::where('status','Not Processed')->get();
-        return view('eqpipeline',['pipelines'=>$pipelines]);
+        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                        ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                        ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                        ->paginate(10);
+        $subwards2 = array();
+        foreach($pipelines as $enquiry){
+            $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
+            $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
+        }
+        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
     }
     public function employeereports(Request $request)
     {

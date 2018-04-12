@@ -17,8 +17,8 @@
                         <thead>
                             <th style="width:15%">Employee Id</th>
                             <th style="width:20%;">Name</th>
-                            <th style="width:22.5%;text-align:center">Dates Assigned</th>
-                            <th style="width:27.5%;text-align:center;">Previously Assigned Date</th>
+                            <th style="width:22.5%;text-align:center">Wards Assigned</th>
+                            <th style="width:27.5%;text-align:center;">Previously Assigned Wards</th>
                             <th style="text-align:center">Action</th>
                         </thead>
                         <tbody>
