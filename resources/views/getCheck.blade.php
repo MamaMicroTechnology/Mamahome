@@ -1,10 +1,112 @@
-@extends('layouts.app')
+<?php
+    if(Auth::user()->department_id == 0){
+        $exts = "layouts.app";
+    }else{
+        $exts = "layouts.amheader";
+    }
+?>
+@extends($exts)
 
 @section('content')
-<div class="col-md-3"></div>
 <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading"><b>File Should be in PDF Format</b>
+    <div class="panel panel-default" style="border-color: green;">
+                <div class="panel-heading" style="background-color:green; color:white;"><b>HR Checklist</b>
+                    @if(session('ErrorFile'))
+                        <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
+                    @endif 
+                </div>
+                <div class="panel-body" style="colr">
+
+                    <table class="table">
+                        <tr> 
+                        <td>Academic </td>
+                        <td>Required Documents</td>
+                        <td>Required Documents</td>
+                        </tr>
+                        <tr> 
+                            <td>Bank</td>
+                            <td>Required Documents</td>
+                            <td>Bank account details</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>IFSC</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>A/C Details</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Email id</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Mobile number</td>
+                        </tr>
+                         <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Branch Name</td>
+                        </tr>
+
+                        <tr> 
+                            <td>Reference Contact Number</td>
+                            <td>Reference Number</td>
+                            <td>Friend</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Relatives</td>
+                        </tr>
+                        <tr> 
+                            <td>Adsress Proof</td>
+                             <td>Required Documents</td>
+                             <td>Aadhar Card Photocopy</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Voter ID Card/Pan Card</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Blood Group</td>
+                        </tr>
+                        <tr> 
+                            <td> If Applicable</td>
+                             <td>Required Documents</td>
+                             <td>Experience letter</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Salary Slip</td>
+                        </tr>
+                        <tr>
+                        <td> Photos</td>
+                        <td>Required Documents</td>
+                        <td>Two passport size photos</td>
+                         </tr>
+
+                     </table>
+
+
+
+                </div>
+            </div>
+    
+
+</div>
+<div class="col-md-6">
+            <div class="panel panel-default" style="border-color: green;">
+                <div class="panel-heading"  style="background-color:green; color:white;" ><b>File Should be in PDF Format</b>
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 

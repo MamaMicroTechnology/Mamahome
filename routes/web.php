@@ -152,9 +152,11 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/salesreports','HomeController@salesreports');
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');
+    Route::get('/video','HomeController@trainingVideo');
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
-    Route::get('/vedio','HomeController@trainingVedio');
+    Route::get('/deleteentry','HomeController@deleteentry');
+    Route::post('/uploadvideo','HomeController@uploadvideo');
 
     
     Route::post('/addDepartment','mamaController@addDepartment');
@@ -275,6 +277,12 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/addvendortype','amController@addvendortype');
     Route::get('/salesreport','mamaController@salesreport');
     Route::get('/amviewattendance','HomeController@employeereports');
+    Route::post('/saveEdit','mamaController@save_edit');
+    Route::get('/check','HomeController@getCheck');
+    Route::get('/video','HomeController@trainingVideo');
+    Route::post('/uploadfile','HomeController@uploadfile');
+    Route::get('/deletelist','HomeController@deletelist');
+    Route::post('/uploadvideo','HomeController@uploadvideo');
     
     Route::get('/updatepay','amController@updatepay');
     Route::get('/updatedispatch','amController@updatedispatch');

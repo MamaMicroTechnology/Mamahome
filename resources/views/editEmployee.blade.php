@@ -62,13 +62,18 @@
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->alt_phone:'' }}" name="altPh" class="form-control input-sm" placeholder="Alternative phone No."></td>
                     </tr>
                     <tr>
-                        <td>Official Email-id</td>
+                        <td>Official Email-id(gmail)</td>
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->official_email:'' }}" name="official_email" class="form-control input-sm" placeholder="Official Email id"></td>
+                    </tr>
+                    <tr>
+                        <td>official Email-id(MamaHome)</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->mh_email:'' }}" name="mh_email" class="form-control input-sm" placeholder="official Email id"></td>
                     </tr>
                     <tr>
                         <td>Personal Email-id</td>
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->personal_email:'' }}" name="personal_email" class="form-control input-sm" placeholder="Personal Email id"></td>
                     </tr>
+                    
                     <tr>
                         <td>Permanent Address</td>
                         <td><textarea class="form-control" name="perAdd" placeholder="Permanent address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->permanent_address:'' }}</textarea></td>
