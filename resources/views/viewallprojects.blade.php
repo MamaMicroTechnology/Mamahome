@@ -4,7 +4,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Project Details 
 				@if($projects != "None")
-					({{ count($projects) }} projects selected)
+					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)
 				@endif
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">

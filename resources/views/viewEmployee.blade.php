@@ -50,7 +50,7 @@
                         </tr>
                         <tr>
                             <td>Date Of Birth</td>
-                            <td>: {{ $details->dob }}</td>
+                            <td>: {{ date('d-m-Y',strtotime($details->dob)) }}</td>
                             <td>Blood Group</td>
                             <td>: {{ $details->blood_group }}</td>
                         </tr>

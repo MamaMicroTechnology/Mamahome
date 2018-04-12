@@ -1131,12 +1131,14 @@ class HomeController extends Controller
         $callAttendedBy = User::where('id',$rec->call_attended_by)->first();
         $followupby = User::where('id',$rec->follow_up_by)->first();
         $roomtypes = RoomType::where('project_id',$id)->get();
+        $subward = SubWard::where('id',$rec->sub_ward_id)->pluck('sub_ward_name')->first();
         return view('adminprojectdetails',[
                 'rec' => $rec,
                 'username'=>$username,
                 'callAttendedBy'=>$callAttendedBy,
                 'roomtypes'=>$roomtypes,
-                'followupby'=>$followupby
+                'followupby'=>$followupby,
+                'subward'=>$subward
             ]);
     }
     public function confirmOrder(Request $request)
@@ -1813,12 +1815,14 @@ class HomeController extends Controller
         $followupby = User::where('id',$details->follow_up_by)->first();
         $callAttendedBy = User::where('id',$details->call_attended_by)->first();
         $listedby = User::where('id',$details->listing_engineer_id)->first();
+        $subward = SubWard::where('id',$details->sub_ward_id)->pluck('sub_ward_name')->first();
         return view('viewDailyProjects',[
                 'details'=>$details,
                 'roomtypes'=>$roomtypes,
                 'followupby'=>$followupby,
                 'callAttendedBy'=>$callAttendedBy,
-                'listedby'=>$listedby
+                'listedby'=>$listedby,
+                'subward'=>$subward
             ]);
     }
     public function editEmployee(Request $request){
@@ -1969,8 +1973,16 @@ class HomeController extends Controller
     }
     public function eqpipeline()
     {
-        $pipelines = Requirement::where('status','Not Processed')->get();
-        return view('eqpipeline',['pipelines'=>$pipelines]);
+        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                        ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                        ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                        ->paginate(10);
+        $subwards2 = array();
+        foreach($pipelines as $enquiry){
+            $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
+            $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
+        }
+        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
     }
     public function employeereports(Request $request)
     {
@@ -2029,14 +2041,21 @@ class HomeController extends Controller
         $details = array();
         $wards = Ward::all();
         $users = User::all();
+        $ids = array();
         if($request->phNo)
         {
-            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id')->first();
-            $projects = ProjectDetails::whereIn('project_details.project_id',$details)
+            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id');
+            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id');
+            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id');
+            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
+            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
+            for($i = 0; $i < count($details); $i++){
+                if(count($details[$i]) != 0){
+                    array_push($ids, $details[$i][0]);
+                    array_push($ids, $details[$i][1]);
+                }
+            }
+            $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
@@ -2072,13 +2091,20 @@ class HomeController extends Controller
         $details = array();
         $wards = Ward::all();
         $users = User::all();
+        $ids = array();
         if($request->phNo){
-            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id')->first();
-            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id')->first();
-            $projects = ProjectDetails::whereIn('project_id',$details)->where('deleted',0)->get();
+            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id');
+            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id');
+            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id');
+            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
+            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
+            for($i = 0; $i < count($details); $i++){
+                if(count($details[$i]) != 0){
+                    array_push($ids, $details[$i][0]);
+                    array_push($ids, $details[$i][1]);
+                }
+            }
+            $projects = ProjectDetails::whereIn('project_id',$ids)->where('deleted',0)->get();
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);

@@ -21,11 +21,15 @@
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Listed By</b></td>
-                                <td>{{ $username->name }}</td>
+                                <td>{{ $username != null ? $username->name : '' }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Updated On</b></td>
                                 <td>{{ date('d-M-Y h:i:s A',strtotime($rec->updated_at)) }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Sub-Ward</b></td>
+                                <td>{{ $subward }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Followup</b></td>

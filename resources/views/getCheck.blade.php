@@ -1,4 +1,11 @@
-@extends('layouts.amheader')
+<?php
+    if(Auth::user()->department_id == 0){
+        $exts = "layouts.app";
+    }else{
+        $exts = "layouts.amheader";
+    }
+?>
+@extends($exts)
 
 @section('content')
 <div class="col-md-6">

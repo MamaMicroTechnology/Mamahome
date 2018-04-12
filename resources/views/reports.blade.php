@@ -4,7 +4,13 @@
 
 <div class="col-md-6 col-md-offset-3">
 	<div class="panel panel-default">
-		<div class="panel-heading">Report of {{ date('d-M-Y',strtotime($loginTimes->logindate)) }}</div>
+		<div class="panel-heading">
+			@if($loginTimes != null)
+				Report of {{ date('d-M-Y',strtotime($loginTimes->logindate)) }}
+			@else
+				No records found
+			@endif
+		</div>
 		<div class="panel-body">
 		    <form method="GET" action="{{ URL::to('/') }}/reports">
 					<div class="col-md-3">
@@ -22,68 +28,68 @@
 				<tr>
 					<td>Login Time</td>
 					<td>:</td>
-					<td>{{ $loginTimes->loginTime }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->loginTime : '' }}</td>
 				</tr>
 				<tr>
 					<td>Allocated Ward</td>
 					<td>:</td>
-					<td>{{ $loginTimes->allocatedWard }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->allocatedWard : '' }}</td>
 				</tr>
 				<tr>
 					<td>First Listing Time</td>
 					<td>:</td>
-					<td>{{ $loginTimes->firstListingTime }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->firstListingTime : '' }}</td>
 				</tr>
 				<tr>
 						<td>First Update Time</td>
 						<td>:</td>
-						<td>{{ $loginTimes->firstUpdateTime }}</td>
+						<td>{{ $loginTimes != null ? $loginTimes->firstUpdateTime : '' }}</td>
 					</tr>
 				<tr>
 					<td>No. of projects listed <br> in the morning</td>
 					<td>:</td>
-					<td>{{ $loginTimes->noOfProjectsListedInMorning }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->noOfProjectsListedInMorning : '' }}</td>
 				</tr>
 				<tr>
 					<td>No. of projects updated <br> in the morning</td>
 					<td>:</td>
-					<td>{{ $loginTimes->noOfProjectsUpdatedInMorning }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->noOfProjectsUpdatedInMorning : '' }}</td>
 				</tr>
-				@if($loginTimes->morningMeter != NULL)
+				@if($loginTimes != null && $loginTimes->morningMeter != NULL)
 				<tr>
 					<td>Meter Image</td>
 					<td>:</td>
 					<td>
-						<img src="{{ URL::to('/') }}/public/meters/{{ $loginTimes->morningMeter }}" height="100" width="200" class="img img-thumbnail">
+						<img src="{{ URL::to('/') }}/public/meters/{{ $loginTimes != null ? $loginTimes->morningMeter : '' }}" height="100" width="200" class="img img-thumbnail">
 					</td>
 				</tr>
 				<tr>
 				    <td>Meter Reading</td>
 				    <td>:</td>
 					<td>
-					    {{ $loginTimes->gtracing }}
+					    {{ $loginTimes != null ? $loginTimes->gtracing : '' }}
 					</td>
 				</tr>
 				@endif
-				@if($loginTimes->morningData != NULL)
+				@if($loginTimes != null && $loginTimes->morningData != NULL)
 				<tr>
 					<td>Data Image</td>
 					<td>:</td>
-					<td><img src="{{ URL::to('/') }}/public/data/{{ $loginTimes->morningData }}" height="100" width="200" class="img img-thumbnail"></td>
+					<td><img src="{{ URL::to('/') }}/public/data/{{ $loginTimes != null ? $loginTimes->morningData : '' }}" height="100" width="200" class="img img-thumbnail"></td>
 				</tr>
 				<tr>
 					<td>Data Reading</td>
 					<td>:</td>
-					<td>{{ $loginTimes->afternoonData }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->afternoonData : '' }}</td>
 				</tr>
 				@endif
 				<tr>
 				    <td>Morning Remarks</td>
 				    <td>:</td>
-				    <td>{{ $loginTimes->morningRemarks }}</td>
+				    <td>{{ $loginTimes != null ? $loginTimes->morningRemarks : '' }}</td>
 				</tr>
 			</table>
-			@if($loginTimes->morningMeter == NULL)
+			@if($loginTimes != null && $loginTimes->morningMeter== NULL)
 			<form method="post" action="{{ URL::to('/') }}/addMorningMeter" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="morningCount" value="{{ $projectCount }}">
@@ -102,7 +108,7 @@
 				<input type="submit" value="Save" class="btn form-control btn-xs btn-primary">
 			</form>
 			@endif
-			@if($loginTimes->morningData == NULL)
+			@if($loginTimes != null ? $loginTimes->morningData  : ''== NULL)
 			<form method="post" action="{{ URL::to('/') }}/addMorningData" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">		
@@ -125,61 +131,61 @@
 			    <tr>
 					<td>Last Listing Time</td>
 					<td>:</td>
-					<td>{{ $loginTimes->lastListingTime }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->lastListingTime : '' }}</td>
 				</tr>
 				<tr>
 					<td>Last Update Time</td>
 					<td>:</td>
-					<td>{{ $loginTimes->lastUpdateTime }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->lastUpdateTime : '' }}</td>
 				</tr>
 			    <tr>
 					<td>Total Projects Listed</td>
 					<td>:</td>
-					<td>{{ $loginTimes->TotalProjectsListed }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->TotalProjectsListed : '' }}</td>
 				</tr>
 				<tr>
 					<td>Total Projects Updated</td>
 					<td>:</td>
-					<td>{{ $loginTimes->totalProjectsUpdated }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->totalProjectsUpdated : '' }}</td>
 				</tr>
-				@if($loginTimes->eveningMeter != NULL)
+				@if($loginTimes != null ? $loginTimes->eveningMeter  : ''!= NULL)
 				<tr>
 					<td>Meter Image</td>
 					<td>:</td>
-					<td><img src="{{ URL::to('/') }}/public/meters/{{ $loginTimes->eveningMeter }}" height="100" width="200" class="img img-thumbnail"></td>
+					<td><img src="{{ URL::to('/') }}/public/meters/{{ $loginTimes != null ? $loginTimes->eveningMeter : '' }}" height="100" width="200" class="img img-thumbnail"></td>
 				</tr>
 				<tr>
 					<td>Meter Reading</td>
 					<td>:</td>
-					<td>{{ $loginTimes->afternoonMeter }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->afternoonMeter : '' }}</td>
 				</tr>
 				@endif
-				@if($loginTimes->eveningData != Null)
+				@if($loginTimes != null ? $loginTimes->eveningData  : ''!= Null)
 				<tr>
 					<td>Data Image</td>
 					<td>:</td>
-					<td><img src="{{ URL::to('/') }}/public/data/{{ $loginTimes->eveningData }}" height="100" width="200" class="img img-thumbnail"></td>
+					<td><img src="{{ URL::to('/') }}/public/data/{{ $loginTimes != null ? $loginTimes->eveningData : '' }}" height="100" width="200" class="img img-thumbnail"></td>
 				</tr>
 				<tr>
 					<td>Data Reading</td>
 					<td>:</td>
-					<td>{{ $loginTimes->afternoonRemarks }}</td>
+					<td>{{ $loginTimes != null ? $loginTimes->afternoonRemarks : '' }}</td>
 				</tr>
 				@endif
-				@if($loginTimes->AmGrade != Null)
+				@if($loginTimes != null ? $loginTimes->AmGrade  : ''!= Null)
 				<tr>
 				    <td>Asst. Manager Remarks</td>
 				    <td>:</td>
-				    <td>{{ $loginTimes->AmRemarks }}</td>
+				    <td>{{ $loginTimes != null ? $loginTimes->AmRemarks : '' }}</td>
 				</tr>
 				<tr>
 				    <td>Grade</td>
 				    <td>:</td>
-				    <td>{{ $loginTimes->AmGrade }}</td>
+				    <td>{{ $loginTimes != null ? $loginTimes->AmGrade : '' }}</td>
 				</tr>
 				@endif
 			</table>
-			@if($loginTimes->eveningMeter == NULL)
+			@if($loginTimes != null ? $loginTimes->eveningMeter  : ''== NULL)
 			<form method="POST" action="{{ URL::to('/') }}/eveningMeter" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">
@@ -197,7 +203,7 @@
 				<input type="submit" value="Save" class="btn btn-primary btn-xs form-control">
 			</form>
 			@endif
-			@if($loginTimes->eveningData == Null)
+			@if($loginTimes != null ? $loginTimes->eveningData  : ''== Null)
 			<form method="POST" action="{{ URL::to('/') }}/eveningData" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="totalCount" value ="{{ $projectCount }}">

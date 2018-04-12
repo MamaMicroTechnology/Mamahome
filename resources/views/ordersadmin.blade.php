@@ -8,7 +8,7 @@
 			<b style="color:white;font-size:1.4em">Orders</b>
 			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
-		<div id="orders" class="panel-body">
+		<div id="myordertable" class="panel-body">
 			<table class="table table-responsive table-striped" border="1">
 				<thead>
 					<tr>
@@ -43,19 +43,9 @@
 						<td>{{$rec->status}}</td>
 						<td>{{ date('d-m-Y',strtotime($rec -> requirement_date)) }}</td>
                         <td id="paymenttd-{{$rec->orderid}}">
-                            <!-- <select id="selectPayment-{{$rec->orderid}}" class="form-control" name="selectPayment-{{$rec->orderid}}" onchange="pay('{{$rec->orderid}}')">
-                                <option value="" disabled selected>-- SELECT --</option>
-                                <option value="Payment Received" {{$rec->payment_status == 'Payment Received'?'selected':''}}>Payment Received</option>
-                                <option value="Payment Pending" {{$rec->payment_status == 'Payment Pending'?'selected':''}}>Payment Pending</option>
-                            </select> -->
                             {{ $rec->payment_status }}
                         </td>
                         <td>
-                            <!-- <select id="selectdispatch-{{$rec->id}}" class="form-control" name="selectdispatch-{{$rec->id}}" onchange="updateDispatch('{{$rec->id}}')">
-                                <option value="" disabled selected>-- SELECT --</option>
-                                <option value="Yes" {{$rec-> dispatch_status == 'Yes'?'selected':''}}>Yes</option>
-                                <option value="No" {{$rec-> dispatch_status == 'No'?'selected':''}}>No</option>
-                            </select> -->
                             @if($rec->dispatch_status)
                             {{$rec->dispatch_status}}
                             @elseif(!$rec->dispatch_status)
@@ -144,7 +134,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
-    	           $("#orders").load(location.href + " #orders>*", "");
+    	           $("#myordertable").load(location.href + " #myordertable>*", "");
     	       }
     	    });
 	    }    
@@ -163,7 +153,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
-    	           $("#orders").load(location.href + " #orders>*", "");
+    	           $("#myordertable").load(location.href + " #myordertable>*", "");
     	       }
     	    });
 	    }

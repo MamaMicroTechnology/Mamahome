@@ -22,8 +22,8 @@
                 <a href="https://www.google.com/maps/place/{{ $project->siteaddress->address }}/@{{ $project->siteaddress->latitude }},{{ $project->siteaddress->longitude }}">{{ $project->siteaddress->address }}</a>
               </td>
               <td>{{ $project->project_status }}</td>
-              <td>{{ $project->procurementdetails->procurement_name }}</td>
-              <td>{{ $project->procurementdetails->procurement_contact_no }}</td>
+              <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_name : '' }}</td>
+              <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : '' }}</td>
               <td>{{ $project->room_types }}</td>
               <td>
               @if($pageName == "Update")

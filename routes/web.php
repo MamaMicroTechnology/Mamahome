@@ -62,6 +62,7 @@ Route::get('/confirmOrder','HomeController@confirmOrder');
 Route::get('/cancelOrder','HomeController@cancelOrder');
 Route::get('/updateamdispatch','HomeController@updateamdispatch');
 Route::get('/deliverOrder','HomeController@deliverOrder');
+Route::get('/{id}/printLPO','HomeController@printLPO');
 
 Route::post('/uploadProfilePicture','HomeController@postMyProfile');
 Route::post('/editinputdata','mamaController@editinputdata');
@@ -138,7 +139,6 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
     
-    Route::get('/{id}/printLPO','HomeController@printLPO');
     Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
     Route::get('/editEmployee','HomeController@editEmployee');

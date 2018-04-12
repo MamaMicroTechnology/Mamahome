@@ -95,6 +95,16 @@ class mamaController extends Controller
     	$user->contactNo = $request->phNo;
     	$user->password = bcrypt('mama@home123');
     	if($user->save()){
+            $empdetails = new EmployeeDetails;
+            $empdetails->employee_id = $user->employeeId;
+            $empdetails->save();
+            if($user->department_id == 1 && $user->group_id == 6){
+                $assignment = new WardAssignment;
+                $assignment->user_id = $user->id;
+                $assignment->subward_id = 1;
+                $assignment->status = "Completed";
+                $assignment->save();
+            }
     		return back()->with('Added','Employee Added Successfully');
     	}else{
     		return back()->with('NotAdded','Employee add unsuccessful');

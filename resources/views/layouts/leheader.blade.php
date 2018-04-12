@@ -36,6 +36,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
+                        <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

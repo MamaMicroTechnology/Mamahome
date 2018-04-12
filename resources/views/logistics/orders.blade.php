@@ -23,7 +23,7 @@
 				<tbody>
 					@foreach($view as $rec)
 					<tr id="row-{{$rec->id}}">
-						<td style="text-align:center"><a href="{{URL::to('/')}}/{{$rec->project_id}}/showProjectDetails">{{$rec -> project_id}}</a></td>
+						<td style="text-align:center"><a href="{{URL::to('/')}}/showProjectDetails?id={{$rec->project_id}}">{{$rec -> project_id}}</a></td>
                         <td style="text-align:center">{{ $rec->orderid }}</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
 						<td style="text-align:center">{{$rec->status}}</td>

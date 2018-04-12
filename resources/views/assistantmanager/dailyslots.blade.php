@@ -56,15 +56,24 @@
             <div class="panel-heading text-center" style="background-color:green">
                 <b style="color:white">Mini Report (Today)</b>
             </div>
-            <div class="panel-body" id="minireport">
+            <div class="panel-body">
                 <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
+                <table class="table table-striped" border="1">
+                    @foreach($users as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                </table>
             </div>
         </div>
     </div>
     <div class="col-md-10" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ $date }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y', strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
                 <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
             </div>
             <div class="panel-body">
@@ -154,8 +163,28 @@
             }
             else
             {
-                orig_from_date = from_date;
-                orig_to_date = to_date;
+                var mydate = new Date(from_date);
+                var todate = new Date(to_date);
+                var month = mydate .getMonth() + 1;
+                var day = mydate .getDate();
+                var year = mydate .getFullYear();
+                var tomonth = todate .getMonth() + 1;
+                var today = todate .getDate();
+                var toyear = todate .getFullYear();
+                if(day < 10){
+                    day = "0" + day;
+                }
+                if(month < 10){
+                    month = "0" + month;
+                }
+                if(today < 10){
+                    today = "0" + today;
+                }
+                if(tomonth < 10){
+                    tomonth = "0" + tomonth;
+                }
+                orig_from_date = day + "-" + month + "-" + year;
+                orig_to_date = today + "-" + tomonth + "-" + toyear;
                 from_date += ' 00:00:00';
                 to_date += ' 00:00:00';
                 document.getElementById('mainPanel').innerHTML = '';
@@ -208,7 +237,17 @@
             }
             else
             {
-                orig_from_date = from_date;
+                var mydate = new Date(from_date);
+                var month = mydate .getMonth() + 1;
+                var day = mydate .getDate();
+                var year = mydate .getFullYear();
+                if(day < 10){
+                    day = "0" + day;
+                }
+                if(month < 10){
+                    month = "0" + month;
+                }
+                orig_from_date = day + "-" + month + "-" + year;
         
                 document.getElementById('mainPanel').innerHTML = '';
                 document.getElementById('panelhead').innerHTML = '';
@@ -219,7 +258,7 @@
                     async: false,
                     success: function(response)
                     {
-                        document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+from_date+" </b>  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
+                        document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b>  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
                         
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
