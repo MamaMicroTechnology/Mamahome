@@ -64,7 +64,7 @@
         @if($page == "hr" && $user->department != NULL)
         <td>
             <div class="btn-group">
-                <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >View</a>
+                <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >View</a>&nbsp;|&nbsp;
                 <a href="{{ URL::to('/') }}/editEmployee?UserId={{ $user->employeeId }}" >Edit</a>
             </div>
         </td>

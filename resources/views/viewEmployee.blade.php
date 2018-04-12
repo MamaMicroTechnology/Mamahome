@@ -44,7 +44,7 @@
                         @if($details != NULL)
                         <tr>
                             <td>Date Of Joining</td>
-                            <td>: {{ $details->date_of_joining }}</td>
+                            <td>: {{ date('d-m-Y',strtotime($details->date_of_joining)) }}</td>
                             <td>Aadhar No.</td>
                             <td>: {{ $details->adhar_no }}</td>
                         </tr>
@@ -73,8 +73,12 @@
                             <td>: {{ $details->alt_phone }}</td>
                         </tr>
                         <tr>
-                            <td>Official Email-id</td>
+                            <td>Official Email-id(email)</td>
                             <td>: {{ $details->official_email }}</td>
+                            <td>Official Email-id(mamahome)</td>
+                            <td>: {{ $details->mh_email }}</td>
+                        </tr>
+                        <tr>
                             <td>Personal Email-id</td>
                             <td>: {{ $details->personal_email }}</td>
                         </tr>

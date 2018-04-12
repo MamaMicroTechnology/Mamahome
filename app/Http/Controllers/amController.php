@@ -216,8 +216,8 @@ class amController extends Controller
             if($request->from){
                 return $request->from;
             }
-            $start_date = date("Y-m-d", strtotime("-1 week"));
-            $end_date = date("Y-m-d");
+            $start_date = date("d-M-Y", strtotime("-1 week"));
+            $end_date = date("d-M-Y");
             // $this->db->where("store_date >= '" . $start_date . "' AND store_date <= '" . $end_date . "'");
             
             $previous_week = strtotime("-1 week +1 day");
@@ -225,8 +225,8 @@ class amController extends Controller
             $start_week = strtotime("last sunday midnight",$previous_week);
             $end_week = strtotime("next saturday",$start_week);
             
-            $start_week = date("Y-m-d",$start_week);
-            $end_week = date("Y-m-d",$end_week);
+            $start_week = date("d-m-Y",$start_week);
+            $end_week = date("d-m-Y",$end_week);
             
             $expenses = loginTime::where('logindate','>=',$start_date)->where('logindate','<',$end_date)->get();
             $disp = "<div class='panel-body' style='background-color:white'><div class='col-md-4'>From :<input id='from' type='date' class='form-control'></div>".

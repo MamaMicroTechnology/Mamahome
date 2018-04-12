@@ -407,6 +407,8 @@ div#calendar{
         @if(Auth::user()->group_id == 14)
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+            <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
+            <a href="{{ URL::to('/') }}/video">Training Video</a>
         @else
            <a href="{{ URL::to('/amorderss') }}">Orders</a>
             @if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)

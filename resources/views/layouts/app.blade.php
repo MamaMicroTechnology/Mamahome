@@ -350,16 +350,16 @@ div#calendar{
     <div id="demo" class="collapse">
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
-        <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Checklist</a>
-       <!--  <a href="{{ URL::to('/vedio') }}">&nbsp;&nbsp;&nbsp; - Training Vedio</a> -->
+        <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
+        <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Vedio</a>
     </div>
-    <a href="#" data-toggle="collapse" data-target="#ap">All Pages &#x21F2;</a>
+    <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
     <div id="ap" class="collapse">
         <a href="{{ URL::to('/leDashboard') }}">&nbsp;&nbsp;&nbsp; - Operation (LE)</a>
         <a href="{{ URL::to('/teamLead') }}">&nbsp;&nbsp;&nbsp; - Operation (TL)</a>
         <a href="{{ URL::to('/salesEngineer') }}">&nbsp;&nbsp;&nbsp; - Sales Engineer</a>
         <a href="{{ URL::to('/marketing') }}">&nbsp;&nbsp;&nbsp; - Marketing</a>
-        <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Asst. Manager</a>
+        <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Asst. Manager of sales</a>
     </div>
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>

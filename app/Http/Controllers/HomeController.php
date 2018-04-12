@@ -19,6 +19,7 @@ use App\Territory;
 use App\State;
 use App\Zone;
 use App\Checklist;
+use App\training;
 use App\loginTime;
 use App\Requirement;
 use App\ProcurementDetails;
@@ -1856,11 +1857,19 @@ class HomeController extends Controller
         $lists = Checklist::all();
         return view('getCheck',['lists'=>$lists]);
     }
-    public function trainingVedio()
+    public function trainingVideo(Request $request)
     { 
+        
         $depts = Department::all();
         $grps = Group::all();
-        return view('trainingVedio',['depts'=>$depts,'grps'=>$grps]);
+        if(!$request->dept){
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none"]);
+        }else{
+            $videos = training::where('dept',$request->dept)
+                        ->where('designation',$request->designation)
+                        ->get();
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos]);
+        }
     }
     public function uploadfile(Request $request){
         $extension = request()->upload->getClientOriginalExtension();
@@ -1874,14 +1883,32 @@ class HomeController extends Controller
         return back();
 
     }
-    public function deletelist(Request $id)
-    {
-        
+     public function uploadvideo(Request $request){
 
-        Checklist::where('id',$id->id)->delete();
+       $vedio = time().'.'.request()->upload->getClientOriginalExtension();
+        $request->upload->move(public_path('trainingvideo'),$vedio);
+        $train = New training;
+        $train->dept=$request->dept;
+        $train->designation= $request->designation;
+        $train->upload= $vedio;
+        $train->remark= $request->remark;
+        $train->save();
         return back();
 
     }
+    public function deletelist(Request $id)
+    {
+    
+        Checklist::where('id',$id->id)->delete();
+        return back();
+    }
+    public function deleteentry(Request $id)
+    {
+    
+        training::where('id',$id->id)->delete();
+        return back();
+    }
+
     
     public function getSalesStatistics(){
         $notProcessed = Requirement::where('status',"Not Processed")->count();
