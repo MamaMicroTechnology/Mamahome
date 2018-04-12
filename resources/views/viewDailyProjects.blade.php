@@ -16,6 +16,12 @@
                             <td>{{ date('d-M-Y h:i:s A',strtotime($details->created_at)) }}</td>
                         </tr>
                         <tr>
+                            <td><b>Listed By</b></td>
+                            <td>
+                                {{ $listedby != null ? $listedby->name : '' }}
+                            </td>
+                        </tr>
+                        <tr>
                             <td style="width:40%"><b>Updated On</b></td>
                             <td>{{ date('d-M-Y h:i:s A',strtotime($details->updated_at)) }}</td>
                         </tr>
@@ -60,18 +66,14 @@
                             <td>{{ $details->project_size }}</td>
                         </tr>
                         <tr>
-                            <td><b>Listing Engineer</b></td>
-                            <td>
-                                {{ $listedby != null ? $listedby->name : '' }}
-                            </td>
-                        </tr>
-                        <tr>
                             <td><b>Road</b></td>
                             <td>{{ $details->road_name }}</td>
                         </tr>
                         <tr>
                             <td><b>Address</b></td>
-                            <td>{{ $details->siteaddress->address }}</td>
+                            <td>
+                                <a target="_blank" href="https://maps.google.com?q={{$details->siteaddress != null ? $details->siteaddress->address : ''}}">{{$details->siteaddress != null ? $details->siteaddress->address : ''}}</a>
+                            </td>
                         </tr>
                         <tr>
                             <td><b>Project Image</b></td>
@@ -111,8 +113,8 @@
 </div>
 <div class="col-md-12">
     <div class="col-md-10 col-md-offset-1">
-        <div class="panel panel-default" style="border-color:green">
-            <div class="panel-heading" style="background-color:green">
+        <div class="panel panel-default" style="border-color:orange">
+            <div class="panel-heading" style="background-color:orange">
                <b style="color:white">Room Types</b> 
             </div>
             <div class="panel-body">

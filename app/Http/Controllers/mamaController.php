@@ -42,6 +42,7 @@ use App\ManufacturerDetail;
 use App\RoomType;
 use App\ActivityLog;
 use App\RecordData;
+use App\Order;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1300,6 +1301,38 @@ class mamaController extends Controller
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
         }elseif($request->status != null){
             Requirement::where('id',$request->id)->update(['status'=>$request->status]);
+            $requirement = Requirement::where('id',$request->id)->first();
+            if($requirement->status == "Enquiry Confirmed"){
+                $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
+                $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                $ward = Ward::where('id',$subward->ward_id)->first();
+                $zone = Zone::where('id',$ward->zone_id)->first();
+                $country = Country::where('id',$ward->country_id)->first();
+                $year = date('Y');
+                $country_initial = strtoupper(substr($country->country_name,0,2));
+                $count = count(Order::all())+1;
+                $number = sprintf("%03d", $count);
+                $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
+                $order = new Order;
+                $order->id = $orderNo;
+                $order->project_id = $requirement->project_id;
+                $order->main_category = $requirement->main_category;
+                $order->brand = $requirement->brand;
+                $order->sub_category = $requirement->sub_category ;
+                $order->material_spec = $requirement->material_spec;
+                $order->referral_image1 = $requirement->referral_image1;
+                $order->referral_image2 = $requirement->referral_image2;
+                $order->requirement_date = $requirement->requirement_date;
+                $order->measurement_unit = $requirement->measurement_unit;
+                $order->unit_price = $requirement->unit_price;
+                $order->quantity = $requirement->quantity;
+                $order->total = $requirement->total;
+                $order->notes = $requirement->notes;
+                $order->status = $requirement->status;
+                $order->dispatch_status = $requirement->dispatch_status;
+                $order->generated_by  = $requirement->generated_by;
+                $order->save();
+            }
         }
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');

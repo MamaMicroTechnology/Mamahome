@@ -7,58 +7,58 @@
 			<b style="color:white;font-size:1.4em">Confirmed Orders &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Count : {{$count}}</b>
 			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
-		<div class="panel-body">
+		<div id="orders" class="panel-body">
 			<table class="table table-responsive table-striped">
 				<thead>
 				    <th style="text-align:center">Project ID</th>
-					<!--<th style="text-align:center">Main Category</th>-->
-					<!--<th style="text-align:center">Sub Category</th>-->
-					<th style="text-align:center">Quantity</th>
-					
+                    <th style="text-align: center;">Order Id</th>
+					<th style="text-align:center">Quantity</th>					
 					<th style="text-align:center">Status</th>
 					<th style="text-align:center">Dispatch Status</th>
-					<!--<th style="text-align:center">Requirement Date</th>-->
-					<th style="text-align:center">Action</th>
-					
-					<!--<th style="text-align:center">Delivery Status</th>-->
+					<th style="text-align:center">Payment Status</th>
+					<th style="text-align:center">Delivery Status</th>
+                    <th style="text-align:center">Action</th>
 					
 				</thead>
 				<tbody>
 					@foreach($view as $rec)
 					<tr id="row-{{$rec->id}}">
 						<td style="text-align:center"><a href="{{URL::to('/')}}/{{$rec->project_id}}/showProjectDetails">{{$rec -> project_id}}</a></td>
-						<!--<td style="text-align:center">{{--$rec->main_category--}}</td>-->
-						<!--<td style="text-align:center">{{--$rec->sub_category--}}</td>-->
+                        <td style="text-align:center">{{ $rec->orderid }}</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
 						<td style="text-align:center">{{$rec->status}}</td>
 						<td style="text-align:center">
 						@if($rec->dispatch_status=='Yes')
 						    Dispatched
 						@else
-						    Not Yet Dispatched
+						    <button onclick="updateDispatch('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Dispatch</button>
 						@endif    
 						</td>
-						<!--<td style="text-align:center">{{--$rec->requirement_date--}}</td>-->
-                        <td style="text-align:center">
-                            @if($rec->status == 'Order Confirmed')
-                            <button onclick="init('myCanvas{{$rec->id}}')" type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal{{$rec->id}}">Open Modal</button>
+				        <td style="text-align: center;">
+                            @if($rec->payment_status == "Payment Pending")
+                                <a href="{{ URL::to('/') }}/takesignature" target="_blank" class="btn btn-sm btn-success">Take Signature</a>
+                            @else
+                                {{ $rec->payment_status }}
                             @endif
                         </td>
-                        
-						<!--<td style="text-align:center">{{--$rec->delivery_status--}}</td>-->
-					    <!--@if($rec->status !== 'Order Confirmed')-->
-					    <!--    <td style="text-align:center">-->
-					    <!--        <a onclick="confirmOrder('{{--$rec->id--}}')" class="btn btn-sm btn-success" style="width:99%">-->
-					    <!--            <b>Confirm Order</b>-->
-					    <!--        </a>-->
-					    <!--    </td>-->
-					    <!--@else-->
-					    <!--    <td style="text-align:center">-->
-					    <!--        <a onclick="cancelOrder('{{--$rec->id--}}')" class="btn btn-sm btn-danger" style="width:99%" >-->
-					    <!--            <b>Cancel Order</b>-->
-					    <!--        </a>-->
-					    <!--    </td>-->
-					    <!--@endif-->
+                        <td style="text-align:center">
+                            @if($rec->delivery_status == "Not Delivered")
+                                <button onclick="deliverOrder('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Deliver</button>
+                            @else
+                                {{ $rec->delivery_status }}
+                            @endif
+                        </td>
+                        <td style="text-align:center">
+                            @if($rec->payment_status == "Payment Received")
+                                {{ $rec->payment_status }}
+                            @elseif($rec->delivery_status != "Delivered")
+    				            <a onclick="cancelOrder('{{$rec->orderid}}')" class="btn btn-sm btn-danger" style="width:99%" >
+    				                <b>Cancel Order</b>
+    				            </a>
+                            @else
+                                Order Delivered
+                            @endif
+				        </td>
 					</tr>
 					<!-- Modal -->
                     <div class="modal fade" id="myModal{{$rec->id}}" role="dialog">
@@ -99,6 +99,28 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script type="text/javascript">
     var canvas, ctx, flag = false,
         prevX = 0,
@@ -220,14 +242,12 @@
 	
 	function pay(arg)
 	{
-		var e = document.getElementById("selectPayment-"+arg);
-		var strUser = e.options[e.selectedIndex].value;
 		var ans = confirm('Are You Sure ? Note: Changes Made Once CANNOT Be Undone');
 		if(ans){
 			$.ajax({
 				type: 'GET',
 				url: "{{URL::to('/')}}/updateampay",
-				data: {payment: strUser, id: arg},
+				data: {id: arg},
 				async: false,
 				success: function(response){
 					console.log(response);
@@ -239,37 +259,36 @@
 
 	function updateDispatch(arg)
 	{
-		var e = document.getElementById("selectdispatch-"+arg);
-		var strUser = e.options[e.selectedIndex].value;
 		var ans = confirm('Are You Sure ? Note: Changes Made Once CANNOT Be Undone');
 		if(ans){
     		$.ajax({
     			type: 'GET',
     			url: "{{URL::to('/')}}/updateamdispatch",
-    			data: {dispatch: strUser, id: arg},
+    			data: {id: arg},
     			async: false,
     			success: function(response){
-    				console.log(response);	
+    				console.log(response);
+                     $("#orders").load(location.href + " #orders>*", "");
     			}
     		});
 		}
 		return false;	
 	}
 	
-	function confirmOrder(arg)
+	function deliverOrder(arg)
 	{
 	    var ans = confirm('Are You Sure To Confirm This Order ?');
 	    if(ans)
 	    {
     	    $.ajax({
     	       type:'GET',
-    	       url: "{{URL::to('/')}}/confirmOrder",
+    	       url: "{{URL::to('/')}}/deliverOrder",
     	       data: {id : arg},
     	       async: false,
     	       success: function(response)
     	       {
     	           console.log(response);
-    	           location.reload(true);
+    	           $("#orders").load(location.href + " #orders>*", "");
     	       }
     	    });
 	    }    
@@ -288,7 +307,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
-    	           location.reload(true);
+    	           $("#orders").load(location.href + " #orders>*", "");
     	       }
     	    });
 	    }

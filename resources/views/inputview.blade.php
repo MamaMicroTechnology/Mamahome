@@ -62,7 +62,7 @@
 							<tr>
 								<td><label>Sub Category* :</label></td>
 								<td>
-									<select name="sCategory" id="sCategory" class="form-control" onchange="getPrice()">
+									<select required name="sCategory" id="sCategory" class="form-control" onchange="getPrice()">
 										
 										
 									</select>
@@ -75,7 +75,7 @@
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>
-									<select class="form-control" name="initiator">
+									<select required class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
 										<option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -89,10 +89,10 @@
 							</tr>
 							<tr>
 								<td><label>Quantity* : </label></td>
-								<td><input type="text" name="equantity" id="equantity" class="form-control" /></td>
+								<td><input required type="text" name="equantity" id="equantity" class="form-control" /></td>
 							</tr>
 							<tr>
-								<td><label>Remarks* : </label></td>
+								<td><label>Remarks : </label></td>
 								<td>
 									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
 								</td>
