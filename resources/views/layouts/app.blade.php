@@ -351,7 +351,7 @@ div#calendar{
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
-        <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Vedio</a>
+        <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
     <div id="ap" class="collapse">
