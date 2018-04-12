@@ -26,6 +26,10 @@
                             <td>{{ date('d-M-Y h:i:s A',strtotime($details->updated_at)) }}</td>
                         </tr>
                         <tr>
+                            <td style="width:40%"><b>Sub-ward</b></td>
+                            <td>{{ $subward }}</td>
+                        </tr>
+                        <tr>
                             <td style="width:40%"><b>Followup</b></td>
                             <td>{{ $details->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
                         </tr>
