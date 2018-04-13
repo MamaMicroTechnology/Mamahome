@@ -130,7 +130,7 @@
                          <thead>
                             <th>Floor No.</th>
                             <th>Room Types</th>
-                            <th>Quantity</th>
+                            <th>No.of Houses</th>
                          </thead>
                          <tbody>
                          @foreach($roomtypes as $roomtype)
