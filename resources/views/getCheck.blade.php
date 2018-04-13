@@ -53,7 +53,11 @@
                             <td></td>
                             <td>Branch Name</td>
                         </tr>
-
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Pass Book</td>
+                        </tr>
                         <tr> 
                             <td>Reference Contact Number</td>
                             <td>Reference Number</td>
