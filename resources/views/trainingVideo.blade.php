@@ -11,7 +11,12 @@
 <div class="container">
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color:green;">
+<<<<<<< HEAD
                 <div class="panel-heading" style="background-color: green;color:white;"><b> View Training Videos</b> <br> Please select the Department and desgination in order to get the training videos
+=======
+                <div class="panel-heading" style="background-color: green;color:white;"><b>View Training Videos</br>
+Please select the Department and desgination in order to get the training videos</b>
+>>>>>>> chaithra
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
@@ -23,8 +28,7 @@
                                     <td>Department</td>
                                     <td>Designation</td>
                                     
-                                </tr>
-                                
+                                </tr> 
                                 <tr>
                                     <td><select required class="form-control" name="dept">
                                     <option value="">--Select--</option>
@@ -41,12 +45,12 @@
                                    <option value="{{ $grp->id }}">{{ $grp->group_name }}</option>
                                   @endforeach
                                      </select>
-                                </td>
-                                <td>
-                                    <input type="submit" class="btn btn-success" value="Submit">
-                                </td>
+                                    </td>
+                                    <td>
+                                     <input type="submit" class="btn btn-success" value="Submit">
+                                     </td>
 
-                            </tr>
+                                </tr>
                             
                         </table>
                     </form>
@@ -68,35 +72,36 @@
                                
                             </td>
                         </tr>
-<div id="myModal{{ $video->id }}" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+                   
+                            <div id="myModal{{ $video->id }}" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{ $video->remark }}</h4>
-      </div>
-      <div class="modal-body">
-        <video class="img img-responsive" controls>
-          <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
-          <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
-          
-        </video>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">{{ $video->remark }}</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <video class="img img-responsive" controls>
+                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
+                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
+                                      
+                                    </video>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
 
-  </div>
-</div>
-                        @endforeach
-                        @endif
-                    </table>
-                </div>
+                              </div>
+                        </div>
+                    @endforeach
+                    @endif
+                </table>    
             </div>
         </div>
+     </div>
 
 <div class="col-md-6">
             <div class="panel panel-default" style="border-color:green">
@@ -143,16 +148,49 @@
                                     </td>
                                 </tr>
                                     <td>
-                                        <input type="text" name="remark" class="form-control" name="remark" placeholder="Title">
+                                        <input type="text" name="remark" class="form-control"  placeholder="Title">
                                     </td>
                                 
                                     <td ><button type="submit" class="btn btn-success pull-right ">Save</button></td>
                                 </tr>
                             </table>
-                        </form>
-                        
+                             
+                        </form>                                                   
             	</div>
 			</div>
+        </div>
 </div>
+
+<div class="col-md-6"></div>
+<div class="col-md-6">
+            <div class="panel panel-default" style="border-color:green;">
+                <div class="panel-heading" style="background-color: green;color:white;"><b>Available Videos</b>
+                    @if(session('ErrorFile'))
+                        <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
+                    @endif 
+                </div>
+                <div class="panel-body" style="height: 500px;max-height: 500pxoverflow-y: scroll;overflow-x: hidden;">
+                    <table class="table table-responsive">
+                        <tr>
+                                    <td><b>Video Title</b></td>
+                                    
+
+                        </tr>
+                       
+                        @foreach($titles as $title)
+                        <tr>
+                            <td>{{ $title->remark }}</td>
+                            
+                        </tr>
+                        @endforeach 
+                       
+                    </table>
+                </div>
+            </div>
 </div>
+<<<<<<< HEAD
 @endsection
+=======
+
+@endsection
+>>>>>>> chaithra

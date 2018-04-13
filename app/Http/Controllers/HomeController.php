@@ -1883,16 +1883,16 @@ class HomeController extends Controller
     }
     public function trainingVideo(Request $request)
     { 
-        
+        $titles = training::all();
         $depts = Department::all();
         $grps = Group::all();
         if(!$request->dept){
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none"]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none",'titles'=>$titles]);
         }else{
             $videos = training::where('dept',$request->dept)
                         ->where('designation',$request->designation)
                         ->get();
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos,'titles'=>$titles]);
         }
     }
     public function uploadfile(Request $request){
