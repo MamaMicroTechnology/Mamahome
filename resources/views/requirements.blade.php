@@ -137,7 +137,7 @@
 	    </div>
 		<div id="req" class="">
 			@if(count($requirements) == 0)
-				No requirements found yet! Please add some.
+				No enquiry found yet! Please add some.
 			@elseif(count($requirements) == 1)
 				This is your requirement
 			@else
