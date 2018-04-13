@@ -11,7 +11,7 @@
 <div class="container">
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color:green;">
-                <div class="panel-heading" style="background-color: green;color:white;"><b>Upload Training Videos</b>
+                <div class="panel-heading" style="background-color: green;color:white;"><b> Training Videos</b>
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
