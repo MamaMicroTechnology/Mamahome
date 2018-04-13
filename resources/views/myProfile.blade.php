@@ -37,7 +37,7 @@
                     </form>
                     <br>
                     <h2>{{ Auth::user()->name }}</h2>
-                    <h3>{{ Auth::user()->department_id }}</h3>
+                   
                 </center>
             </div>
         </div>
