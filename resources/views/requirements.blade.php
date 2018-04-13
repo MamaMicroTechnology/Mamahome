@@ -17,7 +17,7 @@
 			<form method="POST" action="{{ URL::to('/') }}/addRequirement?pId={{ $id }}" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">
-					<label>Requirement Sheet</label>
+					
 					<tr>
 						<td>Main Category</td>
 						<td>:</td>
