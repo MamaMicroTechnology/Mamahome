@@ -11,7 +11,7 @@
 <div class="container">
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color:green;">
-                <div class="panel-heading" style="background-color: green;color:white;"><b>Upload Training Vedios</b>
+                <div class="panel-heading" style="background-color: green;color:white;"><b>Upload Training Videos</b>
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
@@ -52,7 +52,7 @@
                     </form>
                     <table class="table table-responsive">
                         <tr>
-                                    <td>Vedio Title </td>
+                                    <td>Video Title </td>
                                     <td >Action</td>
 
                         </tr>
@@ -79,8 +79,8 @@
       </div>
       <div class="modal-body">
         <video class="img img-responsive" controls>
-          <source src="{{ URL::to('/') }}public/trainingvideo/{{ $video->upload }}" type="video/mp4">
-          <source src="{{ URL::to('/') }}public/trainingvideo/{{ $video->upload }}" type="video/ogg">
+          <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
+          <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
           
         </video>
       </div>
@@ -139,7 +139,7 @@
                                 <tr>
                                 <tr>
                                     <td>
-                                    Vedio Title
+                                    Video Title
                                     </td>
                                 </tr>
                                     <td>
