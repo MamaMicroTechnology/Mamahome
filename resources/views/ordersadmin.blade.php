@@ -20,7 +20,7 @@
 						<th>Quantity</th>
 						<th>Status</th>
 						<th>Requirement Date</th>
-						<th>Sign Status</th>
+						<th>Payment Status</th>
 						<th>Dispatch Status</th>
 						<th>Delivery Status</th>
 						<th>Print Quotation</th>
