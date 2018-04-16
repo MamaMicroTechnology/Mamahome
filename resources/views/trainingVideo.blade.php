@@ -11,6 +11,7 @@
 <div class="container">
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color:green;">
+               
                 <div class="panel-heading" style="background-color: green;color:white;"><b> View Training Videos</b> <br> Please select the Department and designation in order to get the training videos
 
                     @if(session('ErrorFile'))
@@ -64,7 +65,7 @@
                             <td>
                                 <button data-toggle="modal" data-target="#myModal{{ $video->id }}" class="btn btn-sm btn-primary">View</button>
                            
-                                <a href="{{ URL::to('/')}}/deleteentry?id={{ $video->id }}" class="btn btn-sm btn-danger" >Delete</a>
+                                <!-- <a href="{{ URL::to('/')}}/deleteentry?id={{ $video->id }}" class="btn btn-sm btn-danger" >Delete</a> -->
                                
                             </td>
                         </tr>
