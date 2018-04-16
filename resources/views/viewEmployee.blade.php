@@ -73,7 +73,7 @@
                             <td>: {{ $details->alt_phone }}</td>
                         </tr>
                         <tr>
-                            <td>Official Email-id(email)</td>
+                            <td>Official Email-id(gmail)</td>
                             <td>: {{ $details->official_email }}</td>
                             <td>Official Email-id(mamahome)</td>
                             <td>: {{ $details->mh_email }}</td>

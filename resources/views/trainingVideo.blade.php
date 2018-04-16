@@ -113,7 +113,7 @@ Please select the Department and desgination in order to get the training videos
                                 <tr>
                                     <td>Department</td>
                                     <td>Designation</td>
-                                    <td>Upload video</td>
+                                    <td>Upload video(only mp4 format)</td>
                                 </tr>
                                 <tr>
                                     <td><select required class="form-control" name="dept">
@@ -156,7 +156,7 @@ Please select the Department and desgination in order to get the training videos
 			</div>
         </div>
 </div>
-
+<div class="container">
 <div class="col-md-6"></div>
 <div class="col-md-6">
             <div class="panel panel-default" style="border-color:green;">
@@ -165,7 +165,7 @@ Please select the Department and desgination in order to get the training videos
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
                 </div>
-                <div class="panel-body" style="height: 500px;max-height: 500pxoverflow-y: scroll;overflow-x: hidden;">
+                <div class="panel-body" style="height: 500px;max-height: 500pxoverflow-y: scroll;overflow-x: scroll;">
                     <table class="table table-responsive">
                         <tr>
                                     <td><b>Video Title</b></td>
@@ -184,5 +184,5 @@ Please select the Department and desgination in order to get the training videos
                 </div>
             </div>
 </div>
-
+</div>
 @endsection

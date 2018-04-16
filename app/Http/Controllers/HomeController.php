@@ -1984,6 +1984,17 @@ class HomeController extends Controller
         }
         return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
     }
+    public function letraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $users = User::all();
+        $videos = training::where('dept',$request->dept)
+                        ->where('designation',$request->designation)
+                        ->get();
+return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
+    
+}
     public function employeereports(Request $request)
     {
         $depts = [1,2,3,4,5];

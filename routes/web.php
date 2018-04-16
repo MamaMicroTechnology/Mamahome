@@ -110,6 +110,7 @@ Route::get('/followupproject','HomeController@followup');
 Route::get('/updateNoteFollowUp','HomeController@updateNoteFollowUp');
 Route::get('/kra','HomeController@getKRA');
 Route::get('/eqpipeline','HomeController@eqpipeline');
+Route::get('/letraining','HomeController@letraining');
 
 Route::post('/confirmUser','mamaController@confirmUser');
 Route::post('/addProject','mamaController@addProject');
