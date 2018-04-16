@@ -12,7 +12,10 @@
 			<tbody>
 				@foreach($activities as $activity)
 				<tr>
-					<td>{{ $activity->time }}</td>
+					<?php
+						$newdate = substr($activity->time,0,15);
+					?>
+					<td>{{ date('d-m-Y h:i A', strtotime($newdate)) }}</td>
 					<td>{{ $activity->employee_id }}</td>
 					<td>{{ $activity->activity }}</td>
 				</tr>
@@ -35,18 +38,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		var today = new Date();
-		var dd = today.getDate(); //Get day
-		var mm = today.getMonth()+1; //January is 0!
-
-		var yyyy = today.getFullYear();
-		if(dd<10){
-		    dd='0'+dd;
-		} 
-		if(mm<10){
-		    mm='0'+mm;
-		} 
-		var format = dd+'-'+mm+'-'+yyyy;
+		
 		$.noConflict();
 	    $('#myTable').DataTable( {
 	        dom: 'Bfrtip',
@@ -55,18 +47,7 @@
         	"ordering": true,
         	"info":     true,
 	        buttons: [ 
-	            {
-	                extend: 'excelHtml5',
-	                title: 'Sales Report - '+format,
-	                className: 'btn btn-md btn-success hidden',
-	                text: 'Export To Excel'
-	            },
-	            {
-	            	extend: 'pdf',
-	            	title: 'Sales Report - '+format,
-	            	className: 'btn btn-md btn-primary hidden',
-	            	text: 'Export To PDF' 
-	            },            
+	                      
 	        ]
 	    } );
 	} );
