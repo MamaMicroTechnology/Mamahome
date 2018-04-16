@@ -73,9 +73,9 @@
                             <td>: {{ $details->alt_phone }}</td>
                         </tr>
                         <tr>
-                            <td>Official Email-id(email)</td>
+                            <td>Official Email-id(Gmail)</td>
                             <td>: {{ $details->official_email }}</td>
-                            <td>Official Email-id(mamahome)</td>
+                            <td>Official Email-id(mamahome360.com)</td>
                             <td>: {{ $details->mh_email }}</td>
                         </tr>
                         <tr>

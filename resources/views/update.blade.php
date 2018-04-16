@@ -28,12 +28,8 @@
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
                         {{ csrf_field() }}
                         <input type="hidden" name="id" value="{{ $id }}">
-                        <div class="radio">
-                          <label><input name="quality" type="radio" value="Fake">Fake</label>
-                        </div><div class="radio">
-                          <label><input name="quality" type="radio" value="Genuine">Genuine</label>
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Save">
+                        
+                        
                       </form>
                       @else
                       {{ $projectdetails->quality }}

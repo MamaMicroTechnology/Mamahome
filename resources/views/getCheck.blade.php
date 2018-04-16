@@ -10,7 +10,7 @@
 @section('content')
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color: green;">
-                <div class="panel-heading" style="background-color:green; color:white;"><b>HR Checklist</b>
+                <div class="panel-heading" style="background-color:green; color:white;"><b>List of Documents to get from New Employee</b>
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
@@ -53,7 +53,11 @@
                             <td></td>
                             <td>Branch Name</td>
                         </tr>
-
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Pass Book</td>
+                        </tr>
                         <tr> 
                             <td>Reference Contact Number</td>
                             <td>Reference Number</td>
