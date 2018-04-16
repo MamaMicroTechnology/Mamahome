@@ -162,7 +162,7 @@
 					<tbody>
 						@foreach($requirements as $requirement)
 							<tr>
-								<td>{{ $requirement->id }}</td>
+								
 								<td>{{ $requirement->main_category }}</td>
 								<td>{{ $requirement->sub_category }}</td>
 								<td>{{ $requirement->quantity }} {{ $requirement->measurement_unit }}</td>
