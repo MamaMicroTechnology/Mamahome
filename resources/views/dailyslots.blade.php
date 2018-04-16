@@ -73,7 +73,7 @@
     <div class="col-md-10" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ date('d-M-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
                 <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
             </div>
             <div class="panel-body">
@@ -81,7 +81,7 @@
                     <thead>
                         <tr>
                             <th style="text-align:center">Ward No.</th>
-                            <th style="text-align:center">ID</th>
+                            <th style="text-align:center">Project-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Site Engineer Contact Number</th>
                             <th style="text-align:center">Procurement Contact Number</th>

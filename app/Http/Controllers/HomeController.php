@@ -67,17 +67,17 @@ class HomeController extends Controller
     public function authlogin()
     {
         date_default_timezone_set("Asia/Kolkata");
-        $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
+        $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('d-m-Y'))->get();
         if(count($check)==0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
-            $login->logindate = date('Y-m-d');
+            $login->logindate = date('d-m-Y');
             $login->loginTime = date('H:i A');
             $login->logoutTime = "N/A";
             $login->save();
         }
         $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
+        $activity->time = date('d-m-Y H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has logged in to the system at ".date('H:i A');
         $activity->save();
@@ -87,7 +87,7 @@ class HomeController extends Controller
     {
         date_default_timezone_set("Asia/Kolkata");
         $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
+        $activity->time = date('d-m-Y H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has logged out of the system at ".date('H:i A');
         $activity->save();
@@ -133,8 +133,8 @@ class HomeController extends Controller
                                                 'quantity'     =>$request->equantity,
                                                 'total'   =>0,
                                                 'notes'  =>$request->eremarks,
-                                                'created_at' => date('Y-m-d H:i:s'),
-                                                'updated_at' => date('Y-m-d H:i:s'),
+                                                'created_at' => date('d-m-Y H:i:s'),
+                                                'updated_at' => date('d-m-Y H:i:s'),
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator
@@ -732,11 +732,11 @@ class HomeController extends Controller
         $ordersConfirmed = Requirement::where('generated_by',Auth::user()->id)
                             ->where('status','Order Confirmed')->count();
         $check = loginTime::where('user_id',Auth::user()->id)
-            ->where('logindate',date('Y-m-d'))->first();
+            ->where('logindate',date('d-m-Y'))->first();
         if(count($check)==0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
-            $login->logindate = date('Y-m-d');
+            $login->logindate = date('d-m-Y');
             $login->loginTime = date('H:i A');
             $login->logoutTime = "N/A";
             $login->save();   
@@ -748,7 +748,7 @@ class HomeController extends Controller
         $ldate = date('H:i:sA');
         $lodate = date('H:i:sA',$loginTime);
         
-        $today = date('Y-m-d');
+        $today = date('d-m-Y');
         $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
             ->where('created_at','like',$today.'%')->get());
         $loginTimes = loginTime::where('user_id',Auth::user()->id)->where('logindate',$today)->first();
@@ -836,7 +836,7 @@ class HomeController extends Controller
     {
         if(!$request->date){
             date_default_timezone_set("Asia/Kolkata");
-            $today = date('Y-m-d');
+            $today = date('d-m-Y');
             $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
                 ->where('created_at','like',$today.'%')->get());
             $loginTimes = loginTime::where('user_id',Auth::user()->id)->where('logindate',$today)->first();
@@ -863,12 +863,12 @@ class HomeController extends Controller
                 return view('lereportbytl',['loginTimes'=>$loginTimes,'userId'=>$id,'username'=>$username]);             
             }else{
                 $loginTimes = loginTime::where('user_id',$id)
-                    ->where('logindate',date('Y-m-d'))->first();
+                    ->where('logindate',date('d-m-Y'))->first();
                 return back()->with('Error','No Records found');
             }
         }
         $loginTimes = loginTime::where('user_id',$id)
-            ->where('logindate',date('Y-m-d'))->first();
+            ->where('logindate',date('d-m-Y'))->first();
         return view('lereportbytl',['loginTimes'=>$loginTimes,'userId'=>$id,'username'=>$username]);
     }
     public function getRequirementRoads()
@@ -1385,7 +1385,7 @@ class HomeController extends Controller
     public function dailyslots(Request $request)
     {
         $totalListing = array();
-        $date = date('Y-m-d');
+        $date = date('d-m-Y');
         $users = User::where('department_id','1')->where('group_id','6')
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
@@ -1536,8 +1536,8 @@ class HomeController extends Controller
             if($request->from){
                 return $request->from;
             }
-            $start_date = date("Y-m-d", strtotime("-1 week"));
-            $end_date = date("Y-m-d");
+            $start_date = date("d-m-Y", strtotime("-1 week"));
+            $end_date = date("d-m-Y");
             // $this->db->where("store_date >= '" . $start_date . "' AND store_date <= '" . $end_date . "'");
             
             $previous_week = strtotime("-1 week +1 day");
@@ -1545,8 +1545,8 @@ class HomeController extends Controller
             $start_week = strtotime("last sunday midnight",$previous_week);
             $end_week = strtotime("next saturday",$start_week);
             
-            $start_week = date("Y-m-d",$start_week);
-            $end_week = date("Y-m-d",$end_week);
+            $start_week = date("d-m-Y",$start_week);
+            $end_week = date("d-m-Y",$end_week);
             
             $expenses = loginTime::where('logindate','>=',$start_date)->where('logindate','<',$end_date)->get();
             echo "Last week (".$start_date." to ".$end_date.") expenses.";
@@ -2180,10 +2180,10 @@ return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'
                     ->where('employee_id',$request->se)
                     ->where('activity','LIKE','%Updated a project%')->get();
         }else{
-            $date = date('Y-m-d');
+            $date = date('d-m-Y');
             $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
         }
-        $today = date('Y-m-d');
+        $today = date('d-m-Y');
         $exploded = array();
         $projectIds = array();
         foreach($str as $strings){

@@ -6,7 +6,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			@if($loginTimes != null)
-				Report of {{ date('d-M-Y',strtotime($loginTimes->logindate)) }}
+				Report of {{ date('d-m-Y',strtotime($loginTimes->logindate)) }}
 			@else
 				No records found
 			@endif

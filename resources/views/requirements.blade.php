@@ -58,9 +58,9 @@
 						<td>Referral Images</td>
 						<td>:</td>
 						<td>
-							<input type="file" name="rfImage1" class="form-control">
+							<input type="file" name="rfImage1" accept="image/*" class="form-control">
 							<br>
-							<input type="file" name="rfImage2" class="form-control">
+							<input type="file" name="rfImage2"  accept="image/*" class="form-control">
 						</td>
 					</tr>
 					<tr>
