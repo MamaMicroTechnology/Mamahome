@@ -2,7 +2,7 @@
 @section('content')
 <br><br>
 <div style="background-color:white" class="container" >
-<h2 ><center>WELCOME TO {{ Auth::user()->group_id == 4 ? ' ASSISTANT MANAGER OF SALES AND MARKETING' : 'ASSISTANT MANAGER OF SALES AND MARKETING' }}
+<h2 ><center>WELCOME TO {{ Auth::user()->group_id == 14 ? ' HUMAN RESOURCES DASHBOARD' : 'ASSISTANT MANAGER OF SALES AND MARKETING' }}
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><BR>
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>

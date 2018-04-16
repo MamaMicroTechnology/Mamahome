@@ -1989,8 +1989,8 @@ class HomeController extends Controller
          $depts = Department::all();
         $grps = Group::all();
         $users = User::all();
-        $videos = training::where('dept',$request->dept)
-                        ->where('designation',$request->designation)
+        $videos = training::where('dept',"1")
+                        ->where('designation',"6")
                         ->get();
 return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
     

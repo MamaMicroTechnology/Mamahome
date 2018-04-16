@@ -48,11 +48,11 @@
             <div class="row">
                 <div class="col-md-6">
                   <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"><br>
-                  <input required type="email" placeholder="Email" class="form-control" name="email"><br>
+                  <input required type="email" placeholder="User-id of MMT" class="form-control" name="email"><br>
                 </div>
                 <div class="col-md-6">
                   <input required type="text" placeholder="Name" class="form-control" name="name"><br>
-                  <input required type="text" placeholder="Contact No." class="form-control" name="phNo"><br>
+                  <input required type="text" placeholder="Personal Contact No." class="form-control" name="phNo"><br>
                 </div>
             </div>
             <div class="row">
