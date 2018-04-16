@@ -139,9 +139,9 @@
 			@if(count($requirements) == 0)
 				No enquiry found yet! Please add some.
 			@elseif(count($requirements) == 1)
-				This is your requirement
+				This is your enquiry
 			@else
-				These are your requirements
+				These are your enquiry
 			@endif
 			@if(session('Error'))
 			<div class="alert-danger pull-right">{{ session('Error')}}</div>
