@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// chatting
+Route::get('/token','TokenController@token');
+Route::get('/logoutFromChat','TokenController@logout');
+
 // Shared View
 Auth::routes();
 Route::get('/profile','HomeController@getMyProfile');
