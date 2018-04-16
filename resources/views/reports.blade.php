@@ -108,7 +108,7 @@
 				<input type="submit" value="Save" class="btn form-control btn-xs btn-primary">
 			</form>
 			@endif
-			@if($loginTimes != null ? $loginTimes->morningData  : ''== NULL)
+			@if($loginTimes != null && $loginTimes->morningData  == NULL)
 			<form method="post" action="{{ URL::to('/') }}/addMorningData" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">		
@@ -148,7 +148,7 @@
 					<td>:</td>
 					<td>{{ $loginTimes != null ? $loginTimes->totalProjectsUpdated : '' }}</td>
 				</tr>
-				@if($loginTimes != null ? $loginTimes->eveningMeter  : ''!= NULL)
+				@if($loginTimes != null && $loginTimes->eveningMeter  != NULL)
 				<tr>
 					<td>Meter Image</td>
 					<td>:</td>
@@ -160,7 +160,7 @@
 					<td>{{ $loginTimes != null ? $loginTimes->afternoonMeter : '' }}</td>
 				</tr>
 				@endif
-				@if($loginTimes != null ? $loginTimes->eveningData  : ''!= Null)
+				@if($loginTimes != null && $loginTimes->eveningData  != Null)
 				<tr>
 					<td>Data Image</td>
 					<td>:</td>
@@ -172,7 +172,7 @@
 					<td>{{ $loginTimes != null ? $loginTimes->afternoonRemarks : '' }}</td>
 				</tr>
 				@endif
-				@if($loginTimes != null ? $loginTimes->AmGrade  : ''!= Null)
+				@if($loginTimes != null && $loginTimes->AmGrade != Null)
 				<tr>
 				    <td>Asst. Manager Remarks</td>
 				    <td>:</td>
@@ -185,7 +185,7 @@
 				</tr>
 				@endif
 			</table>
-			@if($loginTimes != null ? $loginTimes->eveningMeter  : ''== NULL)
+			@if($loginTimes != null && $loginTimes->eveningMeter  == NULL)
 			<form method="POST" action="{{ URL::to('/') }}/eveningMeter" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">
@@ -203,7 +203,7 @@
 				<input type="submit" value="Save" class="btn btn-primary btn-xs form-control">
 			</form>
 			@endif
-			@if($loginTimes != null ? $loginTimes->eveningData  : ''== Null)
+			@if($loginTimes != null && $loginTimes->eveningData == Null)
 			<form method="POST" action="{{ URL::to('/') }}/eveningData" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="totalCount" value ="{{ $projectCount }}">

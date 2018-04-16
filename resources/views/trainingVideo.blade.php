@@ -11,8 +11,8 @@
 <div class="container">
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color:green;">
-                <div class="panel-heading" style="background-color: green;color:white;"><b>View Training Videos</br>
-Please select the Department and desgination in order to get the training videos</b>
+                <div class="panel-heading" style="background-color: green;color:white;"><b> View Training Videos</b> <br> Please select the Department and designation in order to get the training videos
+
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 

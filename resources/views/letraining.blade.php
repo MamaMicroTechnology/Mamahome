@@ -44,9 +44,7 @@
                         </table>
                     </form>
                      <table class="table table-responsive">
-                     	
-
-                      <tr>
+                     	<tr>
                                 		@foreach($video as $video)
 								@if($video->dept == "1" && $video->designation == "6")
 									<center style="color:green;font-size: 20px">{{$video->remark}}</center>
@@ -54,8 +52,8 @@
 
 							
 							<video class="img img-responsive" controls>
-                                      <source src="{{ URL::to('/') }}/trainingvideo/{{ $video->upload }}" type="video/mp4">
-                                      <source src="{{ URL::to('/') }}/trainingvideo/{{ $video->upload }}" type="video/ogg">
+                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
+                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
                               
                              </video><br>
                               @endif

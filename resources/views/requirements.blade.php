@@ -17,7 +17,7 @@
 			<form method="POST" action="{{ URL::to('/') }}/addRequirement?pId={{ $id }}" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">
-					<label>Requirement Sheet</label>
+					
 					<tr>
 						<td>Main Category</td>
 						<td>:</td>
@@ -137,7 +137,7 @@
 	    </div>
 		<div id="req" class="">
 			@if(count($requirements) == 0)
-				No requirements found yet! Please add some.
+				No enquiry found yet! Please add some.
 			@elseif(count($requirements) == 1)
 				This is your requirement
 			@else

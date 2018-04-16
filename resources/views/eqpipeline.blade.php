@@ -11,7 +11,7 @@
 				<table border="1" id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
-							<th style="text-align: center">Project</th>
+							
 							<th style="text-align: center">Ward Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
@@ -26,11 +26,7 @@
 					<tbody>
 						@foreach($pipelines as $enquiry)
 						<tr>
-							<td style="text-align: center">
-								<a href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
-									<b>{{$enquiry -> project_id }}</b>
-								</a> 
-							</td>
+							
 							<td style="text-align: center">
 								{{$subwards2[$enquiry->project_id]}}
 							</td>
