@@ -152,7 +152,7 @@
 				{{ csrf_field() }}
 				<table class="table">
 					<thead>
-						<th>Enquiry No.</th>
+						
 						<th>Main Category</th>
 						<th>Sub-Category</th>
 						<th>Qnty.</th>
@@ -373,7 +373,7 @@
 		var day 	  	 = (today.getDate().length ==1?"0"+today.getDate():today.getDate()); //This line by Siddharth
 		var month 	  	 = parseInt(today.getMonth())+1;
 		month 	  	     = (today.getMonth().length == 1 ? "0"+month : "0"+month);
-		var e 			 = parseInt(month);  //This line by Siddharth
+		var e 			 = parseInt(month);  
 		var year 	  	 = today.getFullYear();
 		var current_date = new String(year+'-'+month+'-'+day);
 	
@@ -419,8 +419,8 @@
 	        success: function(response)
 	        {
 	            console.log(response);
-	            document.getElementById('status-'+arg).innerHTML = 'Order Initiated';
-	            alert('Order Initiated !!');
+	            document.getElementById('status-'+arg).innerHTML = 'Enquiry Initiated';
+	            alert('Enquiry Initiated !!');
 	        }
 	    });
 	    return false;
