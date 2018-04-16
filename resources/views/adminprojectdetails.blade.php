@@ -17,7 +17,7 @@
                         <tbody>
                             <tr>
                                 <td style="width:40%"><b>Listed On</b></td>
-                                <td>{{ date('d-M-Y h:i:s A',strtotime($rec->created_at)) }}</td>
+                                <td>{{ date('d-m-Y h:i:s A',strtotime($rec->created_at)) }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Listed By</b></td>
@@ -25,7 +25,7 @@
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Updated On</b></td>
-                                <td>{{ date('d-M-Y h:i:s A',strtotime($rec->updated_at)) }}</td>
+                                <td>{{ date('d-m-Y h:i:s A',strtotime($rec->updated_at)) }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Sub-Ward</b></td>

@@ -84,10 +84,10 @@
 								@endforeach
 							</td>
 							<td>
-								{{ date('d/M/Y',strtotime($project->created_at))}}
+								{{ date('d/m/Y',strtotime($project->created_at))}}
 							</td>
 							<td>
-								{{ date('d/M/Y', strtotime($project->updated_at)) }}
+								{{ date('d/m/Y', strtotime($project->updated_at)) }}
 								<br><small>({{ $project->updated_at->diffForHumans() }})</small>
 							</td>
 							@if(Auth::user()->group_id == 1)
