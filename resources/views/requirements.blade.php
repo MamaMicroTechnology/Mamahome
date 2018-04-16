@@ -139,9 +139,9 @@
 			@if(count($requirements) == 0)
 				No enquiry found yet! Please add some.
 			@elseif(count($requirements) == 1)
-				This is your requirement
+				This is your enquiry
 			@else
-				These are your requirements
+				These are your enquiries
 			@endif
 			@if(session('Error'))
 			<div class="alert-danger pull-right">{{ session('Error')}}</div>
@@ -167,7 +167,7 @@
 								<td>{{ $requirement->sub_category }}</td>
 								<td>{{ $requirement->quantity }} {{ $requirement->measurement_unit }}</td>
 								<td id="status-{{ $requirement->id }}">{{ $requirement->status }}</td>
-								<td><a class="btn btn-xs btn-primary" id="init-{{ $requirement->id }}" onclick="initiateOrder('{{ $requirement->id }}')">Initiate Order</a></td>
+								<td><a class="btn btn-xs btn-primary" id="init-{{ $requirement->id }}" onclick="initiateOrder('{{ $requirement->id }}')">Initiate Enquiry</a></td>
 							</tr>
 						@endforeach
 					</tbody>
@@ -420,7 +420,7 @@
 	        {
 	            console.log(response);
 	            document.getElementById('status-'+arg).innerHTML = 'Order Initiated';
-	            alert('Order Initiated !!');
+	            alert('Enquiry Initiated !!');
 	        }
 	    });
 	    return false;
