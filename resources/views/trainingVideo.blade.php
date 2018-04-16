@@ -81,8 +81,8 @@
                                   </div>
                                   <div class="modal-body">
                                     <video class="img img-responsive" controls>
-                                      <source src="{{ URL::to('/') }}/trainingvideo/{{ $video->upload }}" type="video/mp4">
-                                      <source src="{{ URL::to('/') }}/trainingvideo/{{ $video->upload }}" type="video/ogg">
+                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
+                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
                                       
                                     </video>
                                   </div>
