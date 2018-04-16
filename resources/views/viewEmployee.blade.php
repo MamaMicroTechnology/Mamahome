@@ -11,7 +11,7 @@
                 </div>
                 <div class="panel-body">
                     <center>
-                        <img style="border-radius:50%; height:150px; width:150px;" data-toggle="modal" data-target="#myModal" src="{{ URL::to('/') }}/profilePic/{{ $user->profilepic }}">
+                        <img style="border-radius:50%; height:150px; width:150px;" data-toggle="modal" data-target="#myModal" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}">
                         <br>
                         <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -23,7 +23,7 @@
           <h4 class="modal-title"> {{ $user->employeeId }} : {{ $user->name }}</h4>
         </div>
         <div class="modal-body">
-          <img style=" height:150px; width:150px;" src="{{ URL::to('/') }}/profilePic/{{ $user->profilepic }}">
+          <img style=" height:150px; width:150px;" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}">
 
         </div>
         <div class="modal-footer">
