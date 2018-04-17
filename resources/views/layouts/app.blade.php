@@ -384,6 +384,7 @@ div#calendar{
     <a href="{{ URL::to('/tltraining') }}">Training Video</a>
 </div>
 @endif
+
 @endif
         @yield('content')
     </div>

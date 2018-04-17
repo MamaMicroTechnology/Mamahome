@@ -123,6 +123,7 @@ Route::get('/setraining','HomeController@setraining');
 
 
 
+
 Route::post('/confirmUser','mamaController@confirmUser');
 Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
