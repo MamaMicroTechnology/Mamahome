@@ -119,4 +119,6 @@ class logisticsController extends Controller
     {
         return view('logistics.takesignature');
     }
+
+    
 }
