@@ -28,11 +28,11 @@
 		                           </div>
                              @endforeach
                               
-                         	</div>
-                      </table>
-                     </div>
-                  </div>
-              </div>
+                         	</table>
+	       	</div>
+	    </div>
+	</div>
+</div> 
                     
 						
 @endsection
