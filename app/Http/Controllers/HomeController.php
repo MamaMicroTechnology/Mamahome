@@ -67,17 +67,17 @@ class HomeController extends Controller
     public function authlogin()
     {
         date_default_timezone_set("Asia/Kolkata");
-        $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('d-m-Y'))->get();
+        $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
         if(count($check)==0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
-            $login->logindate = date('d-m-Y');
+            $login->logindate = date('Y-m-d');
             $login->loginTime = date('H:i A');
             $login->logoutTime = "N/A";
             $login->save();
         }
         $activity = new ActivityLog;
-        $activity->time = date('d-m-Y H:i A');
+        $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has logged in to the system at ".date('H:i A');
         $activity->save();
@@ -87,7 +87,7 @@ class HomeController extends Controller
     {
         date_default_timezone_set("Asia/Kolkata");
         $activity = new ActivityLog;
-        $activity->time = date('d-m-Y H:i A');
+        $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has logged out of the system at ".date('H:i A');
         $activity->save();
@@ -787,7 +787,11 @@ class HomeController extends Controller
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         $roomtypes = RoomType::where('project_id',$request->projectId)->get();
         $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();
+        $user = User::where('id',$projectdetails->listing_engineer_id)->pluck('name')->first();
+        $updater = User::where('id',$projectdetails->updated_by)->first();
         return view('update',[
+                    'updater'=>$updater,
+                    'username'=>$user,
                     'subwards'=>$subwards,
                     'projectdetails'=>$projectdetails,
                     'projectward'=>$projectward,
@@ -2166,7 +2170,13 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                     array_push($ids, $details[$i][$j]);
                 }
             }
-            $projects = ProjectDetails::whereIn('project_id',$ids)->where('deleted',0)->get();
+            $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
+                            ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+                            ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+                            ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
+                            ->get();
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
