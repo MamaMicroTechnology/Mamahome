@@ -9,7 +9,7 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                <a href="{{url()->previous()}}" class="btn btn-sm btn-danger pull-right">Back</a>    
+                <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
                 </div>
                 <div class="panel-body">
                   
@@ -43,10 +43,11 @@
                                 
                                 <td style="text-align:center"> 
                                   @if($user->status == 'Not Completed')
-                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success">Completed</a>
-                                  @else
-                                    Completed
+                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success" onclick="{{ URL::to('/') }}/salescompleted; return false" >Completed</a>
+                                   @else
+                                 complete
                                   @endif
+                                  
                                 </td>
                             
                             </tr>
