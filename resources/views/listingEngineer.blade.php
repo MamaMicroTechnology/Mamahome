@@ -17,6 +17,7 @@
                   @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
                   @endif
+                  <center id="currentTime" class="pull-right"></center>
                 </div>
                 @if($subwards)
                 <div class="panel-body">
@@ -39,30 +40,62 @@
                                    <td>:</td>
                                    <td id="x">
                                     <div class="col-sm-6">
+                                      <label>Longitude:</label>
                                         <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input placeholder="latitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                        <label>Latitude:</label>
+                                        <input placeholder="Latitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
                                     </div>
                                    </td>
                                </tr>
                                <tr>
-                                   <td>Road Name</td>
+                                   <td>Road Name/Road No.</td>
                                    <td>:</td>
-                                   <td><input id="road" required type="text" placeholder="Road Name" class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
+                                   <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
-                                   <td>Address</td>
+                                   <td>Full Address</td>
                                    <td>:</td>
-                                   <td><input readonly id="address" required type="text" placeholder="Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
+                                   <td><input readonly id="address" required type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
                                </tr>
+                               <tr>
+                                 <td>Construction Type</td>
+                                 <td>:</td>
+                                 <td>
+                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in RMC</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="No" type="radio" name="rmcinterest">No</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                <td>Type of Contract ? </td>
+                                <td>:</td>
+                                <td>
+                                  <select class="form-control" name="contract" id="contract" required>
+                                    <option value="" disabled selected>--- Select ---</option>
+                                    <option value="Labour Contract">Labour Contract</option>
+                                    <option value="Material Contract">Material Contract</option>
+                                </select>
+                              </td>
                                <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
                                <tr>
-                                   <td>Other Approvals</td>
+                                   <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="oApprove"></td>
                                </tr>
@@ -78,7 +111,8 @@
                                            <option value="Pillars">Pillars</option>
                                            <option value="Walls">Walls</option>
                                            <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
+                                           <option value="Electrical">Electrical</option>
+                                           <option value="Plumbing">Plumbing</option>
                                            <option value="Plastering">Plastering</option>
                                            <option value="Flooring">Flooring</option>
                                            <option value="Carpentry">Carpentry</option>
@@ -128,27 +162,9 @@
                                     <td>:</td>
                                     <td>
                                         <table id="bhk" class="table table-responsive">
-                                            <tr>
-                                                <td>
-                                                  <select class="form-control" name="floorNo[]" id="floorNo">
-                                                    
-                                                  </select>
-                                                </td>
-                                                <td>
-                                                    <select name="roomType[]" id="" class="form-control">
-                                                        <option value="1RK">1RK</option>
-                                                        <option value="1BHK">1BHK</option>
-                                                        <option value="2BHK">2BHK</option>
-                                                        <option value="3BHK">3BHK</option>
-                                                        <option value="4BHK">4BHK</option>
-                                                        <option value="5BHK">5BHK</option>
-                                                        <option value="6BHK">6BHK</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of houses">
-                                                </td>
-                                                </tr>
+                                            <tr id="selection">
+                                                
+                                            </tr>
                                             <tr>
                                                 <td colspan=3>
                                                     <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add more</button>
@@ -261,11 +277,6 @@
                        </div> 
                        <div id="seventh" class="hidden">
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
-                            <label>Type of Contract ? </label><select class="form-control" name="contract" id="contract" required>
-                                <option value="" disabled selected>--- Select ---</option>
-                                <option value="Labour Contract">Labour Contract</option>
-                                <option value="Material Contract">Material Contract</option>
-                            </select>
                             <br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>
                        </div>                        
@@ -282,7 +293,24 @@
 </div>
 <!--This line by Siddharth -->
 <script type="text/javascript">
- 
+  // window.onload = function(){
+  //   var current = new Date();
+  //   document.getElementById("currentTime").innerHTML = current.toLocaleTimeString();
+  // }
+  function doDate()
+  {
+      var str = "";
+
+      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+      var months = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+      var now = new Date();
+
+      str += "Today is: " + days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      document.getElementById("currentTime").innerHTML = str;
+  }
+
+  setInterval(doDate, 1000);
   function validateFileType(){
     var fileName = document.getElementById("pImage").value;
     var idxDot = fileName.lastIndexOf(".") + 1;
@@ -680,7 +708,7 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
-      var opts = "<option value=''>--Floor--</option>";
+      var opts = "<option value=''>--Floor--</option><option value='Ground'>Ground</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
@@ -689,7 +717,43 @@
         if(document.getElementById("total").innerHTML != null)
         {
           document.getElementById("total").innerHTML = floor;
-          for(var i = 1; i<=sum; i++){
+          var ctype1 = document.getElementById('constructionType1');
+          var ctype2 = document.getElementById('constructionType2');
+          if(ctype1.checked == true && ctype2.checked == true){
+            // both residential and commercial
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<option value='1RK'>1RK</option>"+
+                      "<option value='1BHK'>1BHK</option>"+
+                      "<option value='2BHK'>2BHK</option>"+
+                      "<option value='3BHK'>3BHK</option></select>"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }else if(ctype1.checked == true && ctype2.checked == false){
+            // residential only
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value='1RK'>1RK</option>"+
+                      "<option value='1BHK'>1BHK</option>"+
+                      "<option value='2BHK'>2BHK</option>"+
+                      "<option value='3BHK'>3BHK</option></select>"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }else if(ctype1.checked == false && ctype2.checked == true){
+            // commercial only
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }
+          for(var i = 1; i<sum; i++){
             opts += "<option value='"+i+"'>Floor "+i+"</option>";
           }
           document.getElementById("floorNo").innerHTML = opts;
@@ -707,19 +771,36 @@
         var cell3 = row.insertCell(0);
         var cell1 = row.insertCell(1);
         var cell2 = row.insertCell(2);
+        var ctype1 = document.getElementById('constructionType1');
+        var ctype2 = document.getElementById('constructionType2');
         var existing = document.getElementById('floorNo').innerHTML;
-        cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-        cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
-                                                        "<option value=\"1RK\">1RK</option>"+
-                                                        "<option value=\"1BHK\">1BHK</option>"+
-                                                        "<option value=\"2BHK\">2BHK</option>"+
-                                                        "<option value=\"3BHK\">3BHK</option>"+
-                                                        "<option value=\"4BHK\">4BHK</option>"+
-                                                        "<option value=\"5BHK\">5BHK</option>"+
-                                                        "<option value=\"6BHK\">6BHK</option>"+
-                                                    "</select>";
-        cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
-        
+        if(ctype1.checked == true && ctype2.checked == false){
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+                                                          "<option value=\"1RK\">1RK</option>"+
+                                                          "<option value=\"1BHK\">1BHK</option>"+
+                                                          "<option value=\"2BHK\">2BHK</option>"+
+                                                          "<option value=\"3BHK\">3BHK</option>"+
+                                                      "</select>";
+          cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
+        }
+        if(ctype1.checked == false && ctype2.checked == true){
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = "<input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">";
+          cell2.innerHTML = "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+        }
+        if(ctype1.checked == true && ctype2.checked == true){
+          // both residential and commercial
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+                                                          "<option value=\"Commercial Floor\">Commercial Floor</option>"+
+                                                          "<option value=\"1RK\">1RK</option>"+
+                                                          "<option value=\"1BHK\">1BHK</option>"+
+                                                          "<option value=\"2BHK\">2BHK</option>"+
+                                                          "<option value=\"3BHK\">3BHK</option>"+
+                                                      "</select>";
+          cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
+        }
     }
 </script>
 @endsection
