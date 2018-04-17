@@ -1382,6 +1382,23 @@ class HomeController extends Controller
         // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
         return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
     }
+    public function dailywiseProjects(Request $request){
+        $today = date('Y-m-d');
+        $date = date('Y-m-d',strtotime('-1 day',strtotime($today)));
+        $projectCount = ProjectDetails::where('created_at','like',$date.'%')->count();
+         $projects = DB::table('project_details')
+            ->rightjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+            ->rightjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
+            ->rightjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+            ->rightjoin('users','users.id','=','project_details.listing_engineer_id')
+            ->rightjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+            ->rightjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
+            ->rightjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
+            ->where('project_details.created_at','like',$date.'%')
+            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+            ->paginate(4);
+             return view('dailywiseProjects', ['date' => $date,'today'=>$today,'projects'=> $projects,'projectCount'=>$projectCount]);
+    }
     public function dailyslots(Request $request)
     {
         $totalListing = array();
@@ -2035,6 +2052,26 @@ public function setraining(Request $request)
                         ->where('designation',"7")
                         ->get();
 return view('setraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
+public function asttraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"5")
+                        ->where('designation',"4")
+                        ->get();
+return view('asttraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
+public function adtraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"5")
+                        ->where('designation',"3")
+                        ->get();
+return view('adtraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     
 }
 public function tltraining(Request $request)

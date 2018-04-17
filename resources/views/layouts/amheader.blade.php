@@ -422,6 +422,7 @@ div#calendar{
            <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+           <a href="{{ URL::to('/') }}/asttraining">Training Video</a>
             @elseif(Auth::user()->group_id == 1)
            <a href="{{ URL::to('/pricing') }}">Pricing</a>
            <a href="{{ URL::to('/') }}/amfinance">Finance</a>
@@ -433,6 +434,8 @@ div#calendar{
            <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+
+
             @endif
         @endif
         @endif

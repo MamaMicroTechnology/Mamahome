@@ -1,4 +1,4 @@
-@extends('layouts.sales')
+@extends('layouts.app')
 @section('content')
 <div class="">
 	
@@ -27,12 +27,13 @@
 		                              <center style="color: green;font-size:20px;">{{$video->remark }}</center>
 		                           </div>
                              @endforeach
-                              
-                         </table>
+                     </table>
 	       	</div>
 	    </div>
 	</div>
-</div> 
+</div>             
+	                     
+
                     
 						
 @endsection
