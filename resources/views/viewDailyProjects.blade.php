@@ -46,6 +46,14 @@
                             <td>{{ $details->project_name }}</td>
                         </tr>
                         <tr>
+                            <td><b>Construction Type</b></td>
+                            <td>{{ $details->construction_type }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested in RMC</b></td>
+                            <td>{{ $details->interested_in_rmc }}</td>
+                        </tr>
+                        <tr>
                             <td><b>Status</b></td>
                             <td>{{ $details->project_status }}</td>
                         </tr>

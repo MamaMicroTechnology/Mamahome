@@ -54,6 +54,14 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td><b>Construction Type</b></td>
+                                <td>{{ $rec->construction_type }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Interested in RMC</b></td>
+                                <td>{{ $rec->interested_in_rmc }}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%;"><b>Project Status</b></td>
                                 <td>{{$rec->project_status}}</td>
                             </tr>
