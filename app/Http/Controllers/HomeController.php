@@ -2128,9 +2128,8 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
             $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
             $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
             for($i = 0; $i < count($details); $i++){
-                if(count($details[$i]) != 0){
-                    array_push($ids, $details[$i][0]);
-                    array_push($ids, $details[$i][1]);
+                for($j = 0; $j<count($details[$i]); $j++){
+                    array_push($ids, $details[$i][$j]);
                 }
             }
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
