@@ -832,7 +832,11 @@ class HomeController extends Controller
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         $roomtypes = RoomType::where('project_id',$request->projectId)->get();
         $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();
+        $user = User::where('id',$projectdetails->listing_engineer_id)->pluck('name')->first();
+        $updater = User::where('id',$projectdetails->updated_by)->first();
         return view('update',[
+                    'updater'=>$updater,
+                    'username'=>$user,
                     'subwards'=>$subwards,
                     'projectdetails'=>$projectdetails,
                     'projectward'=>$projectward,
@@ -1947,16 +1951,16 @@ class HomeController extends Controller
     }
     public function trainingVideo(Request $request)
     { 
-        
+        $titles = training::all();
         $depts = Department::all();
         $grps = Group::all();
         if(!$request->dept){
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none"]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none",'titles'=>$titles]);
         }else{
             $videos = training::where('dept',$request->dept)
                         ->where('designation',$request->designation)
                         ->get();
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos,'titles'=>$titles]);
         }
     }
     public function uploadfile(Request $request){
@@ -2217,7 +2221,13 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                     array_push($ids,$details[$i][$j]);
                 }
             }
-            $projects = ProjectDetails::whereIn('project_id',$ids)->where('deleted',0)->get();
+            $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
+                            ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+                            ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+                            ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
+                            ->get();
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);

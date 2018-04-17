@@ -53,7 +53,12 @@
 								{{ $enquiry->status}}
 							</td>
 							<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
-								{{ $enquiry->notes }}
+								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
+									{{ csrf_field() }}
+									<input type="hidden" value="{{$enquiry->id}}" name="id">
+									<input onblur="this.className='hidden'; document.getElementById('now{{ $enquiry->id }}').className='';" name="note" id="next{{ $enquiry->id }}" type="text" size="35" class="hidden" value="{{ $enquiry->notes }}"> 
+									<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
+								</form>
 							</td>
 							<td style="text-align: center" >
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
@@ -69,4 +74,16 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	function edit(arg){
+		document.getElementById('now'+arg).className = "hidden";
+		document.getElementById('next'+arg).className = "";
+		document.getElementById('next'+arg).focus();
+	}
+	function editm(arg){
+		document.getElementById('noww'+arg).className = "hidden";
+		document.getElementById('nextt'+arg).className = "form-control";
+	}
+</script>
 @endsection

@@ -174,7 +174,7 @@
 	    	        success: function(response)
 	    	        {
 	    	            console.log(response);
-	    	            var ans = "<option value=''>--Select--</option>";
+	    	            var ans = "<option value=''>--Select--</option><option value='All'>All</option>";
 	    	            for(var i=0;i<response[0].length;i++)
 	    	            {
 	    	                ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
