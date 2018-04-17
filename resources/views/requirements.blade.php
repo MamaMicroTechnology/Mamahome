@@ -139,9 +139,9 @@
 			@if(count($requirements) == 0)
 				No enquiry found yet! Please add some.
 			@elseif(count($requirements) == 1)
-				This is your requirement
+				This is your enquiry
 			@else
-				These are your requirements
+				These are your enquiries
 			@endif
 			@if(session('Error'))
 			<div class="alert-danger pull-right">{{ session('Error')}}</div>
@@ -152,7 +152,7 @@
 				{{ csrf_field() }}
 				<table class="table">
 					<thead>
-						<th>Enquiry No.</th>
+						
 						<th>Main Category</th>
 						<th>Sub-Category</th>
 						<th>Qnty.</th>
@@ -162,12 +162,12 @@
 					<tbody>
 						@foreach($requirements as $requirement)
 							<tr>
-								<td>{{ $requirement->id }}</td>
+								
 								<td>{{ $requirement->main_category }}</td>
 								<td>{{ $requirement->sub_category }}</td>
 								<td>{{ $requirement->quantity }} {{ $requirement->measurement_unit }}</td>
 								<td id="status-{{ $requirement->id }}">{{ $requirement->status }}</td>
-								<td><a class="btn btn-xs btn-primary" id="init-{{ $requirement->id }}" onclick="initiateOrder('{{ $requirement->id }}')">Initiate Order</a></td>
+								<td><a class="btn btn-xs btn-primary" id="init-{{ $requirement->id }}" onclick="initiateOrder('{{ $requirement->id }}')">Initiate Enquiry</a></td>
 							</tr>
 						@endforeach
 					</tbody>
@@ -373,7 +373,7 @@
 		var day 	  	 = (today.getDate().length ==1?"0"+today.getDate():today.getDate()); //This line by Siddharth
 		var month 	  	 = parseInt(today.getMonth())+1;
 		month 	  	     = (today.getMonth().length == 1 ? "0"+month : "0"+month);
-		var e 			 = parseInt(month);  //This line by Siddharth
+		var e 			 = parseInt(month);  
 		var year 	  	 = today.getFullYear();
 		var current_date = new String(year+'-'+month+'-'+day);
 	
@@ -420,7 +420,7 @@
 	        {
 	            console.log(response);
 	            document.getElementById('status-'+arg).innerHTML = 'Order Initiated';
-	            alert('Order Initiated !!');
+	            alert('Enquiry Initiated !!');
 	        }
 	    });
 	    return false;

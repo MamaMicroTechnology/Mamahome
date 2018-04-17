@@ -378,6 +378,7 @@ div#calendar{
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
+    <a href="{{ URL::to('/tltraining') }}">Training Video</a>
 </div>
 @endif
 @endif

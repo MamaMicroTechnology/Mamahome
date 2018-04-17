@@ -2032,6 +2032,37 @@ class HomeController extends Controller
         }
         return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
     }
+    public function letraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $users = User::all();
+        $videos = training::where('dept',"1")
+                        ->where('designation',"6")
+                        ->get();
+return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
+    
+}
+public function setraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"2")
+                        ->where('designation',"7")
+                        ->get();
+return view('setraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
+public function tltraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"1")
+                        ->where('designation',"2")
+                        ->get();
+return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
     public function employeereports(Request $request)
     {
         $depts = [1,2,3,4,5];
