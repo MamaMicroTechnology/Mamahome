@@ -201,6 +201,7 @@ div#calendar{
                         @endif
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
                         <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
+                        <li><a href="{{ URL::to('/') }}/setraining">Training Video</a></li>
                     </ul>
                 
                     <!-- Right Side Of Navbar -->
@@ -242,6 +243,7 @@ div#calendar{
 
     <!-- Scripts -->
  <script src="{{ asset('js/app.js') }}"></script>
+ 
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";

@@ -5,7 +5,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			@if($loginTimes)
-			Report of {{ $username->name }} ({{ date('d-M-Y',strtotime($loginTimes->logindate)) }})
+			Report of {{ $username->name }} ({{ date('d-m-Y',strtotime($loginTimes->logindate)) }})
 			@else
 			User may have failed to log in today
 			@endif

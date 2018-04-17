@@ -4,7 +4,7 @@
 <div class="col-md-2">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
-                <b style="color:white">Custom Daily Slot</b>
+                <b style="color:white">Sales Report</b>
             </div>
             <div class="panel-body">
             	<form method="GET" action="{{ URL::to('/') }}/salesreports">
@@ -83,7 +83,7 @@
     <div class="panel panel-primary" style="overflow-x:scroll">
         <div class="panel-heading" id="panelhead">
             <label>
-            	Daily Listings For The Date : <b>{{ date('d-M-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-M-Y',strtotime($_GET['todate'])) : '' }}</b>
+            	Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	Current Count: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
@@ -99,7 +99,7 @@
                 <thead>
                     <tr>
                         <th style="text-align:center">Ward No.</th>
-                        <th style="text-align:center">ID</th>
+                        <th style="text-align:center">Project-ID</th>
                         <th style="text-align:center" class="{{ isset($_GET['se']) ? 'hidden' : '' }}">Updater</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center">Followup</th>

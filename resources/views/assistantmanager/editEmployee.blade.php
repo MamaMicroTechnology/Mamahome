@@ -62,12 +62,16 @@
                         <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->alt_phone:'' }}" name="altPh" class="form-control input-sm" placeholder="Alternative phone No."></td>
                     </tr>
                     <tr>
-                        <td>Official Email-id</td>
-                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->official_email:'' }}" name="official_email" class="form-control input-sm" placeholder="Official Email id"></td>
+                        <td>Official Email-id(gmail)</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->official_email:'' }}" name="official_email" class="form-control input-sm" placeholder="Official Email-id"></td>
+                    </tr>
+                    <tr>
+                        <td>Official Email-id(mamahome)</td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->mh_email:'' }}" name="mh_email" class="form-control input-sm" placeholder="Official Email-id"></td>
                     </tr>
                     <tr>
                         <td>Personal Email-id</td>
-                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->personal_email:'' }}" name="personal_email" class="form-control input-sm" placeholder="Personal Email id"></td>
+                        <td><input type="text" value="{{ $employeeDetails != NULL? $employeeDetails->personal_email:'' }}" name="personal_email" class="form-control input-sm" placeholder="Personal Email-id"></td>
                     </tr>
                     <tr>
                         <td>Permanent Address</td>

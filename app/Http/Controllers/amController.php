@@ -141,8 +141,8 @@ class amController extends Controller
             if($request->from){
                 return $request->from;
             }
-            $start_date = date("d-M-Y", strtotime("-1 week"));
-            $end_date = date("d-M-Y");
+            $start_date = date("d-m-Y", strtotime("-1 week"));
+            $end_date = date("d-m-Y");
             // $this->db->where("store_date >= '" . $start_date . "' AND store_date <= '" . $end_date . "'");
             
             $previous_week = strtotime("-1 week +1 day");

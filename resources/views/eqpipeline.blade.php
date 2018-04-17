@@ -21,6 +21,7 @@
 							<th style="text-align: center">Quantity</th>
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
+							<th style="text-align: center">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -53,6 +54,9 @@
 							</td>
 							<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
 								{{ $enquiry->notes }}
+							</td>
+							<td style="text-align: center" >
+								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
 							</td>
 						</tr>
 						@endforeach

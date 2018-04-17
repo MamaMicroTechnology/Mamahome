@@ -497,6 +497,51 @@ class HomeController extends Controller
                     ->first();
         return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
     }
+    public function eqpipelineedit(Request $request)
+    {
+        $category = Category::all();
+        $depart = [2,4,6,7,8];
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $enq = Requirement::where('requirements.id',$request->reqId)
+                    ->leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                    ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
+                    ->leftjoin('contractor_details','requirements.project_id','contractor_details.project_id')
+                    ->leftjoin('owner_details','requirements.project_id','owner_details.project_id')
+                    ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
+                    ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
+                    ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
+                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
+                    ->first();
+        return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
+    }
+    public function index1(Request $request )
+    {
+        $totalListing = array();
+        $date = date('Y-m-d');
+        $users = User::where('department_id','1')->where('group_id','6')
+                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
+                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
+        $check = ["Fixtures","Completion"];
+       $status = DB::table('project_details')->whereIn('project_status' , $check )->get();        
+        // $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
+        $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+        $projects = DB::table('project_details')
+            ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+            ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
+            ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+            ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+            ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+            ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
+            ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
+            ->whereIn('project_status' , $check )
+            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+            ->paginate(15);
+            
+        return view('status_wise_projects', ['date' => $date,'users'=>$users,  'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'status' =>$status]);
+       }
     public function index()
     {
         if(Auth::user()->confirmation == 0){
@@ -1029,7 +1074,7 @@ class HomeController extends Controller
         $assignment->prev_assign = $ward->sub_ward_name;
         $assignment->status = 'Completed';
         $assignment->save();
-        // salesassignment::where('user_id',$id->userid)->update(['status'=>'Completed']);
+        salesassignment::where('user_id',Auth::user()->id)->delete();
         return back();
     }
     // sales
@@ -1083,7 +1128,9 @@ class HomeController extends Controller
     public function printLPO($id, Request $request)
     {
         $order = Order::where('id',$id)->first();
-        $rec = ProjectDetails::where('project_id', $order->project_id)->first();
+
+        $rec = ProjectDetails::where('project_id', $order->project_id)->first(); 
+        
         return view('printLPO', ['rec' => $rec,'order'=>$order,'id'=>$id]);
     }
     public function ampricing(Request $request){
@@ -1883,16 +1930,16 @@ class HomeController extends Controller
     }
     public function trainingVideo(Request $request)
     { 
-        $titles = training::all();
+        
         $depts = Department::all();
         $grps = Group::all();
         if(!$request->dept){
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none",'titles'=>$titles]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none"]);
         }else{
             $videos = training::where('dept',$request->dept)
                         ->where('designation',$request->designation)
                         ->get();
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos,'titles'=>$titles]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos]);
         }
     }
     public function uploadfile(Request $request){
@@ -1984,6 +2031,37 @@ class HomeController extends Controller
         }
         return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
     }
+    public function letraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $users = User::all();
+        $videos = training::where('dept',"1")
+                        ->where('designation',"6")
+                        ->get();
+return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
+    
+}
+public function setraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"2")
+                        ->where('designation',"7")
+                        ->get();
+return view('setraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
+public function tltraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"1")
+                        ->where('designation',"2")
+                        ->get();
+return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
     public function employeereports(Request $request)
     {
         $depts = [1,2,3,4,5];
@@ -2050,9 +2128,8 @@ class HomeController extends Controller
             $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
             $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
             for($i = 0; $i < count($details); $i++){
-                if(count($details[$i]) != 0){
-                    array_push($ids, $details[$i][0]);
-                    array_push($ids, $details[$i][1]);
+                for($j = 0; $j<count($details[$i]); $j++){
+                    array_push($ids, $details[$i][$j]);
                 }
             }
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)

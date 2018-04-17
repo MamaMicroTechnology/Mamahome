@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -15,8 +16,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// chatting
+Route::get('/token','TokenController@token');
+Route::get('/logoutFromChat','TokenController@logout');
+
 // Shared View
 Auth::routes();
+Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
@@ -49,6 +55,7 @@ Route::get('/enquirysheet','HomeController@enquirysheet');
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
 Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq');
+Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
@@ -110,6 +117,10 @@ Route::get('/followupproject','HomeController@followup');
 Route::get('/updateNoteFollowUp','HomeController@updateNoteFollowUp');
 Route::get('/kra','HomeController@getKRA');
 Route::get('/eqpipeline','HomeController@eqpipeline');
+Route::get('/letraining','HomeController@letraining');
+Route::get('/setraining','HomeController@setraining');
+
+
 
 Route::post('/confirmUser','mamaController@confirmUser');
 Route::post('/addProject','mamaController@addProject');
@@ -187,6 +198,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assignDailySlots','HomeController@getSalesTL');
     Route::get('/assignListSlots','HomeController@assignListSlots');
     Route::get('/teamLead','HomeController@teamLeadHome');
+    Route::get('/tltraining','HomeController@tltraining');
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
     Route::get('/{id}/deleteReportImage2','HomeController@deleteReportImage2');

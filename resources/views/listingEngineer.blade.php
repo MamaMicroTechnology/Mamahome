@@ -261,7 +261,7 @@
                        </div> 
                        <div id="seventh" class="hidden">
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
-                            <label>With / Without Contract ? </label><select class="form-control" name="contract" id="contract" required>
+                            <label>Type of Contract ? </label><select class="form-control" name="contract" id="contract" required>
                                 <option value="" disabled selected>--- Select ---</option>
                                 <option value="Labour Contract">Labour Contract</option>
                                 <option value="Material Contract">Material Contract</option>

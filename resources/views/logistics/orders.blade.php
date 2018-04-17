@@ -15,7 +15,7 @@
 					<th style="text-align:center">Quantity</th>					
 					<th style="text-align:center">Status</th>
 					<th style="text-align:center">Dispatch Status</th>
-					<th style="text-align:center">Payment Status</th>
+					<th style="text-align:center">Sign Status</th>
 					<th style="text-align:center">Delivery Status</th>
                     <th style="text-align:center">Action</th>
 					
