@@ -44,6 +44,8 @@
 					<thead>
 						<th>Project Id</th>
 						<th>Project Name</th>
+						<th>Construction Type</th>
+						<th>Interested In RMC</th>
 						<th>Sub-Ward</th>
 						<th>Project Status</th>
 						<th>Quality</th>
@@ -66,6 +68,8 @@
 								<a target="_none" href="{{ URL::to('/') }}/ameditProject?projectId={{ $project->project_id }}">{{ $project->project_id }}</a>
 							</td>
 							<td>{{ $project->project_name }}</td>
+							<td>{{ $project->construction_type }}</td>
+							<td>{{ $project->interested_in_rmc }}</td>
 							<td>{{ $project->sub_ward_name }}</td>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
