@@ -62,6 +62,8 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
+Route::get('/scdashboard','HomeController@salesConverterDashboard');
+
 
 // Orders
 Route::get('/orders','HomeController@amorders');

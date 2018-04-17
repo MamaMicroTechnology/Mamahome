@@ -568,7 +568,10 @@ class HomeController extends Controller
             return redirect('accountExecutive');
         }else if($group == "Admin"){
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
-        }else{
+        }else if($group == "Sales converter" && $dept == "Sales"){
+            return redirect('scdashboard');
+        }
+        else{
             Auth()->logout();
             return view('errors.403error');
         }
@@ -2322,5 +2325,8 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                 'noOfCalls'=>$noOfCalls,
                 'projectIds'=>$projectIds
             ]);
+    }
+    public function salesConverterDashboard(){
+        return view('scdashboard');
     }
 }
