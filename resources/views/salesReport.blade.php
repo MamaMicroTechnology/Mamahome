@@ -4,7 +4,7 @@
 <div class="col-md-2">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
-                <b style="color:white">Custom Daily Slot</b>
+                <b style="color:white">Sales Report</b>
             </div>
             <div class="panel-body">
             	<form method="GET" action="{{ URL::to('/') }}/salesreports">

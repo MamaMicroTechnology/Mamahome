@@ -21,6 +21,7 @@
 							<th style="text-align: center">Quantity</th>
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
+							<th style="text-align: center">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,6 +59,9 @@
 									<input onblur="this.className='hidden'; document.getElementById('now{{ $enquiry->id }}').className='';" name="note" id="next{{ $enquiry->id }}" type="text" size="35" class="hidden" value="{{ $enquiry->notes }}"> 
 									<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
 								</form>
+							</td>
+							<td style="text-align: center" >
+								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
 							</td>
 						</tr>
 						@endforeach

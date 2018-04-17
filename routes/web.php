@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -21,6 +22,7 @@ Route::get('/logoutFromChat','TokenController@logout');
 
 // Shared View
 Auth::routes();
+Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
@@ -53,11 +55,13 @@ Route::get('/enquirysheet','HomeController@enquirysheet');
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
 Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq');
+Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
+Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 
 // Orders
 Route::get('/orders','HomeController@amorders');
@@ -146,6 +150,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
+     Route::get('/adtraining','HomeController@adtraining');
     
     Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
@@ -291,6 +296,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/video','HomeController@trainingVideo');
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
+     Route::get('/asttraining','HomeController@asttraining');
     Route::post('/uploadvideo','HomeController@uploadvideo');
     
     Route::get('/updatepay','amController@updatepay');
