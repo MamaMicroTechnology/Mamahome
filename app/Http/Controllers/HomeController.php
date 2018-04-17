@@ -568,7 +568,7 @@ class HomeController extends Controller
             return redirect('accountExecutive');
         }else if($group == "Admin"){
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
-        }else if($group == "Sales converter" && $dept == "Sales"){
+        }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }
         else{
