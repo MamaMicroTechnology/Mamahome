@@ -767,7 +767,6 @@ class HomeController extends Controller
     public function listingEngineer()
     {
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-        dd($wardsAssigned);
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         return view('listingEngineer',['subwards'=>$subwards]);
     }
