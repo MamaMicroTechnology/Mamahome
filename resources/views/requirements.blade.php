@@ -141,11 +141,7 @@
 			@elseif(count($requirements) == 1)
 				This is your enquiry
 			@else
-<<<<<<< HEAD
-				These are your enquiry
-=======
 				These are your enquiries
->>>>>>> chaithra
 			@endif
 			@if(session('Error'))
 			<div class="alert-danger pull-right">{{ session('Error')}}</div>
