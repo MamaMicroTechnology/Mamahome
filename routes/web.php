@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -21,6 +22,7 @@ Route::get('/logoutFromChat','TokenController@logout');
 
 // Shared View
 Auth::routes();
+Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
@@ -53,6 +55,7 @@ Route::get('/enquirysheet','HomeController@enquirysheet');
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
 Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq');
+Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');

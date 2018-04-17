@@ -242,6 +242,7 @@ div#calendar{
 
     <!-- Scripts -->
  <script src="{{ asset('js/app.js') }}"></script>
+ 
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";

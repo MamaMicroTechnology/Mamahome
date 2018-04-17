@@ -34,7 +34,7 @@
         </div>
     </div>
 </div>
-<form method="post" action="{{ URL::to('/') }}/amaddEmployee">
+<form method="post" name="form1" action="{{ URL::to('/') }}/amaddEmployee">
     {{ csrf_field() }}
   <div class="modal fade" id="addEmployee" role="dialog">
     <div class="modal-dialog modal-md">
@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-md-6">
                   <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"><br>
-                  <input required type="email" placeholder="User-ID of MMT" class="form-control" name="email"><br>
+                  <input required type="text" placeholder="User-ID Of MMT" class="form-control" name="email"><br>
                 </div>
                 <div class="col-md-6">
                   <input required type="text" placeholder="Name" class="form-control" name="name"><br>
@@ -76,14 +76,16 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Add</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" onclick="phonenumber(document.form1.phNo)">
+            Add </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
         </div>
       </div>
     </div>
   </div>
 
 </form>
+
 <div class='b'></div>
 <div class='bb'></div>
 <div class='message'>
@@ -103,6 +105,7 @@
   </button>
 </div>
 
+<script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($departments as $department)
 <script type="text/javascript">
@@ -126,6 +129,21 @@ $(document).ready(function () {
         $(document.body).css({'cursor' : 'default'});
     });
 });
+
+function phonenumber(inputtxt)
+{
+  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  if(inputtxt.value.match(phoneno))
+     {
+     return true;      
+   }
+   else
+     {
+     alert("Not a valid Phone Number");
+     return false;
+     }
+}
+
 </script>
 @endforeach
 @endsection
