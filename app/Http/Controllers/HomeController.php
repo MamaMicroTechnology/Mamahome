@@ -574,7 +574,7 @@ class HomeController extends Controller
             Auth()->logout();
             return view('errors.403error');
         }else{
-            return redirect('https://mmtchat.herokuapp.com');
+            return redirect('chat');
         }
         return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
     }
