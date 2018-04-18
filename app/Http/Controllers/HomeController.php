@@ -570,10 +570,11 @@ class HomeController extends Controller
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
         }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
-        }
-        else{
+        }else if(Auth::user()->department_id == 10){
             Auth()->logout();
             return view('errors.403error');
+        }else{
+            return redirect('https://mmtchat.herokuapp.com');
         }
         return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
     }
