@@ -43,7 +43,7 @@
                                 
                                 <td style="text-align:center"> 
                                   @if($user->status == 'Not Completed')
-                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success" onclick="{{ URL::to('/') }}/salescompleted; return false" >Completed</a>
+                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success"  onclick="{{ URL::to('/') }}/salescompleted; " > Completed </a>
                                    @else
                                  complete
                                   @endif

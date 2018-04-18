@@ -5,14 +5,12 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                <b style="color:white">Project Details
-                <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
+                <a href="{{ URL::to('/') }}/ameditProject1?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                </b> 
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
                     <tbody>
-                     @if(Auth::check())
-                        @if(Auth::user()->group_id !== 7)
                         <tr>
                             <td style="width:40%"><b>Listed On</b></td>
                             <td>{{ date('d-m-Y h:i:s A',strtotime($details->created_at)) }}</td>
@@ -39,8 +37,6 @@
                             <td style="width:40%"><b>Call Attended By</b></td>
                             <td>{{ $callAttendedBy != null ? $callAttendedBy->name: '' }}</td>
                         </tr>
-                        @endif
-                        @endif
                         <tr>
                             <td style="width:40%"><b>Project Id</b></td>
                             <td>{{ $details->project_id }}</td>

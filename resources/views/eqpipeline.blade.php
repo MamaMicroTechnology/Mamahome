@@ -56,7 +56,7 @@
 								{{ $enquiry->notes }}
 							</td>
 							<td style="text-align: center" >
-								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
+								<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
 							</td>
 						</tr>
 						@endforeach
