@@ -11,18 +11,26 @@
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
                     <tbody>
-                     @if(Auth::check())
-                        @if(Auth::user()->group_id !== 7)
+                    
                         <tr>
                             <td style="width:40%"><b>Listed On</b></td>
                             <td>{{ date('d-m-Y h:i:s A',strtotime($details->created_at)) }}</td>
                         </tr>
+                       
+                         @if(Auth::check())
+                        @if(Auth::user()->group_id !== 7)
                         <tr>
                             <td><b>Listed By</b></td>
                             <td>
                                 {{ $listedby != null ? $listedby->name : '' }}
                             </td>
                         </tr>
+                        <tr>
+                            <td style="width:40%"><b>Call Attended By</b></td>
+                            <td>{{ $callAttendedBy != null ? $callAttendedBy->name: '' }}</td>
+                        </tr>
+                        @endif
+                        @endif
                         <tr>
                             <td style="width:40%"><b>Updated On</b></td>
                             <td>{{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td>
@@ -35,12 +43,8 @@
                             <td style="width:40%"><b>Followup</b></td>
                             <td>{{ $details->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
                         </tr>
-                        <tr>
-                            <td style="width:40%"><b>Call Attended By</b></td>
-                            <td>{{ $callAttendedBy != null ? $callAttendedBy->name: '' }}</td>
-                        </tr>
-                        @endif
-                        @endif
+                        
+                        
                         <tr>
                             <td style="width:40%"><b>Project Id</b></td>
                             <td>{{ $details->project_id }}</td>
@@ -48,6 +52,14 @@
                         <tr>
                             <td><b>Project Name</b></td>
                             <td>{{ $details->project_name }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Construction Type</b></td>
+                            <td>{{ $details->construction_type }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested in RMC</b></td>
+                            <td>{{ $details->interested_in_rmc }}</td>
                         </tr>
                         <tr>
                             <td><b>Status</b></td>

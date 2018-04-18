@@ -22,14 +22,21 @@
                 </div>
                 <div class="panel-body">
                     <center>
-                      <label>Project Details</label>
+                      <label>Project Details</label><br>
+                       @if(Auth::check())
+                        @if(Auth::user()->group_id !== 7)
+                      <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
+                      @endif
+                      @endif
+                      <small>Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}</small><br>
+                      @if($updater != null)
+                      <small>Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}</small>
+                      @endif
                     </center>
                     @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
                         {{ csrf_field() }}
                         <input type="hidden" name="id" value="{{ $id }}">
-                        
-                        
                       </form>
                       @else
                       {{ $projectdetails->quality }}
@@ -49,17 +56,69 @@
                                    <td>:</td>
                                    <td id="x">
                                     <div class="col-sm-6">
+                                        <label>Longitude:</label>
                                         <input disabled value="{{ $projectdetails->siteaddress->longitude }}" placeholder="Longitude" class="form-control input-sm"  type="text" name="longitude" value="" id="longitude">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input disabled value="{{ $projectdetails->siteaddress->latitude }}" placeholder="latitude" class="form-control input-sm"  type="text" name="latitude" value="" id="latitude">
+                                        <label>Latitude:</label>
+                                        <input disabled value="{{ $projectdetails->siteaddress->latitude }}" placeholder="Latitude" class="form-control input-sm"  type="text" name="latitude" value="" id="latitude">
                                     </div>
                                    </td>
                                </tr>
                                <tr>
-                                   <td>Road Name</td>
+                                   <td>Road Name / Road No.</td>
                                    <td>:</td>
-                                   <td><input id="road" value="{{ $projectdetails->road_name }}"  type="text" placeholder="Road Name" class="form-control input-sm" name="rName"></td>
+                                   <td><input id="road" value="{{ $projectdetails->road_name }}"  type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName"></td>
+                               </tr>
+                               <tr>
+                                   <td>Full Address</td>
+                                   <td>:</td>
+                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="rName"></td>
+                               </tr>
+                               <tr>
+                                <?php
+                                  $type = explode(", ",$projectdetails->construction_type);
+                                ?>
+                                 <td>Construction Type</td>
+                                 <td>:</td>
+                                 <td>
+                                    <label required class="checkbox-inline">
+                                      <input {{ $type[0] == "Residential" ? 'checked' : ''}} id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential
+                                    </label>
+                                    @if(count($type) == 2)
+                                    <label required class="checkbox-inline">
+                                      <input {{ $type[0] == "Commercial" ? 'checked' : $type[1] == "Commercial" ? 'checked' : ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
+                                    </label>
+                                    @else
+                                    <label required class="checkbox-inline">
+                                      <input {{ $type[0] == "Commercial" ? 'checked' : ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
+                                    </label> 
+                                    @endif
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in RMC</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input {{ $projectdetails->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input {{ $projectdetails->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Type of Contract ? </td>
+                                  <td>:</td>
+                                  <td>
+                                   <select class="form-control" name="contract" id="contract" required>
+                                      <option value="" disabled selected>--- Select ---</option>
+                                      <option {{ $projectdetails->contract == "Labour Contract" ? 'selected' : ''}} value="Labour Contract">Labour Contract</option>
+                                      <option {{ $projectdetails->contract == "Material Contract" ? 'selected' : ''}} value="Material Contract">Material Contract</option>
+                                      <option {{ $projectdetails->contract == "None" ? 'selected' : ''}} value="None">None</option>
+                                  </select>
+                                  </td>
                                </tr>
                                <tr>
                                  <td>Sub Ward</td>
@@ -72,7 +131,7 @@
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
                                <tr>
-                                   <td>Other Approvals</td>
+                                   <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="oApprove"></td>
                                </tr>
@@ -88,7 +147,8 @@
                                            <option  {{ $projectdetails->project_status == "Pillars" ? 'selected' : ''}} value="Pillars">Pillars</option>
                                            <option  {{ $projectdetails->project_status == "Walls" ? 'selected' : ''}} value="Walls">Walls</option>
                                            <option  {{ $projectdetails->project_status == "Roofing" ? 'selected' : ''}} value="Roofing">Roofing</option>
-                                           <option  {{ $projectdetails->project_status == "Electrical & Plumbing" ? 'selected' : ''}} value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
+                                           <option  {{ $projectdetails->project_status == "Electrical" ? 'selected' : ''}} value="Electrical & Plumbing">Electrical</option>
+                                           <option  {{ $projectdetails->project_status == "Plumbing" ? 'selected' : ''}} value="Electrical & Plumbing">Plumbing</option>
                                            <option  {{ $projectdetails->project_status == "Plastering" ? 'selected' : ''}} value="Plastering">Plastering</option>
                                            <option  {{ $projectdetails->project_status == "Flooring" ? 'selected' : ''}} value="Flooring">Flooring</option>
                                            <option  {{ $projectdetails->project_status == "Carpentry" ? 'selected' : ''}} value="Carpentry">Carpentry</option>
@@ -163,24 +223,35 @@
                                               <td>
                                                 <select id="floorNo" name="floorNo[]" class="form-control">
                                                   <option value="">--Floor--</option>
+                                                    <option value="Ground">Ground</option>
                                                   @for($i = 1;$i<=$projectdetails->project_type;$i++)
                                                     <option value="{{ $i }}">Floor {{ $i }}</option>
                                                   @endfor
                                                 </select>
                                               </td>
                                                 <td>
+                                                    @if($projectdetails->construction_type == "Commercial")
+                                                    <input type="text" name="roomType[]" value="Commercial Floor">
+                                                    @elseif($projectdetails->construction_type == "Residential")
                                                     <select name="roomType[]" id="" class="form-control">
                                                         <option value="1RK">1RK</option>
                                                         <option value="1BHK">1BHK</option>
                                                         <option value="2BHK">2BHK</option>
                                                         <option value="3BHK">3BHK</option>
-                                                        <option value="4BHK">4BHK</option>
-                                                        <option value="5BHK">5BHK</option>
-                                                        <option value="6BHK">6BHK</option>
                                                     </select>
+                                                    @else
+                                                    <select name="roomType[]" id="" class="form-control">
+                                                        <option value="">--Select--</option>
+                                                        <option value="Commercial Floor">Commercial Floor</option>
+                                                        <option value="1RK">1RK</option>
+                                                        <option value="1BHK">1BHK</option>
+                                                        <option value="2BHK">2BHK</option>
+                                                        <option value="3BHK">3BHK</option>
+                                                    </select>
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="number[]" class="form-control" placeholder="No. of houses">
+                                                    <input type="text" name="number[]" class="form-control" placeholder="{{ $projectdetails->construction_type == 'Commercial'? "Floor Size" : "No. of House" }}" >
                                                 </td>
                                                 </tr>
                                             <tr>
@@ -339,12 +410,6 @@
                         
                         </table>
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea><br>
-                            <label>Type of Contract ? </label><select class="form-control" name="contract" id="contract" required>
-                                <option value="" disabled selected>--- Select ---</option>
-                                <option {{ $projectdetails->contract == "Labour Contract" ? 'selected' : ''}} value="Labour Contract">Labour Contract</option>
-                                <option {{ $projectdetails->contract == "Material Contract" ? 'selected' : ''}} value="Material Contract">Material Contract</option>
-                                <option {{ $projectdetails->contract == "None" ? 'selected' : ''}} value="None">None</option>
-                            </select><br>
                             <button type="submit" class="form-control btn btn-primary">Submit Data</button>
                        </div>                        
                        <ul class="pager">
@@ -582,24 +647,36 @@ function sum(){
         var cell3 = row.insertCell(0);
         var cell1 = row.insertCell(1);
         var cell2 = row.insertCell(2);
-        var no = {{ $projectdetails->project_type }};
-        var floors = "<select name='floorNo[]' class='form-control'><option value=''>--Floor--</option>";
-        for(var i = 1; i<=no;i++){
-          floors += "<option value='"+i+"'>Floor "+i+"</option>";
+        var ctype1 = document.getElementById('constructionType1');
+        var ctype2 = document.getElementById('constructionType2');
+        var existing = document.getElementById('floorNo').innerHTML;
+        if(ctype1.checked == true && ctype2.checked == false){
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+                                                          "<option value=\"1RK\">1RK</option>"+
+                                                          "<option value=\"1BHK\">1BHK</option>"+
+                                                          "<option value=\"2BHK\">2BHK</option>"+
+                                                          "<option value=\"3BHK\">3BHK</option>"+
+                                                      "</select>";
+          cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
-        floors += "</select>";
-        cell3.innerHTML = floors;
-        cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
-                                                        "<option value=\"1RK\">1RK</option>"+
-                                                        "<option value=\"1BHK\">1BHK</option>"+
-                                                        "<option value=\"2BHK\">2BHK</option>"+
-                                                        "<option value=\"3BHK\">3BHK</option>"+
-                                                        "<option value=\"4BHK\">4BHK</option>"+
-                                                        "<option value=\"5BHK\">5BHK</option>"+
-                                                        "<option value=\"6BHK\">6BHK</option>"+
-                                                    "</select>";
-        cell2.innerHTML = "<input required name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of rooms\">";
-        
+        if(ctype1.checked == false && ctype2.checked == true){
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = "<input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">";
+          cell2.innerHTML = "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+        }
+        if(ctype1.checked == true && ctype2.checked == true){
+          // both residential and commercial
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+                                                          "<option value=\"Commercial Floor\">Commercial Floor</option>"+
+                                                          "<option value=\"1RK\">1RK</option>"+
+                                                          "<option value=\"1BHK\">1BHK</option>"+
+                                                          "<option value=\"2BHK\">2BHK</option>"+
+                                                          "<option value=\"3BHK\">3BHK</option>"+
+                                                      "</select>";
+          cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
+        }
     }
 </script>
 @endsection

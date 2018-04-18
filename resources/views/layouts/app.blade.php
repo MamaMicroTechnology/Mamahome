@@ -273,6 +273,8 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                    @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
                 </div>
@@ -384,8 +386,18 @@ div#calendar{
     <a href="{{ URL::to('/orders') }}">Orders</a>
     <a href="{{ URL::to('/tltraining') }}">Training Video</a>
 </div>
+@elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
+    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
+    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+  </div>
 @endif
 @endif
+
+
         @yield('content')
     </div>
 

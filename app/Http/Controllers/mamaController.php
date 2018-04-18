@@ -398,6 +398,11 @@ class mamaController extends Controller
     }
     public function addProject(Request $request)
     {
+        $cType = count($request->constructionType);
+        $type = $request->constructionType[0];
+        if($cType != 1){
+            $type .= ", ".$request->constructionType[1];
+        }
         $validator = Validator::make($request->all(), [
             'address' => 'required',
             'basement' => 'required',
@@ -434,6 +439,8 @@ class mamaController extends Controller
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
             $projectdetails->project_name = $request->pName;
+            $projectdetails->construction_type = $type;
+            $projectdetails->interested_in_rmc = $request->rmcinterest;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
             $projectdetails->other_approvals = $imageName2;
@@ -582,6 +589,11 @@ class mamaController extends Controller
                 'remarks' => $request->remarks
             ]);
         }
+        $cType = count($request->constructionType);
+        $type = $request->constructionType[0];
+        if($cType != 1){
+            $type .= ", ".$request->constructionType[1];
+        }
         ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
@@ -591,8 +603,11 @@ class mamaController extends Controller
             'quality' => $request->quality,
             'project_type' => $floor,
             'project_size' => $request->pSize,
+            'interested_in_rmc'=>$request->rmcinterest,
+            'construction_type'=>$type,
             'budget' => $request->budget,
             'contract'=>$request->contract,
+            'updated_by'=>Auth::user()->id
         ]);
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
@@ -666,12 +681,15 @@ class mamaController extends Controller
         $room_types = $request->roomType[0]." (".$request->number[0].")";
         $count = count($request->roomType);
         for($i = 0;$i<$count;$i++){
-            $roomtype = new RoomType;
-            $roomtype->floor_no = $request->floorNo[$i];
-            $roomtype->room_type = $request->roomType[$i];
-            $roomtype->no_of_rooms = $request->number[$i];
-            $roomtype->project_id = $id;
-            $roomtype->save();
+            if($request->number[$i] != null)
+            {
+                $roomtype = new RoomType;
+                $roomtype->floor_no = $request->floorNo[$i];
+                $roomtype->room_type = $request->roomType[$i];
+                $roomtype->no_of_rooms = $request->number[$i];
+                $roomtype->project_id = $id;
+                $roomtype->save();
+            }
         }
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');

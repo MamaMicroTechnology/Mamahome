@@ -572,7 +572,10 @@ class HomeController extends Controller
             return redirect('accountExecutive');
         }else if($group == "Admin"){
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
-        }else{
+        }else if($group == "Sales Converter" && $dept == "Sales"){
+            return redirect('scdashboard');
+        }
+        else{
             Auth()->logout();
             return view('errors.403error');
         }
@@ -836,7 +839,11 @@ class HomeController extends Controller
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         $roomtypes = RoomType::where('project_id',$request->projectId)->get();
         $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();
+        $user = User::where('id',$projectdetails->listing_engineer_id)->pluck('name')->first();
+        $updater = User::where('id',$projectdetails->updated_by)->first();
         return view('update',[
+                    'updater'=>$updater,
+                    'username'=>$user,
                     'subwards'=>$subwards,
                     'projectdetails'=>$projectdetails,
                     'projectward'=>$projectward,
@@ -1968,16 +1975,16 @@ class HomeController extends Controller
     }
     public function trainingVideo(Request $request)
     { 
-        
+        $titles = training::all();
         $depts = Department::all();
         $grps = Group::all();
         if(!$request->dept){
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none"]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>"none",'titles'=>$titles]);
         }else{
             $videos = training::where('dept',$request->dept)
                         ->where('designation',$request->designation)
                         ->get();
-            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos]);
+            return view('trainingVideo',['depts'=>$depts,'grps'=>$grps,'videos'=>$videos,'titles'=>$titles]);
         }
     }
     public function uploadfile(Request $request){
@@ -2056,14 +2063,39 @@ class HomeController extends Controller
         $activities = ActivityLog::orderby('time','DESC')->get();
         return view('activitylog',['activities'=>$activities]);
     }
-    public function eqpipeline()
+    public function eqpipeline(Request $request)
     {
-        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+        // $details = array();
+        // $wards = Ward::all();
+        // $users = User::all();
+        // $ids = array();
+        // if($request->phNo)
+        // {
+        //     $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
+        //     for($i = 0; $i < count($details); $i++){
+        //         for($j = 0; $j<count($details[$i]); $j++){
+        //             array_push($ids, $details[$i][$j]);
+        //         }
+        //     }
+        //      $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
+        //                     ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+        //                     ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+        //                     ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+        //                     ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+        //                     ->where('deleted',0)
+        //                     ->get();
+        // }
+            $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
                         ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
                         ->paginate(10);
         $subwards2 = array();
         foreach($pipelines as $enquiry){
+
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
             $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
         }
@@ -2221,6 +2253,9 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
         }
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
+
+
+
     public function projectDetailsForTL(Request $request)
     {
         $details = array();
@@ -2238,7 +2273,13 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                     array_push($ids,$details[$i][$j]);
                 }
             }
-            $projects = ProjectDetails::whereIn('project_id',$ids)->where('deleted',0)->get();
+            $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
+                            ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+                            ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+                            ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
+                            ->get();
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
@@ -2377,5 +2418,8 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
         return redirect()->back();
      
     }
-
-     }
+    public function salesConverterDashboard()
+    {
+        return view('scdashboard');
+    }
+}

@@ -34,6 +34,8 @@
     								    <div class="checkbox">
                                           <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
                                         </div>
+                                        <button class="btn btn-sm" style="background-color:red;color:white;font-weight:bold">Block</button>
+                                         
     								</form>
     								</td>
     							</tr>
