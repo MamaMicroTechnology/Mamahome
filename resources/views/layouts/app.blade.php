@@ -273,7 +273,7 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                    @elseif(Auth::user()->group_id == 16 && Auth::user()->department_id == 2)
+                    @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
