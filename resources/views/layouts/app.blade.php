@@ -391,6 +391,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/kra">KRA</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
   </div>
 @endif
 @endif
