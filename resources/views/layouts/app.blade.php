@@ -385,7 +385,7 @@ div#calendar{
     <a href="{{ URL::to('/orders') }}">Orders</a>
     <a href="{{ URL::to('/tltraining') }}">Training Video</a>
 </div>
-@elseif(Auth::user()->group_id == 16 && Auth::user()->department_id == 2)
+@elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
