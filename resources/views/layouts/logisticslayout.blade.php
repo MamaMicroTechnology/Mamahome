@@ -327,6 +327,7 @@ div#calendar{
 @if(Auth::user()->group_id == 12)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    <a href="{{ URL::to('/') }}/chat">Chat</a>
     <a href="{{ URL::to('/') }}/lcoorders">Order Details</a>
     <a href="{{ URL::to('/') }}/deliveredorders">Delivered Orders</a>
     <a href="{{ URL::to('/lcoreport') }}">My Report</a>
