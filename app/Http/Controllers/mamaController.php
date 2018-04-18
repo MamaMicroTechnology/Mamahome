@@ -508,8 +508,8 @@ class mamaController extends Controller
         $procurementDetails->procurement_email = $request->pEmail;
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
-        $time = date('H:i A');
-        $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
+        $newtime = date('H:i A');
+        // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
             'lastListingTime' => $newtime
         ]);
