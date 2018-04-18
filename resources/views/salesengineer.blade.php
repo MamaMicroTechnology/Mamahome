@@ -21,8 +21,12 @@
     							@foreach($projects as $project)
     							<tr>
     								<td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
-    								<td id="projsite-{{$project->project_id}}">{{ $project->siteaddress->address }}</td>
-    								<td id="projproc-{{$project->project_id}}">{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}</td>
+    								<td id="projsite-{{$project->project_id}}">
+                                        {{ $project->siteaddress != null ? $project->siteaddress->address : '' }}
+                                    </td>
+    								<td id="projproc-{{$project->project_id}}">
+                                        {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}
+                                    </td>
     								<td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
     								<td><button class="btn btn-sm" style="background-color:#F57F1B;color:white;font-weight:bold" id="viewdet({{$project->project_id}})" onclick="view('{{$project->project_id}}')">View</button>
     								<form method="post" action="{{ URL::to('/') }}/confirmedProject">
@@ -101,7 +105,7 @@
         						            <tr id="locpanelright-{{$project->project_id}}">
                 						        <td><label>Location</label></td>
                 						        <td>
-                						            <input type="text" class="form-control" id="location-{{$project->project_id}}" value="{{$project->siteaddress->address}}" name="address">
+                						            <input type="text" class="form-control" id="location-{{$project->project_id}}" value="{{ $project->siteaddress != null ? $project->siteaddress->address : ''}}" name="address">
                 						        </td>
         						            </tr>
         						            <tr id="matpanelright-{{$project->project_id}}">

@@ -132,9 +132,32 @@
                         <br><br>
                         <table class="table table-hover">
                             @foreach($brands as $brand)
-                            <tr>
+                            <tr id="currentb{{ $brand->id }}">
                                 <td>{{ $brand->category_name }}</td>
                                 <td>{{ $brand->brand }}</td>
+                                <td>
+                                <form method="POST" action="{{ URL::to('/') }}/deletebrand">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $brand->id }}" name="id">
+                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                </form>
+                                </td>
+                                <td><button class="btn btn-sm btn-primary" onclick="editbrand('{{ $brand->id }}')">Edit</button></td>
+                            </tr>
+                             <tr class="hidden" id="editb{{ $brand->id }}">
+                                
+                                <td colspan=3>
+                                <form method="POST" action="{{ URL::to('/') }}/updateBrand">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $brand->id }}" name="id">
+                                    <div class="input-group">
+                                        <input type="text" name="name" value="{{ $brand->brand }}" class="form-control input-sm">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-success" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                </td>
                             </tr>
                             @endforeach
                         </table>
@@ -197,6 +220,10 @@
     function editcategory(arg){
         document.getElementById('current'+arg).className = "hidden";
         document.getElementById('edit'+arg).className = "";
+    }
+    function editbrand(arg){
+        document.getElementById('currentb'+arg).className = "hidden";
+        document.getElementById('editb'+arg).className = "";
     }
     function editsubcategory(arg){
         document.getElementById('currentsub'+arg).className = "hidden";

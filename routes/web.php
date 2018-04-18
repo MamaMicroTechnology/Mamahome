@@ -62,8 +62,10 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
-Route::get('/scdashboard','HomeController@salesConverterDashboard');
 
+//sales converter
+
+Route::get('/scdashboard','HomeController@salesConverterDashboard');
 
 // Orders
 Route::get('/orders','HomeController@amorders');
@@ -90,7 +92,10 @@ Route::post('/addCategory','marketingController@addCategory');
 Route::post('/addSubCategory','marketingController@addSubCategory');
 Route::post('/addBrand','marketingController@addBrand');
 Route::post('/deleteCategory','marketingController@deleteCategory');
+Route::post('/deleteCategory','marketingController@deleteCategory');
 Route::post('/deleteSubCategory','marketingController@deleteSubCategory');
+Route::post('/deletebrand','marketingController@deletebrand');
+Route::post('/updateBrand','marketingController@updateBrand');
 Route::post('/updateCategory','marketingController@updateCategory');
 Route::post('/updateSubCategory','marketingController@updateSubCategory');
 Route::post('/editEnquiry','mamaController@editEnquiry');

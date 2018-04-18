@@ -75,6 +75,10 @@ class marketingController extends Controller
         SubCategory::where('category_id',$request->id)->delete();
         return back()->with('Success','Category with its sub-categories has been deleted');
     }
+    public function deletebrand(Request $request){
+        brand::find($request->id)->delete();
+        return back()->with('Success','brand has been deleted');
+    }
     public function deleteSubCategory(Request $request){
         SubCategory::find($request->id)->delete();
         return back()->with('Success','Sub-Category has been deleted');
@@ -83,6 +87,11 @@ class marketingController extends Controller
         Category::where('id',$request->id)
             ->update(['category_name'=>$request->name]);
         return back()->with('Success','Category has been updated');
+    }
+    public function updateBrand(Request $request){
+        brand::where('id',$request->id)
+            ->update(['brand'=>$request->name]);
+        return back()->with('Success','Brand has been updated');
     }
     public function updateSubCategory(Request $request){
         SubCategory::where('id',$request->id)

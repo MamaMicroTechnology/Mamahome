@@ -390,6 +390,7 @@ div#calendar{
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
   </div>
 @endif
 @endif

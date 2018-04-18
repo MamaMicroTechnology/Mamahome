@@ -80,7 +80,7 @@
                                     <h4 class="modal-title">{{ $video->remark }}</h4>
                                   </div>
                                   <div class="modal-body">
-                                    <video class="img img-responsive" controls>
+                                    <video class="img img-responsive" controls controlslist="nodownload">
                                       <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
                                       <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
                                       
