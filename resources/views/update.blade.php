@@ -19,15 +19,14 @@
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
+                  <small id="currentTime" class="pull-right">
+                    Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
+                  </small><br>
                 </div>
                 <div class="panel-body">
                     <center>
                       <label>Project Details</label><br>
-                      <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
-                      <small>Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}</small><br>
-                      @if($updater != null)
-                      <small>Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}</small>
-                      @endif
+                      <label class="{{ Auth::user()->department_id == '7' ? 'hidden' : '' }}">{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
                     </center>
                     @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
@@ -42,6 +41,15 @@
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
+                            <tr>
+                              <td>Update status</td>
+                              <td>:</td>
+                              <td>
+                                @if($updater != null)
+                                  Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}
+                                @endif
+                              </td>
+                            </tr>
                                <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
@@ -69,7 +77,7 @@
                                <tr>
                                    <td>Full Address</td>
                                    <td>:</td>
-                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="rName"></td>
+                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
                                </tr>
                                <tr>
                                 <?php
