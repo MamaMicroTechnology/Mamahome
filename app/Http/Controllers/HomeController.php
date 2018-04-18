@@ -860,7 +860,7 @@ class HomeController extends Controller
     {
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
-        
+        $todays = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->count();
         $projectCount = array();
         
         foreach($roads as $road){
@@ -874,7 +874,7 @@ class HomeController extends Controller
                                                     ->count();
             $projectCount[$road] = $genuine + $null;
         }
-        return view('roads',['roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('roads',['roads'=>$roads,'projectCount'=>$projectCount,'todays'=>$todays]);
     }
     public function viewProjectList(Request $request)
     {
@@ -882,6 +882,10 @@ class HomeController extends Controller
         $projectlist = ProjectDetails::where('road_name',$request->road)
                     ->where('sub_ward_id',$assignment)
                     ->get();
+        if($request->today){
+            $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")
+                    ->get();
+        }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
     }
     public function getMyReports(Request $request)
@@ -927,6 +931,7 @@ class HomeController extends Controller
     {
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
+        $todays = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->count();
         $projectCount = array();
         
         foreach($roads as $road){
@@ -940,7 +945,7 @@ class HomeController extends Controller
                                                     ->count();
             $projectCount[$road] = $null + $genuine;
         }
-        return view('requirementsroad',['roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('requirementsroad',['roads'=>$roads,'projectCount'=>$projectCount,'todays'=>$todays]);
     }
     public function projectRequirement(Request $request)
     {
@@ -948,6 +953,10 @@ class HomeController extends Controller
         $projectlist = ProjectDetails::where('road_name',$request->road)
         ->where('sub_ward_id',$assignment)
             ->get();
+        if($request->today){
+            $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")
+                    ->get();
+        }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements"]);
     }
     public function getRequirements(Request $request)
