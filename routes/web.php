@@ -64,6 +64,7 @@ Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
+Route::get('/chat','HomeController@getChat');
 
 // Orders
 Route::get('/orders','HomeController@amorders');

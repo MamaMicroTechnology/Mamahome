@@ -2339,4 +2339,8 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     public function salesConverterDashboard(){
         return view('scdashboard');
     }
+    public function getChat()
+    {
+        return view('chat');
+    }
 }
