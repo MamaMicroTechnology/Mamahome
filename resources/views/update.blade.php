@@ -19,10 +19,14 @@
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
+                  <small id="currentTime" class="pull-right">
+                    Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
+                  </small><br>
                 </div>
                 <div class="panel-body">
                     <center>
                       <label>Project Details</label><br>
+<<<<<<< HEAD
                        @if(Auth::check())
                         @if(Auth::user()->group_id !== 7)
                       <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
@@ -32,6 +36,9 @@
                       @if($updater != null)
                       <small>Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}</small>
                       @endif
+=======
+                      <label class="{{ Auth::user()->department_id == '7' ? 'hidden' : '' }}">{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                     </center>
                     @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
@@ -46,6 +53,15 @@
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
+                            <tr>
+                              <td>Update status</td>
+                              <td>:</td>
+                              <td>
+                                @if($updater != null)
+                                  Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}
+                                @endif
+                              </td>
+                            </tr>
                                <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
@@ -71,9 +87,20 @@
                                    <td><input id="road" value="{{ $projectdetails->road_name }}"  type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName"></td>
                                </tr>
                                <tr>
+<<<<<<< HEAD
                                    <td>Full Address</td>
                                    <td>:</td>
                                    <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="rName"></td>
+=======
+                                   <td>Road Width</td>
+                                   <td>:</td>
+                                   <td><input id="road" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
+                               </tr>
+                               <tr>
+                                   <td>Full Address</td>
+                                   <td>:</td>
+                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                </tr>
                                <tr>
                                 <?php
@@ -83,6 +110,7 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
+<<<<<<< HEAD
                                       <input {{ $type[0] == "Residential" ? 'checked' : ''}} id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential
                                     </label>
                                     @if(count($type) == 2)
@@ -94,6 +122,13 @@
                                       <input {{ $type[0] == "Commercial" ? 'checked' : ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
                                     </label> 
                                     @endif
+=======
+                                      <input {{ in_array('Residential', $type) ? 'checked': ''}} id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential
+                                    </label>
+                                    <label required class="checkbox-inline">
+                                      <input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
+                                    </label>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                  </td>
                                </tr>
                                <tr>
@@ -133,12 +168,18 @@
                                <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
                                    <td>:</td>
-                                   <td><input type="file" accept="image/*" class="form-control input-sm" name="oApprove"></td>
+                                   <td>
+                                    <input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]">
+                                  </td>
                                </tr>
                                <tr>
+                                <?php
+                                  $statuses = explode(", ", $projectdetails->project_status);
+                                ?>
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
+<<<<<<< HEAD
                                        <select id="status"  name="status" class="form-control input-sm">
                                            <option value="">--Select--</option>)
                                            <option  {{ $projectdetails->project_status == "Planning" ? 'selected' : ''}} value="Planning">Planning</option>
@@ -156,6 +197,87 @@
                                            <option  {{ $projectdetails->project_status == "Fixtures" ? 'selected' : ''}} value="Fixtures">Fixtures</option>
                                            <option  {{ $projectdetails->project_status == "Completion" ? 'selected' : ''}} value="Completion">Completion</option>
                                        </select>
+=======
+                                       <table class="table table-responsive">
+                                        <tr>
+                                          <td>
+                                            <label class="checkbox-inline">
+                                              <input {{ in_array('Planning', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input {{ in_array('Digging', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input {{ in_array('Foundation', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input {{ in_array('Pillars', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input {{ in_array('Walls', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
+                                            </label>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Roofing', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Electrical', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Plumbing', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Plastering', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Flooring', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
+                                        </label>
+                                        </td>
+                                        </tr>
+                                        <tr>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Carpentry', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Paintings', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Fixtures', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Completion', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
+                                        </label>
+                                        </td>
+                                        <td></td>
+                                        </tr>
+                                      </table>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                    </td>
                                </tr>
                                <tr>
@@ -499,6 +621,9 @@
 <!--This line by Siddharth -->
 
 <script type="text/javascript">
+  $(document).ready(function(){
+      count();
+  });
   $(function(){
   $('#img').change(function(){
     var input = this;
@@ -563,8 +688,6 @@ function sum(){
             window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
-          }else if(document.getElementById("status").value == ""){
-            window.alert("Select Project Status");
           }else if(document.getElementById("basement").value == ""){
             window.alert("You have not entered Project Name");
           }else if(document.getElementById("ground").value == ""){
@@ -659,6 +782,7 @@ function sum(){
                                                           "<option value=\"3BHK\">3BHK</option>"+
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
+<<<<<<< HEAD
         }
         if(ctype1.checked == false && ctype2.checked == true){
           cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
@@ -677,6 +801,52 @@ function sum(){
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
+=======
+        }
+        if(ctype1.checked == false && ctype2.checked == true){
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = "<input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">";
+          cell2.innerHTML = "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+        }
+        if(ctype1.checked == true && ctype2.checked == true){
+          // both residential and commercial
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+                                                          "<option value=\"Commercial Floor\">Commercial Floor</option>"+
+                                                          "<option value=\"1RK\">1RK</option>"+
+                                                          "<option value=\"1BHK\">1BHK</option>"+
+                                                          "<option value=\"2BHK\">2BHK</option>"+
+                                                          "<option value=\"3BHK\">3BHK</option>"+
+                                                      "</select>";
+          cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
+        }
+    }
+    function count(){
+      var ctype1 = document.getElementById('constructionType1');
+      var ctype2 = document.getElementById('constructionType2');
+      var countinput;
+      if(ctype1.checked == true && ctype2.checked == true){
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+      }else if(ctype1.checked == true || ctype2.checked == true){
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+      }else{
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      }
+      if(countinput == 5){
+        $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+        $('#constructionType1').attr('disabled',false);
+        $('#constructionType2').attr('disabled',false);
+      }else{
+        $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+      }
+    }
+    function fileUpload(){
+      var count = document.getElementById('oApprove').files.length;
+      if(count > 5){
+        document.getElementById('oApprove').value="";
+        alert('You are allowed to upload a maximum of 5 files');
+      }
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
     }
 </script>
 @endsection

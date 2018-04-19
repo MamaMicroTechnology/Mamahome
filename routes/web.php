@@ -70,6 +70,9 @@ Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
 
+Route::get('/chat','HomeController@getChat');
+
+
 // Orders
 Route::get('/orders','HomeController@amorders');
 Route::get('/updateampay','HomeController@updateampay');

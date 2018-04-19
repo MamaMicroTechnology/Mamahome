@@ -96,6 +96,11 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><b>Road Width</b></td>
+                            <td>:</td>
+                            <td>{{ $details->road_width }}</td>
+                        </tr>
+                        <tr>
                             <td><b>Project Image</b></td>
                             <td>
                                 <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">

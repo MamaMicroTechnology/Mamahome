@@ -38,6 +38,7 @@
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
                         <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
                         <li><a href="{{ URL::to('/') }}/letraining">Training Video</a></li>
+                        <li><a href="{{ URL::to('/') }}/chat">Chat</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
