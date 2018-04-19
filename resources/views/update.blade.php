@@ -27,13 +27,9 @@
                     <center>
                       <label>Project Details</label><br>
                        @if(Auth::check())
-                        @if(Auth::user()->group_id !== 7)
+                        @if(Auth::user()->group_id !== 7 && Auth::user()->group_id != 6)
                       <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
                       @endif
-                      @endif
-                      <small>Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}</small><br>
-                      @if($updater != null)
-                      <small>Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}</small>
                       @endif
                     </center>
                     @if($projectdetails->quality == NULL)
@@ -49,6 +45,7 @@
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
+                           @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                             <tr>
                               <td>Update status</td>
                               <td>:</td>
@@ -58,6 +55,7 @@
                                 @endif
                               </td>
                             </tr>
+                            @endif
                                <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
@@ -309,7 +307,7 @@
                                               </td>
                                                 <td>
                                                     @if($projectdetails->construction_type == "Commercial")
-                                                    <input type="text" name="roomType[]" value="Commercial Floor">
+                                                    <input type="text" name="roomType[]" readonly value="Commercial Floor">
                                                     @elseif($projectdetails->construction_type == "Residential")
                                                     <select name="roomType[]" id="" class="form-control">
                                                         <option value="1RK">1RK</option>
@@ -741,7 +739,7 @@ function sum(){
         }
         if(ctype1.checked == false && ctype2.checked == true){
           cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = "<input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">";
+          cell1.innerHTML = "<input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">";
           cell2.innerHTML = "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
         }
         if(ctype1.checked == true && ctype2.checked == true){

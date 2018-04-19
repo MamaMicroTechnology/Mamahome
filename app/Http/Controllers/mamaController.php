@@ -1081,11 +1081,25 @@ class mamaController extends Controller
         return back();
     }
     public function salesUpdateProject($id, Request $request){
+        $statusCount = count($request->status);
+        $statuses = $request->status[0];
+        if($statusCount > 1){
+            for($i = 1; $i < $statusCount; $i++){
+                $statuses .= ", ".$request->status[$i];
+            }
+        }
+        $cType = count($request->constructionType);
+        $type = $request->constructionType[0];
+        if($cType != 1){
+            $type .= ", ".$request->constructionType[1];
+        }
         projectDetails::where('project_id',$id)->update([
-            'project_status'=>$request->status,
+            'project_status'=>$statuses,
             'remarks'=>$request->materials,
             'with_cont'=>$request->qstn,
             'followup'=>$request->follow,
+            'construction_type'=>$type,
+            'road_width'=>$request->rWidth,
             'quality'=>$request->quality,
             'contract'=>$request->contract,
             'note'=>$request->note,
@@ -1098,7 +1112,7 @@ class mamaController extends Controller
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A')." with data - Status: ".$request->status.", Remarks: ".$request->materials.", Question: ".$request->qstn.", Followup: ".$request->follow.", Quality: ".$request->quality.", With contractor: ".$request->contract.", Note: ".$request->note;
+        $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A')." with data - Status: ".$statuses.", Remarks: ".$request->materials.", Question: ".$request->qstn.", Followup: ".$request->follow.", Quality: ".$request->quality.", With contractor: ".$request->contract.", Note: ".$request->note;
         $activity->save();
         return back();
     }

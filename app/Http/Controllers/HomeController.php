@@ -529,7 +529,9 @@ class HomeController extends Controller
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
                  
-        $check =DB::table('stages')->where('list',Auth::user()->name)->get()->pluck('status');
+        $check =DB::table('stages')->where('list',Auth::user()->name)
+                    ->orderby('created_at','DESC')->pluck('status');
+        $count = count($check);
         $status = DB::table('project_details')->whereIn('project_status' , $check )->get();        
         // $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
         $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
@@ -543,11 +545,11 @@ class HomeController extends Controller
             ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
             ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
             ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
-            ->whereIn('project_status' , $check )
+            ->where('project_status' , $check[$count-1] )
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
             ->paginate(15);
             
-        return view('status_wise_projects', ['date' => $date,'users'=>$users,  'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'status' =>$status]);
+        return view('status_wise_projects', ['date' => $date,'users'=>$users,  'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'status' =>$status,'status'=>$check]);
        }
     public function index()
     {
@@ -874,7 +876,7 @@ class HomeController extends Controller
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
         
         $projectCount = array();
-        
+        $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
         foreach($roads as $road){
             $genuine = ProjectDetails::where('road_name',$road)
                                                     ->where('quality','Genuine')
@@ -886,7 +888,7 @@ class HomeController extends Controller
                                                     ->count();
             $projectCount[$road] = $genuine + $null;
         }
-        return view('roads',['roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount]);
     }
     public function viewProjectList(Request $request)
     {
@@ -898,18 +900,142 @@ class HomeController extends Controller
     }
     public function getMyReports(Request $request)
     {
+        $now = date('H:i:s');
+        $currentURL = url()->current();;
+        $display = "";
+        $evening = "";
         if(!$request->date){
             date_default_timezone_set("Asia/Kolkata");
             $today = date('Y-m-d');
             $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
                 ->where('created_at','like',$today.'%')->get());
             $loginTimes = loginTime::where('user_id',Auth::user()->id)->where('logindate',$today)->first();
-            return view('reports',['loginTimes'=>$loginTimes,'projectCount'=>$projectCount]);
+            $display .= "<tr><td>Login Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->loginTime : '').
+                        "</td></tr><tr><td>Allocated Ward</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->allocatedWard : '').
+                        "</td></tr><tr><td>First Listing Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstListingTime : '').
+                        "</td></tr><tr><td>First Update Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstUpdateTime : '').
+                        "</td></tr><tr><td>No. of projects listed <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsListedInMorning : '').
+                        "</td></tr><tr><td>No. of projects updated <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsUpdatedInMorning : '').
+                        "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningMeter != null ? "<img src='"
+                        .$currentURL."/public/meters/".$loginTimes->morningMeter.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Meter Reading</td><td>:</td><td>"
+						.($loginTimes != null ? $loginTimes->gtracing : '').
+                        "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningData != null ? "<img src='"
+                        .$currentURL."/public/data/".$loginTimes->morningData.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->afternoonData : '').
+                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
+
+                    $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
+                    .($loginTimes != null ? $loginTimes->lastListingTime : '').
+                    "</td></tr><tr><td>Last Update Time</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->lastUpdateTime : '').
+                    "</td></tr><tr><td>Total Projects Listed</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->TotalProjectsListed : '').
+                    "</td></tr><tr><td>Total Projects Updated</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->totalProjectsUpdated : '').
+                    "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->eveningMeter != null ? "<img src='"
+                    .$currentURL."/public/meters/".$loginTimes->eveningMeter.
+                    "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningMeter : '').
+                    "</td></tr><tr><td>Meter Reading</td><td>:</td><td>".
+                    "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->afternoonMeter != null ? "<img src="
+                    .$currentURL."/public/meters/".$loginTimes->afternoonMeter.
+                    " height='100' width='200' class='img img-thumbnail'>"
+                    : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningData : '').
+                    "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                    "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmRemarks : '').
+                    "</td></tr><tr><td>Grade</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmGrade : '').
+                    "</td></tr></table>";
+            return view('reports',[
+                'evening'=>$evening,
+                'display'=>$display,
+                'loginTimes'=>$loginTimes,
+                'projectCount'=>$projectCount,
+                'now'=>$now
+            ]);
         }else{
             $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
                 ->where('created_at','like',$request->date.'%')->get());
             $loginTimes = loginTime::where('user_id',Auth::user()->id)->where('logindate',$request->date)->first();
-            return view('reports',['loginTimes'=>$loginTimes,'projectCount'=>$projectCount]);
+            $display .= "<tr><td>Login Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->loginTime : '').
+                        "</td></tr><tr><td>Allocated Ward</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->allocatedWard : '').
+                        "</td></tr><tr><td>First Listing Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstListingTime : '').
+                        "</td></tr><tr><td>First Update Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstUpdateTime : '').
+                        "</td></tr><tr><td>No. of projects listed <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsListedInMorning : '').
+                        "</td></tr><tr><td>No. of projects updated <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsUpdatedInMorning : '').
+                        "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningMeter != null ? "<img src='"
+                        .$currentURL."/public/meters/".$loginTimes->morningMeter.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Meter Reading</td><td>:</td><td>"
+						.($loginTimes != null ? $loginTimes->gtracing : '').
+                        "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningData != null ? "<img src='"
+                        .$currentURL."/public/data/".$loginTimes->morningData.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->afternoonData : '').
+                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
+
+                        $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
+                    .($loginTimes != null ? $loginTimes->lastListingTime : '').
+                    "</td></tr><tr><td>Last Update Time</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->lastUpdateTime : '').
+                    "</td></tr><tr><td>Total Projects Listed</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->TotalProjectsListed : '').
+                    "</td></tr><tr><td>Total Projects Updated</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->totalProjectsUpdated : '').
+                    "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->eveningMeter != null ? "<img src='"
+                    .$currentURL."/public/meters/".$loginTimes->eveningMeter.
+                    "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningMeter : '').
+                    "</td></tr><tr><td>Meter Reading</td><td>:</td><td>".
+                    "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->afternoonMeter != null ? "<img src="
+                    .$currentURL."/public/meters/".$loginTimes->afternoonMeter.
+                    " height='100' width='200' class='img img-thumbnail'>"
+                    : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningData : '').
+                    "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                    "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmRemarks : '').
+                    "</td></tr><tr><td>Grade</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmGrade : '').
+                    "</td></tr></table>";
+            return view('reports',[
+                'loginTimes'=>$loginTimes,
+                'projectCount'=>$projectCount,
+                'display'=>$display,
+                'evening'=>$evening,
+                'now'=>$now
+            ]);
         }
     }
     public function updateAssignment(){
@@ -940,7 +1066,7 @@ class HomeController extends Controller
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
         $projectCount = array();
-        
+        $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
         foreach($roads as $road){
             $genuine = ProjectDetails::where('road_name',$road)
                                                     ->where('quality','Genuine')
@@ -952,7 +1078,7 @@ class HomeController extends Controller
                                                     ->count();
             $projectCount[$road] = $null + $genuine;
         }
-        return view('requirementsroad',['roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount]);
     }
     public function projectRequirement(Request $request)
     {
@@ -1096,6 +1222,7 @@ class HomeController extends Controller
         salesassignment::where('user_id',Auth::user()->id)->delete();
         return back();
     }
+
     // sales
     public function getSalesTL(){
         $id = Department::where('dept_name',"Sales")->pluck('id')->first();
@@ -1925,12 +2052,14 @@ class HomeController extends Controller
         return back();
     }
     public function projectadmin(Request $id){
+
         $details = projectDetails::where('project_id',$id->projectId)->first();
         $roomtypes = RoomType::where('project_id',$id->projectId)->get();
         $followupby = User::where('id',$details->follow_up_by)->first();
         $callAttendedBy = User::where('id',$details->call_attended_by)->first();
         $listedby = User::where('id',$details->listing_engineer_id)->first();
         $subward = SubWard::where('id',$details->sub_ward_id)->pluck('sub_ward_name')->first();
+
         return view('viewDailyProjects',[
                 'details'=>$details,
                 'roomtypes'=>$roomtypes,
@@ -2104,30 +2233,7 @@ class HomeController extends Controller
     }
     public function eqpipeline(Request $request)
     {
-        // $details = array();
-        // $wards = Ward::all();
-        // $users = User::all();
-        // $ids = array();
-        // if($request->phNo)
-        // {
-        //     $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id');
-        //     $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id');
-        //     $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id');
-        //     $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
-        //     $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
-        //     for($i = 0; $i < count($details); $i++){
-        //         for($j = 0; $j<count($details[$i]); $j++){
-        //             array_push($ids, $details[$i][$j]);
-        //         }
-        //     }
-        //      $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
-        //                     ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
-        //                     ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
-        //                     ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
-        //                     ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-        //                     ->where('deleted',0)
-        //                     ->get();
-        // }
+       
             $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
                         ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
@@ -2446,12 +2552,26 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     }
     public function stages(Request $request)
     {
-       
+       $users = User::where('users.department_id','!=',10)
+                    ->leftjoin('departments','departments.id','users.department_id')
+                    ->leftjoin('groups','groups.id','users.group_id')
+                    ->select('users.*','departments.dept_name','groups.group_name')
+                    ->paginate(10);
+             $stages = Stages::where('status','')->get();
+            $wards = Ward::all();
+                 
          $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
           $se = DB::table('users')->where('department_id','2')->where('group_id','7')->get();
-         return view('assignStages',['le' => $le ,'se' => $se]);
+         return view('assignStages',['le' => $le ,'se' => $se,'users'=>$users]);
         
     }
+
+
+     
+
+
+
+
      public function store(Request $request)
     {
        
@@ -2480,4 +2600,15 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     {
         return view('chat');
     }
+
+public function approval(request $request  )
+    {         
+      ProjectDetails::where('project_id',$request->id)
+        ->update([
+            'deleted'=>2
+        ]);
+      return back();
+    }
+
+
 }

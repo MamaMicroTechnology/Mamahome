@@ -240,6 +240,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/completedAssignment','mamaController@completedAssignment');
     
     Route::get('/completethis','HomeController@completethis');
+    Route::get('/completethis1','HomeController@completethis1');
     Route::get('/tlsalesreports','HomeController@salesreports');
         
     Route::post('/{id}/assignWards','mamaController@assignWards');
@@ -388,3 +389,9 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
 });
+
+
+
+
+Route::post('/toggle-approve',"HomeController@approval");
+

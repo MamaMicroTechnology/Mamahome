@@ -154,7 +154,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Morning Data Image</td>
+					<td>Morning Meter Image</td>
 					<td>:</td>
 					<td>
 					    @if($loginTimes->morningData != NULL)
