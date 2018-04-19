@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12 col-md-offset-1">
             <div class="panel panel-default" style="border-color:#f4811f">
                 <div class="panel-heading text-center" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">Assign Stages</b>
                     @if(session('Error'))
@@ -19,51 +19,54 @@
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
                         <thead>
-                            <th style="width:15%">Select  Engineers</th>
-                            <th style="width:20%;">Select Project Status</th>
-                        
+                            <th style="width:15%">Name</th>
+                            <th style="width:15%">Desination</th>
+                            <th style="width:15%">Assign Stage</th>
+                           <!--  <th style="width:15%">Previously Assigned  Stage </th> -->
+                          </thead>
 
-                        <tr>
-                            <td>
-                           <select id="status"  name="list" class=" input-sm">
-                                <!-- <select  id="selectle" name="list"> -->
-                                    <option disabled selected value="">( SELECT )</option>
-                                    <option value="ALL">Select Engineers</option>
-                                    @foreach($le as $list)
-                                    <option value="{{$list->name}}">{{$list->name}}</option>
-                                    @endforeach
-                                     @foreach($se as $sales)
-                                    <option value="{{$sales->name}}">{{$sales->name}}</option>
-                                    @endforeach
+                        <tbody>
+                            
+                           @foreach($users as $user)
+                           <tr>
+                           <td>{{$user->name}}</td>
+                           <td>{{ $user->group_name }}</td>
+                           <td>
+                              <form method="POST" action="{{ url('/store')}}">
+                              <input type="hidden" name="list" value="{{ $user->name }}">
+                              {{ csrf_field() }}
+                               <select onchange="this.form.submit()" id="status"  name="status" class=" input-sm">
+                                   <option value="">--Select--</option>
+                                   <option value="Planning">Planning</option>
+                                   <option value="Digging">Digging</option>
+                                   <option value="Foundation">Foundation</option>
+                                   <option value="Pillars">Pillars</option>
+                                   <option value="Walls">Walls</option>
+                                   <option value="Roofing">Roofing</option>
+                                   <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
+                                   <option value="Plastering">Plastering</option>
+                                   <option value="Flooring">Flooring</option>
+                                   <option value="Carpentry">Carpentry</option>
+                                   <option value="Paintings">Paintings</option>
+                                   <option value="Fixtures">Fixtures</option>
+                                   <option value="Completion">Completion</option>
                                 </select>
-                            </td>
-                             <td>
-                                       <select id="status"  name="status" class=" input-sm">
-                                           <option value="">--Select--</option>
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                        </select>
-                                   </td>
-                        </tr>
+                              </form>
+                           </td>
+                           
+                           @endforeach
+                            
+                                   
+                      
                          
+                       </tbody>
                        
-                       
-                    </tbody>
+                    
                 </table>
-                <center><button class="btn btn-sm btn-primary" type="submit">submit</button></center>
+               
             </div>
-            </form>
+            </form>                             {{$users->links()}}
+
         </div>
         </div>
         </div>

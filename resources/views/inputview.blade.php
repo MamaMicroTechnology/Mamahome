@@ -11,7 +11,7 @@
 				<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
 			</div>
 			<div class="panel-body">
-				<form method="POST" action="{{URL::to('/')}}/inputdata">
+				<form method="POST" name="myform" action="{{URL::to('/')}}/inputdata">
 					{{csrf_field()}}
 					@if(SESSION('success'))
 					<div class="text-center alert alert-success">
@@ -89,7 +89,7 @@
 							</tr>
 							<tr>
 								<td><label>Quantity* : </label></td>
-								<td><input required type="text" name="equantity" id="equantity" class="form-control" /></td>
+								<td><input required type="text" oninput="getquantity()" name="equantity"   id="equantity" class="form-control" /></td>
 							</tr>
 							<tr>
 								<td><label>Remarks : </label></td>
@@ -101,7 +101,7 @@
 					</table>
 					<input type="hidden" id="measure" name="measure">
 					<div class="text-center">
-						<input type="submit" name="" id="" class="btn btn-md btn-success" style="width:40%" />
+						<input type="submit"  name="" id="" class="btn btn-md btn-success"  style="width:40%" />
 						<input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 					</div>
 				</form>
@@ -219,5 +219,16 @@
     		}
     	})
     }
+   
+</script>
+<script type="text/javascript">
+	 function getquantity()
+	{
+		var quan=document.myform.equantity.value;
+			if(isNaN(quan)){
+				document.getElementById('equantity').value="";
+				myform.equantity.focus();
+		     }
+	}
 </script>
 @endsection

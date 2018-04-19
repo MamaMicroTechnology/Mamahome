@@ -67,15 +67,15 @@
                         </tr>
                         <tr>
                             <td><b>Owner Name</b></td>
-                            <td>{{ $details->ownerdetails->owner_name }}</td>
+                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
                         </tr>
                         <tr>
                             <td><b>Owner Email</b></td>
-                            <td>{{ $details->ownerdetails->owner_email }}</td>
+                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
                         </tr>
                         <tr>
                             <td><b>Owner Contact</b></td>
-                            <td>{{ $details->ownerdetails->owner_contact_no }}</td>
+                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_n : '' }}</td>
                         </tr>
                             <tr>
                             <td><b>Project Type</b></td>

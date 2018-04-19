@@ -400,17 +400,11 @@ class mamaController extends Controller
     {
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
-<<<<<<< HEAD
-        if($cType != 1){
-            $type .= ", ".$request->constructionType[1];
-        }
-=======
         $otherApprovals = "";
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
         $statusCount = count($request->status);
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
         $validator = Validator::make($request->all(), [
                 'address' => 'required',
                 'basement' => 'required',
@@ -461,10 +455,7 @@ class mamaController extends Controller
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
             $projectdetails->project_name = $request->pName;
-<<<<<<< HEAD
-=======
             $projectdetails->road_width = $request->rWidth;
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
             $projectdetails->construction_type = $type;
             $projectdetails->interested_in_rmc = $request->rmcinterest;
             $projectdetails->road_name = $request->rName;
@@ -630,8 +621,6 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
-<<<<<<< HEAD
-=======
         $statusCount = count($request->status);
         $statuses = $request->status[0];
         if($statusCount > 1){
@@ -639,7 +628,6 @@ class mamaController extends Controller
                 $statuses .= ", ".$request->status[$i];
             }
         }
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
         ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,

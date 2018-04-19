@@ -19,14 +19,20 @@
     							<th>Action</th>
     						</thead>
     						<tbody>
+
     							@foreach($projects as $project)
+                              @if($project->deleted=='0')
     							<tr>
     								<td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
                                     <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
-
-    								<td id="projsite-{{$project->project_id}}">{{ $project->siteaddress->address }}</td>
-    								<td id="projproc-{{$project->project_id}}">{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}</td>
+    								<td id="projsite-{{$project->project_id}}">
+                                        {{ $project->siteaddress != null ? $project->siteaddress->address : '' }}
+                                    </td>
+    								<td id="projproc-{{$project->project_id}}">
+                                        {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}
+                                    </td>
     								<td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
+
     								<td><button class="btn btn-sm" style="background-color:#F57F1B;color:white;font-weight:bold" id="viewdet({{$project->project_id}})" onclick="view('{{$project->project_id}}')">View</button>
     								<form method="post" action="{{ URL::to('/') }}/confirmedProject">
     								    {{ csrf_field() }}
@@ -34,10 +40,11 @@
     								    <div class="checkbox">
                                           <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
                                         </div>
-                                       <!--  <div class="btn-group btn-group-xs">
-                                           <button type="submit" class="btn-primary btn" data-original-title>Block</button> -->
+
+                                     
                                       </div>
                                 
+
                                          
     								</form>
                                     <div class="btn-group btn-group-xs">
@@ -45,12 +52,13 @@
                                  {{csrf_field()}}
                                   <input value="off" type="hidden" name="deleted">
                                   <input type="hidden" name="id" value="{{$project->project_id}}">
-                                  <button type="submit" class="btn green six" data-toggle="tooltip" data-placement="top" data-original-title="View">Block
+                                  <button type="submit" class="btn green six" data-toggle="tooltip" data-placement="top" data-original-title="View" style="background-color:red;color:white;font-weight:bold">Block
                                </button>
                               </form>
                             </div>
     								</td>
     							</tr>
+                                 @endif
     							@endforeach
     						</tbody>
     					</table>
@@ -118,7 +126,7 @@
         						            <tr id="locpanelright-{{$project->project_id}}">
                 						        <td><label>Location</label></td>
                 						        <td>
-                						            <input type="text" class="form-control" id="location-{{$project->project_id}}" value="{{$project->siteaddress->address}}" name="address">
+                						            <input type="text" class="form-control" id="location-{{$project->project_id}}" value="{{ $project->siteaddress != null ? $project->siteaddress->address : ''}}" name="address">
                 						        </td>
         						            </tr>
         						            <tr id="matpanelright-{{$project->project_id}}">
