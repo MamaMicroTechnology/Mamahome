@@ -68,11 +68,9 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 
-<<<<<<< HEAD
-=======
+
 //sales converter
 
->>>>>>> 65b272ff9d5ae1f183cbc20d0002c52fd4b360b1
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
 Route::get('/chat','HomeController@getChat');

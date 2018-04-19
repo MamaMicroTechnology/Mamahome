@@ -2477,4 +2477,4 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     {
         return view('chat');
     }
-
+}

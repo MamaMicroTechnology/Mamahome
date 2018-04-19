@@ -150,10 +150,26 @@
 							<td>
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
 							</td>
+							
 						</tr>
 						@endif
-						@endforeach
+						@endforeach   
 					</tbody>
+					<tr>
+						<td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center">Total</td>
+						 	<td style="text-align: center">{{ $totalofenquiry }}</td>
+						 	<td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					</tr>
 				</table>
 			</div>
 			<div class="panel-footer">
