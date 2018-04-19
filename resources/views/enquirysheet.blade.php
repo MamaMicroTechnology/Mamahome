@@ -150,6 +150,7 @@
 							<td>
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
 							</td>
+							<td>{{ $rmcsize}} </td>
 						</tr>
 						@endif
 						@endforeach
