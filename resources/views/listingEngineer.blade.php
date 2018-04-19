@@ -53,20 +53,16 @@
                                    <td>Road Name/Road No.</td>
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
-<<<<<<< HEAD
-=======
                                </tr>
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" required type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
+                                   <td><input id="rWidth" type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
                                    <td>:</td>
                                    <td><input readonly id="address" required type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
-<<<<<<< HEAD
                                </tr>
                                <tr>
                                  <td>Construction Type</td>
@@ -81,38 +77,14 @@
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
-                                      <label><input required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                      <label><input required value="Yes" id="rmc" type="radio" name="rmcinterest">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input required value="No" type="radio" name="rmcinterest">No</label>
+                                      <label><input required value="No" id="rmc2" type="radio" name="rmcinterest">No</label>
                                     </div>
                                  </td>
                                </tr>
                                <tr>
-=======
-                               </tr>
-                               <tr>
-                                 <td>Construction Type</td>
-                                 <td>:</td>
-                                 <td>
-                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
-                                 </td>
-                               </tr>
-                               <tr>
-                                 <td>Interested in RMC</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" type="radio" name="rmcinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" type="radio" name="rmcinterest">No</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                               <tr>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
                                 <td>
@@ -136,25 +108,6 @@
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
-<<<<<<< HEAD
-                                       <select id="status" required name="status" class="form-control input-sm">
-                                           <option value="">--Select--</option>
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical">Electrical</option>
-                                           <option value="Plumbing">Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                       </select>
-=======
                                       <table class="table table-responsive">
                                         <tr>
                                           <td>
@@ -234,7 +187,6 @@
                                         <td></td>
                                         </tr>
                                       </table>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                    </td>
                                </tr>
                                <tr>
@@ -682,6 +634,10 @@
     var current = "first";
     document.getElementById('headingPanel').innerHTML = 'Project Details';
     function pageNext(){
+        var ctype1 = document.getElementById('constructionType1');
+        var ctype2 = document.getElementById('constructionType2');
+        var rmc = document.getElementById('rmc');
+        var rmc2= document.getElementById('rmc2');
         if(current == 'first'){ 
           if(document.getElementById("pName").value == ""){
             window.alert("You have not entered Project Name");
@@ -701,11 +657,28 @@
             window.alert("You have not entered Budget");
           }else if(document.getElementById("pImage").value == ""){
             window.alert("You have not chosen a file to upload");
-          }else{ 
-            document.getElementById("first").className = "hidden";
-            document.getElementById("second").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Owner Details';
-            current = "second";
+          }else if(ctype1.checked == false && ctype2.checked == false){
+            window.alert("Please choose the construction type");
+          }else if(rmc.checked == false && rmc2.checked == false){
+            window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(document.getElementById('contract').value == ""){
+            window.alert("Choose type of contract");
+          }else{
+            if(ctype1.checked == true && ctype2.checked == true){
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+            }else if(ctype1.checked == true || ctype2.checked == true){
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+            }else{
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            }
+            if(countinput == 0){
+                window.alert("Select at least one project status");
+            }else{
+                document.getElementById("first").className = "hidden";
+                document.getElementById("second").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Owner Details';
+                current = "second";
+            }
           }
         }else if(current == 'second'){              
               document.getElementById("second").className = "hidden";
@@ -861,7 +834,7 @@
             // commercial only
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<td><input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">"+
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
@@ -914,8 +887,6 @@
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
-<<<<<<< HEAD
-=======
     }
     function count(){
       var ctype1 = document.getElementById('constructionType1');
@@ -932,6 +903,8 @@
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
         $('#constructionType2').attr('disabled',false);
+      }else if(countinput == 0){
+          return "none";
       }else{
         $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
       }
@@ -942,7 +915,6 @@
         document.getElementById('oApprove').value="";
         alert('You are allowed to upload a maximum of 5 files');
       }
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
     }
 </script>
 @endsection

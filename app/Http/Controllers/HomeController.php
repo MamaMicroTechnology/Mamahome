@@ -903,18 +903,142 @@ class HomeController extends Controller
     }
     public function getMyReports(Request $request)
     {
+        $now = date('H:i:s');
+        $currentURL = url()->current();;
+        $display = "";
+        $evening = "";
         if(!$request->date){
             date_default_timezone_set("Asia/Kolkata");
             $today = date('Y-m-d');
             $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
                 ->where('created_at','like',$today.'%')->get());
             $loginTimes = loginTime::where('user_id',Auth::user()->id)->where('logindate',$today)->first();
-            return view('reports',['loginTimes'=>$loginTimes,'projectCount'=>$projectCount]);
+            $display .= "<tr><td>Login Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->loginTime : '').
+                        "</td></tr><tr><td>Allocated Ward</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->allocatedWard : '').
+                        "</td></tr><tr><td>First Listing Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstListingTime : '').
+                        "</td></tr><tr><td>First Update Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstUpdateTime : '').
+                        "</td></tr><tr><td>No. of projects listed <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsListedInMorning : '').
+                        "</td></tr><tr><td>No. of projects updated <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsUpdatedInMorning : '').
+                        "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningMeter != null ? "<img src='"
+                        .$currentURL."/public/meters/".$loginTimes->morningMeter.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Meter Reading</td><td>:</td><td>"
+						.($loginTimes != null ? $loginTimes->gtracing : '').
+                        "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningData != null ? "<img src='"
+                        .$currentURL."/public/data/".$loginTimes->morningData.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->afternoonData : '').
+                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
+
+                    $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
+                    .($loginTimes != null ? $loginTimes->lastListingTime : '').
+                    "</td></tr><tr><td>Last Update Time</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->lastUpdateTime : '').
+                    "</td></tr><tr><td>Total Projects Listed</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->TotalProjectsListed : '').
+                    "</td></tr><tr><td>Total Projects Updated</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->totalProjectsUpdated : '').
+                    "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->eveningMeter != null ? "<img src='"
+                    .$currentURL."/public/meters/".$loginTimes->eveningMeter.
+                    "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningMeter : '').
+                    "</td></tr><tr><td>Meter Reading</td><td>:</td><td>".
+                    "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->afternoonMeter != null ? "<img src="
+                    .$currentURL."/public/meters/".$loginTimes->afternoonMeter.
+                    " height='100' width='200' class='img img-thumbnail'>"
+                    : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningData : '').
+                    "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                    "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmRemarks : '').
+                    "</td></tr><tr><td>Grade</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmGrade : '').
+                    "</td></tr></table>";
+            return view('reports',[
+                'evening'=>$evening,
+                'display'=>$display,
+                'loginTimes'=>$loginTimes,
+                'projectCount'=>$projectCount,
+                'now'=>$now
+            ]);
         }else{
             $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
                 ->where('created_at','like',$request->date.'%')->get());
             $loginTimes = loginTime::where('user_id',Auth::user()->id)->where('logindate',$request->date)->first();
-            return view('reports',['loginTimes'=>$loginTimes,'projectCount'=>$projectCount]);
+            $display .= "<tr><td>Login Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->loginTime : '').
+                        "</td></tr><tr><td>Allocated Ward</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->allocatedWard : '').
+                        "</td></tr><tr><td>First Listing Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstListingTime : '').
+                        "</td></tr><tr><td>First Update Time</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->firstUpdateTime : '').
+                        "</td></tr><tr><td>No. of projects listed <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsListedInMorning : '').
+                        "</td></tr><tr><td>No. of projects updated <br> in the morning</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->noOfProjectsUpdatedInMorning : '').
+                        "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningMeter != null ? "<img src='"
+                        .$currentURL."/public/meters/".$loginTimes->morningMeter.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Meter Reading</td><td>:</td><td>"
+						.($loginTimes != null ? $loginTimes->gtracing : '').
+                        "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                        ($loginTimes != null ? ($loginTimes->morningData != null ? "<img src='"
+                        .$currentURL."/public/data/".$loginTimes->morningData.
+                        "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                        "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
+                        .($loginTimes != null ? $loginTimes->afternoonData : '').
+                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
+
+                        $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
+                    .($loginTimes != null ? $loginTimes->lastListingTime : '').
+                    "</td></tr><tr><td>Last Update Time</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->lastUpdateTime : '').
+                    "</td></tr><tr><td>Total Projects Listed</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->TotalProjectsListed : '').
+                    "</td></tr><tr><td>Total Projects Updated</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->totalProjectsUpdated : '').
+                    "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->eveningMeter != null ? "<img src='"
+                    .$currentURL."/public/meters/".$loginTimes->eveningMeter.
+                    "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningMeter : '').
+                    "</td></tr><tr><td>Meter Reading</td><td>:</td><td>".
+                    "</td></tr><tr><td>Data Image</td><td>:</td><td>".
+                    ($loginTimes != null ? ($loginTimes->afternoonMeter != null ? "<img src="
+                    .$currentURL."/public/meters/".$loginTimes->afternoonMeter.
+                    " height='100' width='200' class='img img-thumbnail'>"
+                    : '*No Image Uploaded*') : '*No Image Uploaded*').
+                    ($loginTimes != null ? $loginTimes->eveningData : '').
+                    "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                    "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmRemarks : '').
+                    "</td></tr><tr><td>Grade</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->AmGrade : '').
+                    "</td></tr></table>";
+            return view('reports',[
+                'loginTimes'=>$loginTimes,
+                'projectCount'=>$projectCount,
+                'display'=>$display,
+                'evening'=>$evening,
+                'now'=>$now
+            ]);
         }
     }
     public function updateAssignment(){

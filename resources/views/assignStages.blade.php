@@ -25,43 +25,40 @@
                            <!--  <th style="width:15%">Previously Assigned  Stage </th> -->
                           </thead>
 
-                        <tbody>
-                            
-                           @foreach($users as $user)
-                           <tr>
-                           <td>{{$user->name}}</td>
-                           <td>{{ $user->group_name }}</td>
-                           <td>
-                              <form method="POST" action="{{ url('/store')}}">
-                              <input type="hidden" name="list" value="{{ $user->name }}">
-                              {{ csrf_field() }}
-                               <select onchange="this.form.submit()" id="status"  name="status" class=" input-sm">
-                                   <option value="">--Select--</option>
-                                   <option value="Planning">Planning</option>
-                                   <option value="Digging">Digging</option>
-                                   <option value="Foundation">Foundation</option>
-                                   <option value="Pillars">Pillars</option>
-                                   <option value="Walls">Walls</option>
-                                   <option value="Roofing">Roofing</option>
-                                   <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                   <option value="Plastering">Plastering</option>
-                                   <option value="Flooring">Flooring</option>
-                                   <option value="Carpentry">Carpentry</option>
-                                   <option value="Paintings">Paintings</option>
-                                   <option value="Fixtures">Fixtures</option>
-                                   <option value="Completion">Completion</option>
+                        <tr>
+                            <td>
+                           <select id="status"  name="list" class="form-control input-sm">
+                                <!-- <select  id="selectle" name="list"> -->
+                                    <option disabled selected value="">( SELECT )</option>
+                                    <option value="ALL">Select Engineers</option>
+                                    @foreach($le as $list)
+                                    <option value="{{$list->name}}">{{$list->name}}</option>
+                                    @endforeach
+                                     @foreach($se as $sales)
+                                    <option value="{{$sales->name}}">{{$sales->name}}</option>
+                                    @endforeach
                                 </select>
-                              </form>
-                           </td>
-                           
-                           @endforeach
-                            
-                                   
-                      
-                         
-                       </tbody>
-                       
-                    
+                            </td>
+                             <td>
+                                <select id="status"  name="status" class="form-control input-sm">
+                                    <option value="">--Select--</option>
+                                    <option value="Planning">Planning</option>
+                                    <option value="Digging">Digging</option>
+                                    <option value="Foundation">Foundation</option>
+                                    <option value="Pillars">Pillars</option>
+                                    <option value="Walls">Walls</option>
+                                    <option value="Roofing">Roofing</option>
+                                    <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
+                                    <option value="Plastering">Plastering</option>
+                                    <option value="Flooring">Flooring</option>
+                                    <option value="Carpentry">Carpentry</option>
+                                    <option value="Paintings">Paintings</option>
+                                    <option value="Fixtures">Fixtures</option>
+                                    <option value="Completion">Completion</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
                
             </div>
