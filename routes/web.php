@@ -62,10 +62,16 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
+<<<<<<< HEAD
 
 //sales converter
 
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
+=======
+Route::get('/scdashboard','HomeController@salesConverterDashboard');
+Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
+Route::get('/chat','HomeController@getChat');
+>>>>>>> e87104024919e6dda48ac4fed54921318e3ed18b
 
 // Orders
 Route::get('/orders','HomeController@amorders');
@@ -218,7 +224,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/{id}/deleteReportImage5','HomeController@deleteReportImage5');
     Route::get('/{id}/deleteReportImage6','HomeController@deleteReportImage6');
     Route::get('/completedAssignment','mamaController@completedAssignment');
-    Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
+    
     Route::get('/completethis','HomeController@completethis');
     Route::get('/tlsalesreports','HomeController@salesreports');
         

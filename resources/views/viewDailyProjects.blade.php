@@ -46,6 +46,14 @@
                             <td>{{ $details->project_name }}</td>
                         </tr>
                         <tr>
+                            <td><b>Construction Type</b></td>
+                            <td>{{ $details->construction_type }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested in RMC</b></td>
+                            <td>{{ $details->interested_in_rmc }}</td>
+                        </tr>
+                        <tr>
                             <td><b>Status</b></td>
                             <td>{{ $details->project_status }}</td>
                         </tr>
@@ -78,6 +86,11 @@
                             <td>
                                 <a target="_blank" href="https://maps.google.com?q={{$details->siteaddress != null ? $details->siteaddress->address : ''}}">{{$details->siteaddress != null ? $details->siteaddress->address : ''}}</a>
                             </td>
+                        </tr>
+                        <tr>
+                            <td><b>Road Width</b></td>
+                            <td>:</td>
+                            <td>{{ $details->road_width }}</td>
                         </tr>
                         <tr>
                             <td><b>Project Image</b></td>
