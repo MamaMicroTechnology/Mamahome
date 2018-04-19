@@ -374,3 +374,9 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
 });
+
+
+
+
+Route::post('/toggle-approve',"HomeController@approval");
+

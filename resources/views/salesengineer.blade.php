@@ -34,9 +34,21 @@
     								    <div class="checkbox">
                                           <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
                                         </div>
-                                        <button class="btn btn-sm" style="background-color:red;color:white;font-weight:bold">Block</button>
+                                       <!--  <div class="btn-group btn-group-xs">
+                                           <button type="submit" class="btn-primary btn" data-original-title>Block</button> -->
+                                      </div>
+                                
                                          
     								</form>
+                                    <div class="btn-group btn-group-xs">
+                                   <form action="{{ url('/toggle-approve')}}" method="post">
+                                 {{csrf_field()}}
+                                  <input value="off" type="hidden" name="deleted">
+                                  <input type="hidden" name="id" value="{{$project->project_id}}">
+                                  <button type="submit" class="btn green six" data-toggle="tooltip" data-placement="top" data-original-title="View">Block
+                               </button>
+                              </form>
+                            </div>
     								</td>
     							</tr>
     							@endforeach

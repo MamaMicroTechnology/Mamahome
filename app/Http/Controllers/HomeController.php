@@ -2440,5 +2440,16 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     {
         return view('chat');
     }
+
+public function approval(request $request  )
+    {         
+      ProjectDetails::where('project_id',$request->id)
+        ->update([
+            'deleted'=>2
+        ]);
+      return back();
+    }
+
+
 }
 
