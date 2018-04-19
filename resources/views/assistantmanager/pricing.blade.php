@@ -1,4 +1,8 @@
-@extends('layouts.amheader')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 8? "layouts.app":"layouts.amheader");
+?>
+@extends($ext)
 @section('content')
 
 <div class="col-md-12">
@@ -13,7 +17,11 @@
 						<b>Add Category Details</b>
 					</h4>
 					<br>
+					 @if(Auth::user()->group_id != 8)
 					<form method="POST" action="{{ URL::to('/') }}/insertcat">
+						@else
+						<form method="POST" action="{{ URL::to('/') }}/marketinginsertcat">
+						@endif
 					    {{ csrf_field() }}
 					    <!--<input type="hidden" name="id" id="id">-->
 						<div style="margin-left:5%;margin-right: 5%">

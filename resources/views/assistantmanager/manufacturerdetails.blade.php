@@ -1,5 +1,9 @@
-@extends('layouts.amheader')
 
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 8? "layouts.app":"layouts.amheader");
+?>
+@extends($ext)
 @section('content')
 
 
@@ -9,7 +13,11 @@
             <div class="panel-heading" style="background-color:#f68121">
                 <b style="color:white;font-size:1.2em">Vendor's Information</b>
                 <div class="btn-group pull-right">
+                    @if(Auth::user()->group_id != 8)
                     <a class="btn btn-sm btn-info" href="{{ URL::to('/') }}/addvendortype" id="btn2" name="btn2" style="color:white;"><b>Add Vendor Type</b></a>
+                    @else
+                    <a class="btn btn-sm btn-info" href="{{ URL::to('/') }}/marketingvendortype" id="btn2" name="btn2" style="color:white;"><b>Add Vendor Type</b></a>
+                    @endif
                     <button class="btn-sm btn btn-primary" data-toggle="modal" data-target="#addManufacturer">Add New Vendor</button>
                     <a class="btn btn-sm btn-danger" href="{{ url()->previous() }}" id="btn1" style="color:white;"><b>Back</b></a>
                  </div>
@@ -70,7 +78,11 @@
 </div>
 </div>
 <!-- Modal -->
+@if(Auth::user()->group_id != 8)
 <form method="POST" action="{{ URL::to('/') }}/addmanufacturer" enctype="multipart/form-data">
+@else
+    <form method="POST" action="{{ URL::to('/') }}/marketingaddmanufacturer" enctype="multipart/form-data">
+ @endif       
     <div id="addManufacturer" class="modal fade" role="dialog">
       <div class="modal-dialog modal-md">
     

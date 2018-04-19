@@ -1,4 +1,8 @@
-@extends('layouts.amheader')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 8? "layouts.app":"layouts.amheader");
+?>
+@extends($ext)
 @section('content')
 <div class="col-md-10 col-md-offset-1" style="background-color:white">
     <br>
@@ -9,7 +13,11 @@
                     <b style="color:white;text-align:center">Add Vendor</b>
                 </div>
                 <div class="panel-body">
+                    @if(Auth::user()->group_id != 8)
                     <form method="POST" action="{{URL::to('/')}}/amaddvendor">
+                        @else
+                         <form method="POST" action="{{URL::to('/')}}/marketingaddvendor">
+                            @endif
                         {{ csrf_field() }}
                         <table class="table table-responsive table-striped">
                             <tbody>
@@ -27,6 +35,7 @@
                             <input type="reset" class="btn btn-md btn-danger" value="Clear" />
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

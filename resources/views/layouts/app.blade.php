@@ -252,6 +252,96 @@ div#calendar{
     }
 }
 </style>
+<style>
+
+
+#go {
+  transform: translate(-50%, 0%);
+  color: white;
+  border: 0;
+  background: #71c341;
+  width: 100px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 2rem;
+  transition: background 0.2s ease;
+  outline: none;
+}
+#go:hover {
+  background: #8ecf68;
+}
+#go:active {
+  background: #5a9f32;
+}
+
+.message {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 300px;
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  font-weight: 300;
+  color: #2c2928;
+  opacity: 0;
+  transition: top 0.3s cubic-bezier(0.31, 0.25, 0.5, 1.5), opacity 0.2s ease-in-out;
+}
+.message .check {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(4);
+  width: 120px;
+  height: 110px;
+  background: #71c341;
+  color: white;
+  font-size: 3.8rem;
+  padding-top: 10px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: transform 0.2s 0.25s cubic-bezier(0.31, 0.25, 0.5, 1.5), opacity 0.1s 0.25s ease-in-out;
+}
+.message .scaledown {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+.message p {
+  font-size: 1.1rem;
+  margin: 25px 0px;
+  padding: 0;
+}
+.message p:nth-child(2) {
+  font-size: 2.3rem;
+  margin: 40px 0px 0px 0px;
+}
+.message #ok {
+  position: relative;
+  color: white;
+  border: 0;
+  background: #71c341;
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  transition: background 0.2s ease;
+  outline: none;
+}
+.message #ok:hover {
+  background: #8ecf68;
+}
+.message #ok:active {
+  background: #5a9f32;
+}
+
+.comein {
+  top: 150px;
+  opacity: 1;
+}
+
+</style>
 </head>
 <body>
     <div id="app">
@@ -274,6 +364,9 @@ div#calendar{
                     @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                   
+                    @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
@@ -394,6 +487,15 @@ div#calendar{
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+  </div>
+@elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+     <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+     <a href="{{ URL::to('/marketmanufacturerdetails') }}">Manufacturer Details</a>
+     <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
+     <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
+      <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
 @endif
 @endif

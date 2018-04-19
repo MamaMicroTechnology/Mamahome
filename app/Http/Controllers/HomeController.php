@@ -577,6 +577,8 @@ class HomeController extends Controller
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
         }else if($group == "Sales converter" && $dept == "Sales"){
             return redirect('scdashboard');
+        }else if($group == "Marketing Exective" && $dept == "Marketing"){
+            return redirect('marketingdashboard');
         }else if(Auth::user()->department_id == 10){
 
             Auth()->logout();
@@ -2471,6 +2473,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     {
         return view('scdashboard');
     }
+   
 
    
     public function getChat()

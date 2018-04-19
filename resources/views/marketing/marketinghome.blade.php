@@ -1,16 +1,24 @@
 <?php
   $user = Auth::user()->group_id;
-  $ext = ($user == 4? "layouts.amheader":"layouts.marketingheader");
+  $ext = ($user == 4? "layouts.amheader":"layouts.app");
 ?>
 @extends($ext)
 @section('content')
 
 <div class="container">
+    <div class="col-md-12">
+    <div class="panel panel-default" style="border-color:rgb(244,129,31);text-align: center;">
+                    <div class="panel-heading" style="background-color:rgb(244,129,31);color:white;">Begin adding the products by category and brand followed by sub-category</div>
+    
+                <td style=""></td>
+     </div>      
+</div>
+</div>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-6">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">Category</div>
+                <div class="panel panel-default" style="border-color:green;">
+                    <div class="panel-heading" style="background-color:green;color:white;">Category</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
                         <form method="post" action="{{ URL::to('/') }}/addCategory">
                             {{ csrf_field() }}
@@ -69,48 +77,10 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-6">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">Sub Category
-                        <button class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target="#addCategory"><span class="glyphicon glyphicon-plus"></span></button>
-                    </div>
-                    <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
-                        <table class="table table-hover">
-                            @foreach($subcategories as $subcategory)
-                            <tr id="currentsub{{ $subcategory->id }}">
-                                <td>{{ $subcategory->category->category_name }}</td>
-                                <td>{{ $subcategory->sub_cat_name }}</td>
-                                <td>
-                                    <form method="POST" action="{{ URL::to('/') }}/deleteSubCategory">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" value="{{ $subcategory->id }}" name="id">
-                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-                                    </form>
-                                </td>
-                                <td><button class="btn btn-sm btn-primary" onclick="editsubcategory('{{ $subcategory->id }}')">Edit</button></td>
-                            </tr>
-                            <tr id="editsub{{ $subcategory->id }}" class="hidden">
-                                <td colspan=3>
-                                <form method="POST" action="{{ URL::to('/') }}/updateSubCategory">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="{{ $subcategory->id }}" name="id">
-                                    <div class="input-group">
-                                        <input type="text" name="name" value="{{ $subcategory->sub_cat_name }}" class="form-control input-sm">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-success" type="submit">Save</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">Brand</div>
+                <div class="panel panel-default" style="border-color:green;">
+                    <div class="panel-heading" style="background-color:green;color:white;">Brand</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
                         <form method="post" action="{{ URL::to('/') }}/addBrand">
                             {{ csrf_field() }}
@@ -152,6 +122,45 @@
                                     <input type="hidden" value="{{ $brand->id }}" name="id">
                                     <div class="input-group">
                                         <input type="text" name="name" value="{{ $brand->brand }}" class="form-control input-sm">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-success" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" style="border-color:green;">
+                    <div class="panel-heading" style="background-color:green;color:white;">Sub Category
+                        <button style="background-color:black" class="btn btn-xs  pull-right" data-toggle="modal" data-target="#addCategory"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                    <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
+                        <table class="table table-hover">
+                            @foreach($subcategories as $subcategory)
+                            <tr id="currentsub{{ $subcategory->id }}">
+                                <td>{{ $subcategory->category->category_name }}</td>
+                                <td>{{ $subcategory->sub_cat_name }}</td>
+                                <td>
+                                    <form method="POST" action="{{ URL::to('/') }}/deleteSubCategory">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" value="{{ $subcategory->id }}" name="id">
+                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                                <td><button class="btn btn-sm btn-primary" onclick="editsubcategory('{{ $subcategory->id }}')">Edit</button></td>
+                            </tr>
+                            <tr id="editsub{{ $subcategory->id }}" class="hidden">
+                                <td colspan=3>
+                                <form method="POST" action="{{ URL::to('/') }}/updateSubCategory">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $subcategory->id }}" name="id">
+                                    <div class="input-group">
+                                        <input type="text" name="name" value="{{ $subcategory->sub_cat_name }}" class="form-control input-sm">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>

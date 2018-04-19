@@ -26,7 +26,6 @@
                 <div class="panel-body">
                     <center>
                       <label>Project Details</label><br>
-<<<<<<< HEAD
                        @if(Auth::check())
                         @if(Auth::user()->group_id !== 7)
                       <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
@@ -36,9 +35,6 @@
                       @if($updater != null)
                       <small>Last update was on {{ date('d-m-Y h:i:s A',strtotime($projectdetails->updated_at)) }} by {{ $updater->name }}</small>
                       @endif
-=======
-                      <label class="{{ Auth::user()->department_id == '7' ? 'hidden' : '' }}">{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                     </center>
                     @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
@@ -87,11 +83,6 @@
                                    <td><input id="road" value="{{ $projectdetails->road_name }}"  type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName"></td>
                                </tr>
                                <tr>
-<<<<<<< HEAD
-                                   <td>Full Address</td>
-                                   <td>:</td>
-                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="rName"></td>
-=======
                                    <td>Road Width</td>
                                    <td>:</td>
                                    <td><input id="road" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
@@ -100,7 +91,6 @@
                                    <td>Full Address</td>
                                    <td>:</td>
                                    <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                </tr>
                                <tr>
                                 <?php
@@ -110,25 +100,11 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-<<<<<<< HEAD
-                                      <input {{ $type[0] == "Residential" ? 'checked' : ''}} id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential
-                                    </label>
-                                    @if(count($type) == 2)
-                                    <label required class="checkbox-inline">
-                                      <input {{ $type[0] == "Commercial" ? 'checked' : $type[1] == "Commercial" ? 'checked' : ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
-                                    </label>
-                                    @else
-                                    <label required class="checkbox-inline">
-                                      <input {{ $type[0] == "Commercial" ? 'checked' : ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
-                                    </label> 
-                                    @endif
-=======
                                       <input {{ in_array('Residential', $type) ? 'checked': ''}} id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential
                                     </label>
                                     <label required class="checkbox-inline">
                                       <input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
                                     </label>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                  </td>
                                </tr>
                                <tr>
@@ -179,25 +155,6 @@
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
-<<<<<<< HEAD
-                                       <select id="status"  name="status" class="form-control input-sm">
-                                           <option value="">--Select--</option>)
-                                           <option  {{ $projectdetails->project_status == "Planning" ? 'selected' : ''}} value="Planning">Planning</option>
-                                           <option  {{ $projectdetails->project_status == "Digging" ? 'selected' : ''}} value="Digging">Digging</option>
-                                           <option  {{ $projectdetails->project_status == "Foundation" ? 'selected' : ''}} value="Foundation">Foundation</option>
-                                           <option  {{ $projectdetails->project_status == "Pillars" ? 'selected' : ''}} value="Pillars">Pillars</option>
-                                           <option  {{ $projectdetails->project_status == "Walls" ? 'selected' : ''}} value="Walls">Walls</option>
-                                           <option  {{ $projectdetails->project_status == "Roofing" ? 'selected' : ''}} value="Roofing">Roofing</option>
-                                           <option  {{ $projectdetails->project_status == "Electrical" ? 'selected' : ''}} value="Electrical & Plumbing">Electrical</option>
-                                           <option  {{ $projectdetails->project_status == "Plumbing" ? 'selected' : ''}} value="Electrical & Plumbing">Plumbing</option>
-                                           <option  {{ $projectdetails->project_status == "Plastering" ? 'selected' : ''}} value="Plastering">Plastering</option>
-                                           <option  {{ $projectdetails->project_status == "Flooring" ? 'selected' : ''}} value="Flooring">Flooring</option>
-                                           <option  {{ $projectdetails->project_status == "Carpentry" ? 'selected' : ''}} value="Carpentry">Carpentry</option>
-                                           <option  {{ $projectdetails->project_status == "Paintings" ? 'selected' : ''}} value="Paintings">Paintings</option>
-                                           <option  {{ $projectdetails->project_status == "Fixtures" ? 'selected' : ''}} value="Fixtures">Fixtures</option>
-                                           <option  {{ $projectdetails->project_status == "Completion" ? 'selected' : ''}} value="Completion">Completion</option>
-                                       </select>
-=======
                                        <table class="table table-responsive">
                                         <tr>
                                           <td>
@@ -277,7 +234,6 @@
                                         <td></td>
                                         </tr>
                                       </table>
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                    </td>
                                </tr>
                                <tr>
@@ -782,26 +738,6 @@ function sum(){
                                                           "<option value=\"3BHK\">3BHK</option>"+
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
-<<<<<<< HEAD
-        }
-        if(ctype1.checked == false && ctype2.checked == true){
-          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = "<input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">";
-          cell2.innerHTML = "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
-        }
-        if(ctype1.checked == true && ctype2.checked == true){
-          // both residential and commercial
-          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
-                                                          "<option value=\"Commercial Floor\">Commercial Floor</option>"+
-                                                          "<option value=\"1RK\">1RK</option>"+
-                                                          "<option value=\"1BHK\">1BHK</option>"+
-                                                          "<option value=\"2BHK\">2BHK</option>"+
-                                                          "<option value=\"3BHK\">3BHK</option>"+
-                                                      "</select>";
-          cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
-        }
-=======
         }
         if(ctype1.checked == false && ctype2.checked == true){
           cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
@@ -846,7 +782,6 @@ function sum(){
         document.getElementById('oApprove').value="";
         alert('You are allowed to upload a maximum of 5 files');
       }
->>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
     }
 </script>
 @endsection

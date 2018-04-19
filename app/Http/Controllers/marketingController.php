@@ -106,4 +106,8 @@ class marketingController extends Controller
         $brand->save();
         return back()->with('Success','Brand added');
     }
+     public function marketingDashboard()
+    {
+        return view('marketingdashboard');
+    }
 }

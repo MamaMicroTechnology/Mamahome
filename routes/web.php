@@ -70,11 +70,19 @@ Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 
 
 //sales converter
-
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
 Route::get('/chat','HomeController@getChat');
 
+//marketing
+Route::get('/marketingdashboard','marketingController@marketingDashboard');
+Route::get('/marketingvendordetails','amController@vendorDetails');
+Route::get('/marketingvendortype','amController@addvendortype');
+Route::post('/marketingaddvendor','amController@addvendor');
+Route::post('/marketingaddmanufacturer','mamaController@addManufacturer');
+Route::get('/marketingpricing','amController@getPricing');
+Route::post('/marketinginsertcat','mamaController@insertCat');
+Route::get('/marketmanufacturerdetails','HomeController@manufacturerDetails');
 
 // Orders
 Route::get('/orders','HomeController@amorders');
