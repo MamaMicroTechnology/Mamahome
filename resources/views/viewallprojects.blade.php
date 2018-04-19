@@ -14,6 +14,7 @@
 						<div class="col-md-4">
 							<select name="ward" onchange="getSubwards()" id="ward" class="form-control">
 								<option value="">--SELECT--</option>
+								<option value="All">All</option>
 								@foreach($wards as $ward)
 								<option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
 								@endforeach

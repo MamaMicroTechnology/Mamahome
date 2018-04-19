@@ -192,6 +192,7 @@ class HomeController extends Controller
     }
     public function enquirysheet(Request $request)
     {
+        $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
         $depart = [6,7];
@@ -287,6 +288,7 @@ class HomeController extends Controller
                         ->where('requirements.main_category',$request->category)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
+            $totalofenquiry = Requirement::where('main_category',$request->category)->sum('quantity');
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -422,6 +424,7 @@ class HomeController extends Controller
             }
         }
         return view('enquirysheet',[
+            'totalofenquiry'=>$totalofenquiry,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
             'wards'=>$wards,
@@ -1647,7 +1650,39 @@ class HomeController extends Controller
     {
         $wards = Ward::all();
         $projects = ProjectDetails::all();
-        $totalProjects = ProjectDetails::all()->count();
+        // getting total no of projects
+        $wardsselect = Ward::pluck('id');
+        $subwards = SubWard::whereIn('ward_id',$wardsselect)->pluck('id');
+        $planningCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Planning')->count();
+        $planningSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Planning')->sum('project_size');
+        $foundationCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Foundation')->count();
+        $foundationSize     = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Foundation')->sum('project_size');
+        $roofingCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Roofing')->count();
+        $roofingSize        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Roofing')->sum('project_size');
+        $wallsCount         = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Walls')->count();
+        $wallsSize          = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Walls')->sum('project_size');
+        $completionCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Completion')->count();
+        $completionSize     = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Completion')->sum('project_size');
+        $fixturesCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Fixtures')->count();
+        $fixturesSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Fixtures')->sum('project_size');
+        $pillarsCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->count();
+        $pillarsSize        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->sum('project_size');
+        $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->count();
+        $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->sum('project_size');
+        $flooringCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->count();
+        $flooringSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->sum('project_size');
+        $plasteringCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Plastering')->count();
+        $plasteringSize     = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Plastering')->sum('project_size');
+        $diggingCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Digging')->count();
+        $diggingSize        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Digging')->sum('project_size');
+        $enpCount           = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Electrical & Plumbing')->count();
+        $enpSize            = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Electrical & Plumbing')->sum('project_size');
+        $carpentryCount     = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Carpentry')->count();
+        $carpentrySize      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Carpentry')->sum('project_size');
+
+
+        $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount;
+        
         if($request->ward && !$request->subward){
             if($request->ward == "All"){
                 $wardsselect = Ward::pluck('id');
@@ -2252,7 +2287,16 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                             ->where('deleted',0)
                             ->get();
         }elseif(!$request->subward && $request->ward){
-            $subwards = SubWard::where('ward_id',$request->ward)->get()->pluck('id');
+            if($request->ward == "All"){
+            $projects = ProjectDetails::leftjoin('users','users.id','=','project_details.listing_engineer_id')
+                            ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+                            ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+                            ->where('deleted',0)
+                            ->get();
+            }
+            else{
+                 $subwards = SubWard::where('ward_id',$request->ward)->get()->pluck('id');
             $projects = ProjectDetails::whereIn('project_details.sub_ward_id',$subwards)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
@@ -2260,7 +2304,9 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->where('deleted',0)
                             ->get();
-        }else{
+            }
+        }
+        else{
             $projects = "None";
         }
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
