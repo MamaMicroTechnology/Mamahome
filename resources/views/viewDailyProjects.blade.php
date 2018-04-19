@@ -97,7 +97,7 @@
                         </tr>
                         <tr>
                             <td><b>Road Width</b></td>
-                            <td>:</td>
+                            
                             <td>{{ $details->road_width }}</td>
                         </tr>
                         <tr>
