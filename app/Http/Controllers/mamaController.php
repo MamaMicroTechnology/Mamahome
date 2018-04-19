@@ -436,15 +436,17 @@ class mamaController extends Controller
                 $imageName1 = "N/A";
             }
             $i = 0;
-            foreach($request->oApprove as $oApprove){
-                $imageName2 = $i.time().'.'.$oApprove->getClientOriginalExtension();
-                $oApprove->move(public_path('projectImages'),$imageName2);
-                if($i == 0){
-                    $otherApprovals .= $imageName2;
-                }else{
-                    $otherApprovals .= ", ".$imageName2;
+            if($request->oApprove){
+                foreach($request->oApprove as $oApprove){
+                    $imageName2 = $i.time().'.'.$oApprove->getClientOriginalExtension();
+                    $oApprove->move(public_path('projectImages'),$imageName2);
+                    if($i == 0){
+                        $otherApprovals .= $imageName2;
+                    }else{
+                        $otherApprovals .= ", ".$imageName2;
+                    }
+                    $i++;
                 }
-                $i++;
             }
             $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
             $request->pImage->move(public_path('projectImages'),$imageName3);
