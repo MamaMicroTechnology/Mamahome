@@ -400,21 +400,30 @@ class mamaController extends Controller
     {
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
+        $otherApprovals = "";
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
+        $statusCount = count($request->status);
         $validator = Validator::make($request->all(), [
-            'address' => 'required',
-            'basement' => 'required',
-            'ground' => 'required',
-            'pName' => 'required',
-            'rName' => 'required',
+                'address' => 'required',
+                'basement' => 'required',
+                'ground' => 'required',
+                'pName' => 'required',
+                'rName' => 'required',
+                'status' => 'required'
             ]);
             if ($validator->fails()) {
                 return back()
                 ->with('Error','Please check some of the fields again')
                 ->withErrors($validator)
                 ->withInput();
+            }
+            $statuses = $request->status[0];
+            if($statusCount > 1){
+                for($i = 1; $i < $statusCount; $i++){
+                    $statuses .= ", ".$request->status[$i];
+                }
             }
             $basement = $request->basement;
             $ground = $request->ground;
@@ -426,11 +435,18 @@ class mamaController extends Controller
             }else{
                 $imageName1 = "N/A";
             }
-            if($request->oApprove != NULL){ 
-                $imageName2 = time().'.'.request()->oApprove->getClientOriginalExtension();
-                $request->oApprove->move(public_path('projectImages'),$imageName2);
-            }else{
-                $imageName2 = "N/A";
+            $i = 0;
+            if($request->oApprove){
+                foreach($request->oApprove as $oApprove){
+                    $imageName2 = $i.time().'.'.$oApprove->getClientOriginalExtension();
+                    $oApprove->move(public_path('projectImages'),$imageName2);
+                    if($i == 0){
+                        $otherApprovals .= $imageName2;
+                    }else{
+                        $otherApprovals .= ", ".$imageName2;
+                    }
+                    $i++;
+                }
             }
             $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
             $request->pImage->move(public_path('projectImages'),$imageName3);
@@ -439,12 +455,13 @@ class mamaController extends Controller
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
             $projectdetails->project_name = $request->pName;
+            $projectdetails->road_width = $request->rWidth;
             $projectdetails->construction_type = $type;
             $projectdetails->interested_in_rmc = $request->rmcinterest;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
-            $projectdetails->other_approvals = $imageName2;
-            $projectdetails->project_status = $request->status;
+            $projectdetails->other_approvals = $otherApprovals;
+            $projectdetails->project_status = $statuses;
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
             $projectdetails->project_type = $floor;
@@ -508,8 +525,8 @@ class mamaController extends Controller
         $procurementDetails->procurement_email = $request->pEmail;
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
-        $time = date('H:i A');
-        $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
+        $newtime = date('H:i A');
+        // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
             'lastListingTime' => $newtime
         ]);
@@ -570,11 +587,21 @@ class mamaController extends Controller
                 'municipality_approval' => $imageName1
             ]);
         }
-        if($request->oApprove != NULL){ 
-            $imageName2 = time().'.'.request()->oApprove->getClientOriginalExtension();
-            $request->oApprove->move(public_path('projectImages'),$imageName2);
+        if(count($request->oApprove) != 0){
+            $i = 0;
+            $otherApprovals = "";
+            foreach($request->oApprove as $oApprove){
+                $imageName2 = $i.time().'.'.$oApprove->getClientOriginalExtension();
+                $oApprove->move(public_path('projectImages'),$imageName2);
+                if($i == 0){
+                    $otherApprovals .= $imageName2;
+                }else{
+                    $otherApprovals .= ", ".$imageName2;
+                }
+                $i++;
+            }
             ProjectDetails::where('project_id',$id)->update([
-                'other_approvals' => $imageName2
+                'other_approvals' => $otherApprovals
             ]);
         }
         if($request->pImage != NULL){
@@ -594,10 +621,18 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
+        $statusCount = count($request->status);
+        $statuses = $request->status[0];
+        if($statusCount > 1){
+            for($i = 1; $i < $statusCount; $i++){
+                $statuses .= ", ".$request->status[$i];
+            }
+        }
         ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
-            'project_status' => $request->status,
+            'road_width' => $request->rWidth,
+            'project_status' => $statuses,
             'basement' => $basement,
             'ground' => $ground,
             'quality' => $request->quality,

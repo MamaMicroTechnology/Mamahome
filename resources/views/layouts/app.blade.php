@@ -284,6 +284,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
                          @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
                         <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
                          @endif

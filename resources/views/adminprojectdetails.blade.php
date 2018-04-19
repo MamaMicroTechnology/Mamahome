@@ -54,6 +54,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td style="width:40%;"><b>Road Width</b></td>
+                                <td>{{ $rec->road_width }}</td>
+                            </tr>
+                            <tr>
                                 <td><b>Construction Type</b></td>
                                 <td>{{ $rec->construction_type }}</td>
                             </tr>

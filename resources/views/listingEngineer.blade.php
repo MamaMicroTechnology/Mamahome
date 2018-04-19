@@ -54,6 +54,11 @@
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
+                               <tr>
+                                   <td>Road Width</td>
+                                   <td>:</td>
+                                   <td><input id="rWidth" required type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
+                               </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
                                    <td>:</td>
@@ -97,29 +102,91 @@
                                <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
                                    <td>:</td>
-                                   <td><input type="file" accept="image/*" class="form-control input-sm" name="oApprove"></td>
+                                   <td><input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
                                </tr>
                                <tr>
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
-                                       <select id="status" required name="status" class="form-control input-sm">
-                                           <option value="">--Select--</option>
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical">Electrical</option>
-                                           <option value="Plumbing">Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                       </select>
+                                      <table class="table table-responsive">
+                                        <tr>
+                                          <td>
+                                            <label class="checkbox-inline">
+                                              <input type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
+                                            </label>
+                                          </td>
+                                          <td>
+                                             <label class="checkbox-inline">
+                                              <input type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
+                                            </label>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
+                                        </label>
+                                        </td>
+                                        </tr>
+                                        <tr>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
+                                        </label>
+                                        </td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
+                                        </label>
+                                        </td>
+                                        <td></td>
+                                        </tr>
+                                      </table>
                                    </td>
                                </tr>
                                <tr>
@@ -576,8 +643,6 @@
             window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
-          }else if(document.getElementById("status").value == ""){
-            window.alert("Select Project Status");
           }else if(document.getElementById("basement").value == ""){
             window.alert("You have not entered Basement value");
           }else if(document.getElementById("ground").value == ""){
@@ -801,6 +866,32 @@
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
+    }
+    function count(){
+      var ctype1 = document.getElementById('constructionType1');
+      var ctype2 = document.getElementById('constructionType2');
+      var countinput;
+      if(ctype1.checked == true && ctype2.checked == true){
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+      }else if(ctype1.checked == true || ctype2.checked == true){
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+      }else{
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      }
+      if(countinput == 5){
+        $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+        $('#constructionType1').attr('disabled',false);
+        $('#constructionType2').attr('disabled',false);
+      }else{
+        $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+      }
+    }
+    function fileUpload(){
+      var count = document.getElementById('oApprove').files.length;
+      if(count > 5){
+        document.getElementById('oApprove').value="";
+        alert('You are allowed to upload a maximum of 5 files');
+      }
     }
 </script>
 @endsection

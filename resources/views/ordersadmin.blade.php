@@ -23,7 +23,7 @@
 						<th>Payment Status</th>
 						<th>Dispatch Status</th>
 						<th>Delivery Status</th>
-						<th>Print Quotation</th>
+						<th>Print Invoice</th>
 						<th>&nbsp;&nbsp;&nbsp; Confirm Order &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 					</tr>
 				</thead>
@@ -60,7 +60,7 @@
 						    @endif
 						</td>
 						<td>
-						    <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Quotation</a>
+						    <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Invoice</a>
 					    </td>
 					    <td>
 					    	@if($rec->status == "Enquiry Confirmed")
