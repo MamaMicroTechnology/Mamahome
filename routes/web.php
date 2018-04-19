@@ -22,6 +22,7 @@ Route::get('/logoutFromChat','TokenController@logout');
 
 // Shared View
 Auth::routes();
+
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
@@ -33,12 +34,14 @@ Route::get('/accept','HomeController@acceptConfidentiality');
 Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
+
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
 Route::get('/getContractorProjects','ContractorController@getProjects');
 Route::get('/contractor_with_no_of_projects','ContractorController@getNoOfProjects');
 Route::get('/viewProjects','ContractorController@viewProjects');
 Route::get('/ameditProject','HomeController@editProject');
+
 Route::get('/getSubCatPrices','HomeController@getSubCatPrices');
 Route::get('/loadsubwards','HomeController@loadSubWards');
 Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
@@ -55,7 +58,9 @@ Route::get('/enquirysheet','HomeController@enquirysheet');
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
 Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq');
+Route::get('/editenq1','HomeController@editEnq1');
 Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
+
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
@@ -63,6 +68,11 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 
+<<<<<<< HEAD
+=======
+//sales converter
+
+>>>>>>> 65b272ff9d5ae1f183cbc20d0002c52fd4b360b1
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
 Route::get('/chat','HomeController@getChat');
@@ -210,6 +220,9 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assignListSlots','HomeController@assignListSlots');
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
+    Route::get('/assignStages','HomeController@stages');
+     Route::post('/store','HomeController@store');
+
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
     Route::get('/{id}/deleteReportImage2','HomeController@deleteReportImage2');

@@ -12,6 +12,7 @@
     					<table class="table table-hover table-striped">
     						<thead>
     							<th>Project Name</th>
+                                <th>Project Id</th>
     							<th style="width:15%">Address</th>
     							<th>Procurement Name</th>
     							<th>Contact No.</th>
@@ -21,6 +22,7 @@
     							@foreach($projects as $project)
     							<tr>
     								<td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
+                                    <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
     								<td id="projsite-{{$project->project_id}}">
                                         {{ $project->siteaddress != null ? $project->siteaddress->address : '' }}
                                     </td>
@@ -35,6 +37,8 @@
     								    <div class="checkbox">
                                           <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
                                         </div>
+                                        <!-- <button class="btn btn-sm" style="background-color:red;color:white;font-weight:bold">Block</button> -->
+                                         
     								</form>
     								</td>
     							</tr>

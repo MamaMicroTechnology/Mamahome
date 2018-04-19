@@ -14,6 +14,7 @@
                             <th style="text-align:center">Ward No.</th>
                             <th style="text-align:center">Project-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
+
                             <th style="text-align:center">Site Engineer Contact Number</th>
                             <th style="text-align:center">Procurement Contact Number</th>
                             <th style="text-align:center">Consultant Contact Number</th>
@@ -29,6 +30,7 @@
                         <tr>
                             <td style="text-align:center">{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
+                            
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>
                             <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
                             <td style="text-align:center">{{$project->procurement_contact_no}}</td>

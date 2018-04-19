@@ -45,6 +45,7 @@ use App\Certificate;
 use App\MhInvoice;
 use App\ActivityLog;
 use App\Order;
+use App\Stages;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -191,6 +192,7 @@ class HomeController extends Controller
     }
     public function enquirysheet(Request $request)
     {
+        $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
         $depart = [6,7];
@@ -286,6 +288,7 @@ class HomeController extends Controller
                         ->where('requirements.main_category',$request->category)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
+            $totalofenquiry = Requirement::where('main_category',$request->category)->sum('quantity');
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -421,6 +424,7 @@ class HomeController extends Controller
             }
         }
         return view('enquirysheet',[
+            'totalofenquiry'=>$totalofenquiry,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
             'wards'=>$wards,
@@ -524,10 +528,13 @@ class HomeController extends Controller
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
-        $check = ["Fixtures","Completion"];
-       $status = DB::table('project_details')->whereIn('project_status' , $check )->get();        
+                 
+        $check =DB::table('stages')->where('list',Auth::user()->name)->get()->pluck('status');
+        $status = DB::table('project_details')->whereIn('project_status' , $check )->get();        
         // $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
         $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+       
+        
         $projects = DB::table('project_details')
             ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
             ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
@@ -570,10 +577,12 @@ class HomeController extends Controller
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
         }else if($group == "Sales converter" && $dept == "Sales"){
             return redirect('scdashboard');
-        }
-        else{
+        }else if(Auth::user()->department_id == 10){
+
             Auth()->logout();
             return view('errors.403error');
+        }else {
+            return redirect('chat');
         }
         return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
     }
@@ -846,6 +855,7 @@ class HomeController extends Controller
                     'roomtypes'=>$roomtypes
                 ]);
     }
+   
     public function viewAll()
     {
         $allProjects = ProjectDetails::all();
@@ -1928,6 +1938,22 @@ class HomeController extends Controller
                 'subward'=>$subward
             ]);
     }
+     public function projectadmin1(Request $id){
+        $details = projectDetails::where('project_id',$id->projectId)->first();
+        $roomtypes = RoomType::where('project_id',$id->projectId)->get();
+        $followupby = User::where('id',$details->follow_up_by)->first();
+        $callAttendedBy = User::where('id',$details->call_attended_by)->first();
+        $listedby = User::where('id',$details->listing_engineer_id)->first();
+        $subward = SubWard::where('id',$details->sub_ward_id)->pluck('sub_ward_name')->first();
+        return view('viewDailyProjects1',[
+                'details'=>$details,
+                'roomtypes'=>$roomtypes,
+                'followupby'=>$followupby,
+                'callAttendedBy'=>$callAttendedBy,
+                'listedby'=>$listedby,
+                'subward'=>$subward
+            ]);
+    }
     public function editEmployee(Request $request){
         $user = User::where('employeeId', $request->UserId)->first();
         $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
@@ -2007,7 +2033,7 @@ class HomeController extends Controller
         $list->name= $request->name;
         $list->upload= $files;
         $list->save();
-        return back();
+        return- back();
 
     }
      public function uploadvideo(Request $request){
@@ -2074,14 +2100,39 @@ class HomeController extends Controller
         $activities = ActivityLog::orderby('time','DESC')->get();
         return view('activitylog',['activities'=>$activities]);
     }
-    public function eqpipeline()
+    public function eqpipeline(Request $request)
     {
-        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+        // $details = array();
+        // $wards = Ward::all();
+        // $users = User::all();
+        // $ids = array();
+        // if($request->phNo)
+        // {
+        //     $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->pluck('project_id');
+        //     $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->pluck('project_id');
+        //     for($i = 0; $i < count($details); $i++){
+        //         for($j = 0; $j<count($details[$i]); $j++){
+        //             array_push($ids, $details[$i][$j]);
+        //         }
+        //     }
+        //      $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
+        //                     ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+        //                     ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
+        //                     ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
+        //                     ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
+        //                     ->where('deleted',0)
+        //                     ->get();
+        // }
+            $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
                         ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
                         ->paginate(10);
         $subwards2 = array();
         foreach($pipelines as $enquiry){
+
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
             $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
         }
@@ -2250,6 +2301,9 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
         }
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
+
+
+
     public function projectDetailsForTL(Request $request)
     {
         $details = array();
@@ -2369,7 +2423,58 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                 'projectIds'=>$projectIds
             ]);
     }
-    public function salesConverterDashboard(){
+
+     public function editEnq1(Request $request)
+    {
+        $category = Category::all();
+        $depart = [2,4,6,7,8];
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $enq = Requirement::where('requirements.id',$request->reqId)
+                    ->leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                    ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
+                    ->leftjoin('contractor_details','requirements.project_id','contractor_details.project_id')
+                    ->leftjoin('owner_details','requirements.project_id','owner_details.project_id')
+                    ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
+                    ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
+                    ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
+                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
+                    ->first();
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users]);
+    }
+    public function stages(Request $request)
+    {
+       
+         $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+          $se = DB::table('users')->where('department_id','2')->where('group_id','7')->get();
+         return view('assignStages',['le' => $le ,'se' => $se]);
+        
+    }
+     public function store(Request $request)
+    {
+       
+        $this->validate($request, [
+            
+            'list' => 'required|max:500',
+            'status' => 'required|max:500',
+
+        ]);
+        Stages::create([
+        'list'=> $request['list'],
+        'status'=> $request['status'],
+           
+      ]);
+        return redirect()->back();
+     
+    }
+    public function salesConverterDashboard()
+    {
         return view('scdashboard');
     }
-}
+
+   
+    public function getChat()
+    {
+        return view('chat');
+    }
+

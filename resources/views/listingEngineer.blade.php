@@ -53,16 +53,20 @@
                                    <td>Road Name/Road No.</td>
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
+<<<<<<< HEAD
+=======
                                </tr>
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
                                    <td><input id="rWidth" required type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
                                    <td>:</td>
                                    <td><input readonly id="address" required type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"></td>
+<<<<<<< HEAD
                                </tr>
                                <tr>
                                  <td>Construction Type</td>
@@ -85,6 +89,30 @@
                                  </td>
                                </tr>
                                <tr>
+=======
+                               </tr>
+                               <tr>
+                                 <td>Construction Type</td>
+                                 <td>:</td>
+                                 <td>
+                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in RMC</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="No" type="radio" name="rmcinterest">No</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
                                 <td>
@@ -108,6 +136,25 @@
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
+<<<<<<< HEAD
+                                       <select id="status" required name="status" class="form-control input-sm">
+                                           <option value="">--Select--</option>
+                                           <option value="Planning">Planning</option>
+                                           <option value="Digging">Digging</option>
+                                           <option value="Foundation">Foundation</option>
+                                           <option value="Pillars">Pillars</option>
+                                           <option value="Walls">Walls</option>
+                                           <option value="Roofing">Roofing</option>
+                                           <option value="Electrical">Electrical</option>
+                                           <option value="Plumbing">Plumbing</option>
+                                           <option value="Plastering">Plastering</option>
+                                           <option value="Flooring">Flooring</option>
+                                           <option value="Carpentry">Carpentry</option>
+                                           <option value="Paintings">Paintings</option>
+                                           <option value="Fixtures">Fixtures</option>
+                                           <option value="Completion">Completion</option>
+                                       </select>
+=======
                                       <table class="table table-responsive">
                                         <tr>
                                           <td>
@@ -187,6 +234,7 @@
                                         <td></td>
                                         </tr>
                                       </table>
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
                                    </td>
                                </tr>
                                <tr>
@@ -866,6 +914,8 @@
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
+<<<<<<< HEAD
+=======
     }
     function count(){
       var ctype1 = document.getElementById('constructionType1');
@@ -892,6 +942,7 @@
         document.getElementById('oApprove').value="";
         alert('You are allowed to upload a maximum of 5 files');
       }
+>>>>>>> 7251139306e419a38d0e4db74448d4629530f4e3
     }
 </script>
 @endsection
