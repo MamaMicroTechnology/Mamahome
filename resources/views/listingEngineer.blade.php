@@ -57,7 +57,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" required type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
+                                   <td><input id="rWidth" type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -77,10 +77,10 @@
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
-                                      <label><input required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                      <label><input required value="Yes" id="rmc" type="radio" name="rmcinterest">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input required value="No" type="radio" name="rmcinterest">No</label>
+                                      <label><input required value="No" id="rmc2" type="radio" name="rmcinterest">No</label>
                                     </div>
                                  </td>
                                </tr>
@@ -634,6 +634,10 @@
     var current = "first";
     document.getElementById('headingPanel').innerHTML = 'Project Details';
     function pageNext(){
+        var ctype1 = document.getElementById('constructionType1');
+        var ctype2 = document.getElementById('constructionType2');
+        var rmc = document.getElementById('rmc');
+        var rmc2= document.getElementById('rmc2');
         if(current == 'first'){ 
           if(document.getElementById("pName").value == ""){
             window.alert("You have not entered Project Name");
@@ -653,11 +657,28 @@
             window.alert("You have not entered Budget");
           }else if(document.getElementById("pImage").value == ""){
             window.alert("You have not chosen a file to upload");
-          }else{ 
-            document.getElementById("first").className = "hidden";
-            document.getElementById("second").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Owner Details';
-            current = "second";
+          }else if(ctype1.checked == false && ctype2.checked == false){
+            window.alert("Please choose the construction type");
+          }else if(rmc.checked == false && rmc2.checked == false){
+            window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(document.getElementById('contract').value == ""){
+            window.alert("Choose type of contract");
+          }else{
+            if(ctype1.checked == true && ctype2.checked == true){
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+            }else if(ctype1.checked == true || ctype2.checked == true){
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+            }else{
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            }
+            if(countinput == 0){
+                window.alert("Select at least one project status");
+            }else{
+                document.getElementById("first").className = "hidden";
+                document.getElementById("second").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Owner Details';
+                current = "second";
+            }
           }
         }else if(current == 'second'){              
               document.getElementById("second").className = "hidden";
@@ -813,7 +834,7 @@
             // commercial only
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<td><input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">"+
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
@@ -882,6 +903,8 @@
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
         $('#constructionType2').attr('disabled',false);
+      }else if(countinput == 0){
+          return "none";
       }else{
         $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
       }

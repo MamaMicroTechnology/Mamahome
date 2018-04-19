@@ -25,7 +25,7 @@
 
                         <tr>
                             <td>
-                           <select id="status"  name="list" class=" input-sm">
+                           <select id="status"  name="list" class="form-control input-sm">
                                 <!-- <select  id="selectle" name="list"> -->
                                     <option disabled selected value="">( SELECT )</option>
                                     <option value="ALL">Select Engineers</option>
@@ -38,27 +38,24 @@
                                 </select>
                             </td>
                              <td>
-                                       <select id="status"  name="status" class=" input-sm">
-                                           <option value="">--Select--</option>
-                                           <option value="Planning">Planning</option>
-                                           <option value="Digging">Digging</option>
-                                           <option value="Foundation">Foundation</option>
-                                           <option value="Pillars">Pillars</option>
-                                           <option value="Walls">Walls</option>
-                                           <option value="Roofing">Roofing</option>
-                                           <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
-                                           <option value="Plastering">Plastering</option>
-                                           <option value="Flooring">Flooring</option>
-                                           <option value="Carpentry">Carpentry</option>
-                                           <option value="Paintings">Paintings</option>
-                                           <option value="Fixtures">Fixtures</option>
-                                           <option value="Completion">Completion</option>
-                                        </select>
-                                   </td>
+                                <select id="status"  name="status" class="form-control input-sm">
+                                    <option value="">--Select--</option>
+                                    <option value="Planning">Planning</option>
+                                    <option value="Digging">Digging</option>
+                                    <option value="Foundation">Foundation</option>
+                                    <option value="Pillars">Pillars</option>
+                                    <option value="Walls">Walls</option>
+                                    <option value="Roofing">Roofing</option>
+                                    <option value="Electrical & Plumbing">Electrical &amp; Plumbing</option>
+                                    <option value="Plastering">Plastering</option>
+                                    <option value="Flooring">Flooring</option>
+                                    <option value="Carpentry">Carpentry</option>
+                                    <option value="Paintings">Paintings</option>
+                                    <option value="Fixtures">Fixtures</option>
+                                    <option value="Completion">Completion</option>
+                                </select>
+                            </td>
                         </tr>
-                         
-                       
-                       
                     </tbody>
                 </table>
                 <center><button class="btn btn-sm btn-primary" type="submit">submit</button></center>
