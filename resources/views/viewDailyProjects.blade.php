@@ -18,7 +18,7 @@
                         </tr>
                        
                          @if(Auth::check())
-                        @if(Auth::user()->group_id == 7)
+                        @if(Auth::user()->group_id != 7)
                         <tr>
                             <td><b>Listed By</b></td>
                             <td>
