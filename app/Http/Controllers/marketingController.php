@@ -46,7 +46,7 @@ class marketingController extends Controller
 {
     public function getHome(){
         $categories = Category::all();
-        $subcategories = SubCategory::all();
+        $subcategories = SubCategory::leftjoin('brands','category_sub.brand_id','=','brands.id')->select('brands.brand','category_sub.*')->get();
         $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
         return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
     }

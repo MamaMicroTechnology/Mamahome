@@ -227,7 +227,13 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
     Route::get('/assignStages','HomeController@stages');
-     Route::post('/store','HomeController@store');
+    Route::post('/store','HomeController@store');
+    Route::get('/teamkra','amController@teamamKRA');
+    Route::post('/teamaddKRA','amController@teamaddKRA');
+    Route::get('/teamdeletekra','amController@deletekra');
+    Route::post('/teamupdatekra','amController@updatekra');
+
+
 
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');

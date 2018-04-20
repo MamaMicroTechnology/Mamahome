@@ -344,7 +344,32 @@ class amController extends Controller
             ->get();
         return view('assistantmanager.keyresultarea',['departments'=>$departments,'groups'=>$groups,'kras'=>$kras,'pageName'=>'KRA']);
     }
+    public function teamamKRA(){
+        $dept = [1,2];
+        $group = [6,7,12,17,18];
+        $departments = Department::whereIn('id',$dept)->get();
+        $groups = Group::whereIn('id',$group)->get();
+        $kras = DB::table('key_results')
+            ->join('departments', 'key_results.department_id', '=', 'departments.id')
+            ->join('groups', 'key_results.group_id', '=', 'groups.id')
+            ->select('key_results.*', 'departments.dept_name', 'groups.group_name')
+            ->whereIn('key_results.department_id',$dept)
+            ->whereIn('key_results.group_id',$group)
+            ->get();
+        return view('assistantmanager.keyresultarea',['departments'=>$departments,'groups'=>$groups,'kras'=>$kras,'pageName'=>'KRA']);
+    }
     public function addKRA(Request $request){
+        $kra = new KeyResult;
+        $kra->department_id = $request->department;
+        $kra->group_id = $request->group;
+        $kra->role = $request->role;
+        $kra->goal = $request->goal;
+        $kra->key_result_area = $request->kra;
+        $kra->key_performance_area = $request->kpa;
+        $kra->save();
+        return back()->with('Success','You have added KRA successfully');
+    }
+    public function teamaddKRA(Request $request){
         $kra = new KeyResult;
         $kra->department_id = $request->department;
         $kra->group_id = $request->group;
@@ -370,32 +395,22 @@ class amController extends Controller
     public function deletekra(Request $request)
     { 
         $groupid = $request->groupid;
+
         $deptid = $request->deptid;
         $rec = DB::table('key_results')->where('department_id',$deptid)->where('group_id',$groupid)->delete();
         return back();
     }
     public function updatekra(Request $request)
     {
-        $groupid= $request->groupid;
-        $deptid = $request->deptid;
-        $role = $request->role;
-        $goal = $request->goal;
-        $result = $request->result;
-        $perf = $request->perf;
-
-        $x = DB::table('key_results')
-                ->where('group_id',$groupid)
-                ->where('department_id',$deptid)
-                ->update(['role'=>$role, 'goal'=>$goal,'key_result_area'=>$result,'key_performance_area' => $perf]);
-        if($x)
-        {
-            return back()->with('success','Updated Successfully !!!');
-        }        
-        else
-        {
-            return back()->with('success','Error !!!');
-        }
+    
+        KeyResult::where('id',$request->id)
+            ->update(['role'=>$request->role,
+                'goal'=>$request->goal,
+                'key_result_area'=>$request->kra,
+                'key_performance_area' => $request->kpa]);
+        return back();
     }
+    
     public function confirmDelivery(Request $request){
         $requirement = Requirement::where('id',$request->id)->first();
         $project = ProjectDetails::where('project_id',$request->projectId)->first();
