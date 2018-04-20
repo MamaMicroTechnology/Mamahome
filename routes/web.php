@@ -34,6 +34,7 @@ Route::get('/accept','HomeController@acceptConfidentiality');
 Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
+Route::get('/blocked_projects','HomeController@blocked');
 
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
@@ -394,4 +395,6 @@ Route::group(['middleware'=>['Logistics']],function(){
 
 
 Route::post('/toggle-approve',"HomeController@approval");
+Route::post('/toggle-approve1',"HomeController@approval1");
+
 

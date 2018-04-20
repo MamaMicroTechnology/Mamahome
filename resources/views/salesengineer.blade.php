@@ -46,13 +46,13 @@
                                 
 
                                          
-    								</form>
+    								             </form>
                                     <div class="btn-group btn-group-xs">
                                    <form action="{{ url('/toggle-approve')}}" method="post">
                                  {{csrf_field()}}
                                   <input value="off" type="hidden" name="deleted">
                                   <input type="hidden" name="id" value="{{$project->project_id}}">
-                                  <button type="submit" class="btn green six" data-toggle="tooltip" data-placement="top" data-original-title="View" style="background-color:red;color:white;font-weight:bold">Block
+                                  <button type="submit" data-toggle="tooltip"onclick="return confirm('Are you sure you want to Block this Project?');"  button class="btn btn-sm" style="background-color:#F57F1B;color:white;font-weight:bold">Block
                                </button>
                               </form>
                             </div>

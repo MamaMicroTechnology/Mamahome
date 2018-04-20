@@ -18,7 +18,7 @@
                         </tr>
                        
                          @if(Auth::check())
-                        @if(Auth::user()->group_id !== 7)
+                        @if(Auth::user()->group_id != 7)
                         <tr>
                             <td><b>Listed By</b></td>
                             <td>
@@ -230,14 +230,14 @@
                 <table class="table table-hover">
                     <thead>
                         <th>Contractor Name</th>
-                        <th>Contractor Email</th>
-                        <th>Contractor Contact</th>
+                         <th>Contractor Contact</th>
+                         <th>Contractor Email</th>
                     </thead>    
                     <tbody>
                         <tr>
                             <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_name : '' }}</td>
-                            <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_email : '' }}</td>
                             <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_contact_no : '' }}</td>
+                            <td>{{ $details->contractordetails != null ? $details->contractordetails->contractor_email : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        
@@ -255,14 +255,14 @@
                 <table class="table table-hover">
                     <thead>
                         <th>Constultant Name</th>
-                        <th>Constultant Email</th>
-                        <th>Constultant Contact</th>
+                       <th>Constultant Contact</th>
+                       <th>Constultant Email</th>
                     </thead>    
                     <tbody>
                         <tr>
-                            <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_name : '' }}</td>
+                            <td>{{ $details->consultantdetails != null ? $details->consultantdetails->     consultant_name : '' }}</td>
+                              <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_contact_no : '' }}</td>
                             <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_email : '' }}</td>
-                            <td>{{ $details->consultantdetails != null ? $details->consultantdetails->consultant_contact_no : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        

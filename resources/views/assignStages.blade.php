@@ -20,7 +20,7 @@
                 <table class="table table-responsive table-striped table-hover">
                         <thead>
                             <th style="width:15%">Name</th>
-                            <th style="width:15%">Desination</th>
+                            <th style="width:15%">Designation</th>
                             <th style="width:15%">Assign Stage</th>
                            <!--  <th style="width:15%">Previously Assigned  Stage </th> -->
                           </thead>

@@ -5,11 +5,9 @@
         <div class="panel panel-primary"  style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);">
                <h2>Project Details Of 
-               <?php
-                $size = count($status);
-               ?>
-               {{ $status[$size-1] }} Stage</h2> 
-               
+               {{ $status }} Stage
+                   <div class="pull-right">{{ count($projects) }} Projects Found</div>
+               </h2> 
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">
@@ -24,6 +22,7 @@
                             <th style="text-align:center">Consultant Contact Number</th>
                             <th style="text-align:center">Contractor Contact Number</th>
                             <th style="text-align:center">Add Enquiry</th> 
+                             <th style="text-align:center">Action</th> 
                             <!--<th style="text-align:center">Verification</th>-->
                         </tr>
                     </thead>
@@ -39,6 +38,19 @@
                             <td style="text-align:center">{{$project->consultant_contact_no}}</td>
                             <td style="text-align:center">{{$project->contractor_contact_no}}</td>
                             <td> <a class="btn btn-sm btn-primary " name="addenquiry" onclick="addrequirement()" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
+                           <td> <form method="post" action="{{ URL::to('/') }}/confirmedProject">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" value="{{ $project->project_id }}" name="id">
+                                        <div class="checkbox">
+                                          <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
+                                        </div>
+
+                                     
+                                      </div>
+                                
+
+                                         
+                             </form></td>
                              
                             <!-- <td style="text-align:center" id="listname-{{$project->project_id}}">
                                 {{$project->name}}
