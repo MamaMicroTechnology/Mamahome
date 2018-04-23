@@ -249,7 +249,8 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/completethis','HomeController@completethis');
     Route::get('/completethis1','HomeController@completethis1');
     Route::get('/tlsalesreports','HomeController@salesreports');
-        
+    Route::get('/tlmaps','HomeController@tlMaps');
+    
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');
     Route::post('/{id}/afternoonRemark','mamaController@afternoonRemark');

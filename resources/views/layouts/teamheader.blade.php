@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -9,7 +10,6 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -30,7 +30,7 @@
         .sidenav a {
             padding: 8px 8px 8px 32px;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 18px;
             color: #818181;
             display: block;
             transition: 0.3s;
@@ -358,30 +358,16 @@ div#calendar{
                     </button>
 
                     <!-- Branding Image -->
-                    @if(Auth::check())
-                    @if(Auth::user()->group_id == 1)
-                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                    @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
-                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                    @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
-                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                   
-                    @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
-                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                    @endif
-                    @endif
+                    <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <img style="height: 25px; width: 170px;" src="{{ URL::to('/') }}/logo.png">
+                    </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        @if(Auth::check())
-                        <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
-                         @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
-                         @endif
-                        @endif
+                        
                     </ul>
                 
                     <!-- Right Side Of Navbar -->
@@ -396,10 +382,6 @@ div#calendar{
                                 </a>
 
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ URL::to('/') }}/profile ">Profile</a></li>
-                                    @if(Auth::user()->department_id == 2 && Auth::user()->group_id == 7)
-                                    <li><a href="{{ URL::to('/') }}/salescompleted ">Completed</a></li>
-                                    @endif
                                     <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -419,108 +401,33 @@ div#calendar{
                 </div>
             </div>
         </nav>
-@if(Auth::check())
-@if(Auth::user()->group_id == 1)
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/mapping">Mapping</a>
-    <a href="{{ URL::to('/getprojectsize') }}">Listed Project & Sizes</a>
-    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
-        <div id="projects" class="collapse">
-            <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
-            <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
-        </div>
-    <a href="{{ URL::to('/ampricing') }}">Pricing</a>
-    <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
-    <div id="enquiry" class="collapse">
-            <a href="{{ URL::to('/enquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
-            <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
-           
-        </div>
-    <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
-        <div id="orders" class="collapse">
-            <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
-            <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
-            <!-- <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
-        </div>
-    <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
-    <div id="demo" class="collapse">
-        <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
-        <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
-        <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
-        <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
-    </div>
-    <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
-    <div id="ap" class="collapse">
-        <a href="{{ URL::to('/leDashboard') }}">&nbsp;&nbsp;&nbsp; - Operation (LE)</a>
-        <a href="{{ URL::to('/teamLead') }}">&nbsp;&nbsp;&nbsp; - Operation (TL)</a>
-        <a href="{{ URL::to('/salesEngineer') }}">&nbsp;&nbsp;&nbsp; - Sales Engineer</a>
-        <a href="{{ URL::to('/marketing') }}">&nbsp;&nbsp;&nbsp; - Marketing</a>
-        <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Asst. Manager of sales</a>
-    </div>
-    <a href="{{ URL::to('/employeereports') }}">Attendance</a>
-    <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
-    <a href="{{ URL::to('/finance') }}">Finance</a>
-    <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
-    <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
-</div>
-@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    
-    <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
-    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-     <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
-    <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
-    <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
-    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-    <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
-    <a href="{{ URL::to('/orders') }}">Orders</a>
-    <a href="{{ URL::to('/tltraining') }}">Training Video</a>
-    <a href="{{ URL::to('/') }}/kra">KRA</a>
-</div>
-@elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/kra">KRA</a>
-    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-  </div>
-@elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
-     <a href="{{ URL::to('/marketmanufacturerdetails') }}">Manufacturer Details</a>
-     <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
-     <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
-      <a href="{{ URL::to('/enquirysheet') }}">Enquiry Sheet</a>
-      <a href="{{ URL::to('/') }}/kra">KRA</a>
-  </div>
-@endif
-@endif
+        <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+          @if(Auth::check())
+            <a href="{{ URL::to('/home') }}">Home</a>
+            <a href="{{ URL::to('/') }}/chat">Chat</a>
+          
+          <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
+          <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+          <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+          <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
+          <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
+          <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
+          <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
+          <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
+          <a href="{{ URL::to('/orders') }}">Orders</a>
+          <a href="{{ URL::to('/tltraining') }}">Training Video</a>
+          <a href="{{ URL::to('/') }}/kra">KRA</a>
 
-
+          
+        
+        @endif
+        </div>
         @yield('content')
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-        }
-        
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft= "0";
-        }
-    </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -544,6 +451,43 @@ div#calendar{
         span.onclick = function() { 
             modal.style.display = "none";
         }
-</script>
+    </script>
+    @if(session('Success'))
+    <script>
+    $( document ).ready(function(){go(50)});
+        $('#ok').click(function(){go(500)});
+        
+        function go(nr) {
+          $('.bb').fadeToggle(200);
+          $('.message').toggleClass('comein');
+          $('.check').toggleClass('scaledown');
+          $('#go').fadeToggle(nr);
+        }
+    </script>
+    @endif
+     @if(session('error'))
+    <script>
+    $( document ).ready(function(){go(50)});
+        $('#ok').click(function(){go(500)});
+        
+        function go(nr) {
+          $('.bb').fadeToggle(200);
+          $('.message').toggleClass('comein');
+          $('.check').toggleClass('scaledown');
+          $('#go').fadeToggle(nr);
+        }
+    </script>
+    @endif
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+        
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft= "0";
+        }
+    </script>
 </body>
 </html>
