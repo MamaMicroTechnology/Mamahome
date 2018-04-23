@@ -533,7 +533,7 @@ class HomeController extends Controller
             ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
             ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
             ->where('project_status' , $check)
-            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+            ->select('project_details.project_id','project_details.deleted','project_details.confirmed','procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
             ->paginate(15);
             
         return view('status_wise_projects', ['projects' => $projects, 'status'=>$check]);
