@@ -46,6 +46,7 @@ use App\MhInvoice;
 use App\ActivityLog;
 use App\Order;
 use App\Stages;
+use App\Map;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -2609,6 +2610,11 @@ public function approval(request $request  )
         ]);
       return back();
     }
-
-
+    public function getWardMaping()
+    {
+        $zones = Zone::leftjoin('maps','maps.zone_id','zones.id')
+                    ->select('zones.*','maps.lat','maps.color')
+                    ->get();
+        return view('maping.wardmaping',['zones'=>$zones]);
+    }
 }
