@@ -1609,6 +1609,7 @@ class HomeController extends Controller
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
             ->where('deleted',0)
             ->get();
+
             foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -1623,6 +1624,9 @@ class HomeController extends Controller
         $id = $request->id;
         $from = $request->from;
         $to = $request->to;
+        if($from == $to){
+            return redirect('/gettodayleinfo?from='.$from.'&id='.$id);
+        }
         if($id !== 'ALL')
         {
         $records[0] =  DB::table('project_details')
@@ -1763,7 +1767,11 @@ class HomeController extends Controller
     public function getProjectSize(Request $request)
     {
         $wards = Ward::all();
+<<<<<<< HEAD
         $projects = ProjectDetails::all();
+=======
+        $projects = ProjectDetails::where('deleted',0)->get();
+>>>>>>> 1bc0a5118743041f15c36c535c23e726764cee9d
         // getting total no of projects
         $wardsselect = Ward::pluck('id');
         $subwards = SubWard::whereIn('ward_id',$wardsselect)->pluck('id');

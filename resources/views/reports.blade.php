@@ -29,7 +29,7 @@
 			</table>
 
 			@if($loginTimes != null && $loginTimes->morningMeter== NULL && !isset($_GET['date']))
-			@if(date('H:i:s') < $now)
+			@if("08:20:00" > $now)
 			<form method="post" action="{{ URL::to('/') }}/addMorningMeter" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="morningCount" value="{{ $projectCount }}">
@@ -50,7 +50,7 @@
 			@endif
 			@endif
 			@if($loginTimes != null && $loginTimes->morningData  == NULL && !isset($_GET['date']))
-			@if(date('H:i:s') < $now)
+			@if("08:20:00" > $now)
 			<form method="post" action="{{ URL::to('/') }}/addMorningData" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">		

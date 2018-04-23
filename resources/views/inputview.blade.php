@@ -52,7 +52,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td><label>Brnads* :</label></td>
+								<td><label>Brands* :</label></td>
 								<td>
 									<select name="brand" id="brand" required class="form-control" onchange="getSubCat()">
 										

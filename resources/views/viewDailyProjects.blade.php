@@ -20,7 +20,7 @@
                         </tr>
                        
                          @if(Auth::check())
-                        @if(Auth::user()->group_id != 7)
+                        @if(Auth::user()->department_id != 2)
                         <tr>
                             <td><b>Listed By</b></td>
                             <td>

@@ -469,7 +469,8 @@ div#calendar{
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/kra">KRA</a>
+    
+    <a href="{{ URL::to('/') }}/teamkra"> Add KRA</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
      <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
@@ -479,6 +480,7 @@ div#calendar{
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
     <a href="{{ URL::to('/tltraining') }}">Training Video</a>
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">

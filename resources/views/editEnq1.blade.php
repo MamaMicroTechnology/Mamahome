@@ -56,7 +56,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td><label>Brnads* :</label></td>
+								<td><label>Brands* :</label></td>
 								<td>
 									<select name="brand" id="brand" class="form-control" onchange="getSubCat()">
 										
@@ -75,9 +75,10 @@
 								<td><label>Email : </label></td>
 								<td><input type="email" name="eemail" id="eemail" class="form-control"></td>
 							</tr> -->
+							@if(Auth::user()->group_id != 6 && Auth::user()->group_id != 7)
 							<tr>
 								<td><label>Initiator* : </label></td>
-								<td>
+								<td>	
 									<select class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
@@ -86,6 +87,7 @@
 									</select>
 								</td>
 							</tr>
+							@endif
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>{{ $enq->address }}</td>
@@ -177,7 +179,7 @@
 	    	        success: function(response)
 	    	        {
 	    	            console.log(response);
-	    	            var ans = "<option value=''>--Select--</option>";
+	    	            var ans = "<option value=''>--Select--</option><option value='All'>All</option>";
 	    	            for(var i=0;i<response[0].length;i++)
 	    	            {
 	    	                ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
@@ -222,5 +224,15 @@
     		}
     	})
     }
+</script>
+<script type="text/javascript">
+	 function getquantity()
+	{
+		var quan=document.myform.equantity.value;
+			if(isNaN(quan)){
+				document.getElementById('equantity').value="";
+				myform.equantity.focus();
+		     }
+	}
 </script>
 @endsection
