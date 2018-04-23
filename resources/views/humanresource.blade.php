@@ -1,4 +1,4 @@
-@extends('layouts.amheader')
+@extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
@@ -51,7 +51,8 @@
                 </div>
                 <div class="col-md-6">
                   <input required type="text" placeholder="Name" class="form-control" name="name"><br>
-                  <input required type="text" placeholder="Personal Contact No." class="form-control" name="phNo"><br>
+                  <input required type="text" pattern="^\d{10}$"  placeholder="10 Digit phoneno" class="form-control"  name="phNo" ><br>
+
                 </div>
             </div>
             <div class="row">
@@ -76,7 +77,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success" onclick="phonenumber(document.form1.phNo)">
+            <button type="submit" class="btn btn-success" >
             Add </button>
           <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
         </div>
@@ -130,19 +131,7 @@ $(document).ready(function () {
     });
 });
 
-function phonenumber(inputtxt)
-{
-  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if(inputtxt.value.match(phoneno))
-     {
-     return true;      
-   }
-   else
-     {
-     alert("Not a valid Phone Number");
-     return false;
-     }
-}
+
 
 </script>
 @endforeach

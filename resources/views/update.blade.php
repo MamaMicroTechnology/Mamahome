@@ -27,7 +27,7 @@
                     <center>
                       <label>Project Details</label><br>
                        @if(Auth::check())
-                        @if(Auth::user()->group_id !== 7 && Auth::user()->group_id != 6)
+                        @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                       <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
                       @endif
                       @endif
