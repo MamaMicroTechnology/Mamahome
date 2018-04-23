@@ -1763,7 +1763,7 @@ class HomeController extends Controller
     public function getProjectSize(Request $request)
     {
         $wards = Ward::all();
-        $projects = ProjectDetails::where('deleted',0)->get();
+        $projects = ProjectDetails::get();
         // getting total no of projects
         $wardsselect = Ward::pluck('id');
         $subwards = SubWard::whereIn('ward_id',$wardsselect)->pluck('id');
