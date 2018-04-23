@@ -34,7 +34,7 @@
 				<form method="GET" action="{{ URL::to('/') }}/{{Auth::user()->group_id == 1 ? 'viewallProjects':'projectDetailsForTL'}}">
 					<div class="col-md-4 pull-right">
 						<div class="input-group">
-							<input type="text" name="phNo" class="form-control" placeholder="Phone number search">
+							<input type="text" name="phNo" class="form-control" placeholder="Phone number and project_id search">
 							<div class="input-group-btn">
 								<input type="submit" class="form-control" value="Search">
 							</div>
@@ -46,7 +46,7 @@
 						<th>Project Id</th>
 						<th>Project Name</th>
 						<th>Construction Type</th>
-						<th>Interested In RMC</th>
+						
 						<th>Sub-Ward</th>
 						<th>Project Status</th>
 						<th>Quality</th>
@@ -70,7 +70,7 @@
 							</td>
 							<td>{{ $project->project_name }}</td>
 							<td>{{ $project->construction_type }}</td>
-							<td>{{ $project->interested_in_rmc }}</td>
+							
 							<td>{{ $project->sub_ward_name }}</td>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>

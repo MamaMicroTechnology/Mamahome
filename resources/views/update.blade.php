@@ -266,6 +266,19 @@
                                    <td><input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize"></td>
                                </tr>
                                <tr>
+                                <tr>
+                               
+                                 <td>Budget Type</td>
+                                 <td>:</td>
+                                 <td>
+                                    <label required class="checkbox-inline">
+                                      <input {{ in_array('strulural', $type) ? 'checked': ''}} id="constructionType1" name="budgetType" type="checkbox" value="Residential">Strulural Budget
+                                    </label>
+                                    <label required class="checkbox-inline">
+                                      <input {{ in_array('finishing', $type) ? 'checked': ''}} id="constructionType2" name="budgetType" type="checkbox" value="Commercial">Finishing Budget
+                                    </label>
+                                 </td>
+                               </tr>
                                    <td>Total Budget (in Cr.)</td>
                                    <td>:</td>
                                    <td>
@@ -288,6 +301,13 @@
                                     <div id="imagediv">
                                       <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
+                                     <small id="currentTime" class="pull-right">
+                    Updated on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}</small><br>
+                    @if(Auth::check())
+                       
+                      @endif
+                  <br>
+
                                    </td>
                                </tr>
                                <tr>
