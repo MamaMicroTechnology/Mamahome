@@ -43,6 +43,10 @@
                         </form>
                         <br><br>
                         <table class="table table-hover">
+                            <tr>
+                            <td>Category</td>
+                            <td>Action</td>
+                            </tr>
                             @foreach($categories as $category)
                             <tr id="current{{ $category->id }}">
                                 <td>{{ $category->category_name }}</td>
@@ -101,6 +105,11 @@
                         </form>
                         <br><br>
                         <table class="table table-hover">
+                            <tr>
+                            <td>Category</td>
+                            <td>Brand</td>
+                            <td>Action</td>
+                            </tr>
                             @foreach($brands as $brand)
                             <tr id="currentb{{ $brand->id }}">
                                 <td>{{ $brand->category_name }}</td>
@@ -141,10 +150,17 @@
                     </div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
                         <table class="table table-hover">
+                            <tr>
+                            <td>Category</td>
+                            <td>Brand</td>
+                            <td>Sub Category</td>
+                             <td>Action</td>
+                            </tr>
                             @foreach($subcategories as $subcategory)
                             <tr id="currentsub{{ $subcategory->id }}">
                                 <td>{{ $subcategory->category->category_name }}</td>
-                                <td>{{ $subcategory->sub_cat_name }}</td>
+                                 <td>{{ $subcategory->brand }}</td>
+                                 <td>{{ $subcategory->sub_cat_name }}</td>
                                 <td>
                                     <form method="POST" action="{{ URL::to('/') }}/deleteSubCategory">
                                         {{ csrf_field() }}

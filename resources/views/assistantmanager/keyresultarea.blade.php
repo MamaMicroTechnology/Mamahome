@@ -1,9 +1,17 @@
-@extends('layouts.amheader')
-@section('title','KRA')
+
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 4? "layouts.amheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 
 <!-- Modal -->
+@if(Auth::user()->group_id != 2)
 <form method="POST" action="{{ URL::to('/') }}/addKRA">
+    @else
+    <form method="POST" action="{{ URL::to('/') }}/teamaddKRA">
+    @endif
     {{ csrf_field() }}
     <div id="addKRA" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -84,7 +92,7 @@
                 </thead>
                 <tbody>
                     @foreach($kras as $kra)
-                    <tr>
+                    <tr id="current{{ $kra->group_id }}">
                         <td style="text-align: center;">{{ $kra->dept_name }}</td>
                         <td style="text-align: center;">{{ $kra->group_name }}</td>
                         <td>{{ $kra->role }}</td>
@@ -92,16 +100,113 @@
                         <td>{{ $kra->key_result_area }}</td>
                         <td>{{ $kra->key_performance_area }}</td>
                         <td style="text-align:center" colspan="2">
-                            <a href="{{URL::to('/')}}/editkra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}" class="btn btn-sm btn-success">Edit</a>
+                           
+                            <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal{{ $kra->id }}">Edit</button>
+                           
+                            @if(Auth::user()->group_id != 2)
                             <a href="{{URL::to('/')}}/deletekra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}" class="btn btn-sm btn-danger">Delete</a>
+                            @else
+                            <a href="{{URL::to('/')}}/teamdeletekra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}" class="btn btn-sm btn-danger">Delete</a>
+                            @endif
                         </td>    
                     </tr>
+                   
+                    
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+@if(Auth::user()->group_id != 2)
+@foreach($kras as $kra)
+ <div class="modal fade" id="myModal{{ $kra->id }}" role="dialog">
+    <div class="modal-dialog">             
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: green;color: white;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Edit KRA List</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ URL::to('/') }}/updatekra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}">
+                    {{ csrf_field() }}
+                    <input type="hidden" value="{{ $kra->id }}" name="id">
+                    <table>
+                        <tr>
+                        <td>Role</td>
+                        <td><input type="text" name="role" value="{{ $kra->role }}" class="form-control input-sm"></td>
+                        </tr>
+                        <tr>
+                        <td>Goal</td>
+                        <td><input type="text" name="goal" value="{{ $kra->goal }}" class="form-control input-sm">
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>Key Result Area</td>
+                        <td><input type="text" name="kra" value="{{ $kra->key_result_area }}" class="form-control input-sm">
+                        </td>
+                        </tr>  
+                        <tr>
+                        <td>key performance area</td> 
+                             <td><input type="text" name="kpa" value="{{ $kra->key_performance_area }}" class="form-control input-sm">
+                        </td>
+                        </tr>
+                    </table>           
+                    <div class="modal-footer">
+                         <button class="btn btn-sm btn-success" type="submit">Save</button>
+                     </div>
+                </form>
+             </div>              
+         </div>
+    </div>
+</div>
+@endforeach
+@else
+@foreach($kras as $kra)
+ <div class="modal fade" id="myModal{{ $kra->id }}" role="dialog">
+    <div class="modal-dialog">             
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: green;color: white;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Edit KRA List</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ URL::to('/') }}/teamupdatekra?deptid={{$kra->department_id}}&groupid={{$kra->group_id}}">
+                    {{ csrf_field() }}
+                    <input type="hidden" value="{{ $kra->id }}" name="id">
+                    <table>
+                        <tr>
+                        <td>Role</td>
+                        <td><input type="text" name="role" value="{{ $kra->role }}" class="form-control input-sm"></td>
+                        </tr>
+                        <tr>
+                        <td>Goal</td>
+                        <td><input type="text" name="goal" value="{{ $kra->goal }}" class="form-control input-sm">
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>Key Result Area</td>
+                        <td><input type="text" name="kra" value="{{ $kra->key_result_area }}" class="form-control input-sm">
+                        </td>
+                        </tr>  
+                        <tr>
+                        <td>key performance area</td> 
+                             <td><input type="text" name="kpa" value="{{ $kra->key_performance_area }}" class="form-control input-sm">
+                        </td>
+                        </tr>
+                    </table>           
+                    <div class="modal-footer">
+                         <button class="btn btn-sm btn-success" type="submit">Save</button>
+                     </div>
+                </form>
+             </div>              
+         </div>
+    </div>
+</div>
+@endforeach
+@endif
 <div class='b'></div>
 <div class='bb'></div>
 <div class='message'>
@@ -120,5 +225,6 @@
     OK
   </button>
 </div>
+
 
 @endsection

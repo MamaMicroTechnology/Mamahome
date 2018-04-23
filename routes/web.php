@@ -34,6 +34,7 @@ Route::get('/accept','HomeController@acceptConfidentiality');
 Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
+Route::get('/blocked_projects','HomeController@blocked');
 
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
@@ -227,7 +228,13 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
     Route::get('/assignStages','HomeController@stages');
-     Route::post('/store','HomeController@store');
+    Route::post('/store','HomeController@store');
+    Route::get('/teamkra','amController@teamamKRA');
+    Route::post('/teamaddKRA','amController@teamaddKRA');
+    Route::get('/teamdeletekra','amController@deletekra');
+    Route::post('/teamupdatekra','amController@updatekra');
+
+
 
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
@@ -394,4 +401,6 @@ Route::group(['middleware'=>['Logistics']],function(){
 
 
 Route::post('/toggle-approve',"HomeController@approval");
+Route::post('/toggle-approve1',"HomeController@approval1");
+
 
