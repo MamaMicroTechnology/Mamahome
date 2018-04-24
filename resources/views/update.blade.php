@@ -20,7 +20,7 @@
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
                   <small id="currentTime" class="pull-right">
-                    Listed on {{ date('d-m-Y h:i:s A', stetrtotime($projectdetails->created_at)) }}
+                    Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
                   </small><br>
                 </div>
                 <div class="panel-body">

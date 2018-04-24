@@ -91,12 +91,18 @@
                             <td><b>Project Image</b></td>
                             <td>
                                 <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
-                               <td style="font-size:13px">Updated on: {{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td><br><br>
                                <td style="font-size:13px">
-                               Updated Person Name: {{ $listedby != null ? $listedby->name : '' }}
                                
                             </td>
                             </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px">Updated on</td>
+                            <td>{{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Updater:</td>
+                            <td>{{ $listedby != null ? $listedby->name : '' }}</td>
                         </tr>
                         <tr>
                             <td><b>Budget (Cr.)</b></td>
@@ -268,7 +274,7 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading" style="background-color:green">
-               <b style="color:white">Procurement Details</b> 
+               <b style="color:white">Owner Details</b> 
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
