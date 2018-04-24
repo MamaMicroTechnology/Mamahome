@@ -31,6 +31,7 @@ use App\ContractorDetails;
 use App\salesassignment;
 use App\Report;
 use App\RoomType;
+use App\WardMap;
 use Auth;
 use DB;
 use App\EmployeeDetails;
@@ -1584,6 +1585,9 @@ class HomeController extends Controller
         if(Auth::user()->id == 82){
             $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
             $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
+        }elseif(Auth::user()->id == 85){
+            $projects = ProjectDetails::where('created_at','LIKE',"2018-04-19%")->paginate(10);
+            $projectscount = ProjectDetails::where('created_at','LIKE', "2018-04-19%")->count();
         }
         // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
         return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
@@ -2651,5 +2655,9 @@ public function approval(request $request  )
                     ->get();
         return view('maping.wardmaping',['zones'=>$zones]);
     }
-
+    public function getWards(Request $request)
+    {
+        $wards = Ward::where('zone_id',$request->id)->get();
+        return response()->json($wards);
+    }
 }
