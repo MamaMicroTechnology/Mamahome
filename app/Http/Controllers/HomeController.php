@@ -418,7 +418,7 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                        ->where('requirements.status','!=',"Enquiry cancelled")
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -1573,6 +1573,10 @@ class HomeController extends Controller
         $subwards = SubWard::where('id',$assignment)->pluck('sub_ward_name')->first();
         $projects = ProjectDetails::where('sub_ward_id', $assignment)->paginate(10);
         $projectscount = ProjectDetails::where('sub_ward_id', $assignment)->count();
+        if(Auth::user()->id == 82){
+            $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
+            $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
+        }
         // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
         return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
     }

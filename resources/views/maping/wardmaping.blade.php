@@ -39,6 +39,7 @@
       $("#draw").click(function(){
         var val = parseInt(document.getElementById('color').value);
         var color = "#"+document.getElementById('color').value;
+        document.getElementById('path').value = marker;
         var line = "#"+String(val - 10);
         polygon = map.removePolylines();
         polygon = map.drawPolygon({
@@ -49,23 +50,26 @@
           fillColor: color,
           fillOpacity: 0.2
         });
-        document.getElementById('path').value = marker;
         });
       });
-      function display(arg){
+      function display(arg,col){
         var places = arg.split(",");
-        alert(places[0]);
+        var newpath = [];
+        var mymarker = [];
+        var ncol = parseInt(col);
+        for(var i=0;i<places.length;i+=2){
+          newpath.push([parseFloat(places[i]), parseFloat(places[i+1])]);
+        }
         var val = parseInt(document.getElementById('color').value);
-        var color = "#"+document.getElementById('color').value;
         var line = "#"+String(val - 10);
-        marker[0] = arg;
-        polygon = map.removePolylines();
+        mymarker[0] = newpath;
+        polygon = map.removePolygons();
         polygon = map.drawPolygon({
-          paths: marker,
+          paths: mymarker,
           strokeColor: line,
           strokeOpacity: 1,
           strokeWeight: 3,
-          fillColor: color,
+          fillColor: ncol,
           fillOpacity: 0.2
         });
         document.getElementById('path').value = marker;
@@ -87,9 +91,9 @@
       <div class="col-md-6">
         <div class="col-md-6">
           Zone:
-          <select size="10" required name="zone" id="Zones" class="form-control">
+          <select size="5" required name="zone" id="Zones" class="form-control">
             @foreach($zones as $zone)
-            <option onclick="display('{{ $zone->lat }}')" style="border-bottom: 2px solid;border-top: 2px solid; padding: 5px;" value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
+            <option onclick="display('{{ $zone->lat }}','{{ $zone->color}}')" style="border-bottom: 2px solid;border-top: 2px solid; padding: 5px;" value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
             @endforeach
           </select>
         </div>

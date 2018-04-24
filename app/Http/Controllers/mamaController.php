@@ -1451,11 +1451,18 @@ class mamaController extends Controller
     }
     public function saveMap(Request $request)
     {
-        $map = new Map;
-        $map->zone_id = $request->zone;
-        $map->lat = $request->path;
-        $map->color = $request->color;
-        $map->save();
+        if($check = Map::where('zone_id',$request->zone)->count() == 0){
+            $map = new Map;
+            $map->zone_id = $request->zone;
+            $map->lat = $request->path;
+            $map->color = $request->color;
+            $map->save();
+        }else{
+            $check = Map::where('zone_id',$request->zone)->first();
+            $check->lat = $request->path;
+            $check->color = $request->color;
+            $check->save();
+        }
         return back();
     }
 }
