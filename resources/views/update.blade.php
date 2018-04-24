@@ -309,7 +309,7 @@
                                     </div>
                                      <small id="currentTime" class="pull-right" style="font-size: 13px">
                     <lable> Updated on: {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</lable><br>
-                    <label> Updated User Name:{{ $username != null ? 'Listed by '.$username : '' }}</label>
+                    
 
                     </small><br>
                     @if(Auth::check())
