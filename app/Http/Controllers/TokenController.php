@@ -26,7 +26,7 @@ class TokenController extends Controller
         // Claims will be sent with the token
         $user = Auth::user();
         $claims = ['name' => $user->name, 'email' => $user->email];
-        $users = User::all();
+        $users = User::where('department_id','!=',10)->get();
         $userlist = "";
         foreach($users as $i){
             $userlist .="<p>".$i->name."<br><small>".$i->email."</small></p>";
@@ -64,5 +64,12 @@ class TokenController extends Controller
     	Auth::logout();
     	return redirect('/login');
     }
-
+    public function pms(Request $request)
+    {
+        $messages = Message::where('from_user',$request->authId)
+                    ->where('to_user',$request->userId)
+                    ->orderBy('created_at','asc')
+                    ->get();
+        return new MessageResource($messages);
+    }
 }

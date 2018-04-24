@@ -163,6 +163,7 @@ Route::post('/deleteCertificate','amController@deleteCertificate');
 
 // Admin
 Route::group(['middleware' => ['admin']],function(){
+    Route::get('/wardmaping','HomeController@getWardMaping');
     Route::get('/anr','HomeController@getAnR');
     Route::get('/viewEmployee','HomeController@viewEmployee');
     Route::get('/amdept','HomeController@amDept');
@@ -179,7 +180,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
-     Route::get('/adtraining','HomeController@adtraining');
+    Route::get('/adtraining','HomeController@adtraining');
     
     Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
@@ -199,7 +200,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/deleteentry','HomeController@deleteentry');
     Route::post('/uploadvideo','HomeController@uploadvideo');
-
+    Route::post('/saveMap','mamaController@saveMap');
     
     Route::post('/addDepartment','mamaController@addDepartment');
     Route::post('/deleteDepartment','mamaController@deleteDepartment');
@@ -255,7 +256,8 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/completethis','HomeController@completethis');
     Route::get('/completethis1','HomeController@completethis1');
     Route::get('/tlsalesreports','HomeController@salesreports');
-        
+    Route::get('/tlmaps','HomeController@tlMaps');
+    
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');
     Route::post('/{id}/afternoonRemark','mamaController@afternoonRemark');

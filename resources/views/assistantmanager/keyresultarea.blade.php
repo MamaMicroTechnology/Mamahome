@@ -1,7 +1,7 @@
 
 <?php
     $user = Auth::user()->group_id;
-    $ext = ($user == 4? "layouts.amheader":"layouts.app");
+    $ext = ($user == 4? "layouts.amheader":"layouts.teamheader");
 ?>
 @extends($ext)
 @section('content')

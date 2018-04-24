@@ -43,6 +43,7 @@ use App\RoomType;
 use App\ActivityLog;
 use App\RecordData;
 use App\Order;
+use App\Map;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1448,6 +1449,22 @@ class mamaController extends Controller
             'requirement_date' => $request->edate
 
         ]);
+        return back();
+    }
+    public function saveMap(Request $request)
+    {
+        if($check = Map::where('zone_id',$request->zone)->count() == 0){
+            $map = new Map;
+            $map->zone_id = $request->zone;
+            $map->lat = $request->path;
+            $map->color = $request->color;
+            $map->save();
+        }else{
+            $check = Map::where('zone_id',$request->zone)->first();
+            $check->lat = $request->path;
+            $check->color = $request->color;
+            $check->save();
+        }
         return back();
     }
 }
