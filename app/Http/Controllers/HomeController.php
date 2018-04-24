@@ -1096,9 +1096,13 @@ class HomeController extends Controller
     }
     public function getRequirements(Request $request)
     {
+        $depart = [2,4,8,6,7];
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $assignment = salesassignment::where('user_id',Auth::user()->id)->pluck('assigned_date')->first();
         $requirements = Requirement::where('project_id',$request->projectId)->get();
+        $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $category = Category::all();
-        return view('requirements',['category'=>$category, 'requirements'=>$requirements,'id'=>$request->projectId]);
+        return view('requirements',['category'=>$category, 'requirements'=>$requirements,'id'=>$request->projectId,'projects'=>$projects,'assignment'=>$assignment,'users'=>$users]);
     }
     public function deleteReportImage($id)
     {
@@ -2452,6 +2456,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
         }
     }
+    
     public function deleteRoomType(Request $request)
     {
         RoomType::findOrFail($request->roomId)->delete();

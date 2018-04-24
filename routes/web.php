@@ -49,7 +49,7 @@ Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
-Route::get('/requirements','HomeController@getRequirements');
+Route::get('/requirement','HomeController@getRequirements');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
@@ -250,7 +250,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/completethis1','HomeController@completethis1');
     Route::get('/tlsalesreports','HomeController@salesreports');
     Route::get('/tlmaps','HomeController@tlMaps');
-    
+
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');
     Route::post('/{id}/afternoonRemark','mamaController@afternoonRemark');

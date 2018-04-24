@@ -849,6 +849,7 @@ class mamaController extends Controller
         $requirement->requirement_date = $request->rDate;
         $requirement->measurement_unit = $request->measure;
         $requirement->unit_price = $request->uPrice;
+        $requirement->brand = $request->brand;
         $requirement->quantity = $request->quantity;
         $requirement->total = $request->total;
         $requirement->notes = $request->notes;
