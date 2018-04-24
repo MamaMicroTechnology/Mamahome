@@ -249,7 +249,7 @@
                                         </div>
                                       <div class="col-md-3">
                                         <label>Floor</label>
-                                        <input value="{{ $projectdetails->ground }}" oninput="check('ground')" autocomplete="off" name="ground" id="ground" type="number" class="form-control input-sm" placeholder="Ground">
+                                        <input value="{{ $projectdetails->ground }}" oninput="check('ground')" autocomplete="off" name="ground" id="ground" type="number" class="form-control input-sm" placeholder="Floor">
                                       </div>
                                       <div class="col-md-3">
                                         <br>
@@ -663,9 +663,9 @@ function sum(){
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
           }else if(document.getElementById("basement").value == ""){
-            window.alert("You have not entered Project Name");
+            window.alert("You have not entered basement");
           }else if(document.getElementById("ground").value == ""){
-            window.alert("You have not entered Project Name");
+            window.alert("You have not entered floor");
           }else if(document.getElementById("pSize").value == ""){
             window.alert("You have not entered Project Size");
           }else if(document.getElementById("budget").value == ""){
