@@ -184,7 +184,11 @@
                                           <input type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
                                         </label>
                                         </td>
-                                        <td></td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
+                                        </label>
+                                        </td>
                                         </tr>
                                       </table>
                                    </td>
@@ -218,8 +222,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Strulural Type</label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Finishing Type</label> 
+                                    <label required class="checkbox-inline"><input id="constructionType1" name="budjettype" type="checkbox" value="Residential">Strulural Type</label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="budjettype" type="checkbox" value="Commercial">Finishing Type</label> 
                                  </td>
                                </tr>
                                <tr>

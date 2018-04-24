@@ -85,7 +85,7 @@
             <label>
             	Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
-            	Current Count: <b>{{ $projectsCount }}</b>
+            	No Of Calls: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	Sales Engineer : 
             		@if(isset($_GET['se']) && $_GET['se'] != "ALL")
