@@ -19,9 +19,11 @@ Route::get('/', function () {
 // chatting
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
-
+ Route::get('/assignStages','HomeController@stages');
 // Shared View
 Auth::routes();
+Route::get('/myreport','HomeController@myreport');
+
 
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/profile','HomeController@getMyProfile');
@@ -120,6 +122,7 @@ Route::post('/editEnquiry','mamaController@editEnquiry');
 Route::post('/editManualEnquiry','mamaController@editManualEnquiry');
 
 // Sales Engineer
+Route::get('/sedashboard','HomeController@salesEdashboard');
 Route::get('/updateOwner','HomeController@updateOwner');
 Route::get('/updateConsultant','HomeController@updateConsultant');
 Route::get('/updateContractor','HomeController@updateContractor');
@@ -196,8 +199,10 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/deleteentry','HomeController@deleteentry');
+    Route::get('/getWards','HomeController@getWards');
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
+    Route::post('/saveWardMap','mamaController@saveWardMap');
     
     Route::post('/addDepartment','mamaController@addDepartment');
     Route::post('/deleteDepartment','mamaController@deleteDepartment');
@@ -225,11 +230,14 @@ Route::group(['middleware' => ['admin']],function(){
 // Team Leader
 Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assignDailySlots','HomeController@getSalesTL');
+    Route::get('/assigndate','HomeController@assigndate');
+
     Route::get('/assignListSlots','HomeController@assignListSlots');
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
-    Route::get('/assignStages','HomeController@stages');
+   
     Route::post('/store','HomeController@store');
+    Route::post('/datestore','HomeController@datestore');
     Route::get('/teamkra','amController@teamamKRA');
     Route::post('/teamaddKRA','amController@teamaddKRA');
     Route::get('/teamdeletekra','amController@deletekra');
@@ -397,6 +405,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/confirmDelivery','logisticsController@postconfirmDelivery');
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
+    Route::get('/saveSignature','logisticsController@saveSignature');
 });
 
 
@@ -404,5 +413,3 @@ Route::group(['middleware'=>['Logistics']],function(){
 
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
-
-

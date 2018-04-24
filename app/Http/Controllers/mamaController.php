@@ -44,6 +44,7 @@ use App\ActivityLog;
 use App\RecordData;
 use App\Order;
 use App\Map;
+use App\WardMap;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -412,7 +413,8 @@ class mamaController extends Controller
                 'ground' => 'required',
                 'pName' => 'required',
                 'rName' => 'required',
-                'status' => 'required'
+                'status' => 'required',
+                'budjettype' => 'budjettype'
             ]);
             if ($validator->fails()) {
                 return back()
@@ -472,6 +474,7 @@ class mamaController extends Controller
             $projectdetails->listing_engineer_id = Auth::user()->id;
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
+            $projectDetails->budjettype = $request->budjettype;
             $projectdetails->save();
             
             $room_types = $request->roomType[0]." (".$request->number[0].")";
@@ -1460,6 +1463,23 @@ class mamaController extends Controller
             $map->save();
         }else{
             $check = Map::where('zone_id',$request->zone)->first();
+            $check->lat = $request->path;
+            $check->color = $request->color;
+            $check->save();
+        }
+        return back();
+    }
+    public function saveWardMap(Request $request)
+    {
+        $check = WardMap::where('ward_id',$request->ward_id)->first();
+        if(count($check)== 0){
+            $wardmaps = new WardMap;
+            $wardmaps->ward_id = $request->ward_id;
+            $wardmaps->lat = $request->path;
+            $wardmaps->color = $request->color;
+            $wardmaps->save();
+        }else{
+            $check->ward_id = $request->ward_id;
             $check->lat = $request->path;
             $check->color = $request->color;
             $check->save();

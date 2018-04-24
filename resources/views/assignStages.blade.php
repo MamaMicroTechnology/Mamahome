@@ -36,6 +36,7 @@
                            <tr>
                            <td>{{$user->name}}</td>
                            <td>{{ $user->group_name }}</td>
+                           <td><input type="hidden" name="list" value="{{$user->name}}">
                            <td>
                           <a data-toggle="modal" data-target="#assignstages" class="btn btn-sm btn-primary">Assign Stages</a>
                            
@@ -99,14 +100,16 @@
                                    <option value="Pillars">Pillars</option>
                                    <option value="Walls">Walls</option>
                                    <option value="Roofing">Roofing</option>
-                                   <option value="Electrical & Plumbing">Electrical</option>
-                                    <option value="Plastering">Plumbing</option>
+                                   <option value="Electrical">Electrical</option>
+                                    <option value="Plumbing">Plumbing</option>
                                    <option value="Plastering">Plastering</option>
                                    <option value="Flooring">Flooring</option>
                                    <option value="Carpentry">Carpentry</option>
                                    <option value="Paintings">Paintings</option>
                                    <option value="Fixtures">Fixtures</option>
                                    <option value="Completion">Completion</option>
+                                   <option value="Completion">Closed</option>
+
                                 
                 </select>
             
