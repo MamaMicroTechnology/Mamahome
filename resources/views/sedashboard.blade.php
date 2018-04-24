@@ -1,12 +1,8 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 7? "layouts.sales":"layouts.app");
-?>
-@extends($ext)
+@extends('layouts.app')
 @section('content')
 <br><br>
 <div style="background-color:white" class="container" >
-<h2 ><center>WELCOME TO {{ Auth::user()->group_id == 17 ? ' SALES CONVERTER' : 'ASSISTANT MANAGER OF SALES AND MARKETING' }}
+<h2 ><center>WELCOME TO {{ Auth::user()->group_id == 7 ? ' SALES ENGINEER' : 'ASSISTANT MANAGER OF SALES AND MARKETING' }}
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><BR>
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
