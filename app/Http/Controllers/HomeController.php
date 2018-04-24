@@ -100,7 +100,7 @@ class HomeController extends Controller
     public function inputview()
     {
         $category = Category::all();
-        $depart = [2,4,8,6,7];
+        $depart = [2,4,8,6,7,15];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         return view('inputview',['category'=>$category,'users'=>$users]);
     }
@@ -2644,6 +2644,12 @@ public function approval(request $request  )
         ]);
       return back();
     }
-
+    public function getWardMaping()
+    {
+        $zones = Zone::leftjoin('maps','zones.id','maps.zone_id')
+                    ->select('zones.*','maps.lat','maps.color','maps.zone_id')
+                    ->get();
+        return view('maping.wardmaping',['zones'=>$zones]);
+    }
 
 }
