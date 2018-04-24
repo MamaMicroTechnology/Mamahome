@@ -196,8 +196,10 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/deleteentry','HomeController@deleteentry');
+    Route::get('/getWards','HomeController@getWards');
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
+    Route::post('/saveWardMap','mamaController@saveWardMap');
     
     Route::post('/addDepartment','mamaController@addDepartment');
     Route::post('/deleteDepartment','mamaController@deleteDepartment');
@@ -397,6 +399,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/confirmDelivery','logisticsController@postconfirmDelivery');
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
+    Route::get('/saveSignature','logisticsController@saveSignature');
 });
 
 
@@ -404,5 +407,3 @@ Route::group(['middleware'=>['Logistics']],function(){
 
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
-
-

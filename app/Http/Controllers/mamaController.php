@@ -44,6 +44,7 @@ use App\ActivityLog;
 use App\RecordData;
 use App\Order;
 use App\Map;
+use App\WardMap;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1459,6 +1460,23 @@ class mamaController extends Controller
             $map->save();
         }else{
             $check = Map::where('zone_id',$request->zone)->first();
+            $check->lat = $request->path;
+            $check->color = $request->color;
+            $check->save();
+        }
+        return back();
+    }
+    public function saveWardMap(Request $request)
+    {
+        $check = WardMap::where('ward_id',$request->ward_id)->first();
+        if(count($check)== 0){
+            $wardmaps = new WardMap;
+            $wardmaps->ward_id = $request->ward_id;
+            $wardmaps->lat = $request->path;
+            $wardmaps->color = $request->color;
+            $wardmaps->save();
+        }else{
+            $check->ward_id = $request->ward_id;
             $check->lat = $request->path;
             $check->color = $request->color;
             $check->save();

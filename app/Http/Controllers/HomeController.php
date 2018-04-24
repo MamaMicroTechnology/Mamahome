@@ -1809,8 +1809,8 @@ class HomeController extends Controller
         $fixturesSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Fixtures')->sum('project_size');
         $pillarsCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->count();
         $pillarsSize        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->sum('project_size');
-        $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->count();
-        $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->sum('project_size');
+        $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Paintings')->count();
+        $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Paintings')->sum('project_size');
         $flooringCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->count();
         $flooringSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->sum('project_size');
         $plasteringCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Plastering')->count();
@@ -1843,8 +1843,8 @@ class HomeController extends Controller
                 $fixturesSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Fixtures')->sum('project_size');
                 $pillarsCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->count();
                 $pillarsSize        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->sum('project_size');
-                $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->count();
-                $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->sum('project_size');
+                $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Paintings')->count();
+                $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Paintings')->sum('project_size');
                 $flooringCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->count();
                 $flooringSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->sum('project_size');
                 $plasteringCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Plastering')->count();
@@ -1873,8 +1873,8 @@ class HomeController extends Controller
                 $fixturesSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Fixtures')->sum('project_size');
                 $pillarsCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->count();
                 $pillarsSize        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Pillars')->sum('project_size');
-                $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->count();
-                $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Painting')->sum('project_size');
+                $paintingCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Paintings')->count();
+                $paintingSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Paintings')->sum('project_size');
                 $flooringCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->count();
                 $flooringSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Flooring')->sum('project_size');
                 $plasteringCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Plastering')->count();
@@ -2657,7 +2657,10 @@ public function approval(request $request  )
     }
     public function getWards(Request $request)
     {
-        $wards = Ward::where('zone_id',$request->id)->get();
+        $wards = Ward::where('zone_id',$request->id)
+                    ->leftjoin('ward_maps','wards.id','ward_maps.ward_id')
+                    ->select('wards.*','ward_maps.lat','ward_maps.color')
+                    ->get();
         return response()->json($wards);
     }
 }

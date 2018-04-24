@@ -119,6 +119,9 @@ class logisticsController extends Controller
     {
         return view('logistics.takesignature');
     }
-
+    public function saveSignature(Request $request)
+    {
+        return "submitted";
+    }
     
 }
