@@ -38,24 +38,17 @@
     								    {{ csrf_field() }}
     								    <input type="hidden" value="{{ $project->project_id }}" name="id">
     								    <div class="checkbox">
-                                          <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
+                                          <input  type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called
                                         </div>
 
+                                    
                                      
                                       </div>
                                 
 
                                          
     								             </form>
-                                    <div class="btn-group btn-group-xs">
-                                   <form action="{{ url('/toggle-approve')}}" method="post">
-                                 {{csrf_field()}}
-                                  <input value="off" type="hidden" name="deleted">
-                                  <input type="hidden" name="id" value="{{$project->project_id}}">
-                                  <!-- <button type="submit" data-toggle="tooltip"onclick="return confirm('Are you sure you want to Block this Project?');"  button class="btn btn-sm" style="background-color:#F57F1B;color:white;font-weight:bold">Block
-                               </button> -->
-                              </form>
-                            </div>
+                                   
     								</td>
     							</tr>
                                  @endif

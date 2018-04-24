@@ -214,6 +214,14 @@
                                    <td>:</td>
                                    <td><input value="{{ old('pSize') }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class="form-control input-sm" name="pSize" onkeyup="check('pSize')"></td>
                                </tr>
+                                 <tr>
+                                 <td>Budget Type</td>
+                                 <td>:</td>
+                                 <td>
+                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Strulural Type</label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Finishing Type</label> 
+                                 </td>
+                               </tr>
                                <tr>
                                    <td>Budget (Approx.)</td>
                                    <td>:</td>

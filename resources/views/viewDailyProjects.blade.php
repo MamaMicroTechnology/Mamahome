@@ -4,6 +4,8 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-heading">
+
+                            
                <b style="color:white">Project Details
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                </b> 
@@ -45,10 +47,7 @@
                         </tr>
                         
                         
-                        <tr>
-                            <td style="width:40%"><b>Project Id</b></td>
-                            <td>{{ $details->project_id }}</td>
-                        </tr>
+                        
                         <tr>
                             <td><b>Project Name</b></td>
                             <td>{{ $details->project_name }}</td>
