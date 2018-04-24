@@ -46,6 +46,7 @@ use App\MhInvoice;
 use App\ActivityLog;
 use App\Order;
 use App\Stages;
+use App\Map;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -417,7 +418,7 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                        ->where('requirements.status','!=',"Enquiry cancelled")
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -545,8 +546,8 @@ class HomeController extends Controller
             ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
             ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
             ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
-            ->where('project_status' , $check[$count-1] )
-            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+            ->where('project_status' , $check)
+            ->select('project_details.*','procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
             ->paginate(15);
             
         return view('status_wise_projects', ['date' => $date,'users'=>$users,  'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'status' =>$status,'status'=>$check]);
@@ -1578,6 +1579,10 @@ class HomeController extends Controller
         $subwards = SubWard::where('id',$assignment)->pluck('sub_ward_name')->first();
         $projects = ProjectDetails::where('sub_ward_id', $assignment)->paginate(10);
         $projectscount = ProjectDetails::where('sub_ward_id', $assignment)->count();
+        if(Auth::user()->id == 82){
+            $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
+            $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
+        }
         // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
         return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
     }
