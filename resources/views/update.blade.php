@@ -307,17 +307,12 @@
                                     <div id="imagediv">
                                       <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
-                                     <small id="currentTime" class="pull-right" style="font-size: 13px">
-                    <lable> Updated on: {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</lable><br>
-                    
-
-                    </small><br>
-                    @if(Auth::check())
-              
-                      @endif
-                  <br>
-
                                    </td>
+                               </tr>
+                               <tr>
+                                 <td>Updated On</td>
+                                 <td>:</td>
+                                 <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
                                </tr>
                                <tr>
                                     <td>Room Types</td>

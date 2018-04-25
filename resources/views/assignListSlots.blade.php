@@ -53,16 +53,24 @@
                                 </td>            
                                 <!--Completed Button -->
                                 @if($user->status == 'Completed')
+                                @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center;">
                                         <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary form-control"><b>Report</b></a>
                                     </td>
                                 @else
+                                <td>Assign Wards</td>
+                                @endif
+                                @else
+                                @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center">
                                         <div class="btn-group">
                                             <a href="{{URL::to('/')}}/completedAssignment?id={{$user->id}}" class="btn btn-sm btn-success"><b>Completed</b></a>
                                             <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
                                         </div>
                                     </td>
+                                @else
+                                <td>Ward Assigned</td>
+                                @endif
                                 @endif 
                             </tr>
                             @endforeach
@@ -77,8 +85,13 @@
 
 @foreach($users as $user)
 <!-- Modal -->
+@if(Auth::user()->group_id != 17)
 <form method="POST" action="{{ URL::to('/') }}/{{ $user->id }}/assignWards">
-{{ csrf_field() }}    
+{{ csrf_field() }}
+@else
+<form method="POST" action="{{ URL::to('/') }}/{{ $user->id }}/converterassignWards">
+{{ csrf_field() }}
+@endif    
     <div id="assignWards{{ $user->id }}" class="modal fade" role="dialog">
       <div class="modal-dialog modal-sm">
         <!-- Modal content-->
