@@ -286,7 +286,7 @@
                     <tbody>
                         <tr>
                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
-                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_n : '' }}</td>
+                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_no : '' }}</td>
                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
                            
                         </tr>
