@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="col-md-10" >
         <div class="panel panel-primary"  style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);">
@@ -28,6 +29,7 @@
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
+                    
                         @foreach($projects as $project)
                         @if($project->deleted=='0')
                         <tr>
@@ -66,8 +68,10 @@
                             </td> 
                             -->
                         </tr>
+                        
                         @endif
                         @endforeach
+                       
                     </tbody>
                 </table>
             </div>
@@ -78,6 +82,7 @@
             </div>
         </div>
     </div>
+    
     <script type="text/javascript">
         function addrequirement(){
             var id = document.getElementsByName('addenquiry').id;

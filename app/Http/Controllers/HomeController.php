@@ -198,7 +198,7 @@ class HomeController extends Controller
         $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
-        $depart = [6,7];
+        $depart = [6,7,17,8,12,15,16];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
 
@@ -2460,6 +2460,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->where('deleted',0)
                             ->get();
+                            
             return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }
         if($request->subward && $request->ward){
