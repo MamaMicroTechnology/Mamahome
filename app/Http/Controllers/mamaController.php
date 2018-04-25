@@ -414,7 +414,7 @@ class mamaController extends Controller
                 'pName' => 'required',
                 'rName' => 'required',
                 'status' => 'required',
-                'budjettype' => 'budjettype'
+                'budjettype' => 'required'
             ]);
             if ($validator->fails()) {
                 return back()
