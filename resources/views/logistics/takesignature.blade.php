@@ -50,7 +50,12 @@
       </div>
     </div>
   </div>
-
+  <div style="display: none;">
+    <form action="{{ URL::to('/') }}/saveSignature" id="saveSign" method="GET" enctype="multipart/form-data">
+      <input type="file" id="sign" name="sign">
+    </form>
+  </div>
+  <script src="{{ asset('js/app.js') }}"></script>
   <script src="{{ URL::to('/') }}/js/signature_pad.umd.js"></script>
   <script src="{{ URL::to('/') }}/js/app2.js"></script>
 </body>

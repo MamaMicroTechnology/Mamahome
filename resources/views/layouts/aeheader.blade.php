@@ -368,6 +368,8 @@ div#calendar{
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/home') }}">Home</a></li>
                         <li><a href="{{ URL::to('/') }}/chat">Chat</a></li>
+                         <!-- <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li> -->
+
                         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
                         @endif
                     </ul>

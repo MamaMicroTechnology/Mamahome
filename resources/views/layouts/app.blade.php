@@ -368,6 +368,9 @@ div#calendar{
                    
                     @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                        @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                      
                     @endif
                     @endif
                 </div>
@@ -378,9 +381,12 @@ div#calendar{
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
                         <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
-                         @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
+                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id != 7)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
+                          @endif
                         <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
-                         @endif
+                        
+                       
                         @endif
                     </ul>
                 
@@ -474,6 +480,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
      <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
+     <!--  <a href="{{ URL::to('/assigndate') }}">Assign Dtae</a> -->
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
     <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
     <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
@@ -503,6 +510,19 @@ div#calendar{
       <a href="{{ URL::to('/enquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
+  @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
+<div id="mySidenav" class="sidenav">
+     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Wards_wise_Projects</a>
+     <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Status_wise_Projects</a>
+     <a  href="" >Date_wise_Projects</a>
+    <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
+    <a href="{{ URL::to('/') }}/eqpipeline" >Enquiry Pipelined</a>
+    <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
+
+    <a href="{{ URL::to('/') }}/kra" >KRA</a>
+            
+  </div>
+
 @endif
 @endif
 

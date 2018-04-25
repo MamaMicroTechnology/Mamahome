@@ -20,7 +20,7 @@
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
                   <small id="currentTime" class="pull-right">
-                    Listed on {{ date('d-m-Y h:i:s A', stetrtotime($projectdetails->created_at)) }}
+                    Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
                   </small><br>
                 </div>
                 <div class="panel-body">
@@ -38,6 +38,7 @@
                         <input type="hidden" name="id" value="{{ $id }}">
                       </form>
                       @else
+                      <label style="font-size: 14px">Quality:</label>
                       {{ $projectdetails->quality }}
                       @endif
                     <br>
@@ -229,7 +230,12 @@
                                           <input {{ in_array('Completion', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
                                         </label>
                                         </td>
-                                        <td></td>
+                                         <td>
+                                          <label class="checkbox-inline">
+                                          <input {{ in_array('Closed', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
+                                        </label>
+                                        </td>
+                        
                                         </tr>
                                       </table>
                                    </td>
@@ -301,10 +307,13 @@
                                     <div id="imagediv">
                                       <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
-                                     <small id="currentTime" class="pull-right">
-                    Updated on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}</small><br>
+                                     <small id="currentTime" class="pull-right" style="font-size: 13px">
+                    <lable> Updated on: {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</lable><br>
+                    
+
+                    </small><br>
                     @if(Auth::check())
-                       
+              
                       @endif
                   <br>
 

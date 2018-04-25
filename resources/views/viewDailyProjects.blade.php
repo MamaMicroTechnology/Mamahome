@@ -64,18 +64,7 @@
                             <td><b>Status</b></td>
                             <td>{{ $details->project_status }}</td>
                         </tr>
-                        <tr>
-                            <td><b>Owner Name</b></td>
-                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Owner Email</b></td>
-                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Owner Contact</b></td>
-                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_n : '' }}</td>
-                        </tr>
+                       
                             <tr>
                             <td><b>Project Type</b></td>
                             <td>B{{ $details->basement }} + G + {{ $details->ground }} = {{ $details->basement + $details->ground + 1 }}</td>
@@ -102,12 +91,23 @@
                             <td><b>Project Image</b></td>
                             <td>
                                 <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
+                               <td style="font-size:13px">
+                               
                             </td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px">Updated on</td>
+                            <td>{{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Updater:</td>
+                            <td>{{ $listedby != null ? $listedby->name : '' }}</td>
                         </tr>
                         <tr>
                             <td><b>Budget (Cr.)</b></td>
                             <td>
-                                {{ $details->budget }} Cr.
+                                {{ $details->budget }} Cr.[ {{$details->budgettype}} ]
                             </td>
                         </tr>
                         <tr>
@@ -270,6 +270,31 @@
     </div>
 </div>
         
-        
+ <div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Owner Details</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Owner Name</th>
+                        <th>Owner Contact</th>
+                        <th>Owner Email</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                             <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
+                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_n : '' }}</td>
+                           <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
+                           
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>       
 
 @endsection
