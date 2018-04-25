@@ -53,7 +53,7 @@ Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
-Route::get('/requirement','HomeController@getRequirements');
+Route::get('/requirements','HomeController@getRequirements');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
@@ -78,6 +78,9 @@ Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
 Route::get('/chat','HomeController@getChat');
+Route::get('/assignconverterSlots','HomeController@assignListSlots');
+Route::get('/scmaps','HomeController@tlMaps');
+Route::post('/{id}/converterassignWards','mamaController@assignWards');
 
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
