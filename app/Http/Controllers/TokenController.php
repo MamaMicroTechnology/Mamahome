@@ -66,10 +66,14 @@ class TokenController extends Controller
     }
     public function pms(Request $request)
     {
-        $messages = Message::where('from_user',$request->authId)
+        $mymessages = Message::where('from_user',$request->authId)
                     ->where('to_user',$request->userId)
-                    ->orderBy('created_at','asc')
                     ->get();
+        $hismessages = Message::where('from_user',$request->userId)
+                    ->where('to_user',$request->authId)
+                    ->get();
+        $messages = $mymessages->merge($hismessages);
+        $messages = $messages->sortBy('created_at');
         return new MessageResource($messages);
     }
 }
