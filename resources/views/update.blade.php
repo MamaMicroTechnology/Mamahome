@@ -278,7 +278,7 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-                                      <input {{ in_array('strulural', $type) ? 'checked': ''}} id="constructionType1" name="budgetType" type="checkbox" value="Residential">Strulural Budget
+                                      <input {{ in_array('strulural', $type) ? 'checked': ''}} id="constructionType1" name="budgetType" type="checkbox" value="Residential">Structural Budget
                                     </label>
                                     <label required class="checkbox-inline">
                                       <input {{ in_array('finishing', $type) ? 'checked': ''}} id="constructionType2" name="budgetType" type="checkbox" value="Commercial">Finishing Budget
