@@ -198,8 +198,8 @@ class HomeController extends Controller
         $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
-        $depart = [6,7,17,8,12,15,16];
-        $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $depart = [1,2,3];
+        $initiators = User::whereIn('department_id',$depart)->get();
         $subwards2 = array();
 
         if($request->status && !$request->category){
@@ -567,22 +567,12 @@ class HomeController extends Controller
        {
            $assigndate =Dates::where('user_id',Auth::user()->id)
            ->orderby('created_at','DESC')->pluck('assigndate')->first();
-          
-
            $projects =ProjectDetails::where('project_details.created_at','like',$assigndate."%")
-               ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
                ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-               ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-               ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
-               ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-               ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
-               ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
-              
-               ->select('project_details.*','procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+               ->select('project_details.*','sub_wards.sub_ward_name')
                ->paginate(15);
-            
-               
-           return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate ]);
+               $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
+           return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
     public function index()
     {
@@ -2778,7 +2768,8 @@ public function myreport()
 
 public function assigndate(request $request )
 {
-     $users = User::where('users.department_id','!=',10)
+    $depts = [1,2,3];
+     $users = User::whereIn('users.department_id',$depts)
                     ->leftjoin('departments','departments.id','users.department_id')
                     ->leftjoin('groups','groups.id','users.group_id')
                     

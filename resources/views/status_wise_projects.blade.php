@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-10" >
+<div class="col-md-10 col-md-offset-1" >
         <div class="panel panel-primary"  style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);">
 

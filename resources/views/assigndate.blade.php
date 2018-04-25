@@ -26,30 +26,18 @@
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Designation</th>
                             <th style="width:15%">Assign Date</th>
-                           <!--  <th style="width:15%">Previously Assigned  Stage </th>
-                            <th style="text-align:center">Action</th> -->
+                            <th></th>
                           </thead>
                         <tbody>
                            @foreach($users as $user)
                            <tr>
-                           <td>{{$user->name}}</td>
-                           <td>{{ $user->group_name }}</td>
-                           <td><input type="hidden" id= "user{{ $user->id }}" name="name" value="{{$user->id}}">
-                           <td>
-                          <!--  <td>
-                          <a data-toggle="modal" data-target="#date" class="btn btn-sm btn-primary">Assign Date</a>
-                           
-                           </td> -->
-                           <td> <input type="date" id="date{{ $user->id }}" name="assigndate" class=" input-sm"></td>
-                        <td><button type="button" onclick="save('{{$user->id}}')" class="btn btn-success pull-left">Assign</button></td>
-                           
+                            <td>{{$user->name}}</td>
+                            <td>{{ $user->group_name }}</td>
+                            <input type="hidden" id= "user{{ $user->id }}" name="name" value="{{$user->id}}">
+                            <td> <input type="date" id="date{{ $user->id }}" name="assigndate" class="form-control input-sm"></td>
+                            <td><button type="button" onclick="save('{{$user->id}}')" class="btn btn-success pull-left">Assign</button></td>
                           </tr>         
                            @endforeach
-                          
-                           
-                            
-                          
-                         
                        </tbody>
                        
                     

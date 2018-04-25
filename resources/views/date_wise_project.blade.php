@@ -2,12 +2,12 @@
 
 @section('content')
 
-<div class="col-md-10" >
+<div class="col-md-10 col-md-offset-1">
         <div class="panel panel-primary"  style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);">
 
                <h2>Project Details 
-                   
+                   <p class="pull-right">Total Projects {{ $totalListing }}</p>
                </h2> 
             </div>
             <div class="panel-body">
@@ -36,11 +36,11 @@
                             <td style="text-align:center">{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
                             
-                            <td style="text-align:center">{{$project->owner_contact_no}}</td>
-                            <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
-                            <td style="text-align:center">{{$project->procurement_contact_no}}</td>
-                            <td style="text-align:center">{{$project->consultant_contact_no}}</td>
-                            <td style="text-align:center">{{$project->contractor_contact_no}}</td>
+                            <td style="text-align:center">{{$project->ownerdetails != null ? $project->ownerdetails->owner_contact_no : ''}}</td>
+                            <td style="text-align:center">{{$project->siteengineerdetails != null ? $project->siteengineerdetails->site_engineer_contact_no : ''}}</td>
+                            <td style="text-align:center">{{$project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : ''}}</td>
+                            <td style="text-align:center">{{$project->consultantdetails != null ? $project->consultantdetails->consultant_contact_no : ''}}</td>
+                            <td style="text-align:center">{{$project->contractordetails != null ? $project->contractordetails->contractor_contact_no : ''}}</td>
                             <td> <a class="btn btn-sm btn-primary " name="addenquiry" onclick="addrequirement()" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
                            <td> <form method="post" action="{{ URL::to('/') }}/confirmedProject">
                                         {{ csrf_field() }}
