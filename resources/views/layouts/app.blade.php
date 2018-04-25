@@ -482,7 +482,7 @@ div#calendar{
      <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
       <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
+    <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
     <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
@@ -497,7 +497,7 @@ div#calendar{
     <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/') }}/assignconverterSlots">Assign List Engineers</a>
+    <a href="{{ URL::to('/') }}/assignconverterSlots">Assign Listing Engineers</a>
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
