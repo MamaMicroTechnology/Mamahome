@@ -309,7 +309,7 @@
                                     </div>
                                      <small id="currentTime" class="pull-right" style="font-size: 13px">
                     <lable> Updated on: {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</lable><br>
-                    <label> Updated User Name:{{ $username != null ? 'Listed by '.$username : '' }}</label>
+                    
 
                     </small><br>
                     @if(Auth::check())
@@ -659,6 +659,10 @@ function sum(){
 </script>
 
 <script type="text/javascript">
+  var ctype1 = document.getElementById('constructionType1');
+        var ctype2 = document.getElementById('constructionType2');
+        var rmc = document.getElementById('rmc');
+        var rmc2= document.getElementById('rmc2');
     var current = "first";
     function pageNext(){
       //alert(document.getElementById("pName").value);
@@ -679,10 +683,21 @@ function sum(){
             window.alert("You have not entered Project Size");
           }else if(document.getElementById("budget").value == ""){
             window.alert("You have not entered Budget");
-          }else{ 
-            document.getElementById("first").className = "hidden";
-            document.getElementById("second").className = "";
-            current = "second"
+          }else{
+            if(ctype1.checked == true && ctype2.checked == true){
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+            }else if(ctype1.checked == true || ctype2.checked == true){
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+            }else{
+                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            }
+            if(countinput == 0){
+                window.alert("Select at least one project status");
+            }else{
+                document.getElementById("first").className = "hidden";
+                document.getElementById("second").className = "";
+                current = "second";
+            }
           }
         }else if(current == 'second'){
           

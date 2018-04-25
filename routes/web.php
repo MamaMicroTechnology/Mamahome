@@ -51,7 +51,7 @@ Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
-Route::get('/requirements','HomeController@getRequirements');
+Route::get('/requirement','HomeController@getRequirements');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
@@ -199,8 +199,10 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/deleteentry','HomeController@deleteentry');
+    Route::get('/getWards','HomeController@getWards');
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
+    Route::post('/saveWardMap','mamaController@saveWardMap');
     
     Route::post('/addDepartment','mamaController@addDepartment');
     Route::post('/deleteDepartment','mamaController@deleteDepartment');
@@ -257,7 +259,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/completethis1','HomeController@completethis1');
     Route::get('/tlsalesreports','HomeController@salesreports');
     Route::get('/tlmaps','HomeController@tlMaps');
-    
+
     Route::post('/{id}/assignWards','mamaController@assignWards');
     Route::post('/{id}/morningRemark','mamaController@morningRemark');
     Route::post('/{id}/afternoonRemark','mamaController@afternoonRemark');
@@ -403,6 +405,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/confirmDelivery','logisticsController@postconfirmDelivery');
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
+    Route::get('/saveSignature','logisticsController@saveSignature');
 });
 
 
@@ -410,5 +413,3 @@ Route::group(['middleware'=>['Logistics']],function(){
 
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
-
-
