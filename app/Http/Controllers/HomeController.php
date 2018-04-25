@@ -2295,7 +2295,7 @@ class HomeController extends Controller
              }
              else
     {           
-        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)->where('requirements.created_at','LIKE',date('Y-m-d')."%")
+        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
         ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
                         
         ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
