@@ -214,11 +214,11 @@
                                 <td>{{$rec->ownerdetails->owner_name}}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Owner Name</b></td>
+                                <td style="width:40%;"><b>Owner Contact No</b></td>
                                 <td>{{$rec->ownerdetails->owner_contact_no}}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Owner Name</b></td>
+                                <td style="width:40%;"><b>Owner Email</b></td>
                                 <td>{{$rec->ownerdetails->owner_email}}</td>
                             </tr>
                         </tbody>
