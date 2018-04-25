@@ -13,9 +13,10 @@
                 </div>
                 <div class="panel-body">
             
-    <form method="POST" action="{{ url('/datestore')}}" enctype="multipart/form-data">
+    
                     
-                    {{ csrf_field() }}
+                <form method="POST" action="{{ url('/datestore')}}" > 
+                {{ csrf_field() }}     
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
                         <thead>
@@ -27,8 +28,10 @@
                           </thead>
 
                         <tbody>
-                            
+                       
+                        
                            @foreach($users as $user)
+                           
                            <tr>
                            <td>{{$user->name}}</td>
                            <td>{{ $user->group_name }}</td>
@@ -42,8 +45,8 @@
                         <td><button type="submit" class="btn btn-success pull-left">Assign</button></td>
                            @endforeach
                             
-                                   
-                      
+                          </tr>         
+                          
                          
                        </tbody>
                        
@@ -52,7 +55,7 @@
                
             </div>
   
-            </form> 
+</form>   
  {{$users->links()}}
 
                   </div>

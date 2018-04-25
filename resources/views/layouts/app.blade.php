@@ -480,7 +480,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
      <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
-     <!--  <a href="{{ URL::to('/assigndate') }}">Assign Dtae</a> -->
+      <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
     <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
     <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
