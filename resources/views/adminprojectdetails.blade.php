@@ -32,7 +32,7 @@
                                 <td>{{ $subward }}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%"><b>Followup</b></td>
+                                <td style="width:40%"><b>Followup Started</b></td>
                                 <td>{{ $rec->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
                             </tr>
                             <tr>
