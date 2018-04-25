@@ -100,10 +100,7 @@
                             <td style="font-size:13px">Updated on</td>
                             <td>{{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td>
                         </tr>
-                        <tr>
-                            <td>Updater:</td>
-                            <td>{{ $listedby != null ? $listedby->name : '' }}</td>
-                        </tr>
+                        
                         <tr>
                             <td><b>Budget (Cr.)</b></td>
                             <td>
@@ -286,7 +283,7 @@
                     <tbody>
                         <tr>
                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
-                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_n : '' }}</td>
+                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_no : '' }}</td>
                            <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
                            
                         </tr>

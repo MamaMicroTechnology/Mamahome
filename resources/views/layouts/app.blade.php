@@ -495,6 +495,7 @@ div#calendar{
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
+    <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
     <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
   </div>
@@ -510,9 +511,10 @@ div#calendar{
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
-     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Wards_wise_Projects</a>
-     <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Status_wise_Projects</a>
-     <a  href="" >Date_wise_Projects</a>
+     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Wardswise Projects</a>
+     <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
+     <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
     <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
     <a href="{{ URL::to('/') }}/eqpipeline" >Enquiry Pipelined</a>
     <a href="{{ URL::to('/') }}/myreport" >MY Report</a>

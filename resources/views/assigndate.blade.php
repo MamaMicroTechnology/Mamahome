@@ -15,9 +15,12 @@
             
     
                     
-                <form method="POST" action="{{ url('/datestore')}}" > 
-                {{ csrf_field() }}     
-            <div class="panel-body">
+    <form method="POST" id="assign" action="{{ url('/datestore')}}" >
+    {{ csrf_field() }}
+    <input type="hidden" id="username" name="name">
+    <input type="hidden" id="dateassigned" name="assigndate">
+    </form>
+               <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
                         <thead>
                             <th style="width:15%">Name</th>
@@ -26,26 +29,25 @@
                            <!--  <th style="width:15%">Previously Assigned  Stage </th>
                             <th style="text-align:center">Action</th> -->
                           </thead>
-
                         <tbody>
-                       
-                        
                            @foreach($users as $user)
-                           
                            <tr>
                            <td>{{$user->name}}</td>
                            <td>{{ $user->group_name }}</td>
-                           <td><input type="hidden" name="name" value="{{$user->name}}">
+                           <td><input type="hidden" id= "user{{ $user->id }}" name="name" value="{{$user->id}}">
                            <td>
                           <!--  <td>
                           <a data-toggle="modal" data-target="#date" class="btn btn-sm btn-primary">Assign Date</a>
                            
                            </td> -->
-                          <td> <input type="date"    name="assigndate" class=" input-sm"></td>
-                        <td><button type="submit" class="btn btn-success pull-left">Assign</button></td>
-                           @endforeach
-                            
+                           <td> <input type="date" id="date{{ $user->id }}" name="assigndate" class=" input-sm"></td>
+                        <td><button type="button" onclick="save('{{$user->id}}')" class="btn btn-success pull-left">Assign</button></td>
+                           
                           </tr>         
+                           @endforeach
+                          
+                           
+                            
                           
                          
                        </tbody>
@@ -55,7 +57,6 @@
                
             </div>
   
-</form>   
  {{$users->links()}}
 
                   </div>
@@ -64,7 +65,13 @@
     </div>
 </div>
 
-
+<script>
+    function save(arg){
+        document.getElementById('username').value = document.getElementById('user'+arg).value;
+        document.getElementById('dateassigned').value = document.getElementById('date'+arg).value;
+        document.getElementById('assign').submit();
+    }
+</script>
 @endsection
 
 

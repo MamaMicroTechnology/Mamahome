@@ -569,6 +569,27 @@ class HomeController extends Controller
             
         return view('status_wise_projects', ['date' => $date,'users'=>$users,  'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'status' =>$status,'status'=>$check]);
        }
+       public function datewise(Request $request )
+       {
+           $assigndate =Dates::where('user_id',Auth::user()->id)
+           ->orderby('created_at','DESC')->pluck('assigndate')->first();
+          
+
+           $projects =ProjectDetails::where('project_details.created_at','like',$assigndate."%")
+               ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+               ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
+               ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+               ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+               ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+               ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
+               ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
+              
+               ->select('project_details.*','procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+               ->paginate(15);
+            
+               
+           return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate ]);
+          }
     public function index()
     {
         if(Auth::user()->confirmation == 0){
@@ -2663,19 +2684,28 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     }
      public function datestore(Request $request)
     {
-       
         $this->validate($request, [
             
             'name' => 'required|max:500',
             'assigndate' => 'required|max:500',
 
         ]);
-        $dates = new Dates;
-        $dates->name = $request->name;
-        $dates->assigndate = $request->assigndate;
-        $dates->save();
-        return redirect()->back();
-     
+        $check = Dates::where('user_id',$request->name)->first();
+        if(count($check) == 0){
+             $dates = new Dates;
+             $dates->user_id = $request->name;
+            $dates->assigndate = $request->assigndate;
+            $dates->save();
+        }
+        else
+        
+        {
+
+        $check->user_id = $request->name;
+        $check->assigndate = $request->assigndate;
+        $check->save();   
+        }
+       return redirect()->back();
     }
     public function salesConverterDashboard()
     {
@@ -2756,14 +2786,14 @@ public function assigndate(request $request )
      $users = User::where('users.department_id','!=',10)
                     ->leftjoin('departments','departments.id','users.department_id')
                     ->leftjoin('groups','groups.id','users.group_id')
-                    ->leftjoin('stages','stages.list','user.name')
+                    
                     ->select('users.*','departments.dept_name','groups.group_name')
 
                     ->paginate(10);
-             $stages = Stages::where('status','')->get();
+            //  $stages = Stages::where('status','')->get();
               
 
-            $wards = Ward::all();
+            // $wards = Ward::all();
                  
          $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
           $se = DB::table('users')->where('department_id','2')->where('group_id','7')->get();
