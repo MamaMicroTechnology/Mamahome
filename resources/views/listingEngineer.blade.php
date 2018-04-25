@@ -222,8 +222,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType1" name="budjettype" type="checkbox" value="Residential">Strulural Type</label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="budjettype" type="checkbox" value="Commercial">Finishing Type</label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budjettype" type="checkbox" value="Structural">Structural Type</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budjettype" type="checkbox" value="Finishing">Finishing Type</label> 
                                  </td>
                                </tr>
                                <tr>
@@ -903,18 +903,32 @@
     function count(){
       var ctype1 = document.getElementById('constructionType1');
       var ctype2 = document.getElementById('constructionType2');
+      var ctype3 = document.getElementById('constructionType3');
+      var ctype4 = document.getElementById('constructionType4');
       var countinput;
-      if(ctype1.checked == true && ctype2.checked == true){
+      if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
+        //   both construction type
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+      }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
+        //   all construction type and budget type
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
+      }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
+        //   both construction type and either budget type
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
+      }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
+        //   
         countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
       }else if(ctype1.checked == true || ctype2.checked == true){
         countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
       }else{
         countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
       }
-      if(countinput == 5){
+      if(countinput >= 5){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
         $('#constructionType2').attr('disabled',false);
+        $('#constructionType3').attr('disabled',false);
+        $('#constructionType4').attr('disabled',false);
       }else if(countinput == 0){
           return "none";
       }else{
