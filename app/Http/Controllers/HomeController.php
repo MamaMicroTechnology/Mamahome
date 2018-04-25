@@ -207,7 +207,7 @@ class HomeController extends Controller
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('status','like','%'.$request->status)
-                           
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
 
@@ -221,6 +221,7 @@ class HomeController extends Controller
                 $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
                 
@@ -236,6 +237,7 @@ class HomeController extends Controller
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('status','like','%'.$request->status)
                             ->where('requirements.main_category',$request->category)
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
                 
@@ -248,6 +250,7 @@ class HomeController extends Controller
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('requirements.main_category',$request->category)
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
                 
@@ -265,6 +268,7 @@ class HomeController extends Controller
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -276,6 +280,7 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('project_details.sub_ward_id',$request->ward)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -287,6 +292,7 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('requirements.main_category',$request->category)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             $totalofenquiry = Requirement::where('main_category',$request->category)->sum('quantity');
@@ -299,6 +305,7 @@ class HomeController extends Controller
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('requirements.generated_by',$request->initiator)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -315,6 +322,7 @@ class HomeController extends Controller
                         ->where('requirements.generated_by',$request->initiator)
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->where('requirements.main_category',$request->category)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
@@ -331,6 +339,7 @@ class HomeController extends Controller
                         ->where('project_details.sub_ward_id','=',$request->ward)
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -346,6 +355,7 @@ class HomeController extends Controller
                         ->where('requirements.generated_by','=',$request->initiator)
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -361,6 +371,7 @@ class HomeController extends Controller
                         ->where('requirements.main_category','=',$request->category)
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -377,6 +388,7 @@ class HomeController extends Controller
                         ->where('requirements.generated_by','=',$request->initiator)
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -393,6 +405,7 @@ class HomeController extends Controller
                         ->where('project_details.sub_ward_id','=',$request->ward)
                         ->where('requirements.created_at','>',$from)
                         ->where('requirements.created_at','<',$to)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -407,6 +420,7 @@ class HomeController extends Controller
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('requirements.main_category','=',$request->category)
                         ->where('requirements.generated_by','=',$request->initiator)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
             foreach($enquiries as $enquiry){
@@ -2266,7 +2280,7 @@ class HomeController extends Controller
    
         $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
                         ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
-                        
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
                         ->paginate(10);
                        

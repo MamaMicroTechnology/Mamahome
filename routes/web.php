@@ -74,6 +74,9 @@ Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
 Route::get('/chat','HomeController@getChat');
+Route::get('/assignconverterSlots','HomeController@assignListSlots');
+Route::get('/scmaps','HomeController@tlMaps');
+Route::post('/{id}/converterassignWards','mamaController@assignWards');
 
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
