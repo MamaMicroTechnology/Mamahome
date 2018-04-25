@@ -367,7 +367,8 @@ class HomeController extends Controller
             }
         }elseif($request->from && $request->to && !$request->initiator && $request->category && !$request->ward){
             // from, to and category
-            
+            $from = $request->from;
+            $to = $request->to;
             $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                         ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
