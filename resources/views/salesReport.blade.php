@@ -7,7 +7,11 @@
                 <b style="color:white">Sales Report</b>
             </div>
             <div class="panel-body">
+				@if(Auth::user()->department_id != 1)
             	<form method="GET" action="{{ URL::to('/') }}/salesreports">
+				@else
+				<form method="GET" action="{{ URL::to('/') }}/tlsalesreports">
+				@endif
                     <table class="table table-responsive">
 	                    <tbody>
 	                        <tr>

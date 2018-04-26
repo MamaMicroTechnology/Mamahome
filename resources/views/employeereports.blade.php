@@ -1,4 +1,7 @@
-@extends('layouts.app')
+<?php
+	$ext = Auth::user()->id == 1 ? "layouts.app" : "layouts.amheader";
+?>
+@extends($ext)
 @section('content')
 <?php
 	if(isset($_GET['month']) && isset($_GET['year'])){
