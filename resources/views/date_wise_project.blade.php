@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
-                    
+                    @if($projects != "nothing")
                         @foreach($projects as $project)
                         @if($project->deleted=='0')
                         <tr>
@@ -71,13 +71,13 @@
                         
                         @endif
                         @endforeach
-                       
+                       @endif
                     </tbody>
                 </table>
             </div>
             <div class="panel-footer">
                 <center>
-                        {{$projects->links()}}
+                        {{ $projects != "nothing" ? $projects->links() : '' }}
                 </center>
             </div>
         </div>
