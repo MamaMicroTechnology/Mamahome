@@ -250,7 +250,8 @@ class amController extends Controller
             $date = $request->year.'-'.$request->month;
             $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
         }else{
-            $attendances = attendance::where('empId',$request->userId)->orderby('date')->get();
+            $date = date('Y-m');
+            $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
         }
         return view('assistantmanager.empattendance',['attendances'=>$attendances,'userid'=>$request->userId,'user'=>$user,'pageName'=>'HR']);
     }

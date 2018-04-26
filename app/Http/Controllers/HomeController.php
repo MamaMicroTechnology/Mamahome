@@ -2373,7 +2373,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
 }
     public function employeereports(Request $request)
     {
-        $depts = [1,2,3,4,5];
+        $depts = [1,2,3,4,5,6];
         $users = User::whereIn('department_id',$depts)->where('name','NOT LIKE','%test%')->orderBy('department_id','ASC')->get();
         if($request->month){
             $year = $request->year;
