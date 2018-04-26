@@ -68,6 +68,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function authlogin()
     {
         date_default_timezone_set("Asia/Kolkata");
@@ -567,16 +568,11 @@ class HomeController extends Controller
        {
            $assigndate =Dates::where('user_id',Auth::user()->id)
            ->orderby('created_at','DESC')->pluck('assigndate')->first();
-           if($assigndate != null){
            $projects =ProjectDetails::where('project_details.created_at','like',$assigndate."%")
                ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
                ->select('project_details.*','sub_wards.sub_ward_name')
                ->paginate(15);
                $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
-            }else{
-                $projects = "nothing";
-                $totalListing = 0;
-            }
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
     public function index()
@@ -894,6 +890,7 @@ class HomeController extends Controller
 
                 ]);
     }
+   
    
     public function viewAll()
     {
@@ -2094,19 +2091,12 @@ class HomeController extends Controller
         return view('followup',['projects'=>$projects]);
     }
     public function confirmedProject(Request $request){
-        $check = projectDetails::where('project_id',$request->id)->first();
-        if($check->confirmed == Null || $check->confirmed == "False"){
-            projectDetails::where('project_id',$request->id)
-            ->update([
-                'confirmed' => "True"
-            ]);
-
-        }else{
-            projectDetails::where('project_id',$request->id)->update([
-                'confirmed' => "False"
-            ]);
-        }
-        return back();
+        $confirmed = 0;
+        $check = projectDetails::where('project_id',$request->id)
+        ->increment('confirmed');
+       
+        
+        return redirect()->back();
     }
     public function projectadmin(Request $id){
 

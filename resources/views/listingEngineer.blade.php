@@ -57,7 +57,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -94,6 +94,11 @@
                                     <option value="Material Contract">Material Contract</option>
                                 </select>
                               </td>
+
+
+
+
+
                                <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
@@ -222,8 +227,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budjettype" type="checkbox" value="Structural">Structural Type</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budjettype" type="checkbox" value="Finishing">Finishing Type</label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -234,7 +239,7 @@
                                <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
-                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()"><p id="errormsg"></p></td>
+                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -285,12 +290,12 @@
                                <tr>
                                    <td>Contractor Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
+                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="edName" onblur="checkmail('cEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Contractor Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ old('cContact') }}" onblur="checklength('cPhone');" id="cPhone" onkeyup="check('cPhone')" placeholder="Contractor Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
+                                   <td><input value="{{ old('cContact') }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone')" placeholder="Contractor Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
                                </tr>
                            </table>
                        </div>
@@ -675,7 +680,11 @@
             window.alert("Please tell us whether the customer is interested in RMC or not");
           }else if(document.getElementById('contract').value == ""){
             window.alert("Choose type of contract");
-          }else{
+          }
+          else if(document.getElementById('rWidth').value == ""){
+            window.alert("Choose type of Road Width");
+          }
+          else{
             if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
@@ -692,16 +701,38 @@
                 current = "second";
             }
           }
-        }else if(current == 'second'){              
+        }else if(current == 'second'){
+            if(document.getElementById("contract").value == "Material Contract"){
+                if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
+                    window.alert("Please enter owner details");
+                }else{
+                    document.getElementById("second").className = "hidden";
+                    document.getElementById("third").className = "";
+                    document.getElementById('headingPanel').innerHTML = 'Contractor Details';
+                    current = "third";
+                }
+            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
+            }
         }else if(current == 'third'){
-            document.getElementById("third").className = "hidden";
-            document.getElementById("fourth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-            current = "fourth";
+            if(document.getElementById("contract").value == "Labour Contract"){
+                if(document.getElementById("cName").value == "" || document.getElementById("cContact").value == ""){
+                    window.alert("Please enter contractor details");
+                }else{
+                    document.getElementById("third").className = "hidden";
+                    document.getElementById("fourth").className = "";
+                    document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                    current = "fourth";
+                }
+            }else{
+                document.getElementById("third").className = "hidden";
+                document.getElementById("fourth").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                current = "fourth";
+            }
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";

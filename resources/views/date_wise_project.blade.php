@@ -23,7 +23,8 @@
                             <th style="text-align:center">Consultant Contact Number</th>
                             <th style="text-align:center">Contractor Contact Number</th>
                             <th style="text-align:center">Add Enquiry</th> 
-                             <th style="text-align:center">Action</th> 
+                             <th style="text-align:center">Action</th>
+                             <th style="text-align:center">No Of Times Called</th> 
                              <!-- <th style="text-align: center">Blocked </th> -->
                             <!--<th style="text-align:center">Verification</th>-->
                         </tr>
@@ -42,19 +43,29 @@
                             <td style="text-align:center">{{$project->consultantdetails != null ? $project->consultantdetails->consultant_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->contractordetails != null ? $project->contractordetails->contractor_contact_no : ''}}</td>
                             <td> <a class="btn btn-sm btn-primary " name="addenquiry" onclick="addrequirement()" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
-                           <td> <form method="post" action="{{ URL::to('/') }}/confirmedProject">
-                                        {{ csrf_field() }}
-                             <input type="hidden" value="{{ $project->project_id }}" name="id">
-                              <div class="checkbox">
-                              <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
-                              </div>
-
-                                     
-                             </div>
-                                
-
-                                         
-                             </form></td>
+                            <td>
+                                <form method="post" action="{{ URL::to('/') }}/confirmedProject">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $project->project_id }}" name="id">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" {{  $project->confirmed }} name="confirmed" onchange="this.form.submit()">Called</label>
+                                    </div>
+                                    </div>       
+                                </form>
+                                <td>{{  $project->confirmed }}</td>
+                            </td>
+<!--                                                        
+                                                  <script type="text/javascript">
+                                                        var count = 0;
+                                                        function add(){
+                                                            var check = document.getElementById("check");
+                                                            if(check.checked == true){
+                                                            count++;
+                                                            }
+                                                            document.getElementById('display').innerHTML = count;
+                                                        }
+                                                 </script> -->
+                             </td>
                             <!-- <td>
                                <div class="btn-group btn-group-xs">
                                    <form action="{{ url('/toggle-approve')}}" method="post">

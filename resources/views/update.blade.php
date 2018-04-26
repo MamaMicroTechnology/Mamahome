@@ -303,7 +303,7 @@
                                    <td>Project Image</td>
                                    <td>:</td>
                                    <td>
-                                    <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage"><br>
+                                    <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage" multiple><br>
                                     <div id="imagediv">
                                       <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
@@ -364,8 +364,10 @@
                                               <td>Floor {{ $roomtype->floor_no }}</td>
                                               <td>{{ $roomtype->room_type }}</td>
                                               <td>{{ $roomtype->no_of_rooms }}</td>
+                                              
                                               <td>
-                                                <button type="button" data-toggle="modal" data-target="#delete{{ $roomtype->id }}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete{{ $roomtype->id }}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button><br><br>
+                                          
                                                 <!-- Modal -->
                                                 <div id="delete{{ $roomtype->id }}" class="modal fade" role="dialog">
                                                   <div class="modal-dialog modal-sm">
@@ -523,6 +525,7 @@
     </div>
 </div>
 
+    
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <!--This line by Siddharth -->
 <script type="text/javascript">
@@ -676,7 +679,9 @@ function sum(){
             window.alert("You have not entered floor");
           }else if(document.getElementById("pSize").value == ""){
             window.alert("You have not entered Project Size");
-          }else if(document.getElementById("budget").value == ""){
+          }else if(document.getElementById("road").value == ""){
+            window.alert("You have not entered road width");
+          else if(document.getElementById("budget").value == ""){
             window.alert("You have not entered Budget");
           }else{
             if(ctype1.checked == true && ctype2.checked == true){
@@ -821,4 +826,7 @@ function sum(){
       }
     }
 </script>
+<script>
+
+
 @endsection

@@ -285,6 +285,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/leDashboard','HomeController@leDashboard');
     Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
+   
     Route::get('/allProjects','HomeController@viewAll');
     Route::get('/{id}/viewDetails','HomeController@viewDetails');
     Route::get('/roads','HomeController@getRoads');

@@ -474,7 +474,8 @@ class mamaController extends Controller
             $projectdetails->listing_engineer_id = Auth::user()->id;
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
-            $projectdetails->budjettype = $request->budjettype;
+            $projectdetails->budgetType = $request->budgetType;
+            $projectdetails->construction_type = $request->construction_type;
             $projectdetails->save();
             
             $room_types = $request->roomType[0]." (".$request->number[0].")";

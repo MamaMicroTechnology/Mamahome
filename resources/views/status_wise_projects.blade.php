@@ -23,7 +23,8 @@
                             <th style="text-align:center">Consultant Contact Number</th>
                             <th style="text-align:center">Contractor Contact Number</th>
                             <th style="text-align:center">Add Enquiry</th> 
-                             <th style="text-align:center">Action</th> 
+                             <th style="text-align:center">Action</th>
+                             <th style="text-align:center">No Of Times Called</th>  
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
@@ -42,10 +43,11 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $project->project_id }}" name="id">
                                     <div class="checkbox">
-                                        <label><input type="checkbox" {{ $project->confirmed == "True"?'checked':'' }} name="confirmed" onchange="this.form.submit()">Called</label>
+                                    <label><input type="checkbox" name="confirmed" onchange="this.form.submit()">Called</label>
                                     </div>
                                     </div>       
                                 </form>
+                                <td>{{  $project->confirmed }}</td>
                             </td>
                         </tr>
                         @endforeach
