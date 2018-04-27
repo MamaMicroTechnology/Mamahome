@@ -1501,7 +1501,8 @@ class HomeController extends Controller
     public function deliverOrder(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered']);
+        $today = date('Y-m-d');
+        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered','delivered_on'=>$today]);
         if($x)
         {
             return response()->json("Updated");
