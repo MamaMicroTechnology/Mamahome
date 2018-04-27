@@ -382,7 +382,7 @@ div#calendar{
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
                         <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id != 7)
-                         <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em">Enquiry Pipelined</a></li>
                           @endif
                         <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
                         
@@ -441,7 +441,7 @@ div#calendar{
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
     <div id="enquiry" class="collapse">
-            <a href="{{ URL::to('/enquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
+            <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
            
         </div>
@@ -477,7 +477,7 @@ div#calendar{
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     
     <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
-    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
      <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
      <!--  <a href="{{ URL::to('/assigndate') }}">Assign Dtae</a> -->
@@ -494,7 +494,7 @@ div#calendar{
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/') }}/assignconverterSlots">Assign List Engineers</a>
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
@@ -507,11 +507,12 @@ div#calendar{
      <a href="{{ URL::to('/marketmanufacturerdetails') }}">Manufacturer Details</a>
      <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
      <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
-      <a href="{{ URL::to('/enquirysheet') }}">Enquiry Sheet</a>
+      <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
      <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Wards_wise_Projects</a>
      <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Status_wise_Projects</a>
      <a  href="" >Date_wise_Projects</a>

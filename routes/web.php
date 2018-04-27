@@ -51,13 +51,13 @@ Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
-Route::get('/requirements','HomeController@getRequirements');
+Route::get('/requirement','HomeController@inputview');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
 Route::get('/getProjects','HomeController@getProjects');
 Route::get('/showThisProject','HomeController@showProjectDetails');
-Route::get('/enquirysheet','HomeController@enquirysheet');
+
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
 Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq');
@@ -79,6 +79,7 @@ Route::get('/chat','HomeController@getChat');
 Route::get('/assignconverterSlots','HomeController@assignListSlots');
 Route::get('/scmaps','HomeController@tlMaps');
 Route::post('/{id}/converterassignWards','mamaController@assignWards');
+Route::get('/scenquirysheet','HomeController@enquirysheet');
 
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
@@ -89,6 +90,7 @@ Route::post('/marketingaddmanufacturer','mamaController@addManufacturer');
 Route::get('/marketingpricing','amController@getPricing');
 Route::post('/marketinginsertcat','mamaController@insertCat');
 Route::get('/marketmanufacturerdetails','HomeController@manufacturerDetails');
+Route::get('/mrenquirysheet','HomeController@enquirysheet');
 
 // Orders
 Route::get('/orders','HomeController@amorders');
@@ -184,7 +186,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
     Route::get('/adtraining','HomeController@adtraining');
-    
+    Route::get('/adenquirysheet','HomeController@enquirysheet');
     Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
     Route::get('/editEmployee','HomeController@editEmployee');
@@ -234,7 +236,7 @@ Route::group(['middleware' => ['admin']],function(){
 Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assignDailySlots','HomeController@getSalesTL');
     Route::get('/assigndate','HomeController@assigndate');
-
+    Route::get('/tlenquirysheet','HomeController@enquirysheet');
     Route::get('/assignListSlots','HomeController@assignListSlots');
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
@@ -280,6 +282,7 @@ Route::group(['middleware' => ['operationTL']],function(){
 Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
+    // Route::get('/enquirysheet','HomeController@enquirysheet');
     Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
     Route::get('/allProjects','HomeController@viewAll');
@@ -337,6 +340,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/deletekra','amController@deletekra');
     Route::get('/amgetSubCatPrices','amController@amgetSubCatPrices');
     Route::get('/amenquirysheet','amController@enquirysheet');
+    Route::get('/astenquirysheet','HomeController@enquirysheet');
     Route::get('/addvendortype','amController@addvendortype');
     Route::get('/salesreport','mamaController@salesreport');
     Route::get('/amviewattendance','HomeController@employeereports');

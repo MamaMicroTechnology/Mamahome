@@ -1,8 +1,5 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 7? "layouts.sales":"layouts.app");
-?>
-@extends($ext)
+
+@extends('layouts.app')
 @section('content')
 <center><table >
                 <tr><td>You have attended {{ $calls }} calls so far.</td></tr>

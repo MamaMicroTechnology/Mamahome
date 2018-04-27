@@ -1,8 +1,4 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 7? "layouts.sales":"layouts.app");
-?>
-@extends($ext)
+@extends('layouts.app')
 @section('content')
 		<div class="col-md-12">
 		    <div class="col-md-6">
@@ -664,7 +660,7 @@ function updatemat(arg)
 		}
 		function addrequirement(){
 		    var id = document.getElementsByName('addenquiry').id;
-		    window.location.href="{{ URL::to('/') }}/requirements?projectId="+id;
+		    window.location.href="{{ URL::to('/') }}/inputview?projectId="+id;
 		}
 		function count(){
 			var ctype1 = document.getElementById('constructionType1');

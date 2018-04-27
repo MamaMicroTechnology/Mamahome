@@ -420,7 +420,7 @@ div#calendar{
            <a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a>
            <a href="{{ URL::to('/') }}/amkra">KRA</a>
            <a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a>
-           <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+           <a href="{{ URL::to('/') }}/astenquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
            <a href="{{ URL::to('/') }}/asttraining">Training Video</a>
@@ -432,7 +432,7 @@ div#calendar{
            <a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a>
            <a href="{{ URL::to('/') }}/amkra">KRA</a>
            <a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a>
-           <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+           <a href="{{ URL::to('/') }}/adenquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
 

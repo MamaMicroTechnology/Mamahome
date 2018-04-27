@@ -49,6 +49,7 @@ use App\Order;
 use App\Stages;
 use App\Dates;
 use App\Map;
+use App\brand;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -99,35 +100,72 @@ class HomeController extends Controller
         $request->session()->invalidate();
         return redirect('/login');
     }
-    public function inputview()
+    public function inputview(Request $request)
     {
         $category = Category::all();
+        $brand = brand::leftjoin('category','category.id','=','brands.category_id')
+                ->select('brand')->get();
+
         $depart = [2,4,8,6,7,15];
+        $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
-        return view('inputview',['category'=>$category,'users'=>$users]);
+        return view('inputview',['category'=>$category,'users'=>$users,'projects'=>$projects,'brand'=>$brand]);
     }
     public function inputdata(Request $request)
     {
-        if($request->mCategory == "All"){
-            $category = "All";
-        }else{
-            $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
-        }
-        if($request->sCategory == "All"){
-            $subcategory = "All";
-        }else{
-            $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
-        }
+        
+        $sub_cat_name = SubCategory::where('id',$request->subcat)->first();
+        $brand = brand::where('id',$sub_cat_name->brand_id)->first();
+        $category= Category::where('id',$sub_cat_name->category_id)->first();
+        $var = count($request->subcat);
+        $var1 = count($brand);
+        $var2 = count($category);
+        $storecategory = $request->mCategory[0];
+        $storebrand = $request->bnd[0];
+        $storesubcat =$request->subcat[0];
+       
+         if($var > 1)
+         {
+            for($i = 1 ; $i<$var ; $i++)
+            {
+                 $brand .=",".$request->subcat[$i];
+            }
+         }
+          if($var1 > 1)
+         {
+            for($i = 1 ; $i<$var1 ; $i++)
+            {
+                 $brand .=",".$brand[$i];
+            }
+         }
+         if($var2 > 1)
+         {
+            for($i = 1 ; $i<$var2 ; $i++)
+            {
+                 $category .=",".$category[$i];
+            }
+         }
 
-        if($request->brand == "All"){
-            $brand = "All";
-        }else{
-            $brand = DB::table('brands')->where('id',$request->brand)->pluck('brand')->first();
-        }
+        // if($request->mCategory == "All"){
+        //     $category = "All";
+        // }else{
+        //     $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
+        // }
+        // if($request->sCategory == "All"){
+        //     $subcategory = "All";
+        // }else{
+        //     $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
+        // }
+
+        // if($request->brand == "All"){
+        //     $brand = "All";
+        // }else{
+        //     $brand = DB::table('brands')->where('id',$request->brand)->pluck('brand')->first();
+        // }
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
-                                                'main_category' =>$category,
-                                                'brand' => $brand,
-                                                'sub_category'  =>$subcategory,
+                                                'main_category' =>$category->category_name,
+                                                'brand' => $brand->brand,
+                                                'sub_category'  =>$storesubcat,
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
                                                 'referral_image2'   =>'',
@@ -197,7 +235,7 @@ class HomeController extends Controller
     {
         $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
-        $category = Category::all();
+        $category = Category::all();  
         $depart = [6,7];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
@@ -1340,7 +1378,7 @@ class HomeController extends Controller
     {
         $cat = $request->cat; 
         $category = Category::where('id',$cat)->first();
-        $subcat = SubCategory::where('category_id',$cat)->where('brand_id',$request->brand)->get();
+        $subcat = SubCategory::where('brand_id',$request->brand)->get();
         $res = array();
         $res[0] = $category;
         $res[1] = $subcat;
