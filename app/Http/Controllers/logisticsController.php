@@ -28,6 +28,7 @@ use App\ManufacturerDetail;
 use App\KeyResult;
 use App\MhInvoice;
 use App\Order;
+use App\DeliveryDetails;
 
 class logisticsController extends Controller
 {
@@ -121,7 +122,41 @@ class logisticsController extends Controller
     }
     public function saveSignature(Request $request)
     {
-        return "submitted";
+        $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
+        $request->signature->move(public_path('signatures'),$signatureName);
+        $signature = Order::where('id',$request->orderId)->first();
+        $signature->signature = $signatureName;
+        $signature->payment_status = "Payment Received";
+        $signature->save();
+        return back()->with('Success','Payment Received');
     }
-    
+    public function saveDeliveryDetails(Request $request)
+    {
+        if(!$request->vid){
+            $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+            $request->vno->move(public_path('delivery_details'),$vehicleNo);
+
+            $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+            $request->lp->move(public_path('delivery_details'),$locationPicture);
+
+            $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+            $request->qm->move(public_path('delivery_details'),$quality);
+
+            $deliveryDetails = new DeliveryDetails;
+            $deliveryDetails->order_id = $request->orderId;
+            $deliveryDetails->vehicle_no = $vehicleNo;
+            $deliveryDetails->location_picture = $locationPicture;
+            $deliveryDetails->quality_of_material = $quality;
+            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+            $deliveryDetails->save();
+        }else{
+            $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
+            $request->vid->move(public_path('delivery_details'),$video);
+            $deliveryDetails = new DeliverDedtails;
+            $deliveryDetails->order_id = $request->orderId;
+            $deliveryDetails->delivery_video = $video;
+            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+            $deliveryDetails->save();
+        }
+    }
 }

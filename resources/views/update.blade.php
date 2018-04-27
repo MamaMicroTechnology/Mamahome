@@ -84,9 +84,9 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="road" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
+                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
                                </tr>
-                               <tr>
+                                 <tr>
                                    <td>Full Address</td>
                                    <td>:</td>
                                    <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
@@ -111,10 +111,10 @@
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
-                                      <label><input {{ $projectdetails->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                      <label><input id="rmc" {{ $projectdetails->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input {{ $projectdetails->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
+                                      <label><input id="rmc2" {{ $projectdetails->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
                                     </div>
                                  </td>
                                </tr>
@@ -278,10 +278,10 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-                                      <input {{ in_array('strulural', $type) ? 'checked': ''}} id="constructionType1" name="budgetType" type="checkbox" value="Residential">Structural Budget
+                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Structural Budget
                                     </label>
                                     <label required class="checkbox-inline">
-                                      <input {{ in_array('finishing', $type) ? 'checked': ''}} id="constructionType2" name="budgetType" type="checkbox" value="Commercial">Finishing Budget
+                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Finishing Budget
                                     </label>
                                  </td>
                                </tr>
@@ -303,7 +303,7 @@
                                    <td>Project Image</td>
                                    <td>:</td>
                                    <td>
-                                    <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage"><br>
+                                    <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage" multiple><br>
                                     <div id="imagediv">
                                       <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
                                     </div>
@@ -364,8 +364,10 @@
                                               <td>Floor {{ $roomtype->floor_no }}</td>
                                               <td>{{ $roomtype->room_type }}</td>
                                               <td>{{ $roomtype->no_of_rooms }}</td>
+                                              
                                               <td>
-                                                <button type="button" data-toggle="modal" data-target="#delete{{ $roomtype->id }}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete{{ $roomtype->id }}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button><br><br>
+                                          
                                                 <!-- Modal -->
                                                 <div id="delete{{ $roomtype->id }}" class="modal fade" role="dialog">
                                                   <div class="modal-dialog modal-sm">
@@ -523,6 +525,7 @@
     </div>
 </div>
 
+    
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <!--This line by Siddharth -->
 <script type="text/javascript">
@@ -653,33 +656,36 @@ function sum(){
 }
 </script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
+
 <script type="text/javascript">
-  var ctype1 = document.getElementById('constructionType1');
+    var current = "first";
+    document.getElementById('headingPanel').innerHTML = 'Project Details';
+    function pageNext(){
+        var ctype1 = document.getElementById('constructionType1');
         var ctype2 = document.getElementById('constructionType2');
+
         var rmc = document.getElementById('rmc');
         var rmc2= document.getElementById('rmc2');
-    var current = "first";
-    function pageNext(){
-      //alert(document.getElementById("pName").value);
-        if(current == 'first'){
-          if(document.getElementById("pName").value === ""){
+        if(current == 'first')
+        { 
+          if(document.getElementById("pName").value == ""){
             window.alert("You have not entered Project Name");
-          }else if(document.getElementById("longitude").value === ""){
+          }else if(document.getElementById("longitude").value == ""){
             window.alert("Please click on Get Location button");
           }else if(document.getElementById("latitude").value == ""){
             window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
-          }else if(document.getElementById("basement").value == ""){
-            window.alert("You have not entered basement");
-          }else if(document.getElementById("ground").value == ""){
-            window.alert("You have not entered floor");
-          }else if(document.getElementById("pSize").value == ""){
-            window.alert("You have not entered Project Size");
-          }else if(document.getElementById("budget").value == ""){
-            window.alert("You have not entered Budget");
-          }else{
-            if(ctype1.checked == true && ctype2.checked == true){
+          } else if(document.getElementById('rWidth').value == ""){
+            window.alert("You have not entered  Width");
+          }else if(ctype1.checked == false && ctype2.checked == false){
+            window.alert("Please choose the construction type");
+          }else if(rmc.checked == false && rmc2.checked == false){
+            window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(document.getElementById("contract").value == ""){
+            alert("Please select contract type");
+          }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
@@ -688,76 +694,225 @@ function sum(){
             }
             if(countinput == 0){
                 window.alert("Select at least one project status");
-            }else{
+            
+            } else if(document.getElementById("basement").value == ""){
+            window.alert("You have not entered Basement value");
+          } else if(document.getElementById("ground").value == ""){
+            window.alert("You have not entered Floor value");
+          }else if(document.getElementById("pSize").value == ""){
+            window.alert("You have not entered Project Size");
+          }
+          else if(constructionType3.checked == false && constructionType4.checked == false){
+            window.alert("Please choose the Budget type");
+          }else if(document.getElementById("budget").value == ""){
+            window.alert("You have not entered Budget");
+          }else if (document.getElementById("pImage").value == ""){
+            window.alert("You have not chosen a file to upload for Project Image");
+          }
+            else {
                 document.getElementById("first").className = "hidden";
                 document.getElementById("second").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Owner Details';
                 current = "second";
             }
-          }
-        }else if(current == 'second'){
-          
-        
-            document.getElementById("second").className = "hidden";
-            document.getElementById("third").className = "";
-            current = "third";
-          
-        }else if(current == 'third'){
            
-            document.getElementById("third").className = "hidden";
-            document.getElementById("fourth").className = "";
-            current = "fourth";
           
+        }
+     else if(current == 'second'){
+            if(document.getElementById("contract").value == "Material Contract"){
+                if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
+                    window.alert("Please enter owner details");
+                }else{
+                    document.getElementById("second").className = "hidden";
+                    document.getElementById("third").className = "";
+                    document.getElementById('headingPanel').innerHTML = 'Contractor Details';
+                    current = "third";
+                }
+            }else{
+              document.getElementById("second").className = "hidden";
+              document.getElementById("third").className = "";
+              document.getElementById('headingPanel').innerHTML = 'Contractor Details';
+              current = "third";    
+            }
+        }else if(current == 'third'){
+            if(document.getElementById("contract").value == "Labour Contract"){
+                if(document.getElementById("cName").value == "" || document.getElementById("cContact").value == ""){
+                    window.alert("Please enter contractor details");
+                }else{
+                    document.getElementById("third").className = "hidden";
+                    document.getElementById("fourth").className = "";
+                    document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                    current = "fourth";
+                }
+            }else{
+                document.getElementById("third").className = "hidden";
+                document.getElementById("fourth").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                current = "fourth";
+            }
         }else if(current == 'fourth'){
-          
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Site Engineer Details';
             current = "fifth";
-          
         }else if(current == 'fifth'){
             document.getElementById("fifth").className = "hidden";
             document.getElementById("sixth").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Procurement Details';
             current = "sixth";
-        }else if(current == 'sixth'){
-           
+        }else if(current == 'sixth'){  
+          if(document.getElementById('prName').value == ''){
+            alert('Please Enter a Name');
+            document.getElementById('prName').focus();
+          }else if(document.getElementById('prPhone').value== ''){
+            alert('Please Enter Phone Number');
+            document.getElementById('prPhone').focus();
+          }else if(document.getElementById("prName").value == ""){
+            window.alert("Please Enter Procurement Name");
+          }else if(document.getElementById("pContact") == ""){
+            window.alert("Please enter phone number");
+          }else { 
             document.getElementById("sixth").className = "hidden";
             document.getElementById("seventh").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Remarks';
             current = "seventh";
-          
-        }
+            document.getElementById("next").className = "hidden";
+          }
+         
+        } 
     }
     function pagePrevious(){
+        document.getElementById("next").className = "";
         if(current == 'seventh'){
             document.getElementById("seventh").className = "hidden";
             document.getElementById("sixth").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Procurement Details';
             current = "sixth"
         }else if(current == 'sixth'){
             document.getElementById("sixth").className = "hidden";
             document.getElementById("fifth").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Site Engineer Details';
             current = "fifth"
         }
         else if(current == 'fifth'){
             document.getElementById("fifth").className = "hidden";
             document.getElementById("fourth").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
             current = "fourth"
         }
         else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("third").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Contractor Details';
             current = "third"
         }
         else if(current == 'third'){
             document.getElementById("third").className = "hidden";
             document.getElementById("second").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Owner Details';
             current = "second"
         }else if(current == 'second'){
             document.getElementById("second").className = "hidden";
             document.getElementById("first").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Project Details';
             current = "first";
         }else{
             document.getElementById("next").className = "disabled";
         }
     }
-    function addRow() {
+</script>
+
+<script type="text/javascript">
+ function checkmail(arg){
+    var mail = document.getElementById(arg);
+    if(mail.value.length > 0 ){
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value))  {  
+        return true;  
+      }  
+      else{
+        alert("Invalid Email Address!");  
+        mail.value = ''; 
+        mail.focus(); 
+      }
+    }
+     return false;
+  }
+
+  function check(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+      while(isNaN(document.getElementById(arg).value)){
+      var str = document.getElementById(arg).value;
+      str     = str.substring(0, str.length - 1);
+      document.getElementById(arg).value = str;
+      }
+    }
+    else{
+      input = input.trim();
+      document.getElementById(arg).value = input;
+    }
+    //For ground and basement generation
+    if(arg == 'ground' || arg == 'basement'){
+      var basement = parseInt(document.getElementById("basement").value);
+      var ground   = parseInt(document.getElementById("ground").value);
+      var opts = "<option value=''>--Floor--</option><option value='Ground'>Ground</option>";
+      if(!isNaN(basement) && !isNaN(ground)){
+        var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
+        sum          = basement+ground+1;
+        floor       += sum;
+        
+        if(document.getElementById("total").innerHTML != null)
+        {
+          document.getElementById("total").innerHTML = floor;
+          var ctype1 = document.getElementById('constructionType1');
+          var ctype2 = document.getElementById('constructionType2');
+          if(ctype1.checked == true && ctype2.checked == true){
+            // both residential and commercial
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<option value='1RK'>1RK</option>"+
+                      "<option value='1BHK'>1BHK</option>"+
+                      "<option value='2BHK'>2BHK</option>"+
+                      "<option value='3BHK'>3BHK</option></select>"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses / No. Of Flats\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }else if(ctype1.checked == true && ctype2.checked == false){
+            // residential only
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value='1RK'>1RK</option>"+
+                      "<option value='1BHK'>1BHK</option>"+
+                      "<option value='2BHK'>2BHK</option>"+
+                      "<option value='3BHK'>3BHK</option></select>"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }else if(ctype1.checked == false && ctype2.checked == true){
+            // commercial only
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }
+          for(var i = 1; i<sum; i++){
+            opts += "<option value='"+i+"'>Floor "+i+"</option>";
+          }
+          document.getElementById("floorNo").innerHTML = opts;
+        }
+        else
+          document.getElementById("total").innerHTML = '';
+      }
+    }
+
+    return false;
+  }
+  function addRow() {
         var table = document.getElementById("bhk");
         var row = table.insertRow(0);
         var cell3 = row.insertCell(0);
@@ -778,7 +933,7 @@ function sum(){
         }
         if(ctype1.checked == false && ctype2.checked == true){
           cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = "<input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">";
+          cell1.innerHTML = "<input name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">";
           cell2.innerHTML = "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
         }
         if(ctype1.checked == true && ctype2.checked == true){
@@ -797,18 +952,34 @@ function sum(){
     function count(){
       var ctype1 = document.getElementById('constructionType1');
       var ctype2 = document.getElementById('constructionType2');
+      var ctype3 = document.getElementById('constructionType3');
+      var ctype4 = document.getElementById('constructionType4');
       var countinput;
-      if(ctype1.checked == true && ctype2.checked == true){
+      if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
+        //   both construction type
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+      }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
+        //   all construction type and budget type
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
+      }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
+        //   both construction type and either budget type
+        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
+      }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
+        //   
         countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
       }else if(ctype1.checked == true || ctype2.checked == true){
         countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
       }else{
         countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
       }
-      if(countinput == 5){
+      if(countinput >= 5){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
         $('#constructionType2').attr('disabled',false);
+        $('#constructionType3').attr('disabled',false);
+        $('#constructionType4').attr('disabled',false);
+      }else if(countinput == 0){
+          return "none";
       }else{
         $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
       }
@@ -821,4 +992,5 @@ function sum(){
       }
     }
 </script>
+
 @endsection

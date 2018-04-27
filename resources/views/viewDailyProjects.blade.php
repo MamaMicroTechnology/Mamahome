@@ -104,7 +104,7 @@
                         <tr>
                             <td><b>Budget (Cr.)</b></td>
                             <td>
-                                {{ $details->budget }} Cr.[ {{$details->budgettype}} ]
+                                {{ $details->budget }} Cr.              [  {{  $details->budgetType   }}  ]
                             </td>
                         </tr>
                         <tr>

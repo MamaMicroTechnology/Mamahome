@@ -24,7 +24,7 @@
                     <center>
                     <label id="headingPanel"></label>
                     <br>
-                        <button id="getBtn" class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
+                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
                     </center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
@@ -57,7 +57,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}"></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -88,12 +88,17 @@
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
                                 <td>
-                                  <select class="form-control" name="contract" id="contract" required>
-                                    <option value="" disabled selected>--- Select ---</option>
-                                    <option value="Labour Contract">Labour Contract</option>
-                                    <option value="Material Contract">Material Contract</option>
+                                  <select class="form-control" name="contract" id="contract" class="requiredn">
+                                    <option   value="" disabled selected>--- Select ---</option>
+                                    <option    value="Labour Contract">Labour Contract</option>
+                                    <option  value="Material Contract">Material Contract</option>
                                 </select>
                               </td>
+
+
+
+
+
                                <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
@@ -222,8 +227,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budjettype" type="checkbox" value="Structural">Structural Type</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budjettype" type="checkbox" value="Finishing">Finishing Type</label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -234,7 +239,7 @@
                                <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
-                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()"><p id="errormsg"></p></td>
+                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -285,12 +290,12 @@
                                <tr>
                                    <td>Contractor Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
+                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="edName" onblur="checkmail('cEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Contractor Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ old('cContact') }}" onblur="checklength('cPhone');" id="cPhone" onkeyup="check('cPhone')" placeholder="Contractor Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
+                                   <td><input value="{{ old('cContact') }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone')" placeholder="Contractor Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
                                </tr>
                            </table>
                        </div>
@@ -650,7 +655,8 @@
         var ctype2 = document.getElementById('constructionType2');
         var rmc = document.getElementById('rmc');
         var rmc2= document.getElementById('rmc2');
-        if(current == 'first'){ 
+        if(current == 'first')
+        { 
           if(document.getElementById("pName").value == ""){
             window.alert("You have not entered Project Name");
           }else if(document.getElementById("longitude").value == ""){
@@ -659,24 +665,15 @@
             window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
-          }else if(document.getElementById("basement").value == ""){
-            window.alert("You have not entered Basement value");
-          }else if(document.getElementById("ground").value == ""){
-            window.alert("You have not entered Ground value");
-          }else if(document.getElementById("pSize").value == ""){
-            window.alert("You have not entered Project Size");
-          }else if(document.getElementById("budget").value == ""){
-            window.alert("You have not entered Budget");
-          }else if(document.getElementById("pImage").value == ""){
-            window.alert("You have not chosen a file to upload");
+          } else if(document.getElementById('rWidth').value == ""){
+            window.alert("You have not entered  Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
-          }else if(document.getElementById('contract').value == ""){
-            window.alert("Choose type of contract");
-          }else{
-            if(ctype1.checked == true && ctype2.checked == true){
+          }else if(document.getElementById("contract").value == ""){
+            alert("Please select contract type");
+          }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
@@ -685,23 +682,62 @@
             }
             if(countinput == 0){
                 window.alert("Select at least one project status");
-            }else{
+            
+            } else if(document.getElementById("basement").value == ""){
+            window.alert("You have not entered Basement value");
+          } else if(document.getElementById("ground").value == ""){
+            window.alert("You have not entered Floor value");
+          }else if(document.getElementById("pSize").value == ""){
+            window.alert("You have not entered Project Size");
+          }
+          else if(constructionType3.checked == false && constructionType4.checked == false){
+            window.alert("Please choose the Budget type");
+          }else if(document.getElementById("budget").value == ""){
+            window.alert("You have not entered Budget");
+          }else if (document.getElementById("pImage").value == ""){
+            window.alert("You have not chosen a file to upload");
+          }
+            else {
                 document.getElementById("first").className = "hidden";
                 document.getElementById("second").className = "";
                 document.getElementById('headingPanel').innerHTML = 'Owner Details';
                 current = "second";
             }
-          }
-        }else if(current == 'second'){              
+           
+          
+        }
+     else if(current == 'second'){
+            if(document.getElementById("contract").value == "Material Contract"){
+                if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
+                    window.alert("Please enter owner details");
+                }else{
+                    document.getElementById("second").className = "hidden";
+                    document.getElementById("third").className = "";
+                    document.getElementById('headingPanel').innerHTML = 'Contractor Details';
+                    current = "third";
+                }
+            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
+            }
         }else if(current == 'third'){
-            document.getElementById("third").className = "hidden";
-            document.getElementById("fourth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-            current = "fourth";
+            if(document.getElementById("contract").value == "Labour Contract"){
+                if(document.getElementById("cName").value == "" || document.getElementById("cContact").value == ""){
+                    window.alert("Please enter contractor details");
+                }else{
+                    document.getElementById("third").className = "hidden";
+                    document.getElementById("fourth").className = "";
+                    document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                    current = "fourth";
+                }
+            }else{
+                document.getElementById("third").className = "hidden";
+                document.getElementById("fourth").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                current = "fourth";
+            }
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";
@@ -723,14 +759,15 @@
             window.alert("Please Enter Procurement Name");
           }else if(document.getElementById("pContact") == ""){
             window.alert("Please enter phone number");
-          }else{ 
+          }else { 
             document.getElementById("sixth").className = "hidden";
             document.getElementById("seventh").className = "";
             document.getElementById('headingPanel').innerHTML = 'Remarks';
             current = "seventh";
             document.getElementById("next").className = "hidden";
           }
-        }
+         
+        } 
     }
     function pagePrevious(){
         document.getElementById("next").className = "";

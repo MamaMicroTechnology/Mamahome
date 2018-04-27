@@ -282,9 +282,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
-                        @if(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
-                        <li><a href="{{ URL::to('/') }}/amorderss">Orders</a></li>
-                        @endif
+                        <li><a href="{{ URL::to('/') }}/takesignature" target="_blank">Take Signature</a></li>
                         @endif
                     </ul>
                 
