@@ -113,38 +113,51 @@ class HomeController extends Controller
     }
     public function inputdata(Request $request)
     {
-        
-        $sub_cat_name = SubCategory::where('id',$request->subcat)->first();
-        $brand = brand::where('id',$sub_cat_name->brand_id)->first();
-        $category= Category::where('id',$sub_cat_name->category_id)->first();
+        // for fetching sub categories
+        $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
+        $subcategories = implode(", ", $sub_cat_name);
+         
+            // fetching brands
+        $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
+        $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
+       $brandnames = implode(", ", $brand);
+       
+
+        $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
+        $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
+        $categoryNames = implode(", ", $category);
+      
+           
         $var = count($request->subcat);
         $var1 = count($brand);
+
         $var2 = count($category);
-        $storecategory = $request->mCategory[0];
-        $storebrand = $request->bnd[0];
+        // $storecategory = $request->mCategory[0];
+        // $storebrand = $request->bnd[0];
         $storesubcat =$request->subcat[0];
        
-         if($var > 1)
-         {
-            for($i = 1 ; $i<$var ; $i++)
-            {
-                 $brand .=",".$request->subcat[$i];
-            }
-         }
-          if($var1 > 1)
-         {
-            for($i = 1 ; $i<$var1 ; $i++)
-            {
-                 $brand .=",".$brand[$i];
-            }
-         }
-         if($var2 > 1)
-         {
-            for($i = 1 ; $i<$var2 ; $i++)
-            {
-                 $category .=",".$category[$i];
-            }
-         }
+         // if($var > 1)
+         // {
+         //    for($i = 1 ; $i<$var ; $i++)
+         //    {
+         //         $storesubcat .=",".$request->subcat[$i];
+         //    }
+         // }
+         // if($var1 > 1)
+         // {
+         //    for($i = 1 ; $i<$var1 ; $i++)
+         //    {
+         //         $brand .=",".$brand[$i];
+         //    }
+         // }
+         // if($var2 > 1)
+         // {
+         //    for($i = 1 ; $i<$var2 ; $i++)
+         //    {
+         //         $category .=",".$category[$i];
+         //    }
+         // }
+
 
         // if($request->mCategory == "All"){
         //     $category = "All";
@@ -163,15 +176,15 @@ class HomeController extends Controller
         //     $brand = DB::table('brands')->where('id',$request->brand)->pluck('brand')->first();
         // }
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
-                                                'main_category' =>$category->category_name,
-                                                'brand' => $brand->brand,
-                                                'sub_category'  =>$storesubcat,
+                                                'main_category' => $categoryNames,
+                                                'brand' => $brandnames,
+                                                'sub_category'  =>$subcategories,
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
                                                 'referral_image2'   =>'',
                                                 'requirement_date'  =>$request->edate,
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
-                                                'unit_price'   =>$request->econtact,
+                                                'unit_price'   => '',
                                                 'quantity'     =>$request->equantity,
                                                 'total'   =>0,
                                                 'notes'  =>$request->eremarks,

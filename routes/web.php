@@ -26,6 +26,8 @@ Route::get('/myreport','HomeController@myreport');
 
 
 Route::get('/status_wise_projects','HomeController@index1');
+
+
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
@@ -127,6 +129,7 @@ Route::post('/editEnquiry','mamaController@editEnquiry');
 Route::post('/editManualEnquiry','mamaController@editManualEnquiry');
 
 // Sales Engineer
+Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/sedashboard','HomeController@salesEdashboard');
 Route::get('/updateOwner','HomeController@updateOwner');
 Route::get('/updateConsultant','HomeController@updateConsultant');

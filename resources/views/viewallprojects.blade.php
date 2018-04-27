@@ -59,6 +59,7 @@
 						<th>Listed By</th>
 						<th>Called By</th>
 						<th>Listed On</th>
+						
 						<th>Last update</th>
 					</thead>
 					<tbody>
@@ -88,6 +89,7 @@
 								@endif
 								@endforeach
 							</td>
+							
 							<td>
 								{{ date('d/m/Y',strtotime($project->created_at))}}
 							</td>

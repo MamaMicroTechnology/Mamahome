@@ -87,7 +87,7 @@
 			                  		<!-- <div class="col-md-6"> -->
 			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			                  			<label class="checkbox-inline">
-			                  			 <input type="checkbox" name="subcat[]" value="{{ $subcategory->id}}" id="" name="">{{ $subcategory->sub_cat_name}}
+			                  			 <input type="checkbox" name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
 			                  			</label>
 			                  			<br>
 			                  		<!-- </div> -->
