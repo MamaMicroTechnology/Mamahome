@@ -24,7 +24,7 @@
                     <center>
                     <label id="headingPanel"></label>
                     <br>
-                        <button id="getBtn" class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
+                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
                     </center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
@@ -88,10 +88,10 @@
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
                                 <td>
-                                  <select class="form-control" name="contract" id="contract" required>
-                                    <option value="" disabled selected>--- Select ---</option>
-                                    <option value="Labour Contract">Labour Contract</option>
-                                    <option value="Material Contract">Material Contract</option>
+                                  <select class="form-control" name="contract" id="contract" class="requiredn">
+                                    <option   value="" disabled selected>--- Select ---</option>
+                                    <option    value="Labour Contract">Labour Contract</option>
+                                    <option  value="Material Contract">Material Contract</option>
                                 </select>
                               </td>
 
@@ -655,7 +655,8 @@
         var ctype2 = document.getElementById('constructionType2');
         var rmc = document.getElementById('rmc');
         var rmc2= document.getElementById('rmc2');
-        if(current == 'first'){ 
+        if(current == 'first')
+        { 
           if(document.getElementById("pName").value == ""){
             window.alert("You have not entered Project Name");
           }else if(document.getElementById("longitude").value == ""){
@@ -664,28 +665,15 @@
             window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
-          }else if(document.getElementById("basement").value == ""){
-            window.alert("You have not entered Basement value");
-          }else if(document.getElementById("ground").value == ""){
-            window.alert("You have not entered Ground value");
-          }else if(document.getElementById("pSize").value == ""){
-            window.alert("You have not entered Project Size");
-          }else if(document.getElementById("budget").value == ""){
-            window.alert("You have not entered Budget");
-          }else if(document.getElementById("pImage").value == ""){
-            window.alert("You have not chosen a file to upload");
+          } else if(document.getElementById('rWidth').value == ""){
+            window.alert("You have not entered  Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
-          }else if(document.getElementById('contract').value == ""){
-            window.alert("Choose type of contract");
-          }
-          else if(document.getElementById('rWidth').value == ""){
-            window.alert("Choose type of Road Width");
-          }
-          else{
-            if(ctype1.checked == true && ctype2.checked == true){
+          }else if(document.getElementById("contract").value == ""){
+            alert("Please select contract type");
+          }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
@@ -694,14 +682,31 @@
             }
             if(countinput == 0){
                 window.alert("Select at least one project status");
-            }else{
+            
+            } else if(document.getElementById("basement").value == ""){
+            window.alert("You have not entered Basement value");
+          } else if(document.getElementById("ground").value == ""){
+            window.alert("You have not entered Floor value");
+          }else if(document.getElementById("pSize").value == ""){
+            window.alert("You have not entered Project Size");
+          }
+          else if(constructionType3.checked == false && constructionType4.checked == false){
+            window.alert("Please choose the Budget type");
+          }else if(document.getElementById("budget").value == ""){
+            window.alert("You have not entered Budget");
+          }else if (document.getElementById("pImage").value == ""){
+            window.alert("You have not chosen a file to upload");
+          }
+            else {
                 document.getElementById("first").className = "hidden";
                 document.getElementById("second").className = "";
                 document.getElementById('headingPanel').innerHTML = 'Owner Details';
                 current = "second";
             }
-          }
-        }else if(current == 'second'){
+           
+          
+        }
+     else if(current == 'second'){
             if(document.getElementById("contract").value == "Material Contract"){
                 if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
                     window.alert("Please enter owner details");
@@ -754,14 +759,15 @@
             window.alert("Please Enter Procurement Name");
           }else if(document.getElementById("pContact") == ""){
             window.alert("Please enter phone number");
-          }else{ 
+          }else { 
             document.getElementById("sixth").className = "hidden";
             document.getElementById("seventh").className = "";
             document.getElementById('headingPanel').innerHTML = 'Remarks';
             current = "seventh";
             document.getElementById("next").className = "hidden";
           }
-        }
+         
+        } 
     }
     function pagePrevious(){
         document.getElementById("next").className = "";

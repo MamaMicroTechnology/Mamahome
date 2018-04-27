@@ -100,7 +100,7 @@
                     @endforeach
                 </select>
             <label>Choose Subward :</label><br>
-                <select name="subward" class="form-control" id="subward{{ $user->id }}">
+                <select name="subward" class="form-control" id="subward{{ $user->id }}" >
                 </select>
             <!-- <input type="date" name="date" class="form-control"> -->
           </div>

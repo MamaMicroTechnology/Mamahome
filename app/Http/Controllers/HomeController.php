@@ -880,6 +880,7 @@ class HomeController extends Controller
         $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();
         $user = User::where('id',$projectdetails->listing_engineer_id)->pluck('name')->first();
         $updater = User::where('id',$projectdetails->updated_by)->first();
+        // $projectdetails['budgetType'] = explode(",", $projectdetails['budgetType']);
         return view('update',[
                     'updater'=>$updater,
                     'username'=>$user,

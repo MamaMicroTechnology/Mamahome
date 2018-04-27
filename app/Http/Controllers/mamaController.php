@@ -406,6 +406,17 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
+
+        $bType = count($request->budgetType);
+        $type2 = $request->budgetType[0];
+        $otherApprovals = "";
+        if($bType != 1){
+            $type2 .= ", ".$request->budgetType[1];
+        }
+
+
+
+
         $statusCount = count($request->status);
         $validator = Validator::make($request->all(), [
                 'address' => 'required',
@@ -414,7 +425,7 @@ class mamaController extends Controller
                 'pName' => 'required',
                 'rName' => 'required',
                 'status' => 'required',
-                'budjettype' => 'required'
+              
             ]);
             if ($validator->fails()) {
                 return back()
@@ -475,7 +486,7 @@ class mamaController extends Controller
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $request->budgetType;
-            $projectdetails->construction_type = $request->construction_type;
+           
             $projectdetails->save();
             
             $room_types = $request->roomType[0]." (".$request->number[0].")";
@@ -647,6 +658,7 @@ class mamaController extends Controller
             'construction_type'=>$type,
             'budget' => $request->budget,
             'contract'=>$request->contract,
+            'budgetType' => $request->budgetType,
             'updated_by'=>Auth::user()->id
         ]);
         OwnerDetails::where('project_id',$id)->update([
@@ -1039,6 +1051,7 @@ class mamaController extends Controller
             if($ward != null){
                 $assignment->prev_assign = $ward->ward_name;
             }
+           
             $assignment->assigned_date = $request->subward;
             $assignment->status = 'Not Completed';
             $assignment->save();
