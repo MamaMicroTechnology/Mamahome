@@ -659,7 +659,8 @@ class mamaController extends Controller
             'budget' => $request->budget,
             'contract'=>$request->contract,
             'budgetType' => $request->budgetType,
-            'updated_by'=>Auth::user()->id
+            'updated_by'=>Auth::user()->id,
+            'call_attended_by'=>Auth::user()->id
         ]);
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,

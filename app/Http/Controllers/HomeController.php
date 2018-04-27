@@ -1499,7 +1499,8 @@ class HomeController extends Controller
     public function deliverOrder(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered']);
+        $today = date('Y-m-d');
+        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered','delivered_on'=>$today]);
         if($x)
         {
             return response()->json("Updated");
@@ -2364,7 +2365,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
 }
     public function employeereports(Request $request)
     {
-        $depts = [1,2,3,4,5];
+        $depts = [1,2,3,4,5,6];
         $users = User::whereIn('department_id',$depts)->where('name','NOT LIKE','%test%')->orderBy('department_id','ASC')->get();
         if($request->month){
             $year = $request->year;
