@@ -2105,10 +2105,13 @@ class HomeController extends Controller
     }
     public function confirmedProject(Request $request){
         $confirmed = 0;
-        $check = projectDetails::where('project_id',$request->id)
-        ->increment('confirmed');
-       
-        
+        $check = ProjectDetails::where('project_id',$request->id)->first();
+        if($check->confirmed == null || $check->confirmed == "true"){
+            ProjectDetails::where('project_id',$request->id)->update(['confirmed'=>1]);
+        }else{
+            projectDetails::where('project_id',$request->id)
+            ->increment('confirmed');
+        }
         return redirect()->back();
     }
     public function projectadmin(Request $id){
