@@ -22,7 +22,11 @@
                 <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Departments</b></div>
                 <div class="panel-body">
                     @foreach($departments as $department)
-                        <a id="{{ $department->dept_name }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
+                        <?php 
+                            $content = explode(" ",$department->dept_name);
+                            $con = implode("",$content);
+                        ?>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
                     @endforeach
                     <a id="FormerEmployees" class="list-group-item" href="#">Former Employees</a>
                 </div>
@@ -107,11 +111,15 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($departments as $department)
+<?php 
+    $content = explode(" ",$department->dept_name);
+    $con = implode("",$content);
+?>
 <script type="text/javascript">
 $(document).ready(function () {
-    $("#{{ $department->dept_name }}").on('click',function(){
+    $("#{{ $con }}").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/view?dept={{ $department->dept_name }}", function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/view?dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
