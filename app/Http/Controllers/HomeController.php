@@ -2104,9 +2104,8 @@ class HomeController extends Controller
         return view('followup',['projects'=>$projects]);
     }
     public function confirmedProject(Request $request){
-        $confirmed = 0;
         $check = ProjectDetails::where('project_id',$request->id)->first();
-        if($check->confirmed == null || $check->confirmed == "true"){
+        if($check->confirmed == null || $check->confirmed == "true" || $check->confirmed == "false"){
             ProjectDetails::where('project_id',$request->id)->update(['confirmed'=>1]);
         }else{
             projectDetails::where('project_id',$request->id)
