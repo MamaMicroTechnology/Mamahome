@@ -24,7 +24,7 @@ Route::get('/logoutFromChat','TokenController@logout');
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 
-
+Route::get('/assign_project','HomeController@projectwise');
 Route::get('/status_wise_projects','HomeController@index1');
 
 

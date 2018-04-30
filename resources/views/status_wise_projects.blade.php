@@ -43,7 +43,7 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $project->project_id }}" name="id">
                                     <div class="checkbox">
-                                    <label><input type="checkbox" name="confirmed" onchange="this.form.submit()">Called</label>
+                                    <label><input  {{ $project->confirmed !== "0" ? 'checked': ''}}  type="checkbox" name="confirmed" onchange="this.form.submit()">Called</label>
                                     </div>
                                     </div>       
                                 </form>
