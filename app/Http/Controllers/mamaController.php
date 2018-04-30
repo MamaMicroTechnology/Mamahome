@@ -44,6 +44,7 @@ use App\ActivityLog;
 use App\RecordData;
 use App\Order;
 use App\Map;
+use App\brand;
 use App\WardMap;
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1455,16 +1456,36 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
+        // for fetching sub categories
+        $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
+        $subcategories = implode(", ", $sub_cat_name);
+         
+            // fetching brands
+        $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
+        $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
+       $brandnames = implode(", ", $brand);
+       
+
+        $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
+        $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
+        $categoryNames = implode(", ", $category);
+      
+           
+        $var = count($request->subcat);
+        $var1 = count($brand);
+
+        $var2 = count($category);
+        $storesubcat =$request->subcat[0];
         $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
         $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
         Requirement::where('id',$request->reqId)->update([
-            'main_category' => $category,
-            'sub_category' => $subcategory,
+            'main_category' => $categoryNames,
+            'brand' => $brandnames,
+            'sub_category'  =>$subcategories,
             'generated_by' => $request->initiator,
             'notes' => $request->eremarks,
             'quantity' => $request->equantity,
             'requirement_date' => $request->edate
-
         ]);
         return back();
     }

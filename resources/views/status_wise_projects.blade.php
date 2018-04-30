@@ -6,7 +6,7 @@
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);">
 
                <h2>Project Details Of 
-               {{ $status }} Stage
+                    {{ $status[0] }} Stage
                    <div class="pull-right">{{ $totalListing }} Projects Found</div>
                </h2> 
             </div>
@@ -37,7 +37,7 @@
                             <td style="text-align:center">{{$project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->consultantdetails != null ? $project->consultantdetails->consultant_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->contractordetails != null ? $project->contractordetails->contractor_contact_no : ''}}</td>
-                            <td> <a class="btn btn-sm btn-primary " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->id }}" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
+                            <td> <a class="btn btn-sm btn-primary " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
                             <td>
                                 <form method="post" action="{{ URL::to('/') }}/confirmedProject">
                                     {{ csrf_field() }}

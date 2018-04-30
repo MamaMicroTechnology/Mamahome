@@ -408,7 +408,7 @@ div#calendar{
             <a href="{{ URL::to('/') }}/chat">Chat</a>
           
           <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
-          <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+          <a href="{{ URL::to('/') }}/adenquirysheet">Enquiry Sheet</a>
           <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
           <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
           <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
