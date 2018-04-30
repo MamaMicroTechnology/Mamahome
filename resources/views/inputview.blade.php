@@ -25,7 +25,7 @@
 								<td style="width:70%"><input required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr> 
-								@if(Auth::user()->group_id != 7)
+								@if(!isset($_GET['projectId']))
 								<td><label>Contact Number* : </label></td>
 								<td><input required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div></td>
 								@else
@@ -38,7 +38,7 @@
 								<td><input required type="text" name="ename" id="ename" class="form-control"/></td>
 							</tr> -->
 							<tr>
-								@if(Auth::user()->group_id != 7)
+								@if(!isset($_GET['projectId']))
 								<td><label>Project* : </label></td>
 								<td>
 									
@@ -56,7 +56,7 @@
 								<td><label>Select category:</label></td>
 								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
-							<!-- model -->
+<!-- model -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog" style="width:80%">
     
@@ -125,7 +125,13 @@
 							</tr>
 							<tr>
 								<td><label>Location* : </label></td>
-								<td><input type="text" name="elocation" id="elocation" class="form-control" /></td>
+								<td>
+									@if(isset($_GET['projectId']))
+									<input type="text" value="{{ $projects->siteaddress != Null ? $projects->siteaddress->address  : '' }}" name="elocation" id="elocation" class="form-control" />
+									@else
+									<input type="text" name="elocation" id="elocation" class="form-control" />
+									@endif
+								</td>
 							</tr>
 							<tr>
 								<td><label>Quantity* : </label></td>

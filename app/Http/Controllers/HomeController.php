@@ -133,49 +133,7 @@ class HomeController extends Controller
         $var1 = count($brand);
 
         $var2 = count($category);
-        // $storecategory = $request->mCategory[0];
-        // $storebrand = $request->bnd[0];
         $storesubcat =$request->subcat[0];
-       
-         // if($var > 1)
-         // {
-         //    for($i = 1 ; $i<$var ; $i++)
-         //    {
-         //         $storesubcat .=",".$request->subcat[$i];
-         //    }
-         // }
-         // if($var1 > 1)
-         // {
-         //    for($i = 1 ; $i<$var1 ; $i++)
-         //    {
-         //         $brand .=",".$brand[$i];
-         //    }
-         // }
-         // if($var2 > 1)
-         // {
-         //    for($i = 1 ; $i<$var2 ; $i++)
-         //    {
-         //         $category .=",".$category[$i];
-         //    }
-         // }
-
-
-        // if($request->mCategory == "All"){
-        //     $category = "All";
-        // }else{
-        //     $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
-        // }
-        // if($request->sCategory == "All"){
-        //     $subcategory = "All";
-        // }else{
-        //     $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
-        // }
-
-        // if($request->brand == "All"){
-        //     $brand = "All";
-        // }else{
-        //     $brand = DB::table('brands')->where('id',$request->brand)->pluck('brand')->first();
-        // }
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
