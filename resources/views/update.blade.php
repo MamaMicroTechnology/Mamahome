@@ -702,13 +702,6 @@ function sum(){
           }else if(document.getElementById("pSize").value == ""){
             window.alert("You have not entered Project Size");
           }
-          else if(constructionType3.checked == false && constructionType4.checked == false){
-            window.alert("Please choose the Budget type");
-          }else if(document.getElementById("budget").value == ""){
-            window.alert("You have not entered Budget");
-          }else if (document.getElementById("pImage").value == ""){
-            window.alert("You have not chosen a file to upload for Project Image");
-          }
             else {
                 document.getElementById("first").className = "hidden";
                 document.getElementById("second").className = "";
