@@ -49,6 +49,7 @@ use App\Order;
 use App\Stages;
 use App\Dates;
 use App\Map;
+use App\brand;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -100,41 +101,49 @@ class HomeController extends Controller
         $request->session()->invalidate();
         return redirect('/login');
     }
-    public function inputview()
+    public function inputview(Request $request)
     {
         $category = Category::all();
+        $brand = brand::leftjoin('category','category.id','=','brands.category_id')
+                ->select('brand')->get();
+
         $depart = [2,4,8,6,7,15];
+        $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
-        return view('inputview',['category'=>$category,'users'=>$users]);
+        return view('inputview',['category'=>$category,'users'=>$users,'projects'=>$projects,'brand'=>$brand]);
     }
     public function inputdata(Request $request)
     {
-        if($request->mCategory == "All"){
-            $category = "All";
-        }else{
-            $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
-        }
-        if($request->sCategory == "All"){
-            $subcategory = "All";
-        }else{
-            $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
-        }
+        // for fetching sub categories
+        $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
+        $subcategories = implode(", ", $sub_cat_name);
+         
+            // fetching brands
+        $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
+        $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
+       $brandnames = implode(", ", $brand);
+       
 
-        if($request->brand == "All"){
-            $brand = "All";
-        }else{
-            $brand = DB::table('brands')->where('id',$request->brand)->pluck('brand')->first();
-        }
+        $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
+        $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
+        $categoryNames = implode(", ", $category);
+      
+           
+        $var = count($request->subcat);
+        $var1 = count($brand);
+
+        $var2 = count($category);
+        $storesubcat =$request->subcat[0];
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
-                                                'main_category' =>$category,
-                                                'brand' => $brand,
-                                                'sub_category'  =>$subcategory,
+                                                'main_category' => $categoryNames,
+                                                'brand' => $brandnames,
+                                                'sub_category'  =>$subcategories,
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
                                                 'referral_image2'   =>'',
                                                 'requirement_date'  =>$request->edate,
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
-                                                'unit_price'   =>$request->econtact,
+                                                'unit_price'   => '',
                                                 'quantity'     =>$request->equantity,
                                                 'total'   =>0,
                                                 'notes'  =>$request->eremarks,
@@ -198,9 +207,9 @@ class HomeController extends Controller
     {
         $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
-        $category = Category::all();
-        $depart = [1,2,3];
-        $initiators = User::whereIn('department_id',$depart)->get();
+        $category = Category::all();  
+        $depart = [6,7];
+        $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
 
         if($request->status && !$request->category){
@@ -555,14 +564,16 @@ class HomeController extends Controller
     public function index1(Request $request )
     {
         $check =DB::table('stages')->where('list',Auth::user()->name)
-        ->orderby('created_at','DESC')->pluck('status')->first();
+                    ->orderby('created_at','DESC')->pluck('status');
+        $count = count($check); 
         $projects = ProjectDetails::leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-                    ->where('project_details.project_status' , $check)
-                    ->where('project_details.deleted',0)
-                    ->select('project_details.*','sub_wards.sub_ward_name')
-                    ->paginate(15);
+            ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+            ->where('project_status' , $check)
+            ->select('project_details.*','users.name','sub_wards.sub_ward_name')
+            ->paginate(15);
         $totalListing = ProjectDetails::where('project_status',$check)->count();
-        return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status' =>$check]);
+            
+        return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status'=>$check]);
        }
        public function datewise(Request $request )
        {
@@ -572,7 +583,7 @@ class HomeController extends Controller
                ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
                ->select('project_details.*','sub_wards.sub_ward_name')
                ->paginate(15);
-               $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
+            $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
     public function index()
@@ -1333,7 +1344,7 @@ class HomeController extends Controller
     {
         $cat = $request->cat; 
         $category = Category::where('id',$cat)->first();
-        $subcat = SubCategory::where('category_id',$cat)->where('brand_id',$request->brand)->get();
+        $subcat = SubCategory::where('brand_id',$request->brand)->get();
         $res = array();
         $res[0] = $category;
         $res[1] = $subcat;
@@ -2441,7 +2452,6 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->where('deleted',0)
                             ->get();
-                            
             return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }
         if($request->subward && $request->ward){
@@ -2666,28 +2676,19 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     }
      public function datestore(Request $request)
     {
+       
         $this->validate($request, [
             
             'name' => 'required|max:500',
             'assigndate' => 'required|max:500',
 
         ]);
-        $check = Dates::where('user_id',$request->name)->first();
-        if(count($check) == 0){
-             $dates = new Dates;
-             $dates->user_id = $request->name;
-            $dates->assigndate = $request->assigndate;
-            $dates->save();
-        }
-        else
-        
-        {
-
-        $check->user_id = $request->name;
-        $check->assigndate = $request->assigndate;
-        $check->save();   
-        }
-       return redirect()->back();
+        $dates = new Dates;
+        $dates->name = $request->name;
+        $dates->assigndate = $request->assigndate;
+        $dates->save();
+        return redirect()->back();
+     
     }
     public function salesConverterDashboard()
     {
@@ -2765,18 +2766,17 @@ public function myreport()
 
 public function assigndate(request $request )
 {
-    $depts = [1,2,3];
-     $users = User::whereIn('users.department_id',$depts)
+     $users = User::where('users.department_id','!=',10)
                     ->leftjoin('departments','departments.id','users.department_id')
                     ->leftjoin('groups','groups.id','users.group_id')
-                    
+                    ->leftjoin('stages','stages.list','user.name')
                     ->select('users.*','departments.dept_name','groups.group_name')
 
                     ->paginate(10);
-            //  $stages = Stages::where('status','')->get();
+             $stages = Stages::where('status','')->get();
               
 
-            // $wards = Ward::all();
+            $wards = Ward::all();
                  
          $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
           $se = DB::table('users')->where('department_id','2')->where('group_id','7')->get();

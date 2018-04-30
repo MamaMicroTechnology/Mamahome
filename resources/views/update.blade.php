@@ -25,7 +25,7 @@
                 </div>
                 <div class="panel-body">
                     <center>
-                      <label>Project Details</label><br>
+                      <label id="headingPanel">Project Details</label><br>
                        @if(Auth::check())
                         @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                       <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
@@ -660,6 +660,7 @@ function sum(){
 
 <script type="text/javascript">
     var current = "first";
+    var countinput=0;
     document.getElementById('headingPanel').innerHTML = 'Project Details';
     function pageNext(){
         var ctype1 = document.getElementById('constructionType1');
@@ -694,7 +695,6 @@ function sum(){
             }
             if(countinput == 0){
                 window.alert("Select at least one project status");
-            
             } else if(document.getElementById("basement").value == ""){
             window.alert("You have not entered Basement value");
           } else if(document.getElementById("ground").value == ""){
@@ -706,17 +706,12 @@ function sum(){
             window.alert("Please choose the Budget type");
           }else if(document.getElementById("budget").value == ""){
             window.alert("You have not entered Budget");
-          }else if (document.getElementById("pImage").value == ""){
-            window.alert("You have not chosen a file to upload for Project Image");
-          }
-            else {
+          }else {
                 document.getElementById("first").className = "hidden";
                 document.getElementById("second").className = "";
                 document.getElementById('headingPanel').innerHTML = 'Owner Details';
                 current = "second";
             }
-           
-          
         }
      else if(current == 'second'){
             if(document.getElementById("contract").value == "Material Contract"){
