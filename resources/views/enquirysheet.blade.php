@@ -10,14 +10,17 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
-					
-				</form>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
-				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
+			@if(Auth::user()->group_id == 1)
+				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
+			@elseif(Auth::user()->group_id == 17)
+				<form method="GET" action="{{ URL::to('/') }}/scenquirysheet">
+			@else
+				<form method="GET" action="{{ URL::to('/') }}/tlenquirysheet">
+			@endif
 					<div class="col-md-12">
 							<div class="col-md-2">
 								<label>From (Enquiry Date)</label>

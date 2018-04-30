@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12 col-md-offset-1">
+        <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default" style="border-color:#f4811f">
                 <div class="panel-heading text-center" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">Assign Date</b>
                     @if(session('Error'))

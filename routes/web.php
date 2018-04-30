@@ -411,7 +411,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/lcodashboard','logisticsController@dashboard');
     Route::get('/lcoorders','logisticsController@orders');
     Route::get('/lcoreport','logisticsController@report');
-    Route::get('/{id}/showProjectDetails','logisticsController@showProjectDetails');
+    Route::get('/showProjectDetails','logisticsController@showProjectDetails');
     Route::get('/confirmDelivery','logisticsController@confirmDelivery');
     Route::post('/confirmDelivery','logisticsController@postconfirmDelivery');
     Route::get('/deliveredorders','logisticsController@deliveredorders');

@@ -23,7 +23,7 @@
 					    @foreach($rec as $view)
 					    <tr>
 					        <td style="text-align:center">
-					            <a href="{{URL::to('/')}}/{{$view->project_id}}/showProjectDetails" target="_blank">{{$view->project_id}}</a>
+					            <a href="{{URL::to('/')}}/showProjectDetails?id={{$view->project_id}}" target="_blank">{{$view->project_id}}</a>
 					        </td>
 					        <td style="text-align:center">{{$view->main_category}}</td>
 					        <td style="text-align:center">{{$view->sub_category}}</td>
