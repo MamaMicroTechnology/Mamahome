@@ -69,6 +69,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function authlogin()
     {
         date_default_timezone_set("Asia/Kolkata");
@@ -639,16 +640,11 @@ class HomeController extends Controller
        {
            $assigndate =Dates::where('user_id',Auth::user()->id)
            ->orderby('created_at','DESC')->pluck('assigndate')->first();
-           if($assigndate != null){
            $projects =ProjectDetails::where('project_details.created_at','like',$assigndate."%")
                ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
                ->select('project_details.*','sub_wards.sub_ward_name')
                ->paginate(15);
                $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
-            }else{
-                $projects = "nothing";
-                $totalListing = 0;
-            }
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
     public function index()
@@ -956,6 +952,7 @@ class HomeController extends Controller
         $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();
         $user = User::where('id',$projectdetails->listing_engineer_id)->pluck('name')->first();
         $updater = User::where('id',$projectdetails->updated_by)->first();
+        // $projectdetails['budgetType'] = explode(",", $projectdetails['budgetType']);
         return view('update',[
                     'updater'=>$updater,
                     'username'=>$user,
@@ -966,6 +963,7 @@ class HomeController extends Controller
 
                 ]);
     }
+   
    
     public function viewAll()
     {
@@ -1573,7 +1571,8 @@ class HomeController extends Controller
     public function deliverOrder(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered']);
+        $today = date('Y-m-d');
+        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered','delivered_on'=>$today]);
         if($x)
         {
             return response()->json("Updated");
@@ -2166,19 +2165,12 @@ class HomeController extends Controller
         return view('followup',['projects'=>$projects]);
     }
     public function confirmedProject(Request $request){
-        $check = projectDetails::where('project_id',$request->id)->first();
-        if($check->confirmed == Null || $check->confirmed == "False"){
-            projectDetails::where('project_id',$request->id)
-            ->update([
-                'confirmed' => "True"
-            ]);
-
-        }else{
-            projectDetails::where('project_id',$request->id)->update([
-                'confirmed' => "False"
-            ]);
-        }
-        return back();
+        $confirmed = 0;
+        $check = projectDetails::where('project_id',$request->id)
+        ->increment('confirmed');
+       
+        
+        return redirect()->back();
     }
     public function projectadmin(Request $id){
 
@@ -2445,7 +2437,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
 }
     public function employeereports(Request $request)
     {
-        $depts = [1,2,3,4,5];
+        $depts = [1,2,3,4,5,6];
         $users = User::whereIn('department_id',$depts)->where('name','NOT LIKE','%test%')->orderBy('department_id','ASC')->get();
         if($request->month){
             $year = $request->year;

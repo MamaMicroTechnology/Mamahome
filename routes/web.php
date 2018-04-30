@@ -288,6 +288,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     // Route::get('/enquirysheet','HomeController@enquirysheet');
     Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
+   
     Route::get('/allProjects','HomeController@viewAll');
     Route::get('/{id}/viewDetails','HomeController@viewDetails');
     Route::get('/roads','HomeController@getRoads');
@@ -415,7 +416,8 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/confirmDelivery','logisticsController@postconfirmDelivery');
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
-    Route::get('/saveSignature','logisticsController@saveSignature');
+    Route::post('/saveSignature','logisticsController@saveSignature');
+    Route::post('/saveDeliveryDetails','logisticsController@saveDeliveryDetails');
 });
 
 
