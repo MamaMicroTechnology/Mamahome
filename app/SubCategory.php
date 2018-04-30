@@ -15,4 +15,7 @@ class SubCategory extends Model
     public function categoryprice(){
         return $this->hasMany("App\CategoryPrice");
     }
+    public function brand(){
+    	return $this->belongsTo("App\brand");
+    }
 }
