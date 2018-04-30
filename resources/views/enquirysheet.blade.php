@@ -24,11 +24,11 @@
 					<div class="col-md-12">
 							<div class="col-md-2">
 								<label>From (Enquiry Date)</label>
-								<input type="date" class="form-control" name="from">
+								<input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
 							</div>
 							<div class="col-md-2">
 								<label>To (Enquiry Date)</label>
-								<input type="date" class="form-control" name="to">
+								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
 								<label>Wards</label>
@@ -36,7 +36,7 @@
 									<option value="">--Select--</option>
 									<option value="">All</option>
 									@foreach($wards as $ward)
-									<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
+									<option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -46,7 +46,7 @@
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($initiators as $initiator)
-								<option value="{{ $initiator->id }}">{{ $initiator->name }}</option>
+								<option {{ isset($_GET['initiator']) ? $_GET['initiator'] == $initiator->id ? 'selected' : '' : '' }} value="{{ $initiator->id }}">{{ $initiator->name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -56,7 +56,7 @@
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
-								<option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
 								@endforeach
 							</select>
 						</div>
