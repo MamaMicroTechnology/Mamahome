@@ -53,7 +53,7 @@ Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
-Route::get('/requirement','HomeController@inputview');
+Route::get('/requirements','HomeController@inputview');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');

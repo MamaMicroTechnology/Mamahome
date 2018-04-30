@@ -17,7 +17,6 @@
                             <th style="text-align:center">Ward No.</th>
                             <th style="text-align:center">Project-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
-
                             <th style="text-align:center">Site Engineer Contact Number</th>
                             <th style="text-align:center">Procurement Contact Number</th>
                             <th style="text-align:center">Consultant Contact Number</th>
@@ -36,13 +35,12 @@
                         <tr>
                             <td style="text-align:center">{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
-                            
                             <td style="text-align:center">{{$project->ownerdetails != null ? $project->ownerdetails->owner_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->siteengineerdetails != null ? $project->siteengineerdetails->site_engineer_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->consultantdetails != null ? $project->consultantdetails->consultant_contact_no : ''}}</td>
                             <td style="text-align:center">{{$project->contractordetails != null ? $project->contractordetails->contractor_contact_no : ''}}</td>
-                            <td> <a class="btn btn-sm btn-primary " name="addenquiry" onclick="addrequirement()" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
+                            <td> <a class="btn btn-sm btn-primary " id="addenquiry" onclick="addrequirement({{ $project->project_id }})" style="color:white;font-weight:bold;background-color: green">Add Enquiry</a></td>
                             <td>
                                 <form method="post" action="{{ URL::to('/') }}/confirmedProject">
                                     {{ csrf_field() }}
@@ -54,30 +52,8 @@
                                 </form>
                                 <td>{{  $project->confirmed }}</td>
                             </td>
-<!--                                                        
-                                                  <script type="text/javascript">
-                                                        var count = 0;
-                                                        function add(){
-                                                            var check = document.getElementById("check");
-                                                            if(check.checked == true){
-                                                            count++;
-                                                            }
-                                                            document.getElementById('display').innerHTML = count;
-                                                        }
-                                                 </script> -->
                              </td>
-                            <!-- <td>
-                               <div class="btn-group btn-group-xs">
-                                   <form action="{{ url('/toggle-approve')}}" method="post">
-                                 {{csrf_field()}}
-                                  <input value="off" type="hidden" name="deleted">
-                                  <input type="hidden" name="id" value="{{$project->project_id}}">
-                                  <button type="submit" data-toggle="tooltip"onclick="return confirm('Are you sure you want to Block this Project?');"  button class="btn btn-sm" style="background-color:#F57F1B;color:white;font-weight:bold">Block
-                               </button>
-                              </form>
-                            </div>
-                            </td> 
-                            -->
+                            
                         </tr>
                         
                         @endif
@@ -95,8 +71,7 @@
     </div>
     
     <script type="text/javascript">
-        function addrequirement(){
-            var id = document.getElementsByName('addenquiry').id;
+        function addrequirement(id){
             window.location.href="{{ URL::to('/') }}/requirements?projectId="+id;
         }
     </script>

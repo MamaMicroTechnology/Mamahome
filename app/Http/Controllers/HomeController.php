@@ -605,36 +605,17 @@ class HomeController extends Controller
     }
     public function index1(Request $request )
     {
-        $totalListing = array();
-        $date = date('Y-m-d');
-        $users = User::where('department_id','1')->where('group_id','6')
-                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
-                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
-                    ->select('users.*','sub_wards.sub_ward_name')
-                    ->get();
-                 
         $check =DB::table('stages')->where('list',Auth::user()->name)
                     ->orderby('created_at','DESC')->pluck('status');
-        $count = count($check);
-        $status = DB::table('project_details')->whereIn('project_status' , $check )->get();        
-        // $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
-        $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
-       
-        
-        $projects = DB::table('project_details')
-            ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-            ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-            ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+        $count = count($check); 
+        $projects = ProjectDetails::leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
-            ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-            ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
-            ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
             ->where('project_status' , $check)
-            ->select('project_details.*','procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+            ->select('project_details.*','users.name','sub_wards.sub_ward_name')
             ->paginate(15);
-         
+        $totalListing = ProjectDetails::where('project_status',$check)->count();
             
-        return view('status_wise_projects', ['date' => $date,'users'=>$users,  'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'status' =>$status,'status'=>$check]);
+        return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status'=>$check]);
        }
        public function datewise(Request $request )
        {
@@ -644,7 +625,7 @@ class HomeController extends Controller
                ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
                ->select('project_details.*','sub_wards.sub_ward_name')
                ->paginate(15);
-               $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
+            $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
     public function index()

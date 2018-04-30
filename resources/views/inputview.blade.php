@@ -29,11 +29,8 @@
 								<td><label>Contact Number* : </label></td>
 								<td><input required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div></td>
 								@else
-
 								<td><label>Contact Number: </label></td>
-								
 								<td >{{ $projects->procurementdetails != NULL?$projects->procurementdetails->procurement_contact_no:'' }}</td>
-					
 								@endif
 							</tr>
 							<!-- <tr>
