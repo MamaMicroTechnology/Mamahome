@@ -2769,7 +2769,7 @@ public function assigndate(request $request )
      $users = User::where('users.department_id','!=',10)
                     ->leftjoin('departments','departments.id','users.department_id')
                     ->leftjoin('groups','groups.id','users.group_id')
-                    ->leftjoin('stages','stages.list','user.name')
+                    ->leftjoin('stages','stages.list','users.name')
                     ->select('users.*','departments.dept_name','groups.group_name')
 
                     ->paginate(10);
