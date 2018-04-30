@@ -278,10 +278,10 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Structural Budget
+                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural Budget
                                     </label>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Finishing Budget
+                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing Budget
                                     </label>
                                  </td>
                                </tr>
@@ -730,21 +730,10 @@ function sum(){
               current = "third";    
             }
         }else if(current == 'third'){
-            if(document.getElementById("contract").value == "Labour Contract"){
-                if(document.getElementById("cName").value == "" || document.getElementById("cContact").value == ""){
-                    window.alert("Please enter contractor details");
-                }else{
-                    document.getElementById("third").className = "hidden";
-                    document.getElementById("fourth").className = "";
-                    document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-                    current = "fourth";
-                }
-            }else{
                 document.getElementById("third").className = "hidden";
                 document.getElementById("fourth").className = "";
                 document.getElementById('headingPanel').innerHTML = 'Consultant Details';
                 current = "fourth";
-            }
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";
