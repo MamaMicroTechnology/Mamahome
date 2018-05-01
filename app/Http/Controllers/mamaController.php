@@ -1482,7 +1482,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' =>$request->id,
+            'generated_by' =>$request->User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
             'notes' => $request->eremarks,
             'quantity' => $request->equantity,
             'requirement_date' => $request->edate
