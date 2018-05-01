@@ -1457,6 +1457,8 @@ class mamaController extends Controller
     public function editinputdata(Request $request)
     {
         // for fetching sub categories
+        $depart = [2,4,8,6,7,15];
+        $initiator= User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
          
@@ -1482,7 +1484,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' =>User::whereIn('group_id',$depart)->where('department_id','!=',10)->get(),
+            'generated_by' =>$initiator,
             'notes' => $request->eremarks,
             'quantity' => $request->equantity,
             'requirement_date' => $request->edate
