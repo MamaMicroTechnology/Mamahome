@@ -1458,7 +1458,7 @@ class mamaController extends Controller
     {
         // for fetching sub categories
         $depart = [2,4,8,6,7,15];
-        $initiator= User::whereIn('group_id',$depart)->where('department_id','!=',10)->first();
+        $initiator= User::whereIn('group_id',$depart)->where('department_id','!=',10)->select('id')->first();
         dd($initiator);
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
