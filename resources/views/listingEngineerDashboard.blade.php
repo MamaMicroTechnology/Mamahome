@@ -6,11 +6,12 @@
 
 @section('content')
 
-@if($ldate < $lodate)
+  @if($ldate < $lodate)
   <div>You are ahead of time.</div>
   @elseif($ldate > $outtime)
   <div>You are done for today. Take a rest.</div>
   @else
+
 <div class="container">
     <div class="row">
       @if($subwards)
@@ -27,17 +28,6 @@
            {{ $ordersInitiated }} orders has been initiated by you<br>
            out of which {{ $ordersConfirmed }} has been confirmed
          </label><br><br>
-            <center></center>
-            <div class="panel-panel-primary">
-                <div class="panel-heading text-center">
-                    <!--<b><u>CURRENT PRICE LIST</u></b>-->
-                </div>
-                <div class="panel-body">
-
-                            
-                </div>
-            </div>
-            
        </div>
         <div class="pull-right col-lg-8">
           <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">
@@ -45,6 +35,29 @@
        @else
        No wards assigned to you yet
        @endif
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <table class="table table-hover" border=1>
+        <center><label for="Points">Your Points so far</label></center>
+          <thead>
+            <th>Reason For Earning Point</th>
+            <th>Point Earned</th>
+          </thead>
+          <tbody>
+            @foreach($points_indetail as $points)
+            <tr>
+              <td>{!! $points->reason !!}</td>
+              <td style="text-align: right">{{ $points->type == "Add" ? "+".$points->point : "-".$points->point }}</td>
+            </tr>
+            @endforeach
+            <tr>
+              <td style="text-align: right;"><b>Total</b></td>
+              <td style="text-align: right">{{ $total }}</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
     </div>
 </div>
 

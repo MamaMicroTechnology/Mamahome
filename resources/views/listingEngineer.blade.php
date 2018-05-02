@@ -839,6 +839,7 @@
                       "</select></td>"+
                       "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
                       "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
@@ -851,6 +852,7 @@
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
                       "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+

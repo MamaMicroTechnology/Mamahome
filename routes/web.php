@@ -286,7 +286,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
     // Route::get('/enquirysheet','HomeController@enquirysheet');
-    Route::get('/projectlist','HomeController@projectList');
+    // Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
    
     Route::get('/allProjects','HomeController@viewAll');
@@ -299,9 +299,9 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/checkDupPhoneSite', 'HomeController@checkDupPhoneSite');
     Route::get('/checkDupPhoneContractor', 'HomeController@checkDupPhoneContractor');
     Route::get('/checkDupPhoneProcurement', 'HomeController@checkDupPhoneProcurement');
-    Route::get('/updateContractor','HomeController@updateContractor');
-    Route::get('/updateConsultant','HomeController@updateConsultant');
-    Route::get('/updateProcurement','HomeController@updateProcurement');
+    // Route::get('/updateContractor','HomeController@updateContractor');
+    // Route::get('/updateConsultant','HomeController@updateConsultant');
+    // Route::get('/updateProcurement','HomeController@updateProcurement');
     Route::get('/completed','mamaController@completedAssignment');
     Route::get('/requirementsroads','HomeController@getRequirementRoads');
     Route::get('/projectrequirement','HomeController@projectRequirement');

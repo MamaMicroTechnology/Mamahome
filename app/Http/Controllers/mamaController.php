@@ -46,6 +46,7 @@ use App\Order;
 use App\Map;
 use App\brand;
 use App\WardMap;
+use App\Point;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -401,6 +402,64 @@ class mamaController extends Controller
     }
     public function addProject(Request $request)
     {
+        $point = 0;
+        // counting points
+        // project name
+        $point = $request->pName != null ? $point+2 : $point+0;
+        // road name
+        $point = $request->rName != null ? $point+2 : $point+0;        
+        // road width
+        $point = $request->rWidth != null ? $point+4 : $point+0;
+        // Construction type
+        $point = $request->constructionType != null ? $point+5 : $point+0;
+        // interested in rmc
+        $point = $request->rmcinterest != null ? $point+3 : $point+0;
+        // type of contract
+        $point = $request->contract != null ? $point+6 : $point+0;
+        // project status
+        $point = $request->status != null ? $point+5 : $point+0;
+        // project type
+        $point = $request->basement != null && $request->ground != null ? $point+5 : $point+0;
+        // project size
+        $point = $request->pSize != null ? $point+8 : $point+0;
+        // budgettype
+        $point = $request->budgetType != null ? $point+3 : $point+0;
+        // total budget
+        $point = $request->budget != null ? $point+5 : $point+0;
+        // project Image
+        $point = $request->pImage != null ? $point+6 : $point+0;
+        // room types
+        $point = $request->roomType[0] != null ? $point+5 : $point+0;
+        // owner details
+        $point = $request->oName != null ? $point+5 : $point+0;
+        $point = $request->oEmail != null ? $point+5 : $point+0;
+        $point = $request->oContact != null ? $point+5 : $point+0;
+        // contractor details
+        $point = $request->cName != null ? $point+3 : $point+0;
+        $point = $request->cEmail != null ? $point+3 : $point+0;
+        $point = $request->cContact != null ? $point+3 : $point+0;
+        // consultant details
+        // $point = $request->coName != null ? $point+3 : $point+0;
+        // $point = $request->coEmail != null ? $point+3 : $point+0;
+        // $point = $request->coContact != null ? $point+3 : $point+0;
+        // site engineer details
+        $point = $request->eName != null ? $point+3 : $point+0;
+        $point = $request->eEmail != null ? $point+3 : $point+0;
+        $point = $request->eContact != null ? $point+3 : $point+0;
+        // procurement details
+        $point = $request->prName != null ? $point+3 : $point+0;
+        $point = $request->pEmail != null ? $point+3 : $point+0;
+        $point = $request->prPhone != null ? $point+3 : $point+0;
+        $point = $request->remarks != null ? $point+10 : $point+0;
+        
+        // store points to database
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = "Adding a project";
+        $points->save();
+
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
@@ -414,10 +473,6 @@ class mamaController extends Controller
         if($bType != 1){
             $type2 .= ", ".$request->budgetType[1];
         }
-
-
-
-
         $statusCount = count($request->status);
         $validator = Validator::make($request->all(), [
                 'address' => 'required',
@@ -594,6 +649,84 @@ class mamaController extends Controller
     }
     public function updateProject($id, Request $request)
     {
+        $point = 0;
+        $project = ProjectDetails::where('project_id',$id)->first();
+        if($request->quality && $project->quality != $request->quality){
+            $points = new Point;
+            $points->user_id = Auth::user()->id;
+            $points->point = 20;
+            $points->type = "Add";
+            $points->reason = "Marking project Id: <a href=\"\">".$id."</a> as ".$request->quality;
+            $points->save();
+        }
+        
+        $point = $request->pName != null && $project->project_name != $request->pName ? $point+2 : $point+0;
+        // road name
+        $point = $request->rName != null && $project->road_name != $request->rName ? $point+2 : $point+0;        
+        // road width
+        $point = $request->rWidth != null && $project->road_width != $request->rWidth ? $point+4 : $point+0;
+        // Construction type
+        if(count($request->construction_type) != 0){
+            $construction_types = implode(", ",$request->constructionType);
+        }else{
+            $construction_types = $project->construction_type;
+        }
+        $point = $request->constructionType != null && $project->construction_type != $construction_types ? $point+5 : $point+0;
+        // interested in rmc
+        $point = $request->rmcinterest != null && $project->interested_in_rmc != $request->rmcinterest ? $point+3 : $point+0;
+        // type of contract
+        $point = $request->contract != null && $project->contract != $request->contract ? $point+6 : $point+0;
+        // project status
+        if(count($request->status) != 0){
+            $statuses = implode(", ",$request->status);
+        }else{
+            $statuses = $project->project_status;
+        }
+        $point = $request->status != null && $project->project_status != $statuses ? $point+5 : $point+0;
+        // project type
+        $point = ($request->basement != null && $request->ground != null) && ($request->basement != $project->basement && $request->ground != $project->ground) ? $point+5 : $point+0;
+        // project size
+        $point = $request->pSize != null && $project->project_size != $request->pSize ? $point+8 : $point+0;
+        // budgettype
+        $point = $request->budgetType != null && $project->budgetType != $request->budgetType ? $point+3 : $point+0;
+        // total budget
+        $point = $request->budget != null && $project->budget != $project->budget ? $point+5 : $point+0;
+        // project Image
+        $point = $request->pImage != null ? $point+6 : $point+0;
+        // room types
+        $point = $request->floorNo[0] != null ? $point+5 : $point+0;
+        // owner details
+        $point = $request->oName != null && $project->ownerdetails->owner_name != $request->oName ? $point+5 : $point+0;
+        $point = $request->oEmail != null && $project->ownerdetails->owner_email != $request->oEmail ? $point+5 : $point+0;
+        $point = $request->oContact != null && $project->ownerdetails->owner_contact_no != $request->oContact ? $point+5 : $point+0;
+        // contractor details
+        $point = $request->cName != null && $project->contractordetails->contractor_name != $request->cName ? $point+3 : $point+0;
+        $point = $request->cEmail != null && $project->contractordetails->contractor_email != $request->cEmail ? $point+3 : $point+0;
+        $point = $request->cContact != null && $project->contractordetails->contractor_contact_no != $request->cContact ? $point+3 : $point+0;
+        // consultant details
+        // $point = $request->coName != null ? $point+3 : $point+0;
+        // $point = $request->coEmail != null ? $point+3 : $point+0;
+        // $point = $request->coContact != null ? $point+3 : $point+0;
+        // site engineer details
+        $point = $request->eName != null && $project->siteengineerdetails->site_engineer_name != $request->eName ? $point+3 : $point+0;
+        $point = $request->eEmail != null && $project->siteengineerdetails->site_engineer_email != $request->eEmail ? $point+3 : $point+0;
+        $point = $request->eContact != null && $project->siteengineerdetails->site_engineer_contact_no != $request->eContact ? $point+3 : $point+0;
+        // procurement details
+        $point = $request->prName != null && $project->procurementdetails->procurement_name != $request->prName ? $point+3 : $point+0;
+        $point = $request->pEmail != null && $project->procurementdetails->procurement_email != $request->pEmail ? $point+3 : $point+0;
+        $point = $request->prPhone != null && $project->procurementdetails->procurement_contact_no != $request->prPhone ? $point+3 : $point+0;
+        $point = $request->remarks != null && $project->remarks != $request->remarks ? $point+10 : $point+0;
+        
+        // store points to database
+        if($point != 0){
+            $points = new Point;
+            $points->user_id = Auth::user()->id;
+            $points->point = $point;
+            $points->type = "Add";
+            $points->reason = "Updating a project";
+            $points->save();
+        }
+
         $basement = $request->basement;
         $ground = $request->ground;
         $floor = $basement + $ground + 1;
@@ -1102,30 +1235,41 @@ class mamaController extends Controller
         return back();
     }
     public function salesUpdateProject($id, Request $request){
-        $statusCount = count($request->status);
-        $statuses = $request->status[0];
-        if($statusCount > 1){
-            for($i = 1; $i < $statusCount; $i++){
-                $statuses .= ", ".$request->status[$i];
-            }
+        $point = 0;
+        $project = ProjectDetails::where('project_id',$id)->first();
+        if(count($request->status) != 0){
+            $statuses = implode(", ",$request->status);
+        }else{
+            $statuses = $project->project_status;
         }
-        $cType = count($request->constructionType);
-        $type = $request->constructionType[0];
-        if($cType != 1){
-            $type .= ", ".$request->constructionType[1];
+        if(count($request->constructionType) != 0){
+            $type = implode(", ",$request->constructionType);
+        }else{
+            $type = $project->construction_type;
         }
+        $point = $project->construction_type != $type ? $point+5 : $point+0;
+        $point = $project->project_status != $statuses ? $point+5 : $point+0;
+        $point = $project->road_width != $request->rWidth ? $point+4 : $point+0;
+        $point = $project->quality != $request->quality ? $point+20 : $point+0;
+        $point = $project->contract != $request->contract ? $point+6 : $point+0;
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = "Updating project";
+        $points->save();
         projectDetails::where('project_id',$id)->update([
-            'project_status'=>$statuses,
-            'remarks'=>$request->materials,
-            'with_cont'=>$request->qstn,
-            'followup'=>$request->follow,
-            'construction_type'=>$type,
-            'road_width'=>$request->rWidth,
-            'quality'=>$request->quality,
-            'contract'=>$request->contract,
-            'note'=>$request->note,
-            'follow_up_by'=>Auth::user()->id,
-            'call_attended_by'=>Auth::user()->id
+                'project_status'=>$statuses,
+                'remarks'=>$request->materials,
+                'with_cont'=>$request->qstn,
+                'followup'=>$request->follow,
+                'construction_type'=>$type,
+                'road_width'=>$request->rWidth,
+                'quality'=>$request->quality,
+                'contract'=>$request->contract,
+                'note'=>$request->note,
+                'follow_up_by'=>Auth::user()->id,
+                'call_attended_by'=>Auth::user()->id
             ]);
         siteAddress::where('project_id',$id)->update([
             'address'=>$request->address
@@ -1386,6 +1530,12 @@ class mamaController extends Controller
     public function markProject(Request $request)
     {
         ProjectDetails::where('project_id',$request->id)->update(['quality'=>$request->quality]);
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = 20;
+        $points->type = "Add";
+        $points->reason = "Marking project Id: ".$id." as ".$request->quality;
+        $points->save();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;

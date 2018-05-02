@@ -50,6 +50,7 @@ use App\Stages;
 use App\Dates;
 use App\Map;
 use App\brand;
+use App\Point;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -985,6 +986,10 @@ class HomeController extends Controller
                         ->select('requirements.status','site_addresses.address','site_addresses.latitude','site_addresses.longitude','project_details.project_name','project_details.project_id','project_details.created_at','project_details.updated_at')
                         ->get();
         $prices = CategoryPrice::all();
+        $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('type','Add')->sum('point');
+        $points_subtracted = Point::where('user_id',Auth::user()->id)->where('type','Subtract')->sum('point');
+        $points_indetail = Point::where('user_id',Auth::user()->id)->get();
+        $total = $points_earned_so_far - $points_subtracted;
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
                                                 'projects'=>$projects,
@@ -994,7 +999,11 @@ class HomeController extends Controller
                                                 'outtime'=>$outtime,
                                                 'total'=>$totalLists,
                                                 'ordersInitiated'=>$ordersInitiated,
-                                                'ordersConfirmed'=>$ordersConfirmed
+                                                'ordersConfirmed'=>$ordersConfirmed,
+                                                'points_indetail'=>$points_indetail,
+                                                'points_earned_so_far'=>$points_earned_so_far,
+                                                'points_subtracted'=>$points_subtracted,
+                                                'total'=>$total
                                                 ]);
     }
     public function projectList()
@@ -1056,10 +1065,14 @@ class HomeController extends Controller
     }
     public function viewProjectList(Request $request)
     {
-        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-        $projectlist = ProjectDetails::where('road_name',$request->road)
-                    ->where('sub_ward_id',$assignment)
-                    ->get();
+        if($request->today){
+            $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->get();
+        }else{
+            $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+            $projectlist = ProjectDetails::where('road_name',$request->road)
+            ->where('sub_ward_id',$assignment)
+            ->get();
+        }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
     }
     public function getMyReports(Request $request)
@@ -1426,6 +1439,10 @@ class HomeController extends Controller
                                 ->count();
         $total = $fakeProjects + $genuineProjects;
         $prices = CategoryPrice::all();
+        $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('type','Add')->sum('point');
+        $points_subtracted = Point::where('user_id',Auth::user()->id)->where('type','Subtract')->sum('point');
+        $points_indetail = Point::where('user_id',Auth::user()->id)->get();
+        $total = $points_earned_so_far - $points_subtracted;
         return view('sedashboard',[
             'projects'=>$projects,
             'reqcount'=>$reqcount,
@@ -1436,7 +1453,11 @@ class HomeController extends Controller
             'ordersinitiate'=>$ordersinitiate,
             'ordersConfirmed'=>$ordersConfirmed,
             'fakeProjects'=>$fakeProjects,
-            'genuineProjects'=>$genuineProjects
+            'genuineProjects'=>$genuineProjects,
+            'points_indetail'=>$points_indetail,
+            'points_earned_so_far'=>$points_earned_so_far,
+            'points_subtracted'=>$points_subtracted,
+            'total'=>$total
         ]);
     }
     public function printLPO($id, Request $request)
@@ -1542,6 +1563,19 @@ class HomeController extends Controller
         $name = $request->name;
         $phone = $request->phone;
         $email = $request->email;
+        $project = OwnerDetails::where('project_id',$id)->first();
+        $point = 0;
+        if($project != null){
+            $point = $name != $project->owner_name ? $point+5 : $point+0;
+            $point = $phone != $project->owner_contact_no ? $point+5 : $point+0;
+            $point = $email != $project->owner_email ? $point+5 : $point+0;
+            $points = new Point;
+            $points->user_id = Auth::user()->id;
+            $points->point = $point;
+            $points->type = "Add";
+            $points->reason = "Updating owner details";
+            $points->save();
+        }
         $x = OwnerDetails::where('project_id',$id)->update(['owner_name' => $name, 'owner_contact_no' => $phone, 'owner_email' => $email]);
         if($x)
         {
@@ -1558,6 +1592,19 @@ class HomeController extends Controller
         $name = $request->name;
         $phone = $request->phone;
         $email = $request->email;
+        $project = ContractorDetails::where('project_id',$id)->first();
+        $point = 0;
+        if($project != null){
+            $point = $name != $project->contractor_name ? $point+3 : $point+0;
+            $point = $phone != $project->contractor_contact_no ? $point+3 : $point+0;
+            $point = $email != $project->contractor_email ? $point+3 : $point+0;
+            $points = new Point;
+            $points->user_id = Auth::user()->id;
+            $points->point = $point;
+            $points->type = "Add";
+            $points->reason = "Updating contractor details";
+            $points->save();
+        }
         $x = ContractorDetails::where('project_id',$id)->update(['contractor_name' => $name, 'contractor_contact_no' => $phone, 'contractor_email' => $email]);
         if($x)
         {
@@ -1574,6 +1621,19 @@ class HomeController extends Controller
         $name = $request->name;
         $phone = $request->phone;
         $email = $request->email;
+        $project = ConsultantDetails::where('project_id',$id)->first();
+        $point = 0;
+        if($project != null){
+            $point = $name != $project->consultant_name ? $point+3 : $point+0;
+            $point = $phone != $project->consultant_contact_no ? $point+3 : $point+0;
+            $point = $email != $project->consultant_email ? $point+3 : $point+0;
+            $points = new Point;
+            $points->user_id = Auth::user()->id;
+            $points->point = $point;
+            $points->type = "Add";
+            $points->reason = "Updating consultant details";
+            $points->save();
+        }
         $x = ConsultantDetails::where('project_id',$id)->update(['consultant_name' => $name, 'consultant_contact_no' => $phone, 'consultant_email' => $email]);
         if($x)
         {
@@ -1583,6 +1643,7 @@ class HomeController extends Controller
         {
             return response()->json('Error !!!');
         }
+        dd($test);
     }
     public function updateProcurement(Request $request)
     {
@@ -1590,6 +1651,19 @@ class HomeController extends Controller
         $name = $request->name;
         $phone = $request->phone;
         $email = $request->email;
+        $project = ProcurementDetails::where('project_id',$id)->first();
+        $point = 0;
+        if($project != null){
+            $point = $name != $project->procurement_name ? $point+3 : $point+0;
+            $point = $phone != $project->procurement_contact_no ? $point+3 : $point+0;
+            $point = $email != $project->procurement_email ? $point+3 : $point+0;
+            $points = new Point;
+            $points->user_id = Auth::user()->id;
+            $points->point = $point;
+            $points->type = "Add";
+            $points->reason = "Updating procurement details";
+            $points->save();
+        }
         $x = ProcurementDetails::where('project_id',$id)->update(['procurement_name' => $name, 'procurement_contact_no' => $phone, 'procurement_email' => $email]);
         if($x)
         {
