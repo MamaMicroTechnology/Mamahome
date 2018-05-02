@@ -2250,8 +2250,8 @@ class HomeController extends Controller
     }
     public function confirmedProject(Request $request){
         $check = ProjectDetails::where('project_id',$request->id)->first();
-        if( $check->confirmed == "true" || $check->confirmed == "false"){
-            ProjectDetails::where('project_id',$request->id)->update(['confirmed'=> 1]);
+        if($check->confirmed == null || $check->confirmed == "true" || $check->confirmed == "false"){
+            ProjectDetails::where('project_id',$request->id)->update(['confirmed'=>1]);
         }else{
             projectDetails::where('project_id',$request->id)
             ->increment('confirmed');

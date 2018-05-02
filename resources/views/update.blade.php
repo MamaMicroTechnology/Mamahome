@@ -278,10 +278,10 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Structural Budget
+                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural Budget
                                     </label>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Finishing Budget
+                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing Budget
                                     </label>
                                  </td>
                                </tr>
@@ -714,27 +714,15 @@ function sum(){
             }
         }
      else if(current == 'second'){
-            if(document.getElementById("contract").value == "Material Contract"){
-                if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
-                    window.alert("Please enter owner details");
-                }else{
-                    document.getElementById("second").className = "hidden";
-                    document.getElementById("third").className = "";
-                    document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-                    current = "third";
-                }
-            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
-            }
-         }else if(current == 'third'){
-            document.getElementById("third").className = "hidden";
-      document.getElementById("fourth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-            current = "fourth";
-            
+        }else if(current == 'third'){
+                document.getElementById("third").className = "hidden";
+                document.getElementById("fourth").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                current = "fourth";
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";

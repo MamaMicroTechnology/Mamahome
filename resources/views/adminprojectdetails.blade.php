@@ -120,7 +120,7 @@
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Total Budget (in Cr.)</b></td>
-                                <td>{{$rec->budget}} Cr.</td>
+                                <td>{{$rec->budget}} Cr. ({{ $rec->budgetType }})</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Budget (per sq.ft)</b></td>

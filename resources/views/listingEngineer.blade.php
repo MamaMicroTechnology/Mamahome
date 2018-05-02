@@ -707,26 +707,16 @@
           
         }
      else if(current == 'second'){
-            if(document.getElementById("contract").value == "Material Contract"){
-                if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
-                    window.alert("Please enter owner details");
-                }else{
-                    document.getElementById("second").className = "hidden";
-                    document.getElementById("third").className = "";
-                    document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-                    current = "third";
-                }
-            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
-            }
         }else if(current == 'third'){
-            document.getElementById("third").className = "hidden";
-      document.getElementById("fourth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-            current = "fourth";
+                document.getElementById("third").className = "hidden";
+                document.getElementById("fourth").className = "";
+                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+                current = "fourth";
+            
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";

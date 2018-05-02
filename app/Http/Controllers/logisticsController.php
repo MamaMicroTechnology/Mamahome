@@ -29,6 +29,7 @@ use App\KeyResult;
 use App\MhInvoice;
 use App\Order;
 use App\DeliveryDetails;
+use App\RoomType;
 
 class logisticsController extends Controller
 {
@@ -75,10 +76,12 @@ class logisticsController extends Controller
         return view('logistics.orders',['view' => $view,'count' => $countview]);
     }
     
-    public function showProjectDetails($id)
+    public function showProjectDetails(Request $id)
     {
+        $id = $id->id;
         $rec = ProjectDetails::where('project_id',$id)->first();
-        return view('logistics.projectdetails',['rec' => $rec]);
+        $roomtypes = RoomType::where('project_id',$id)->get();
+        return view('logistics.projectdetails',['rec' => $rec,'roomtypes'=>$roomtypes]);
     }
     public function confirmDelivery(Request $request){
         $requirement = Requirement::where('id',$request->id)->first();
@@ -158,5 +161,7 @@ class logisticsController extends Controller
             $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
             $deliveryDetails->save();
         }
+        Order::where('id',$request->orderId)->update(['delivery_details',"Delivered"]);
+        return back();
     }
 }
