@@ -729,22 +729,12 @@ function sum(){
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
             }
-        }else if(current == 'third'){
-            if(document.getElementById("contract").value == "Labour Contract"){
-                if(document.getElementById("cName").value == "" || document.getElementById("cContact").value == ""){
-                    window.alert("Please enter contractor details");
-                }else{
-                    document.getElementById("third").className = "hidden";
-                    document.getElementById("fourth").className = "";
-                    document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-                    current = "fourth";
-                }
-            }else{
-                document.getElementById("third").className = "hidden";
-                document.getElementById("fourth").className = "";
-                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-                current = "fourth";
-            }
+         }else if(current == 'third'){
+            document.getElementById("third").className = "hidden";
+      document.getElementById("fourth").className = "";
+            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
+            current = "fourth";
+            
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";

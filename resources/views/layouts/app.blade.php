@@ -406,6 +406,9 @@ div#calendar{
                                     @if(Auth::user()->department_id == 2 && Auth::user()->group_id == 7)
                                     <li><a href="{{ URL::to('/') }}/salescompleted ">Completed</a></li>
                                     @endif
+                                    @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
+                                    <li><a href="{{ URL::to('/') }}/admincompleted?id={{ Auth::user()->id }}">Completed</a></li>
+                                    @endif
                                     <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -471,6 +474,7 @@ div#calendar{
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
+    <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">

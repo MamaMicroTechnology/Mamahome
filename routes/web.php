@@ -72,7 +72,8 @@ Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
-
+Route::get('/date_wise_project','HomeController@datewise');
+Route::get('/status_wise_projects','HomeController@index1');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -208,6 +209,11 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/deleteentry','HomeController@deleteentry');
     Route::get('/getWards','HomeController@getWards');
+    Route::get('/assignadmin','HomeController@assignadmin');
+    Route::get('/admincompleted','mamaController@completedAssignment');
+
+
+
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
     Route::post('/saveWardMap','mamaController@saveWardMap');

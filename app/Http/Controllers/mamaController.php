@@ -52,9 +52,9 @@ class mamaController extends Controller
 {
     public function addDepartment(Request $request)
     {
-    	$department = New Department;
-    	$department->dept_name = $request->dept_name;
-    	if($department->save()){
+        $department = New Department;
+        $department->dept_name = $request->dept_name;
+        if($department->save()){
             $activity = new ActivityLog;
             $activity->time = date('Y-m-d H:i A');
             $activity->employee_id = Auth::user()->employeeId;
@@ -67,16 +67,16 @@ class mamaController extends Controller
             $activity->employee_id = Auth::user()->employeeId;
             $activity->activity = Auth::user()->name." has tried to add a new department on ".date('H:i A')." but failed";
             $activity->save();
-    		return back()->with('Error','Seems there is some problem in the input');
-    	}
+            return back()->with('Error','Seems there is some problem in the input');
+        }
     }
     public function deleteDepartment(Request $request)
     {
-    	User::where('department_id',$request->id)->update([
-    		'department_id' => 1
-    	]);
-    	Department::where('id',$request->id)->delete();
-    	return back()->with('Success','Department deleted');
+        User::where('department_id',$request->id)->update([
+            'department_id' => 1
+        ]);
+        Department::where('id',$request->id)->delete();
+        return back()->with('Success','Department deleted');
     }
     public function addEmployee(Request $request)
     {
@@ -89,15 +89,15 @@ class mamaController extends Controller
                     ->withErrors($validator)
                     ->withInput();
         }
-    	$user = New User;
-    	$user->employeeId = $request->employeeId;
-    	$user->department_id = $request->dept;
-    	$user->name = $request->name;
-    	$user->email = $request->email;
-    	$user->group_id = $request->designation;
-    	$user->contactNo = $request->phNo;
-    	$user->password = bcrypt('mama@home123');
-    	if($user->save()){
+        $user = New User;
+        $user->employeeId = $request->employeeId;
+        $user->department_id = $request->dept;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->group_id = $request->designation;
+        $user->contactNo = $request->phNo;
+        $user->password = bcrypt('mama@home123');
+        if($user->save()){
             $empdetails = new EmployeeDetails;
             $empdetails->employee_id = $user->employeeId;
             $empdetails->save();
@@ -108,32 +108,32 @@ class mamaController extends Controller
                 $assignment->status = "Completed";
                 $assignment->save();
             }
-    		return back()->with('Added','Employee Added Successfully');
-    	}else{
-    		return back()->with('NotAdded','Employee add unsuccessful');
-    	}
+            return back()->with('Added','Employee Added Successfully');
+        }else{
+            return back()->with('NotAdded','Employee add unsuccessful');
+        }
     }
     public function deleteEmployee(Request $request)
     {
-    	User::where('id',$request->id)->delete();
-    	return back()->with('UserSuccess','User deleted');
+        User::where('id',$request->id)->delete();
+        return back()->with('UserSuccess','User deleted');
     }
     public function assignDesignation($id,Request $request)
     {
-    	User::where('id',$id)->update([
-    		'group_id' => $request->designation
-    	]);
-    	return back();
+        User::where('id',$id)->update([
+            'group_id' => $request->designation
+        ]);
+        return back();
     }
     public function addDesignation(Request $request)
     {
-    	$group = New Group;
-    	$group->group_name = $request->desig_name;
-    	if($group->save()){
-    		return back();
-    	}else{
-    		return back();
-    	}
+        $group = New Group;
+        $group->group_name = $request->desig_name;
+        if($group->save()){
+            return back();
+        }else{
+            return back();
+        }
     }
     public function deleteDesignation(Request $request)
     {
@@ -153,11 +153,11 @@ class mamaController extends Controller
     }
     // public function addState(Request $request)
     // {
-    // 	$state = New State;
-    // 	$state->zone_id = $request->zone_id;
-    // 	$state->state_name = $request->state_name;
-    // 	$state->save();
-    // 	return back();
+    //  $state = New State;
+    //  $state->zone_id = $request->zone_id;
+    //  $state->state_name = $request->state_name;
+    //  $state->save();
+    //  return back();
     // }
     public function addZone(Request $request)
     {
@@ -168,13 +168,13 @@ class mamaController extends Controller
         $imageName1 = time().'.'.request()->image->getClientOriginalExtension();
         $request->image->move(public_path('zoneimages'),$imageName1);
         
-    	$zone = New Zone;
-    	$zone->country_id = $request->sId;
-    	$zone->zone_name = $request->zone_name;
-    	$zone->zone_number = $request->zone_no;
+        $zone = New Zone;
+        $zone->country_id = $request->sId;
+        $zone->zone_name = $request->zone_name;
+        $zone->zone_number = $request->zone_no;
         $zone->zone_image = $imageName1;
-    	$zone->save();
-    	return back();
+        $zone->save();
+        return back();
     }
      
      public function view_zone(Request $id){

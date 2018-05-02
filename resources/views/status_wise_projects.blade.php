@@ -41,11 +41,13 @@
                             <td>
                                 <form method="post" action="{{ URL::to('/') }}/confirmedProject">
                                     {{ csrf_field() }}
-                                    <input type="hidden" value="{{ $project->project_id }}" name="id">
-                                    <div class="checkbox">
-                                    <label><input type="checkbox" name="confirmed" onchange="this.form.submit()">Called</label>
-                                    </div>
-                                    </div>       
+                                     <input type="hidden" value="{{ $project->project_id }}" name="id">
+                                    @if( ($project->confirmed !== "0" ||  $project->confirmed == "true") && ($project->confirmed !== "false" && $project->confirmed !== "Null" ))
+                                 <button type="button" class="btn btn-danger" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
+                                @endif
+                                        @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
+                                 <button type="button" class="btn btn-success"  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
+                                @endif      
                                 </form>
                                 <td>{{  $project->confirmed }}</td>
                             </td>
