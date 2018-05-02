@@ -129,7 +129,13 @@ class HomeController extends Controller
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
       
-           
+        $points = new Point;
+        $points->user_id = $request->initiator;
+        $points->point = 100;
+        $points->type = "Add";
+        $points->reason = "Generating enquiry";
+        $points->save();
+        
         $var = count($request->subcat);
         $var1 = count($brand);
 
