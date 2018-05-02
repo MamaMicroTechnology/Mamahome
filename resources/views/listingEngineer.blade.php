@@ -707,14 +707,10 @@
           
         }
      else if(current == 'second'){
-            if(document.getElementById("contract").value == "Material Contract"){
-               
-            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
-            }
         }else if(current == 'third'){
                 document.getElementById("third").className = "hidden";
                 document.getElementById("fourth").className = "";
