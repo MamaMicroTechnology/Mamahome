@@ -482,6 +482,7 @@ div#calendar{
     
     <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
     <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
+   <a href="{{ URL::to('/enquiryCancell') }}">Enquiry cancelled</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
      <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
       <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
