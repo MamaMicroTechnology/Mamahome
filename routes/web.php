@@ -157,7 +157,7 @@ Route::get('/kra','HomeController@getKRA');
 Route::get('/eqpipeline','HomeController@eqpipeline');
 Route::get('/letraining','HomeController@letraining');
 Route::get('/setraining','HomeController@setraining');
-
+Route::post('/addDeliveryBoy','mamaController@addDeliveryBoy');
 
 
 

@@ -1582,7 +1582,9 @@ class HomeController extends Controller
                 ->leftJoin('users','orders.generated_by','=','users.id')
                 ->select('orders.*','orders.id as orderid','users.name','users.group_id')
                 ->paginate(25);
-        return view('ordersadmin',['view' => $view]);
+        $depts = [1,2];
+        $users = User::whereIn('department_id',$depts)->get();
+        return view('ordersadmin',['view' => $view,'users'=>$users]);
     }
     public function getSubCat(Request $request)
     {

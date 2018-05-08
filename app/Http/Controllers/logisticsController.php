@@ -80,9 +80,10 @@ class logisticsController extends Controller
     public function orders()
     {
         $view = Order::orderBy('project_id','DESC')
-                ->leftJoin('users','orders.generated_by','=','users.id')
+                ->leftJoin('users','orders.delivery_boy','=','users.id')
                 ->select('orders.*','orders.id as orderid','users.name','users.group_id')
                 ->where('status','Order Confirmed')
+                ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
         $countview = Order::where('status',"Order Confirmed")->count();
         return view('logistics.orders',['view' => $view,'count' => $countview]);
@@ -141,6 +142,7 @@ class logisticsController extends Controller
         $request->signature->move(public_path('signatures'),$signatureName);
         $signature = Order::where('id',$request->orderId)->first();
         $signature->signature = $signatureName;
+        $signature->total = $request->amount;
         $signature->payment_status = "Payment Received";
         $signature->save();
         return back()->with('Success','Payment Received');

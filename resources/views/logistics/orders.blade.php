@@ -13,7 +13,7 @@
 				    <th style="text-align:center">Project ID</th>
                     <th style="text-align: center;">Order Id</th>
 					<th style="text-align:center">Quantity</th>					
-					<th style="text-align:center">Status</th>
+					<!-- <th style="text-align:center">Status</th> -->
 					<th style="text-align:center">Dispatch Status</th>
 					<th style="text-align:center">Sign Status</th>
 					<th style="text-align:center">Delivery Status</th>
@@ -26,7 +26,7 @@
 						<td style="text-align:center"><a href="{{URL::to('/')}}/showProjectDetails?id={{$rec->project_id}}">{{$rec -> project_id}}</a></td>
                         <td style="text-align:center">{{ $rec->orderid }}</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
-						<td style="text-align:center">{{$rec->status}}</td>
+						<!-- <td style="text-align:center"></td> -->
 						<td style="text-align:center">
 						@if($rec->dispatch_status=='Yes')
 						    Dispatched
@@ -36,10 +36,29 @@
 						</td>
 				        <td style="text-align: center;">
                             @if($rec->payment_status != "Payment Received" && $rec->dispatch_status == 'Yes')
+							<button data-toggle="modal" data-target="#PaymentModal" class="btn btn-success btn-sm">Payment Details</button>
                                 <form method="POST" action="{{ URL::to('/') }}/saveSignature" enctype="multipart/form-data">
                                     {{ csrf_field() }}
-                                    <input oninput="this.form.submit()" type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
-                                    <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+									<div id="PaymentModal" class="modal fade" role="dialog">
+										<div class="modal-dialog modal-sm">
+											<!-- Modal content-->
+											<div class="modal-content">
+											<div class="modal-header">
+												Payment
+											</div>
+											<div class="modal-body">
+												<label for="amount">Amount Received:</label>
+												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm"><br>
+												<label for="sign">Signature:</label>
+												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
+												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-success pull-left">Save</button>
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
                                 </form>
                             @else
                                 <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>

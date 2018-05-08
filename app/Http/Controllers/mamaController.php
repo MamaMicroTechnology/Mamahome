@@ -1690,4 +1690,9 @@ class mamaController extends Controller
         $point->save();
         return back()->with('Success','Your request has been sent and is waiting for admin approval');
     }
+    public function addDeliveryBoy(Request $request)
+    {
+        Order::where('id',$request->orderId)->update(['delivery_boy'=>$request->delivery]);
+        return back();
+    }
 }
