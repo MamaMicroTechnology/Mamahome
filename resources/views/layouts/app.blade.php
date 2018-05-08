@@ -380,7 +380,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b> <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id != 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em">Enquiry Pipelined</a></li>
                           @endif

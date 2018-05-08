@@ -651,80 +651,85 @@ class mamaController extends Controller
     {
         $point = 0;
         $project = ProjectDetails::where('project_id',$id)->first();
-        if($request->quality && $project->quality != $request->quality){
-            $points = new Point;
-            $points->user_id = Auth::user()->id;
-            $points->point = 20;
-            $points->type = "Add";
-            $points->reason = "Marking project Id: <a href=\"\">".$id."</a> as ".$request->quality;
-            $points->save();
-        }
-        
-        $point = $request->pName != null && $project->project_name != $request->pName ? $point+2 : $point+0;
-        // road name
-        $point = $request->rName != null && $project->road_name != $request->rName ? $point+2 : $point+0;        
-        // road width
-        $point = $request->rWidth != null && $project->road_width != $request->rWidth ? $point+4 : $point+0;
-        // Construction type
-        if(count($request->construction_type) != 0){
-            $construction_types = implode(", ",$request->constructionType);
-        }else{
-            $construction_types = $project->construction_type;
-        }
-        $point = $request->constructionType != null && $project->construction_type != $construction_types ? $point+5 : $point+0;
-        // interested in rmc
-        $point = $request->rmcinterest != null && $project->interested_in_rmc != $request->rmcinterest ? $point+3 : $point+0;
-        // type of contract
-        $point = $request->contract != null && $project->contract != $request->contract ? $point+6 : $point+0;
-        // project status
-        if(count($request->status) != 0){
-            $statuses = implode(", ",$request->status);
-        }else{
-            $statuses = $project->project_status;
-        }
-        $point = $request->status != null && $project->project_status != $statuses ? $point+5 : $point+0;
-        // project type
-        $point = ($request->basement != null && $request->ground != null) && ($request->basement != $project->basement && $request->ground != $project->ground) ? $point+5 : $point+0;
-        // project size
-        $point = $request->pSize != null && $project->project_size != $request->pSize ? $point+8 : $point+0;
-        // budgettype
-        $point = $request->budgetType != null && $project->budgetType != $request->budgetType ? $point+3 : $point+0;
-        // total budget
-        $point = $request->budget != null && $project->budget != $project->budget ? $point+5 : $point+0;
-        // project Image
-        $point = $request->pImage != null ? $point+6 : $point+0;
-        // room types
-        $point = $request->floorNo[0] != null ? $point+5 : $point+0;
-        // owner details
-        $point = $request->oName != null && $project->ownerdetails->owner_name != $request->oName ? $point+5 : $point+0;
-        $point = $request->oEmail != null && $project->ownerdetails->owner_email != $request->oEmail ? $point+5 : $point+0;
-        $point = $request->oContact != null && $project->ownerdetails->owner_contact_no != $request->oContact ? $point+5 : $point+0;
-        // contractor details
-        $point = $request->cName != null && $project->contractordetails->contractor_name != $request->cName ? $point+3 : $point+0;
-        $point = $request->cEmail != null && $project->contractordetails->contractor_email != $request->cEmail ? $point+3 : $point+0;
-        $point = $request->cContact != null && $project->contractordetails->contractor_contact_no != $request->cContact ? $point+3 : $point+0;
-        // consultant details
-        // $point = $request->coName != null ? $point+3 : $point+0;
-        // $point = $request->coEmail != null ? $point+3 : $point+0;
-        // $point = $request->coContact != null ? $point+3 : $point+0;
-        // site engineer details
-        $point = $request->eName != null && $project->siteengineerdetails->site_engineer_name != $request->eName ? $point+3 : $point+0;
-        $point = $request->eEmail != null && $project->siteengineerdetails->site_engineer_email != $request->eEmail ? $point+3 : $point+0;
-        $point = $request->eContact != null && $project->siteengineerdetails->site_engineer_contact_no != $request->eContact ? $point+3 : $point+0;
-        // procurement details
-        $point = $request->prName != null && $project->procurementdetails->procurement_name != $request->prName ? $point+3 : $point+0;
-        $point = $request->pEmail != null && $project->procurementdetails->procurement_email != $request->pEmail ? $point+3 : $point+0;
-        $point = $request->prPhone != null && $project->procurementdetails->procurement_contact_no != $request->prPhone ? $point+3 : $point+0;
-        $point = $request->remarks != null && $project->remarks != $request->remarks ? $point+10 : $point+0;
-        
-        // store points to database
-        if($point != 0){
-            $points = new Point;
-            $points->user_id = Auth::user()->id;
-            $points->point = $point;
-            $points->type = "Add";
-            $points->reason = "Updating a project";
-            $points->save();
+        $today = date('Y-m-d');
+        $created = date('Y-m-d',strtotime($project->created_at));
+        $updated = date('Y-m-d',strtotime($project->updated_at));
+        if($today != $created || $today != $updated){
+            if($request->quality && $project->quality != $request->quality){
+                $points = new Point;
+                $points->user_id = Auth::user()->id;
+                $points->point = 20;
+                $points->type = "Add";
+                $points->reason = "Marking project Id: <a href=\"\">".$id."</a> as ".$request->quality;
+                $points->save();
+            }
+            
+            $point = $request->pName != null && $project->project_name != $request->pName ? $point+2 : $point+0;
+            // road name
+            $point = $request->rName != null && $project->road_name != $request->rName ? $point+2 : $point+0;        
+            // road width
+            $point = $request->rWidth != null && $project->road_width != $request->rWidth ? $point+4 : $point+0;
+            // Construction type
+            if(count($request->construction_type) != 0){
+                $construction_types = implode(", ",$request->constructionType);
+            }else{
+                $construction_types = $project->construction_type;
+            }
+            $point = $request->constructionType != null && $project->construction_type != $construction_types ? $point+5 : $point+0;
+            // interested in rmc
+            $point = $request->rmcinterest != null && $project->interested_in_rmc != $request->rmcinterest ? $point+3 : $point+0;
+            // type of contract
+            $point = $request->contract != null && $project->contract != $request->contract ? $point+6 : $point+0;
+            // project status
+            if(count($request->status) != 0){
+                $statuses = implode(", ",$request->status);
+            }else{
+                $statuses = $project->project_status;
+            }
+            $point = $request->status != null && $project->project_status != $statuses ? $point+5 : $point+0;
+            // project type
+            $point = ($request->basement != null && $request->ground != null) && ($request->basement != $project->basement && $request->ground != $project->ground) ? $point+5 : $point+0;
+            // project size
+            $point = $request->pSize != null && $project->project_size != $request->pSize ? $point+8 : $point+0;
+            // budgettype
+            $point = $request->budgetType != null && $project->budgetType != $request->budgetType ? $point+3 : $point+0;
+            // total budget
+            $point = $request->budget != null && $project->budget != $project->budget ? $point+5 : $point+0;
+            // project Image
+            $point = $request->pImage != null ? $point+6 : $point+0;
+            // room types
+            $point = $request->floorNo[0] != null ? $point+5 : $point+0;
+            // owner details
+            $point = $request->oName != null && $project->ownerdetails->owner_name != $request->oName ? $point+5 : $point+0;
+            $point = $request->oEmail != null && $project->ownerdetails->owner_email != $request->oEmail ? $point+5 : $point+0;
+            $point = $request->oContact != null && $project->ownerdetails->owner_contact_no != $request->oContact ? $point+5 : $point+0;
+            // contractor details
+            $point = $request->cName != null && $project->contractordetails->contractor_name != $request->cName ? $point+3 : $point+0;
+            $point = $request->cEmail != null && $project->contractordetails->contractor_email != $request->cEmail ? $point+3 : $point+0;
+            $point = $request->cContact != null && $project->contractordetails->contractor_contact_no != $request->cContact ? $point+3 : $point+0;
+            // consultant details
+            // $point = $request->coName != null ? $point+3 : $point+0;
+            // $point = $request->coEmail != null ? $point+3 : $point+0;
+            // $point = $request->coContact != null ? $point+3 : $point+0;
+            // site engineer details
+            $point = $request->eName != null && $project->siteengineerdetails->site_engineer_name != $request->eName ? $point+3 : $point+0;
+            $point = $request->eEmail != null && $project->siteengineerdetails->site_engineer_email != $request->eEmail ? $point+3 : $point+0;
+            $point = $request->eContact != null && $project->siteengineerdetails->site_engineer_contact_no != $request->eContact ? $point+3 : $point+0;
+            // procurement details
+            $point = $request->prName != null && $project->procurementdetails->procurement_name != $request->prName ? $point+3 : $point+0;
+            $point = $request->pEmail != null && $project->procurementdetails->procurement_email != $request->pEmail ? $point+3 : $point+0;
+            $point = $request->prPhone != null && $project->procurementdetails->procurement_contact_no != $request->prPhone ? $point+3 : $point+0;
+            $point = $request->remarks != null && $project->remarks != $request->remarks ? $point+10 : $point+0;
+            
+            // store points to database
+            if($point != 0){
+                $points = new Point;
+                $points->user_id = Auth::user()->id;
+                $points->point = $point;
+                $points->type = "Add";
+                $points->reason = "Updating a project";
+                $points->save();
+            }
         }
 
         $basement = $request->basement;
@@ -1671,5 +1676,18 @@ class mamaController extends Controller
             $check->save();
         }
         return back();
+    }
+    public function addPoints(Request $request)
+    {
+        $point = new Point;
+        $point->user_id = $request->userId;
+        $point->point = $request->point;
+        $point->type = $request->type;
+        $point->reason = $request->reason;
+        $point->confirmation = Auth::user()->department_id == 1 ? 0 : 1;
+        $point->created_at = $request->date;
+        $point->updated_at = $request->date;
+        $point->save();
+        return back()->with('Success','Your request has been sent and is waiting for admin approval');
     }
 }

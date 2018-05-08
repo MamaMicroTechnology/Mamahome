@@ -1,7 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-4 col-md-offset-1">
+	<table class="table table-hover" border=1>
+		<center><label for="Points">{{ $username->name }}'s Points For {{ isset($_GET['date']) ? date('d-m-Y',strtotime($_GET['date'])) : 'Today' }}</label></center>
+		<thead>
+			<th>Reason For Earning Point</th>
+			<th>Points Earned</th>
+		</thead>
+		<tbody>
+			@foreach($points_indetail as $points)
+			<tr>
+				<td>{!! $points->reason !!}</td>
+				<td style="text-align: right">{{ $points->type == "Add" ? "+".$points->point : "-".$points->point }}</td>
+			</tr>
+			@endforeach
+			<tr>
+				<td colspan=2>
+					<button type="button" class="btn btn-info btn-sm form-control" data-toggle="modal" data-target="#myModal">Add More Point</button>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><b>Total</b></td>
+				<td style="text-align: right">{{ $total }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="col-md-6">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			@if($loginTimes)
@@ -372,6 +398,57 @@
 		@endif
 	</div>
 </div>
+
+<form action="{{ URL::to('/') }}/addPoints" method="post">
+{{ csrf_field() }}
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Points To {{ $username->name }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+		<input type="hidden" name="userId" value="{{ $username->id }}">
+		<input type="hidden" name="date" value="{{ isset($_GET['date']) ? $_GET['date'].' '.date('H:i:s') : date('Y-m-d H:i:s') }}">
+			<tr>
+				<td>Type</td>
+				<td>:</td>
+				<td>
+					<select name="type" id="" class="form-control">
+						<option value="">--Select--</option>
+						<option value="Add">Add</option>
+						<option value="Subtract">Subtract</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Reason</td>
+				<td>:</td>
+				<td>
+					<textarea name="reason" rows="3" class="form-control" placeholder="Reason for adding points"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>Points</td>
+				<td>:</td>
+				<td><input type="number" name="point" class="form-control" placeholder="Amount you want to add"></td>
+			</tr>
+		</table>
+      </div>
+      <div class="modal-footer">
+		<button type="submit" class="btn btn-success pull-left">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</form>
 
 <script>
     function editMorning(){

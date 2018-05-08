@@ -42,7 +42,7 @@
                                     <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>
+                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>
                             @endif
                         </td>
                         <td style="text-align:center">

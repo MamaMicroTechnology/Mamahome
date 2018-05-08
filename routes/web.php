@@ -171,6 +171,7 @@ Route::post('/deleteCertificate','amController@deleteCertificate');
 
 // Admin
 Route::group(['middleware' => ['admin']],function(){
+    Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
     Route::get('/anr','HomeController@getAnR');
     Route::get('/viewEmployee','HomeController@viewEmployee');
@@ -208,6 +209,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/deleteentry','HomeController@deleteentry');
     Route::get('/getWards','HomeController@getWards');
+    Route::get('/approvePoint','HomeController@approvePoint');
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
     Route::post('/saveWardMap','mamaController@saveWardMap');
@@ -250,7 +252,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::post('/teamaddKRA','amController@teamaddKRA');
     Route::get('/teamdeletekra','amController@deletekra');
     Route::post('/teamupdatekra','amController@updatekra');
-
+    Route::post('/addPoints','mamaController@addPoints');
 
 
 

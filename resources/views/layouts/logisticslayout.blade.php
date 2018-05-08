@@ -282,6 +282,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
+                        <li><a href="{{ URL::to('/') }}/chat">Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
                         <li><a href="{{ URL::to('/') }}/takesignature" target="_blank">Take Signature</a></li>
                         @endif
                     </ul>
@@ -325,7 +326,7 @@ div#calendar{
 @if(Auth::user()->group_id == 12)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/chat">Chat</a>
+    
     <a href="{{ URL::to('/') }}/lcoorders">Order Details</a>
     <a href="{{ URL::to('/') }}/deliveredorders">Delivered Orders</a>
     <a href="{{ URL::to('/lcoreport') }}">My Report</a>

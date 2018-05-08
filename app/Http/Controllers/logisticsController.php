@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use DB;
@@ -30,9 +31,20 @@ use App\MhInvoice;
 use App\Order;
 use App\DeliveryDetails;
 use App\RoomType;
+use App\Message;
 
 class logisticsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+            $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('chatcount', $message);
+            return $next($request);
+        });
+    }
     public function dashboard()
     {
         return view('logistics.lcodashboard');

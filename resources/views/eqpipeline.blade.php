@@ -1,4 +1,7 @@
-@extends('layouts.app')
+<?php
+	$extender = Auth::user()->department_id == 1 ? 'layouts.leheader':'layouts.app';
+?>
+@extends($extender)
 @section('content')
 
 <div class="">
