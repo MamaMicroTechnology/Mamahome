@@ -57,7 +57,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -729,7 +729,7 @@
             current = "sixth";
         }else if(current == 'sixth'){  
           if(document.getElementById('prName').value == ''){
-            alert('Please Enter a Name');
+            alert('Please Enter a Procurement Name');
             document.getElementById('prName').focus();
           }else if(document.getElementById('prPhone').value== ''){
             alert('Please Enter Phone Number');
@@ -858,7 +858,7 @@
                       "<option value='2BHK'>2BHK</option>"+
                       "<option value='3BHK'>3BHK</option></select>"+
                       "</td><td>"+
-                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses\"></td>";
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses/No. of Flats\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }else if(ctype1.checked == false && ctype2.checked == true){
             // commercial only

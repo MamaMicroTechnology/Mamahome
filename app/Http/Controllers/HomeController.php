@@ -115,7 +115,7 @@ class HomeController extends Controller
         $brand = brand::leftjoin('category','category.id','=','brands.category_id')
                 ->select('brand')->get();
 
-        $depart = [2,4,8,6,7,15];
+        $depart = [2,4,8,6,7,15,17,16,1];
         $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         return view('inputview',['category'=>$category,'users'=>$users,'projects'=>$projects,'brand'=>$brand]);
@@ -222,7 +222,7 @@ class HomeController extends Controller
         $totalofenquiry = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();  
-        $depart = [6,7];
+        $depart = [6,7,8,1,15,16,17];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
 
@@ -699,12 +699,14 @@ class HomeController extends Controller
     {
         $check =DB::table('stages')->where('list',Auth::user()->name)
                     ->orderby('created_at','DESC')->pluck('status');
+
         $count = count($check); 
         $projects = ProjectDetails::leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
             ->where('project_status' , $check)
             ->select('project_details.*','users.name','sub_wards.sub_ward_name')
             ->paginate(15);
+            
         $totalListing = ProjectDetails::where('project_status',$check)->count();
             
         return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status'=>$check]);
@@ -915,13 +917,32 @@ class HomeController extends Controller
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
-    
+        
         $wards = Ward::orderby('ward_name','ASC')->get();
         $zones = Zone::all();
         $subwardsAssignment = WardAssignment::all();
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
         
         return view('assignListSlots',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards,'zones'=>$zones]);
+    }
+     public function assignadmin(){          
+    $group = Group::where('group_name','Admin')->pluck('id')->first();
+        $users = User::where('group_id',$group)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id')
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+
+       
+        $wards = Ward::orderby('ward_name','ASC')->get();
+        $zones = Zone::all();
+        $subwardsAssignment = WardAssignment::all();
+        $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
+        
+        return view('assignadmin',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards,'zones'=>$zones]);
     }
      public function tlmaps()
     {
@@ -1117,7 +1138,7 @@ class HomeController extends Controller
                         .$currentURL."/public/meters/".$loginTimes->morningMeter.
                         "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
                         "</td></tr><tr><td>Meter Reading</td><td>:</td><td>"
-						.($loginTimes != null ? $loginTimes->gtracing : '').
+                        .($loginTimes != null ? $loginTimes->gtracing : '').
                         "</td></tr><tr><td>Data Image</td><td>:</td><td>".
                         ($loginTimes != null ? ($loginTimes->morningData != null ? "<img src='"
                         .$currentURL."/public/data/".$loginTimes->morningData.
@@ -1182,7 +1203,7 @@ class HomeController extends Controller
                         .$currentURL."/public/meters/".$loginTimes->morningMeter.
                         "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
                         "</td></tr><tr><td>Meter Reading</td><td>:</td><td>"
-						.($loginTimes != null ? $loginTimes->gtracing : '').
+                        .($loginTimes != null ? $loginTimes->gtracing : '').
                         "</td></tr><tr><td>Data Image</td><td>:</td><td>".
                         ($loginTimes != null ? ($loginTimes->morningData != null ? "<img src='"
                         .$currentURL."/public/data/".$loginTimes->morningData.
@@ -2366,6 +2387,10 @@ class HomeController extends Controller
         salesassignment::where('user_id',Auth::user()->id)->delete();
         return redirect('/home');
     }
+    public function updateAdminAssignment(){
+        salesassignment::where('user_id',Auth::user()->id)->delete();
+        return redirect('/leDashboard');
+    }
     public function viewDailyReport($uId, $date){
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
@@ -2565,7 +2590,7 @@ class HomeController extends Controller
         $ward = SubWard::where('id',$assignment)->pluck('ward_id')->first();
         $subward = Subward::where('ward_id',$ward)->pluck('id');
         $projects = ProjectDetails::where('quality','Genuine')->where('project_status','Walls')->paginate(10);
-    	$projectscount = ProjectDetails::where('quality','Genuine')->count();
+        $projectscount = ProjectDetails::where('quality','Genuine')->count();
         return view('salesengineer',['projects'=>$projects,'subwards'=>$assignment,'projectscount'=>$projectscount,'links'=>$subward]);
     }
     public function activityLog()
@@ -2894,8 +2919,10 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
      public function editEnq1(Request $request)
     {
         $category = Category::all();
-        $depart = [2,4,6,7,8];
-        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+        $depart = [6];
+        $depart1= [7];
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -2907,7 +2934,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1]);
     }
     public function stages(Request $request)
     {

@@ -167,7 +167,7 @@ class logisticsController extends Controller
         }else{
             $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
             $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails = new DeliverDedtails;
+            $deliveryDetails = new DeliveryDetails;
             $deliveryDetails->order_id = $request->orderId;
             $deliveryDetails->delivery_video = $video;
             $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
