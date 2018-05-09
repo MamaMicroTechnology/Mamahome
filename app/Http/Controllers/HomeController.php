@@ -1576,12 +1576,24 @@ class HomeController extends Controller
         $categories = Category::all();
         return view('updateprice',['prices'=>$prices,'categories'=>$categories]);
     }
-    public function amorders()
+    public function amorders(Request $request)
     {
-        $view = Order::orderby('project_id','DESC')
-                ->leftJoin('users','orders.generated_by','=','users.id')
-                ->select('orders.*','orders.id as orderid','users.name','users.group_id')
-                ->paginate(25);
+        if($request->projectId){
+            $view = Order::orderby('orders.id','DESC')
+                    ->leftJoin('users','orders.generated_by','=','users.id')
+                    ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
+                    ->select('orders.*','orders.id as orderid','users.name','users.group_id',
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date')
+                    ->where('project_id',$request->projectId)
+                    ->paginate(25);
+        }else{
+            $view = Order::orderby('orders.id','DESC')
+                    ->leftJoin('users','orders.generated_by','=','users.id')
+                    ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
+                    ->select('orders.*','orders.id as orderid','users.name','users.group_id',
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date')
+                    ->paginate(25);
+        }
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         return view('ordersadmin',['view' => $view,'users'=>$users]);

@@ -21,6 +21,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
          <label>
            You have listed <strong>{{ $numbercount }}</strong> projects so far.<br>

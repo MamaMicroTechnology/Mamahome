@@ -12,8 +12,8 @@
 				<thead>
 				    <th style="text-align:center">Project ID</th>
                     <th style="text-align: center;">Order Id</th>
+					<th style="text-align:center">Product</th>
 					<th style="text-align:center">Quantity</th>					
-					<!-- <th style="text-align:center">Status</th> -->
 					<th style="text-align:center">Dispatch Status</th>
 					<th style="text-align:center">Payment Status</th>
 					<th style="text-align:center">Delivery Status</th>
@@ -25,6 +25,10 @@
 					<tr id="row-{{$rec->id}}">
 						<td style="text-align:center"><a href="{{URL::to('/')}}/showProjectDetails?id={{$rec->project_id}}">{{$rec -> project_id}}</a></td>
                         <td style="text-align:center">{{ $rec->orderid }}</td>
+						<td>
+							{{ $rec->main_category }}<br>
+							({{ $rec->sub_category }})
+						</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
 						<!-- <td style="text-align:center"></td> -->
 						<td style="text-align:center">
@@ -122,10 +126,10 @@
                                 <!-- <button onclick="deliverOrder('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Deliver</button> -->
                             @else
 							<?php
-								$images = "<a class='".($rec->vehicle_no == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/delivery_details/".$rec->vehicle_no."'>Vehicle No</a><br>"
-											."<a class='".($rec->location_picture == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/delivery_details/".$rec->location_picture."'>Location Picture</a><br>"
-											."<a class='".($rec->quality_of_material == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/delivery_details/".$rec->quality_of_material."'>Quality Of Material</a><br>"
-											."<a class='".($rec->delivery_video == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/delivery_details/".$rec->delivery_video."'>Video</a>";
+								$images = "<a target='_blank' class='".($rec->vehicle_no == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->vehicle_no."'>Vehicle No</a><br>"
+											."<a class='".($rec->location_picture == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->location_picture."'>Location Picture</a><br>"
+											."<a class='".($rec->quality_of_material == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->quality_of_material."'>Quality Of Material</a><br>"
+											."<a class='".($rec->delivery_video == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->delivery_video."'>Video</a>";
 							?>
 								<a href="#" data-toggle="popover" title="Delivery Images" data-content="{!! $images !!}">
 									{{ $rec->delivery_status }}

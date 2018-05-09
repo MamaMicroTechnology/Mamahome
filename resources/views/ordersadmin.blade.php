@@ -9,6 +9,15 @@
 			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
 		<div id="myordertable" class="panel-body">
+		<form action="orders" method="get">
+				<div class="input-group col-md-3">
+					<input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
+					<div class="input-group-btn">
+						<button type="submit" class="btn btn-success">Search</button>
+					</div>
+				</div>
+			</form>
+			<br>
 			<table class="table table-responsive table-striped" border="1">
 				<thead>
 					<tr>
@@ -59,7 +68,27 @@
                         <td class="text-center" id="paymenttd-{{$rec->orderid}}">
                             @if($rec->payment_status == "Payment Received")
 								₹ {{ $rec->total }} <br>Received<br>
-								<a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">View Signature</a>
+								<a data-toggle="modal" data-target="#signatureImage{{ $rec->orderid }}" href="#">View Signature</a>
+								<!-- Modal -->
+								<div id="signatureImage{{ $rec->orderid }}" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Signature</h4>
+									</div>
+									<div class="modal-body">
+										<img src="{{ URL::to('/') }}/signatures/{{ $rec->signature }}" alt="Sign" title="Sign" class="img img-responsive">
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+									</div>
+
+								</div>
+								</div>
 							@else
 								{{ $rec->payment_status }}
 							@endif
@@ -72,10 +101,44 @@
                             @endif
                         </td>
 						<td>
-						    @if($rec -> delivery_status)
+						    @if($rec -> delivery_status == "Delivered")
+						    <a data-toggle="modal" data-target="#deliveryImage{{ $rec->orderid }}" href="#">Delivered</a>
+						    <!-- Modal -->
+								<div id="deliveryImage{{ $rec->orderid }}" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Delivery Details</h4>
+									</div>
+									<div class="modal-body" style="overflow-y:scroll; max-height:400px; height:400px;">
+										<br>
+										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->vehicle_no }}" alt="Vehicle No." title="Vehicle No." class="img img-responsive img-thumbnail">
+										<center><label for="above">Vehicle No.</label></center>
+										<br>
+										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->location_picture }}" alt="Location Picture" title="Location Picture" class="img img-responsive img-thumbnail">
+										<center><label for="above">Location Picture</label></center>
+										<br>
+										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->quality_of_material }}" alt="Quality Of Material" title="Quality Of Material" class="img img-responsive img-thumbnail">
+										<center><label for="above">Quality Of Material</label></center>
+										<br>
+										<video class="{{ $rec->delivery_video != null ? 'img img-responsive img-thumbnail' : 'hidden' }}" width="320" height="240" controls>
+											<source src="{{ $rec->delivery_video }}" type="video/mp4">
+											<source src="{{ $rec->delivery_video }}" type="video/ogg">
+											Your browser does not support the video tag.
+										</video>
+										<center><label class="{{ $rec->delivery_video == null ? 'hidden': '' }}"  for="above">Delivery Video</label></div></center>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+									</div>
+
+								</div>
+								</div>
+							@else
 						    {{$rec -> delivery_status}}
-						    @else
-						    Not Delivered
 						    @endif
 						</td>
 						<!-- <td>

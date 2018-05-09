@@ -32,6 +32,7 @@ use App\Order;
 use App\DeliveryDetails;
 use App\RoomType;
 use App\Message;
+use App\Point;
 
 class logisticsController extends Controller
 {
@@ -146,6 +147,12 @@ class logisticsController extends Controller
         $signature->total = $request->amount;
         $signature->payment_status = "Payment Received";
         $signature->save();
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = 400;
+        $points->type = "Add";
+        $points->reason = "Receiving payment";
+        $points->save();
         return back()->with('Success','Payment Received');
     }
     public function saveDeliveryDetails(Request $request)
@@ -172,6 +179,14 @@ class logisticsController extends Controller
         }
         $deliveryDetails->save();
         Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered"]);
+        $reasonText = date('H:i:s') > "20:00:00" ? "Delivering material at night" : "Delivering material";
+        $point = date('H:i:s') > "20:00:00" ? 500 : 250;
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = $reasonText;
+        $points->save();
         return back();
     }
 }
