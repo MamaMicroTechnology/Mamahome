@@ -384,7 +384,7 @@ div#calendar{
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id != 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em">Enquiry Pipelined</a></li>
                           @endif
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b> <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span> </a></li>
                         
                        
                         @endif

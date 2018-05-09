@@ -35,6 +35,7 @@ use App\brand;
 use App\ActivityLog;
 use App\Order;
 use App\Message;
+use App\training;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -46,6 +47,10 @@ class amController extends Controller
             $this->user= Auth::user();
             $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
             View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
             return $next($request);
         });
     }

@@ -361,7 +361,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/video','HomeController@trainingVideo');
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
-     Route::get('/asttraining','HomeController@asttraining');
+    Route::get('/asttraining','HomeController@asttraining');
     Route::post('/uploadvideo','HomeController@uploadvideo');
     
     Route::get('/updatepay','amController@updatepay');

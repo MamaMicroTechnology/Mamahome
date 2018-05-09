@@ -32,6 +32,7 @@ use App\Order;
 use App\DeliveryDetails;
 use App\RoomType;
 use App\Message;
+use App\training;
 use App\Point;
 
 class logisticsController extends Controller
@@ -43,6 +44,10 @@ class logisticsController extends Controller
             $this->user= Auth::user();
             $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
             View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
             return $next($request);
         });
     }

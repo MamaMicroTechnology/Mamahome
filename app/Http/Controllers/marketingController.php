@@ -43,6 +43,7 @@ use App\Certificate;
 use App\MhInvoice;
 use App\brand;
 use App\Message;
+use App\training;
 
 class marketingController extends Controller
 {
@@ -53,6 +54,10 @@ class marketingController extends Controller
             $this->user= Auth::user();
             $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
             View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
             return $next($request);
         });
     }

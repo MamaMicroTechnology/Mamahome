@@ -69,6 +69,10 @@ class HomeController extends Controller
             $this->user= Auth::user();
             $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
             View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
             return $next($request);
         });
     }
@@ -2661,49 +2665,95 @@ class HomeController extends Controller
         $videos = training::where('dept',"1")
                         ->where('designation',"6")
                         ->get();
-return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
+        foreach($videos as $video){
+            if($video->viewed_by == "none"){
+                $video->viewed_by = Auth::user()->id;
+                $video->save();
+            }else{
+                $newList = $video->viewed_by.", ".Auth::user()->id;
+                $video->viewed_by = $newList;
+                $video->save();
+            }
+        }
+        return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
     
-}
-public function setraining(Request $request)
+    }
+    public function setraining(Request $request)
+        {
+            $depts = Department::all();
+            $grps = Group::all();
+            $videos = training::where('dept',"2")
+                            ->where('designation',"7")
+                            ->get();
+            foreach($videos as $video){
+                if($video->viewed_by == "none"){
+                    $video->viewed_by = Auth::user()->id;
+                    $video->save();
+                }else{
+                    $newList = $video->viewed_by.", ".Auth::user()->id;
+                    $video->viewed_by = $newList;
+                    $video->save();
+                }
+            }
+        return view('setraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    }
+    public function asttraining(Request $request)
     {
-         $depts = Department::all();
-        $grps = Group::all();
-        $videos = training::where('dept',"2")
-                        ->where('designation',"7")
-                        ->get();
-return view('setraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
-    
-}
-public function asttraining(Request $request)
-    {
-         $depts = Department::all();
+        $depts = Department::all();
         $grps = Group::all();
         $videos = training::where('dept',"5")
                         ->where('designation',"4")
                         ->get();
-return view('asttraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
-    
-}
-public function adtraining(Request $request)
+        foreach($videos as $video){
+            if($video->viewed_by == "none"){
+                $video->viewed_by = Auth::user()->id;
+                $video->save();
+            }else{
+                $newList = $video->viewed_by.", ".Auth::user()->id;
+                $video->viewed_by = $newList;
+                $video->save();
+            }
+        }
+        return view('asttraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    }
+    public function adtraining(Request $request)
     {
-         $depts = Department::all();
+        $depts = Department::all();
         $grps = Group::all();
         $videos = training::where('dept',"5")
                         ->where('designation',"3")
                         ->get();
-return view('adtraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
-    
-}
-public function tltraining(Request $request)
+        foreach($videos as $video){
+            if($video->viewed_by == "none"){
+                $video->viewed_by = Auth::user()->id;
+                $video->save();
+            }else{
+                $newList = $video->viewed_by.", ".Auth::user()->id;
+                $video->viewed_by = $newList;
+                $video->save();
+            }
+        }
+        return view('adtraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    }
+    public function tltraining(Request $request)
     {
-         $depts = Department::all();
+        $depts = Department::all();
         $grps = Group::all();
         $videos = training::where('dept',"1")
                         ->where('designation',"2")
                         ->get();
-return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
-    
-}
+        foreach($videos as $video){
+            if($video->viewed_by == "none"){
+                $video->viewed_by = Auth::user()->id;
+                $video->save();
+            }else{
+                $newList = $video->viewed_by.", ".Auth::user()->id;
+                $video->viewed_by = $newList;
+                $video->save();
+            }
+        }
+        return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);   
+    }
     public function employeereports(Request $request)
     {
         $depts = [1,2,3,4,5,6];
