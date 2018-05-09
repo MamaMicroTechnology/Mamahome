@@ -165,7 +165,7 @@
 	<div class="row">
 	<div class="col-md-4 col-md-offset-1">
 		<table class="table table-hover" border=1>
-			<center><label for="Points">{{ $user->name }}'s Points For {{ isset($_GET['date']) ? date('d-m-Y',strtotime($_GET['date'])) : 'Today' }}</label></center>
+			<center><label for="Points">{{ $user->name }}'s Points For {{ date('d-M-Y',strtotime($date)) }}</label></center>
 			<thead>
 				<th>Reason For Earning Point</th>
 				<th>Points Earned</th>

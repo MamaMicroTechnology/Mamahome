@@ -81,11 +81,12 @@ class logisticsController extends Controller
     {
         $view = Order::orderBy('project_id','DESC')
                 ->leftJoin('users','orders.delivery_boy','=','users.id')
-                ->select('orders.*','orders.id as orderid','users.name','users.group_id')
-                ->where('status','Order Confirmed')
+                ->leftJoin('delivery_details','delivery_details.order_id','orders.id')
+                ->select('orders.*','orders.id as orderid','users.name','users.group_id','delivery_details.vehicle_no',
+                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video')
                 ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
-        $countview = Order::where('status',"Order Confirmed")->count();
+        $countview = Order::where('delivery_boy',Auth::user()->id)->count();
         return view('logistics.orders',['view' => $view,'count' => $countview]);
     }
     
@@ -128,7 +129,7 @@ class logisticsController extends Controller
     }
     public function deliveredorders()
     {
-        $rec = Order::where('delivery_status','Yes')->orWhere('delivery_status','Delivered')->get();
+        $rec = Order::where('delivery_boy',Auth::user()->id)->Where('delivery_status','Delivered')->get();
         $countrec = count($rec);
         return view('logistics.deliveredorders',['rec'=>$rec,'countrec'=>$countrec]);
     }
@@ -149,33 +150,28 @@ class logisticsController extends Controller
     }
     public function saveDeliveryDetails(Request $request)
     {
-        if(!$request->vid){
-            $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
-            $request->vno->move(public_path('delivery_details'),$vehicleNo);
-
-            $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
-            $request->lp->move(public_path('delivery_details'),$locationPicture);
-
-            $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
-            $request->qm->move(public_path('delivery_details'),$quality);
-
-            $deliveryDetails = new DeliveryDetails;
-            $deliveryDetails->order_id = $request->orderId;
-            $deliveryDetails->vehicle_no = $vehicleNo;
-            $deliveryDetails->location_picture = $locationPicture;
-            $deliveryDetails->quality_of_material = $quality;
-            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-            $deliveryDetails->save();
-        }else{
+        $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+        $request->vno->move(public_path('delivery_details'),$vehicleNo);
+        
+        $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+        $request->lp->move(public_path('delivery_details'),$locationPicture);
+        
+        $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+        $request->qm->move(public_path('delivery_details'),$quality);
+        
+        $deliveryDetails = new DeliveryDetails;
+        $deliveryDetails->order_id = $request->orderId;
+        $deliveryDetails->vehicle_no = $vehicleNo;
+        $deliveryDetails->location_picture = $locationPicture;
+        $deliveryDetails->quality_of_material = $quality;
+        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        if($request->vid){
             $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
             $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails = new DeliveryDetails;
-            $deliveryDetails->order_id = $request->orderId;
             $deliveryDetails->delivery_video = $video;
-            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-            $deliveryDetails->save();
         }
-        Order::where('id',$request->orderId)->update(['delivery_details',"Delivered"]);
+        $deliveryDetails->save();
+        Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered"]);
         return back();
     }
 }
