@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Mamahome</title>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-  <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
-  <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
-  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
-  <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
-  <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
+@extends('layouts.app')
+@section('content')
   <script type="text/javascript">
     var map;
     var path = [];
@@ -196,6 +187,4 @@
     });
   }
 </script>
-
-</body>
-</html>
+@endsection

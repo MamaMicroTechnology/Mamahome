@@ -9,6 +9,12 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
+    <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+    <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
     body{
@@ -446,7 +452,6 @@ div#calendar{
     <div id="enquiry" class="collapse">
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
-           
         </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
@@ -471,7 +476,7 @@ div#calendar{
     </div>
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
-    <a href="{{ URL::to('/finance') }}">Finance</a>
+    <!-- <a href="{{ URL::to('/finance') }}">Finance</a> -->
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
@@ -536,7 +541,6 @@ div#calendar{
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -572,5 +576,6 @@ div#calendar{
             modal.style.display = "none";
         }
 </script>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

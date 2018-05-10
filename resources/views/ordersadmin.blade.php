@@ -6,18 +6,18 @@
 	<div class="panel panel-primary" style="overflow-x: scroll;">
 		<div class="panel-heading text-center">
 			<b style="color:white;font-size:1.4em">Orders</b>
-			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
+			<a class="pull-left btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
 		<div id="myordertable" class="panel-body">
-		<form action="orders" method="get">
-				<div class="input-group col-md-3">
+			<form action="orders" method="get">
+				<div class="input-group col-md-3 pull-right">
 					<input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
 					<div class="input-group-btn">
 						<button type="submit" class="btn btn-success">Search</button>
 					</div>
 				</div>
 			</form>
-			<br>
+			<br><br>
 			<table class="table table-responsive table-striped" border="1">
 				<thead>
 					<tr>
