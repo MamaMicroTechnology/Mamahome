@@ -42,15 +42,17 @@
 								
 								<th style="text-align: center">Ward Name</th>
 								<th style="text-align: center">Name</th>
-								<th style="text-align: center">Requirement Date</th>
-								<th style="text-align: center">Enquiry Date</th>
+								<th style="text-align: center">Action</th>
+								<!-- <th style="text-align: center">Enquiry Date</th> -->
 								<th style="text-align: center">Contact</th>
 								<th style="text-align: center">Product</th>
 								<th style="text-align: center">Quantity</th>
-								<th style="text-align: center">Status</th>
+								<!-- <th style="text-align: center">Status</th> -->
 								<th style="text-align: center">Remarks</th>
+								<th style="text-align: center">Last Updated Time</th>
 								<th style="text-align: center">Update Status</th>
-								<th style="text-align: center">Action</th>
+								
+								<th style="text-align: center">Requirement Date</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -63,12 +65,13 @@
 								<td style="text-align: center">
 									{{$enquiry -> procurement_name}}
 								</td>
-								<td style="text-align: center">
-									{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}
+								<td style="text-align: center" >
+								<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
 								</td>
-								<td style="text-align: center">
+								
+								<!-- <td style="text-align: center">
 									{{ date('d/m/Y', strtotime($enquiry->created_at)) }}
-								</td>
+								</td> -->
 								<td style="text-align: center">
 									{{$enquiry -> procurement_contact_no }}
 								</td>
@@ -78,9 +81,9 @@
 								<td style="text-align: center">
 									{{$enquiry -> quantity}}
 								</td>
-								<td style="text-align: center">
+								<!-- <td style="text-align: center">
 									{{ $enquiry->status}}
-								</td>
+								</td> -->
 								<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
 									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 										{{ csrf_field() }}
@@ -88,6 +91,10 @@
 										<input onblur="this.className='hidden'; document.getElementById('now{{ $enquiry->id }}').className='';" name="note" id="next{{ $enquiry->id }}" type="text" size="35" class="hidden" value="{{ $enquiry->notes }}"> 
 										<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
 									</form>
+								</td>
+								<td>
+									{{ date('d-m-Y H:i A', strtotime("$enquiry->updated_at"))}}
+									
 								</td>
 								<td>
 									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
@@ -101,11 +108,11 @@
 										</select>
 									</form>
 								</td>
+								<td style="text-align: center">
+									{{$newDate = date('d/m/Y ', strtotime($enquiry->requirement_date)) }}
+								</td>
 
-
-							<td style="text-align: center" >
-								<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
-							</td>
+							
 						</tr>
 						@endforeach
 					</tbody>

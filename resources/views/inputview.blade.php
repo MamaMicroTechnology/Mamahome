@@ -111,7 +111,32 @@
       </div>
     </div>
 </div>
-<!-- model end -->
+<!-- model end -->			
+							@if(Auth::user()->group_id == 6)
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users1 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@elseif(Auth::user()->group_id == 7)
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users2 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@else
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>
@@ -123,6 +148,7 @@
 									</select>
 								</td>
 							</tr>
+							@endif
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>

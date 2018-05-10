@@ -33,6 +33,7 @@ use App\MhInvoice;
 use App\brand;
 use App\ActivityLog;
 use App\Order;
+use App\MamahomeAsset;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -121,7 +122,7 @@ class amController extends Controller
             return response()->json('Error');
         }
     }
-    //End Siddharth's block
+  
     
     public function amshowProjectDetails(Request $id)
     {
@@ -169,6 +170,17 @@ class amController extends Controller
         $groups = Group::all();
         return view('assistantmanager.amhumanresource',['departments'=>$departments,'groups'=>$groups,'pageName'=>'HR']);
     }
+    public function addassets(Request $request){
+        
+         
+        $assets = Asset::all();
+        $asts = array();
+        foreach($assets as $asset){
+            $asts[$asset->type] = MamahomeAsset::where('asset_id',$asset->id)->count();
+        }
+      
+        return view('addassets',['assets'=>$assets,'asts'=>$asts]);
+    }
     public function confirmamOrder(Request $request)
     {
         $id = $request->id;
@@ -215,6 +227,50 @@ class amController extends Controller
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
         return view('assistantmanager.hremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+    }
+    public function getasset(Request $request){
+       
+        $asset =$request->asset;
+        $id = Asset::where('type',$request->asset)->pluck('id')->first();
+        $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get();
+       
+        return view('hrasset',['asset'=>$asset,'mh'=>$mh]);
+    }
+    public function storeasset(Request $request){
+        
+       
+        $image = time().'.'.request()->upload->getClientOriginalExtension();
+        $request->upload->move(public_path('assettype'),$image);
+        if($request->bill != null){
+        $billimage = time().'.'.request()->bill->getClientOriginalExtension();
+        $request->bill->move(public_path('assetbill'),$billimage);
+        }
+        else{
+            $billimage='';
+        }
+      
+       $asset = Asset::where('type',$request->asset)->pluck('id')->first();
+      
+        $mhome = New MamahomeAsset;
+        $mhome->asset_id = $asset;
+        $mhome->name=$request->lname;
+        $mhome->sl_no= $request->slno;
+        $mhome->asset_image= $image;
+        $mhome->description= $request->desc;
+        $mhome->company= $request->cmp;
+        $mhome->date= $request->tdate;
+        $mhome->bill= '';
+        $mhome->remark =$request->remark;
+        $mhome->save();
+
+        return back();
+    }
+    public function addtype(Request $request){
+
+        $name = New Asset;
+        $name->type = $request->aname;
+        $name->save();
+       return back()->with('Added','Asset Added Successfully');
     }
     public function amreportdates(Request $request){
         if($request->month != null){
@@ -379,7 +435,12 @@ class amController extends Controller
         $kra->key_result_area = $request->kra;
         $kra->key_performance_area = $request->kpa;
         $kra->save();
-        return back()->with('Success','You have added KRA successfully');
+
+
+        return back()->with('Success','You have a
+
+
+            ed KRA successfully');
     }
     public function editkra(Request $request)
     {
@@ -494,14 +555,8 @@ class amController extends Controller
     }
     public function deleteAsset(Request $request)
     {
-        $userid = Certificate::find($request->id);
-        $username = User::where('employeeId',$userid->employeeId)->pluck('name')->first();
-        AssetInfo::find($request->id)->delete();
-        $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
-        $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has deleted ".$username."'s asset at ".date('H:i A');
-        $activity->save();
+        
+        AssetInfo::where('id',$request->id)->delete();
         return back();
     }
     public function deleteCertificate(Request $request)
@@ -514,6 +569,59 @@ class amController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has deleted ".$username."'s certificate at ".date('H:i A');
         $activity->save();
+        return back();
+    }
+    public function assignassets(Request $request)
+    {
+
+        $departments = Department::all();
+        $groups = Group::all();
+        return view('assignassets',['departments'=>$departments,'groups'=>$groups]);
+    
+    }
+    public function getview(Request $request){
+       $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
+        $users = User::where('department_id',$deptId)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
+        return view('hrassign',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+    }
+     public function assignEmployee(Request $request){
+
+        $user = User::where('employeeId', $request->UserId)->first();
+        $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
+        $assets = Asset::all();
+        $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();
+        $info = AssetInfo::where('id',$request->id)->get();
+        return view('assignEmployee',['user'=>$user,'employeeDetails'=>$employeeDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'pageName'=>'HR']);
+    }
+    public function editasset(Request $request){
+        $post = MamahomeAsset::where('id',$request->Id)->get();
+        return view('editasset',['post'=>$post]);
+
+    }
+    public function saveasset(Request $request){
+
+         MamahomeAsset::where('id',$request->Id)->update([
+        'name'=> $request->ename,
+        'sl_no' => $request->serialno,
+        'description' => $request->desc,
+        'company' => $request->cmp,
+        'remark' =>$request->remark,
+            
+        ]);
+         return redirect('/assets');
+    }
+    public function saveassetinfo(Request $request){
+
+        AssetInfo::where('id',$request->Id)->update([
+
+            'serial_no' =>$request->serial_no,
+            'description' =>$request->desc,
+            'remark' =>$request->remark,
+
+        ]);
         return back();
     }
 }

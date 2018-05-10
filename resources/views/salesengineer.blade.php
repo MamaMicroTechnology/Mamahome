@@ -239,6 +239,7 @@
                 						    </tr>
                 						    <tr>
                 						        <td><b>Follow Up?</b></td>
+                                    
                     						    <td>
                     						        <div class="radio">
                                                       <label><input {{ $project->followup == 'No'?'checked':'' }} type="radio" name="follow" value="No">No</label>
@@ -247,7 +248,14 @@
                                                       <label><input {{ $project->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
                                                     </div>
                     						   </td>
+
                 						    </tr>
+                                <tr>
+                                  <td><b> Follow up date</b></td>
+                                  <td ><input  type="date" name="fdate" id="fdate" class="form-control" /></td>
+
+
+                                </tr>
                 						    <tr>
                 						        <td><b>Quality</b></td>
                 						        <td>

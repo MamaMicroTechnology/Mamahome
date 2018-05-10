@@ -459,6 +459,7 @@ div#calendar{
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
+        
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
@@ -482,9 +483,10 @@ div#calendar{
     
     <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
     <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/enquiryCancell') }}">Enquiry cancelled</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-     <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
-      <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
+    <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
+    <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
     <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
     <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
@@ -521,6 +523,8 @@ div#calendar{
      <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
     <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
+   <!--  <a href="{{ URL::to('/') }}/followup_project" >Date wise Follow up projects</a> -->
+
     <a href="{{ URL::to('/') }}/eqpipeline" >Enquiry Pipelined</a>
     <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
     <a href="{{ URL::to('/') }}/kra" >KRA</a>

@@ -152,6 +152,7 @@ Route::get('/salescompleted','HomeController@updateSalesAssignment');
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
 Route::get('/followupproject','HomeController@followup');
+// Route::get('/followup_project','HomeController@followup_projects');
 Route::get('/updateNoteFollowUp','HomeController@updateNoteFollowUp');
 Route::get('/kra','HomeController@getKRA');
 Route::get('/eqpipeline','HomeController@eqpipeline');
@@ -231,8 +232,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/addSubWard','mamaController@addSubWard');
     Route::post('/addState','mamaController@addState');
     Route::post('/addZone','mamaController@addZone');
-    Route::post('/{uid}/{rid}/giveGrade','mamaController@giveGrade');
-    Route::post('/{uid}/{rid}/giveRemarks','mamaController@giveRemarks');
+    Route::post('/{uid}/{rid}/giveGrade','mamaController@giveGrade')
+;    Route::post('/{uid}/{rid}/giveRemarks','mamaController@giveRemarks');
     Route::post('/{id}/{rid}/editGrade','mamaController@editGrade');
     Route::post('/grade','mamaController@gradetoEmp');
     Route::post('/edit/save','mamaController@saveEdit');
@@ -357,6 +358,22 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');
     Route::get('/video','HomeController@trainingVideo');
+
+//human resource//
+    Route::get('/assets','amController@addassets');  
+    Route::get('/viewasset','amController@getasset');
+    Route::post('/inputasset','amController@storeasset');
+    Route::post('/addtype','amController@addtype');
+    Route::get('/assignassets','amController@assignassets');
+    Route::get('/assetsview','amController@getview');
+    Route::get('/assignEmployee','amController@assignEmployee');
+    Route::get('/editasset','amController@editasset');
+    Route::post('/saveasset','amController@saveasset');
+    Route::post('/saveassetinfo','amController@saveassetinfo');
+
+
+
+
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
      Route::get('/asttraining','HomeController@asttraining');

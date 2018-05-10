@@ -109,7 +109,7 @@
 </div>
 <!-- model end -->
 
-							@if(Auth::user()->group_id != 6 && Auth::user()->group_id != 7)
+							
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
@@ -121,7 +121,7 @@
 									</select>
 								</td>
 							</tr>
-							@endif
+						
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>{{ $enq->address }}</td>

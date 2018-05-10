@@ -409,6 +409,8 @@ div#calendar{
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
+            <a href="{{ URL::to('/') }}/assets">Add Assets</a>
+            <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video">Training Video</a>
         @else
            <a href="{{ URL::to('/amorderss') }}">Orders</a>
