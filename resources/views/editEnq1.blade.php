@@ -45,7 +45,7 @@
 							</tr>	
 							<tr>
 								<td><label>Select category:</label></td>
-								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
+								<td><button id="mybutton" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
 
 <!-- model -->
@@ -113,7 +113,7 @@
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
-									<select class="form-control"  name="initiator">
+									<select required class="form-control"  name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
 										<option value="{{$user->id}}">{{$user->name}}</option>
@@ -125,7 +125,7 @@
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
-									<select class="form-control" name="initiator">
+									<select required class="form-control" name="initiator">
 										<option value="" required>--Select--</option>
 										@foreach($users1 as $user)
 										<option value="{{$user->id}}">{{$user->name}}</option>
@@ -281,4 +281,5 @@
 		     }
 	}
 </script>
+<script>
 @endsection

@@ -1,14 +1,14 @@
-@extends('layouts.amheader')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="panel panel-default" style="border-color: green;">
+                <div class="panel-heading" style="background-color: green;color:white;">
                     {{ $user->employeeId }} : {{ $user->name }}
                     
-            <a href="{{ url()->previous() }}" class="btn btn-default input-sm pull-right">Back</a>
+            <a href="{{ url()->previous() }}" class="btn btn-danger input-sm pull-right">Back</a>
                 </div>
                 <div class="panel-body">
                     <center>

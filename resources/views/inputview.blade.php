@@ -54,7 +54,7 @@
 							</tr>	
 							<tr>
 								<td><label>Select category:</label></td>
-								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
+								<td><button  required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
 <!-- model -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -166,7 +166,7 @@
 							<tr>
 								<td><label>Remarks : </label></td>
 								<td>
-									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
+									<textarea style="resize: none;" rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
 								</td>
 							</tr>
 						</tbody>

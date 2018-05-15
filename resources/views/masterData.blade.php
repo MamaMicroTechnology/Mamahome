@@ -4,8 +4,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Countries</div>
+            <div class="panel panel-default" style="border-color: green;">
+                <div class="panel-heading" style="background-color: green;color:white;" >Countries</div>
                 <div class="panel-body">
                     <form method="POST" action="{{ URL::to('/') }}/addCountry">
                         {{ csrf_field() }}
@@ -37,8 +37,8 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Zones
+            <div class="panel panel-default" style="border-color: green;" >
+                <div class="panel-heading" style="background-color: green;color:white;" >Zones
                     @if(session('ErrorZone'))
                         <div class="alert-danger pull-right">{{ session('ErrorZone' )}}</div>
                     @endif 
@@ -136,8 +136,8 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Wards</div>
+            <div class="panel panel-default" style="border-color: rgb(244, 129, 31);" >
+                <div class="panel-heading" style="background-color: rgb(244, 129, 31);color:white;" >Wards</div>
                 <div class="panel-body">
                     <form method="POST" action="{{ URL::to('/') }}/addWard" enctype="multipart/form-data">
                         {{ csrf_field() }}
@@ -170,7 +170,7 @@
                             </tr>
                             <tr>
                                 <td><input type="text" name="name" required placeholder="Ward Name" class="form-control input-sm"></td>
-                                <td><input type="file" name="image" required class="form-control input-sm" accept="image/*"></td>
+                                <td><input type="file" name="image" required class="form-control input-sm" accept="image/*" ></td>
                             </tr>
                         </table>
                         <button type="submit" class="form-control btn btn-success input-sm">Add</button>
@@ -186,8 +186,9 @@
                                     @foreach($wards as $ward)
                                     <tr>
                                         <td style="width:20%">{{ $ward->ward_name }}</td>
+                                       
                                         <td style="width:33%"><center><a href="{{ URL::to('/') }}/public/wardImages/{{ $ward->ward_image }}" class="btn btn-sm btn-primary" target="_blank">View Image</a></center></td>
-                                        <!--<td><input type="file" name="wardimage{{$ward->id}}" onchange="editwardimage('{{$ward->id}}')" id="wardimage{{$ward->id}}" class="form-control" value="Edit Image" /></td>-->
+                                       
                                     </tr>
                                     @endforeach
                             </tbody>
@@ -196,8 +197,8 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Sub Wards</div>
+            <div class="panel panel-default" style="border-color:rgb(244, 129, 31); " >
+                <div class="panel-heading" style="background-color: rgb(244, 129, 31);color:white;" >Sub Wards</div>
                 <div class="panel-body" style=" height: 700px; max-height: 700px; overflow-y:scroll; overflow-x: hidden;">
                     <form method="POST" action="{{ URL::to('/') }}/addSubWard" enctype="multipart/form-data">
                         {{ csrf_field() }}

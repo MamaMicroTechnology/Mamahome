@@ -4,8 +4,8 @@
 
 <div class="col-md-10 col-md-offset-1">
         <center>Manufacturer's Information</center><br>
-        <div class="panel panel-danger">
-            <div class="panel-heading">
+        <div class="panel panel-danger" style="border-color:rgb(244, 129, 31) ">
+            <div class="panel-heading" style="background-color: rgb(244, 129, 31);color:white;">
                 Details
                   <a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
             </div>

@@ -5,6 +5,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color: green;color: white;">Asset Info
         <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+        
         <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;</span>
          <input type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#myaddModal" value="ADD Asset">
         </div>
@@ -43,7 +44,7 @@
                                     <td>{{$assetInfo->serial_no}}</td>
                                     <td><a href="{{ URL::to('/')}}/public/assettype/{{ $assetInfo->image}}"  target="_blank"> image</a></td>
                                     <td>{{ $assetInfo->description }}</td>
-                                    <td>{{ date('d-m-Y h:m:s ' , strtotime($assetInfo->assign_date))}}</td>
+                                    <td>{{ date( 'd-m-Y' , strtotime($assetInfo->assign_date))}}</td>
                                     <td>{{$assetInfo->remark}}</td>
                                     <td>
                                         <form method="POST" action="{{ URL::to('/') }}/deleteAsset">
@@ -104,12 +105,12 @@
                        <tr>
                             <td>Description:</td>
                             <td>
-                                <textarea required class="form-control" placeholder="Asset description" name="details[]"></textarea>
+                                <textarea required class="form-control" placeholder="Asset description" name="details[]" style="resize: none;"></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>Remark:</td>
-                             <td><textarea required class="form-control" placeholder="Remark" name="remark[]" ></textarea>
+                             <td><textarea required class="form-control" placeholder="Remark" name="remark[]" style="resize: none;" ></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -151,11 +152,11 @@
                                         </tr>
                                         <tr>
                                             <td><label>Description</label></td>
-                                            <td><input type="text" class="form-control" value="{{ $assetInfo->description }}" name="desc" style="width: 50%;"></td>
+                                            <td><input type="text" class="form-control" value="{{ $assetInfo->description }}" name="desc" style="width: 50%;resize: none;"></td>
                                         </tr>
                                         <tr>
                                             <td><label>Remark</label></td>
-                                            <td><input type="text" class="form-control" value="{{$assetInfo->remark}}" name="remark" style="width: 50%;"></td>
+                                            <td><input type="text" class="form-control" value="{{$assetInfo->remark}}" name="remark" style="width: 50%;resize: none;"></td>
                                         </tr>
                                         <tr>
                                             <td></td>

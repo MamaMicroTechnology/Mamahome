@@ -20,7 +20,7 @@
 						<input required type="date" name="date" class="form-control input-sm">
 					</div>
 					<div>
-						<button type="submit">Submit</button>
+						<button type="submit">Submit</button	>
 					</div>
 				</form><br>
 			<label>Morning</label>
@@ -87,6 +87,11 @@
 						<td>:</td>
 						<td><input required type="text" name="eveningMeterReading" class="form-control"></td>
 					</tr>
+					<!-- <tr>
+						<td>Evening Remarks</td>
+						<td>:</td>
+						<td><input required type="text" name="eRemark" class="form-control"></td>
+					</tr> -->
 				</table>
 				<input type="submit" value="Save" class="btn btn-primary btn-xs form-control">
 			</form>

@@ -5,7 +5,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default" style="border-color:green">
 			 <div class="panel-heading" style="background-color: green;color:white;"><b>
-			 Team Leader Training Video		
+			 sales convertor Training Video		
 			 </b>
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>

@@ -95,7 +95,7 @@ class mamaController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->group_id = $request->designation;
-        $user->contactNo = $request->phNo;
+        $user->contactNo = '';
         $user->password = bcrypt('mama@home123');
         if($user->save()){
             $empdetails = new EmployeeDetails;
@@ -199,8 +199,8 @@ class mamaController extends Controller
     {
         $cCode = Country::where('id',$request->country)->pluck('country_code')->first();
         $zone = Zone::where('id', $request->zone)->pluck('zone_number')->first();
-        $imageName = time().'.'.request()->image->getClientOriginalExtension();
-        $request->image->move(public_path('wardImages'),$imageName);
+        $imageName = time().'.'.request()->image[0]->getClientOriginalExtension();
+        $request->image[0]->move(public_path('wardImages'),$imageName);
         $ward = New Ward;
         $ward->country_id = $request->country;
         $ward->zone_id = $request->zone;

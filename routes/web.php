@@ -53,7 +53,7 @@ Route::get('/get_what_you_want','ContractorController@getWhatYouWant');
 Route::get('/amorderss','amController@amorders');
 Route::get('/placeOrder','amController@placeOrder');
 Route::get('/updateStatusReq','HomeController@updateStatusReq');
-Route::get('/requirements','HomeController@inputview');
+Route::get('/requirement','HomeController@inputview');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
@@ -83,6 +83,8 @@ Route::get('/assignconverterSlots','HomeController@assignListSlots');
 Route::get('/scmaps','HomeController@tlMaps');
 Route::post('/{id}/converterassignWards','mamaController@assignWards');
 Route::get('/scenquirysheet','HomeController@enquirysheet');
+Route::get('/sctraining','HomeController@sctraining');
+
 
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
@@ -156,6 +158,7 @@ Route::get('/followupproject','HomeController@followup');
 Route::get('/updateNoteFollowUp','HomeController@updateNoteFollowUp');
 Route::get('/kra','HomeController@getKRA');
 Route::get('/eqpipeline','HomeController@eqpipeline');
+Route::get('/eqpipe','HomeController@eqpipeline');
 Route::get('/letraining','HomeController@letraining');
 Route::get('/setraining','HomeController@setraining');
 
@@ -293,7 +296,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
     // Route::get('/enquirysheet','HomeController@enquirysheet');
-    Route::get('/projectlist','HomeController@projectList');
+    // Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
    
     Route::get('/allProjects','HomeController@viewAll');

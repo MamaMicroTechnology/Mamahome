@@ -1104,12 +1104,18 @@ class HomeController extends Controller
     }
     public function viewProjectList(Request $request)
     {
+        if($request->today){
+            $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->get();
+        }
+        else{
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $projectlist = ProjectDetails::where('road_name',$request->road)
                     ->where('sub_ward_id',$assignment)
                     ->get();
+        }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
     }
+
     public function getMyReports(Request $request)
     {
         $now = date('H:i:s');
@@ -1146,7 +1152,7 @@ class HomeController extends Controller
                         "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
                         "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->afternoonData : '').
-                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        "</td></tr><tr><td>Team Leader Remarks</td><td>:</td><td>".
                         ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
 
                     $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
@@ -1169,8 +1175,10 @@ class HomeController extends Controller
                     " height='100' width='200' class='img img-thumbnail'>"
                     : '*No Image Uploaded*') : '*No Image Uploaded*').
                     ($loginTimes != null ? $loginTimes->eveningData : '').
-                    "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
-                    ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                    // "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
+                    // ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                     "</td></tr><tr><td>Team Leader Remark</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->eveningRemarks : '').
                     "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
                     ($loginTimes != null ? $loginTimes->AmRemarks : '').
                     "</td></tr><tr><td>Grade</td><td>:</td><td>".
@@ -1211,7 +1219,7 @@ class HomeController extends Controller
                         "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
                         "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->afternoonData : '').
-                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        "</td></tr><tr><td>Team Leader Remarks</td><td>:</td><td>".
                         ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
 
                         $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
@@ -1236,6 +1244,10 @@ class HomeController extends Controller
                     ($loginTimes != null ? $loginTimes->eveningData : '').
                     "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
                     ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+
+                     "</td></tr><tr><td>Team Leader Remark</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->eveningRemarks : '').
+
                     "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
                     ($loginTimes != null ? $loginTimes->AmRemarks : '').
                     "</td></tr><tr><td>Grade</td><td>:</td><td>".
@@ -1535,6 +1547,7 @@ class HomeController extends Controller
     public function showProjectDetails(Request $request)
     {
         $id = $request->id;
+
         $rec = ProjectDetails::where('project_id',$id)->first();
         $username = User::where('id',$rec->listing_engineer_id)->first();
         $callAttendedBy = User::where('id',$rec->call_attended_by)->first();
@@ -2334,7 +2347,7 @@ class HomeController extends Controller
                       }
                       else
                       {
-                                $projects = ProjectDetails::where('follow_up_date',$today)
+                                $projects = ProjectDetails::where('follow_up_date','LIKE',$today."%")
                                 ->where('follow_up_by',Auth::user()->id)
                                 ->where('deleted',0)
                                 ->paginate(10);
@@ -2540,13 +2553,37 @@ class HomeController extends Controller
     public function eqpipeline(Request $request)
     {
       
-   if(!$request){
-        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
-                        ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
-                        ->where('requirements.status','!=',"Enquiry Cancelled")
-                        ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
-                        ->get();
+                $category = Category::all();
+                $today = date('Y-m-d');
+               if(!$request){
+                    $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                                    ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                                    ->where('requirements.status','!=',"Enquiry Cancelled")
+                                    ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                                    ->get();
+                               
 
+                 }
+             elseif($request->eqpipeline == 'today'){
+
+                 $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                ->where('requirements.status','!=',"Enquiry Cancelled" )
+                ->where('requirements.created_at','LIKE',$today."%")    
+                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                ->get() ;
+
+               
+             }
+             elseif($request->category)
+             { 
+                
+                $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                ->where('requirements.status','!=',"Enquiry Cancelled" )
+                ->where('requirements.main_category',$request->category)
+                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                ->get() ;
              }
              else
             {           
@@ -2556,6 +2593,7 @@ class HomeController extends Controller
                 ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
                 ->get() ;
 
+
             }
                        
         $subwards2 = array();
@@ -2564,7 +2602,7 @@ class HomeController extends Controller
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
             $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
         }
-        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
+        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2,'category'=>$category]);
     }
     public function letraining(Request $request)
     {
@@ -2615,6 +2653,16 @@ public function tltraining(Request $request)
                         ->where('designation',"2")
                         ->get();
 return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
+    
+}
+public function sctraining(Request $request)
+    {
+         $depts = Department::all();
+        $grps = Group::all();
+        $videos = training::where('dept',"2")
+                        ->where('designation',"17")
+                        ->get();
+return view('sctraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
     
 }
     public function employeereports(Request $request)
@@ -2750,6 +2798,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
                 for($j = 0; $j<count($details[$i]); $j++){
                     array_push($ids, $details[$i][$j]);
                 }
+
             }
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
