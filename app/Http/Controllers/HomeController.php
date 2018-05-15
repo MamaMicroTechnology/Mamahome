@@ -710,8 +710,9 @@ class HomeController extends Controller
         $projects = ProjectDetails::leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
             ->where('project_status' , $check)
+            ->where('project_details.quality', Null)
             ->select('project_details.*','users.name','sub_wards.sub_ward_name')
-            ->paginate(15);
+            ->paginate(30);
             
         $totalListing = ProjectDetails::where('project_status',$check)->count();
             

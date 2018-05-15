@@ -10,14 +10,14 @@
 		</div>
 		<div id="myordertable" class="panel-body">
 		<form action="orders" method="get">
-				<div class="input-group col-md-3">
+				<div class="input-group col-md-3 pull-right">
 					<input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
 					<div class="input-group-btn">
 						<button type="submit" class="btn btn-success">Search</button>
 					</div>
 				</div>
 			</form>
-			<br>
+			<br><br>
 			<table class="table table-responsive table-striped" border="1">
 				<thead>
 					<tr>

@@ -9,7 +9,7 @@
     We appreciate you services.
     </SMALL>
 </center></h2></div>
-<div class="row">
+<div class="row hidden">
       <div class="col-md-4 col-md-offset-4">
         <table class="table table-hover" border=1>
         <center><label for="Points">Your Points For Today</label></center>
