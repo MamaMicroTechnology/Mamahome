@@ -47,6 +47,8 @@ use App\Map;
 use App\brand;
 use App\WardMap;
 use App\Point;
+use App\ZoneMap;
+use App\SubWardMap;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1646,17 +1648,45 @@ class mamaController extends Controller
     }
     public function saveMap(Request $request)
     {
-        if($check = Map::where('zone_id',$request->zone)->count() == 0){
-            $map = new Map;
-            $map->zone_id = $request->zone;
-            $map->lat = $request->path;
-            $map->color = $request->color;
-            $map->save();
-        }else{
-            $check = Map::where('zone_id',$request->zone)->first();
-            $check->lat = $request->path;
-            $check->color = $request->color;
-            $check->save();
+        if($request->page == "Zone"){
+            if($check = ZoneMap::where('zone_id',$request->zone)->count() == 0){
+                $map = new ZoneMap;
+                $map->zone_id = $request->zone;
+                $map->lat = $request->path;
+                $map->color = $request->color;
+                $map->save();
+            }else{
+                $check = ZoneMap::where('zone_id',$request->zone)->first();
+                $check->lat = $request->path;
+                $check->color = $request->color;
+                $check->save();
+            }
+        }elseif($request->page == "Ward"){
+            if($check = WardMap::where('ward_id',$request->zone)->count() == 0){
+                $map = new WardMap;
+                $map->ward_id = $request->zone;
+                $map->lat = $request->path;
+                $map->color = $request->color;
+                $map->save();
+            }else{
+                $check = WardMap::where('ward_id',$request->zone)->first();
+                $check->lat = $request->path;
+                $check->color = $request->color;
+                $check->save();
+            }
+        }elseif($request->page == "Sub Ward"){
+            if($check = SubWardMap::where('sub_ward_id',$request->zone)->count() == 0){
+                $map = new SubWardMap;
+                $map->sub_ward_id = $request->zone;
+                $map->lat = $request->path;
+                $map->color = $request->color;
+                $map->save();
+            }else{
+                $check = SubWardMap::where('sub_ward_id',$request->zone)->first();
+                $check->lat = $request->path;
+                $check->color = $request->color;
+                $check->save();
+            }
         }
         return back();
     }

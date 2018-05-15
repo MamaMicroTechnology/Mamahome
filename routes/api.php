@@ -28,3 +28,5 @@ Route::post('itMessage','TokenController@itMessage');
 // tl
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
+Route::get('login/{username}/{password}','TokenController@getLogin');
+Route::get('logout','TokenController@logout');

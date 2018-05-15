@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use App\Message;
 use App\Department;
 use App\Http\Resources\Message as MessageResource;
@@ -66,6 +67,11 @@ class TokenController extends Controller
     {
     	Auth::logout();
     	return redirect('/login');
+    }
+    public function apilogout()
+    {
+        Auth::logout();
+        return response()->json(['status'=>"logged out"]);
     }
     public function pms(Request $request)
     {
@@ -152,6 +158,16 @@ class TokenController extends Controller
                     ->where('messages.id',$article->id)
                     ->first();
             return new MessageResource($articles);
+        }
+    }
+    public function getLogin(Request $request)
+    {
+        $messages = new Collection;
+        if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
+            $userdetails = User::where('id',Auth::user()->id)->first();
+            return response()->json(['message' => 'true','userid'=>$userdetails->id]);
+        }else{
+            return response()->json(['message' => 'false']);
         }
     }
 }

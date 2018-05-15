@@ -53,6 +53,8 @@ use App\Map;
 use App\brand;
 use App\Point;
 use App\Message;
+use App\ZoneMap;
+use App\SubWardMap;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -733,8 +735,9 @@ class HomeController extends Controller
         $projects = ProjectDetails::leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
             ->where('project_status' , $check)
+            ->where('project_details.quality', Null)
             ->select('project_details.*','users.name','sub_wards.sub_ward_name')
-            ->paginate(15);
+            ->paginate(30);
             
         $totalListing = ProjectDetails::where('project_status',$check)->count();
             
@@ -3136,12 +3139,28 @@ public function approval(request $request  )
         ]);
       return back();
     }
-    public function getWardMaping()
+    public function getWardMaping(Request $request)
     {
-        $zones = Zone::leftjoin('maps','zones.id','maps.zone_id')
-                    ->select('zones.*','maps.lat','maps.color','maps.zone_id')
-                    ->get();
-        return view('maping.wardmaping',['zones'=>$zones]);
+        if($request->zoneId){
+            $zones = Zone::leftjoin('zone_maps','zones.id','zone_maps.zone_id')
+                        ->select('zones.*','zone_maps.lat','zone_maps.color','zone_maps.zone_id','zones.zone_name as name')
+                        ->where('zones.id',$request->zoneId)
+                        ->first();
+            $page = "Zone";
+        }elseif($request->wardId){
+            $zones = Ward::leftjoin('ward_maps','wards.id','ward_maps.ward_id')
+                        ->select('wards.*','ward_maps.lat','ward_maps.color','ward_maps.ward_id','wards.ward_name as name')
+                        ->where('wards.id',$request->wardId)
+                        ->first();
+            $page = "Ward";
+        }elseif($request->subWardId){
+            $zones = SubWard::leftjoin('sub_ward_maps','sub_wards.id','sub_ward_maps.sub_ward_id')
+                        ->select('sub_wards.*','sub_ward_maps.lat','sub_ward_maps.color','sub_ward_maps.sub_ward_id','sub_wards.sub_ward_name as name')
+                        ->where('sub_wards.id',$request->subWardId)
+                        ->first();
+            $page = "Sub Ward";
+        }
+        return view('maping.wardmaping',['zones'=>$zones,'page'=>$page]);
     }
     public function getWards(Request $request)
     {

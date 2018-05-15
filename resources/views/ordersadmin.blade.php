@@ -9,7 +9,7 @@
 			<a class="pull-left btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
 		<div id="myordertable" class="panel-body">
-			<form action="orders" method="get">
+		<form action="orders" method="get">
 				<div class="input-group col-md-3 pull-right">
 					<input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
 					<div class="input-group-btn">
