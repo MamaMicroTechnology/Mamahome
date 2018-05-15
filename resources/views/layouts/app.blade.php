@@ -536,7 +536,6 @@ div#calendar{
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -572,5 +571,6 @@ div#calendar{
             modal.style.display = "none";
         }
 </script>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
