@@ -17,7 +17,7 @@
 					</div>
 				</div>
 			</form>
-			<br>
+			<br><br>
 			<table class="table table-responsive table-striped" border="1">
 				<thead>
 					<tr>
