@@ -65,70 +65,25 @@
                         </form>
                         <table class="table">
                             <thead>
-                                    <th>Country</th>
-                                    <th>Zone Name</th>
-                                    <th>Zone No</th>
-                                    <th>Zone Image</th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody>
-                                    @foreach($zones as $zone)
-                                        <tr>
-                                            <td>{{ $zone->country->country_name }} </td>
-                                            <td>{{ $zone->zone_name }}</td>
-                                            <td>{{ $zone->zone_number }}</td>
-                                            <td style="width:10%"><center><a href="{{ URL::to('/')}}/public/zoneimages/{{ $zone->zone_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
-  <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal{{ $zone->id }}">Edit</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal{{ $zone->id }}" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit Zone</h4>
-        </div>
-        <div class="modal-body">
-          <form method="POST" action="{{ URL::to('/') }}/saveEdit" enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <input type="hidden" value="{{ $zone->id }}" name="zoneId" >
-                            <table class="table">
-                                <tr>
-                                    <!--  -->
-                                    <td><input type="text" name="zone_name" required class="form-control input-sm" value="{{ $zone->zone_name}}" ></td>
-                                    <td><input type="text" name="zone_no" required class="form-control input-sm" value="{{ $zone->zone_number}}" ></td>
-
-                                    <td>
-
-                                         <input type="file" name="image" required class="form-control input-sm" accept="image/*" value="{{ $zone->zone_image }}" >
-                                       @if($zone->zone_image!=NULL) 
-                        <img  height="500" class="img img-responsive" width="500" src= "{{ URL::to('/') }}/public/zoneimages/{{ $zone->zone_image }}">
-
-                                         @endif
-                                     </td>
-
-
-                                    <td><button type="submit" class="btn btn-success input-sm">Save</button></td>
-                                </tr>
-                            </table>
-                        </form>
-
-
-
-        </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-        </div> -->
-      </div>
-      
-    </div>
-  </div>
-</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                <th>Country</th>
+                                <th>Zone Name</th>
+                                <th>Zone No</th>
+                                <th>Zone Image</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                @foreach($zones as $zone)
+                                    <tr>
+                                        <td>{{ $zone->country->country_name }} </td>
+                                        <td>{{ $zone->zone_name }}</td>
+                                        <td>{{ $zone->zone_number }}</td>
+                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/public/zoneimages/{{ $zone->zone_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
+                                        <td>
+                                            <a href="{{ URL::to('/') }}/wardmaping?zoneId={{ $zone->id }}" class="btn btn-success btn-sm">Edit</a>
+                                            </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                 </div>
             </div>
@@ -159,14 +114,6 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <!--<td>-->
-                                <!--    <select required name="state" class="input-sm form-control">-->
-                                <!--        <option value="">--State--&nbsp;&nbsp;&nbsp;</option>-->
-                                <!--        @foreach($states as $state)-->
-                                <!--        <option value="{{ $state->id }}">{{ $state->state_name }}</option>-->
-                                <!--        @endforeach-->
-                                <!--    </select>-->
-                                <!--</td>-->
                             </tr>
                             <tr>
                                 <td><input type="text" name="name" required placeholder="Ward Name" class="form-control input-sm"></td>
@@ -188,7 +135,7 @@
                                         <td style="width:20%">{{ $ward->ward_name }}</td>
                                        
                                         <td style="width:33%"><center><a href="{{ URL::to('/') }}/public/wardImages/{{ $ward->ward_image }}" class="btn btn-sm btn-primary" target="_blank">View Image</a></center></td>
-                                       
+                                        <td><a href="{{ URL::to('/') }}/wardmaping?wardId={{ $ward->id }}" class="btn btn-success btn-sm form-control">Edit</a></td>
                                     </tr>
                                     @endforeach
                             </tbody>
@@ -229,13 +176,7 @@
                                         <tr>
                                             <td style="width:20%">{{ $ward->sub_ward_name }}</td>
                                             <td style="width:33%"><center><a href="{{ URL::to('/')}}/public/subWardImages/{{ $ward->sub_ward_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
-                                            <td>
-                                                <form method="POST" action="{{ URL::to('/') }}/editsubwardimage" enctype="multipart/form-data">
-                                                    {{ csrf_field() }}
-                                                    <input type="hidden" value="{{ $ward->id }}" name="subwardId">
-                                                    <input type="file" name="subwardimage" onchange="this.form.submit()" id="subwardimage{{$ward->id}}" class="form-control" accept="image/*" />
-                                                </form>
-                                            </td>
+                                            <td><a href="{{ URL::to('/') }}/wardmaping?subWardId={{ $ward->id }}" class="btn btn-success btn-sm form-control">Edit</a></td>
                                         </tr>
                                     @endforeach
                             </tbody>

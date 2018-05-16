@@ -609,7 +609,6 @@ function updatemat(arg)
 		        var name = document.getElementById('consultantname-'+arg).value;
 		        var phone = document.getElementById('consultantphone-'+arg).value;
 		        var email = document.getElementById('consultantemail-'+arg).value;
-		        alert(id);
 		        $.ajax({
 		           type: 'GET',
 		           url: "{{URL::to('/')}}/updateConsultant",

@@ -3,16 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use App\ContractorDetails;
 use App\ProjectDetails;
 use App\RoomType;
 use App\OwnerDetails;
 use DB;
 use Auth;
+use App\training;
+use App\Message;
 
 date_default_timezone_set("Asia/Kolkata");
 class ContractorController extends Controller
 {
+  public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+            $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
+            return $next($request);
+        });
+    }
 
     public function getUpdates()
     {

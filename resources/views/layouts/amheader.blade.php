@@ -366,7 +366,9 @@ div#calendar{
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        
+                        <li><a href="{{ URL::to('/home') }}">Home</a></li>
+                        <li><a href="{{ URL::to('/') }}/chat">Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
+                        <li><a href="{{ URL::to('/') }}/video">Training Video</a></li>
                     </ul>
                 
                     <!-- Right Side Of Navbar -->

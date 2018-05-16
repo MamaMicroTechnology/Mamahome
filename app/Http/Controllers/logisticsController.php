@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use DB;
@@ -30,9 +31,26 @@ use App\MhInvoice;
 use App\Order;
 use App\DeliveryDetails;
 use App\RoomType;
+use App\Message;
+use App\training;
+use App\Point;
 
 class logisticsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+            $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
+            return $next($request);
+        });
+    }
     public function dashboard()
     {
         return view('logistics.lcodashboard');
@@ -68,11 +86,13 @@ class logisticsController extends Controller
     public function orders()
     {
         $view = Order::orderBy('project_id','DESC')
-                ->leftJoin('users','orders.generated_by','=','users.id')
-                ->select('orders.*','orders.id as orderid','users.name','users.group_id')
-                ->where('status','Order Confirmed')
+                ->leftJoin('users','orders.delivery_boy','=','users.id')
+                ->leftJoin('delivery_details','delivery_details.order_id','orders.id')
+                ->select('orders.*','orders.id as orderid','users.name','users.group_id','delivery_details.vehicle_no',
+                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video')
+                ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
-        $countview = Order::where('status',"Order Confirmed")->count();
+        $countview = Order::where('delivery_boy',Auth::user()->id)->count();
         return view('logistics.orders',['view' => $view,'count' => $countview]);
     }
     
@@ -115,7 +135,7 @@ class logisticsController extends Controller
     }
     public function deliveredorders()
     {
-        $rec = Order::where('delivery_status','Yes')->orWhere('delivery_status','Delivered')->get();
+        $rec = Order::where('delivery_boy',Auth::user()->id)->Where('delivery_status','Delivered')->get();
         $countrec = count($rec);
         return view('logistics.deliveredorders',['rec'=>$rec,'countrec'=>$countrec]);
     }
@@ -129,39 +149,49 @@ class logisticsController extends Controller
         $request->signature->move(public_path('signatures'),$signatureName);
         $signature = Order::where('id',$request->orderId)->first();
         $signature->signature = $signatureName;
+        $signature->total = $request->amount;
         $signature->payment_status = "Payment Received";
         $signature->save();
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = 400;
+        $points->type = "Add";
+        $points->reason = "Receiving payment";
+        $points->save();
         return back()->with('Success','Payment Received');
     }
     public function saveDeliveryDetails(Request $request)
     {
-        if(!$request->vid){
-            $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
-            $request->vno->move(public_path('delivery_details'),$vehicleNo);
-
-            $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
-            $request->lp->move(public_path('delivery_details'),$locationPicture);
-
-            $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
-            $request->qm->move(public_path('delivery_details'),$quality);
-
-            $deliveryDetails = new DeliveryDetails;
-            $deliveryDetails->order_id = $request->orderId;
-            $deliveryDetails->vehicle_no = $vehicleNo;
-            $deliveryDetails->location_picture = $locationPicture;
-            $deliveryDetails->quality_of_material = $quality;
-            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-            $deliveryDetails->save();
-        }else{
+        $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+        $request->vno->move(public_path('delivery_details'),$vehicleNo);
+        
+        $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+        $request->lp->move(public_path('delivery_details'),$locationPicture);
+        
+        $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+        $request->qm->move(public_path('delivery_details'),$quality);
+        
+        $deliveryDetails = new DeliveryDetails;
+        $deliveryDetails->order_id = $request->orderId;
+        $deliveryDetails->vehicle_no = $vehicleNo;
+        $deliveryDetails->location_picture = $locationPicture;
+        $deliveryDetails->quality_of_material = $quality;
+        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        if($request->vid){
             $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
             $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails = new DeliverDedtails;
-            $deliveryDetails->order_id = $request->orderId;
             $deliveryDetails->delivery_video = $video;
-            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-            $deliveryDetails->save();
         }
-        Order::where('id',$request->orderId)->update(['delivery_details',"Delivered"]);
+        $deliveryDetails->save();
+        Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered"]);
+        $reasonText = date('H:i:s') > "20:00:00" ? "Delivering material at night" : "Delivering material";
+        $point = date('H:i:s') > "20:00:00" ? 500 : 250;
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = $reasonText;
+        $points->save();
         return back();
     }
 }
