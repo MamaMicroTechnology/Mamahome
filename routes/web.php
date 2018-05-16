@@ -23,8 +23,8 @@ Route::get('/logoutFromChat','TokenController@logout');
 // Shared View
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
-
-
+Route::get('/invoice','logisticsController@getinvoice');
+Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
 
 
