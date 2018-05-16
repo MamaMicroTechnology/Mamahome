@@ -63,6 +63,7 @@ input:checked + .slider:before {
     <th>Emp Id</th>
     <th>Name</th>
     <th>Designation</th>
+    <th>Emp.details</th>
 </thead>
 <tbody>
 @foreach($users as $user)
@@ -70,6 +71,7 @@ input:checked + .slider:before {
         <td>{{ $user->employeeId}}</td>
         <td>{{ $user->name}}</td>
         <td>{{ $user->group->group_name }}</td>
+        <td><a href="{{ URL::to('/') }}/ameditEmployee?UserId={{ $user->employeeId }}">Edit</a> &nbsp;|&nbsp;<a href="{{ URL::to('/') }}/amviewEmployee?UserId={{ $user->employeeId }}">View</a></td>
     </tr>
 @endforeach
 </tbody>

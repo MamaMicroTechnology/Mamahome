@@ -1,10 +1,5 @@
+@extends('layouts.app')
 
-
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 14? "layouts.app":"layouts.amheader");
-?>
-@extends($ext)
 @section('content')
 <div class="container">
     <div class="row">
@@ -21,10 +16,10 @@
                    {{ session('NotAdded') }}
                 </div>
             @endif
-            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee</button>
+           <!--  <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee</button> -->
             <br><br>
             <div class="panel panel-default" style="border-color:#f4811f">
-                <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Departments</b></div>
+                <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Assign Assets </b></div>
                 <div class="panel-body">
                     @foreach($departments as $department)
                         <?php 
@@ -33,7 +28,7 @@
                         ?>
                         <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
                     @endforeach
-                    <a id="FormerEmployees" class="list-group-item" href="#">Former Employees</a>
+                    
                 </div>
             </div>
         </div>
@@ -54,41 +49,37 @@
           <h4 class="modal-title">Add Employee</h4>
         </div>
         <div class="modal-body">
-          <table class="table table-hover">
-              <tbody>
-                  <tr>
-                    <td><label>Emp Id</td>
-                    <td> <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"></td>
-                  </tr>
-                  <tr>
-                    <td><label>Name</label></td>
-                    <td><input required type="text" placeholder="Name" class="form-control" name="name"></td>
-                  </tr>
-                  <tr>
-                    <td><label>User-Id Of MMT</label></td>
-                    <td><input required type="text" placeholder="User-id of MMT" class="form-control" name="email"></td>
-                  </tr>
-                  <tr>
-                    <td><label>Department</label></td>
-                      <td><select required class="form-control" name="dept">
+            <div class="row">
+                <div class="col-md-6">
+                  <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"><br>
+                  <input required type="email" placeholder="User-id of MMT" class="form-control" name="email"><br>
+                </div>
+                <div class="col-md-6">
+                  <input required type="text" placeholder="Name" class="form-control" name="name"><br>
+                  <input required type="text" placeholder="Personal Contact No." class="form-control" name="phNo"><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                  Department:<br>
+                  <select required class="form-control" name="dept">
                       <option value="">--Select--</option>
                       @foreach($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
                       @endforeach
-                  </select></td>
-                  </tr>
-                  <tr>
-                    <td><label>Designation</label></td>
-                    <td> <select required class="form-control" name="designation">
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  Designation:<br>
+                  <select required class="form-control" name="designation">
                       <option value="">--Select--</option>
                       @foreach($groups as $designation)
                         <option value="{{ $designation->id }}">{{ $designation->group_name }}</option>
                       @endforeach
-                  </select></td>
-                  </tr> 
-                </tbody>
-              </table>
+                  </select>
+                </div>
             </div>
+        </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success">Add</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -99,24 +90,7 @@
 
 </form>
 
-<div class='b'></div>
-<div class='bb'></div>
-<div class='message'>
-  <div class='check'>
-    &#10004;
-  </div>
-  <p>
-    Success
-  </p>
-  <p>
-    @if(session('Success'))
-    {{ session('Success') }}
-    @endif
-  </p>
-  <button id='ok'>
-    OK
-  </button>
-</div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($departments as $department)
@@ -127,8 +101,10 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $("#{{ $con }}").on('click',function(){
+
+      
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/view?dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/assetsview?dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -136,17 +112,6 @@ $(document).ready(function () {
     });
 });
 </script>
-<script type="text/javascript">
-$(document).ready(function () {
-    $("#FormerEmployees").on('click',function(){
-        $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/view?dept=FormerEmployees", function(responseTxt, statusTxt, xhr){
-            if(statusTxt == "error")
-                alert("Error: " + xhr.status + ": " + xhr.statusText);
-        });
-        $(document.body).css({'cursor' : 'default'});
-    });
-});
-</script>
+
 @endforeach
 @endsection

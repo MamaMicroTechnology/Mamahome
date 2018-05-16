@@ -2,6 +2,7 @@
 	$user = Auth::user()->group_id;
 	$ext = ($user == 4? "layouts.amheader":"layouts.app");
 ?>
+
 @extends($ext)
 @section('content')
 <div class="col-md-12">
@@ -18,6 +19,12 @@
 						<h3 style="font-size:1.8em">{{SESSION('success')}}</h3>
 					</div>
 					@endif
+					@if(session('NotAdded'))
+               <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                   {{ session('NotAdded') }}
+                </div>
+           			 @endif
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>
@@ -53,8 +60,8 @@
 								@endif
 							</tr>	
 							<tr>
-								<td><label>Select category:</label></td>
-								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
+								<td><label>Product:</label></td>
+								<td><button  required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Select Category</button></td>
 							</tr>
 <!-- model -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -78,18 +85,19 @@
 
 	                  @foreach($cat->brand as $brand)
 	                   <div class="row">
-	                   		<div class="col-md-6">
+	                   	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                   	<!-- 	<div class="col-md-6"> -->
 			                  	<b><u>{{$brand->brand}}</u></b><br>
 			                  @foreach($brand->subcategory as $subcategory)
 			                  		<!-- <div class="col-md-6"> -->
-			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			                  			<label class="checkbox-inline">
-			                  			 <input type="checkbox" name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+			                  			 <input type="checkbox"  name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
 			                  			</label>
 			                  			<br>
 			                  		<!-- </div> -->
 			                  @endforeach
-			                  </div>
+			                  <!-- </div> -->
 			           </div>
 	                  @endforeach
 		    	 	</div>
@@ -105,13 +113,38 @@
         <div class="modal-footer">
         	
          
-           <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+           <button type="button"  class="btn btn-success" data-dismiss="modal">Save</button>
           	
         </div>
       </div>
     </div>
 </div>
-<!-- model end -->
+<!-- model end -->			
+							@if(Auth::user()->group_id == 6)
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users1 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@elseif(Auth::user()->group_id == 7)
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users2 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@else
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>
@@ -123,6 +156,7 @@
 									</select>
 								</td>
 							</tr>
+							@endif
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>
@@ -140,14 +174,14 @@
 							<tr>
 								<td><label>Remarks : </label></td>
 								<td>
-									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
+									<textarea style="resize: none;" rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<input type="hidden" id="measure" name="measure">
 					<div class="text-center">
-						<input type="submit"  name="" id="" class="btn btn-md btn-success"  style="width:40%" />
+						<input type="submit" name="" id="" class="btn btn-md btn-success"  style="width:40%" />
 						<input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 					</div>
 				</form>
@@ -324,4 +358,24 @@
 		     }
 	}
 </script>
+<!-- <script type="text/javascript">
+	 function popup()
+	{
+		
+		$.ajax({
+        type:'GET',
+        url:"{{URL::to('/')}}/getcount",
+        success: function(response)
+            {
+            	console.log(response);
+            	if(count == 0)
+            	{
+            		alert(count);
+            	}
+
+            }
+           });
+		
+	}
+</script> -->
 @endsection

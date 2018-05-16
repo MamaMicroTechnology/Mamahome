@@ -21,20 +21,24 @@
                 </div>
                 @if($subwards)
                 <div class="panel-body">
-                    <center>
-                    <label id="headingPanel"></label>
                     <br>
-                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
-                    </center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
+                            <center> <label id="headingPanel"></label></center>
                                <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
+                                <tr>
+                                    <!--      
+                                     <td>
+                                          <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
+                                      </td> -->
+                                       
+                              </tr>
                                <tr>
                                    <td>Location</td>
                                    <td>:</td>
@@ -49,6 +53,7 @@
                                     </div>
                                    </td>
                                </tr>
+                              
                                <tr>
                                    <td>Road Name/Road No.</td>
                                    <td>:</td>
@@ -57,7 +62,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet"  class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -227,8 +232,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]" type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -666,7 +671,7 @@
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
           } else if(document.getElementById('rWidth').value == ""){
-            window.alert("You have not entered  Width");
+            window.alert("You have not entered Road Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){

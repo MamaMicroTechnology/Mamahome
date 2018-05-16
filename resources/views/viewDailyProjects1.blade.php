@@ -5,7 +5,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                <b style="color:white">Project Details
-                <a href="{{ URL::to('/') }}/ameditProject1?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
+                
                </b> 
             </div>
             <div class="panel-body">

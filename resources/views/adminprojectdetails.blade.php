@@ -147,7 +147,7 @@
                          <tbody>
                          @foreach($roomtypes as $roomtype)
                             <tr>
-                                <td>Floor {{ $roomtype->floor_no }}</td>
+                                <td><b>Floor No:</b>{{ $roomtype->floor_no }}</td>
                                 <td>{{ $roomtype->room_type }}</td>
                                 <td>{{ $roomtype->no_of_rooms }}</td>
                             </tr>

@@ -11,6 +11,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
+					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
@@ -95,7 +96,7 @@
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
-							<th style="text-align: center">Project</th>
+							<th style="text-align: center">Project_Id</th>
 							<th style="text-align: center">Ward Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>

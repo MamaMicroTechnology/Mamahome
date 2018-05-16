@@ -1,9 +1,11 @@
-@extends('layouts.amheader')
+@extends('layouts.app')
 @section('content')
 
 <div class="col-md-6 col-md-offset-3">
-    <div class="panel panel-success">
-        <div class="panel-heading">Add details of {{ $user->name }}</div>
+    <div class="panel panel-default" style="border-color: green;">
+        <div class="panel-heading" style="background-color: green;color:white;padding-bottom: 20px;">Add details of {{ $user->name }}
+             <a href="{{ url()->previous() }}" class="btn btn-danger input-sm pull-right">Back</a>
+        </div>
         <div class="panel-body">
             <form method="POST" action="{{ URL::to('/') }}/amedit/save" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -75,7 +77,7 @@
                     </tr>
                     <tr>
                         <td>Permanent Address</td>
-                        <td><textarea class="form-control" name="perAdd" placeholder="Permanent address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->permanent_address:'' }}</textarea></td>
+                        <td><textarea style="resize: none;" class="form-control" name="perAdd" placeholder="Permanent address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->permanent_address:'' }}</textarea></td>
                     </tr>
                     <tr>
                         <td>Permanent Address Proof</td>
@@ -90,7 +92,7 @@
                     </tr>
                     <tr>
                         <td>Present Address</td>
-                        <td><textarea class="form-control" name="preAdd" placeholder="Present address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->temporary_address:'' }}</textarea></td>
+                        <td><textarea style="resize: none;" class="form-control" name="preAdd" placeholder="Present address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->temporary_address:'' }}</textarea></td>
                     </tr>
                     <tr>
                         <td>Present Address Proof</td>
@@ -157,12 +159,12 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" class="btn btn-primary form-control" value="Save">
+                <input type="submit" class="btn btn-success form-control" value="Save">
             </form>
         </div>
     </div>
-    <div class="panel panel-success">
-        <div class="panel-heading">Bank Account details</div>
+    <div class="panel panel-default" style="border-color:green;">
+        <div class="panel-heading"  style="background-color: green;color:white;">Bank Account details</div>
         <div class="panel-body">
             <form method="POST" action="{{ URL::to('/') }}/amedit/bank_account" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -217,12 +219,12 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" class="btn btn-primary form-control" value="Save">
+                <input type="submit" class="btn btn-success form-control" value="Save">
             </form>
         </div>
     </div>
-    <div class="panel panel-warning">
-        <div class="panel-heading">Asset Info</div>
+    <div class="panel panel-default"  style="border-color: green;">
+        <div class="panel-heading"  style="background-color: green;color:white;">Asset Info</div>
         <div class="panel-body">
             <table class="table table-responsive">
                 <tr>
@@ -263,7 +265,7 @@
                             </tbody>
                         </table>
                         @endif
-                        <form method="POST" action="{{ URL::to('/') }}/amedit/saveAssetInfo">
+                       <!--  <form method="POST" action="{{ URL::to('/') }}/amedit/saveAssetInfo">
                             {{ csrf_field() }}
                             <input type="hidden" name="userId" value="{{ $user->employeeId }}">
                             <table id="asset" class="table table-responsive">
@@ -287,14 +289,14 @@
                             <button onclick="addRow()">+</button>
                             <button onclick="deleteRow()">-</button>
                             <input type="submit" class="form-control btn btn-success" value="Save">
-                        </form>
+                        </form> -->
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    <div class="panel panel-success">
-        <div class="panel-heading">Certificates</div>
+    <div class="panel panel-default" style="border-color: green;">
+        <div class="panel-heading"  style="background-color: green;color:white;">Certificates</div>
         <div class="panel-body">
             <button onclick="addCertificateRow()">+</button>
             <form method="POST" action="{{ URL::to('/') }}/amedit/uploadCertificates" enctype="multipart/form-data">
@@ -354,17 +356,17 @@
   <div id="caption"></div>
 </div>
 <script>
-    function addRow() {
-            var table = document.getElementById("asset");
-            var row = table.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            cell1.innerHTML = "<select required class=\"form-control\" name=\"type[]\"><option value=\"\">--Select--</option>@foreach($assets as $asset)<option value=\"{{$asset->type}}\">{{ $asset->type }}</option>@endforeach </select>";
-            cell2.innerHTML = "<textarea required class=\"form-control\" placeholder=\"Asset description\" name=\"details[]\"></textarea>";
-        }
-        function deleteRow() {
-            document.getElementById("asset").deleteRow(-1);
-        }
+    // function addRow() {
+    //         var table = document.getElementById("asset");
+    //         var row = table.insertRow(-1);
+    //         var cell1 = row.insertCell(0);
+    //         var cell2 = row.insertCell(1);
+    //         cell1.innerHTML = "<select required class=\"form-control\" name=\"type[]\"><option value=\"\">--Select--</option>@foreach($assets as $asset)<option value=\"{{$asset->type}}\">{{ $asset->type }}</option>@endforeach </select>";
+    //         cell2.innerHTML = "<textarea required class=\"form-control\" placeholder=\"Asset description\" name=\"details[]\"></textarea>";
+    //     }
+    //     function deleteRow() {
+    //         document.getElementById("asset").deleteRow(-1);
+    //     }
         function addCertificateRow() {
             var table = document.getElementById("Certificate");
             var row = table.insertRow(-1);

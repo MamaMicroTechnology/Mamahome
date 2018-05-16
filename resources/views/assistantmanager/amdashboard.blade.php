@@ -1,4 +1,9 @@
-@extends('layouts.amheader')
+
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 14? "layouts.app":"layouts.amheader");
+?>
+@extends($ext)
 @section('content')
 <br><br>
 <div style="background-color:white" class="container" >

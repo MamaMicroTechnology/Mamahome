@@ -405,12 +405,8 @@ div#calendar{
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
           @if(Auth::check())
-            
-        @if(Auth::user()->group_id == 14)
-            <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
-            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
-            <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
-            
+            <a href="{{ URL::to('/home') }}">Home</a>
+            <a href="{{ URL::to('/') }}/chat">Chat</a>
         @else
            <a href="{{ URL::to('/amorderss') }}">Orders</a>
             @if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)
@@ -424,7 +420,7 @@ div#calendar{
            <a href="{{ URL::to('/') }}/astenquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
-           <a href="{{ URL::to('/') }}/asttraining">Training Video</a>
+           <a href="{{ URL::to('/') }}/training">Training Video</a>
             @elseif(Auth::user()->group_id == 1 )
            <a href="{{ URL::to('/pricing') }}">Pricing</a>
            <a href="{{ URL::to('/') }}/amfinance">Finance</a>
@@ -440,7 +436,7 @@ div#calendar{
 
             @endif
         @endif
-        @endif
+
         </div>
         @yield('content')
     </div>
