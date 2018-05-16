@@ -3,7 +3,7 @@
 
 <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default" style="border-color: green;">
-        <div class="panel-heading" style="background-color: green;color:white;">Add details of {{ $user->name }}
+        <div class="panel-heading" style="background-color: green;color:white;padding-bottom: 20px;">Add details of {{ $user->name }}
              <a href="{{ url()->previous() }}" class="btn btn-danger input-sm pull-right">Back</a>
         </div>
         <div class="panel-body">

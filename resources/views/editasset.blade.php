@@ -3,7 +3,7 @@
 
 <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: green;color: white;">Edit Asset Details
+        <div class="panel-heading" style="background-color: green;color: white;padding-bottom: 20px;">Edit Asset Details
         <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
         </div>
         <div class="panel-body">

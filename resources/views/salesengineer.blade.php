@@ -95,7 +95,7 @@
 											<?php
 											$type = explode(", ",$project->construction_type);
 											?>
-											<td>Construction Type</td>
+											<td><label>Construction Type</label></td>
 											<td>
 												<label required class="checkbox-inline">
 												<input {{ in_array('Residential', $type) ? 'checked': ''}} id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential
@@ -200,7 +200,7 @@
                 						        </td>
         						            </tr>
 											<tr>
-												<td>Road Width</td>
+												<td><label>Road Width</label></td>
 												<td><input id="road" value="{{ $project->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
 											</tr>
         						            <tr id="matpanelright-{{$project->project_id}}">
@@ -252,7 +252,7 @@
                 						    </tr>
                                 <tr>
                                   <td><b> Follow up date</b></td>
-                                  <td ><input  type="date" name="fdate" id="fdate" class="form-control" /></td>
+                                  <td ><input required type="date" name="fdate" id="fdate" class="form-control" /></td>
 
 
                                 </tr>

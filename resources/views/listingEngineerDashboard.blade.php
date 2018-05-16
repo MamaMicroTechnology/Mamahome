@@ -23,44 +23,41 @@
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
                 <tr>
-                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed:</label></td>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
                 </tr>
                 <tr>  
-                  <td style="border: 1px solid gray;"><label>Total Number of Projects Listed Today:</label></td>
+                  <td style="border: 1px solid gray;"><label>Total Number of Projects Listed Today</label></td>
                   <td style="border: 1px solid gray;">{{ $total }}</td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders Initiated by You:</label></td>
+                  <td style="border: 1px solid gray;"><label>Orders Initiated by You</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed:</label></td>
+                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
                 </tr>
           </tbody>
         </table>
-         <!-- <label>
+         <!-- <!-- <label>
            You have listed <strong>{{ $numbercount }}</strong> projects so far.<br>
            You have listed {{ $total }} projects today.<br>
            {{ $ordersInitiated }} orders has been initiated by you<br>
            out of which {{ $ordersConfirmed }} has been confirmed
-<<<<<<< HEAD
          </label><br><br> -->
-            <center></center>
+            <!-- <center></center>
             <div class="panel-panel-primary">
                 <div class="panel-heading text-center">
                     <!--<b><u>CURRENT PRICE LIST</u></b>-->
-                </div>
+                <!-- </div>
                 <div class="panel-body">
 
                             
                 </div>
             </div>
             
-=======
-         </label><br><br>
->>>>>>> master
+         </label><br><br>  -->
        </div>
         <div class="pull-right col-lg-8">
           <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">

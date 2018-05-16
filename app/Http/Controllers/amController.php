@@ -36,6 +36,7 @@ use App\ActivityLog;
 use App\Order;
 use App\Message;
 use App\training;
+use App\MamahomeAsset;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller

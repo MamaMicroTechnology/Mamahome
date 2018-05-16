@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default" style="border-color: green;">
-                <div class="panel-heading" style="background-color: green;color:white;">
+                <div class="panel-heading" style="background-color: green;color:white;padding-bottom: 20px;">
                     {{ $user->employeeId }} : {{ $user->name }}
                     
             <a href="{{ url()->previous() }}" class="btn btn-danger input-sm pull-right">Back</a>

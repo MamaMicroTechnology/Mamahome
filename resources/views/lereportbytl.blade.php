@@ -235,12 +235,30 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Evening Data Reading</td>
+					<td>Evening Meter Reading</td>
+					<td>:</td>
+					<td>
+					    @if($loginTimes->eveningMeter != NULL)
+					    {{ $loginTimes->afternoonMeter }}
+					    @endif
+					</td>
+				</tr>
+				<tr>
+					<td>Evening Data Image</td>
 					<td>:</td>
 					<td>
 					    @if($loginTimes->eveningData != NULL)
 					    <img src="{{ URL::to('/') }}/public/data/{{ $loginTimes->eveningData }}" height="100" width="200" class="img img-thumbnail">
 					<a href="{{ URL::to('/') }}/{{ $loginTimes->id }}/deleteReportImage6" class="btn btn-danger">Delete</a>
+					    @endif
+					</td>
+				</tr>
+				<tr>
+					<td>Evening Data Reading</td>
+					<td>:</td>
+					<td>
+					    @if($loginTimes->eveningData != NULL)
+					    {{ $loginTimes->afternoonRemarks }}
 					    @endif
 					</td>
 				</tr>

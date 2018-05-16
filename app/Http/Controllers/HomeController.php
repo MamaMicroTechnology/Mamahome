@@ -36,6 +36,7 @@ use App\WardMap;
 use Auth;
 use DB;
 use App\EmployeeDetails;
+use Validator;
 use App\BankDetails;
 use App\Asset;
 use App\AssetInfo;
@@ -130,9 +131,19 @@ class HomeController extends Controller
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
     }
+    
     public function inputdata(Request $request)
     {
         // for fetching sub categories
+         $validator = Validator::make($request->all(), [
+            'subcat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                    ->with('NotAdded','Select Category Before Submit')
+                    ->withErrors($validator)
+                    ->withInput();
+        }
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
          
@@ -1057,7 +1068,7 @@ class HomeController extends Controller
         $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->get();
-        $total = $points_earned_so_far - $points_subtracted;
+        // $total = $points_earned_so_far - $points_subtracted;
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
                                                 'projects'=>$projects,
@@ -1071,7 +1082,7 @@ class HomeController extends Controller
                                                 'points_indetail'=>$points_indetail,
                                                 'points_earned_so_far'=>$points_earned_so_far,
                                                 'points_subtracted'=>$points_subtracted,
-                                                'total'=>$total
+                                                // 'total'=>$total
                                                 ]);
     }
     public function projectList()
@@ -1380,10 +1391,15 @@ class HomeController extends Controller
     }
     public function projectRequirement(Request $request)
     {
+        if($request->today){
+            $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->get();
+        }
+        else{
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $projectlist = ProjectDetails::where('road_name',$request->road)
         ->where('sub_ward_id',$assignment)
             ->get();
+        }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements"]);
     }
     public function getRequirements(Request $request)
@@ -3008,6 +3024,7 @@ class HomeController extends Controller
         $wards = Ward::all();
         $users = User::all();
         $ids = array();
+
         if($request->phNo){
             $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo )->orwhere('project_id',$request->phNo)->pluck('project_id');
             $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
@@ -3021,6 +3038,7 @@ class HomeController extends Controller
                 }
 
             }
+
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
@@ -3028,7 +3046,12 @@ class HomeController extends Controller
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->where('deleted',0)
                             ->get();
-            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+
+            $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
+            $updater = User::whereIn('id',$projectdetails)->first();
+           
+
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users,'updater'=>$updater]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
         }
@@ -3225,7 +3248,7 @@ class HomeController extends Controller
                 $read->save();
             }
         }
-        // Message::where('read_by','NOT LIKE',"%".Auth::user()->id."%")->update(['read_by'=>Auth::user()->id]);
+       
         return view('chat');
     }
 
