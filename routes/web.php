@@ -20,11 +20,12 @@ Route::get('/', function () {
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
-// Shared View
+
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 
 Route::get('/assign_project','HomeController@projectwise');
+Route::POST('/projectstore','HomeController@projectstore');
 Route::get('/status_wise_projects','HomeController@index1');
 
 
@@ -147,7 +148,10 @@ Route::get('/getleinfo','HomeController@getleinfo');
 Route::get('/gettodayleinfo','HomeController@gettodayleinfo');
 Route::get('/registrationrequests','HomeController@regReq');
 Route::get('/salesAddProject','HomeController@listingEngineer');
-Route::get('/salescompleted','HomeController@updateSalesAssignment');
+Route::get('/salescompleted','HomeController@projectwisedel');
+
+
+
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
 Route::get('/followupproject','HomeController@followup');
@@ -285,7 +289,7 @@ Route::group(['middleware' => ['operationTL']],function(){
 Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
-    // Route::get('/enquirysheet','HomeController@enquirysheet');
+     Route::get('/enquirysheet','HomeController@enquirysheet');
     Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
    
@@ -423,5 +427,5 @@ Route::group(['middleware'=>['Logistics']],function(){
 
 
 
-Route::post('/toggle-approve',"HomeController@approval");
-Route::post('/toggle-approve1',"HomeController@approval1");
+
+// /Route::post('/toggle-approve1',"HomeController@approval1");

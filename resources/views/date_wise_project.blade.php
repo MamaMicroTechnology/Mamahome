@@ -23,9 +23,11 @@
                             <th style="text-align:center">Contractor Contact Number</th>
                             <th style="text-align:center">Add Enquiry</th> 
                              <th style="text-align:center">Action</th>
-                             <th style="text-align:center">No Of Times Called</th> 
+                             <th style="text-align:center">No Of Times Called</th>
+                             <th style="text-align: center" >Call_History</th> 
                              <!-- <th style="text-align: center">Blocked </th> -->
                             <!--<th style="text-align:center">Verification</th>-->
+                     
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
@@ -45,14 +47,20 @@
                                 <form method="post" action="{{ URL::to('/') }}/confirmedProject">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $project->project_id }}" name="id">
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onchange="this.form.submit()">Called</label>
-                                    </div>
+                                    
+                                    @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
+                                 <button type="button" class="btn btn-danger" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
+                                @endif
+                                        @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
+                                 <button type="button" class="btn btn-success"  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
+                                @endif
+                                        
+                                    
                                     </div>       
                                 </form>
+                                </td>
                                 <td>{{  $project->confirmed }}</td>
-                            </td>
-                             </td>
+                            <td><p>{{$project->updated_at}}</p></td> 
                             
                         </tr>
                         

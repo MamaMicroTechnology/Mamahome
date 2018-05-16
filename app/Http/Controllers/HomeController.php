@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\orderconfirmation;
 use App\Mail\invoice;
@@ -50,6 +51,9 @@ use App\Stages;
 use App\Dates;
 use App\Map;
 use App\brand;
+use App\AssignStage;
+
+  
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -70,6 +74,10 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     
+   public  function display(){
+    return view('/list'); 
+   }
+
     public function authlogin()
     {
         date_default_timezone_set("Asia/Kolkata");
@@ -165,7 +173,7 @@ class HomeController extends Controller
     public function getProjects(Request $request)
     {
         $contact = $request->contact;
-        $x = ProjectDetails::join('procurement_details','procurement_details.project_id','=','project_details.project_id')
+        $x = project_details::join('procurement_details','procurement_details.project_id','=','project_details.project_id')
                             ->where('procurement_details.procurement_contact_no',$contact)
                             ->get();
         if(count($x)==0){
@@ -561,31 +569,51 @@ class HomeController extends Controller
                     ->first();
         return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
     }
+   
+
+
     public function index1(Request $request )
     {
-        $check =DB::table('stages')->where('list',Auth::user()->name)
-                    ->orderby('created_at','DESC')->pluck('status');
-        $count = count($check); 
-        $projects = ProjectDetails::leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
+        $check =DB::table('assignstage','user_id',Auth::user()->id)->pluck('stage');        
+          $count=Count($check);
+
+
+        $projects = AssignStage::leftjoin('project_details', 'project_details.project_status', 'assignstage.stage')
             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
-            ->where('project_status' , $check)
-            ->select('project_details.*','users.name','sub_wards.sub_ward_name')
-            ->paginate(15);
-        $totalListing = ProjectDetails::where('project_status',$check)->count();
-            
-        return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status'=>$check]);
+            ->where('stage' , $check)
+            ->where('project_details.quality', NULL)
+            ->select('project_details.*','users.name')
+            ->paginate(15); 
+      
+           
+        return view('status_wise_projects', ['projects' => $projects]);
        }
+       
+
+
+
        public function datewise(Request $request )
        {
-           $assigndate =Dates::where('user_id',Auth::user()->id)
-           ->orderby('created_at','DESC')->pluck('assigndate')->first();
-           $projects =ProjectDetails::where('project_details.created_at','like',$assigndate."%")
-               ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-               ->select('project_details.*','sub_wards.sub_ward_name')
+            $assigndate =AssignStage::where('user_id',Auth::user()->id)
+                           ->orderby('created_at','DESC')->pluck('assigndate')->first();
+            $check =DB::table('assignstage','user_id',Auth::user()->id)->pluck('stage');  
+            $projects =ProjectDetails::where('project_details.created_at','like',$assigndate."%")
+                ->whereOr('project_details.project_status','asssign_satge')
+                ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
+                 ->whereOr('stage' , $check)
+               ->leftjoin('assignstage', 'project_details.sub_ward_id',  'assignstage.sub_id')
+               ->select('project_details.*')
                ->paginate(15);
+                  
             $totalListing = ProjectDetails::where('created_at','LIKE',$assigndate."%")->count();
+           
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
+    
+
+
+
+
     public function index()
     {
         if(Auth::user()->confirmation == 0){
@@ -1270,6 +1298,15 @@ class HomeController extends Controller
         salesassignment::where('user_id',Auth::user()->id)->delete();
         return back();
     }
+     public function completethis1(Request $user_id)
+    {   
+        $assignment =AssignStage::where('user_id',Auth::user()->id)->first();
+        dd( $assignment);
+        $assignment->state = 'Completed';
+        $assignment->save();    
+        AssignStage::where('user_id',Auth::user()->id)->delete();
+        return back();
+    }
 
     // sales
     public function getSalesTL(){
@@ -1615,26 +1652,186 @@ class HomeController extends Controller
         SiteAddress::where('project_id', $id)->update(['address' => $view]);
         return response()->json($view);
     }
-    public function projectsUpdate()
-    {
-        $assignment = salesassignment::where('user_id',Auth::user()->id)->pluck('assigned_date')->first();
-        $subwards = SubWard::where('id',$assignment)->pluck('sub_ward_name')->first();
-        $projects = ProjectDetails::where('sub_ward_id', $assignment)->paginate(10);
-        $projectscount = ProjectDetails::where('sub_ward_id', $assignment)->count();
-        if(Auth::user()->id == 82){
-            $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
-            $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
-        }elseif(Auth::user()->id == 85){
-            $projects = ProjectDetails::where('created_at','LIKE',"2018-04-19%")->paginate(10);
-            $projectscount = ProjectDetails::where('created_at','LIKE', "2018-04-19%")->count();
-        }elseif(Auth::user()->id == 78){
-            $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
-            $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
+    public function projectsUpdate(Request $request)
+    {     
+
+        
+       
+        $roomtypes = RoomType::where('project_id',$request->projectId)->get();
+       
+         $assigndate =AssignStage::where('user_id',Auth::user()->id)
+                     ->orderby('assigndate','DESC')->pluck('assigndate')->first();
+         $rmc =AssignStage::where('user_id',Auth::user()->id)->pluck('rmc')->first();
+         $project_type = AssignStage::where('user_id',Auth::user()->id)->pluck('project_type')->first();
+         $projectSize = AssignStage::where('user_id',Auth::user()->id)->pluck('project_size')->first();
+         $budget = AssignStage::where('user_id',Auth::user()->id)->pluck('budget')->first();
+        $subwards = AssignStage::where('user_id',Auth::user()->id)->pluck('subward')->first();
+         $subwardNames = explode(", ", $subwards);
+         $subwardid = Subward::whereIn('sub_ward_name',$subwardNames)->pluck('id')->toArray();
+        $bud = AssignStage::where('user_id',Auth::user()->id)->pluck('budget_type')->first();
+         $lab = AssignStage::where('user_id',Auth::user()->id)->pluck('contract_type')->first();
+         $date =  AssignStage::where('user_id',Auth::user()->id)->pluck('assigndate')->first();
+        $rmc = AssignStage::where('user_id',Auth::user()->id)->pluck('rmc')->first();
+
+        $project_type = AssignStage::where('user_id',Auth::user()->id)->pluck('project_type')->first();
+         $projectsie =  AssignStage::where('user_id',Auth::user()->id)->pluck('project_size')->first();
+        $budget = AssignStage::where('user_id',Auth::user()->id)->pluck('budget')->first();
+        
+           $roomtypes = RoomType::where('project_id',$request->projectId)->get();
+
+
+
+        
+         $projectids = new Collection();
+         //feching wardwise
+         
+
+         $projects = ProjectDetails::whereIn('sub_ward_id',$subwardid)->pluck('project_id');
+         $projectids = $projectids->merge($projects);
+
+         //feching budget types
+         $budgettypes = ProjectDetails::whereIn('project_id',$projectids)->where('budgetType',"LIKE","%".$bud."%")->pluck('project_id');
+            
+            if(Count($budgettypes) > 0){
+                $projectids = $budgettypes;
+            }
+            else {
+
+                  $projectids = $projectids->merge($budgettypes);
+            }
+           
+           
+         //feching contracts 
+
+
+         $labc = ProjectDetails::whereIn('project_id',$projectids)->where('contract',$lab)->pluck('project_id');
+         
+          if(Count($labc) > 0){
+                $projectids = $labc;
+
+            }else {
+
+                $projectids=$projectids->merge($labc);
+            }
+            
+             
+       
+         
+
+        //feching stages
+        
+
+         $stage = AssignStage::where('user_id',Auth::user()->id)->pluck('stage')->first(); 
+
+         $stagec = explode(", ", $stage);
+           // $projectids = new Collection();
+                                  
+           for($i = 0; $i<count($stagec); $i++)
+           {
+               $projectsat = ProjectDetails::whereIn('project_id',$projectids)->where('project_status' ,'LIKE', "%".$stagec[$i]."%")->pluck('project_id');
+              
+           }
+        if(Count( $projectsat) > 0){
+             $projectids = $projectsat;
+        }else{
+
+        $projectids= $projectids->merge($projectsat);
         }
-        // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
-        return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
+
+
+
+
+        if($date != "NULL"){
+          $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
+           if(Count($datec) > 0){
+            $projectids= $datec;
+          }else{
+            
+               $projectids=$projectids->merge($datec);
+          }
+            
+        }
+
+        else{
+             $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE',$date."%")->pluck('project_id');
+             if(Count($datec) > 0){
+                $projectids = $datec;
+             }else{
+                
+              $projectids=$projectids->merge($datec);
+             }
+            
+        }
+        
+         
+        
+         $rmcs = ProjectDetails::whereIn('project_id',$projectids)->where('interested_in_rmc',$rmc)->pluck('project_id');
+         if(Count( $rmcs) > 0){
+             $projectids = $rmcs;
+        }
+        else
+        {
+          $projectids = $projectids->merge($rmcs);
+        }
+         
+        
+
+         $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '<=',$project_type !=null ? $project_type :0    )->pluck('project_id');
+          if(Count($project_types) > 0){
+            $projectids = $project_types;
+          }else{
+
+              $projectids = $projectids->merge($project_types);
+            
+          }
+
+
+
+          $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','<=',$projectSize != null ? $projectSize : 0)->pluck('project_id');
+           if(Count($project_sizes) > 0){
+             $projectids =$project_sizes;
+        }else{
+
+         $projectids = $projectids->merge($project_sizes);
+        }
+
+
+          $budgets = ProjectDetails::whereIn('project_id',$projectids)->where('budget','<=',$budget != null ? $budget : 0 )->pluck('project_id');
+         
+           if(Count($budgets) > 0  ){
+             $projectids =$budgets;
+        }
+        else{
+            
+         $projectids = $projectids->merge($budgets);
+        }
+
+         
+      $projects = ProjectDetails::whereIn('project_id',$projectids)
+                                ->select('project_details.*')
+                                  ->paginate(15);
+          
+        
+
+       
+
+           $requirements = array();
+        foreach($projects as $project){
+            $req = Requirement::where('project_id',$project->project_id)->pluck('id')->toArray(); 
+            $pid = $project->project_id;
+            array_push($requirements, [$pid,$req]);
+        }
+        
+        
+                                 
+     return view('salesengineer',['projects'=>$projects,'roomtypes'=>$roomtypes, 
+                   
+                'requirements' =>$requirements,' subwardid' => $subwardid
+                 ]);
     }
-    public function dailywiseProjects(Request $request){
+    
+
+ public function dailywiseProjects(Request $request){
         $today = date('Y-m-d');
         $date = date('Y-m-d',strtotime('-1 day',strtotime($today)));
         $projectCount = ProjectDetails::where('created_at','like',$date.'%')->count();
@@ -2679,12 +2876,12 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
        
         $this->validate($request, [
             
-            'name' => 'required|max:500',
+            'user_id' => 'required|max:500',
             'assigndate' => 'required|max:500',
 
         ]);
         $dates = new Dates;
-        $dates->name = $request->name;
+        $dates->user_id = $request->user_id;
         $dates->assigndate = $request->assigndate;
         $dates->save();
         return redirect()->back();
@@ -2702,14 +2899,7 @@ return view('tltraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps]);
         return view('chat');
     }
 
-public function approval(request $request  )
-    {         
-      ProjectDetails::where('project_id',$request->id)
-        ->update([
-            'deleted'=>2
-        ]);
-      return back();
-    }
+
     public function getWardMaping()
     {
         $zones = Zone::leftjoin('maps','zones.id','maps.zone_id')
@@ -2766,13 +2956,16 @@ public function myreport()
 
 public function assigndate(request $request )
 {
-     $users = User::where('users.department_id','!=',10)
+     
+    
+    $users = User::where('users.department_id','!=',10)
                     ->leftjoin('departments','departments.id','users.department_id')
                     ->leftjoin('groups','groups.id','users.group_id')
-                    ->leftjoin('stages','stages.list','user.name')
+                    ->leftjoin('stages','stages.list','users.name')
                     ->select('users.*','departments.dept_name','groups.group_name')
 
                     ->paginate(10);
+
              $stages = Stages::where('status','')->get();
               
 
@@ -2784,5 +2977,132 @@ public function assigndate(request $request )
         
 }
 
+public function projectwise(request $request){
+     $depts = [4,5];
+    $users = User::where('users.department_id','!=',$depts)
+              ->leftjoin('assignstage','assignstage.user_id','users.id')
+              ->leftjoin('departments','departments.id','users.department_id'   )
+              ->leftjoin('groups','groups.id','users.group_id')
+              
+              ->select('users.*','departments.dept_name','groups.group_name','assignstage.prv_ward','assignstage.prv_subward','assignstage.prv_date','assignstage.prv_stage','assignstage.state' )->paginate(20);
+      
+ //      $details= $request->Search;
+ // $detail = User::where(['name', 'LIKE', '%' . $details . '%'])->get();
+
+                   
+   $assignstage=AssignStage::all();
+    $wards = Ward::all();
+    $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
+               ->select('sub_wards.*')->get();
+    $assign = AssignStage::pluck('state');
+   
+   
+ return view('assign_project',['subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assign'=>$assign,'assignstage'=>$assignstage ]);
+    
+}
+public function projectwisedel(request $request){
+
+AssignStage::where('user_id',Auth::user()->id)->delete();
+return redirect()->back();
 
 }
+
+public function projectstore(request $request)
+{
+    if($request->ward){
+    $wards = implode(", ", $request->ward);
+    }else{
+        $wards = "null";
+    }
+    if($request->subward ) 
+     {
+    $subwards = implode(", ", $request->subward);
+
+    } else{
+        $subwards = "null";
+    }
+
+    if($request->stage )  {
+
+    $stages = implode(", ", $request->stage);
+    } else{
+        $stages ="null";
+    }
+    if($request->constraction_type ){
+    $contracts = implode(", ",$request->constraction_type);
+        
+    }else{
+       $contracts = "null";  
+    }
+   if($request->budget_type){
+
+    $budgets = implode(", ", $request->budget_type);
+   }else{
+    $budgets = "null";
+   }
+$check = AssignStage::where('user_id',$request->user_id)->first();
+    
+if(count($check) == 0){
+     
+     $projectassign = new AssignStage;
+    
+        $projectassign->user_id = $request->user_id;
+
+        $projectassign->ward = $wards;
+        $projectassign->subward = $subwards;
+        $projectassign->stage = $stages;
+        $projectassign->assigndate = $request->assigndate;
+        $projectassign->project_type = $request->project_type;
+        $projectassign->project_size = $request->project_size;
+        $projectassign->budget = $request->budget;
+        $projectassign->contract_type = $request->contract_type;
+        $projectassign->constraction_type = $contracts;
+        $projectassign->rmc = $request->rmc;
+        $projectassign->budget_type = $budgets;
+        $projectassign->prv_ward =$wards ;
+        $projectassign->state = "Not Completed ";
+        $projectassign->prv_subward =$subwards;
+        $projectassign->prv_date =$request->assigndate;
+        $projectassign->prv_stage =$stages;
+        $projectassign->save();
+}else{
+        $check->ward = $wards;
+        $check->subward = $subwards;
+        $check->stage = $stages;
+        $check->assigndate = $request->assigndate;
+        $check->project_type = $request->project_type;
+        $check->project_size = $request->project_size;
+        $check->budget = $request->budget;
+        $check->contract_type = $request->contract_type;
+        $check->constraction_type = $contracts;
+        $check->rmc = $request->rmc;
+        $check->budget_type = $budgets;           
+        $check->state = "Not Completed ";
+        $check->prv_ward =$wards ;
+        $check->prv_subward =$subwards;
+        $check->prv_date =$request->assigndate;
+        $check->prv_stage =$stages;
+        $check->save(); 
+}
+       
+
+      return redirect()->back();
+
+
+}
+     }
+
+
+
+
+
+
+
+    
+
+   
+     
+ 
+
+    
+    

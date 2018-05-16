@@ -25,9 +25,9 @@
                         <thead>
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Designation</th>
-                            <th style="width:15%">Assign Stage</th>
-                            <th style="width:15%">Previously Assigned  Stage </th>
-                            <th style="text-align:center">Action</th>
+                            <th style="width:5%">Assign Stage</th>;
+                          
+                            <th style="text-align:center;width:35%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Action</th>
                           </thead>
 
                         <tbody>
@@ -41,7 +41,7 @@
                           <a data-toggle="modal" data-target="#assignstages" class="btn btn-sm btn-primary">Assign Stages</a>
                            
                            </td>
-                           <td style="text-align:center">
+                           <td style="text-align:center;width:-50%">
                            @if($user->status1 == 'Not Completed')
                                     {{ $user->prev_assign}}
                                   @else

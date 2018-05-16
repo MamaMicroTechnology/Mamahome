@@ -33,7 +33,7 @@
                            <tr>
                             <td>{{$user->name}}</td>
                             <td>{{ $user->group_name }}</td>
-                            <input type="hidden" id= "user{{ $user->id }}" name="name" value="{{$user->id}}">
+                            <input type="hidden" id= "user{{ $user->id }}" name="user_id" value="{{$user->id}}">
                             <td> <input type="date" id="date{{ $user->id }}" name="assigndate" class="form-control input-sm"></td>
                             <td><button type="button" onclick="save('{{$user->id}}')" class="btn btn-success pull-left">Assign</button></td>
                           </tr>         
