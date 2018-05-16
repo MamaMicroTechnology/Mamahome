@@ -44,48 +44,84 @@
 								</td>
 							</tr>	
 							<tr>
-								<td><label>Main Category* :</label></td>
-								<td>
-									<select name="mCategory" id="mCategory" required class="form-control" onchange="getBrands()">
-										<option value="{{ $enq->main_category }}" selected>{{ $enq->main_category }}</option>
-										<option value="All">All</option>
-										    @foreach($category as $cat)
-										    <option value="{{$cat->id}}">{{$cat->category_name}}</option>
-										    @endforeach
-									</select>
-								</td>
+								<td><label>Select category:</label></td>
+								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
-							<tr>
-								<td><label>Brnads* :</label></td>
-								<td>
-									<select name="brand" id="brand" class="form-control" onchange="getSubCat()">
-										
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td><label>Sub Category* :</label></td>
-								<td>
-									<select name="sCategory" id="sCategory" class="form-control" onchange="getPrice()">
-										<option>{{ $enq->sub_category }}</option>
-									</select>
-								</td>
-							</tr>
-<!-- 							<tr>
-								<td><label>Email : </label></td>
-								<td><input type="email" name="eemail" id="eemail" class="form-control"></td>
-							</tr> -->
+
+<!-- model -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:80%">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: green;color: white;" >
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><center>CATEGORY</center></h4>
+        </div>
+        <div class="modal-body" style="height:500px;overflow-y:scroll;">
+        <br>
+        <br>
+        <div class="row">
+		<?php
+			$subcategories = explode(", ",$enq->sub_category);
+			$brands = explode(", ",$enq->brand);
+		?>
+		@foreach($category as $cat)
+			
+			<div class="col-md-4" >
+					<div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
+	                  <button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   >{{$cat->category_name}}</button>
+
+	                  @foreach($cat->brand as $brand)
+	                   <div class="row">
+	                   		<div class="col-md-6">
+			                  	<b><u>{{$brand->brand}}</u></b><br>
+			                  @foreach($brand->subcategory as $subcategory)
+			                  		<!-- <div class="col-md-6"> -->
+			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                  			<label class="checkbox-inline">
+			                  			 <input {{ in_array($subcategory->sub_cat_name, $subcategories) && in_array($brand->brand, $brands)  ? 'checked': ''}} type="checkbox" name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+			                  			</label>
+			                  			<br>
+			                  		<!-- </div> -->
+			                  @endforeach
+			                  </div>
+			           </div>
+	                  @endforeach
+		    	 	</div>
+	        </div>
+	        @if($loop->iteration % 3==0)
+	        	</div>
+	        		<div class="row">
+	        @endif
+    	 @endforeach
+    	 </div>	
+        </div>
+       
+        <div class="modal-footer">
+        	
+         
+           <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+          	
+        </div>
+      </div>
+    </div>
+</div>
+<!-- model end -->
+
+							@if(Auth::user()->group_id != 6 && Auth::user()->group_id != 7)
 							<tr>
 								<td><label>Initiator* : </label></td>
-								<td>
+								<td>	
 									<select class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
-										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
+										<option value="{{$user->id}}">{{$user->name}}</option>
 										@endforeach
 									</select>
 								</td>
 							</tr>
+							@endif
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>{{ $enq->address }}</td>
@@ -177,7 +213,7 @@
 	    	        success: function(response)
 	    	        {
 	    	            console.log(response);
-	    	            var ans = "<option value=''>--Select--</option>";
+	    	            var ans = "<option value=''>--Select--</option><option value='All'>All</option>";
 	    	            for(var i=0;i<response[0].length;i++)
 	    	            {
 	    	                ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
@@ -222,5 +258,15 @@
     		}
     	})
     }
+</script>
+<script type="text/javascript">
+	 function getquantity()
+	{
+		var quan=document.myform.equantity.value;
+			if(isNaN(quan)){
+				document.getElementById('equantity').value="";
+				myform.equantity.focus();
+		     }
+	}
 </script>
 @endsection

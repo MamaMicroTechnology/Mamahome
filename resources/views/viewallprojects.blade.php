@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 	<div class="col-md-12">
-		<div class="panel panel-default">
+		<div class="panel panel-primary">
 			<div class="panel-heading">Project Details 
 				@if($projects != "None")
 					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)
@@ -14,6 +14,7 @@
 						<div class="col-md-4">
 							<select name="ward" onchange="getSubwards()" id="ward" class="form-control">
 								<option value="">--SELECT--</option>
+								<option value="All">All</option>
 								@foreach($wards as $ward)
 								<option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
 								@endforeach
@@ -33,7 +34,7 @@
 				<form method="GET" action="{{ URL::to('/') }}/{{Auth::user()->group_id == 1 ? 'viewallProjects':'projectDetailsForTL'}}">
 					<div class="col-md-4 pull-right">
 						<div class="input-group">
-							<input type="text" name="phNo" class="form-control" placeholder="Phone number search">
+							<input type="text" name="phNo" class="form-control" placeholder="Phone number and project_id search">
 							<div class="input-group-btn">
 								<input type="submit" class="form-control" value="Search">
 							</div>
@@ -44,6 +45,8 @@
 					<thead>
 						<th>Project Id</th>
 						<th>Project Name</th>
+						<th>Construction Type</th>
+						
 						<th>Sub-Ward</th>
 						<th>Project Status</th>
 						<th>Quality</th>
@@ -56,6 +59,7 @@
 						<th>Listed By</th>
 						<th>Called By</th>
 						<th>Listed On</th>
+						
 						<th>Last update</th>
 					</thead>
 					<tbody>
@@ -66,6 +70,8 @@
 								<a target="_none" href="{{ URL::to('/') }}/ameditProject?projectId={{ $project->project_id }}">{{ $project->project_id }}</a>
 							</td>
 							<td>{{ $project->project_name }}</td>
+							<td>{{ $project->construction_type }}</td>
+							
 							<td>{{ $project->sub_ward_name }}</td>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
@@ -83,6 +89,7 @@
 								@endif
 								@endforeach
 							</td>
+							
 							<td>
 								{{ date('d/m/Y',strtotime($project->created_at))}}
 							</td>

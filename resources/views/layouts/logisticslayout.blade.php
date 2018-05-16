@@ -282,9 +282,8 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
-                        @if(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
-                        <li><a href="{{ URL::to('/') }}/amorderss">Orders</a></li>
-                        @endif
+                        <li><a href="{{ URL::to('/') }}/chat">Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
+                        <li><a href="{{ URL::to('/') }}/takesignature" target="_blank">Take Signature</a></li>
                         @endif
                     </ul>
                 
@@ -327,6 +326,7 @@ div#calendar{
 @if(Auth::user()->group_id == 12)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    
     <a href="{{ URL::to('/') }}/lcoorders">Order Details</a>
     <a href="{{ URL::to('/') }}/deliveredorders">Delivered Orders</a>
     <a href="{{ URL::to('/lcoreport') }}">My Report</a>
@@ -350,28 +350,28 @@ div#calendar{
         }
     </script>
     <script>
-        // Get the modal
-        var modal = document.getElementById('myModal');
+        // // Get the modal
+        // var modal = document.getElementById('myModal');
         
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        function display(arg){
-            var img = document.getElementById(arg);
-            var modalImg = document.getElementById("img01");
-            var captionText = document.getElementById("caption");
-            img.onclick = function(){
-                modal.style.display = "block";
-                modalImg.src = this.src;
-                captionText.innerHTML = this.alt;
-            }
-        }
+        // // Get the image and insert it inside the modal - use its "alt" text as a caption
+        // function display(arg){
+        //     var img = document.getElementById(arg);
+        //     var modalImg = document.getElementById("img01");
+        //     var captionText = document.getElementById("caption");
+        //     img.onclick = function(){
+        //         modal.style.display = "block";
+        //         modalImg.src = this.src;
+        //         captionText.innerHTML = this.alt;
+        //     }
+        // }
         
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("imgClose")[0];
+        // // Get the <span> element that closes the modal
+        // var span = document.getElementsByClassName("imgClose")[0];
         
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() { 
-            modal.style.display = "none";
-        }
-</script>
+        // // When the user clicks on <span> (x), close the modal
+        // span.onclick = function() { 
+        //     modal.style.display = "none";
+        // }
+    </script>
 </body>
 </html>

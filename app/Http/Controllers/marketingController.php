@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\orderconfirmation;
 use App\Mail\invoice;
@@ -41,12 +42,28 @@ use App\ManufacturerDetail;
 use App\Certificate;
 use App\MhInvoice;
 use App\brand;
+use App\Message;
+use App\training;
 
 class marketingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+            $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
+            return $next($request);
+        });
+    }
     public function getHome(){
         $categories = Category::all();
-        $subcategories = SubCategory::all();
+        $subcategories = SubCategory::leftjoin('brands','category_sub.brand_id','=','brands.id')->select('brands.brand','category_sub.*')->get();
         $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
         return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
     }
@@ -75,6 +92,10 @@ class marketingController extends Controller
         SubCategory::where('category_id',$request->id)->delete();
         return back()->with('Success','Category with its sub-categories has been deleted');
     }
+    public function deletebrand(Request $request){
+        brand::find($request->id)->delete();
+        return back()->with('Success','brand has been deleted');
+    }
     public function deleteSubCategory(Request $request){
         SubCategory::find($request->id)->delete();
         return back()->with('Success','Sub-Category has been deleted');
@@ -83,6 +104,11 @@ class marketingController extends Controller
         Category::where('id',$request->id)
             ->update(['category_name'=>$request->name]);
         return back()->with('Success','Category has been updated');
+    }
+    public function updateBrand(Request $request){
+        brand::where('id',$request->id)
+            ->update(['brand'=>$request->name]);
+        return back()->with('Success','Brand has been updated');
     }
     public function updateSubCategory(Request $request){
         SubCategory::where('id',$request->id)
@@ -96,5 +122,9 @@ class marketingController extends Controller
         $brand->brand = $request->brand;
         $brand->save();
         return back()->with('Success','Brand added');
+    }
+     public function marketingDashboard()
+    {
+        return view('marketingdashboard');
     }
 }

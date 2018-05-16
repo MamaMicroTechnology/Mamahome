@@ -200,8 +200,10 @@ div#calendar{
                         @endif
                         @endif
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
-                        <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
+                        <li><a href="{{ URL::to('/') }}/chat">Chat</a></li>
+                      @if(Auth::user()->department_id =! 2 && Auth::user()->group_id =! 7)
                         <li><a href="{{ URL::to('/') }}/setraining">Training Video</a></li>
+                        @endif
                     </ul>
                 
                     <!-- Right Side Of Navbar -->

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use App\Message;
 use App\Http\Resources\Message as MessageResource;
 
@@ -26,7 +27,7 @@ class TokenController extends Controller
         // Claims will be sent with the token
         $user = Auth::user();
         $claims = ['name' => $user->name, 'email' => $user->email];
-        $users = User::all();
+        $users = User::where('department_id','!=',10)->get();
         $userlist = "";
         foreach($users as $i){
             $userlist .="<p>".$i->name."<br><small>".$i->email."</small></p>";
@@ -64,5 +65,31 @@ class TokenController extends Controller
     	Auth::logout();
     	return redirect('/login');
     }
-
+    public function apilogout()
+    {
+        Auth::logout();
+        return response()->json(['status'=>"logged out"]);
+    }
+    public function pms(Request $request)
+    {
+        $mymessages = Message::where('from_user',$request->authId)
+                    ->where('to_user',$request->userId)
+                    ->get();
+        $hismessages = Message::where('from_user',$request->userId)
+                    ->where('to_user',$request->authId)
+                    ->get();
+        $messages = $mymessages->merge($hismessages);
+        $messages = $messages->sortBy('created_at');
+        return new MessageResource($messages);
+    }
+    public function getLogin(Request $request)
+    {
+        $messages = new Collection;
+        if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
+            $userdetails = User::where('id',Auth::user()->id)->first();
+            return response()->json(['message' => 'true','userid'=>$userdetails->id]);
+        }else{
+            return response()->json(['message' => 'false']);
+        }
+    }
 }

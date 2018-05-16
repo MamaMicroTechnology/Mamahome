@@ -43,7 +43,7 @@
                                 
                                 <td style="text-align:center"> 
                                   @if($user->status == 'Not Completed')
-                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success" onclick="{{ URL::to('/') }}/salescompleted; return false" >Completed</a>
+                                    <a href="{{URL::to('/')}}/completethis?userid={{$user->id}}" class="btn btn-sm btn-success"  onclick="{{ URL::to('/') }}/salescompleted; " > Completed </a>
                                    @else
                                  complete
                                   @endif
@@ -100,7 +100,7 @@
                     @endforeach
                 </select>
             <label>Choose Subward :</label><br>
-                <select name="subward" class="form-control" id="subward{{ $user->id }}">
+                <select name="subward" class="form-control" id="subward{{ $user->id }}" >
                 </select>
             <!-- <input type="date" name="date" class="form-control"> -->
           </div>

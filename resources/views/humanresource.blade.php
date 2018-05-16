@@ -1,4 +1,4 @@
-@extends('layouts.amheader')
+@extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
@@ -23,7 +23,11 @@
                 <div class="panel-heading" style="background-color:#f4811f">Departments</div>
                 <div class="panel-body">
                     @foreach($departments as $department)
-                        <a id="{{ $department->dept_name }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }})</a>
+                        <?php 
+                            $content = explode(" ",$department->dept_name);
+                            $con = implode("",$content);
+                        ?>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }})</a>
                     @endforeach
                         <a id="Formeremployee" class="list-group-item" href="#">Former Employees ({{ $depts["FormerEmployees"] }})</a>
                 </div>
@@ -51,7 +55,8 @@
                 </div>
                 <div class="col-md-6">
                   <input required type="text" placeholder="Name" class="form-control" name="name"><br>
-                  <input required type="text" placeholder="Personal Contact No." class="form-control" name="phNo"><br>
+                  <input required type="text" pattern="^\d{10}$"  placeholder="10 Digit phoneno" class="form-control"  name="phNo" ><br>
+
                 </div>
             </div>
             <div class="row">
@@ -76,7 +81,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success" onclick="phonenumber(document.form1.phNo)">
+            <button type="submit" class="btn btn-success" >
             Add </button>
           <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
         </div>
@@ -108,11 +113,15 @@
 <script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($departments as $department)
+<?php 
+    $content = explode(" ",$department->dept_name);
+    $con = implode("",$content);
+?>
 <script type="text/javascript">
 $(document).ready(function () {
-    $("#{{ $department->dept_name }}").on('click',function(){
+    $("#{{ $con }}").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/humanresources/{{ $department->dept_name }}?page=hr", function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/humanresources/"+encodeURIComponent("{{ $department->dept_name }}")+"?page=hr", function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -130,19 +139,7 @@ $(document).ready(function () {
     });
 });
 
-function phonenumber(inputtxt)
-{
-  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if(inputtxt.value.match(phoneno))
-     {
-     return true;      
-   }
-   else
-     {
-     alert("Not a valid Phone Number");
-     return false;
-     }
-}
+
 
 </script>
 @endforeach

@@ -10,22 +10,25 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
-					
-				</form>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
-				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
+			@if(Auth::user()->group_id == 1)
+				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
+			@elseif(Auth::user()->group_id == 17)
+				<form method="GET" action="{{ URL::to('/') }}/scenquirysheet">
+			@else
+				<form method="GET" action="{{ URL::to('/') }}/tlenquirysheet">
+			@endif
 					<div class="col-md-12">
 							<div class="col-md-2">
 								<label>From (Enquiry Date)</label>
-								<input type="date" class="form-control" name="from">
+								<input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
 							</div>
 							<div class="col-md-2">
 								<label>To (Enquiry Date)</label>
-								<input type="date" class="form-control" name="to">
+								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
 								<label>Wards</label>
@@ -33,7 +36,7 @@
 									<option value="">--Select--</option>
 									<option value="">All</option>
 									@foreach($wards as $ward)
-									<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
+									<option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -43,7 +46,7 @@
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($initiators as $initiator)
-								<option value="{{ $initiator->id }}">{{ $initiator->name }}</option>
+								<option {{ isset($_GET['initiator']) ? $_GET['initiator'] == $initiator->id ? 'selected' : '' : '' }} value="{{ $initiator->id }}">{{ $initiator->name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -53,7 +56,7 @@
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
-								<option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -112,7 +115,7 @@
 						@if($enquiry->status != "Not Processed")
 						<tr>
 							<td style="text-align: center">
-								<a href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
+								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
 								</a> 
 							</td>
@@ -150,10 +153,26 @@
 							<td>
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
 							</td>
+							
 						</tr>
 						@endif
-						@endforeach
+						@endforeach   
 					</tbody>
+					<tr>
+						<td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center">Total</td>
+						 	<td style="text-align: center">{{ $totalofenquiry }}</td>
+						 	<td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					</tr>
 				</table>
 			</div>
 			<div class="panel-footer">

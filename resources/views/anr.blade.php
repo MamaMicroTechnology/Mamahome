@@ -9,7 +9,11 @@
                 <div class="panel-heading">Departments</div>
                 <div class="panel-body">
                     @foreach($departments as $department)
-                        <a id="{{ $department->dept_name }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
+                        <?php 
+                            $content = explode(" ",$department->dept_name);
+                            $con = implode("",$content);
+                        ?>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
                     @endforeach
                     <a id="Formeremployee" class="list-group-item" href="#">Former Employees</a>
                 </div>
@@ -23,11 +27,15 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($departments as $department)
+<?php 
+    $content = explode(" ",$department->dept_name);
+    $con = implode("",$content);
+?>
 <script type="text/javascript">
 $(document).ready(function () {
-    $("#{{ $department->dept_name }}").on('click',function(){
+    $("[id = '{{ $con }}']").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/humanresources/{{ $department->dept_name }}?page=anr", function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/humanresources/"+encodeURIComponent("{{ $department->dept_name }}")+"?page=anr", function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });

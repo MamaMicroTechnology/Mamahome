@@ -18,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::get('messages','TokenController@index');
 Route::post('message','TokenController@store');
+Route::get('privatemessage','TokenController@pms');
+Route::get('login/{username}/{password}','TokenController@getLogin');
+Route::get('logout','TokenController@logout');

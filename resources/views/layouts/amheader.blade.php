@@ -366,7 +366,9 @@ div#calendar{
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        
+                        <li><a href="{{ URL::to('/home') }}">Home</a></li>
+                        <li><a href="{{ URL::to('/') }}/chat">Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
+                        <li><a href="{{ URL::to('/') }}/video">Training Video</a></li>
                     </ul>
                 
                     <!-- Right Side Of Navbar -->
@@ -403,12 +405,12 @@ div#calendar{
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
           @if(Auth::check())
-            <a href="{{ URL::to('/home') }}">Home</a>
+            
         @if(Auth::user()->group_id == 14)
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
-            <a href="{{ URL::to('/') }}/video">Training Video</a>
+            
         @else
            <a href="{{ URL::to('/amorderss') }}">Orders</a>
             @if(Auth::user()->department_id == 5 && Auth::user()->group_id == 4)
@@ -419,11 +421,11 @@ div#calendar{
            <a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a>
            <a href="{{ URL::to('/') }}/amkra">KRA</a>
            <a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a>
-           <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+           <a href="{{ URL::to('/') }}/astenquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
            <a href="{{ URL::to('/') }}/asttraining">Training Video</a>
-            @elseif(Auth::user()->group_id == 1)
+            @elseif(Auth::user()->group_id == 1 )
            <a href="{{ URL::to('/pricing') }}">Pricing</a>
            <a href="{{ URL::to('/') }}/amfinance">Finance</a>
            <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
@@ -431,7 +433,7 @@ div#calendar{
            <a href="{{ URL::to('/') }}/amdailyslots">Daily Slots</a>
            <a href="{{ URL::to('/') }}/amkra">KRA</a>
            <a href="{{ URL::to('/') }}/assignDailySlots">Assign Daily Slots</a>
-           <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+           <a href="{{ URL::to('/') }}/adenquirysheet">Enquiry Sheet</a>
            <a href="{{ URL::to('/') }}/salesreport">Sales Report</a>
            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
 
