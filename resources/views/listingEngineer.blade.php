@@ -27,14 +27,15 @@
                     {{ csrf_field() }}
                            <table class="table">
                             <center> <label id="headingPanel"></label></center>
-                            <center> <tr>
+                             <tr>
+                                     <td></td>
                                      <td></td>
                                      <td></td>
                                      <td>
                                           <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></td>
                                       
                                        
-                              </tr></center>
+                              </tr>
                             <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
