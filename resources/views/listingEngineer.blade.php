@@ -33,10 +33,10 @@
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
                                 <tr>
-                                    <!--      
+                                          
                                      <td>
                                           <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
-                                      </td> -->
+                                      </td>
                                        
                               </tr>
                                <tr>
