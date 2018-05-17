@@ -93,7 +93,7 @@
 								        <h4 class="modal-title">Image</h4>
 								      </div>
 								      <div class="modal-body">
-								        <img style=" height:250px; width:470px;" src="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">
+								        <img style=" height:350px; width:640px;" src="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">
 								      </div>
 								      <div class="modal-footer">
 								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
