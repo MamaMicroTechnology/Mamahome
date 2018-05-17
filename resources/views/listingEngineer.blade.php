@@ -22,20 +22,16 @@
                 @if($subwards)
                 <div class="panel-body">
                     <br>
+                    
+                                     
+                             <center>       
+                     <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
                             <center> <label id="headingPanel"></label></center>
-                             <tr>
-                                     <td></td>
-                                     
-                                     
-                                     <td align ="center">
-                     <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></td>
-                                      
-                                       
-                              </tr>
+                            
                             <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
