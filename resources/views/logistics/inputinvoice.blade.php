@@ -142,19 +142,19 @@
                     </tr>
                     <tr>
                         <td colspan=2>Quantity</td>
-                        <td colspan=2>MH210</td>
+                        <td colspan=2><input type="text" name="" id="" class="form-control"></td>
                     </tr>
                     <tr>
                         <td colspan=2>Date of Invoice</td>
-                        <td colspan=2></td>
+                        <td colspan=2><input type="date" name="" id="" class="form-control"></td>
                     </tr>
                     <tr>
                         <td colspan=2>Total Amount</td>
-                        <td colspan=2></td>
+                        <td colspan=2><input type="text" name="" id="" class="form-control"></td>
                     </tr>
                     <tr>
                         <td colspan=2>Pic Manufacturer Invoice</td>
-                        <td colspan=2></td>
+                        <td colspan=2><input type="file" name="" id="" class="form-control"></td>
                     </tr>
                 </table>
             </div>
