@@ -28,7 +28,7 @@
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>
-								<td style="width:30%"><label> Enuiry Date* : </label></td>
+								<td style="width:30%"><label> Enquiry Date* : </label></td>
 								<td style="width:70%"><input required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr> 
