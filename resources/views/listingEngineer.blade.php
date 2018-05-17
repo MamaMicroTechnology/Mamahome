@@ -29,7 +29,7 @@
                             <center> <label id="headingPanel"></label></center>
                              <tr>
                                      <td></td>
-                                     <td></td>
+                                     
                                      
                                      <td align ="center">
                      <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></td>
