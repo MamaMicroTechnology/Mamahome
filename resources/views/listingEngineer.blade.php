@@ -29,9 +29,9 @@
                             <center> <label id="headingPanel"></label></center>
                              <tr>
                                           
-                                     <td>
-                                        <center>  <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center>
-                                      </td>
+                                  <center>   <td>
+                                          <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></td></center>
+                                      
                                        
                               </tr>
                             <tr>
