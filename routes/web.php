@@ -117,7 +117,7 @@ Route::post('/postchangepassword','mamaController@postChangePassword');
 Route::post('/forgot','mamaController@forgot');
 Route::post('/{id}/updateProject','mamaController@updateProject');
 Route::post('/markProject','mamaController@markProject');
-Route::post('/addRequirement','mamaController@addRequirement');
+Route::post('/addRequirements','mamaController@addRequirement');
 Route::post('/inputdata','HomeController@inputdata');
 Route::post('/addCategory','marketingController@addCategory');
 Route::post('/addSubCategory','marketingController@addSubCategory');
