@@ -371,14 +371,12 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                   
                     @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                      @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                      @elseif(Auth::user()->group_id == 14)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                      
                     @endif
                     @endif
                 </div>
@@ -388,7 +386,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span></b></a></li>
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
                         @endif
@@ -402,23 +400,23 @@ div#calendar{
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
                         @endif
                         @if(Auth::user()->group_id == 14)
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
-                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
                        
                         @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 2)
-                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 17)
-                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
-                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
-                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
                         @endif
                     </ul>
