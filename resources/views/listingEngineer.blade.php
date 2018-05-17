@@ -21,7 +21,8 @@
                 </div>
                 @if($subwards)
                 <div class="panel-body">
-                    <br>
+                   <center> <label id="headingPanel"></label></center>
+                   <br>
                     
                                      
                              <center>       
@@ -30,7 +31,7 @@
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
-                            <center> <label id="headingPanel"></label></center>
+                            
                             
                             <tr>
                                    <td>Project Name</td>
