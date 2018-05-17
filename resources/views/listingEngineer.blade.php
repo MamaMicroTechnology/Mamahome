@@ -27,18 +27,19 @@
                     {{ csrf_field() }}
                            <table class="table">
                             <center> <label id="headingPanel"></label></center>
-                               <tr>
+                             <tr>
+                                          
+                                     <td>
+                                        <center>  <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center>
+                                      </td>
+                                       
+                              </tr>
+                            <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
-                                <tr>
-                                          
-                                     <td>
-                                          <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
-                                      </td>
-                                       
-                              </tr>
+                               
                                <tr>
                                    <td>Location</td>
                                    <td>:</td>
