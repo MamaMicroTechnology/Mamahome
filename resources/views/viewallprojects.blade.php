@@ -60,7 +60,9 @@
 						<th>Called By</th>
 						<th>Listed On</th>
 						<th>Last update</th>
+						@if(Auth::user()->group_id == 2 )
 						<th>Last updated By</th>
+						@endif
 					</thead>
 					<tbody>
 						@if($projects != "None")
@@ -122,9 +124,11 @@
 								{{ date('d/m/Y', strtotime($project->updated_at)) }}
 								<br><small>({{ $project->updated_at->diffForHumans() }})</small>
 							</td>
+							@if(Auth::user()->group_id == 2 )
 							<td>@if($updater != null)
-                                   {{ $updater->name }}
-                                @endif</td>
+                                 			  {{ $updater->name }}
+                               				 @endif</td>
+							 @endif
 							@if(Auth::user()->group_id == 1)
 							<td>
 								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>
