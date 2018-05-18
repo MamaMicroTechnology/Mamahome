@@ -40,9 +40,7 @@
                                </tr>
                                 <tr>
                                          
-                                     <td>
-                                          <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
-                                      </td>
+                                    
                                        
                               </tr>
                                <tr>
