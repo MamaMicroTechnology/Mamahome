@@ -6,6 +6,7 @@
   <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
+  @if(isset($_GET['userId']))
     <script type="text/javascript">
         var track = [];
         @foreach($track as $trac)
@@ -32,6 +33,28 @@
         });
         });
     </script>
+    @else
+    <script type="text/javascript">
+    var map;
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: 12.9716,
+        lng: 77.5946,
+        zoomControl : true,
+        zoomControlOpt: {
+            style : 'SMALL',
+            position: 'TOP_LEFT'
+        },
+        panControl : false,
+        streetViewControl : false,
+        mapTypeControl: false,
+        overviewMapControl: false
+      });
+      map.setZoom(11);
+    });
+  </script>
+    @endif
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2" style="max-height:550px; height:550px; overflow-y: scroll;">
