@@ -28,7 +28,7 @@
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>
-								<td style="width:30%"><label> Enuiry Date* : </label></td>
+								<td style="width:30%"><label> Requirement Date* : </label></td>
 								<td style="width:70%"><input required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr> 
@@ -78,30 +78,32 @@
         <br>
         <div class="row">	
 		@foreach($category as $cat)
-			
-			<div class="col-md-4" >
-					<div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
-	                  <button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   >{{$cat->category_name}}</button>
+			<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">{{$cat->category_name}}</div>
+				<div class="panel-body" style="height:300px; max-height:300; overflow-y: scroll;">
+					@foreach($cat->brand as $brand)
+						<div class="row">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<b><u>{{$brand->brand}}</u></b><br>
+							@foreach($brand->subcategory as $subcategory)
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="checkbox-inline">
+										<input type="checkbox"  name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+										<input type="text" placeholder="Quantity" name="quantity[]" id="" class="form-control">
+									</label>
+									<br><br>
+							@endforeach
+						</div>
+						@endforeach
+				</div>
+				<!-- <div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
+					<button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   ></button>
 
-	                  @foreach($cat->brand as $brand)
-	                   <div class="row">
-	                   	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                   	<!-- 	<div class="col-md-6"> -->
-			                  	<b><u>{{$brand->brand}}</u></b><br>
-			                  @foreach($brand->subcategory as $subcategory)
-			                  		<!-- <div class="col-md-6"> -->
-			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			                  			<label class="checkbox-inline">
-			                  			 <input type="checkbox"  name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-			                  			</label>
-			                  			<br>
-			                  		<!-- </div> -->
-			                  @endforeach
-			                  <!-- </div> -->
-			           </div>
-	                  @endforeach
-		    	 	</div>
+					
+				</div> -->
 	        </div>
+			</div>
 	        @if($loop->iteration % 3==0)
 	        	</div>
 	        		<div class="row">
@@ -120,27 +122,12 @@
     </div>
 </div>
 <!-- model end -->			
-							@if(Auth::user()->group_id == 6)
+							@if(Auth::user()->group_id == 6 || Auth::user()->group_id == 7)
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
 									<select required class="form-control" name="initiator">
-										<option value="">--Select--</option>
-										@foreach($users1 as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
-									</select>
-								</td>
-							</tr>
-							@elseif(Auth::user()->group_id == 7)
-							<tr>
-								<td><label>Initiator* : </label></td>
-								<td>	
-									<select required class="form-control" name="initiator">
-										<option value="">--Select--</option>
-										@foreach($users2 as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
+										<option value="{{Auth::user()->id}}">{{Auth::user()->name}}</option>
 									</select>
 								</td>
 							</tr>
@@ -166,10 +153,6 @@
 									<input type="text" name="elocation" id="elocation" class="form-control" />
 									@endif
 								</td>
-							</tr>
-							<tr>
-								<td><label>Quantity* : </label></td>
-								<td><input required type="text" oninput="getquantity()" name="equantity"   id="equantity" class="form-control" /></td>
 							</tr>
 							<tr>
 								<td><label>Remarks : </label></td>

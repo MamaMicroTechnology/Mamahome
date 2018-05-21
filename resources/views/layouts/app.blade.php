@@ -507,6 +507,7 @@ div#calendar{
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
+    <a href="{{ URL::to('/confidential') }}">Confidential</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
