@@ -10,7 +10,7 @@
     <script type="text/javascript">
         var track = [];
         @foreach($track as $trac)
-            track.push([{{ $trac->latitude }},{{ $trac->longitude }}]);
+            track.push([{{ round($trac->latitude,4) }},{{ round($trac->longitude,4) }}]);
         @endforeach
         var map;
         $(document).ready(function(){
@@ -22,7 +22,7 @@
             console.log(e);
             }
         });
-        map.setZoom(11);
+        map.setZoom(16);
         path = track;
 
         map.drawPolyline({
