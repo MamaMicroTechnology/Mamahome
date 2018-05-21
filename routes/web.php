@@ -218,7 +218,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/approvePoint','HomeController@approvePoint');
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
-
+    Route::get('/letracking','HomeController@getLeTracking');
 
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
