@@ -37,8 +37,8 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{ URL::to('/') }}/home">Home</a></li>
                         <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
-                        <li><a href="{{ URL::to('/') }}/letraining">Training Video</a></li>
-                        <li><a href="{{ URL::to('/') }}/chat">Chat</a></li>
+                        <li><a href="{{ URL::to('/') }}/letraining">Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span> </a></li>
+                        <li><a href="{{ URL::to('/') }}/chat">Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

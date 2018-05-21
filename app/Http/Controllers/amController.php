@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use DB;
@@ -33,10 +34,26 @@ use App\MhInvoice;
 use App\brand;
 use App\ActivityLog;
 use App\Order;
+use App\Message;
+use App\training;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+            $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
+            return $next($request);
+        });
+    }
     public function getAMDashboard(){
         $prices = CategoryPrice::all();
         return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home']);

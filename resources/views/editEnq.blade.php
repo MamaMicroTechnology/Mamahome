@@ -116,7 +116,7 @@
 									<select class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
-										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
+										<option value="{{$user->id}}">{{$user->name}}</option>
 										@endforeach
 									</select>
 								</td>

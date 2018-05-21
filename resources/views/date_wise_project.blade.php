@@ -27,7 +27,6 @@
                              <th style="text-align: center" >Call_History</th> 
                              <!-- <th style="text-align: center">Blocked </th> -->
                             <!--<th style="text-align:center">Verification</th>-->
-                     
                         </tr>
                     </thead>
                     <tbody id="mainPanel">

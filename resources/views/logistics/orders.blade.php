@@ -12,10 +12,10 @@
 				<thead>
 				    <th style="text-align:center">Project ID</th>
                     <th style="text-align: center;">Order Id</th>
+					<th style="text-align:center">Product</th>
 					<th style="text-align:center">Quantity</th>					
-					<th style="text-align:center">Status</th>
 					<th style="text-align:center">Dispatch Status</th>
-					<th style="text-align:center">Sign Status</th>
+					<th style="text-align:center">Payment Status</th>
 					<th style="text-align:center">Delivery Status</th>
                     <th style="text-align:center">Action</th>
 					
@@ -25,8 +25,12 @@
 					<tr id="row-{{$rec->id}}">
 						<td style="text-align:center"><a href="{{URL::to('/')}}/showProjectDetails?id={{$rec->project_id}}">{{$rec -> project_id}}</a></td>
                         <td style="text-align:center">{{ $rec->orderid }}</td>
+						<td>
+							{{ $rec->main_category }}<br>
+							({{ $rec->sub_category }})
+						</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
-						<td style="text-align:center">{{$rec->status}}</td>
+						<!-- <td style="text-align:center"></td> -->
 						<td style="text-align:center">
 						@if($rec->dispatch_status=='Yes')
 						    Dispatched
@@ -36,25 +40,44 @@
 						</td>
 				        <td style="text-align: center;">
                             @if($rec->payment_status != "Payment Received" && $rec->dispatch_status == 'Yes')
+							<button data-toggle="modal" data-target="#PaymentModal{{$rec->orderid}}" class="btn btn-success btn-sm">Payment Details</button>
                                 <form method="POST" action="{{ URL::to('/') }}/saveSignature" enctype="multipart/form-data">
                                     {{ csrf_field() }}
-                                    <input oninput="this.form.submit()" type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
-                                    <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+									<div id="PaymentModal{{$rec->orderid}}" class="modal fade" role="dialog">
+										<div class="modal-dialog modal-sm">
+											<!-- Modal content-->
+											<div class="modal-content">
+											<div class="modal-header">
+												Payment
+											</div>
+											<div class="modal-body">
+												<label for="amount">Amount Received:</label>
+												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm"><br>
+												<label for="sign">Signature:</label>
+												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
+												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-success pull-left">Save</button>
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>
+                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>
                             @endif
                         </td>
                         <td style="text-align:center">
                             @if($rec->delivery_status == "Not Delivered")
 								<!-- Trigger the modal with a button -->
-							<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Deliver</button>
+							<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}">Deliver</button>
 
 							<!-- Modal -->
 							<form action="{{ URL::to('/') }}/saveDeliveryDetails" method="post" enctype="multipart/form-data">
 								{{ csrf_field() }}
 								<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-								<div id="myModal" class="modal fade" role="dialog">
+								<div id="myModal{{ $rec->orderid }}" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 
 									<!-- Modal content-->
@@ -64,25 +87,24 @@
 										<h4 class="modal-title">Order Delivery Form</h4>
 									</div>
 									<div class="modal-body">
-									<b><i>*You can upload either images or a video*</i></b>
 										<table class="table table-hover" border=1>
 											<tr>
 												<td colspan=2><label for="Images">Images</label></td>
 											</tr>
 											<tr>
 												<td>Vehicle No.</td>
-												<td><input accept="image/*" oninput="inputcheck()" type="file" name="vno" id="vno" class="form-control"></td>
+												<td><input required accept="image/*" oninput="inputcheck()" type="file" name="vno" id="vno" class="form-control"></td>
 											</tr>
 											<tr>
 												<td>Location Picture</td>
-												<td><input accept="image/*" oninput="inputcheck()" type="file" name="lp" id="lp" class="form-control"></td>
+												<td><input required accept="image/*" oninput="inputcheck()" type="file" name="lp" id="lp" class="form-control"></td>
 											</tr>
 											<tr>
 												<td>Quality of Material</td>
-												<td><input accept="image/*" oninput="inputcheck()" type="file" name="qm" id="qm" class="form-control"></td>
+												<td><input required accept="image/*" oninput="inputcheck()" type="file" name="qm" id="qm" class="form-control"></td>
 											</tr>
 											<tr>
-												<td colspan="2"><center><label for="Video">Or Video</label></center></td>
+												<td colspan="2"><center><label for="Video">Video</label></center></td>
 											</tr>
 											<tr>
 												<td>
@@ -103,7 +125,15 @@
 							</form>
                                 <!-- <button onclick="deliverOrder('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Deliver</button> -->
                             @else
-                                {{ $rec->delivery_status }}
+							<?php
+								$images = "<a target='_blank' class='".($rec->vehicle_no == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->vehicle_no."'>Vehicle No</a><br>"
+											."<a class='".($rec->location_picture == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->location_picture."'>Location Picture</a><br>"
+											."<a class='".($rec->quality_of_material == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->quality_of_material."'>Quality Of Material</a><br>"
+											."<a class='".($rec->delivery_video == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->delivery_video."'>Video</a>";
+							?>
+								<a href="#" data-toggle="popover" title="Delivery Images" data-content="{!! $images !!}">
+									{{ $rec->delivery_status }}
+								</a>
                             @endif
                         </td>
                         <td style="text-align:center">
@@ -126,22 +156,14 @@
 		</div>
 	</div>
 </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({html:true});   
+});
+</script>
 <script type="text/javascript">
-	function inputcheck(){
-		if(document.getElementById("vno").value != "" || document.getElementById("lp").value != "" || document.getElementById("qm").value != ""){
-			document.getElementById("vid").disabled = "true";
-		}else if(document.getElementById("vid").value != ""){
-			document.getElementById("vno").disabled = "true";
-			document.getElementById("lp").disabled = "true";
-			document.getElementById("qm").disabled = "true";
-		}else{
-			document.getElementById("vno").disabled = "false";
-			document.getElementById("lp").disabled = "false";
-			document.getElementById("qm").disabled = "false";
-			document.getElementById("vid").disabled = "false";
-		}
-	}
+	
 	function pay(arg)
 	{
 		var ans = confirm('Are You Sure ? Note: Changes Made Once CANNOT Be Undone');

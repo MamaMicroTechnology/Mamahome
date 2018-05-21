@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 	<div class="col-md-12">
-		<div class="panel panel-default">
+		<div class="panel panel-primary">
 			<div class="panel-heading">Project Details 
 				@if($projects != "None")
 					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)

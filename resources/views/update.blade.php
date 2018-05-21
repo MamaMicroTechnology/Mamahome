@@ -11,11 +11,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                  @if($subwards)
-                  You're Assigned Ward is  {{$subwards->sub_ward_name}}
-                  @else
-                  Update Project
-                  @endif
+                 
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
@@ -30,6 +26,16 @@
                         @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                       <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
                       @endif
+                      @endif
+                    </center>
+                    @if($projectdetails->quality == NULL)
+                      <form method="POST" action="{{ URL::to('/') }}/markProject">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="id" value="{{ $id }}">
+                      </form>
+                      @else
+                      <label style="font-size: 14px">Quality:</label>
+                      {{ $projectdetails->quality }}
                       @endif
                     </center>
                       @if($projectdetails->quality == NULL)
@@ -278,10 +284,10 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Structural Budget
+                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural Budget
                                     </label>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $projectdetails->budgetType }}">Finishing Budget
+                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing Budget
                                     </label>
                                  </td>
                                </tr>
@@ -690,7 +696,11 @@ function sum(){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+<<<<<<< HEAD
             }else {
+=======
+            }else{
+>>>>>>> master
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
             }
             if(countinput == 0){
@@ -714,37 +724,15 @@ function sum(){
             }
         }
      else if(current == 'second'){
-            if(document.getElementById("contract").value == "Material Contract"){
-                if(document.getElementById("oName").value == "" || document.getElementById("oContact").value == ""){
-                    window.alert("Please enter owner details");
-                }else{
-                    document.getElementById("second").className = "hidden";
-                    document.getElementById("third").className = "";
-                    document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-                    current = "third";
-                }
-            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
               current = "third";    
-            }
         }else if(current == 'third'){
-            if(document.getElementById("contract").value == "Labour Contract"){
-                if(document.getElementById("cName").value == "" || document.getElementById("cContact").value == ""){
-                    window.alert("Please enter contractor details");
-                }else{
-                    document.getElementById("third").className = "hidden";
-                    document.getElementById("fourth").className = "";
-                    document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-                    current = "fourth";
-                }
-            }else{
                 document.getElementById("third").className = "hidden";
                 document.getElementById("fourth").className = "";
                 document.getElementById('headingPanel').innerHTML = 'Consultant Details';
                 current = "fourth";
-            }
         }else if(current == 'fourth'){
             document.getElementById("fourth").className = "hidden";
             document.getElementById("fifth").className = "";

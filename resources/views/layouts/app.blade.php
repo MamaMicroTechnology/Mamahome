@@ -340,21 +340,6 @@ div#calendar{
   top: 150px;
   opacity: 1;
 }
- #parent #popup {
-  display: none;
-}
-
-#parent:hover #popup {
-  display: block;
-}
-
-#popup {
-    background-color: white;
-    width: 200px;
-    border: 10px solid green;
-    padding: 25px;
-    margin: 25px;
-}
 
 </style>
 </head>
@@ -395,11 +380,11 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b> <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id != 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em">Enquiry Pipelined</a></li>
                           @endif
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b> <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span> </a></li>
                         
                        
                         @endif
@@ -420,6 +405,9 @@ div#calendar{
                                     <li><a href="{{ URL::to('/') }}/profile ">Profile</a></li>
                                     @if(Auth::user()->department_id == 2 && Auth::user()->group_id == 7)
                                     <li><a href="{{ URL::to('/') }}/salescompleted ">Completed</a></li>
+                                    @endif
+                                    @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
+                                    <li><a href="{{ URL::to('/') }}/admincompleted?id={{ Auth::user()->id }}">Completed</a></li>
                                     @endif
                                     <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
                                     <li>
@@ -486,6 +474,7 @@ div#calendar{
     <a href="{{ URL::to('/finance') }}">Finance</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
+    <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -546,7 +535,6 @@ div#calendar{
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -582,5 +570,7 @@ div#calendar{
             modal.style.display = "none";
         }
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

@@ -14,37 +14,22 @@
                 <div class="panel-body">
                  
              <div class="panel-body">
-             <!-- <form method="GET" action="{{ URL::to('/') }}/{{Auth::user()->department_id == 1 ? 'assign_project':'projectwise'}}">
-          <div class="col-md-4 pull-right">
-            <div class="input-group">
-              <input type="text" name="search" class="form-control" placeholder="name ">
-              <div class="input-group-btn">
-                <input type="submit" class="form-control" value="Search">
-              </div>
-            </div>
-          </div>
-        </form> -->
-             
-                <table class="table table-responsive table-striped table-hover" class="table">
+             <table class="table table-responsive table-striped table-hover" class="table">
                         <thead>
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Designation</th>
-                           
                             <th style="width:15%">Previously Assigned Wards </th>
                             <th style="width:15%">Previously Assigned Sub Ward </th>
                             <th style="width:15%">Previously Assigned Date </th>
                             <th style="width:15%">Previously Assigned Stage </th>
-                            
-                            <th style="width:15%">Action </th>
+                           <th style="width:15%">Action </th>
                             <th></th>
                           </thead>
                           @foreach($users as $user)  
-                            <!-- <div id="first"> -->
-                    
                            <tr>
                             <td>{{$user->name}}</td>
                             <td>{{ $user->group_name }}</td>
-                          
+                           
                             <input type="hidden"  name="user_id" value="{{ $user->id }}">
                              <td>{{ $user->prv_ward }}</td>
                              <td>{{ $user->prv_subward }}</td>
@@ -57,7 +42,7 @@
                 </table>
            
 
-<form method="POST" action="{{ URL::to('/') }}/projectstore" enctype="multipart/form-data">
+<form method="POST" name="myform" action="{{ URL::to('/') }}/projectstore" enctype="multipart/form-data">
   {{ csrf_field() }}
   <input type="hidden" id="userId" name="user_id">
  <div id="myModal" class="modal fade" role="dialog">
@@ -81,18 +66,23 @@
         </div>
           @foreach($wards as $ward)
           <div id="subwards{{ $ward->id }}" class="hidden">
-            <h4 class="modal-title">Choose SubWard</h4>
+            <h4 class="modal-title">Choose SubWard </h4>
+            <input type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward->id}}');">All
+         
+          <br>    
+          <div id="ward{{ $ward->id }}">
               @foreach($subwards as $subward)
-
               @if($subward->ward_id == $ward->id)
                     <label>
-                  
+                      
                       <input  type="checkbox"  name="subward[]" value="{{$subward->sub_ward_name}}">
                       &nbsp;&nbsp;{{$subward->sub_ward_name}}
 
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;
               @endif
               @endforeach
+          </div>
+              
           </div>
           <button id="back{{ $ward->id }}" onclick="back('{{$ward->id }}')" type="button" class="hidden">Back</button>
           @endforeach
@@ -102,7 +92,8 @@
                  <div class="container">
                      <div class="row">
                        <div class="col-sm-12"> 
-                       <h3 style="color:#398439;">Assign Stage</h3>
+                       <h3 style="color:#398439;">Assign Stage</h3>&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;     <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="color:orange;font-size:15px">&nbsp;&nbsp; ALL</span>
                           <table>
                              <tr id="sp">
                              <div class="checkbox">
@@ -137,30 +128,31 @@
 
             <div class="row">
               <div class="col-sm-6">  
-              <h3 style="color:#398439;">Assign Date</h3>
+              <h3 style="color:#398439;">Project Listed date</h3>
 
-              <input type="date" name="assigndate" class="form-control input-sm" id="datepicker">
+              <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
               </div>
             </div> <br>                                                      
             <h3 style="color:#398439;">Project Type </h3>
             <div class="row">
             <div class="col-md-2">
-                 <input value="{{ old('basement') }}" onkeyup="check('basement')" id="basement" name="project_type" type="text" autocomplete="off" class="form-control input-sm" placeholder="Basement" id="email">
+            <h5 style="color:#398439;">Basement</h5>
+                 <input  name="basement" type="text" autocomplete="off" class="form-control input-sm" placeholder="Basement" id="email">
                  </div>
-                 <div class="col-md-1">
-                                                      <b style="font-size: 20px;">+</b>
-                                                       </div>
+                                                  
                <div class="col-md-2">
-                <input value="{{ old('ground') }}" onkeyup="check('ground');" autocomplete="off" name="project_type " id="ground" type="text" class="form-control" placeholder="Floor">
+                <h5 style="color:#398439;">Ground</h5>
+                <input name="Floor"  type="text" class="form-control" placeholder="Floor">
                </div>
                <div class="col-md-3">
-                <p id="total"></p>
+               <h5 style="color:#398439;">Total</h5>
+               <input  name="project_type"    type="text" class="form-control" placeholder="total">
               </div>
             </div>
               <div class="row">
               <div class="col-sm-3">
               <h3 style="color:#398439;">Project Size</h3>
-              <input type="text" class="form-control" name="project_size" placeholder="Project Size Min 10k">
+              <input type="text" class="form-control" name="project_size" placeholder="Project Size in sq ft">
               </div>
               <div class="col-sm-3">
               <h3 style="color:#398439;">Budget </h3>
@@ -237,9 +229,11 @@ function makeUserId(arg){
                 current = "second";
         }   
      else { 
-            document.getElementById("second").className = "hidden";
+            document.getElementById("second").className = "next";
             document.getElementById("third").className = "";
             current = "third";
+            document.getElementById("prev").className = "hidden";
+                document.getElementById("next").className = "hidden";
             // document.getElementById("next").className = "hidden";
           }
   
@@ -248,7 +242,7 @@ function makeUserId(arg){
  function pagePrevious()
  {
         document.getElementById("next").className = "next";
-        document.getElementById("prev").className = "hidden";
+        document.getElementById("prev").className = "previous";
          if(current == 'third'){
             document.getElementById("third").className = "hidden";
             document.getElementById("second").className = "";
@@ -320,5 +314,27 @@ function back(arg){
   document.getElementById('wards').className = "";
   document.getElementById('subwards'+arg).className = "hidden";
   document.getElementById('back'+arg).className = "hidden";
+}
+</script>
+
+
+
+<script language="JavaScript">
+  function selectAll(source) {
+    checkboxes = document.getElementsByName('stage[]');
+    for(var i in checkboxes)
+      checkboxes[i].checked = source.checked;
+  }
+</script>
+
+<script>
+function checkall(arg){
+var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
+alert(clist);
+for (var i = 0; i < clist.length; ++i) 
+{ 
+  clist[i].checked = "checked"; 
+  }
+  
 }
 </script>

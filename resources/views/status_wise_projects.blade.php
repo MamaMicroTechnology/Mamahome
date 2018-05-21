@@ -7,6 +7,9 @@
 
                <h2>
                    <div class="pull-right"></div>
+               <h2>Project Details Of 
+                    {{ $status[0] }} Stage
+                   <div class="pull-right">{{ $totalListing }} Projects Found</div>
                </h2> 
             </div>
             <div class="panel-body">
@@ -23,8 +26,7 @@
                             <th style="text-align:center">Contractor Contact Number</th>
                             <th style="text-align:center">Add Enquiry</th> 
                              <th style="text-align:center">Action</th>
-                             <th style="text-align:center">No Of Times Called</th> 
-                             <th style="text-align: center" >Call_History</th>
+                             <th style="text-align:center">No Of Times Called</th>  
                         </tr>
                     </thead>
                     <tbody id="mainPanel">

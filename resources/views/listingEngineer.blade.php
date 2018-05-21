@@ -57,7 +57,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -227,7 +227,7 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType3" onclick="dis()" name="budgetType" type="checkbox" value="Structural">Structural</label>
                                     <label required class="checkbox-inline"><input id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
@@ -707,9 +707,6 @@
           
         }
      else if(current == 'second'){
-            if(document.getElementById("contract").value == "Material Contract"){
-               
-            }else{
               document.getElementById("second").className = "hidden";
               document.getElementById("third").className = "";
               document.getElementById('headingPanel').innerHTML = 'Contractor Details';
@@ -733,7 +730,7 @@
             current = "sixth";
         }else if(current == 'sixth'){  
           if(document.getElementById('prName').value == ''){
-            alert('Please Enter a Name');
+            alert('Please Enter a Procurement Name');
             document.getElementById('prName').focus();
           }else if(document.getElementById('prPhone').value== ''){
             alert('Please Enter Phone Number');
@@ -843,6 +840,7 @@
                       "</select></td>"+
                       "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
                       "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
@@ -855,12 +853,13 @@
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
                       "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
                       "<option value='3BHK'>3BHK</option></select>"+
                       "</td><td>"+
-                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses\"></td>";
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses/No. of Flats\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }else if(ctype1.checked == false && ctype2.checked == true){
             // commercial only
@@ -962,5 +961,14 @@
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
+</script>
+<script>
+function dis(){
+
+    if (document.getElementById("constructionType3").checked){
+        document.getElementById('constructionType4').disabled=true;
+}
+
+
 </script>
 @endsection
