@@ -56,6 +56,7 @@ use App\Point;
 use App\Message;
 use App\ZoneMap;
 use App\SubWardMap;
+use App\UserLocation;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -3624,5 +3625,16 @@ public function assigndate(request $request )
             ]);
         }
         return view('confidential',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
+    }
+    public function getLeTracking(Request $request)
+    {
+        $users = User::where('group_id','6')->get();
+        if($request->userId){
+            $track = UserLocation::where('user_id',$request->userId)
+                        ->where('created_at','LIKE',date('Y-m-d')."%")
+                        ->get();
+            return view('letracking',['users'=>$users,'track'=>$track]);
+        }
+        return view('letracking',['users'=>$users]);
     }
 }

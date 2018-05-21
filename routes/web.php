@@ -219,7 +219,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
     Route::get('/confidential','HomeController@confidential');
-
+    Route::get('/letracking','HomeController@getLeTracking');
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
