@@ -56,6 +56,7 @@ use App\Point;
 use App\Message;
 use App\ZoneMap;
 use App\SubWardMap;
+use App\UserLocation;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -793,7 +794,7 @@ class HomeController extends Controller
             return redirect('accountExecutive');
         }else if($group == "Admin"){
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
-        }else if($group == "Sales converter" && $dept == "Sales"){
+        }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
             return redirect('marketingdashboard');
@@ -3356,5 +3357,15 @@ public function assigndate(request $request )
         $point->save();
         return back();
     }
-
+    public function getLeTracking(Request $request)
+    {
+        $users = User::where('group_id','6')->get();
+        if($request->userId){
+            $track = UserLocation::where('user_id',$request->userId)
+                        ->where('created_at','LIKE',date('Y-m-d')."%")
+                        ->get();
+            return view('letracking',['users'=>$users,'track'=>$track]);
+        }
+        return view('letracking',['users'=>$users]);
+    }
 }

@@ -40,9 +40,7 @@
                                </tr>
                                 <tr>
                                          
-                                     <td>
-                                          <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button>
-                                      </td>
+                                    
                                        
                               </tr>
                                <tr>
@@ -103,6 +101,7 @@
                                     <option   value="" disabled selected>--- Select ---</option>
                                     <option    value="Labour Contract">Labour Contract</option>
                                     <option  value="Material Contract">Material Contract</option>
+                                     <option  value="null">None</option>
                                 </select>
                               </td>
 
