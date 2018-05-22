@@ -27,6 +27,7 @@
                         ?>
                         <a id="{{ $con }}" class="list-group-item" href="#">{{ $asset->type }} ({{ $asts[$asset->type] }})</a>
                     @endforeach
+                    <a id="simcard" class="list-group-item" href="#">SIMCard ({{ $asts["SIMCard"] }})</a>
                    
                 </div>
             </div>
@@ -51,7 +52,7 @@
                         <tbody>
                             <tr>
                                 <td style="width:30%"><label>   Asset Name: </label></td>
-                                <td style="width:50%"><input type="text" required name="aname" placeholder=" Asset name"  class="form-control" style="width:50%" /></td>
+                                <td style="width:50%"><input type="text" required name="aname" placeholder=" Asset name" pattern="[ A-Za-z,]+" class="form-control" style="width:50%" /></td>
                             </tr>
                         </tbody>
                 </table>
@@ -104,8 +105,21 @@ $(document).ready(function () {
 });
 
 </script>
-
 @endforeach
+<script type="text/javascript">
+$(document).ready(function () {
+    $("#simcard").on('click',function(){
+        $(document.body).css({'cursor' : 'wait'});
+        $("#disp").load("{{ URL::to('/') }}/viewasset?asset=SimCard", function(responseTxt, statusTxt, xhr){
+            if(statusTxt == "error")
+                alert("Error: " + xhr.status + ": " + xhr.statusText);
+        });
+        $(document.body).css({'cursor' : 'default'});
+        
+    });
+});
+</script>
+
 
 
 

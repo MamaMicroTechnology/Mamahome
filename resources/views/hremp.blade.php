@@ -5,7 +5,6 @@
 <thead>
     <th>Emp Id</th>
     <th>Name</th>
-    <th>Dept.</th>
     <th>Acceptance</th>
     <th>Designation</th>
     <th>Office Phone</th>
@@ -16,11 +15,11 @@
     <tr>
         <td>{{ $user->employeeId}}</td>
         <td><a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}">{{ $user->name}}</a></td>
-        <td>
+        <!-- <td>
             @if($user->department != NULL)
                 {{ $user->department->dept_name }}
             @endif
-        </td>
+        </td> -->
         <td>
             @if($user->confirmation == 0)
              User has not accepted the company policy.

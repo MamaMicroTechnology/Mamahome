@@ -16,7 +16,7 @@
         <td>{{ $user->name}}</td>
         <td>{{ $user->group->group_name }}</td>
         <td>
-            <a href="{{ URL::to('/') }}/assignEmployee?UserId={{ $user->employeeId }}" >assign</a>
+            <a class="btn btn-primary" href="{{ URL::to('/') }}/assignEmployee?UserId={{ $user->employeeId }}" >Assign</a>
         </td>
        
     </tr>
