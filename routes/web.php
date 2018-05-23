@@ -376,7 +376,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/editasset','amController@editasset');
     Route::post('/saveasset','amController@saveasset');
     Route::post('/saveassetinfo','amController@saveassetinfo');
-
+    Route::get('/preview','amcontroller@preview');
 
 
 

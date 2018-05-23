@@ -73,7 +73,7 @@
                 <tbody>
                     <tr>
                         <td ><label>SIMCard Brand/Provider </label></td>
-                        <td ><input required type="text" name="sim" id="sim"  placeholder="Provider Name" title="Please enter characters only" class="form-control"  style="width:60%" /></td>
+                        <td ><input required type="text" name="sim" id="sim"  placeholder="Provider Name" title="Please enter characters only" class="form-control" pattern="[A-Za-z]+" style="width:60%" /></td>
                     </tr>
                     <tr>
                     	<td><label>SIMCard Number</label></td>
