@@ -710,7 +710,7 @@ class HomeController extends Controller
     public function editEnq(Request $request)
     {
         $category = Category::all();
-        $depart = [2,4,6,7,8];
+        $depart = [2,4,6,7,8,17];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
@@ -732,7 +732,8 @@ class HomeController extends Controller
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $depart1 = [6];
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-     
+       $depart2 = [2,4,6,7,8,17];
+        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -744,12 +745,12 @@ class HomeController extends Controller
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
     public function eqpipelineedit(Request $request)
     {
         $category = Category::all();
-        $depart = [2,4,6,7,8];
+        $depart = [2,4,6,7,8,17];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
