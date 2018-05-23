@@ -45,7 +45,7 @@
 							</tr>	
 							<tr>
 								<td><label>Select category:</label></td>
-								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
+								<td><button id="mybutton" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
 
 <!-- model -->
@@ -109,14 +109,26 @@
 </div>
 <!-- model end -->
 
-							@if(Auth::user()->group_id == 6 )
+							@if(Auth::user()->group_id == 7)
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
-									<select class="form-control" name="initiator">
+									<select required class="form-control"  name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
-										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@else
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control" name="initiator">
+										<option value="" required>--Select--</option>
+										@foreach($users1 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
 										@endforeach
 									</select>
 								</td>
@@ -281,4 +293,11 @@
 		     }
 	}
 </script>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<script>
+=======
+>>>>>>> master
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
 @endsection

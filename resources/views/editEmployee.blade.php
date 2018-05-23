@@ -2,8 +2,10 @@
 @section('content')
 
 <div class="col-md-6 col-md-offset-3">
-    <div class="panel panel-success">
-        <div class="panel-heading">Add details</div>
+    <div class="panel panel-default" style="border-color: green;">
+        <div class="panel-heading" style="background-color: green;color:white;padding-bottom: 20px;">Add details
+             <a href="{{ url()->previous() }}" class="btn btn-danger input-sm pull-right">Back</a>
+        </div>
         <div class="panel-body">
             <form method="POST" action="{{ URL::to('/') }}/edit/save" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -76,7 +78,7 @@
                     
                     <tr>
                         <td>Permanent Address</td>
-                        <td><textarea class="form-control" name="perAdd" placeholder="Permanent address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->permanent_address:'' }}</textarea></td>
+                        <td><textarea style="resize: none;" class="form-control" name="perAdd" placeholder="Permanent address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->permanent_address:'' }}</textarea></td>
                     </tr>
                     <tr>
                         <td>Permanent Address Proof</td>
@@ -91,7 +93,7 @@
                     </tr>
                     <tr>
                         <td>Present Address</td>
-                        <td><textarea class="form-control" name="preAdd" placeholder="Present address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->temporary_address:'' }}</textarea></td>
+                        <td><textarea style="resize: none;" class="form-control" name="preAdd" placeholder="Present address" rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->temporary_address:'' }}</textarea></td>
                     </tr>
                     <tr>
                         <td>Present Address Proof</td>
@@ -158,12 +160,12 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" class="btn btn-primary form-control" value="Save">
+                <input type="submit" class="btn btn-success form-control" value="Save">
             </form>
         </div>
     </div>
-    <div class="panel panel-success">
-        <div class="panel-heading">Bank Account details</div>
+    <div class="panel panel-success" style="border-color: green;">
+        <div class="panel-heading" style="background-color: green;color:white;">Bank Account details</div>
         <div class="panel-body">
             <form method="POST" action="{{ URL::to('/') }}/edit/bank_account" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -218,12 +220,12 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" class="btn btn-primary form-control" value="Save">
+                <input type="submit" class="btn btn-success form-control" value="Save">
             </form>
         </div>
     </div>
-    <div class="panel panel-warning">
-        <div class="panel-heading">Asset Info</div>
+    <div class="panel panel-default" style="border-color: green;">
+        <div class="panel-heading" style="background-color: green;color:white;">Asset Info</div>
         <div class="panel-body">
             <table class="table table-responsive">
                 <tr>
@@ -294,8 +296,8 @@
             </table>
         </div>
     </div>
-    <div class="panel panel-success">
-        <div class="panel-heading">Certificates</div>
+    <div class="panel panel-default" style="border-color: green;">
+        <div class="panel-heading" style="background-color: green;color:white;">Certificates</div>
         <div class="panel-body">
             <button onclick="addCertificateRow()">+</button>
             <form method="POST" action="{{ URL::to('/') }}/edit/uploadCertificates" enctype="multipart/form-data">

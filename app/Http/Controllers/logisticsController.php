@@ -34,6 +34,8 @@ use App\RoomType;
 use App\Message;
 use App\training;
 use App\Point;
+use App\SiteAddress;
+use App\OwnerDetails;
 
 class logisticsController extends Controller
 {
@@ -150,9 +152,12 @@ class logisticsController extends Controller
         $signature = Order::where('id',$request->orderId)->first();
         $signature->signature = $signatureName;
 <<<<<<< HEAD
+<<<<<<< HEAD
         $signature->payment_status = "Payment Received";
         $signature->save();
 =======
+=======
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
         $signature->total = $request->amount;
         $signature->payment_status = "Payment Received";
         $signature->save();
@@ -162,11 +167,15 @@ class logisticsController extends Controller
         $points->type = "Add";
         $points->reason = "Receiving payment";
         $points->save();
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
         return back()->with('Success','Payment Received');
     }
     public function saveDeliveryDetails(Request $request)
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         if(!$request->vid){
             $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
@@ -186,14 +195,29 @@ class logisticsController extends Controller
             $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
             $deliveryDetails->save();
         }else{
+=======
+        $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+        $request->vno->move(public_path('delivery_details'),$vehicleNo);
+        
+        $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+        $request->lp->move(public_path('delivery_details'),$locationPicture);
+        
+        $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+        $request->qm->move(public_path('delivery_details'),$quality);
+        
+        $deliveryDetails = new DeliveryDetails;
+        $deliveryDetails->order_id = $request->orderId;
+        $deliveryDetails->vehicle_no = $vehicleNo;
+        $deliveryDetails->location_picture = $locationPicture;
+        $deliveryDetails->quality_of_material = $quality;
+        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        if($request->vid){
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
             $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
             $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails = new DeliverDedtails;
-            $deliveryDetails->order_id = $request->orderId;
             $deliveryDetails->delivery_video = $video;
-            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-            $deliveryDetails->save();
         }
+<<<<<<< HEAD
 =======
         $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
         $request->vno->move(public_path('delivery_details'),$vehicleNo);
@@ -217,6 +241,10 @@ class logisticsController extends Controller
         }
         $deliveryDetails->save();
         Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered"]);
+=======
+        $deliveryDetails->save();
+        Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered",'delivered_on'=>date('Y-m-d')]);
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
         $reasonText = date('H:i:s') > "20:00:00" ? "Delivering material at night" : "Delivering material";
         $point = date('H:i:s') > "20:00:00" ? 500 : 250;
         $points = new Point;
@@ -226,6 +254,192 @@ class logisticsController extends Controller
         $points->reason = $reasonText;
         $points->save();
         return back();
+<<<<<<< HEAD
 >>>>>>> master
+=======
+    }
+    public function getinvoice()
+    {
+        $number = 48035;
+        $length = strlen($number);
+        if($number < 20){
+            $length = 1;
+        }
+        $ones = array(
+            0 => "", 
+            1 => "one", 
+            2 => "two", 
+            3 => "three", 
+            4 => "four", 
+            5 => "five", 
+            6 => "six", 
+            7 => "seven", 
+            8 => "eight", 
+            9 => "nine", 
+            10 => "ten", 
+            11 => "eleven", 
+            12 => "twelve", 
+            13 => "thirteen", 
+            14 => "fourteen", 
+            15 => "fifteen", 
+            16 => "sixteen", 
+            17 => "seventeen", 
+            18 => "eighteen", 
+            19 => "nineteen" 
+        ); 
+        $tens = array(
+            0 => "and",
+            2 => "twenty", 
+            3 => "thirty", 
+            4 => "forty", 
+            5 => "fifty", 
+            6 => "sixty", 
+            7 => "seventy", 
+            8 => "eighty", 
+            9 => "ninety" 
+        ); 
+        $hundreds = array( 
+            "hundred", 
+            "thousand", 
+            "lakhs", 
+            "crores", 
+            "trillion", 
+            "quadrillion" 
+        );
+        switch($length){
+            case 1:
+            // ones
+                $text = $ones[$number];
+                break;
+            case 2:
+            // tens
+                $first = substr($number,0,1);
+                $second = substr($number,-1);
+                if($second != 0){
+                    $text = $tens[$first]." ".$ones[$second];
+                }else{
+                    $text = $tens[$first];
+                }
+                break;
+            case 3:
+            // hundreds
+                $first = substr($number,0,1);
+                $text = $ones[$first]." ".$hundreds[0];
+                $second = substr($number,-2);
+                if($second != 0){
+                    $number = $second;
+                    $first = substr($number,0,1);
+                    $second = substr($number,-1);
+                    if($second != 0){
+                        $text .= " ".$tens[$first]." ".$ones[$second];
+                    }else{
+                        $text .= " ".$tens[$first];
+                    }
+                }
+            break;
+            case 4:
+            // thounsands
+                $first = substr($number,0,1);
+                $text = $ones[$first]." ".$hundreds[1];
+                $second = substr($number,-3);
+                if($second != 0){
+                    $number = $second;
+                    $first = substr($number,0,1);
+                    if($first != 0){
+                        $text .= " ".$ones[$first]." ".$hundreds[0];
+                    }
+                    $second = substr($number,-2);
+                    if($second != 0){
+                        $number = $second;
+                        $first = substr($number,0,1);
+                        $second = substr($number,-1);
+                        if($second != 0){
+                            $text .= " ".$tens[$first]." ".$ones[$second];
+                        }else{
+                            $text .= " ".$tens[$first];
+                        }
+                    }
+                }
+                break;
+            case 5:
+            // ten thousands
+                $first = substr($number,0,2);
+                if($first < 20){
+                    $text = $ones[$first]." ".$hundreds[1];
+                }else{
+                    $another = substr($first,0,1);
+                    $and = substr($first,-1);
+                    $text = $tens[$another]." ".$ones[$and]." ".$hundreds[1];
+                }
+                $second = substr($number,-3);
+                if($second != 0){
+                    $number = $second;
+                    $first = substr($number,0,1);
+                    if($first != 0){
+                        $text .= " ".$ones[$first]." ".$hundreds[0];
+                    }
+                    $second = substr($number,-2);
+                    if($second != 0){
+                        $number = $second;
+                        $first = substr($number,0,1);
+                        $second = substr($number,-1);
+                        if($second != 0){
+                            $text .= " ".$tens[$first]." ".$ones[$second];
+                        }else{
+                            $text .= " ".$tens[$first];
+                        }
+                    }
+                }
+                break;
+            case 6:
+            // lakhs
+                $first = substr($number,0,1);
+                if($first == 1){
+                    $text = $ones[$first]." lakh";
+                }else{
+                    $text = $ones[$first]." ".$hundreds[2];
+                }
+                $first = substr($number,1,2);
+                $check = substr($first,0,1);
+                if($check == 0){
+                    $first = substr($first,1,1);
+                }
+                if($first < 20){
+                    $text .= " ".$ones[$first]." ".$hundreds[1];
+                }else{
+                    $another = substr($first,0,1);
+                    $and = substr($first,-1);
+                    $text .= " ".$tens[$another]." ".$ones[$and]." ".$hundreds[1];
+                }
+                $second = substr($number,-3);
+                if($second != 0){
+                    $number = $second;
+                    $first = substr($number,0,1);
+                    if($first != 0){
+                        $text .= " ".$ones[$first]." ".$hundreds[0];
+                    }
+                    $second = substr($number,-2);
+                    if($second != 0){
+                        $number = $second;
+                        $first = substr($number,0,1);
+                        $second = substr($number,-1);
+                        if($second != 0){
+                            $text .= " ".$tens[$first]." ".$ones[$second];
+                        }else{
+                            $text .= " ".$tens[$first];
+                        }
+                    }
+                }
+                break;
+        }
+        return view('logistics.getinvoice',['text'=>$text]);
+    }
+    public function inputinvoice(Request $request)
+    {
+        $orders = Order::where('id',$request->id)->first();
+        $address = SiteAddress::where('project_id',$orders->project_id)->first();
+        $owner = OwnerDetails::where('project_id',$orders->project_id)->first();
+        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner]);
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
     }
 }

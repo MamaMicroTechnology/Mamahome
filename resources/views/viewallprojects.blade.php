@@ -59,8 +59,8 @@
 						<th>Listed By</th>
 						<th>Called By</th>
 						<th>Listed On</th>
-						
 						<th>Last update</th>
+						<th>Last updated By</th>
 					</thead>
 					<tbody>
 						@if($projects != "None")
@@ -75,11 +75,36 @@
 							<td>{{ $project->sub_ward_name }}</td>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
-							<td>{{ $project->address }}</td>
+							<td><a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}" target="_blank">{{ $project->address }}</a></td>
 							<td>B({{ $project->basement}})+G({{ $project->ground }})+1={{ $project->basement + $project->ground + 1 }}</td>
+
 							<td>{{ $project->project_size }}</td>
 							<td>{{ $project->budget }}</td>
-							<td><a href="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">{{ $project->image }}</a></td>
+							<td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $project->project_id }}">View Image</button>
+								<div id="viewimage{{$project->project_id }}" class="modal fade" role="dialog">
+								  <div class="modal-dialog" style="width: 50%;height: 30%">
+
+								    <!-- Modal content-->
+								    <div class="modal-content">
+								      <div class="modal-header" style="background-color: green;color:white;">
+								        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+								        <h4 class="modal-title">Image</h4>
+								      </div>
+								      <div class="modal-body">
+								        <img style=" height:250px; width:470px;" src="{{ URL::to('/') }}/projectImages/{{ $project->image }}">
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								      </div>
+								    </div>
+
+								  </div>
+							</div>
+
+
+
+							</td>
+							
 							<td>{{ $project->remarks }}</td>
 							<td>{{ $project->name }}</td>
 							<td>
@@ -97,6 +122,9 @@
 								{{ date('d/m/Y', strtotime($project->updated_at)) }}
 								<br><small>({{ $project->updated_at->diffForHumans() }})</small>
 							</td>
+							<td>@if($updater != null)
+                                   {{ $updater->name }}
+                                @endif</td>
 							@if(Auth::user()->group_id == 1)
 							<td>
 								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>
@@ -119,6 +147,7 @@
 							    </div>
 							  </div>
 							</td>
+							
 							@endif
 						</tr>
 						@endforeach
@@ -128,6 +157,8 @@
 			</div>
 		</div>
 	</div>
+
+
 
 	<script type="text/javascript">
 		function getSubwards()

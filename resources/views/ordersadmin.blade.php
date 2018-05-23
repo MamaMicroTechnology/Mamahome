@@ -6,7 +6,7 @@
 	<div class="panel panel-primary" style="overflow-x: scroll;">
 		<div class="panel-heading text-center">
 			<b style="color:white;font-size:1.4em">Orders</b>
-			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
+			<a class="pull-left btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
 		<div id="myordertable" class="panel-body">
 		<form action="orders" method="get">
@@ -39,7 +39,9 @@
 				<tbody>
 					@foreach($view as $rec)
 					<tr id="row-{{$rec->id}}">
-						<td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}</a></td>
+						<td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}
+						</a>
+						</td>
 						<td>{{ $rec->orderid }}</td>
 						<td>{{$rec -> name }}</td>
 						<td>
@@ -115,18 +117,18 @@
 									</div>
 									<div class="modal-body" style="overflow-y:scroll; max-height:400px; height:400px;">
 										<br>
-										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->vehicle_no }}" alt="Vehicle No." title="Vehicle No." class="img img-responsive img-thumbnail">
+										<img src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->vehicle_no }}" alt="Vehicle No." title="Vehicle No." class="img img-responsive img-thumbnail">
 										<center><label for="above">Vehicle No.</label></center>
 										<br>
-										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->location_picture }}" alt="Location Picture" title="Location Picture" class="img img-responsive img-thumbnail">
+										<img src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->location_picture }}" alt="Location Picture" title="Location Picture" class="img img-responsive img-thumbnail">
 										<center><label for="above">Location Picture</label></center>
 										<br>
-										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->quality_of_material }}" alt="Quality Of Material" title="Quality Of Material" class="img img-responsive img-thumbnail">
+										<img src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->quality_of_material }}" alt="Quality Of Material" title="Quality Of Material" class="img img-responsive img-thumbnail">
 										<center><label for="above">Quality Of Material</label></center>
 										<br>
 										<video class="{{ $rec->delivery_video != null ? 'img img-responsive img-thumbnail' : 'hidden' }}" width="320" height="240" controls>
-											<source src="{{ $rec->delivery_video }}" type="video/mp4">
-											<source src="{{ $rec->delivery_video }}" type="video/ogg">
+											<source src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->delivery_video }}" type="video/mp4">
+											<source src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->delivery_video }}" type="video/ogg">
 											Your browser does not support the video tag.
 										</video>
 										<center><label class="{{ $rec->delivery_video == null ? 'hidden': '' }}"  for="above">Delivery Video</label></div></center>
@@ -147,8 +149,8 @@
 					    <td>
 					    	@if($rec->status == "Enquiry Confirmed")
 					    	<div class="btn-group">
-						    	<button class="btn btn-sm btn-success pull-left" onclick="confirmOrder('{{ $rec->orderid }}')">Confirm</button>
-						    	<button class="btn btn-sm btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
+						    	<button class="btn btn-xs btn-success " onclick="confirmOrder('{{ $rec->orderid }}')">Confirm</button>
+						    	<button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
 					    	</div>
 					    	@else
 					    	{{ $rec->status }}

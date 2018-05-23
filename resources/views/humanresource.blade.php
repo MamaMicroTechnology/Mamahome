@@ -48,37 +48,40 @@
           <h4 class="modal-title">Add Employee</h4>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                  <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"><br>
-                  <input required type="text" placeholder="User-ID Of MMT" class="form-control" name="email"><br>
-                </div>
-                <div class="col-md-6">
-                  <input required type="text" placeholder="Name" class="form-control" name="name"><br>
-                  <input required type="text" pattern="^\d{10}$"  placeholder="10 Digit phoneno" class="form-control"  name="phNo" ><br>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                  Department:<br>
-                  <select required class="form-control" name="dept">
+            <table class="table table-hover">
+              <tbody>
+                  <tr>
+                    <td><label>Emp Id</td>
+                    <td> <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"></td>
+                  </tr>
+                  <tr>
+                    <td><label>Name</label></td>
+                    <td><input required type="text" placeholder="Name" class="form-control" name="name"></td>
+                  </tr>
+                  <tr>
+                    <td><label>User-Id Of MMT</label></td>
+                    <td><input required type="text" placeholder="User-id of MMT" class="form-control" name="email"></td>
+                  </tr>
+                  <tr>
+                    <td><label>Department</label></td>
+                      <td><select required class="form-control" name="dept">
                       <option value="">--Select--</option>
                       @foreach($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
                       @endforeach
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  Designation:<br>
-                  <select required class="form-control" name="designation">
+                  </select></td>
+                  </tr>
+                  <tr>
+                    <td><label>Designation</label></td>
+                    <td> <select required class="form-control" name="designation">
                       <option value="">--Select--</option>
                       @foreach($groups as $designation)
                         <option value="{{ $designation->id }}">{{ $designation->group_name }}</option>
                       @endforeach
-                  </select>
-                </div>
-            </div>
+                  </select></td>
+                  </tr> 
+                </tbody>
+              </table>
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success" >

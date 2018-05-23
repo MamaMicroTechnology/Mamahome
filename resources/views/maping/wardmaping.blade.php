@@ -152,4 +152,25 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
   </div>
 </div>
+
+<script>
+  function getWards(){
+    var id = document.getElementById('Zones').value;
+    var wards = "";
+    $.ajax({
+        type: 'GET',
+        url: "{{URL::to('/')}}/getWards",
+        data: {id:id},
+        async: false,
+        success: function(response)
+        {
+          for(var i = 0; i < response.length; i++){
+            wards += "<option value="+response[i].id+" onclick=makelines('"+response[i].lat+"')>"+response[i].ward_name+"</option>"
+          }
+          document.getElementById('wards').innerHTML = wards;
+          console.log(response);
+        }
+    });
+  }
+</script>
 @endsection

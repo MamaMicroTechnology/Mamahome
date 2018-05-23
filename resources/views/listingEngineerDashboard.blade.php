@@ -1,9 +1,6 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 6? "layouts.leheader":"layouts.app");
-?>
-@extends($ext)
 
+
+@extends('layouts.leheader')
 @section('content')
 
   @if($ldate < $lodate)
@@ -23,12 +20,44 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-         <label>
+         <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody >
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
+                </tr>
+                <tr>  
+                  <td style="border: 1px solid gray;"><label>Total Number of Projects Listed Today</label></td>
+                  <td style="border: 1px solid gray;">{{ $total }}</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Orders Initiated by You</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
+                </tr>
+          </tbody>
+        </table>
+         <!-- <!-- <label>
            You have listed <strong>{{ $numbercount }}</strong> projects so far.<br>
            You have listed {{ $total }} projects today.<br>
            {{ $ordersInitiated }} orders has been initiated by you<br>
            out of which {{ $ordersConfirmed }} has been confirmed
-         </label><br><br>
+         </label><br><br> -->
+            <!-- <center></center>
+            <div class="panel-panel-primary">
+                <div class="panel-heading text-center">
+                    <!--<b><u>CURRENT PRICE LIST</u></b>-->
+                <!-- </div>
+                <div class="panel-body">
+
+                            
+                </div>
+            </div>
+            
+         </label><br><br>  -->
        </div>
         <div class="pull-right col-lg-8">
           <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">

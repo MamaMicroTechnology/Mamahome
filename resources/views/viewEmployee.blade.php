@@ -4,10 +4,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="panel panel-default" style="border-color: green;">
+                <div class="panel-heading"  style="background-color: green;color:white;padding-bottom: 20px;">
                     {{ $user->employeeId }} : {{ $user->name }}
-            <a href="{{ URL::to('/') }}/humanresources" class="btn btn-default input-sm pull-right">Back</a>
+            <a href="{{ URL::to('/') }}/humanresources" class="btn btn-danger input-sm pull-right">Back</a>
                 </div>
                 <div class="panel-body">
                     <center>

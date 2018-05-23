@@ -36,16 +36,16 @@
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">
                                       <div class="btn-group">
-                                      <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm " style="background-color:#F57F1B;color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button>
-                                      <a class="btn btn-sm btn-primary " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;padding: 6px;background-color: green">Add Enquiry</a>
+                                      <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button>
+                                      <a class="btn btn-sm btn-success " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
-                                   <button type="button" id="demo"  style="padding: 5.5px;" class="btn btn-sm btn-danger" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
+                                   <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373" class="btn btn-sm " {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
                                    <span class="badge">&nbsp;{{  $project->confirmed }}&nbsp;</span>
                                    </button>
                                   @endif
                                           @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
-                                   <button style="padding: 5.5px;" id="demo"  type="button" class="btn  btn-sm btn-success"  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
+                                   <button style="padding: 5.5px;background-color: #aed581;" id="demo"  type="button" class="btn  btn-sm "  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
                                     <span class="badge">&nbsp;{{  $project->confirmed }}&nbsp;</span>
                                    </button></div>
                                   @endif
@@ -53,7 +53,7 @@
                       </td>
 
                     <td>
-                      <button style="padding: 5.5px;" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm btn-primary"  >
+                      <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
                                    History </button>
 
                     </td>   
@@ -64,7 +64,7 @@
 </tbody>
 </table>
 @foreach($projects as $project)
-   <form method="POST" action="{{ URL::to('/') }}/{{ $project->project_id }}/updateProject" enctype="multipart/form-data" id="sub">
+   <form method="POST" action="{{ URL::to('/') }}/{{ $project->project_id }}/updateProject" enctype="multipart/form-data" id="sub" >
     {{ csrf_field() }}
 <!-- The Modal -->
  <div class="modal fade" id="myModal{{ $project->project_id }}">
@@ -100,7 +100,7 @@
                <tr>
                    <td>Location</td>
                    <td>:</td>
-                   <td style=" padding: 10px;" id="x">
+                   <td  id="x">
                     <div class="col-sm-6">
                       <label>Longitude:</label>
                         <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress->latitude }}" id="longitude">
@@ -124,7 +124,7 @@
                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                    <td>Full Address</td>
                    <td>:</td>
-                   <td style="padding: 20px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress->address }}"></td>
+                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress->address }}"></td>
                </tr>
                <?php
                   $type = explode(", ",$project->construction_type);
@@ -149,10 +149,11 @@
                     </div>
                  </td>
                </tr>
+        
                <tr>
                 <td>Type of Contract ? </td>
                 <td>:</td>
-                <td style="padding: 20px;">
+                <td style="padding: 10px;">
                   <select style="width: 50%;"  class="form-control" name="contract" id="contract" required>
                       <option value="" disabled selected>--- Select ---</option>
                       <option {{ $project->contract == "Labour Contract" ? 'selected' : ''}} value="Labour Contract">Labour Contract</option> 
@@ -161,6 +162,27 @@
                   </select>                              </td>
 
                </tr>
+              <tr>
+              <td><b>Follow Up?</b></td>
+              <td>:</td>
+              <td>
+                  <div class="radio">
+                                <label><input {{ $project->followup == 'No'?'checked':'' }} type="radio" name="follow" value="No">No</label>
+                              </div>
+                              <div class="radio">
+                                <label><input {{ $project->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
+                              </div>
+             </td>
+
+          </tr>
+          <tr>
+            <td><b> Follow up date</b></td>
+            <td>:</td>
+            <td ><input style="width:50%;" required type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+
+
+          </tr>
+
 
                <tr>
                    <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
@@ -287,16 +309,11 @@
                     </div>
                     </td>
                </tr>
-               <tr>
-                   <td>Project Size (Approx.)</td>
-                   <td style="padding:10px">:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  value="{{ $project->project_size }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class=" form-control" name="pSize" onkeyup="check('pSize')"></td>
-               </tr>
                  <tr>
                
                  <td>Budget Type</td>
-                 <td style="padding:20px">:</td>
-                 <td style="padding: 20px;">
+                 <td style="padding:10px">:</td>
+                 <td style="padding: 10px;">
                     <label required class="checkbox-inline">
                       <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $project->budgetType }}" id="a">Structural Budget
                     </label>
@@ -306,9 +323,14 @@
                  </td>
                </tr>
                <tr>
+                   <td>Project Size (Approx.)</td>
+                   <td style="padding:10px">:</td>
+                   <td style="padding: 10px;"><input style="width: 50%;"  value="{{ $project->project_size }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class=" form-control" name="pSize" onkeyup="check('pSize')"></td>
+               </tr>
+               <tr>
                    <td>Total Budget (in Cr.)</td>
                    <td style="padding:10px">:</td>
-                   <td style="padding: 10px;">
+                   <td >
                     <div class="col-md-4">
                       <input id="budget" style="width: 70%;"  value="{{ $project->budget }}"  placeholder="Budget" type="text"
                        class="form-control" onkeyup="check('budget')" name="budget">
@@ -424,7 +446,7 @@
     
     <div id="menu1{{ $project->project_id }}" class="container tab-pane fade"><br>
     <label>Owner Details</label>
-           <table class="table" style="width: 40%;">
+           <table class="table" border="" style="width:40%;">
               <tr>
                    <td>Owner Name</td>
                    <td>:</td>
@@ -442,16 +464,16 @@
                </tr>
               </table>
              <label>Contractor Details</label>
-           <table class="table" style="width: 40%;">
+           <table class="table"  border=""  style="width:40%;">
                <tr>
                    <td>Contractor Name</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_name :'' }}"  id="cName" type="text" placeholder="Contractor Name" class="form-control input-sm" name="cName"></td>
+                   <td >:</td>
+                   <td style="padding:10px;"><input value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_name :'' }}"  id="cName" type="text" placeholder="Contractor Name" class="form-control input-sm" name="cName"></td>
                </tr>
                <tr>
                    <td>Contractor Email</td>
                    <td>:</td>
-                   <td style="padding: 10px;"><input value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_email :'' }}"  placeholder="Contractor Email" type="email" onblur="checkmail('cEmail')" class="form-control input-sm" name="cEmail" id="cEmail"></td>
+                   <td style="padding: 10px; "><input value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_email :'' }}"  placeholder="Contractor Email" type="email" onblur="checkmail('cEmail')" class="form-control input-sm" name="cEmail" id="cEmail"></td>
                </tr>
                <tr>
                    <td>Contractor Contact No.</td>
@@ -460,7 +482,7 @@
                </tr>
            </table>
            <label>Consultant Details</label>
-           <table class="table" style="width: 40%;">
+           <table  border=""  class="table" style="width: 40%;">
                <tr>
                    <td>Consultant Name</td>
                    <td>:</td>
@@ -478,8 +500,8 @@
                </tr>
            </table>
 
-        <label>Site Engineer Details</label>
-                                 <table class="table" style="width: 40%;">
+                                  <label>Site Engineer Details</label>
+                                 <table  border=""  class="table" style="width: 40%;">
                                      <tr>
                                          <td>Site Engineer Name</td>
                                          <td>:</td>
@@ -497,7 +519,7 @@
                                      </tr>
                                  </table>
                                   <label>Procurement Details</label>
-           <table class="table" style="width: 40%;">
+           <table  border="" class="table" style="width: 40%;">
                <tr>
                    <td>Procurement Name</td>
                    <td>:</td>
@@ -595,17 +617,13 @@
     
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="background-color:rgb(245, 127, 27);padding:5px;">
+        <div class="modal-header  " style="background-color:#868e96;padding:5px; " >
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"> Customer History</h4>
+          <h4 class="modal-title"> Customer History <span class="pull-right"> Project_Id: {{ $project-> project_id }}</span></h4>
         </div>
         <div class="modal-body">
            <table class="">
-                                       <tr>
-                                       <td style="padding: 10px;">No Of Times Called</td>
-                                       <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->confirmed }}</td>
-                                       </tr>
+                                       
                                         <tr>
                                        <td style="padding: 10px;" > Project Created by</td>
                                        <td>:</td>
@@ -619,28 +637,35 @@
                                         
                                         
                                          <tr>
-                                       <td style="padding: 10px;" > Last Called By</td>
-                                       <td>:</td>
+                                       
                                      <td>  <table class="table table-responsive table-hover">
                                        <tbody>
                                        <thead>
                                           <!-- <th>User_id</th> -->
-                                          <th>Project_id</th>
+                                          <th>SlNo</th>
+                                          <th>Called Date</th>
                                           <th>Called Time</th>
+                                         <th> &nbsp;&nbsp; Name </th>
                                        </thead>
                                        <tbody>
-
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <label>Call History</label>
+                                         <?php $i=1 ?>
                                           @foreach($his as $call)
                                           @if($call->project_id == $project->project_id)
                                           <tr>
                                            <!--  <td>
                                               {{ $call->user_id }}
                                             </td> -->
+                                           
+                                            <td>{{ $i++ }}</td>
                                             <td>
-                                              {{ $call->project_id }}
+                                              {{ date('d-m-Y', strtotime($call->called_Time)) }}
                                             </td>
                                             <td>
-                                              {{ $call->called_Time }}
+                                              {{ date('h:i:s A', strtotime($call->called_Time)) }}
+                                            </td>
+                                            <td>
+                                             {{$call->username}}
                                             </td>
                                           </tr>
                                       @endif
@@ -652,7 +677,7 @@
                                       
                                      </table>
         </div>
-        <div class="modal-footer" style="background-color: green;padding:1px;">
+        <div class="modal-footer" style="padding:1px;">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>

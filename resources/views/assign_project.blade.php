@@ -35,7 +35,7 @@
                              <td>{{ $user->prv_subward }}</td>
                              <td>{{ $user->prv_date }}</td>
                              <td>{{ $user->prv_stage }}</td>
-                             <td><button onclick="makeUserId('{{ $user->id }}')" type="button"  data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn btn-success pull-left">Assign</button></td>
+                             <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
                           </tr>         
                            @endforeach
                    
@@ -50,37 +50,46 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header" style="background-color: rgb(244, 129, 31);">
+      <div class="modal-header" style="background-color: rgb(244, 129, 31);padding:5px;">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Choose Wards</h4>
       </div>
       <div class="modal-body">
         <div id="first">
-        <div id="wards">
+        <div id="wards">  
+        <div class="row">
         @foreach($wards as $ward)
+        <div class="col-sm-2">
           <label>
             <input  onclick="hide('{{ $ward->id }}')"  style=" padding: 5px;" data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
           </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
         @endforeach
         </div>
         </div>
-          @foreach($wards as $ward)
+        </div>
+         @foreach($wards as $ward)
           <div id="subwards{{ $ward->id }}" class="hidden">
             <h4 class="modal-title">Choose SubWard </h4>
             <input type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward->id}}');">All
          
-          <br>    
+          <br><br>    
           <div id="ward{{ $ward->id }}">
+          <div class="row"> 
               @foreach($subwards as $subward)
+              
               @if($subward->ward_id == $ward->id)
-                    <label>
+              <div class="col-sm-2" >
+                    <label class="checkbox-inline">
                       
                       <input  type="checkbox"  name="subward[]" value="{{$subward->sub_ward_name}}">
                       &nbsp;&nbsp;{{$subward->sub_ward_name}}
-
-                    </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                     </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
               @endif
+                   
               @endforeach
+          </div>
           </div>
               
           </div>
@@ -92,7 +101,7 @@
                  <div class="container">
                      <div class="row">
                        <div class="col-sm-12"> 
-                       <h3 style="color:#398439;">Assign Stage</h3>&nbsp;&nbsp;&nbsp;&nbsp;
+                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;">Assign Stage</h4>&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;     <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="color:orange;font-size:15px">&nbsp;&nbsp; ALL</span>
                           <table>
                              <tr id="sp">
@@ -128,61 +137,94 @@
 
             <div class="row">
               <div class="col-sm-6">  
-              <h3 style="color:#398439;">Project Listed date</h3>
+              <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Listed date</h4>
 
               <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
               </div>
             </div> <br>                                                      
-            <h3 style="color:#398439;">Project Type </h3>
+            <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
+
             <div class="row">
             <div class="col-md-2">
-            <h5 style="color:#398439;">Basement</h5>
-                 <input  name="basement" type="text" autocomplete="off" class="form-control input-sm" placeholder="Basement" id="email">
-                 </div>
-                                                  
-               <div class="col-md-2">
-                <h5 style="color:#398439;">Ground</h5>
-                <input name="Floor"  type="text" class="form-control" placeholder="Floor">
-               </div>
-               <div class="col-md-3">
-               <h5 style="color:#398439;">Total</h5>
-               <input  name="project_type"    type="text" class="form-control" placeholder="total">
-              </div>
+            <h5 style="color:#2962ff;">Basement From</h5>
+                 <input  name="basement"  pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
             </div>
+                  <div class="col-md-2">
+                   <h5 style="color:#2962ff;">Basement To</h5>
+                 <input  name="base" pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
+                 </div>
+                <div class="col-md-2">
+                <h5 style="color:#2962ff;">Floor From</h5>
+                <input name="Floor"  type="text" pattern="[0-9]+" title="Enter the number only" class="form-control" placeholder="Floor">
+               </div>
+               <div class="col-md-2">
+                <h5 style="color:#2962ff;">Floor To</h5>
+                <input name="Floor2"  type="text" pattern="[0-9]+" title="Enter the number only" class="form-control" placeholder="Floor">
+               </div>
+              </div>
               <div class="row">
-              <div class="col-sm-3">
-              <h3 style="color:#398439;">Project Size</h3>
-              <input type="text" class="form-control" name="project_size" placeholder="Project Size in sq ft">
+               <div class="col-md-2">
+               <h5 style="color:#2962ff;">Total From</h5>
+               <input  name="project_type" pattern="[0-9]+" title="Enter the number only"   type="text" class="form-control" placeholder="total">
               </div>
-              <div class="col-sm-3">
-              <h3 style="color:#398439;">Budget </h3>
-              <input type="text" class="form-control" name="budget" placeholder="Budget Min 10lac">
+               <div class="col-md-2">
+               <h5 style="color:#2962ff;">Total To</h5>
+               <input  name="total" pattern="[0-9]+" title="Enter the number only"   type="text" class="form-control" placeholder="total">
               </div>
-              <div class="col-sm-3">
-                <h3 style="color:#398439;">Contract</h3>
+              </div>
+              <div class="row">
+              <div class="col-sm-4">
+              <h4 style="background-color:#9e9e9e; width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Size</h4>
+              <div class="col-sm-6">
+              <h5  style="color:#2962ff;">From</h5>
+              <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="project_size" placeholder="Project Size in sq ft">
+              </div>
+              <div class="col-sm-6">
+              <h5 style="color:#2962ff;">To</h5>
+              <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="projectsize" placeholder="Project Size in sq ft">
+              </div>
+              </div>
+              <div class="col-sm-4">
+              <h4 style="background-color:#9e9e9e;width: 50%;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget </h4>
+              <div class="col-sm-6">
+              <h5 style="color:#2962ff;">From</h5>
+              <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budget" placeholder="Budget Min 10lac">
+              </div>
+              <div class="col-sm-6">
+              <h5 style="color:#2962ff;">To</h5>
+              <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budgetto" placeholder="Budget Min 10lac">
+              </div>
+              </div>
+             <!--  <div class="col-sm-3">
+                <h4 style="color:#398439;">Contract</h4>
                 <select class="form-control" name="contract_type" id="contract" >
                     <option   value="" disabled selected>--- Select ---</option>
                     <option    value="Labour Contract">Labour Contract</option>
                     <option  value="Material Contract">Material Contract</option>
                 </select>
-              </div>
+              </div> -->
               </div><br><br>
                 <div class="row">
-                    <div class="col-sm-4">
-                      <h3 style="color:#398439;">Contraction Type</h3>
+                    <div class="col-sm-3">
+                      <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Construction Type</h4>
                       <label required class="checkbox-inline"><input id="constructionType1" name="constraction_type[]" type="checkbox" value="Residential">&nbsp;&nbsp;Residential</label><br>
                       <label required class="checkbox-inline"><input id="constructionType2" name="constraction_type[]" type="checkbox" value="Commercial">&nbsp;&nbsp;Commercial</label> 
                     </div> 
-                  <div class="col-sm-3">
-                    <h3 style="color:#398439;">RMC </h3>      
-                    <label><input id="rmc" type="radio" name="rmc" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
-                    <label><input id="rmc2" type="radio" name="rmc" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label>
+                  <div class="col-sm-2">
+                    <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">RMC </h4>      
+                    <label><input id="rmc" type="checkbox" name="rmc[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label><input id="rmc2" type="checkbox" name="rmc[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label>
                   </div>
-                  <div class="col-sm-3">
-                    <h3 style="color:#398439;">Budget Type </h3>
+                  <div class="col-sm-2">
+                    <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget Type </h4>
                     <label required class="checkbox-inline"><input id="constructionType3" name="budget_type[]" type="checkbox" value="Structural">&nbsp;&nbsp;Structural</label><br>
                     <label required class="checkbox-inline"><input id="constructionType4" name="budget_type[]" type="checkbox" value="Finishing">&nbsp;&nbsp;Finishing </label>     
-                  </div>     
+                  </div>  
+                  <div class="col-sm-2">
+                    <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Contract</h4>
+                    <label required class="checkbox-inline"><input id="constructionType3" name="contract_type[]" type="checkbox" value="Labour Contract">&nbsp;&nbsp;Labour Contract</label><br>
+                    <label required class="checkbox-inline"><input id="constructionType4" name="contract_type[]" type="checkbox" value="Material Contract">&nbsp;&nbsp;Material Contract </label>     
+                  </div>    
                 </div>
                 </div><br><br>
                 <center>
@@ -330,7 +372,7 @@ function back(arg){
 <script>
 function checkall(arg){
 var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
-alert(clist);
+
 for (var i = 0; i < clist.length; ++i) 
 { 
   clist[i].checked = "checked"; 

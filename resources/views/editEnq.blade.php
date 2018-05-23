@@ -45,7 +45,7 @@
 							</tr>	
 							<tr>
 								<td><label>Select category:</label></td>
-								<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
+								<td><button required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
 
 <!-- model -->
@@ -109,11 +109,11 @@
 </div>
 <!-- model end -->
 
-							@if(Auth::user()->group_id != 6 && Auth::user()->group_id != 7)
+							
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
-									<select class="form-control" name="initiator">
+									<select required class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users as $user)
 										<option value="{{$user->id}}">{{$user->name}}</option>
@@ -121,7 +121,7 @@
 									</select>
 								</td>
 							</tr>
-							@endif
+						
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>{{ $enq->address }}</td>
