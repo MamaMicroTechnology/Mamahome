@@ -377,6 +377,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/editasset','amController@editasset');
     Route::post('/saveasset','amController@saveasset');
     Route::post('/saveassetinfo','amController@saveassetinfo');
+<<<<<<< HEAD
     Route::get('/getname','amController@getname');
     Route::get('/getserial','amController@getserial');
     Route::get('/getdesc','amController@getdesc');
@@ -388,6 +389,9 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/signature','amController@signature');
     Route::get('/preview','amController@preview');
 
+=======
+    Route::get('/preview','amcontroller@preview');
+>>>>>>> chaithra
 
 
 
