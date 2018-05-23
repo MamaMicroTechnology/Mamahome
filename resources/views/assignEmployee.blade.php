@@ -152,7 +152,7 @@
                        
                        <tr>
                             <td><label>Description:</label></td>
-                                <td> <input name="details" id="desc" required class="form-control" onclick="getdesc()"></td>
+                                <td> <input  name="details" id="desc" required class="form-control" onclick="getdesc()"></td>
                             </td>
                         </tr>
                          <tr>
@@ -373,7 +373,8 @@ function getdesc(){
                            var text = response[i].description;
                          
                         }
-                         document.getElementById('desc').value = text;   
+                         document.getElementById('desc').value = text;
+                         document.getElementById('desc').disabled = text;  
                     }
                 });
             }

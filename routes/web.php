@@ -171,7 +171,6 @@ Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
 Route::post('/confirmedProject','HomeController@confirmedProject');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
-Route::post('/deleteAsset','amController@deleteAsset');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 
 
@@ -387,7 +386,6 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/getbrand','amController@getbrand');
     Route::get('/signature','amController@signature');
     Route::get('/preview','amController@preview');
-
 
 
 
