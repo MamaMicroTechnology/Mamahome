@@ -62,7 +62,7 @@ input:checked + .slider:before {
 <thead>
     <th>Emp Id</th>
     <th>Name</th>
-    <th>Dept.</th>
+   <!--  <th>Dept.</th> -->
     <th>Designation</th>
     <th>Contact</th>
     <th>Attendance/Reports</th>
@@ -75,7 +75,7 @@ input:checked + .slider:before {
     <tr>
         <td>{{ $user->employeeId}}</td>
         <td>{{ $user->name}}</td>
-        <td>{{ $user->department->dept_name }}</td>
+        <!-- <td>{{ $user->department->dept_name }}</td> -->
         <td>{{ $user->group->group_name }}</td>
         <td>{{ $user->office_phone }}</td>
         <td>
