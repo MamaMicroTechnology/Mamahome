@@ -9,7 +9,7 @@
                <div class="pull-right col-md-4">
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                </div>
-              <br><br>
+              <br>
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
