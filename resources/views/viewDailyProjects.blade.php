@@ -6,7 +6,7 @@
             <div class="panel-heading">
 
                             
-               <b style="color:white">Project Details <center> {{ $details->project_id }}</center>
+               <b style="color:white">Project Details <center>  <b style="color:white"> Project Id {{ $details->project_id }}</center><center>  </b>
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                </b> 
                
