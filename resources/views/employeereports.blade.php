@@ -1,3 +1,5 @@
+
+
 @extends('layouts.app')
 @section('content')
 <?php
@@ -58,26 +60,26 @@
 	}
 ?>
 <div class="col-md-12" style="font-size: 11px;">
-	<div class="panel panel-default">
-		<div class="panel-heading">Employee Attendance for the month of <?php print($current." ".$year); ?>
+	<div class="panel panel-default" style="border-color:rgb(244, 129, 31);">
+		<div class="panel-heading" style="background-color: rgb(244, 129, 31);color:white;">Employee Attendance for the month of <?php print($current." ".$year); ?>
 			<div class="pull-right btn-group">
 				@if(Auth::user()->group_id == 1)
 				<a href="{{ URL::to('/') }}/employeereports?month={{ $prevMonth }}&year={{ $prevYear }}" class="btn btn-default btn-sm">
-					<span class="glyphicon glyphicon-backward"></span></a>
+					previous</a>
 				<a href="{{ URL::to('/') }}/employeereports" class="btn btn-default btn-sm">
 					<span class="glyphicon glyphicon-refresh"></span></a>
 				</a>
 				<a href="{{ URL::to('/') }}/employeereports?month={{ $nextMonth }}&year={{ $nextYear }}" class="btn btn-default btn-sm {{ $month == $thismonth ? 'disabled' : ''}}">
-					<span class="glyphicon glyphicon-forward"></span></a>
+					next</a>
 				</a>
 				@else
 					<a href="{{ URL::to('/') }}/amviewattendance?month={{ $prevMonth }}&year={{ $prevYear }}" class="btn btn-default btn-sm">
-					<span class="glyphicon glyphicon-backward"></span></a>
+					previous</span></a>
 					<a href="{{ URL::to('/') }}/amviewattendance" class="btn btn-default btn-sm">
 						<span class="glyphicon glyphicon-refresh"></span></a>
 					</a>
 					<a href="{{ URL::to('/') }}/amviewattendance?month={{ $nextMonth }}&year={{ $nextYear }}" class="btn btn-default btn-sm {{ $month == $thismonth ? 'disabled' : ''}}">
-						<span class="glyphicon glyphicon-forward"></span></a>
+						next</span></a>
 					</a>
 				@endif
 			</div>

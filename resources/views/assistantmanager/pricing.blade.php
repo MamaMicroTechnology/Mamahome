@@ -1,4 +1,8 @@
-@extends('layouts.amheader')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 8? "layouts.app":"layouts.amheader");
+?>
+@extends($ext)
 @section('content')
 
 <div class="col-md-12">
@@ -10,10 +14,14 @@
 			<div class="panel-body">
 				<div id="addpage">
 					<h4 style="text-align: center">
-						<b>Add Category Details</b>
+						<b>Add and Edit Category Details</b>
 					</h4>
 					<br>
-					<form method="POST" action="{{ URL::to('/') }}/insertcat">
+					 @if(Auth::user()->group_id != 8)
+					<form method="POST"  name="myform" action="{{ URL::to('/') }}/insertcat">
+						@else
+						<form method="POST" name="myform" action="{{ URL::to('/') }}/marketinginsertcat">
+						@endif
 					    {{ csrf_field() }}
 					    <!--<input type="hidden" name="id" id="id">-->
 						<div style="margin-left:5%;margin-right: 5%">
@@ -73,7 +81,7 @@
 										<label> GST </label>
 									</td>
 									<td style="width:80%">
-										<input type="text" name="gst" id="gst" class="form-control" placeholder="GST" />
+										<input type="text" name="gst" id="gst" oninput="getgst()" class="form-control" placeholder="GST" />
 									</td>
 								</tr>
 								<tr style="border-top-style: hidden">
@@ -81,7 +89,7 @@
 										<label> Transportation Cost </label>
 									</td>
 									<td style="width:80%">
-										<input type="text" name="tc" id="tc" class="form-control" placeholder="Transportation Cost" />
+										<input type="text" name="tc" id="tc" oninput="gettc()" class="form-control" placeholder="Transportation Cost" />
 									</td>
 								</tr>
 								<tr style="border-top-style: hidden">
@@ -89,7 +97,7 @@
 										<label> Royalty </label>
 									</td>
 									<td style="width:80%">
-										<input type="text" name="royalty" id="royalty" class="form-control" placeholder="Roylaty (If any)" />
+										<input type="text" name="royalty" oninput="getroyalty()" id="royalty" class="form-control" placeholder="Roylaty (If any)" />
 									</td>
 								</tr>	
 							</table>
@@ -334,5 +342,31 @@
         });    
     }
 
+</script>
+<script type="text/javascript">
+	 function getgst()
+	{
+		var gsts=document.myform.gst.value;
+			if(isNaN(gsts)){
+				document.getElementById('gst').value="";
+				myform.gst.focus();
+		     }
+	}
+	function gettc()
+	{
+		var tcs=document.myform.tc.value;
+			if(isNaN(tcs)){
+				document.getElementById('tc').value="";
+				myform.tc.focus();
+		     }
+	}
+	function getroyalty()
+	{
+		var royaltys=document.myform.royalty.value;
+			if(isNaN(royaltys)){
+				document.getElementById('royalty').value="";
+				myform.royalty.focus();
+		     }
+	}
 </script>
 @endsection

@@ -9,6 +9,12 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
+    <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+    <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
     body{
@@ -252,6 +258,96 @@ div#calendar{
     }
 }
 </style>
+<style>
+
+
+#go {
+  transform: translate(-50%, 0%);
+  color: white;
+  border: 0;
+  background: #71c341;
+  width: 100px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 2rem;
+  transition: background 0.2s ease;
+  outline: none;
+}
+#go:hover {
+  background: #8ecf68;
+}
+#go:active {
+  background: #5a9f32;
+}
+
+.message {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 300px;
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  font-weight: 300;
+  color: #2c2928;
+  opacity: 0;
+  transition: top 0.3s cubic-bezier(0.31, 0.25, 0.5, 1.5), opacity 0.2s ease-in-out;
+}
+.message .check {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(4);
+  width: 120px;
+  height: 110px;
+  background: #71c341;
+  color: white;
+  font-size: 3.8rem;
+  padding-top: 10px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: transform 0.2s 0.25s cubic-bezier(0.31, 0.25, 0.5, 1.5), opacity 0.1s 0.25s ease-in-out;
+}
+.message .scaledown {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+.message p {
+  font-size: 1.1rem;
+  margin: 25px 0px;
+  padding: 0;
+}
+.message p:nth-child(2) {
+  font-size: 2.3rem;
+  margin: 40px 0px 0px 0px;
+}
+.message #ok {
+  position: relative;
+  color: white;
+  border: 0;
+  background: #71c341;
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  transition: background 0.2s ease;
+  outline: none;
+}
+.message #ok:hover {
+  background: #8ecf68;
+}
+.message #ok:active {
+  background: #5a9f32;
+}
+
+.comein {
+  top: 150px;
+  opacity: 1;
+}
+
+</style>
 </head>
 <body>
     <div id="app">
@@ -273,6 +369,14 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                    @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                    @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                     @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                     @elseif(Auth::user()->group_id == 14)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
                 </div>
@@ -282,6 +386,38 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span></b></a></li>
+                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
+                        @endif
+                        @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 6)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif
+                       <!--  @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif -->
+                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif
+                        @if(Auth::user()->group_id == 14)
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
+                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                       
+                        @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 2)
+                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                         @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 17)
+                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                         @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
+                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
+                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
                         @endif
                     </ul>
                 
@@ -300,6 +436,9 @@ div#calendar{
                                     <li><a href="{{ URL::to('/') }}/profile ">Profile</a></li>
                                     @if(Auth::user()->department_id == 2 && Auth::user()->group_id == 7)
                                     <li><a href="{{ URL::to('/') }}/salescompleted ">Completed</a></li>
+                                    @endif
+                                    @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
+                                    <li><a href="{{ URL::to('/') }}/admincompleted?id={{ Auth::user()->id }}">Completed</a></li>
                                     @endif
                                     <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
                                     <li>
@@ -336,21 +475,22 @@ div#calendar{
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
     <div id="enquiry" class="collapse">
-            <a href="{{ URL::to('/enquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
+            <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
-           
         </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
             <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
             <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
-            <!-- <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
+           <!--  <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
+        <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
+        <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
@@ -363,30 +503,78 @@ div#calendar{
     </div>
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
-    <a href="{{ URL::to('/finance') }}">Finance</a>
+   <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
+    <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/kra">KRA</a>
-    <a href="{{ URL::to('/') }}/enquirysheet">Enquiry Sheet</a>
+    
+    <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
+    <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
+   <a href="{{ URL::to('/enquiryCancell') }}">Enquiry cancelled</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
+    <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
+    <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
+    <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
-    <a href="{{ URL::to('/tltraining') }}">Training Video</a>
+    <!-- <a href="{{ URL::to('/tltraining') }}">Training Video</a> -->
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
+@elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
+    <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/') }}/assignconverterSlots">Assign Listing Engineers</a>
+    <a href="{{ URL::to('/') }}/scmaps">Maps</a>
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
+  </div>
+@elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+     <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+     <a href="{{ URL::to('/marketmanufacturerdetails') }}">Manufacturer Details</a>
+     <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
+     <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
+      <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
+      <a href="{{ URL::to('/') }}/kra">KRA</a>
+  </div>
+  @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
+<div id="mySidenav" class="sidenav">
+     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Wardswise Projects</a>
+     <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
+     <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
+    <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
+    <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
+    <a href="{{ URL::to('/') }}/kra" >KRA</a>           
+  </div>
+   @elseif(Auth::user()->group_id == 14)
+   <div id="mySidenav" class="sidenav">
+     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+            <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
+            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+            <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
+            <a href="{{ URL::to('/') }}/assets">Add Assets</a>
+            <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
+            <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
+      </div>
 @endif
 @endif
+
+
         @yield('content')
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -422,5 +610,6 @@ div#calendar{
             modal.style.display = "none";
         }
 </script>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

@@ -5,11 +5,12 @@
 	<div class="col-md-12">
 		<div class="panel panel-default" style="border-color:green">
 			 <div class="panel-heading" style="background-color: green;color:white;"><b>
-			 Team Leader Training Video		 	
+			 Team Leader Training Video		
 			 </b>
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
+                    <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
                 </div>
 			<div class="panel-body">
 				
@@ -28,11 +29,11 @@
 		                           </div>
                              @endforeach
                               
-                         	</div>
-                      </table>
-                     </div>
-                  </div>
-              </div>
+                         	</table>
+	       	</div>
+	    </div>
+	</div>
+</div> 
                     
 						
 @endsection

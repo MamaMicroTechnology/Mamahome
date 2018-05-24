@@ -1,18 +1,14 @@
-<?php
-    if(Auth::user()->department_id == 0){
-        $exts = "layouts.app";
-    }else{
-        $exts = "layouts.amheader";
-    }
-?>
-@extends($exts)
+
+@extends('Layouts.app')
 
 @section('content')
 <div class="container">
 <div class="col-md-6">
     <div class="panel panel-default" style="border-color:green;">
+
                
                 <div class="panel-heading" style="background-color: green;color:white;"><b> View Training Videos</b> <br> Please select the Department and designation in order to get the training videos
+
 
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
@@ -80,7 +76,7 @@
                                     <h4 class="modal-title">{{ $video->remark }}</h4>
                                   </div>
                                   <div class="modal-body">
-                                    <video class="img img-responsive" controls>
+                                    <video class="img img-responsive" controls controlslist="nodownload">
                                       <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
                                       <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
                                       

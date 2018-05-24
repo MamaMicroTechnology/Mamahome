@@ -3,7 +3,19 @@
  <div class="container">
      <div class="row">
          <div class="panel panel-default">
+          <!--   <form method="GET" action="{{ URL::to('/') }}/{{Auth::user()->group_id == 1 ? 'getMhOrders':'getMhOrders'}}">
+              {{csrf_field()}}
+                    <div class="col-md-4 pull-right">
+                        <div class="input-group">
+                            <input type="text" name="phNo" class="form-control" placeholder="Phone number and project_id search">
+                            <div class="input-group-btn">
+                                <input type="submit" class="form-control" value="Search">
+                            </div>
+                        </div>
+                    </div>
+                </form> -->
              <div class="panel-heading">Orders</div>
+
              <div class="panel-body">
                  <table class="table table-hover">
                      <thead>

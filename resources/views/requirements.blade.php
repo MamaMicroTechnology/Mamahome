@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
 <?php
 	$id = $_GET['projectId'];
 ?>
@@ -17,34 +15,52 @@
 			<form method="POST" action="{{ URL::to('/') }}/addRequirement?pId={{ $id }}" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<table class="table">
-					
+					<tr>
+						<td ><label> Enquiry Date* </label></td>
+						<td>:</td>
+						<td ><input required type="date" name="edate" id="edate" class="form-control"  /></td>
+					</tr>
+					<tr>
+								<td><label>Contact Number </label></td>
+								<td>:</td>
+								<td >{{ $projects->procurementdetails != NULL?$projects->procurementdetails->procurement_contact_no:'' }}</td>
+					</tr>
+					<tr>
+								<td><label>Project_id</label></td>
+								<td>:</td>
+								<td >{{ $projects->project_id }}</td>
+					</tr>
 					<tr>
 						<td>Main Category</td>
 						<td>:</td>
 						<td>
-							<select name="mCategory" id="mCategory" required class="form-control input-sm" onchange="getBrands()">
-								<option value="" disabled selected>--Select--</option>
-								    @foreach($category as $cat)
-								    <option value="{{$cat->id}}">{{$cat->category_name}}</option>
-								    @endforeach
-							</select>
+
+							<table class="table table-resonsive">
+								<tr >
+								@foreach($category as $cat)
+								<div class="col-md-3">
+								<label class="checkbox-inline">
+		                                  <input type="checkbox" name="mCategory" id="mCategory{{ $cat->id }}" required onchange="getBrands('{{ $cat->id }}','{{ $cat->category_name }}')" value="{{$cat->category_name}}" >{{$cat->category_name}}
+		                        </label>
+		                        </div>
+
+		                         @endforeach
+		                     	</tr>
+                         	</table>
 						</td>
 					</tr>
 					<tr>
-						<td>Brnads</td>
+						<td>Brands</td>
 						<td>:</td>
-						<td>
-							<select name="brand" id="brand" required class="form-control input-sm" onchange="getSubCat()">
-								
-							</select>
+						<td id="brand">
 						</td>
 					</tr>
 					<tr>
 						<td>Sub Category</td>
 						<td>:</td>
 						<td>
-							<select name="sCategory" id="sCategory" class="form-control input-sm" onchange="getPrice()">
-								
+							
+								<select name="sCategory" id="sCategory" class="form-control input-sm" onchange="getPrice()">
 								
 							</select>
 						</td>
@@ -336,20 +352,13 @@
 					document.getElementById('total').value = quantity * price;
 		}
 	}
+    
     function getSubCat()
     {
+    	alert("bmnb");
         var e = document.getElementById("mCategory");
         var cat = e.options[e.selectedIndex].value;
         var brand = document.getElementById("brand").value;
-        if(e.options[e.selectedIndex].text == 'Sand')
-        {
-            document.getElementById('truck').innerHTML = "<td>Type of Truck</td><td>:</td><td><select class='form-control' id='truckvalue' required><option disabled selected>-- SELECT --</option><option value='6'>6 - Wheeler Truck (18 to 22)</option><option value='10'>10 - Wheeler Truck (24 to 32)</option></select></td>";
-        }
-        else
-        {
-            document.getElementById('truck').innerHTML = "";
-            // document.getElementById('Number').innerHTML = "";
-        }
         $.ajax({
             type:'GET',
             url:"{{URL::to('/')}}/getSubCat",
@@ -357,7 +366,7 @@
             data:{cat : cat, brand: brand},
             success: function(response)
             {
-                var text = "<option value='' disabled selected>----Select----</option>";
+                var text = "<option value='' disabled selected>----Select----</option><option value='All'>All</option>";
                 for(var i=0; i < response[1].length; i++)
                 {
                     text += "<option value="+response[1][i].id+">"+response[1][i].sub_cat_name+"</option>";
@@ -446,25 +455,38 @@
 		document.getElementById("btn1").className = "pull-right btn btn-sm btn-success";
 		document.getElementById("btn2").className = "hidden";
 	}
-	function getBrands(){
-		var e = document.getElementById('mCategory');
-	    var cat = e.options[e.selectedIndex].value;
-	    $("html body").css("cursor", "progress");
+	var count = 0;
+	function getBrands(id,category_name){
+		var e = id;
+		
 	    $.ajax({
             type:'GET',
             url:"{{URL::to('/')}}/getBrands",
             async:false,
-            data:{cat : cat},
+            data:{cat : e}, 
             success: function(response)
             {
                 console.log(response);
-                var ans = "<option value=''>--Select--</option>";
+                var ans = document.getElementById('brand').innerHTML;
+                var name = category_name;
+                
+               	if(response[0].length != 0){ 
+                ans += "<div class='col-md-4'>"+name+"<br>";
+                count++;
                 for(var i=0;i<response[0].length;i++)
                 {
-                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                    ans += "<input type='checkbox' onchange='getSubCat()' value='"+response[0][i].id+"'>"+response[0][i].brand+"<br>";
+                }
+               
+                
+	                ans += "</div>";
+	                if(count == 3){ 
+	                	ans += "<br><hr><hr><hr>";
+	                	count =0;
+	                }
                 }
                 document.getElementById('brand').innerHTML = ans;
-                $("body").css("cursor", "default");
+
             }
         });
 	}

@@ -5,9 +5,19 @@
 @extends($ext)
 
 @section('content')
+<div class="col-md-12">
+		<div class="panel panel-primary" >
+			 <div class="panel-heading text-center" ><b>
+			 Enquiry Cancelled		 	
+			 </b>
+                    @if(session('ErrorFile'))
+                        <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
+                    @endif 
+                    <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+              </div>
+			<div class="panel-body" style="overflow-x:scroll;overflow-y:scroll;height:1000px">
 
-
-<table id="myTable" class="table table-responsive table-striped table-hover">
+					<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="text-align: center">Project</th>
@@ -62,4 +72,7 @@
 						@endforeach
 					</tbody>
 				</table>
+			</div>
+		</div>
+	</div>
 @endsection

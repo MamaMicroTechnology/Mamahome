@@ -94,8 +94,8 @@
                     <tbody id="mainPanel">
                         @foreach($projects as $project)
                         <tr>
-                            <td style="text-align:center">{{ $project->sub_ward_name }}</td>
-                            <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
+                            <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
+                            <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>
                             <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
                             <td style="text-align:center">{{$project->procurement_contact_no}}</td>
@@ -199,21 +199,21 @@
                             document.getElementById('mainPanel').innerHTML += 
                             "<tr><td>"
                                 +response[0][i].sub_ward_name+
-                            "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"'>"
+                            "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
-                                +response[0][i].owner_contact_no+
+                                +(response[0][i].owner_contact_no != null ? response[0][i].owner_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].site_engineer_contact_no+
+                                +(response[0][i].site_engineer_contact_no !=null ? response[0][i].site_engineer_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].procurement_contact_no+
+                                +(response[0][i].procurement_contact_no != null ? response[0][i].procurement_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].consultant_contact_no+
+                                +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '') +
                             "</td><td>"
-                                +response[0][i].contractor_contact_no+
-                            "</td><td><a href='{{URL::to('/')}}/dailyslots?userId="+response[0][i].id+"'>"
+                                +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
+                            "</td><td>"     
                                 +response[0][i].name+
-                            "</a></td></tr>";
+                            "</td></tr>";
                         }
                         console.log(response);   
                     }    
@@ -261,21 +261,21 @@
                             document.getElementById('mainPanel').innerHTML += 
                             "<tr><td>"
                                 +response[0][i].sub_ward_name+
-                            "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"'>"
+                            "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
-                                +response[0][i].owner_contact_no+
+                                +(response[0][i].owner_contact_no == null ? response[0][i].owner_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].site_engineer_contact_no+
+                                +(response[0][i].site_engineer_contact_no == null ? response[0][i].site_engineer_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].procurement_contact_no+
+                                +(response[0][i].procurement_contact_no == null ? response[0][i].procurement_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].consultant_contact_no+
+                                +(response[0][i].consultant_contact_no == null ? response[0][i].consultant_contact_no : '')+
                             "</td><td>"
-                                +response[0][i].contractor_contact_no+
-                            "</td><td><a href='{{URL::to('/')}}/dailyslots?userId="+response[0][i].id+"'>"
+                                +(response[0][i].contractor_contact_no == null ? response[0][i].contractor_contact_no : '')+
+                            "</td><td>"
                                 +response[0][i].name+
-                            "</a></td></tr>";
+                            "</td></tr>";
                         }
                         console.log(response);   
                     }    

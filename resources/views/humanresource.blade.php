@@ -1,4 +1,4 @@
-@extends('layouts.amheader')
+@extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
@@ -23,7 +23,11 @@
                 <div class="panel-heading" style="background-color:#f4811f">Departments</div>
                 <div class="panel-body">
                     @foreach($departments as $department)
-                        <a id="{{ $department->dept_name }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }})</a>
+                        <?php 
+                            $content = explode(" ",$department->dept_name);
+                            $con = implode("",$content);
+                        ?>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }})</a>
                     @endforeach
                         <a id="Formeremployee" class="list-group-item" href="#">Former Employees ({{ $depts["FormerEmployees"] }})</a>
                 </div>
@@ -44,39 +48,43 @@
           <h4 class="modal-title">Add Employee</h4>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                  <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"><br>
-                  <input required type="text" placeholder="User-ID Of MMT" class="form-control" name="email"><br>
-                </div>
-                <div class="col-md-6">
-                  <input required type="text" placeholder="Name" class="form-control" name="name"><br>
-                  <input required type="text" placeholder="Personal Contact No." class="form-control" name="phNo"><br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                  Department:<br>
-                  <select required class="form-control" name="dept">
+            <table class="table table-hover">
+              <tbody>
+                  <tr>
+                    <td><label>Emp Id</td>
+                    <td> <input required type="text" placeholder="Employee Id" class="form-control" name="employeeId"></td>
+                  </tr>
+                  <tr>
+                    <td><label>Name</label></td>
+                    <td><input required type="text" placeholder="Name" class="form-control" name="name"></td>
+                  </tr>
+                  <tr>
+                    <td><label>User-Id Of MMT</label></td>
+                    <td><input required type="text" placeholder="User-id of MMT" class="form-control" name="email"></td>
+                  </tr>
+                  <tr>
+                    <td><label>Department</label></td>
+                      <td><select required class="form-control" name="dept">
                       <option value="">--Select--</option>
                       @foreach($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
                       @endforeach
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  Designation:<br>
-                  <select required class="form-control" name="designation">
+                  </select></td>
+                  </tr>
+                  <tr>
+                    <td><label>Designation</label></td>
+                    <td> <select required class="form-control" name="designation">
                       <option value="">--Select--</option>
                       @foreach($groups as $designation)
                         <option value="{{ $designation->id }}">{{ $designation->group_name }}</option>
                       @endforeach
-                  </select>
-                </div>
-            </div>
+                  </select></td>
+                  </tr> 
+                </tbody>
+              </table>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success" onclick="phonenumber(document.form1.phNo)">
+            <button type="submit" class="btn btn-success" >
             Add </button>
           <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
         </div>
@@ -108,11 +116,15 @@
 <script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($departments as $department)
+<?php 
+    $content = explode(" ",$department->dept_name);
+    $con = implode("",$content);
+?>
 <script type="text/javascript">
 $(document).ready(function () {
-    $("#{{ $department->dept_name }}").on('click',function(){
+    $("#{{ $con }}").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/humanresources/{{ $department->dept_name }}?page=hr", function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/humanresources/"+encodeURIComponent("{{ $department->dept_name }}")+"?page=hr", function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -130,19 +142,7 @@ $(document).ready(function () {
     });
 });
 
-function phonenumber(inputtxt)
-{
-  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if(inputtxt.value.match(phoneno))
-     {
-     return true;      
-   }
-   else
-     {
-     alert("Not a valid Phone Number");
-     return false;
-     }
-}
+
 
 </script>
 @endforeach

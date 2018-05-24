@@ -1,13 +1,9 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 7? "layouts.sales":"layouts.app");
-?>
-@extends($ext)
+@extends('layouts.app')
 @section('content')
 
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-        <div class="panel-heading">KRA List</div>
+        <div class="panel-heading" style="background-color: green;color:white;">KRA List</div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
                 <thead>

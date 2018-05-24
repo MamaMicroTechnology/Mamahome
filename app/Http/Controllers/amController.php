@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use DB;
@@ -33,10 +34,27 @@ use App\MhInvoice;
 use App\brand;
 use App\ActivityLog;
 use App\Order;
+use App\Message;
+use App\training;
+use App\MamahomeAsset;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user= Auth::user();
+            $message = Message::where('read_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('chatcount', $message);
+            $trainingCount = training::where('dept',$this->user->department_id)
+                            ->where('designation',$this->user->group_id)
+                            ->where('viewed_by','NOT LIKE',"%".$this->user->id."%")->count();
+            View::share('trainingCount',$trainingCount);
+            return $next($request);
+        });
+    }
     public function getAMDashboard(){
         $prices = CategoryPrice::all();
         return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home']);
@@ -58,6 +76,22 @@ class amController extends Controller
         $res[0] = $category;
         $res[1] = $subcat;
         return response()->json($res);   
+    }
+    public function getname(Request $request){
+         $name = MamahomeAsset::where('asset_id',$request->name)->where('status',null)->get();
+            return response()->json($name);
+    
+
+       
+    }
+    public function getserial(Request $request){
+
+       $serial = MamahomeAsset::where('id',$request->z)->get();
+       return response()->json($serial);
+    }
+    public function getdesc(Request $request){
+        $desc = MamahomeAsset::where('id',$request->z)->get();
+        return response()->json($desc);
     }
     public function getBrands(Request $request){
         $res[0] = brand::where('category_id',$request->cat)->get();
@@ -121,7 +155,7 @@ class amController extends Controller
             return response()->json('Error');
         }
     }
-    //End Siddharth's block
+  
     
     public function amshowProjectDetails(Request $id)
     {
@@ -168,6 +202,17 @@ class amController extends Controller
         $departments = Department::all();
         $groups = Group::all();
         return view('assistantmanager.amhumanresource',['departments'=>$departments,'groups'=>$groups,'pageName'=>'HR']);
+    }
+    public function addassets(Request $request){
+        
+         
+        $assets = Asset::all();
+        $asts = array();
+        foreach($assets as $asset){
+            $asts[$asset->type] = MamahomeAsset::where('asset_id',$asset->id)->count();
+        }
+        $asts["SIMCard"] =  MamahomeAsset::where('asset_id',10)->count();
+        return view('addassets',['assets'=>$assets,'asts'=>$asts]);
     }
     public function confirmamOrder(Request $request)
     {
@@ -216,6 +261,73 @@ class amController extends Controller
                 ->get();
         return view('assistantmanager.hremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
     }
+    public function getasset(Request $request){
+         
+       if($request->asset == "SimCard"){
+
+         $id = Asset::where('type',$request->asset)->pluck('id')->first();
+         $tcount = MamahomeAsset::where('asset_id',10)->count();
+        $rcount =AssetInfo::where('asset_type',$request->asset)->count();
+        $remaining = $tcount-$rcount;
+        $mh = MamahomeAsset::where('asset_id',10)->select('mamahome_assets.*')->get(); 
+        return view('assetsim',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
+       } 
+        $id = Asset::where('type',$request->asset)->pluck('id')->first();
+        $tcount = MamahomeAsset::where('asset_id',$id)->count();
+        $rcount =AssetInfo::where('asset_type',$request->asset)->count();
+        $remaining = $tcount-$rcount;
+        $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get(); 
+        return view('hrasset',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
+
+    }
+    public function storeasset(Request $request){
+        
+       
+        $image = time().'.'.request()->upload->getClientOriginalExtension();
+        $request->upload->move(public_path('assettype'),$image);
+        if($request->bill != null){
+        $billimage = time().'.'.request()->bill->getClientOriginalExtension();
+        $request->bill->move(public_path('assetbill'),$billimage);
+        }
+        else{
+            $billimage='';
+        }
+      
+       $asset = Asset::where('type',$request->asset)->pluck('id')->first();
+        $mhome = New MamahomeAsset;
+        $mhome->asset_id = $asset;
+        $mhome->name=$request->lname;
+        $mhome->sl_no= $request->slno;
+        $mhome->asset_image= $image;
+        $mhome->description= $request->desc;
+        $mhome->company= $request->cmp;
+        $mhome->date= $request->tdate;
+        $mhome->bill= '';
+        $mhome->remark =$request->remark;
+        $mhome->save();
+
+        return back();
+    }
+    public function assetsimcard(Request $request){
+
+         $asset = Asset::where('type',$request->asset)->pluck('id')->first();
+        
+         $mhome = New MamahomeAsset;
+        $mhome->asset_id = 10;
+         $mhome->provider = $request->sim;
+         $mhome->sim_number = $request->number;
+         $mhome->sim_remark = $request->sremark;
+         $mhome->save();
+         return back();
+
+    }
+    public function addtype(Request $request){
+
+        $name = New Asset;
+        $name->type = $request->aname;
+        $name->save();
+       return back()->with('Added','Asset Added Successfully');
+    }
     public function amreportdates(Request $request){
         if($request->month != null){
             $today = $request->year."-".$request->month;
@@ -250,7 +362,8 @@ class amController extends Controller
             $date = $request->year.'-'.$request->month;
             $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
         }else{
-            $attendances = attendance::where('empId',$request->userId)->orderby('date')->get();
+            $date = date('Y-m');
+            $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
         }
         return view('assistantmanager.empattendance',['attendances'=>$attendances,'userid'=>$request->userId,'user'=>$user,'pageName'=>'HR']);
     }
@@ -344,6 +457,20 @@ class amController extends Controller
             ->get();
         return view('assistantmanager.keyresultarea',['departments'=>$departments,'groups'=>$groups,'kras'=>$kras,'pageName'=>'KRA']);
     }
+    public function teamamKRA(){
+        $dept = [1,2];
+        $group = [6,7,12,17,18];
+        $departments = Department::whereIn('id',$dept)->get();
+        $groups = Group::whereIn('id',$group)->get();
+        $kras = DB::table('key_results')
+            ->join('departments', 'key_results.department_id', '=', 'departments.id')
+            ->join('groups', 'key_results.group_id', '=', 'groups.id')
+            ->select('key_results.*', 'departments.dept_name', 'groups.group_name')
+            ->whereIn('key_results.department_id',$dept)
+            ->whereIn('key_results.group_id',$group)
+            ->get();
+        return view('assistantmanager.keyresultarea',['departments'=>$departments,'groups'=>$groups,'kras'=>$kras,'pageName'=>'KRA']);
+    }
     public function addKRA(Request $request){
         $kra = new KeyResult;
         $kra->department_id = $request->department;
@@ -354,6 +481,22 @@ class amController extends Controller
         $kra->key_performance_area = $request->kpa;
         $kra->save();
         return back()->with('Success','You have added KRA successfully');
+    }
+    public function teamaddKRA(Request $request){
+        $kra = new KeyResult;
+        $kra->department_id = $request->department;
+        $kra->group_id = $request->group;
+        $kra->role = $request->role;
+        $kra->goal = $request->goal;
+        $kra->key_result_area = $request->kra;
+        $kra->key_performance_area = $request->kpa;
+        $kra->save();
+
+
+        return back()->with('Success','You have a
+
+
+            ed KRA successfully');
     }
     public function editkra(Request $request)
     {
@@ -370,32 +513,22 @@ class amController extends Controller
     public function deletekra(Request $request)
     { 
         $groupid = $request->groupid;
+
         $deptid = $request->deptid;
         $rec = DB::table('key_results')->where('department_id',$deptid)->where('group_id',$groupid)->delete();
         return back();
     }
     public function updatekra(Request $request)
     {
-        $groupid= $request->groupid;
-        $deptid = $request->deptid;
-        $role = $request->role;
-        $goal = $request->goal;
-        $result = $request->result;
-        $perf = $request->perf;
-
-        $x = DB::table('key_results')
-                ->where('group_id',$groupid)
-                ->where('department_id',$deptid)
-                ->update(['role'=>$role, 'goal'=>$goal,'key_result_area'=>$result,'key_performance_area' => $perf]);
-        if($x)
-        {
-            return back()->with('success','Updated Successfully !!!');
-        }        
-        else
-        {
-            return back()->with('success','Error !!!');
-        }
+    
+        KeyResult::where('id',$request->id)
+            ->update(['role'=>$request->role,
+                'goal'=>$request->goal,
+                'key_result_area'=>$request->kra,
+                'key_performance_area' => $request->kpa]);
+        return back();
     }
+    
     public function confirmDelivery(Request $request){
         $requirement = Requirement::where('id',$request->id)->first();
         $project = ProjectDetails::where('project_id',$request->projectId)->first();
@@ -478,14 +611,32 @@ class amController extends Controller
     }
     public function deleteAsset(Request $request)
     {
-        $userid = Certificate::find($request->id);
-        $username = User::where('employeeId',$userid->employeeId)->pluck('name')->first();
-        AssetInfo::find($request->id)->delete();
-        $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
-        $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has deleted ".$username."'s asset at ".date('H:i A');
-        $activity->save();
+         $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
+        AssetInfo::where('id',$request->id)->delete();
+        $mhasset = MamahomeAsset::where('id',$mh)->first();
+        $mhasset->status = null;
+        $mhasset->save();
+        return back();
+    }
+     public function deleteassetsim(Request $request)
+    {
+        
+        MamahomeAsset::where('id',$request->id)->delete();
+        return back();
+    }
+     public function deletesim(Request $request)
+    {
+        
+        $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
+        AssetInfo::where('id',$request->id)->delete();
+        $mhasset = MamahomeAsset::where('id',$mh)->first();
+        $mhasset->status = null;  
+        $mhasset->save();
+        return back();
+    }
+    public function deleteassets(Request $request)
+    {
+        MamahomeAsset::where('id',$request->Id)->delete();
         return back();
     }
     public function deleteCertificate(Request $request)
@@ -499,5 +650,105 @@ class amController extends Controller
         $activity->activity = Auth::user()->name." has deleted ".$username."'s certificate at ".date('H:i A');
         $activity->save();
         return back();
+    }
+    public function assignassets(Request $request)
+    {
+
+        $departments = Department::all();
+        $groups = Group::all();
+        return view('assignassets',['departments'=>$departments,'groups'=>$groups]);
+    
+    }
+    public function getview(Request $request){
+       $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
+        $users = User::where('department_id',$deptId)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
+        return view('hrassign',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+    }
+     public function assignEmployee(Request $request){
+
+        $user = User::where('employeeId', $request->UserId)->first();
+        $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
+        $assets = Asset::where('id','!=',10)->get();
+        $sim = MamahomeAsset::where('asset_id','=',10)->get();
+        $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();
+        $info = AssetInfo::where('id',$request->id)->get();
+        return view('assignEmployee',['user'=>$user,'employeeDetails'=>$employeeDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'sim'=>$sim,    
+            'pageName'=>'HR']);
+    }
+    public function editasset(Request $request){
+        $post = MamahomeAsset::where('id',$request->Id)->get();
+        return view('editasset',['post'=>$post]);
+
+    }
+    public function saveasset(Request $request){
+
+         MamahomeAsset::where('id',$request->Id)->update([
+        'name'=> $request->ename,
+        'sl_no' => $request->serialno,
+        'description' => $request->desc,
+        'company' => $request->cmp,
+        'remark' =>$request->remark,
+            
+        ]);
+         return redirect('/assets');
+    }
+    public function saveassetinfo(Request $request){
+
+        AssetInfo::where('id',$request->Id)->update([
+            'serial_no' =>$request->serial_no,
+            'description' =>$request->desc,
+            'remark' =>$request->remark,
+        ]);
+        return back();
+    }
+    public function savesiminfo(Request $request){
+
+        
+         $simnumber = MamahomeAsset::where('id',$request->number)->pluck('sim_number')->first();
+         $empimage = time().'.'.request()->emp_image->getClientOriginalExtension();
+        $request->emp_image->move(public_path('empsignature'),$empimage);
+        $mimage = time().'.'.request()->manager_image->getClientOriginalExtension();
+        $request->manager_image->move(public_path('managersignature'),$mimage);
+         $assetInfo = new AssetInfo;
+        $assetInfo->asset_type = 'SIMCard';
+        $assetInfo->mh_id = $request->number;
+        $assetInfo->employeeId = $request->userId;
+        $assetInfo->emp_signature = $empimage;
+        $assetInfo->manager_signature = $mimage;
+         $assetInfo->provider = $request->sim;
+         $assetInfo->sim_number = $simnumber;
+         $assetInfo->sim_remark = $request->sremark;
+         $assetInfo->save();
+
+
+        $mhasset = MamahomeAsset::where('id',$request->number)->first();
+        $mhasset->status = "Assigned";
+        $mhasset->save();
+
+         return back();
+
+
+    }
+    public function getbrand(Request $request){
+       $name = MamahomeAsset::where('id',$request->name)->where('status',null)->get();
+
+       return response()->json($name);
+    }
+    public function signature()
+    {
+        return view('logistics.takesignature');
+    }
+    public function preview(Request $request)
+    {
+         $user = User::where('employeeId', $request->Id)
+        ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.date_of_joining','employee_details.permanent_address')
+                ->get();
+        $info = AssetInfo::where('id', $request->id)->get();
+
+        return view('preview',['user'=>$user,'info'=>$info]);
     }
 }

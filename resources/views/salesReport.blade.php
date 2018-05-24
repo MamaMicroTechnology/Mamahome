@@ -7,7 +7,11 @@
                 <b style="color:white">Sales Report</b>
             </div>
             <div class="panel-body">
+				@if(Auth::user()->department_id != 1)
             	<form method="GET" action="{{ URL::to('/') }}/salesreports">
+				@else
+				<form method="GET" action="{{ URL::to('/') }}/tlsalesreports">
+				@endif
                     <table class="table table-responsive">
 	                    <tbody>
 	                        <tr>
@@ -83,9 +87,9 @@
     <div class="panel panel-primary" style="overflow-x:scroll">
         <div class="panel-heading" id="panelhead">
             <label>
-            	Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
+            	Daily Callings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
-            	Current Count: <b>{{ $projectsCount }}</b>
+            	No Of Calls: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	Sales Engineer : 
             		@if(isset($_GET['se']) && $_GET['se'] != "ALL")

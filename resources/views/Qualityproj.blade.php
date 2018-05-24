@@ -13,7 +13,7 @@
             @endforeach
         </div>
     </div>
-        <div class="panel panel-warning">
+        <div class="panel panel-primary">
             <div class="panel-heading">Quality Of Projects</div>
             <div id="piechart2">
                 
@@ -137,7 +137,7 @@ function drawChart() {
                         }
                         result += "<tr id='tr-"+response[0][i].project_id+"'><td style='text-align:center'>";
                         result += "<a href='";
-                        result += '{{URL::to('/')}}/showProjectDetails?id='+response[0][i].project_id;
+                        result += '{{URL::to('/')}}/showThisProject?id='+response[0][i].project_id;
                         result += "'";
                         var date_1 = response[0][i].created_at;
                         var res = date_1.substr(0, 10);

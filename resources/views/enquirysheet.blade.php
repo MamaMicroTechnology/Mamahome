@@ -10,22 +10,26 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
-					
-				</form>
+					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
-				<form method="GET" action="{{ URL::to('/') }}/enquirysheet">
+			@if(Auth::user()->group_id == 1)
+				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
+			@elseif(Auth::user()->group_id == 17)
+				<form method="GET" action="{{ URL::to('/') }}/scenquirysheet">
+			@else
+				<form method="GET" action="{{ URL::to('/') }}/tlenquirysheet">
+			@endif
 					<div class="col-md-12">
 							<div class="col-md-2">
 								<label>From (Enquiry Date)</label>
-								<input type="date" class="form-control" name="from">
+								<input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
 							</div>
 							<div class="col-md-2">
 								<label>To (Enquiry Date)</label>
-								<input type="date" class="form-control" name="to">
+								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
 								<label>Wards</label>
@@ -33,7 +37,7 @@
 									<option value="">--Select--</option>
 									<option value="">All</option>
 									@foreach($wards as $ward)
-									<option value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
+									<option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -43,7 +47,7 @@
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($initiators as $initiator)
-								<option value="{{ $initiator->id }}">{{ $initiator->name }}</option>
+								<option {{ isset($_GET['initiator']) ? $_GET['initiator'] == $initiator->id ? 'selected' : '' : '' }} value="{{ $initiator->id }}">{{ $initiator->name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -53,7 +57,7 @@
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
-								<option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -92,7 +96,7 @@
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
-							<th style="text-align: center">Project</th>
+							<th style="text-align: center">Project_Id</th>
 							<th style="text-align: center">Ward Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
@@ -112,7 +116,7 @@
 						@if($enquiry->status != "Not Processed")
 						<tr>
 							<td style="text-align: center">
-								<a href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
+								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
 								</a> 
 							</td>
@@ -150,10 +154,26 @@
 							<td>
 								<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiry->id }}" class="btn btn-xs btn-primary">Edit</a>
 							</td>
+							
 						</tr>
 						@endif
-						@endforeach
+						@endforeach   
 					</tbody>
+					<tr>
+						<td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center">Total</td>
+						 	<td style="text-align: center">{{ $totalofenquiry }}</td>
+						 	<td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					        <td style="text-align: center"></td>
+					</tr>
 				</table>
 			</div>
 			<div class="panel-footer">
@@ -184,71 +204,6 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var today = new Date();
-		var dd = today.getDate(); //Get day
-		var mm = today.getMonth()+1; //January is 0!
-
-		var yyyy = today.getFullYear();
-		if(dd<10){
-		    dd='0'+dd;
-		} 
-		if(mm<10){
-		    mm='0'+mm;
-		} 
-		var format = dd+'-'+mm+'-'+yyyy;
-		$.noConflict();
-	    $('#myTable').DataTable( {
-	        dom: 'Bfrtip',
-	        "paging":   false,
-	        "searching": false,
-        	"ordering": true,
-        	"info":     true,
-	        buttons: [ 
-	            // {
-	            //     extend: 'excelHtml5',
-	            //     title: 'Sales Report - '+format,
-	            //     className: 'btn btn-md btn-success hidden',
-	            //     text: 'Export To Excel'
-	            // },
-	            // {
-	            // 	extend: 'pdf',
-	            // 	title: 'Sales Report - '+format,
-	            // 	className: 'btn btn-md btn-primary hidden',
-	            // 	text: 'Export To PDF' 
-	            // },            
-	        ]
-	    } );
-	} );
-</script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var today = new Date();
-		var dd = today.getDate(); //Get day
-		var mm = today.getMonth()+1; //January is 0!
-
-		var yyyy = today.getFullYear();
-		if(dd<10){
-		    dd='0'+dd;
-		} 
-		if(mm<10){
-		    mm='0'+mm;
-		} 
-		var format = dd+'-'+mm+'-'+yyyy;
-		$.noConflict();
-	    $('#myTable2').DataTable( {
-	        dom: 'Bfrtip',
-	        "paging":   false,
-	        "searching": false,
-        	"ordering": true,
-        	"info":     true,
-	        buttons: [ 
-	                   
-	        ]
-	    } );
-	} );
-</script>
 <script type="text/javascript">
 function myFunction() {
   // Declare variables

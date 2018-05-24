@@ -1,7 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-4 col-md-offset-1">
+	<table class="table table-hover" border=1>
+		<center><label for="Points">{{ $username->name }}'s Points For {{ isset($_GET['date']) ? date('d-m-Y',strtotime($_GET['date'])) : 'Today' }}</label></center>
+		<thead>
+			<th>Reason For Earning Point</th>
+			<th>Points Earned</th>
+		</thead>
+		<tbody>
+			@foreach($points_indetail as $points)
+			<tr>
+				<td>{!! $points->reason !!}</td>
+				<td style="text-align: right">{{ $points->type == "Add" ? "+".$points->point : "-".$points->point }}</td>
+			</tr>
+			@endforeach
+			<tr>
+				<td colspan=2>
+					<button type="button" class="btn btn-info btn-sm form-control" data-toggle="modal" data-target="#myModal">Add More Point</button>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><b>Total</b></td>
+				<td style="text-align: right">{{ $total }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="col-md-6">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			@if($loginTimes)
@@ -72,11 +98,11 @@
 						@endif
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>Logout Time</td>
 					<td>:</td>
 					<td>{{ $loginTimes->logoutTime }}</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td>Allocated Ward</td>
 					<td>:</td>
@@ -109,13 +135,13 @@
 					@if($loginTimes->morningRemarks == NULL)
 					<form method="post" action="{{ URL::to('/') }}/{{ $loginTimes->id }}/morningRemark">
 						{{ csrf_field() }}
-						<textarea required class="form-control" name="mRemark"></textarea><br>
+						<textarea style="resize: none;" required class="form-control" name="mRemark"></textarea><br>
 						<button class="form-control" type="submit">Save</button>
 					</form>
 					@else
 					    <form method="post" action="{{ URL::to('/') }}/{{ $loginTimes->id }}/editMorningRemarks">
 					        {{ csrf_field() }}
-					    <textarea name="remark" id="mEdit" class="hidden">{!! nl2br($loginTimes->morningRemarks) !!}</textarea>
+					    <textarea style="resize: none;" name="remark" id="mEdit" class="hidden">{!! nl2br($loginTimes->morningRemarks) !!}</textarea>
 						<p id="mCurrent">{!! nl2br($loginTimes->morningRemarks) !!}</p>
 					    <input id="mSaveBtn" type="submit" value="Save" class="hidden">
 					    </form>
@@ -154,7 +180,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Morning Data Image</td>
+					<td>Morning Data Reading</td>
 					<td>:</td>
 					<td>
 					    @if($loginTimes->morningData != NULL)
@@ -209,12 +235,30 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Evening Meter Reading</td>
+					<td>:</td>
+					<td>
+					    @if($loginTimes->eveningMeter != NULL)
+					    {{ $loginTimes->afternoonMeter }}
+					    @endif
+					</td>
+				</tr>
+				<tr>
 					<td>Evening Data Image</td>
 					<td>:</td>
 					<td>
 					    @if($loginTimes->eveningData != NULL)
 					    <img src="{{ URL::to('/') }}/public/data/{{ $loginTimes->eveningData }}" height="100" width="200" class="img img-thumbnail">
 					<a href="{{ URL::to('/') }}/{{ $loginTimes->id }}/deleteReportImage6" class="btn btn-danger">Delete</a>
+					    @endif
+					</td>
+				</tr>
+				<tr>
+					<td>Evening Data Reading</td>
+					<td>:</td>
+					<td>
+					    @if($loginTimes->eveningData != NULL)
+					    {{ $loginTimes->afternoonRemarks }}
 					    @endif
 					</td>
 				</tr>
@@ -354,13 +398,13 @@
     				<tr>
     					<td>Evening Remarks</td>
     					<td>:</td>
-    					<td>
+    					<td >
 					        {{ csrf_field() }}
 					        @if($loginTimes->eveningRemarks != NULL)
 					        <p id="eCurrent">{!! nl2br($loginTimes->eveningRemarks) !!}</p>
-					         <textarea name="eRemark" rows="3" id="eEdit" class="hidden">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
+					         <textarea  style="resize: none;" name="eRemark" rows="3" id="eEdit" class="hidden">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
 					        @else
-    					    <textarea name="eRemark" rows="3" id="eEdit" class="form-control">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
+    					    <textarea style="resize: none;" name="eRemark" rows="3" id="eEdit" class="form-control">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
     					    @endif
     					</td>
     				</tr>
@@ -372,6 +416,57 @@
 		@endif
 	</div>
 </div>
+
+<form action="{{ URL::to('/') }}/addPoints" method="post">
+{{ csrf_field() }}
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Points To {{ $username->name }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+		<input type="hidden" name="userId" value="{{ $username->id }}">
+		<input type="hidden" name="date" value="{{ isset($_GET['date']) ? $_GET['date'].' '.date('H:i:s') : date('Y-m-d H:i:s') }}">
+			<tr>
+				<td>Type</td>
+				<td>:</td>
+				<td>
+					<select name="type" id="" class="form-control">
+						<option value="">--Select--</option>
+						<option value="Add">Add</option>
+						<option value="Subtract">Subtract</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Reason</td>
+				<td>:</td>
+				<td>
+					<textarea name="reason" rows="3" class="form-control" placeholder="Reason for adding points"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>Points</td>
+				<td>:</td>
+				<td><input type="number" name="point" class="form-control" placeholder="Amount you want to add"></td>
+			</tr>
+		</table>
+      </div>
+      <div class="modal-footer">
+		<button type="submit" class="btn btn-success pull-left">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</form>
 
 <script>
     function editMorning(){

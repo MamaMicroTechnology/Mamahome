@@ -32,7 +32,7 @@
                                 <td>{{ $subward }}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%"><b>Followup</b></td>
+                                <td style="width:40%"><b>Followup Started</b></td>
                                 <td>{{ $rec->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
                             </tr>
                             <tr>
@@ -52,6 +52,18 @@
                                 <td>
                                     <a target="_blank" href="https://maps.google.com?q={{$rec->siteaddress != null ? $rec->siteaddress->address : ''}}">{{$rec->siteaddress != null ? $rec->siteaddress->address : ''}}</a>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Road Width</b></td>
+                                <td>{{ $rec->road_width }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Construction Type</b></td>
+                                <td>{{ $rec->construction_type }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Interested in RMC</b></td>
+                                <td>{{ $rec->interested_in_rmc }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Project Status</b></td>
@@ -108,7 +120,7 @@
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Total Budget (in Cr.)</b></td>
-                                <td>{{$rec->budget}} Cr.</td>
+                                <td>{{$rec->budget}} Cr. ({{ $rec->budgetType }})</td>
                             </tr>
                             <tr>
                                 <td style="width:40%;"><b>Budget (per sq.ft)</b></td>
@@ -135,7 +147,7 @@
                          <tbody>
                          @foreach($roomtypes as $roomtype)
                             <tr>
-                                <td>Floor {{ $roomtype->floor_no }}</td>
+                                <td><b>Floor No:</b>{{ $roomtype->floor_no }}</td>
                                 <td>{{ $roomtype->room_type }}</td>
                                 <td>{{ $roomtype->no_of_rooms }}</td>
                             </tr>
@@ -202,11 +214,11 @@
                                 <td>{{$rec->ownerdetails->owner_name}}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Owner Name</b></td>
+                                <td style="width:40%;"><b>Owner Contact No</b></td>
                                 <td>{{$rec->ownerdetails->owner_contact_no}}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%;"><b>Owner Name</b></td>
+                                <td style="width:40%;"><b>Owner Email</b></td>
                                 <td>{{$rec->ownerdetails->owner_email}}</td>
                             </tr>
                         </tbody>

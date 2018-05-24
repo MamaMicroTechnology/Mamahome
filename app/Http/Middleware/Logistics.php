@@ -20,6 +20,7 @@ class Logistics
     {
         if(Auth::check()){
             if(Auth::user()->group_id != 12){
+                if(Auth::user()->group_id != 6)
                 return redirect()->back();
             }
         }
