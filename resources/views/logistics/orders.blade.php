@@ -18,7 +18,6 @@
 					<th style="text-align:center">Payment Status</th>
 					<th style="text-align:center">Delivery Status</th>
                     <th style="text-align:center">Action</th>
-					
 				</thead>
 				<tbody>
 					@foreach($view as $rec)
@@ -126,10 +125,10 @@
                                 <!-- <button onclick="deliverOrder('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Deliver</button> -->
                             @else
 							<?php
-								$images = "<a target='_blank' class='".($rec->vehicle_no == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->vehicle_no."'>Vehicle No</a><br>"
-											."<a class='".($rec->location_picture == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->location_picture."'>Location Picture</a><br>"
-											."<a class='".($rec->quality_of_material == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->quality_of_material."'>Quality Of Material</a><br>"
-											."<a class='".($rec->delivery_video == null ? 'hidden':'')."' href='".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->delivery_video."'>Video</a>";
+								$images = "<a target='_blank' class='".($rec->vehicle_no == null ? 'hidden':'')."' href='http://".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->vehicle_no."'>Vehicle No</a><br>"
+											."<a target='_blank' class='".($rec->location_picture == null ? 'hidden':'')."' href='http://".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->location_picture."'>Location Picture</a><br>"
+											."<a target='_blank' class='".($rec->quality_of_material == null ? 'hidden':'')."' href='http://".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->quality_of_material."'>Quality Of Material</a><br>"
+											."<a target='_blank' class='".($rec->delivery_video == null ? 'hidden':'')."' href='http://".$_SERVER['HTTP_HOST']."/"."public/delivery_details/".$rec->delivery_video."'>Video</a>";
 							?>
 								<a href="#" data-toggle="popover" title="Delivery Images" data-content="{!! $images !!}">
 									{{ $rec->delivery_status }}

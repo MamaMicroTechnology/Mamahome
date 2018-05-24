@@ -2,6 +2,7 @@
 	$user = Auth::user()->group_id;
 	$ext = ($user == 4? "layouts.amheader":"layouts.app");
 ?>
+
 @extends($ext)
 @section('content')
 <div class="col-md-12">
@@ -18,10 +19,16 @@
 						<h3 style="font-size:1.8em">{{SESSION('success')}}</h3>
 					</div>
 					@endif
+					@if(session('NotAdded'))
+               <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                   {{ session('NotAdded') }}
+                </div>
+           			 @endif
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>
-								<td style="width:30%"><label> Enuiry Date* : </label></td>
+								<td style="width:30%"><label> Enquiry Date* : </label></td>
 								<td style="width:70%"><input required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr> 
@@ -112,6 +119,91 @@
     </div>
 </div>
 <!-- model end -->
+								<td><label>Product:</label></td>
+								<td><button  required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Select Category</button></td>
+							</tr>
+<!-- model -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:80%">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: green;color: white;" >
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><center>CATEGORY</center></h4>
+        </div>
+        <div class="modal-body" style="height:500px;overflow-y:scroll;">
+        <br>
+        <br>
+        <div class="row">	
+		@foreach($category as $cat)
+			
+			<div class="col-md-4" >
+					<div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
+	                  <button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   >{{$cat->category_name}}</button>
+
+	                  @foreach($cat->brand as $brand)
+	                   <div class="row">
+	                   	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                   	<!-- 	<div class="col-md-6"> -->
+			                  	<b><u>{{$brand->brand}}</u></b><br>
+			                  @foreach($brand->subcategory as $subcategory)
+			                  		<!-- <div class="col-md-6"> -->
+			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                  			<label class="checkbox-inline">
+			                  			 <input type="checkbox"  name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+			                  			</label>
+			                  			<br>
+			                  		<!-- </div> -->
+			                  @endforeach
+			                  <!-- </div> -->
+			           </div>
+	                  @endforeach
+		    	 	</div>
+	        </div>
+	        @if($loop->iteration % 3==0)
+	        	</div>
+	        		<div class="row">
+	        @endif
+    	 @endforeach
+    	 </div>	
+        </div>
+       
+        <div class="modal-footer">
+        	
+         
+           <button type="button"  class="btn btn-success" data-dismiss="modal">Save</button>
+          	
+        </div>
+      </div>
+    </div>
+</div>
+<!-- model end -->			
+							@if(Auth::user()->group_id == 6)
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users1 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@elseif(Auth::user()->group_id == 7)
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users2 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@else
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>
@@ -123,6 +215,7 @@
 									</select>
 								</td>
 							</tr>
+							@endif
 							<tr>
 								<td><label>Location* : </label></td>
 								<td>
@@ -140,7 +233,7 @@
 							<tr>
 								<td><label>Remarks : </label></td>
 								<td>
-									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
+									<textarea style="resize: none;" rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" /></textarea>
 								</td>
 							</tr>
 						</tbody>
@@ -324,4 +417,34 @@
 		     }
 	}
 </script>
+<script type="text/javascript">
+	 function getquantity()
+	{
+		var quan=document.myform.equantity.value;
+			if(isNaN(quan)){
+				document.getElementById('equantity').value="";
+				myform.equantity.focus();
+		     }
+	}
+</script>
+<!-- <script type="text/javascript">
+	 function popup()
+	{
+		
+		$.ajax({
+        type:'GET',
+        url:"{{URL::to('/')}}/getcount",
+        success: function(response)
+            {
+            	console.log(response);
+            	if(count == 0)
+            	{
+            		alert(count);
+            	}
+
+            }
+           });
+		
+	}
+</script> -->
 @endsection

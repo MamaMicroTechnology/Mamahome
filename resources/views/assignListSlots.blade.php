@@ -9,6 +9,7 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
+                    <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
                 </div>
                 <div class="panel-body" style=" height:500px;max-height:500px;overflow-y:scroll; overflow-x: hidden;">
                     <table class="table table-responsive table-striped">
@@ -58,7 +59,7 @@
                                         <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary form-control"><b>Report</b></a>
                                     </td>
                                 @else
-                                <td>Assign Wards</td>
+                                <td style="text-align:center;">Assign Wards</td>
                                 @endif
                                 @else
                                 @if(Auth::user()->group_id != 17)
@@ -69,7 +70,7 @@
                                         </div>
                                     </td>
                                 @else
-                                <td>Ward Assigned</td>
+                                <td style="text-align:center;">Ward Assigned</td>
                                 @endif
                                 @endif 
                             </tr>

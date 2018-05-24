@@ -9,6 +9,12 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
+    <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+    <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
     body{
@@ -365,12 +371,12 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                   
                     @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                        @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
+                     @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                      
+                     @elseif(Auth::user()->group_id == 14)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
                 </div>
@@ -380,13 +386,38 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat</b> <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
-                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id != 7)
-                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em">Enquiry Pipelined</a></li>
-                          @endif
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video</b> <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span> </a></li>
-                        
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span></b></a></li>
+                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
+                        @endif
+                        @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 6)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif
+                       <!--  @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif -->
+                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif
+                        @if(Auth::user()->group_id == 14)
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
+                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
                        
+                        @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 2)
+                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                         @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 17)
+                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                         @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
+                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
+                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
+                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        @endif
                         @endif
                     </ul>
                 
@@ -446,7 +477,6 @@ div#calendar{
     <div id="enquiry" class="collapse">
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
-           
         </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
@@ -459,6 +489,8 @@ div#calendar{
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
+        <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
+        <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
@@ -471,7 +503,7 @@ div#calendar{
     </div>
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
-    <a href="{{ URL::to('/finance') }}">Finance</a>
+   <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
@@ -484,15 +516,15 @@ div#calendar{
     <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
    <a href="{{ URL::to('/enquiryCancell') }}">Enquiry cancelled</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-     <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
-      <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
+    <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
+    <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
     <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
     <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
     <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
-    <a href="{{ URL::to('/tltraining') }}">Training Video</a>
+    <!-- <a href="{{ URL::to('/tltraining') }}">Training Video</a> -->
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
@@ -501,7 +533,7 @@ div#calendar{
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/') }}/assignconverterSlots">Assign Listing Engineers</a>
+   
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
@@ -522,12 +554,19 @@ div#calendar{
      <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
     <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
-    <a href="{{ URL::to('/') }}/eqpipeline" >Enquiry Pipelined</a>
     <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
-    <a href="{{ URL::to('/') }}/kra" >KRA</a>
-            
+    <a href="{{ URL::to('/') }}/kra" >KRA</a>           
   </div>
-
+   @elseif(Auth::user()->group_id == 14)
+   <div id="mySidenav" class="sidenav">
+     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+            <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
+            <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+            <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
+            <a href="{{ URL::to('/') }}/assets">Add Assets</a>
+            <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
+            <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
+      </div>
 @endif
 @endif
 

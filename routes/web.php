@@ -23,8 +23,8 @@ Route::get('/logoutFromChat','TokenController@logout');
 // Shared View
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
-
-
+Route::get('/invoice','logisticsController@getinvoice');
+Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
 
 
@@ -83,6 +83,8 @@ Route::get('/assignconverterSlots','HomeController@assignListSlots');
 Route::get('/scmaps','HomeController@tlMaps');
 Route::post('/{id}/converterassignWards','mamaController@assignWards');
 Route::get('/scenquirysheet','HomeController@enquirysheet');
+Route::get('/sctraining','HomeController@sctraining');
+
 
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
@@ -114,7 +116,7 @@ Route::post('/postchangepassword','mamaController@postChangePassword');
 Route::post('/forgot','mamaController@forgot');
 Route::post('/{id}/updateProject','mamaController@updateProject');
 Route::post('/markProject','mamaController@markProject');
-Route::post('/addRequirement','mamaController@addRequirement');
+Route::post('/addRequirements','mamaController@addRequirement');
 Route::post('/inputdata','HomeController@inputdata');
 Route::post('/addCategory','marketingController@addCategory');
 Route::post('/addSubCategory','marketingController@addSubCategory');
@@ -152,9 +154,11 @@ Route::get('/salescompleted','HomeController@updateSalesAssignment');
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
 Route::get('/followupproject','HomeController@followup');
+// Route::get('/followup_project','HomeController@followup_projects');
 Route::get('/updateNoteFollowUp','HomeController@updateNoteFollowUp');
 Route::get('/kra','HomeController@getKRA');
 Route::get('/eqpipeline','HomeController@eqpipeline');
+Route::get('/eqpipe','HomeController@eqpipeline');
 Route::get('/letraining','HomeController@letraining');
 Route::get('/setraining','HomeController@setraining');
 Route::post('/addDeliveryBoy','mamaController@addDeliveryBoy');
@@ -166,7 +170,6 @@ Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
 Route::post('/confirmedProject','HomeController@confirmedProject');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
-Route::post('/deleteAsset','amController@deleteAsset');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 
 
@@ -213,7 +216,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/approvePoint','HomeController@approvePoint');
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
-
+    Route::get('/letracking','HomeController@getLeTracking');
 
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
@@ -233,8 +236,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/addSubWard','mamaController@addSubWard');
     Route::post('/addState','mamaController@addState');
     Route::post('/addZone','mamaController@addZone');
-    Route::post('/{uid}/{rid}/giveGrade','mamaController@giveGrade');
-    Route::post('/{uid}/{rid}/giveRemarks','mamaController@giveRemarks');
+    Route::post('/{uid}/{rid}/giveGrade','mamaController@giveGrade')
+;    Route::post('/{uid}/{rid}/giveRemarks','mamaController@giveRemarks');
     Route::post('/{id}/{rid}/editGrade','mamaController@editGrade');
     Route::post('/grade','mamaController@gradetoEmp');
     Route::post('/edit/save','mamaController@saveEdit');
@@ -359,6 +362,32 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');
     Route::get('/video','HomeController@trainingVideo');
+
+//human resource//
+    Route::get('/assets','amController@addassets');  
+    Route::get('/viewasset','amController@getasset');
+    Route::post('/inputasset','amController@storeasset');
+    Route::post('/assetsimcard','amController@assetsimcard');
+    Route::post('/addtype','amController@addtype');
+    Route::get('/assignassets','amController@assignassets');
+    Route::get('/assetsview','amController@getview');
+    Route::get('/assignEmployee','amController@assignEmployee');
+    Route::get('/editasset','amController@editasset');
+    Route::post('/saveasset','amController@saveasset');
+    Route::post('/saveassetinfo','amController@saveassetinfo');
+    Route::get('/getname','amController@getname');
+    Route::get('/getserial','amController@getserial');
+    Route::get('/getdesc','amController@getdesc');
+    Route::post('/deleteassetsimcard','amController@deleteassetsim');
+    Route::get('/deleteassets','amController@deleteassets');
+    Route::post('/deletesim','amcontroller@deletesim');
+    Route::post('/savesiminfo','amcontroller@savesiminfo');
+    Route::get('/getbrand','amController@getbrand');
+    Route::get('/signature','amController@signature');
+    Route::get('/preview','amController@preview');
+
+
+
     Route::post('/uploadfile','HomeController@uploadfile');
     Route::get('/deletelist','HomeController@deletelist');
     Route::get('/asttraining','HomeController@asttraining');

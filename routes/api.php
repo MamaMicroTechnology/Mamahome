@@ -19,5 +19,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('messages','TokenController@index');
 Route::post('message','TokenController@store');
 Route::get('privatemessage','TokenController@pms');
+// invoices
+Route::get('ManagementMessages','TokenController@ManagementMessages');
+Route::post('ManagementMessage','TokenController@ManagementMessage');
+// it
+Route::get('itMessages','TokenController@itMessages');
+Route::post('itMessage','TokenController@itMessage');
+// tl
+Route::get('tlMessages','TokenController@tlMessages');
+Route::post('tlMessage','TokenController@tlMessage');
 Route::get('login/{username}/{password}','TokenController@getLogin');
 Route::get('logout','TokenController@logout');
+Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');

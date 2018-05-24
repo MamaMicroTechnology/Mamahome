@@ -98,11 +98,11 @@
 						@endif
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>Logout Time</td>
 					<td>:</td>
 					<td>{{ $loginTimes->logoutTime }}</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td>Allocated Ward</td>
 					<td>:</td>
@@ -135,13 +135,13 @@
 					@if($loginTimes->morningRemarks == NULL)
 					<form method="post" action="{{ URL::to('/') }}/{{ $loginTimes->id }}/morningRemark">
 						{{ csrf_field() }}
-						<textarea required class="form-control" name="mRemark"></textarea><br>
+						<textarea style="resize: none;" required class="form-control" name="mRemark"></textarea><br>
 						<button class="form-control" type="submit">Save</button>
 					</form>
 					@else
 					    <form method="post" action="{{ URL::to('/') }}/{{ $loginTimes->id }}/editMorningRemarks">
 					        {{ csrf_field() }}
-					    <textarea name="remark" id="mEdit" class="hidden">{!! nl2br($loginTimes->morningRemarks) !!}</textarea>
+					    <textarea style="resize: none;" name="remark" id="mEdit" class="hidden">{!! nl2br($loginTimes->morningRemarks) !!}</textarea>
 						<p id="mCurrent">{!! nl2br($loginTimes->morningRemarks) !!}</p>
 					    <input id="mSaveBtn" type="submit" value="Save" class="hidden">
 					    </form>
@@ -180,7 +180,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Morning Meter Image</td>
+					<td>Morning Data Reading</td>
 					<td>:</td>
 					<td>
 					    @if($loginTimes->morningData != NULL)
@@ -235,12 +235,30 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Evening Meter Reading</td>
+					<td>:</td>
+					<td>
+					    @if($loginTimes->eveningMeter != NULL)
+					    {{ $loginTimes->afternoonMeter }}
+					    @endif
+					</td>
+				</tr>
+				<tr>
 					<td>Evening Data Image</td>
 					<td>:</td>
 					<td>
 					    @if($loginTimes->eveningData != NULL)
 					    <img src="{{ URL::to('/') }}/public/data/{{ $loginTimes->eveningData }}" height="100" width="200" class="img img-thumbnail">
 					<a href="{{ URL::to('/') }}/{{ $loginTimes->id }}/deleteReportImage6" class="btn btn-danger">Delete</a>
+					    @endif
+					</td>
+				</tr>
+				<tr>
+					<td>Evening Data Reading</td>
+					<td>:</td>
+					<td>
+					    @if($loginTimes->eveningData != NULL)
+					    {{ $loginTimes->afternoonRemarks }}
 					    @endif
 					</td>
 				</tr>
@@ -380,13 +398,13 @@
     				<tr>
     					<td>Evening Remarks</td>
     					<td>:</td>
-    					<td>
+    					<td >
 					        {{ csrf_field() }}
 					        @if($loginTimes->eveningRemarks != NULL)
 					        <p id="eCurrent">{!! nl2br($loginTimes->eveningRemarks) !!}</p>
-					         <textarea name="eRemark" rows="3" id="eEdit" class="hidden">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
+					         <textarea  style="resize: none;" name="eRemark" rows="3" id="eEdit" class="hidden">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
 					        @else
-    					    <textarea name="eRemark" rows="3" id="eEdit" class="form-control">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
+    					    <textarea style="resize: none;" name="eRemark" rows="3" id="eEdit" class="form-control">{!! nl2br($loginTimes->eveningRemarks) !!}</textarea>
     					    @endif
     					</td>
     				</tr>

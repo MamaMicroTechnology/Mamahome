@@ -9,6 +9,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use App\Message;
+use App\Department;
+use App\UserLocation;
 use App\Http\Resources\Message as MessageResource;
 
 class TokenController extends Controller
@@ -28,18 +30,20 @@ class TokenController extends Controller
         $user = Auth::user();
         $claims = ['name' => $user->name, 'email' => $user->email];
         $users = User::where('department_id','!=',10)->get();
-        $userlist = "";
-        foreach($users as $i){
-            $userlist .="<p>".$i->name."<br><small>".$i->email."</small></p>";
+        $departmentList = "<p><a href='/'>All</a></p>";
+        $departments = Department::get();
+        foreach($departments as $department){
+            $departmentList .= "<p><a href='".$department->id."'>".$department->dept_name."</a></p>";
         }
         // Create token from user + add claims data
         $token = $auth->fromUser($user, $claims);
-        return response()->json(['token' => $token,'user'=>$user,'userlist'=>$userlist]);
+        return response()->json(['token' => $token,'user'=>$user,'userlist'=>$departmentList]);
     }
     public function index()
     {
         $articles = Message::orderBy('messages.created_at','asc')
                     ->leftJoin('users','users.id','messages.from_user')
+                    ->where('messages.to_user','All')
                     ->select('messages.body','users.name','users.id')
                     ->get();
         return MessageResource::collection($articles);
@@ -48,7 +52,7 @@ class TokenController extends Controller
     {
         $article = new Message;
         $article->from_user = $request->input('id');
-        $article->to_user = "1";
+        $article->to_user = "All";
         $article->body = $request->input('body');
 
         if($article->save()){
@@ -82,6 +86,81 @@ class TokenController extends Controller
         $messages = $messages->sortBy('created_at');
         return new MessageResource($messages);
     }
+    // getting management messages
+    public function ManagementMessages(Request $request)
+    {
+        $articles = Message::orderBy('messages.created_at','asc')
+                    ->leftJoin('users','users.id','messages.from_user')
+                    ->where('messages.to_user','1')
+                    ->select('messages.body','users.name','users.id')
+                    ->get();
+        return MessageResource::collection($articles);
+    }
+    public function ManagementMessage(Request $request){
+        $article = new Message;
+        $article->from_user = $request->input('id');
+        $article->to_user = "1";
+        $article->body = $request->input('body');
+
+        if($article->save()){
+            $articles = Message::orderBy('messages.created_at','asc')
+                    ->leftJoin('users','users.id','messages.from_user')
+                    ->select('messages.body','users.name','users.id')
+                    ->where('messages.id',$article->id)
+                    ->first();
+            return new MessageResource($articles);
+        }
+    }
+    // it
+    public function itMessages(Request $request)
+    {
+        $articles = Message::orderBy('messages.created_at','asc')
+                    ->leftJoin('users','users.id','messages.from_user')
+                    ->where('messages.to_user','it')
+                    ->select('messages.body','users.name','users.id')
+                    ->get();
+        return MessageResource::collection($articles);
+    }
+    public function itMessage(Request $request){
+        $article = new Message;
+        $article->from_user = $request->input('id');
+        $article->to_user = "it";
+        $article->body = $request->input('body');
+
+        if($article->save()){
+            $articles = Message::orderBy('messages.created_at','asc')
+                    ->leftJoin('users','users.id','messages.from_user')
+                    ->select('messages.body','users.name','users.id')
+                    ->where('messages.id',$article->id)
+                    ->first();
+            return new MessageResource($articles);
+        }
+    }
+    // tl
+    public function tlMessages(Request $request)
+    {
+        $articles = Message::orderBy('messages.created_at','asc')
+                    ->leftJoin('users','users.id','messages.from_user')
+                    ->where('messages.to_user','tl')
+                    ->select('messages.body','users.name','users.id')
+                    ->get();
+        return MessageResource::collection($articles);
+    }
+    public function tlMessage(Request $request){
+        $article = new Message;
+        $article->from_user = $request->input('id');
+        $article->to_user = "tl";
+        $article->body = $request->input('body');
+
+        if($article->save()){
+            $articles = Message::orderBy('messages.created_at','asc')
+                    ->leftJoin('users','users.id','messages.from_user')
+                    ->select('messages.body','users.name','users.id')
+                    ->where('messages.id',$article->id)
+                    ->first();
+            return new MessageResource($articles);
+        }
+    }
     public function getLogin(Request $request)
     {
         $messages = new Collection;
@@ -91,5 +170,15 @@ class TokenController extends Controller
         }else{
             return response()->json(['message' => 'false']);
         }
+    }
+    public function saveLocation(Request $request)
+    {
+        $location = new UserLocation;
+        $location->user_id = $request->userid;
+        $location->latitude = $request->latitude;
+        $location->longitude = $request->longitude;
+        $location->save();
+        $messages = new Collection;
+        return response()->json(['message'=>'true']);
     }
 }

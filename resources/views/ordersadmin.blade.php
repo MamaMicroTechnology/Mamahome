@@ -6,7 +6,7 @@
 	<div class="panel panel-primary" style="overflow-x: scroll;">
 		<div class="panel-heading text-center">
 			<b style="color:white;font-size:1.4em">Orders</b>
-			<a class="pull-right btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
+			<a class="pull-left btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
 		<div id="myordertable" class="panel-body">
 		<form action="orders" method="get">
@@ -39,7 +39,9 @@
 				<tbody>
 					@foreach($view as $rec)
 					<tr id="row-{{$rec->id}}">
-						<td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}</a></td>
+						<td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}
+						</a>
+						</td>
 						<td>{{ $rec->orderid }}</td>
 						<td>{{$rec -> name }}</td>
 						<td>
@@ -147,8 +149,8 @@
 					    <td>
 					    	@if($rec->status == "Enquiry Confirmed")
 					    	<div class="btn-group">
-						    	<button class="btn btn-sm btn-success pull-left" onclick="confirmOrder('{{ $rec->orderid }}')">Confirm</button>
-						    	<button class="btn btn-sm btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
+						    	<button class="btn btn-xs btn-success " onclick="confirmOrder('{{ $rec->orderid }}')">Confirm</button>
+						    	<button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
 					    	</div>
 					    	@else
 					    	{{ $rec->status }}

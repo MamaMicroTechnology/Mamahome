@@ -36,6 +36,7 @@ use App\WardMap;
 use Auth;
 use DB;
 use App\EmployeeDetails;
+use Validator;
 use App\BankDetails;
 use App\Asset;
 use App\AssetInfo;
@@ -55,6 +56,7 @@ use App\Point;
 use App\Message;
 use App\ZoneMap;
 use App\SubWardMap;
+use App\UserLocation;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -121,14 +123,28 @@ class HomeController extends Controller
         $brand = brand::leftjoin('category','category.id','=','brands.category_id')
                 ->select('brand')->get();
 
+        $depart1 = [6];
+        $depart2 = [7];
         $depart = [2,4,8,6,7,15,17,16,1];
         $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
-        return view('inputview',['category'=>$category,'users'=>$users,'projects'=>$projects,'brand'=>$brand]);
+       $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+       $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
     }
+    
     public function inputdata(Request $request)
     {
-        // for fetching sub categories
+
+         $validator = Validator::make($request->all(), [
+            'subcat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                    ->with('NotAdded','Select Category Before Submit')
+                    ->withErrors($validator)
+                    ->withInput();
+        }
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
          
@@ -158,6 +174,8 @@ class HomeController extends Controller
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
                                                 'sub_category'  =>$subcategories,
+                                                'follow_up' =>'',
+                                                'follow_up_by' =>'',
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
                                                 'referral_image2'   =>'',
@@ -668,7 +686,7 @@ class HomeController extends Controller
     public function editEnq(Request $request)
     {
         $category = Category::all();
-        $depart = [2,4,6,7,8];
+        $depart = [2,4,6,7,8,17];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
@@ -683,10 +701,32 @@ class HomeController extends Controller
                     ->first();
         return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
     }
+    public function editEnq1(Request $request)
+    {
+        $category = Category::all();
+        $depart = [7];
+       $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        $depart1 = [6];
+       $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        $depart2 = [2,4,6,7,8,17];
+        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
+        $enq = Requirement::where('requirements.id',$request->reqId)
+                    ->leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                    ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
+                    ->leftjoin('contractor_details','requirements.project_id','contractor_details.project_id')
+                    ->leftjoin('owner_details','requirements.project_id','owner_details.project_id')
+                    ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
+                    ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
+                    ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
+                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
+                    ->first();
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+    }
     public function eqpipelineedit(Request $request)
     {
         $category = Category::all();
-        $depart = [2,4,6,7,8];
+        $depart = [2,4,6,7,8,17];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
@@ -755,7 +795,7 @@ class HomeController extends Controller
             return redirect('accountExecutive');
         }else if($group == "Admin"){
             return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
-        }else if($group == "Sales converter" && $dept == "Sales"){
+        }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
             return redirect('marketingdashboard');
@@ -1030,7 +1070,7 @@ class HomeController extends Controller
         $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->get();
-        $total = $points_earned_so_far - $points_subtracted;
+        // $total = $points_earned_so_far - $points_subtracted;
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
                                                 'projects'=>$projects,
@@ -1044,7 +1084,7 @@ class HomeController extends Controller
                                                 'points_indetail'=>$points_indetail,
                                                 'points_earned_so_far'=>$points_earned_so_far,
                                                 'points_subtracted'=>$points_subtracted,
-                                                'total'=>$total
+                                                // 'total'=>$total
                                                 ]);
     }
     public function projectList()
@@ -1116,6 +1156,7 @@ class HomeController extends Controller
         }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
     }
+
     public function getMyReports(Request $request)
     {
         $now = date('H:i:s');
@@ -1152,7 +1193,7 @@ class HomeController extends Controller
                         "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
                         "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->afternoonData : '').
-                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        "</td></tr><tr><td>Team Leader Remarks</td><td>:</td><td>".
                         ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
 
                     $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
@@ -1175,8 +1216,10 @@ class HomeController extends Controller
                     " height='100' width='200' class='img img-thumbnail'>"
                     : '*No Image Uploaded*') : '*No Image Uploaded*').
                     ($loginTimes != null ? $loginTimes->eveningData : '').
-                    "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
-                    ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                    // "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
+                    // ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+                     "</td></tr><tr><td>Team Leader Remark</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->eveningRemarks : '').
                     "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
                     ($loginTimes != null ? $loginTimes->AmRemarks : '').
                     "</td></tr><tr><td>Grade</td><td>:</td><td>".
@@ -1217,7 +1260,7 @@ class HomeController extends Controller
                         "' height='100' width='200' class='img img-thumbnail'>" : '*No Image Uploaded*') : '*No Image Uploaded*').
                         "</td></tr><tr><td>Data Reading</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->afternoonData : '').
-                        "</td></tr><tr><td>Morning Remarks</td><td>:</td><td>".
+                        "</td></tr><tr><td>Team Leader Remarks</td><td>:</td><td>".
                         ($loginTimes != null ? $loginTimes->morningRemarks : '')."</td></tr>";
 
                         $evening .= "<tr><td>Last Listing Time</td><td>:</td><td>"
@@ -1242,6 +1285,10 @@ class HomeController extends Controller
                     ($loginTimes != null ? $loginTimes->eveningData : '').
                     "</td></tr><tr><td>Data Reading</td><td>:</td><td>".
                     ($loginTimes != null ? $loginTimes->afternoonRemarks : '').
+
+                     "</td></tr><tr><td>Team Leader Remark</td><td>:</td><td>".
+                    ($loginTimes != null ? $loginTimes->eveningRemarks : '').
+
                     "</td></tr><tr><td>Asst. Manager Remarks</td><td>:</td><td>".
                     ($loginTimes != null ? $loginTimes->AmRemarks : '').
                     "</td></tr><tr><td>Grade</td><td>:</td><td>".
@@ -1346,10 +1393,15 @@ class HomeController extends Controller
     }
     public function projectRequirement(Request $request)
     {
+        if($request->today){
+            $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->get();
+        }
+        else{
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $projectlist = ProjectDetails::where('road_name',$request->road)
         ->where('sub_ward_id',$assignment)
             ->get();
+        }
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements"]);
     }
     public function getRequirements(Request $request)
@@ -1632,6 +1684,7 @@ class HomeController extends Controller
     public function showProjectDetails(Request $request)
     {
         $id = $request->id;
+
         $rec = ProjectDetails::where('project_id',$id)->first();
         $username = User::where('id',$rec->listing_engineer_id)->first();
         $callAttendedBy = User::where('id',$rec->call_attended_by)->first();
@@ -1938,18 +1991,19 @@ class HomeController extends Controller
         $assignment = salesassignment::where('user_id',Auth::user()->id)->pluck('assigned_date')->first();
         $subwards = SubWard::where('id',$assignment)->pluck('sub_ward_name')->first();
         $projects = ProjectDetails::where('sub_ward_id', $assignment)->paginate(10);
+
         $projectscount = ProjectDetails::where('sub_ward_id', $assignment)->count();
-        if(Auth::user()->id == 82){
-            $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
-            $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
-        }elseif(Auth::user()->id == 85){
-            $projects = ProjectDetails::where('created_at','LIKE',"2018-04-19%")->paginate(10);
-            $projectscount = ProjectDetails::where('created_at','LIKE', "2018-04-19%")->count();
-        }elseif(Auth::user()->id == 78){
-            $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
-            $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
-        }
-        // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
+        // if(Auth::user()->id != 82){
+        //     $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
+        //     $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
+        // }elseif(Auth::user()->id != 85){
+        //     $projects = ProjectDetails::where('created_at','LIKE',"2018-04-19%")->paginate(10);
+        //     $projectscount = ProjectDetails::where('created_at','LIKE', "2018-04-19%")->count();
+        // }elseif(Auth::user()->id != 78){
+        //     $projects = ProjectDetails::where('created_at','LIKE',$assignment."%")->paginate(10);
+        //     $projectscount = ProjectDetails::where('created_at','LIKE', $assignment."%")->count();
+        // }
+         // $projects = ProjectDetails::where('created_at','like',$assignment.'%')->orderBy('created_at', 'desc')->paginate(15);
         return view('salesengineer',['projects'=>$projects,'subwards'=>$subwards,'projectscount'=>$projectscount]);
     }
     public function dailywiseProjects(Request $request){
@@ -2008,7 +2062,7 @@ class HomeController extends Controller
         $from = $request->from;
         $to = $request->to;
         if($from == $to){
-            return redirect('/gettodayleinfo?from='.$from.'&id='.$id);
+             return redirect('/gettodayleinfo?from='.$from.'&id='.$id);
         }
         if($id !== 'ALL')
         {
@@ -2049,7 +2103,7 @@ class HomeController extends Controller
     {
         $records = array();
         $id = $request->id;
-        $from = $request->from_date;
+      $from = $request->from_date;
         if($id !== 'ALL')
         {
         $records[0] =  DB::table('project_details')
@@ -2431,12 +2485,79 @@ class HomeController extends Controller
             'total'=>$total
         ]);
     }
-    public function followup(){
-        $projects = ProjectDetails::where('followup',"Yes")
-            ->where('follow_up_by',Auth::user()->id)
-            ->where('deleted',0)
-            ->paginate(10);
-        return view('followup',['projects'=>$projects]);
+    // public function followup_projects(Request $request){
+
+
+    //     $today = date('Y-m-d');
+    //     $projects = Requirement::where('follow_up',$today)
+    //     ->leftjoin('users','users.id','=','requirements.generated_by')
+    //                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')     
+    //                 ->leftjoin('owner_details','owner_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('consultant_details','consultant_details.project_id','=','requirements.project_id')
+    //      ->get( );
+    //      $from = $request->from;
+    //     $to = $request->to;
+    //   if($request->from && $request->to){
+    //      $projects = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+    //                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id') 
+    //                  ->where('requirements.created_at','>',$from)
+    //                  ->where('requirements.created_at','<=',$to) 
+    //                  ->where('follow_up', '!=', null)   
+    //                 ->leftjoin('owner_details','owner_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('consultant_details','consultant_details.project_id','=','requirements.project_id')
+    //                 ->get();
+
+    //   }
+    //     return view('followupproject',['projects'=>$projects]);
+    // }
+
+    public function followup(Request $request){
+        $today = date('Y-m-d');
+        $from = $request->from;
+        $to = $request->to;
+
+        
+
+
+                            
+                      if($request->from && $request->to)
+                      {
+                            $from = $request->from;
+                            $to = $request->to;  
+                            if($from == $to)
+                             {   
+                                    $projects = ProjectDetails::
+                                    where('follow_up_by',Auth::user()->id)
+                                    ->where('follow_up_date','>=',$from)
+                                    ->where('follow_up_date','<=',$to) 
+                                     ->paginate(10);
+                             }
+
+                             else{
+
+                                    $projects = ProjectDetails::
+                                    where('follow_up_by',Auth::user()->id)
+                                    ->where('follow_up_date','>=',$from)
+                                    ->where('follow_up_date','<=',$to) 
+                                     ->paginate(10);
+
+                             }
+
+                      }
+                      else
+                      {
+                                $projects = ProjectDetails::where('follow_up_date','LIKE',$today."%")
+                                ->where('follow_up_by',Auth::user()->id)
+                                ->where('deleted',0)
+                                ->paginate(10);
+
+                      }
+     
+    return view('followup',['projects'=>$projects]);
     }
     public function confirmedProject(Request $request){
         $check = ProjectDetails::where('project_id',$request->id)->first();
@@ -2635,22 +2756,48 @@ class HomeController extends Controller
     public function eqpipeline(Request $request)
     {
       
-   if(!$request){
-        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
-                        ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
-                        ->where('requirements.status','!=',"Enquiry Cancelled")
-                        ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
-                        ->get();
+                $category = Category::all();
+                $today = date('Y-m-d');
+               if(!$request){
+                    $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                                    ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                                    ->where('requirements.status','!=',"Enquiry Cancelled")
+                                    ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                                    ->get();
+                               
 
+                 }
+             elseif($request->eqpipeline == 'today'){
+
+                 $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                ->where('requirements.status','!=',"Enquiry Cancelled" )
+                ->where('requirements.created_at','LIKE',$today."%")    
+                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                ->get() ;
+
+               
+             }
+             elseif($request->category)
+             { 
+                
+                $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                ->where('requirements.status','!=',"Enquiry Cancelled" )
+                ->where('requirements.main_category',$request->category)
+                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                ->get() ;
              }
              else
-    {           
-        $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
-        ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
-        ->where('requirements.status','!=',"Enquiry Cancelled")        
-        ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
-        ->get() ;
-    }
+            {           
+                $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
+                ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                ->where('requirements.status','!=',"Enquiry Cancelled")        
+                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                ->get() ;
+
+
+            }
                        
         $subwards2 = array();
         foreach($pipelines as $enquiry){
@@ -2658,7 +2805,7 @@ class HomeController extends Controller
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
             $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
         }
-        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2]);
+        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2,'category'=>$category]);
     }
     public function letraining(Request $request)
     {
@@ -2879,6 +3026,7 @@ class HomeController extends Controller
         $wards = Ward::all();
         $users = User::all();
         $ids = array();
+
         if($request->phNo){
             $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo )->orwhere('project_id',$request->phNo)->pluck('project_id');
             $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
@@ -2890,6 +3038,7 @@ class HomeController extends Controller
                 for($j = 0; $j<count($details[$i]); $j++){
                     array_push($ids, $details[$i][$j]);
                 }
+
             }
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
@@ -2899,6 +3048,12 @@ class HomeController extends Controller
                             ->where('deleted',0)
                             ->get();
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+
+            $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
+            $updater = User::whereIn('id',$projectdetails)->first();
+           
+
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users,'updater'=>$updater]);
         }else{
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
         }
@@ -2996,26 +3151,26 @@ class HomeController extends Controller
     }
 
 
-     public function editEnq1(Request $request)
-    {
-        $category = Category::all();
-        $depart = [6];
-        $depart1= [7];
-        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        $enq = Requirement::where('requirements.id',$request->reqId)
-                    ->leftjoin('users','users.id','=','requirements.generated_by')
-                    ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                    ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
-                    ->leftjoin('contractor_details','requirements.project_id','contractor_details.project_id')
-                    ->leftjoin('owner_details','requirements.project_id','owner_details.project_id')
-                    ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
-                    ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
-                    ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
-                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
-                    ->first();
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1]);
-    }
+    //  public function editEnq1(Request $request)
+    // {
+    //     $category = Category::all();
+    //     $depart = [6];
+    //     $depart1= [7];
+    //     $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+    //     $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+    //     $enq = Requirement::where('requirements.id',$request->reqId)
+    //                 ->leftjoin('users','users.id','=','requirements.generated_by')
+    //                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+    //                 ->leftjoin('procurement_details','requirements.project_id','=','procurement_details.procurement_contact_no')
+    //                 ->leftjoin('contractor_details','requirements.project_id','contractor_details.project_id')
+    //                 ->leftjoin('owner_details','requirements.project_id','owner_details.project_id')
+    //                 ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
+    //                 ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
+    //                 ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
+    //                 ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
+    //                 ->first();
+    //     return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1]);
+    // }
     public function stages(Request $request)
     {
        $users = User::where('users.department_id','!=',10)
@@ -3095,7 +3250,7 @@ class HomeController extends Controller
                 $read->save();
             }
         }
-        // Message::where('read_by','NOT LIKE',"%".Auth::user()->id."%")->update(['read_by'=>Auth::user()->id]);
+       
         return view('chat');
     }
 
@@ -3203,5 +3358,15 @@ public function assigndate(request $request )
         $point->save();
         return back();
     }
-
+    public function getLeTracking(Request $request)
+    {
+        $users = User::where('group_id','6')->get();
+        if($request->userId){
+            $track = UserLocation::where('user_id',$request->userId)
+                        ->where('created_at','LIKE',date('Y-m-d')."%")
+                        ->get();
+            return view('letracking',['users'=>$users,'track'=>$track]);
+        }
+        return view('letracking',['users'=>$users]);
+    }
 }

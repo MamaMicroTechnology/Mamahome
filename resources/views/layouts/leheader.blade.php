@@ -35,10 +35,10 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ URL::to('/') }}/home">Home</a></li>
-                        <li><a href="{{ URL::to('/') }}/eqpipeline">Enquiry Pipelined</a></li>
-                        <li><a href="{{ URL::to('/') }}/letraining">Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span> </a></li>
-                        <li><a href="{{ URL::to('/') }}/chat">Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span> </a></li>
+                        <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em;font-family:Times New Roman;"><b>Home</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em;font-family:Times New Roman;"><b>Chat</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/letraining" style="font-size:1.1em;font-family:Times New Roman;"><b>Training Video</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman;"><b>Enquiry Pipelined</b></a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

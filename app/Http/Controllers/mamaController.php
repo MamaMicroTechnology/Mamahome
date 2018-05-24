@@ -49,6 +49,8 @@ use App\WardMap;
 use App\Point;
 use App\ZoneMap;
 use App\SubWardMap;
+use App\Asset;
+use App\MamahomeAsset;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -98,7 +100,7 @@ class mamaController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->group_id = $request->designation;
-        $user->contactNo = $request->phNo;
+        $user->contactNo = '';
         $user->password = bcrypt('mama@home123');
         if($user->save()){
             $empdetails = new EmployeeDetails;
@@ -202,8 +204,8 @@ class mamaController extends Controller
     {
         $cCode = Country::where('id',$request->country)->pluck('country_code')->first();
         $zone = Zone::where('id', $request->zone)->pluck('zone_number')->first();
-        $imageName = time().'.'.request()->image->getClientOriginalExtension();
-        $request->image->move(public_path('wardImages'),$imageName);
+        $imageName = time().'.'.request()->image[0]->getClientOriginalExtension();
+        $request->image[0]->move(public_path('wardImages'),$imageName);
         $ward = New Ward;
         $ward->country_id = $request->country;
         $ward->zone_id = $request->zone;
@@ -470,10 +472,8 @@ class mamaController extends Controller
         }
 
         $bType = count($request->budgetType);
-        $type2 = $request->budgetType[0];
-        $otherApprovals = "";
-        if($bType != 1){
-            $type2 .= ", ".$request->budgetType[1];
+        if(count($request->budgetType != 0)){
+            $type2 = implode(", ",$request->budgetType);
         }
         $statusCount = count($request->status);
         $validator = Validator::make($request->all(), [
@@ -543,7 +543,7 @@ class mamaController extends Controller
             $projectdetails->listing_engineer_id = Auth::user()->id;
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
-            $projectdetails->budgetType = $request->budgetType;
+            $projectdetails->budgetType = $type2;
            
             $projectdetails->save();
             
@@ -1266,17 +1266,19 @@ class mamaController extends Controller
         $points->reason = "Updating project";
         $points->save();
         projectDetails::where('project_id',$id)->update([
-                'project_status'=>$statuses,
-                'remarks'=>$request->materials,
-                'with_cont'=>$request->qstn,
-                'followup'=>$request->follow,
-                'construction_type'=>$type,
-                'road_width'=>$request->rWidth,
-                'quality'=>$request->quality,
-                'contract'=>$request->contract,
-                'note'=>$request->note,
-                'follow_up_by'=>Auth::user()->id,
-                'call_attended_by'=>Auth::user()->id
+            'project_status'=>$statuses,
+            'remarks'=>$request->materials,
+            'with_cont'=>$request->qstn,
+            'reqDate' =>$request->reqDate,
+            'followup'=>$request->follow,
+            'follow_up_date' =>$request->fdate,
+            'construction_type'=>$type,
+            'road_width'=>$request->rWidth,
+            'quality'=>$request->quality,
+            'contract'=>$request->contract,
+            'note'=>$request->note,
+            'follow_up_by'=>Auth::user()->id,
+            'call_attended_by'=>Auth::user()->id
             ]);
         siteAddress::where('project_id',$id)->update([
             'address'=>$request->address
@@ -1451,13 +1453,33 @@ class mamaController extends Controller
     }
     public function saveAssetInfo(Request $request){
         $count = count($request->type);
+
+        $empimage = time().'.'.request()->emp_image->getClientOriginalExtension();
+        $request->emp_image->move(public_path('empsignature'),$empimage);
+        $mimage = time().'.'.request()->manager_image->getClientOriginalExtension();
+        $request->manager_image->move(public_path('managersignature'),$mimage);
         for($i = 0; $i<$count;$i++){
             $assetInfo = new AssetInfo;
+
             $assetInfo->employeeId = $request->userId;
-            $assetInfo->asset_type = $request->type[$i];
-            $assetInfo->description = $request->details[$i];
+            $type = Asset::where('id',$request->type[$i])->pluck('type')->first();
+            $assetInfo->asset_type = $type;
+            $name = MamahomeAsset::where('id',$request->mname)->pluck('name')->first();
+            $assetInfo->name = $name;
+            $assetInfo->emp_signature = $empimage;
+            $assetInfo->manager_signature = $mimage;
+            $snum = MamahomeAsset::where('id',$request->number)->pluck('sl_no')->first();
+            $assetInfo->serial_no = $snum;
+            $assetInfo->assign_date =$request->tdate;
+            $assetInfo->remark = $request->remark[$i];
+            $assetInfo->description = $request->details;
+            $assetInfo->mh_id = $request->mname;
             $assetInfo->save();
         }
+            $mhasset = MamahomeAsset::where('id',$request->mname)->first();
+            $mhasset->status = "Assigned";
+            $mhasset->save();
+      
         return back();
     }
     public function uploadCertificates(Request $request){
@@ -1627,21 +1649,13 @@ class mamaController extends Controller
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
       
-           
-        $var = count($request->subcat);
-        $var1 = count($brand);
-
-        $var2 = count($category);
-        $storesubcat =$request->subcat[0];
-        $category = Category::where('id',$request->mCategory)->pluck('category_name')->first();
-        $subcategory = SubCategory::where('id',$request->sCategory)->pluck('sub_cat_name')->first();
         Requirement::where('id',$request->reqId)->update([
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
             'generated_by' => $request->initiator,
-            'notes' => $request->eremarks,
             'quantity' => $request->equantity,
+             'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
         return back();
