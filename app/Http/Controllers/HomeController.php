@@ -2062,7 +2062,7 @@ class HomeController extends Controller
         $from = $request->from;
         $to = $request->to;
         if($from == $to){
-            return redirect('/gettodayleinfo?from='.$from.'&id='.$id.'&to='.$to);
+            return redirect('/gettodayleinfo?from='.$from.'&id='.$id);
         }
         if($id !== 'ALL')
         {
@@ -2103,8 +2103,7 @@ class HomeController extends Controller
     {
         $records = array();
         $id = $request->id;
-        $from = date('Y-m-d', strtotime($request->from));
-        $to = date('Y-m-d', strtotime($request->to));
+        $from = $request->from_date;
         if($id !== 'ALL')
         {
         $records[0] =  DB::table('project_details')
