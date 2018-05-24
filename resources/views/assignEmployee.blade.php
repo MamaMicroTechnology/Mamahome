@@ -321,7 +321,6 @@ function getname(){
                         {
                             ans += "<option value='"+response[i].id+"'>"+response[i].name+"</option>";
                         }
-                        alert(ans);
                         document.getElementById('mname').innerHTML = ans;
                     }
                 });
