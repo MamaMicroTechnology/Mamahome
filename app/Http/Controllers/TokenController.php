@@ -166,7 +166,7 @@ class TokenController extends Controller
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id]);
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
         }else{
             return response()->json(['message' => 'false']);
         }
