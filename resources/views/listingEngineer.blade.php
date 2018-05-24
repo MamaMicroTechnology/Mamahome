@@ -34,6 +34,11 @@
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
+                                <tr>
+                                         
+                                    
+                                       
+                              </tr>
                                <tr>
                                    <td>Location</td>
                                    <td>:</td>
@@ -92,6 +97,7 @@
                                     <option   value="" disabled selected>--- Select ---</option>
                                     <option    value="Labour Contract">Labour Contract</option>
                                     <option  value="Material Contract">Material Contract</option>
+                                     <option  value="null">None</option>
                                 </select>
                               </td>
                                <!-- <tr>
