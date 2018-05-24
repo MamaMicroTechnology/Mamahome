@@ -59,6 +59,7 @@ use App\ZoneMap;
 use App\SubWardMap;
 use App\AssignStage;
 use App\History;
+use App\Assignenquiry;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -4029,12 +4030,96 @@ if(count($check) == 0){
 }
        
 
-      return redirect()->back();
+      return redirect()->back()->with('Assig projects successfully');
 
 
             
 }
 
+public function enquirywise(request $request){
+
+ $depts = [4,5];
+ $users = User::where('users.department_id','!=',$depts)
+              ->leftjoin('departments','departments.id','users.department_id')
+              ->leftjoin('groups','groups.id','users.group_id')
+              ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
+
+   $wards = Ward::all();
+    $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
+               ->select('sub_wards.*')->get();
+                $category = Category::all();
+                $brands = brand::all();
+                $sub = SubCategory::all();
+
+
+    return view('/assign_enquiry',[ 'users'=>$users,'sub'=>$sub,'wards'=> $wards,'subwards'=>$subwards,'category'=>$category,'brands'=>$brands ]);
+}
+function enquirystore(request $request){
+
+if($request->ward){
+    $wards = implode(", ", $request->ward);
+    }else{
+        $wards = "null";
+    }
+
+if($request->subward ) 
+     {
+    $subwards = implode(", ", $request->subward);
+
+    } else{
+        $subwards = "null";
+    }
+if($request->cat){
+    $cat = implode(",", $request->cat);
+}else{
+    $cat = "null";
+}
+if($request->brand){
+    $brand = implode(",", $request->brand);
+}else{
+    $brand = "null";
+}
+if($request->sub){
+    $sub = implode(",", $request->sub);
+}else{
+    $sub = "null";
+}
+
+
+
+
+    $check = Assignenquiry::where('user_id',$request->user_id)->first();
+
+
+if(count($check) == 0){
+     
+         $enquiry = new Assignenquiry;
+         $enquiry ->user_id = $request->user_id;
+         $enquiry->ward = $wards;
+         $enquiry->subward = $subwards;
+         $enquiry->cat =$cat;
+         $enquiry->brand=$brand;
+         $enquiry->sub=$sub;
+         $enquiry->save();
+}else{
+
+        $check->ward = $wards;
+        $check->subward = $subwards;
+
+         $check->cat =$cat;
+         $check->brand=$brand;
+         $check->sub=$sub;
+$check->save(); 
+}
+       
+
+      return redirect()->back()->with('Assig enquiry successfully');
+
+
+}
+public function enqwise(){
+    return view('enquirywise');
+}
 
  }
 

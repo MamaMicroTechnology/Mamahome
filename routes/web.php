@@ -26,13 +26,16 @@ Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 
 Route::get('/assign_project','HomeController@projectwise');
+ Route::get('/assign_enquiry','HomeController@enquirywise');
 Route::POST('/projectstore','HomeController@projectstore');
+Route::POST('/enquirystore','HomeController@enquirystore');
 // Shared View
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 Route::get('/invoice','logisticsController@getinvoice');
 Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
+Route::get('/enquirywise','HomeController@enqwise');
 
 
 Route::get('/profile','HomeController@getMyProfile');
