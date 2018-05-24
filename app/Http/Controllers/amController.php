@@ -80,7 +80,6 @@ class amController extends Controller
     public function getname(Request $request){
        
          $name = MamahomeAsset::where('asset_id',$request->name)->where('status',null)->get();
-        dd($name);
             return response()->json($name);
     
 
