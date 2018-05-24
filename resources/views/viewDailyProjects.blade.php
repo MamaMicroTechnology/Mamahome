@@ -4,16 +4,11 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-heading">
-
-                            
-               <b style="color:white">
                <div class="col-md-4">Project Details</div>
                <div class="pull-center col-md-4">Project Id {{ $details->project_id }}</div>
                <div class="pull-right col-md-4">
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm">Edit</a>
-                </div>
-               </b> 
-               
+               </div>
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
