@@ -264,15 +264,15 @@
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
-                                +(response[0][i].owner_contact_no == null ? response[0][i].owner_contact_no : '')+
+                                +(response[0][i].owner_contact_no != null ? response[0][i].owner_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].site_engineer_contact_no == null ? response[0][i].site_engineer_contact_no : '')+
+                                +(response[0][i].site_engineer_contact_no != null ? response[0][i].site_engineer_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].procurement_contact_no == null ? response[0][i].procurement_contact_no : '')+
+                                +(response[0][i].procurement_contact_no != null ? response[0][i].procurement_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].consultant_contact_no == null ? response[0][i].consultant_contact_no : '')+
+                                +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].contractor_contact_no == null ? response[0][i].contractor_contact_no : '')+
+                                +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
                             "</td><td>"
                                 +response[0][i].name+
                             "</td></tr>";
