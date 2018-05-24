@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use App\Message;
 use App\Department;
+use App\UserLocation;
 use App\Http\Resources\Message as MessageResource;
 
 class TokenController extends Controller
@@ -170,4 +171,17 @@ class TokenController extends Controller
             return response()->json(['message' => 'false']);
         }
     }
+<<<<<<< HEAD
+=======
+    public function saveLocation(Request $request)
+    {
+        $location = new UserLocation;
+        $location->user_id = $request->userid;
+        $location->latitude = $request->latitude;
+        $location->longitude = $request->longitude;
+        $location->save();
+        $messages = new Collection;
+        return response()->json(['message'=>'true']);
+    }
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
 }

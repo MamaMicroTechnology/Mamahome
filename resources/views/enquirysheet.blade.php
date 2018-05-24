@@ -61,17 +61,6 @@
 								@endforeach
 							</select>
 						</div>
-<!-- 						<div class="col-md-4">
-							<label>Status:</label>
-							<select name="status" class="form-control">
-								<option value="">--Select--</option>
-								<option value="all">All</option>
-								<option value="Process">On Process</option>
-								<option value="Confirmed">Enquiry Confirmed</option>
-								<option value="Cancelled">Enquiry Cancelled</option>
-							</select>
-						</div> -->
-						<!-- </div> -->
 						<div class="col-md-2">
 							<label></label>
 							<input type="submit" value="Fetch" class="form-control btn btn-primary">
@@ -126,7 +115,12 @@
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
 							<td style="text-align: center">{{$enquiry -> procurement_contact_no }}</td>
 							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}</td>
-							<td style="text-align: center">{{$enquiry -> quantity}}</td>
+							<td style="text-align: center">
+								<?php $quantity = explode(", ",$enquiry->quantity); ?>
+								@for($i = 0; $i<count($quantity); $i++)
+								{{ $quantity[$i] }}<br>
+								@endfor
+							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
 								{{ $enquiry->status}}

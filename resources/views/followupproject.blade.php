@@ -40,7 +40,7 @@
                                         @foreach($projects as $project)
                                         <tr>
                                             <td>{{$project->project_id}}</td>
-                                            <td>{{ date('d-m-Y', strtotime($project->follow_up)) }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($project->followup)) }}</td>
                                             <td>{{ $project->project_name }}</td>
                                             <td>{{ $project->owner_contact_no}}</td>
                                             <td>{{ $project->procurement_contact_no}}</td>

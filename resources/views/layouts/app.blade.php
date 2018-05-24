@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DO    CTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -507,6 +507,7 @@ div#calendar{
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
+    <a href="{{ URL::to('/confidential') }}">Confidential</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -516,9 +517,9 @@ div#calendar{
     <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
    <a href="{{ URL::to('/enquiryCancell') }}">Enquiry cancelled</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
-    <a href="{{ URL::to('/assigndate') }}">Assign Date</a>
-    <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
+    <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
+      <a href="{{ URL::to('/assign_project') }}">Assign Project</a><!-- 
+    <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> -->
     <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
     <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
@@ -550,9 +551,13 @@ div#calendar{
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Wardswise Projects</a>
-     <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
-     <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a>
+     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
+      <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
+      <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
+     <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a> 
+     <!--  <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
+     <!-- <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
+     <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
     <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
     <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
     <a href="{{ URL::to('/') }}/kra" >KRA</a>           

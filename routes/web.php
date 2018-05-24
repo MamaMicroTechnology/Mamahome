@@ -20,12 +20,22 @@ Route::get('/', function () {
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
+ Route::get('/h','HomeController@hstore');
+
+Auth::routes();
+Route::get('/myreport','HomeController@myreport');
+
+Route::get('/assign_project','HomeController@projectwise');
+ Route::get('/assign_enquiry','HomeController@enquirywise');
+Route::POST('/projectstore','HomeController@projectstore');
+Route::POST('/enquirystore','HomeController@enquirystore');
 // Shared View
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 Route::get('/invoice','logisticsController@getinvoice');
 Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
+Route::get('/enquirywise','HomeController@enqwise');
 
 
 Route::get('/profile','HomeController@getMyProfile');
@@ -151,7 +161,10 @@ Route::get('/getleinfo','HomeController@getleinfo');
 Route::get('/gettodayleinfo','HomeController@gettodayleinfo');
 Route::get('/registrationrequests','HomeController@regReq');
 Route::get('/salesAddProject','HomeController@listingEngineer');
-Route::get('/salescompleted','HomeController@updateSalesAssignment');
+Route::get('/salescompleted','HomeController@projectwisedel');
+
+
+
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
 Route::get('/followupproject','HomeController@followup');
@@ -217,7 +230,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/approvePoint','HomeController@approvePoint');
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
-
+    Route::get('/confidential','HomeController@confidential');
 
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
