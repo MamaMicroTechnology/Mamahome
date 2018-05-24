@@ -6,9 +6,10 @@
             <div class="panel-heading">
 
                             
-               <b style="color:white">Project Details
+               <b style="color:white">Project Details {{ $details->project_id }}
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                </b> 
+               
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
