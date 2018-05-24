@@ -2062,7 +2062,7 @@ class HomeController extends Controller
         $from = $request->from;
         $to = $request->to;
         if($from == $to){
-            return redirect('/gettodayleinfo?from='.$from.'&id='.$id);
+            return redirect('/gettodayleinfo?from='.$from.'&id='.$id.'&to='.$to);
         }
         if($id !== 'ALL')
         {
@@ -2103,7 +2103,8 @@ class HomeController extends Controller
     {
         $records = array();
         $id = $request->id;
-        $from = $request->from_date;
+        $from = date('Y-m-d', strtotime($request->from));
+        $to = date('Y-m-d', strtotime($request->to));
         if($id !== 'ALL')
         {
         $records[0] =  DB::table('project_details')
@@ -2115,6 +2116,7 @@ class HomeController extends Controller
                 ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
                 ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
                 ->where('project_details.created_at','like',$from.'%')
+                ->where('project_details.created_at','like',$to.'%')
                 ->where('users.id',$id)
                 ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
                 ->get();
