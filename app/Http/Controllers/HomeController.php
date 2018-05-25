@@ -1890,10 +1890,7 @@ class HomeController extends Controller
         {
             return response()->json('Error !!!');
         }
-<<<<<<< HEAD
-=======
         
->>>>>>> 16824d8c9df759b58694ba8b52bfdde10db294a2
     }
     public function updateProcurement(Request $request)
     {
