@@ -226,12 +226,14 @@
             var e = document.getElementById("selectle");
             var le_id = e.options[e.selectedIndex].value;
             var from_date = document.getElementById('fromdate').value;
-            if(!le_id || !from_date){
-                alert('Please Select A Listing Engineer And From Date !!');
+            var to_date =  document.getElementById('todate').value;
+            if(!le_id || !from_date || !to_date){
+                alert('Please Select all 3 fields !!');
                 return false;
             }
             else
             {
+
                 var mydate = new Date(from_date);
                 var month = mydate .getMonth() + 1;
                 var day = mydate .getDate();
