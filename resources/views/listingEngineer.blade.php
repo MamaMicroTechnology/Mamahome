@@ -101,7 +101,7 @@
                                     <option   value="" disabled selected>--- Select ---</option>
                                     <option    value="Labour Contract">Labour Contract</option>
                                     <option  value="Material Contract">Material Contract</option>
-                                     <option  value="null">None</option>
+                                     <option  value="None">None</option>
                                 </select>
                               </td>
 

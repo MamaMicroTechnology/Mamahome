@@ -227,7 +227,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+<<<<<<< HEAD
         
+=======
+>>>>>>> d8e4e2702c02884b92171c0747ed6ece06d3cf0b
 
     ],
 
