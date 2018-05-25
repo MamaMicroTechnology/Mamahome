@@ -226,12 +226,14 @@
             var e = document.getElementById("selectle");
             var le_id = e.options[e.selectedIndex].value;
             var from_date = document.getElementById('fromdate').value;
-            if(!le_id || !from_date){
-                alert('Please Select A Listing Engineer And From Date !!');
+            var to_date =  document.getElementById('todate').value;
+            if(!le_id || !from_date || !to_date){
+                alert('Please Select all 3 fields !!');
                 return false;
             }
             else
             {
+
                 var mydate = new Date(from_date);
                 var month = mydate .getMonth() + 1;
                 var day = mydate .getDate();
@@ -264,15 +266,15 @@
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
-                                +(response[0][i].owner_contact_no == null ? response[0][i].owner_contact_no : '')+
+                                +(response[0][i].owner_contact_no != null ? response[0][i].owner_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].site_engineer_contact_no == null ? response[0][i].site_engineer_contact_no : '')+
+                                +(response[0][i].site_engineer_contact_no != null ? response[0][i].site_engineer_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].procurement_contact_no == null ? response[0][i].procurement_contact_no : '')+
+                                +(response[0][i].procurement_contact_no != null ? response[0][i].procurement_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].consultant_contact_no == null ? response[0][i].consultant_contact_no : '')+
+                                +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].contractor_contact_no == null ? response[0][i].contractor_contact_no : '')+
+                                +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
                             "</td><td>"
                                 +response[0][i].name+
                             "</td></tr>";
