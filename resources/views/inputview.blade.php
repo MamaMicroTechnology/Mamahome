@@ -28,7 +28,7 @@
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>
-								<td style="width:30%"><label> Enuiry Date* : </label></td>
+								<td style="width:30%"><label> Requirement Date* : </label></td>
 								<td style="width:70%"><input required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr> 
@@ -69,7 +69,7 @@
     
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="background-color: green;color: white;" >
+        <div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;" >
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title"><center>CATEGORY</center></h4>
         </div>
@@ -78,30 +78,41 @@
         <br>
         <div class="row">	
 		@foreach($category as $cat)
-			
-			<div class="col-md-4" >
-					<div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
-	                  <button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   >{{$cat->category_name}}</button>
+			<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">{{$cat->category_name}}</div>
+				<div class="panel-body" style="height:300px; max-height:300; overflow-y: scroll;">
+					@foreach($cat->brand as $brand)
+						<div class="row">
+							<b class="btn btn-sm btn-warning form-control" style="border-radius: 0px;" data-toggle="collapse" data-target="#demo{{ $brand->id }}"><u>{{$brand->brand}}</u></b>
+							<br>
+							<div id="demo{{ $brand->id }}" class="collapse">
+							@foreach($brand->subcategory as $subcategory)
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="checkbox-inline">
+									
+										<input type="hidden" id="quantity{{ $subcategory->id }}" value="{{ $subcategory->Quantity }}">
+										<input type="checkbox"  name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+										<input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')"
+                                         autocomplete="off" name="quantity[]"  class="form-control">
 
-	                  @foreach($cat->brand as $brand)
-	                   <div class="row">
-	                   	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                   	<!-- 	<div class="col-md-6"> -->
-			                  	<b><u>{{$brand->brand}}</u></b><br>
-			                  @foreach($brand->subcategory as $subcategory)
-			                  		<!-- <div class="col-md-6"> -->
-			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			                  			<label class="checkbox-inline">
-			                  			 <input type="checkbox"  name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-			                  			</label>
-			                  			<br>
-			                  		<!-- </div> -->
-			                  @endforeach
-			                  <!-- </div> -->
-			           </div>
-	                  @endforeach
-		    	 	</div>
+										
+									</label>
+									<br><br>
+							@endforeach
+				           <center><span id="total" >total:</span></center>
+						  </div>
+						<br>
+						</div><br>
+						@endforeach
+				</div>
+				<!-- <div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
+					<button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   ></button>
+
+					
+				</div> -->
 	        </div>
+			</div>
 	        @if($loop->iteration % 3==0)
 	        	</div>
 	        		<div class="row">
@@ -120,27 +131,12 @@
     </div>
 </div>
 <!-- model end -->			
-							@if(Auth::user()->group_id == 6)
+							@if(Auth::user()->group_id == 6 || Auth::user()->group_id == 7)
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
 									<select required class="form-control" name="initiator">
-										<option value="">--Select--</option>
-										@foreach($users1 as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
-									</select>
-								</td>
-							</tr>
-							@elseif(Auth::user()->group_id == 7)
-							<tr>
-								<td><label>Initiator* : </label></td>
-								<td>	
-									<select required class="form-control" name="initiator">
-										<option value="">--Select--</option>
-										@foreach($users2 as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
+										<option value="{{Auth::user()->id}}">{{Auth::user()->name}}</option>
 									</select>
 								</td>
 							</tr>
@@ -166,10 +162,6 @@
 									<input type="text" name="elocation" id="elocation" class="form-control" />
 									@endif
 								</td>
-							</tr>
-							<tr>
-								<td><label>Quantity* : </label></td>
-								<td><input required type="text" oninput="getquantity()" name="equantity"   id="equantity" class="form-control" /></td>
 							</tr>
 							<tr>
 								<td><label>Remarks : </label></td>
@@ -378,4 +370,65 @@
 		
 	}
 </script> -->
+<script>
+
+function quan(arg){
+
+	if(parseInt(document.getElementById('quan'+arg).value) < parseInt(document.getElementById('quantity'+arg).value)){
+		alert("Minimum"+ document.getElementById('quantity'+arg).value + "quantity");
+		document.getElementById('quan'+arg).value ="";
+	}
+}
+</script>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+}
+</script>
+<!-- <script>
+ function check(arg){
+    var input = document.getElementById('quan'+arg).value;
+ 	
+    if(input){
+    if(isNaN(input)){
+      while(isNaN(document.getElementById('quan'+arg).value)){
+      var str = document.getElementById('quan'+arg).value;
+      str     = str.substring(0, str.length - 1);
+      document.getElementById(arg).value = str;
+      }
+    }
+    else{
+      input = input.trim();
+      document.getElementById(arg).value = input;
+    }
+    if(arg == 'quan'){
+      var basement = parseInt(document.getElementById("quan").value);
+     
+      if(!isNaN(subcat)){
+        var floor    = 'B('+subcat+')';
+        sum          = subcat;
+        floor       += sum;
+      
+        if(document.getElementById("total").innerHTML != null)
+          document.getElementById("total").innerHTML = floor;
+        else
+          document.getElementById("total").innerHTML = '';
+      }
+    }
+  }
+    return false;
+  }
+</script> -->
+
 @endsection

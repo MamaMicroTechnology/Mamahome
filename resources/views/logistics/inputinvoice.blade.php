@@ -142,7 +142,7 @@
                     </tr>
                     <tr>
                         <td colspan=2>Quantity</td>
-                        <td colspan=2><input type="text" name="" id="" class="form-control"></td>
+                        <td colspan=2><input type="text" name="" placeholder="Quantity" id="" class="form-control"></td>
                     </tr>
                     <tr>
                         <td colspan=2>Date of Invoice</td>
@@ -150,7 +150,7 @@
                     </tr>
                     <tr>
                         <td colspan=2>Total Amount</td>
-                        <td colspan=2><input type="text" name="" id="" class="form-control"></td>
+                        <td colspan=2><input type="text" name="" placeholder="Total Amount" id="" class="form-control"></td>
                     </tr>
                     <tr>
                         <td colspan=2>Pic Manufacturer Invoice</td>

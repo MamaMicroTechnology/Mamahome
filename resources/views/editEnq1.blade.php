@@ -145,6 +145,18 @@
 									</select>
 								</td>
 							</tr>
+							@else
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users1 as $user)
+										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
 							@endif
 							<tr>
 								<td><label>Location* : </label></td>
@@ -293,8 +305,4 @@
 		     }
 	}
 </script>
-<<<<<<< HEAD
-<script>
-=======
->>>>>>> master
 @endsection

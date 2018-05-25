@@ -11,11 +11,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                  @if($subwards)
-                  You're Assigned Ward is  {{$subwards->sub_ward_name}}
-                  @else
-                  Update Project
-                  @endif
+                 
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
@@ -41,7 +37,17 @@
                       <label style="font-size: 14px">Quality:</label>
                       {{ $projectdetails->quality }}
                       @endif
-                    <br>
+                    </center>
+                      @if($projectdetails->quality == NULL)
+                        <form method="POST" action="{{ URL::to('/') }}/markProject">
+                          {{ csrf_field() }}
+                          <input type="hidden" name="id" value="{{ $id }}">
+                        </form>
+                        @else
+                        <label style="font-size: 14px">Quality:</label>
+                        {{ $projectdetails->quality }}
+                        @endif
+                      <br>
                    <form method="POST" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
@@ -690,7 +696,11 @@ function sum(){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+<<<<<<< HEAD
+            }else {
+=======
             }else{
+>>>>>>> master
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
             }
             if(countinput == 0){
