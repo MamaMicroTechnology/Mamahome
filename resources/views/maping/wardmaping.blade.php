@@ -44,6 +44,18 @@
           }
         });
 
+         $("#undo").click(function(){
+          path.pop();
+            marker[0] = path;
+            polygon = map.removePolylines();
+            polygon = map.drawPolyline({
+              path: path,
+              strokeColor: '#131540',
+              strokeOpacity: 0.6,
+              strokeWeight: 1
+            });
+         });
+
       map.setZoom(11);
       map.drawPolygon({
         paths: newpath,
@@ -97,6 +109,17 @@
             });
           }
         });
+        $("#undo").click(function(){
+          path.pop();
+            marker[0] = path;
+            polygon = map.removePolylines();
+            polygon = map.drawPolyline({
+              path: path,
+              strokeColor: '#131540',
+              strokeOpacity: 0.6,
+              strokeWeight: 1
+            });
+         });
       map.setZoom(10);
       map.setOptions({draggableCursor:'crosshair'});
       $("#draw").click(function(){
@@ -129,7 +152,7 @@
         <div id="map"></div>
       </div>
       <br>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <form onsubmit="validate()" action="{{ URL::to('/') }}/saveMap" method="POST">
           {{ csrf_field() }}
             <div class="col-md-6">
@@ -138,17 +161,17 @@
                 <input type="hidden" name="page" value="{{ $page }}">
                 <input type="hidden" name="zone" value="{{ $zones->id }}">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               Color:
               <input name="color" class="jscolor form-control" id="color" value="{{ $zones->color }}">
               <div id="area"></div>
             </div>
-            <div class="col-md-3">
-              <br>
+            <div class="col-md-4">
+              <input type="hidden" value="{{ $zones->lat }}" name="path" id="path" class="form-control"><br>
+              <button type="button" class="btn btn-primary" id="undo">Undo</button>
+              <button type="button" id="draw" class="btn btn-primary">Preview</button>
+              <input type="submit" value="Save" class="btn btn-success" id="savebutton">
             </div>
-          <input type="hidden" value="{{ $zones->lat }}" name="path" id="path" class="form-control"><br>
-          <button type="button" id="draw" class="btn btn-primary">Preview</button>
-          <input type="submit" value="Save" class="btn btn-success" id="savebutton">
         </form>
       </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
