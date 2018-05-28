@@ -11,7 +11,11 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                  @if($subwards)
                  
+                  @else
+                  Update Project
+                  @endif
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
@@ -696,11 +700,7 @@ function sum(){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
             }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
-<<<<<<< HEAD
             }else {
-=======
-            }else{
->>>>>>> master
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
             }
             if(countinput == 0){

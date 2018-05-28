@@ -49,6 +49,8 @@ use App\WardMap;
 use App\Point;
 use App\ZoneMap;
 use App\SubWardMap;
+use App\Asset;
+use App\MamahomeAsset;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1458,19 +1460,31 @@ class mamaController extends Controller
     public function saveAssetInfo(Request $request){
         $count = count($request->type);
 
-        $image = time().'.'.request()->image->getClientOriginalExtension();
-        $request->image->move(public_path('assettype'),$image);
+        $empimage = time().'.'.request()->emp_image->getClientOriginalExtension();
+        $request->emp_image->move(public_path('empsignature'),$empimage);
+        $mimage = time().'.'.request()->manager_image->getClientOriginalExtension();
+        $request->manager_image->move(public_path('managersignature'),$mimage);
         for($i = 0; $i<$count;$i++){
             $assetInfo = new AssetInfo;
+
             $assetInfo->employeeId = $request->userId;
-            $assetInfo->asset_type = $request->type[$i];
-            $assetInfo->image = $image;
-            $assetInfo->serial_no = $request->serial_no[$i];
+            $type = Asset::where('id',$request->type[$i])->pluck('type')->first();
+            $assetInfo->asset_type = $type;
+            $name = MamahomeAsset::where('id',$request->mname)->pluck('name')->first();
+            $assetInfo->name = $name;
+            $assetInfo->emp_signature = $empimage;
+            $assetInfo->manager_signature = $mimage;
+            $snum = MamahomeAsset::where('id',$request->number)->pluck('sl_no')->first();
+            $assetInfo->serial_no = $snum;
             $assetInfo->assign_date =$request->tdate;
             $assetInfo->remark = $request->remark[$i];
-            $assetInfo->description = $request->details[$i];
+            $assetInfo->description = $request->details;
+            $assetInfo->mh_id = $request->mname;
             $assetInfo->save();
         }
+            $mhasset = MamahomeAsset::where('id',$request->mname)->first();
+            $mhasset->status = "Assigned";
+            $mhasset->save();
       
         return back();
     }
@@ -1641,7 +1655,6 @@ class mamaController extends Controller
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
       
-
         Requirement::where('id',$request->reqId)->update([
             'main_category' => $categoryNames,
             'brand' => $brandnames,

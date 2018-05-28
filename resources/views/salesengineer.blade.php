@@ -627,12 +627,18 @@
                                         <tr>
                                        <td style="padding: 10px;" > Project Created by</td>
                                        <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->created_at }}</td>
+                                       <td style="padding: 10px;">{{ date('d-m-Y', strtotime( $project->created_at)) }}</td>
+                                        <td>
+                                              {{ date('h:i:s A', strtotime($project->created_at)) }}
+                                            </td>
                                        </tr>
                                         <tr>
                                        <td style="padding: 10px;" > Project Updated by</td>
                                        <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->updated_at }}</td>
+                                       <td style="padding: 10px;">{{ date('d-m-Y', strtotime(  $project->updated_at)) }}</td>
+                                        <td>
+                                              {{ date('h:i:s A', strtotime($project->updated_at)) }}
+                                            </td>
                                        </tr>
                                         
                                         

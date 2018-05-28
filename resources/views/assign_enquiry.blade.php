@@ -15,6 +15,8 @@
                  
              <div class="panel-body">
     <form method="POST" name="myform" action="{{ URL::to('/') }}/enquirystore" enctype="multipart/form-data">
+
+  {{ csrf_field() }}
              <table class="table table-responsive table-striped table-hover" class="table">
                         <thead>
                             <th style="width:15%">Name</th>
@@ -30,10 +32,9 @@
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
                           </tr>         
                            @endforeach
+                          <input type="hidden" name="user_id" id="userId">
                    
                 </table>
-  {{ csrf_field() }}
-  <input type="hidden" id="userId" name="user_id">
  <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
@@ -53,10 +54,11 @@
             <input  onclick="hide('{{ $ward->id }}')"  style=" padding: 5px;" data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
           </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
-                            <input type="hidden"  name="user_id" value="{{ $user->id }}">
         @endforeach
         </div>
     </div>
+    <h4>Assign Date</h4>
+   <input type="date" name="dateenq" class="form-control" style="width: 50%;">
         </div>
 
          @foreach($wards as $ward)
@@ -84,8 +86,8 @@
           </div>
           </div>
           @endforeach
-         <div class="row"> 
-         <h4>Select Category</h4>
+         <div class="row">
+        <h4>&nbsp;&nbsp; Select Category</h4>
        @foreach($category as $cat)
       
          <div class="col-sm-4">
@@ -96,29 +98,52 @@
         @endforeach
         </div>
 </div>
-<center><button type="submit" class="btn btn-primary">Submit Data</button></center>                                        
+<p class="text-center"><button type="submit" class="btn btn-primary">Submit Data</button></p>                                        
 @foreach($category as $cat)
 <div class="hidden" id="brand{{ $cat->id }}">
        @foreach($brands as $brand)
        @if($brand->category_id == $cat->id)
        <label>&nbsp;&nbsp;&nbsp;    
-         <input type="checkbox" id="sub_cat{{$brand->id}}" onclick="clickbrand( {{ $brand->id }} )"; name="brand[]" style=" padding: 5px;" value=" {{ $brand->brand}}">&nbsp;&nbsp;  {{ $brand->brand}}
+         <input data-toggle="modal" data-target="#myModal2" type="checkbox" id="sub_cat{{$brand->id}}" onclick="clickbrand( {{ $brand->id }} )"; name="brand[]" style=" padding: 5px;" value=" {{ $brand->brand}}">&nbsp;&nbsp;  {{ $brand->brand}} <span style="color:green;">[{{$cat->category_name}}]</span>
        </label>
        @endif
        @endforeach
        </div>
 @endforeach
+  <!-- Modal -->
+  <!-- <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+         <div class="row">
  @foreach($brands as $brand)
 <div class="hidden" id="sub{{ $brand->id }}">
        @foreach($sub as $subs)
        @if($brand->brand_id == $subs->brand_id)
+        <div class="col-sm-4">
+          
        <label>&nbsp;&nbsp;&nbsp;    
-         <input type="checkbox" name="sub[]"  style=" padding: 5px;" value=" {{ $subs->sub_cat_name}}">&nbsp;&nbsp;  {{ $subs->sub_cat_name}}
+         <input type="checkbox" name="subcat[]"  style=" padding: 5px;" value=" {{ $subs->sub_cat_name}}">&nbsp;&nbsp;  {{ $subs->sub_cat_name}}
        </label>
+       </div>
        @endif
        @endforeach
    </div>
 @endforeach
+</div>
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
   </div>
 </div>
 </div> 
@@ -131,6 +156,7 @@
 </div>
 </div> 
    <!-- model -->
+  
  @endsection          
 
  <script type="text/javascript">
@@ -182,5 +208,8 @@ function displaybrand(arg){
         if(document.getElementById('sub_cat'+arg).checked == true){
             document.getElementById('sub'+arg).className = "";
         }
+    }
+    function makeUserId(arg){
+      document.getElementById('userId').value = arg;
     }
 </script>

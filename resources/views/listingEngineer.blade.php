@@ -21,10 +21,12 @@
                 </div>
                 @if($subwards)
                 <div class="panel-body">
-                    <center> <label id="headingPanel"></label></center>
-                    <br>    
-                    <center>       
-                    <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
+                   <center> <label id="headingPanel"></label></center>
+                   <br>
+                    
+                                     
+                             <center>       
+                     <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
@@ -34,6 +36,11 @@
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
+                                <tr>
+                                         
+                                    
+                                       
+                              </tr>
                                <tr>
                                    <td>Location</td>
                                    <td>:</td>
@@ -55,9 +62,15 @@
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
                                <tr>
+                                   <td>Road Name/Road No.</td>
+                                   <td>:</td>
+                                   <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
+                               </tr>
+                               <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet"  class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                  
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -92,6 +105,7 @@
                                     <option   value="" disabled selected>--- Select ---</option>
                                     <option    value="Labour Contract">Labour Contract</option>
                                     <option  value="Material Contract">Material Contract</option>
+                                     <option  value="None">None</option>
                                 </select>
                               </td>
                                <!-- <tr>
@@ -222,8 +236,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" onclick="dis()" name="budgetType" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]" type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>

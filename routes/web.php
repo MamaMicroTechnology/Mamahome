@@ -50,7 +50,6 @@ Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
 Route::get('/blocked_projects','HomeController@blocked');
 
-
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
 Route::get('/getContractorProjects','ContractorController@getProjects');
@@ -184,7 +183,6 @@ Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
 Route::post('/confirmedProject','HomeController@confirmedProject');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
-Route::post('/deleteAsset','amController@deleteAsset');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 
 
@@ -232,7 +230,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
     Route::get('/confidential','HomeController@confidential');
-
+    Route::get('/letracking','HomeController@getLeTracking');
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
@@ -277,7 +275,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/teamdeletekra','amController@deletekra');
     Route::post('/teamupdatekra','amController@updatekra');
     Route::post('/addPoints','mamaController@addPoints');
-
+    Route::get('/tltracking','HomeController@getLeTracking');
 
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
@@ -382,6 +380,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/assets','amController@addassets');  
     Route::get('/viewasset','amController@getasset');
     Route::post('/inputasset','amController@storeasset');
+    Route::post('/assetsimcard','amController@assetsimcard');
     Route::post('/addtype','amController@addtype');
     Route::get('/assignassets','amController@assignassets');
     Route::get('/assetsview','amController@getview');
@@ -389,7 +388,16 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/editasset','amController@editasset');
     Route::post('/saveasset','amController@saveasset');
     Route::post('/saveassetinfo','amController@saveassetinfo');
-
+    Route::get('/getname','amController@getname');
+    Route::get('/getserial','amController@getserial');
+    Route::get('/getdesc','amController@getdesc');
+    Route::post('/deleteassetsimcard','amController@deleteassetsim');
+    Route::get('/deleteassets','amController@deleteassets');
+    Route::post('/deletesim','amcontroller@deletesim');
+    Route::post('/savesiminfo','amcontroller@savesiminfo');
+    Route::get('/getbrand','amController@getbrand');
+    Route::get('/signature','amController@signature');
+    Route::get('/preview','amController@preview');
 
 
 
