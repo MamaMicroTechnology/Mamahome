@@ -281,8 +281,4 @@
 		     }
 	}
 </script>
-<<<<<<< HEAD
-<script>
-=======
->>>>>>> master
 @endsection
