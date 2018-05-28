@@ -140,9 +140,9 @@ class HomeController extends Controller
     public function inputdata(Request $request)
     {
         // for fetching sub categories
-        $get = implode(", ",array_filter($request->quantity));
+        $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
-        $quantity = array_filter($request->quantity);
+        $quantity = array_filter($request->quan);
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
@@ -3914,8 +3914,9 @@ public function assigndate(request $request )
     }
 
 public function projectwise(request $request){
-     $depts = [4,5];
-    $users = User::where('users.department_id','!=',$depts)
+     $depts = [1,2];
+     $wardsAndSub = [];
+    $users = User::where('users.department_id',$depts)
               ->leftjoin('assignstage','assignstage.user_id','users.id')
               ->leftjoin('departments','departments.id','users.department_id'   )
               ->leftjoin('groups','groups.id','users.group_id')
@@ -3931,9 +3932,11 @@ public function projectwise(request $request){
     $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
                ->select('sub_wards.*')->get();
     $assign = AssignStage::pluck('state');
-   
-   
- return view('assign_project',['subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assign'=>$assign,'assignstage'=>$assignstage ]);
+    foreach($wards as $ward){
+        $subward = SubWard::where('ward_id',$ward->id)->get();
+        array_push($wardsAndSub,['ward'=>$ward->id,'subWards'=>$subward]);
+    }
+ return view('assign_project',['wardsAndSub'=>$wardsAndSub,'subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assign'=>$assign,'assignstage'=>$assignstage ]);
     
 }
 public function projectwisedel(request $request){
@@ -4065,21 +4068,22 @@ if(count($check) == 0){
 
 public function enquirywise(request $request){
 
- $depts = [4,5];
- $users = User::where('users.department_id','!=',$depts)
+ $depts = [17];
+ $wardsAndSub = [];
+ $users = User::where('users.group_id',$depts)
               ->leftjoin('departments','departments.id','users.department_id')
               ->leftjoin('groups','groups.id','users.group_id')
               ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
 
    $wards = Ward::all();
-    $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
-               ->select('sub_wards.*')->get();
                 $category = Category::all();
                 $brands = brand::all();
                 $sub = SubCategory::all();
-
-
-    return view('/assign_enquiry',[ 'users'=>$users,'sub'=>$sub,'wards'=> $wards,'subwards'=>$subwards,'category'=>$category,'brands'=>$brands ]);
+    foreach($wards as $ward){
+        $subward = SubWard::where('ward_id',$ward->id)->get();
+        array_push($wardsAndSub,['ward'=>$ward->id,'subwards'=>$subward]);
+    }
+    return view('/assign_enquiry',['wardsAndSub'=>$wardsAndSub, 'users'=>$users,'sub'=>$sub,'wards'=> $wards,'category'=>$category,'brands'=>$brands ]);
 }
 function enquirystore(request $request){
 
@@ -4158,21 +4162,20 @@ public function enqwise(Request $request){
          $brand = Assignenquiry::where('user_id',Auth::user()->id)->pluck('brand');
          $sub = Assignenquiry::where('user_id',Auth::user()->id)->pluck('sub');
 
-        
-
-      $projectids = new Collection();
+         
+         $projectids = new Collection();
          //feching wardwise
          
-
+         
          $project = ProjectDetails::leftjoin('requirements','requirements.project_id','project_details.project_id')
-                     ->whereIn('project_details.sub_ward_id',$subwardid)
-                     ->pluck('project_details.project_id');
-           
-           if(count($project) > 0){
-               $projectids = $projectids->merge($project);
-           }else{
+         ->whereIn('project_details.sub_ward_id',$subwardid)
+         ->pluck('project_details.project_id');
+         
+         if(count($project) > 0){
+             $projectids = $projectids->merge($project);
+            }else{
                 $projectids = ProjectDetails::pluck('project_id');
-           }
+            }
 
 
       $catc = explode(", ", $cat);
@@ -4183,16 +4186,16 @@ public function enqwise(Request $request){
            {
                $category = Requirement::whereIn('project_id',$projectids)->where('main_category' ,'LIKE', $catc[$i]."%")->pluck('project_id');
                
-           }
-        if(Count( $category) > 0){
-             $projectids = $category;
-
-        }else{
-
-        $projectids= $projectids->merge($category);
-        
-        }
-
+            }
+            if(Count( $category) > 0){
+                $projectids = $category;
+                
+            }else{
+                
+                $projectids= $projectids->merge($category);
+                
+            }
+            
   $brandc = explode(", ", $brand);
 
             // $projectids = new Collection>);
@@ -4208,7 +4211,7 @@ public function enqwise(Request $request){
 
         $projectids= $projectids->merge($brandlist);
         
-        }
+    }
     if( $assigndate != "NULL"){
           $datec = Requirement::whereIn('project_id',$projectids)->where('created_at','LIKE' , $assigndate."%")->pluck('project_id');
            if(Count($datec) > 0){
@@ -4218,7 +4221,7 @@ public function enqwise(Request $request){
                $projectids=$projectids->merge($datec);
           }
             
-            $projectids= $datec;
+          $projectids= $datec;
         }
 
         else{
