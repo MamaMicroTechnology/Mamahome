@@ -121,13 +121,21 @@
 									</select>
 								</td>
 							</tr>
+<<<<<<< HEAD
 							@elseif(Auth::user()->group_id == 17)
+=======
+							@else
+>>>>>>> MuraliHamsa
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
 									<select required class="form-control" name="initiator">
 										<option value="" required>--Select--</option>
+<<<<<<< HEAD
 										@foreach($users2 as $user)
+=======
+										@foreach($users1 as $user)
+>>>>>>> MuraliHamsa
 										<option value="{{$user->id}}">{{$user->name}}</option>
 										@endforeach
 									</select>
@@ -137,10 +145,17 @@
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
+<<<<<<< HEAD
 									<select required class="form-control" name="initiator">
 										<option value="" required>--Select--</option>
 										@foreach($users1 as $user)
 										<option value="{{$user->id}}">{{$user->name}}</option>
+=======
+									<select class="form-control" name="initiator">
+										<option value="">--Select--</option>
+										@foreach($users1 as $user)
+										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
+>>>>>>> MuraliHamsa
 										@endforeach
 									</select>
 								</td>
@@ -299,5 +314,9 @@
 <script>
 =======
 >>>>>>> master
+<<<<<<< HEAD
 >>>>>>> 7e303fad753443a75262790f1c9e5a49f2831c20
+=======
+>>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
+>>>>>>> MuraliHamsa
 @endsection

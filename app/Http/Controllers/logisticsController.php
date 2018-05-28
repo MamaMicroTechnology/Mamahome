@@ -151,6 +151,10 @@ class logisticsController extends Controller
         $request->signature->move(public_path('signatures'),$signatureName);
         $signature = Order::where('id',$request->orderId)->first();
         $signature->signature = $signatureName;
+
+        $signature->payment_status = "Payment Received";
+        $signature->save();
+
         $signature->total = $request->amount;
         $signature->payment_status = "Payment Received";
         $signature->save();
@@ -160,10 +164,53 @@ class logisticsController extends Controller
         $points->type = "Add";
         $points->reason = "Receiving payment";
         $points->save();
+
         return back()->with('Success','Payment Received');
     }
     public function saveDeliveryDetails(Request $request)
     {
+
+        if(!$request->vid){
+            $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+            $request->vno->move(public_path('delivery_details'),$vehicleNo);
+
+            $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+            $request->lp->move(public_path('delivery_details'),$locationPicture);
+
+            $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+            $request->qm->move(public_path('delivery_details'),$quality);
+
+            $deliveryDetails = new DeliveryDetails;
+            $deliveryDetails->order_id = $request->orderId;
+            $deliveryDetails->vehicle_no = $vehicleNo;
+            $deliveryDetails->location_picture = $locationPicture;
+            $deliveryDetails->quality_of_material = $quality;
+            $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+            $deliveryDetails->save();
+        }else{
+
+        $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+        $request->vno->move(public_path('delivery_details'),$vehicleNo);
+        
+        $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+        $request->lp->move(public_path('delivery_details'),$locationPicture);
+        
+        $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+        $request->qm->move(public_path('delivery_details'),$quality);
+        
+        $deliveryDetails = new DeliveryDetails;
+        $deliveryDetails->order_id = $request->orderId;
+        $deliveryDetails->vehicle_no = $vehicleNo;
+        $deliveryDetails->location_picture = $locationPicture;
+        $deliveryDetails->quality_of_material = $quality;
+        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        if($request->vid){
+
+            $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
+            $request->vid->move(public_path('delivery_details'),$video);
+            $deliveryDetails->delivery_video = $video;
+        }
+
         $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
         $request->vno->move(public_path('delivery_details'),$vehicleNo);
         
@@ -186,6 +233,7 @@ class logisticsController extends Controller
         }
         $deliveryDetails->save();
         Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered",'delivered_on'=>date('Y-m-d')]);
+
         $reasonText = date('H:i:s') > "20:00:00" ? "Delivering material at night" : "Delivering material";
         $point = date('H:i:s') > "20:00:00" ? 500 : 250;
         $points = new Point;
@@ -195,6 +243,7 @@ class logisticsController extends Controller
         $points->reason = $reasonText;
         $points->save();
         return back();
+
     }
     public function getinvoice()
     {
@@ -378,5 +427,6 @@ class logisticsController extends Controller
         $address = SiteAddress::where('project_id',$orders->project_id)->first();
         $owner = OwnerDetails::where('project_id',$orders->project_id)->first();
         return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner]);
+
     }
 }

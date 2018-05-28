@@ -171,6 +171,7 @@ class TokenController extends Controller
             return response()->json(['message' => 'false']);
         }
     }
+
     public function saveLocation(Request $request)
     {
         $location = new UserLocation;
@@ -181,4 +182,5 @@ class TokenController extends Controller
         $messages = new Collection;
         return response()->json(['message'=>'true']);
     }
+
 }

@@ -797,6 +797,8 @@ class mamaController extends Controller
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,
             'construction_type'=>$type,
+            'follow_up_date' =>$request->follow_up_date,
+            'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
             'budgetType' => $request->budgetType,
@@ -1265,13 +1267,15 @@ class mamaController extends Controller
         $points->type = "Add";
         $points->reason = "Updating project";
         $points->save();
+
+
         projectDetails::where('project_id',$id)->update([
             'project_status'=>$statuses,
             'remarks'=>$request->materials,
             'with_cont'=>$request->qstn,
             'reqDate' =>$request->reqDate,
-            'followup'=>$request->follow,
-            'follow_up_date' =>$request->fdate,
+            'followup'=>$request->followup,
+            'follow_up_date' =>$request->follow_up_date,
             'construction_type'=>$type,
             'road_width'=>$request->rWidth,
             'quality'=>$request->quality,
@@ -1280,6 +1284,8 @@ class mamaController extends Controller
             'follow_up_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
             ]);
+ 
+
         siteAddress::where('project_id',$id)->update([
             'address'=>$request->address
             ]);

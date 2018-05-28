@@ -99,11 +99,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size:13px">Updated on</td>
-                            <td>{{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td>
-                        </tr>
-                        
-                        <tr>
                             <td style="font-size:13px"><b>Updated on</b></td>
                             <td>{{ date('d-m-Y h:i:s A',strtotime($details->updated_at)) }}</td>
                         </tr>

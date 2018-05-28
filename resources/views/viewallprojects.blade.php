@@ -59,7 +59,6 @@
 						<th>Listed By</th>
 						<th>Called By</th>
 						<th>Listed On</th>
-						
 						<th>Last update</th>
 						@if(Auth::user()->group_id == 2 )
 						<th>Last updated By</th>

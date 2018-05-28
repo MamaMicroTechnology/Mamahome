@@ -30,10 +30,8 @@
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
-                           <table class="table">
-                            
-                            
-                            <tr>
+                            <table class="table">
+                                <tr>
                                    <td>Project Name</td>
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
@@ -72,9 +70,7 @@
                                    <td>Road Width</td>
                                    <td>:</td>
                                    <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
-                                   <td>Road Width</td>
-                                   <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet"  class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                  
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -112,11 +108,6 @@
                                      <option  value="None">None</option>
                                 </select>
                               </td>
-
-
-
-
-
                                <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
@@ -135,81 +126,81 @@
                                         <tr>
                                           <td>
                                             <label class="checkbox-inline">
-                                              <input type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
+                                              <input id="planning" type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
                                             </label>
                                           </td>
                                           <td>
                                              <label class="checkbox-inline">
-                                              <input type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
+                                              <input id="digging" type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
                                             </label>
                                           </td>
                                           <td>
                                              <label class="checkbox-inline">
-                                              <input type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
+                                              <input id="foundation" type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
                                             </label>
                                           </td>
                                           <td>
                                              <label class="checkbox-inline">
-                                              <input type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
+                                              <input id="pillars" type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
                                             </label>
                                           </td>
                                           <td>
                                              <label class="checkbox-inline">
-                                              <input type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
+                                              <input id="walls" type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
                                             </label>
                                           </td>
                                         </tr>
                                         <tr>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
+                                          <input id="roofing" type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
+                                          <input id="electrical" type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
+                                          <input id="plumbing" type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
+                                          <input id="plastering" type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
+                                          <input id="flooring" type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
                                         </label>
                                         </td>
                                         </tr>
                                         <tr>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
+                                          <input id="carpentry" type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
+                                          <input id="paintings" type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
+                                          <input id="fixtures" type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
+                                          <input id="completion" type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
                                         </label>
                                         </td>
                                          <td>
                                           <label class="checkbox-inline">
-                                          <input type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
+                                          <input id="closed" type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
                                         </label>
                                         </td>
                                         </tr>
@@ -942,31 +933,40 @@
       var ctype3 = document.getElementById('constructionType3');
       var ctype4 = document.getElementById('constructionType4');
       var countinput;
-      if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
-        //   both construction type
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
-      }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
-        //   all construction type and budget type
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
-      }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
-        //   both construction type and either budget type
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
-      }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
-        //   
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
-      }else if(ctype1.checked == true || ctype2.checked == true){
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
-      }else{
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
-      }
-      if(countinput >= 5){
+    //   if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
+    //     //   both construction type
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+    //   }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
+    //     //   all construction type and budget type
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
+    //   }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
+    //     //   both construction type and either budget type
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
+    //   }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
+    //     //   
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+    //   }else if(ctype1.checked == true || ctype2.checked == true){
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+    //   }else{
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    //   }
+    //   if(countinput >= 5){
+    //     $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+    //     $('#constructionType1').attr('disabled',false);
+    //     $('#constructionType2').attr('disabled',false);
+    //     $('#constructionType3').attr('disabled',false);
+    //     $('#constructionType4').attr('disabled',false);
+    //   }else if(countinput == 0){
+    //       return "none";
+    //   }else{
+    //     $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+    //   }
+      if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
         $('#constructionType2').attr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
-      }else if(countinput == 0){
-          return "none";
       }else{
         $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
       }
@@ -978,5 +978,14 @@
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
+</script>
+<script>
+function dis(){
+
+    if (document.getElementById("constructionType3").checked){
+        document.getElementById('constructionType4').disabled=true;
+}
+
+
 </script>
 @endsection

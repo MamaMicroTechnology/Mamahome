@@ -176,7 +176,10 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $subcategory->id }}" name="id">
                                     <div class="input-group">
-                                        <input type="text" name="name" value="{{ $subcategory->sub_cat_name }}" class="form-control input-sm">
+                                        <input type="text" name="name" value="{{ $subcategory->sub_cat_name }}" 
+                                        class="form-control input-sm"><br><br>
+                                        <input type="text" name="Quantity" value="{{ $subcategory->Quantity }}" 
+                                        class="form-control input-sm" style="width: 50%">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>
@@ -211,8 +214,8 @@
             <select class="form-control" required name="brand" id="brand">
                 
             </select><br>
-            <input required type="text" placeholder="Sub Category" name="subcategory" class="form-control">
-            
+            <input required type="text" placeholder="Sub Category" name="subcategory" class="form-control"><br>
+            <input required type="text" placeholder="Minimum Quantity" name="Quantity" class="form-control" style="width:30%;">
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success">Add</button>

@@ -5,6 +5,8 @@
         <div class="panel panel-primary"  style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);">
 
+               <h2>
+                   <div class="pull-right"></div>
                <h2>Project Details Of 
                     {{ $status[0] }} Stage
                    <div class="pull-right">{{ $totalListing }} Projects Found</div>
@@ -29,6 +31,7 @@
                     </thead>
                     <tbody id="mainPanel">
                         @foreach($projects as $project)
+                       
                         <tr>
                             <td style="text-align:center">{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
@@ -41,18 +44,23 @@
                             <td>
                                 <form method="post" action="{{ URL::to('/') }}/confirmedProject">
                                     {{ csrf_field() }}
-                                     <input type="hidden" value="{{ $project->project_id }}" name="id">
-                                    @if( ($project->confirmed !== "0" ||  $project->confirmed == "true") && ($project->confirmed !== "false" && $project->confirmed !== "Null" ))
-                                 <button type="button" class="btn btn-danger" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
+                                    <input type="hidden" value="{{ $project->project_id }}" name="id">
+                                     @if( $project->confirmed !== "0" ||  $project->confirmed == "true" || $project->confirmed !== "NULL" )
+                                 <button type="button" class="btn btn-danger"  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
                                 @endif
-                                        @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
-                                 <button type="button" class="btn btn-success"  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
-                                @endif      
+                                        @if( $project->confirmed == "0" ||  $project->confirmed == "false" || $project->confirmed == "NULL" )
+                                 <button type="button" class="btn btn-success" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
+                                @endif
+                                          
+                                      
                                 </form>
                                 <td>{{  $project->confirmed }}</td>
                             </td>
+
+                            <td><p >{{$project->updated_at}}</p></td> 
                         </tr>
-                        @endforeach
+                      
+                         @endforeach
                     </tbody>
                 </table>
             </div>
