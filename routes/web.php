@@ -443,6 +443,7 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::get('/addBuilderProjects','aeController@addBuilderProjects');
     Route::post('/addBuilderDetails','aeController@postBuilderDetails');
     Route::post('/addBuilderProject','aeController@addBuilderProject');
+    Route::get('/deliveredOrders','aeController@getDeliveredOrders');
 });
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){

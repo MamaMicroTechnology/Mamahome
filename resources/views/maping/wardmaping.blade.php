@@ -35,6 +35,7 @@
             lognitude = e.latLng.lng();
             path.push([latitude, lognitude]);
             marker[0] = path;
+            polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
               strokeColor: '#131540',
@@ -101,6 +102,7 @@
             lognitude = e.latLng.lng();
             path.push([latitude, lognitude]);
             marker[0] = path;
+            polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
               strokeColor: '#131540',
