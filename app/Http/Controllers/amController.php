@@ -77,6 +77,23 @@ class amController extends Controller
         $res[1] = $subcat;
         return response()->json($res);   
     }
+    public function getname(Request $request){
+       
+         $name = MamahomeAsset::where('asset_id',$request->name)->where('status',null)->get();
+            return response()->json($name);
+    
+
+       
+    }
+    public function getserial(Request $request){
+
+       $serial = MamahomeAsset::where('id',$request->z)->get();
+       return response()->json($serial);
+    }
+    public function getdesc(Request $request){
+        $desc = MamahomeAsset::where('id',$request->z)->get();
+        return response()->json($desc);
+    }
     public function getBrands(Request $request){
         $res[0] = brand::where('category_id',$request->cat)->get();
         return response()->json($res);
@@ -195,7 +212,7 @@ class amController extends Controller
         foreach($assets as $asset){
             $asts[$asset->type] = MamahomeAsset::where('asset_id',$asset->id)->count();
         }
-      
+        $asts["SIMCard"] =  MamahomeAsset::where('asset_id',10)->count();
         return view('addassets',['assets'=>$assets,'asts'=>$asts]);
     }
     public function confirmamOrder(Request $request)
@@ -246,12 +263,23 @@ class amController extends Controller
         return view('assistantmanager.hremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
     }
     public function getasset(Request $request){
-       
-        $asset =$request->asset;
+         
+       if($request->asset == "SimCard"){
+
+         $id = Asset::where('type',$request->asset)->pluck('id')->first();
+         $tcount = MamahomeAsset::where('asset_id',10)->count();
+        $rcount =AssetInfo::where('asset_type',$request->asset)->count();
+        $remaining = $tcount-$rcount;
+        $mh = MamahomeAsset::where('asset_id',10)->select('mamahome_assets.*')->get(); 
+        return view('assetsim',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
+       } 
         $id = Asset::where('type',$request->asset)->pluck('id')->first();
-        $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get();
-       
-        return view('hrasset',['asset'=>$asset,'mh'=>$mh]);
+        $tcount = MamahomeAsset::where('asset_id',$id)->count();
+        $rcount =AssetInfo::where('asset_type',$request->asset)->count();
+        $remaining = $tcount-$rcount;
+        $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get(); 
+        return view('hrasset',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
+
     }
     public function storeasset(Request $request){
         
@@ -267,7 +295,6 @@ class amController extends Controller
         }
       
        $asset = Asset::where('type',$request->asset)->pluck('id')->first();
-      
         $mhome = New MamahomeAsset;
         $mhome->asset_id = $asset;
         $mhome->name=$request->lname;
@@ -281,6 +308,19 @@ class amController extends Controller
         $mhome->save();
 
         return back();
+    }
+    public function assetsimcard(Request $request){
+
+         $asset = Asset::where('type',$request->asset)->pluck('id')->first();
+        
+         $mhome = New MamahomeAsset;
+        $mhome->asset_id = 10;
+         $mhome->provider = $request->sim;
+         $mhome->sim_number = $request->number;
+         $mhome->sim_remark = $request->sremark;
+         $mhome->save();
+         return back();
+
     }
     public function addtype(Request $request){
 
@@ -572,8 +612,32 @@ class amController extends Controller
     }
     public function deleteAsset(Request $request)
     {
-        
+         $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
         AssetInfo::where('id',$request->id)->delete();
+        $mhasset = MamahomeAsset::where('id',$mh)->first();
+        $mhasset->status = null;
+        $mhasset->save();
+        return back();
+    }
+     public function deleteassetsim(Request $request)
+    {
+        
+        MamahomeAsset::where('id',$request->id)->delete();
+        return back();
+    }
+     public function deletesim(Request $request)
+    {
+        
+        $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
+        AssetInfo::where('id',$request->id)->delete();
+        $mhasset = MamahomeAsset::where('id',$mh)->first();
+        $mhasset->status = null;  
+        $mhasset->save();
+        return back();
+    }
+    public function deleteassets(Request $request)
+    {
+        MamahomeAsset::where('id',$request->Id)->delete();
         return back();
     }
     public function deleteCertificate(Request $request)
@@ -608,10 +672,12 @@ class amController extends Controller
 
         $user = User::where('employeeId', $request->UserId)->first();
         $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
-        $assets = Asset::all();
+        $assets = Asset::where('id','!=',10)->get();
+        $sim = MamahomeAsset::where('asset_id','=',10)->get();
         $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();
         $info = AssetInfo::where('id',$request->id)->get();
-        return view('assignEmployee',['user'=>$user,'employeeDetails'=>$employeeDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'pageName'=>'HR']);
+        return view('assignEmployee',['user'=>$user,'employeeDetails'=>$employeeDetails,'assets'=>$assets,'assetInfos'=>$assetInfos,'sim'=>$sim,    
+            'pageName'=>'HR']);
     }
     public function editasset(Request $request){
         $post = MamahomeAsset::where('id',$request->Id)->get();
@@ -633,12 +699,57 @@ class amController extends Controller
     public function saveassetinfo(Request $request){
 
         AssetInfo::where('id',$request->Id)->update([
-
             'serial_no' =>$request->serial_no,
             'description' =>$request->desc,
             'remark' =>$request->remark,
-
         ]);
         return back();
+    }
+    public function savesiminfo(Request $request){
+
+        
+         $simnumber = MamahomeAsset::where('id',$request->number)->pluck('sim_number')->first();
+         $empimage = time().'.'.request()->emp_image->getClientOriginalExtension();
+        $request->emp_image->move(public_path('empsignature'),$empimage);
+        $mimage = time().'.'.request()->manager_image->getClientOriginalExtension();
+        $request->manager_image->move(public_path('managersignature'),$mimage);
+         $assetInfo = new AssetInfo;
+        $assetInfo->asset_type = 'SIMCard';
+        $assetInfo->mh_id = $request->number;
+        $assetInfo->employeeId = $request->userId;
+        $assetInfo->emp_signature = $empimage;
+        $assetInfo->manager_signature = $mimage;
+         $assetInfo->provider = $request->sim;
+         $assetInfo->sim_number = $simnumber;
+         $assetInfo->sim_remark = $request->sremark;
+         $assetInfo->save();
+
+
+        $mhasset = MamahomeAsset::where('id',$request->number)->first();
+        $mhasset->status = "Assigned";
+        $mhasset->save();
+
+         return back();
+
+
+    }
+    public function getbrand(Request $request){
+       $name = MamahomeAsset::where('id',$request->name)->where('status',null)->get();
+
+       return response()->json($name);
+    }
+    public function signature()
+    {
+        return view('logistics.takesignature');
+    }
+    public function preview(Request $request)
+    {
+         $user = User::where('employeeId', $request->Id)
+        ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.date_of_joining','employee_details.permanent_address')
+                ->get();
+        $info = AssetInfo::where('id', $request->id)->get();
+
+        return view('preview',['user'=>$user,'info'=>$info]);
     }
 }

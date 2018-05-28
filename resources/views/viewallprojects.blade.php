@@ -126,9 +126,9 @@
 							</td>
 							@if(Auth::user()->group_id == 2 )
 							<td>@if($updater != null)
-                                 			  {{ $updater->name }}
-                               				 @endif</td>
-							 @endif
+                                   {{ $updater->name }}
+                                @endif</td>
+                            @endif
 							@if(Auth::user()->group_id == 1)
 							<td>
 								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>

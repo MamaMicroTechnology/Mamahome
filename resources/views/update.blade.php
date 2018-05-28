@@ -12,7 +12,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                   @if($subwards)
-                  You're Assigned Ward is  {{$subwards->sub_ward_name}}
+                 
                   @else
                   Update Project
                   @endif
