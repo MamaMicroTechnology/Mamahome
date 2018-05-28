@@ -27,7 +27,7 @@
 					    <!-- <th>Designation</th> -->
 						<th>Required</th>
 						<th>Quantity</th>
-						<th>Delivery Boy</th>
+						<th>Logistics Coordinator</th>
 						<th>Requirement Date</th>
 						<th>Payment Status</th>
 						<th>Dispatch Status</th>
@@ -218,6 +218,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
+    	           	 alert(response);
     	           $("#myordertable").load(location.href + " #myordertable>*", "");
     	       }
     	    });

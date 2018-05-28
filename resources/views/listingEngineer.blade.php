@@ -247,9 +247,9 @@
                                    <td><input value="{{ old('budget') }}" id="budget" required placeholder="Budget in Crores" type="text" onkeyup="check('budget')" class="form-control input-sm" name="budget"></td>
                                </tr>
                                <tr>
-                                   <td>Project Image</td>
+                                   <td>Project Images</td>
                                    <td>:</td>
-                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
+                                   <td><input id="pImage" oninput="fileuploadimage()" required type="file" accept="image/*" class="form-control input-sm" name="pImage[]" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -968,6 +968,13 @@
       if(count > 5){
         document.getElementById('oApprove').value="";
         alert('You are allowed to upload a maximum of 5 files');
+      }
+    }
+    function fileUploadimage(){
+      var count = document.getElementById('pImage').files.length;
+      if(count > 4){
+        document.getElementById('pImage').value="";
+        alert('You are allowed to upload a maximum of 4 files');
       }
     }
 </script>
