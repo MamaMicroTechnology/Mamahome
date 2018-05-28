@@ -139,8 +139,20 @@ class HomeController extends Controller
     
     public function inputdata(Request $request)
     {
-
-         $validator = Validator::make($request->all(), [
+        // for fetching sub categories
+        $get = implode(", ",array_filter($request->quantity));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quantity);
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub." :".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$sub." :".$another[$i];
+            }
+        }
+        $validator = Validator::make($request->all(), [
             'subcat' => 'required'
         ]);
         if ($validator->fails()) {
@@ -1879,7 +1891,6 @@ class HomeController extends Controller
         {
             return response()->json('Error !!!');
         }
-        
     }
     public function updateProcurement(Request $request)
     {
@@ -2328,7 +2339,6 @@ class HomeController extends Controller
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
 
             ->get();
-
             foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -2344,11 +2354,12 @@ class HomeController extends Controller
         $from = $request->from;
         $to = $request->to;
         if($from == $to){
-             return redirect('/gettodayleinfo?from='.$from.'&id='.$id);
+            return redirect('/gettodayleinfo?from='.$from.'&id='.$id.'&to='.$to);
         }
         if($id !== 'ALL')
         {
-        $records[0] =  DB::table('project_details')
+
+                $records[0] =  DB::table('project_details')
                 ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
                 ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
                 ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
@@ -2365,7 +2376,8 @@ class HomeController extends Controller
         }
         else
         {
-            $records[0] =  DB::table('project_details')
+              
+                $records[0] =  DB::table('project_details')
                 ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
                 ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
                 ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
@@ -2385,9 +2397,12 @@ class HomeController extends Controller
     {
         $records = array();
         $id = $request->id;
-      $from = $request->from_date;
+        $from = $request->from_date;
+        $to = date('Y-m-d', strtotime($request->to));
         if($id !== 'ALL')
-        {
+        { 
+
+          
         $records[0] =  DB::table('project_details')
                 ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
                 ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
@@ -2396,7 +2411,8 @@ class HomeController extends Controller
                 ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
                 ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
                 ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-                ->where('project_details.created_at','like',$from.'%')
+                ->where('project_details.created_at','LIKE',$from."%")
+                ->where('project_details.created_at','LIKE',$to."%")
                 ->where('users.id',$id)
                 ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
                 ->get();
@@ -2404,6 +2420,7 @@ class HomeController extends Controller
         }
         else
         {
+
             $records[0] =  DB::table('project_details')
                 ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
                 ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
@@ -2413,6 +2430,7 @@ class HomeController extends Controller
                 ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
                 ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
                 ->where('project_details.created_at','like',$from.'%')
+                ->where('project_details.created_at','LIKE',$to."%")
                 ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
                 ->get();
         $records[1] = count($records[0]);

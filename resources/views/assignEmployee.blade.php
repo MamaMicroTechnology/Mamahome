@@ -316,6 +316,7 @@ function getname(){
                     success: function(response)
                     {
                         console.log(response);
+                        
                         var ans = "<option value=''>--Select--</option>";
                         for(var i=0;i<response.length;i++)
                         {

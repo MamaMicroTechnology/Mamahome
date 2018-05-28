@@ -229,8 +229,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/approvePoint','HomeController@approvePoint');
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
+    Route::get('/confidential','HomeController@confidential');
     Route::get('/letracking','HomeController@getLeTracking');
-
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
@@ -275,7 +275,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/teamdeletekra','amController@deletekra');
     Route::post('/teamupdatekra','amController@updatekra');
     Route::post('/addPoints','mamaController@addPoints');
-
+    Route::get('/tltracking','HomeController@getLeTracking');
 
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');

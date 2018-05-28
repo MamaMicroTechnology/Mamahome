@@ -145,17 +145,10 @@
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
-<<<<<<< HEAD
-									<select required class="form-control" name="initiator">
-										<option value="" required>--Select--</option>
-										@foreach($users1 as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-=======
 									<select class="form-control" name="initiator">
 										<option value="">--Select--</option>
 										@foreach($users1 as $user)
 										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
->>>>>>> MuraliHamsa
 										@endforeach
 									</select>
 								</td>
@@ -309,6 +302,7 @@
 	}
 </script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <script>
@@ -319,4 +313,6 @@
 =======
 >>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
 >>>>>>> MuraliHamsa
+=======
+>>>>>>> b2b49d708803e00adfd451b104f0c77f6e541861
 @endsection
