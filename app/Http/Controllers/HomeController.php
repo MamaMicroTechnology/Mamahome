@@ -140,9 +140,9 @@ class HomeController extends Controller
     public function inputdata(Request $request)
     {
         // for fetching sub categories
-        $get = implode(", ",array_filter($request->quantity));
+        $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
-        $quantity = array_filter($request->quantity);
+        $quantity = array_filter($request->quan);
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();

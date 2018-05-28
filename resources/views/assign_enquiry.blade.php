@@ -79,8 +79,8 @@
                       &nbsp;&nbsp;{{$subward->sub_ward_name}}
                      </label>&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
-              @endif
                    
+              @endif
               @endforeach
           </div>
           </div>
