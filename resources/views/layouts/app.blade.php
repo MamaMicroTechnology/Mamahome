@@ -504,6 +504,7 @@ div#calendar{
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
+   <a href="{{ URL::to('/letracking') }}">Tracking</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
@@ -525,7 +526,7 @@ div#calendar{
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
-    <!-- <a href="{{ URL::to('/tltraining') }}">Training Video</a> -->
+    <a href="{{ URL::to('/tltracking') }}">Tracking</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)

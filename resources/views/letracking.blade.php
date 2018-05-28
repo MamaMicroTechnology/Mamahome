@@ -59,7 +59,10 @@
         <div class="row">
             <div class="col-md-2" style="max-height:550px; height:550px; overflow-y: scroll;">
                 @foreach($users as $user)
-                <a style="font-family:'Times New Roman'" class="list-group-item" href="{{ URL::to('/') }}/letracking?userId={{ $user->id }}">{{ $user->employeeId }} {{ $user->name }}</a>
+                <a style="font-family:'Times New Roman'" class="list-group-item"
+                    href="{{ URL::to('/') }}/{{ Auth::user()->id == 1 ? 'letracking' : 'tltracking' }}?userId={{ $user->id }}">
+                    {{ $user->employeeId }} {{ $user->name }}
+                </a>
                 @endforeach
             </div>
             <div class="col-md-10">

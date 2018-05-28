@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
   @if($zones->lat != null)
   <script type="text/javascript">
+  var count = 0;
     var map, path = [], newpath = [];
     var marker = [];
     var latlng = "{{ $zones-> lat }}";
@@ -56,6 +57,7 @@
         var color = "#"+document.getElementById('color').value;
         document.getElementById('path').value = marker;
         var line = "#"+String(val - 10);
+        count = 1;
         polygon = map.removePolylines();
         polygon = map.removePolygons();
         polygon = map.drawPolygon({
@@ -128,7 +130,7 @@
       </div>
       <br>
       <div class="col-md-6">
-        <form action="{{ URL::to('/') }}/saveMap" method="POST">
+        <form onsubmit="validate()" action="{{ URL::to('/') }}/saveMap" method="POST">
           {{ csrf_field() }}
             <div class="col-md-6">
               {{ $page }}:<br>
@@ -146,7 +148,7 @@
             </div>
           <input type="hidden" value="{{ $zones->lat }}" name="path" id="path" class="form-control"><br>
           <button type="button" id="draw" class="btn btn-primary">Preview</button>
-          <input type="submit" value="Save" class="btn btn-success">
+          <input type="submit" value="Save" class="btn btn-success" id="savebutton">
         </form>
       </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>

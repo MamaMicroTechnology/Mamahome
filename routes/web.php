@@ -264,7 +264,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/teamdeletekra','amController@deletekra');
     Route::post('/teamupdatekra','amController@updatekra');
     Route::post('/addPoints','mamaController@addPoints');
-
+    Route::get('/tltracking','HomeController@getLeTracking');
 
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
