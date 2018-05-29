@@ -22,7 +22,7 @@
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>
-								<td style="width:30%"><label>Date* : </label></td>
+								<td style="width:30%"><label>Requirement Date* : </label></td>
 								<td style="width:70%"><input value="{{ $enq->requirement_date }}" required type="date" name="edate" id="edate" class="form-control" style="width:30%" /></td>
 							</tr>
 							<tr>

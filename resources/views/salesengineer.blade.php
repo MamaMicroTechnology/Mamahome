@@ -103,11 +103,11 @@
                    <td  id="x">
                     <div class="col-sm-6">
                       <label>Longitude:</label>
-                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress->latitude }}" id="longitude">
+                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="longitude">
                     </div>
                     <div class="col-sm-6">
                         <label>Latitude:</label>
-                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress->latitude }}" id="latitude">
+                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="latitude">
                     </div>
                    </td>
                </tr>  
@@ -124,7 +124,7 @@
                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                    <td>Full Address</td>
                    <td>:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress->address }}"></td>
+                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}"></td>
                </tr>
                <?php
                   $type = explode(", ",$project->construction_type);

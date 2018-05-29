@@ -67,8 +67,7 @@ name="selectprojects" onchange="getAddress()">
 <tr>
 <td><label>Product:</label></td>
 <td><button required type="button" class="btn btn-success"
-data-toggle="modal" data-target="#myModal">Select
-Category</button></td>
+data-toggle="modal" data-target="#myModal">Product</button></td>
 </tr>
 <!-- model -->
 <div class="modal fade" id="myModal" role="dialog">
