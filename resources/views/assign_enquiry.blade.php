@@ -57,36 +57,30 @@
         @endforeach
         </div>
     </div>
-    <h4>Assign Date</h4>
-   <input type="date" name="dateenq" class="form-control" style="width: 50%;">
+  </div>
+  @foreach($wardsAndSub as $subward)
+  <div id="subwards{{ $subward['ward'] }}" class="hidden">
+    <h4 class="modal-title">Choose SubWard </h4>
+    <span class="pull-right"><button id="back{{ $subward['ward'] }}" onclick="back('{{$subward['ward'] }}')" type="button" class="hidden">Back</button></span>
+    <label class="checkbox-inline"><input id="check{{ $subward['ward'] }}" type="checkbox" name="sub" value="submit" onclick="checkall('{{$subward['ward']}}');">All</label>
+    <br><br>    
+    <div id="ward{{ $subward['ward'] }}">
+      <div class="row"> 
+        @foreach($subward['subwards'] as $subs)
+        <div class="col-sm-2" >
+          <label class="checkbox-inline">
+            <input  type="checkbox"  name="subward[]" value="{{$subs->sub_ward_name}}">
+            &nbsp;&nbsp;{{$subs->sub_ward_name}}
+          </label>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
-
-         @foreach($wards as $ward)
-          <div id="subwards{{ $ward->id }}" class="hidden">
-            <h4 class="modal-title">Choose SubWard </h4>
-          <span class="pull-right"><button id="back{{ $ward->id }}" onclick="back('{{$ward->id }}')" type="button" class="hidden">Back</button></span>
-            <input type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward->id}}');">All
-         
-          <br><br>    
-          <div id="ward{{ $ward->id }}">
-          <div class="row"> 
-              @foreach($subwards as $subward)
-              @if($subward->ward_id == $ward->id)
-              <div class="col-sm-2" >
-                    <label class="checkbox-inline">
-                      
-                      <input  type="checkbox"  name="subward[]" value="{{$subward->sub_ward_name}}">
-                      &nbsp;&nbsp;{{$subward->sub_ward_name}}
-                     </label>&nbsp;&nbsp;&nbsp;&nbsp;
-                    </div>
-              @endif
-                   
-              @endforeach
-          </div>
-          </div>
-          </div>
-          @endforeach
-         <div class="row">
+        @endforeach
+      </div>
+    </div>
+  </div>
+  @endforeach 
+  <h4>Assign Date</h4>
+  <input type="date" name="dateenq" class="form-control" style="width: 50%;">         
+  <div class="row">
         <h4>&nbsp;&nbsp; Select Category</h4>
        @foreach($category as $cat)
       
@@ -101,48 +95,15 @@
 <p class="text-center"><button type="submit" class="btn btn-primary">Submit Data</button></p>                                        
 @foreach($category as $cat)
 <div class="hidden" id="brand{{ $cat->id }}">
-       @foreach($brands as $brand)
-       @if($brand->category_id == $cat->id)
-       <label>&nbsp;&nbsp;&nbsp;    
-         <input data-toggle="modal" data-target="#myModal2" type="checkbox" id="sub_cat{{$brand->id}}" onclick="clickbrand( {{ $brand->id }} )"; name="brand[]" style=" padding: 5px;" value=" {{ $brand->brand}}">&nbsp;&nbsp;  {{ $brand->brand}} <span style="color:green;">[{{$cat->category_name}}]</span>
-       </label>
-       @endif
-       @endforeach
-       </div>
-@endforeach
-  <!-- Modal -->
-  <!-- <div class="modal fade" id="myModal2" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-         <div class="row">
- @foreach($brands as $brand)
-<div class="hidden" id="sub{{ $brand->id }}">
-       @foreach($sub as $subs)
-       @if($brand->brand_id == $subs->brand_id)
-        <div class="col-sm-4">
-          
-       <label>&nbsp;&nbsp;&nbsp;    
-         <input type="checkbox" name="subcat[]"  style=" padding: 5px;" value=" {{ $subs->sub_cat_name}}">&nbsp;&nbsp;  {{ $subs->sub_cat_name}}
-       </label>
-       </div>
-       @endif
-       @endforeach
-   </div>
-@endforeach
+  @foreach($brands as $brand)
+    @if($brand->category_id == $cat->id)
+    <label>&nbsp;&nbsp;&nbsp;    
+      <input data-toggle="modal" data-target="#myModal2" type="checkbox" id="sub_cat{{$brand->id}}" onclick="clickbrand( {{ $brand->id }} )"; name="brand[]" style=" padding: 5px;" value=" {{ $brand->brand}}">&nbsp;&nbsp;  {{ $brand->brand}} <span style="color:green;">[{{$cat->category_name}}]</span>
+    </label>
+    @endif
+  @endforeach
 </div>
-         
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
+@endforeach
 </div>
   </div>
 </div>
@@ -186,12 +147,17 @@ function back(arg){
 <script>
 function checkall(arg){
 var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
-
-for (var i = 0; i < clist.length; ++i) 
-{ 
-  clist[i].checked = "checked"; 
+  if(document.getElementById('check'+arg).checked == true){
+    for (var i = 0; i < clist.length; ++i) 
+    { 
+      clist[i].checked = true; 
+    }
+  }else{
+    for (var i = 0; i < clist.length; ++i) 
+    { 
+      clist[i].checked = false; 
+    }
   }
-  
 }
 </script>   
 <script>
