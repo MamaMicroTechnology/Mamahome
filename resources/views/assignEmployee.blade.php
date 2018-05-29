@@ -375,9 +375,9 @@ function getdesc(){
                          
                         }
                          document.getElementById('desc').value = text;
-                         document.getElementById('desc').disabled = text;  
+                        
                     }
                 });
             }
-</script>
+</script>       
 @endsection
