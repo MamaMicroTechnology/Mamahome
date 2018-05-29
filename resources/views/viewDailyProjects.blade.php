@@ -96,6 +96,7 @@
                                
                             </td>
                             </td>
+                            </td>
                         </tr>
                         <tr>
                             <td style="font-size:13px"><b>Updated on</b></td>
@@ -295,6 +296,32 @@
     </div>
 </div>
         
+ <div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Owner Details</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Owner Name</th>
+                        <th>Owner Contact</th>
+                        <th>Owner Email</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                             <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
+                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_no : '' }}</td>
+                           <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
+                           
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>       
        
 
 @endsection

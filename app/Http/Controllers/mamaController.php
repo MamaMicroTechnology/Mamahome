@@ -844,6 +844,8 @@ class mamaController extends Controller
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,
             'construction_type'=>$type,
+            'follow_up_date' =>$request->follow_up_date,
+            'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
             'budgetType' => $request->budgetType,
@@ -1312,13 +1314,15 @@ class mamaController extends Controller
         $points->type = "Add";
         $points->reason = "Updating project";
         $points->save();
+
+
         projectDetails::where('project_id',$id)->update([
             'project_status'=>$statuses,
             'remarks'=>$request->materials,
             'with_cont'=>$request->qstn,
             'reqDate' =>$request->reqDate,
-            'followup'=>$request->follow,
-            'follow_up_date' =>$request->fdate,
+            'followup'=>$request->followup,
+            'follow_up_date' =>$request->follow_up_date,
             'construction_type'=>$type,
             'road_width'=>$request->rWidth,
             'quality'=>$request->quality,
@@ -1327,6 +1331,8 @@ class mamaController extends Controller
             'follow_up_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
             ]);
+ 
+
         siteAddress::where('project_id',$id)->update([
             'address'=>$request->address
             ]);
@@ -1689,20 +1695,30 @@ class mamaController extends Controller
             // fetching brands
         $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
         $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
-       $brandnames = implode(", ", $brand);
-       
+        $brandnames = implode(", ", $brand);
+        $get = implode(", ",array_filter($request->quan));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quan);
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub." :".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$sub." :".$another[$i];
+            }
+        }
 
         $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
       
-
         Requirement::where('id',$request->reqId)->update([
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
             'generated_by' => $request->initiator,
-            'quantity' => $request->equantity,
+            'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);

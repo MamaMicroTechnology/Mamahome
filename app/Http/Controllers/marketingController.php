@@ -79,6 +79,7 @@ class marketingController extends Controller
         $subcat->category_id = $request->category;
         $subcat->brand_id = $request->brand;
         $subcat->sub_cat_name = $request->subcategory;
+        $subcat->Quantity = $request->Quantity;
         $subcat->save();
         $cprice = new CategoryPrice;
         $cprice->category_id = $request->category;
@@ -112,7 +113,10 @@ class marketingController extends Controller
     }
     public function updateSubCategory(Request $request){
         SubCategory::where('id',$request->id)
-        ->update(['sub_cat_name'=>$request->name]);
+        ->update(['sub_cat_name'=>$request->name,   
+                'Quantity'=>$request->Quantity
+
+            ]);
         return back()->with('Success','Sub-Category has been updated');
     }
     public function addBrand(Request $request)

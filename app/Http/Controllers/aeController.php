@@ -10,6 +10,7 @@ use App\BuilderInfo;
 use App\BuilderProjects;
 use App\Ward;
 use App\SubWard;
+use App\Order;
 
 class aeController extends Controller
 {
@@ -80,5 +81,14 @@ class aeController extends Controller
         $builderProjects->remarks = $request->remarks;
         $builderProjects->save();
         return back()->with('Success','Project added successfully');
+    }
+    public function getDeliveredOrders()
+    {
+        $deliveredOrders = Order::where('orders.delivery_status',"Delivered")
+                            ->leftjoin('site_addresses','site_addresses.project_id','orders.project_id')
+                            ->leftjoin('project_details','project_details.project_id','orders.project_id')
+                            ->select('orders.*','site_addresses.address','orders.id as orderId','project_details.project_name')
+                            ->get();
+        return view('accountExecutive.deliveredOrders',['deliveredOrders'=>$deliveredOrders]);
     }
 }

@@ -6,9 +6,9 @@
         <div class="panel panel-default"  style="overflow-x:scroll;border-color:rgb(244, 129, 31); ">
             <div class="panel-heading" id="panelhead" style="background-color: rgb(244, 129, 31);color:white;">
 
-               <h2>Project Details 
-                   <p class="pull-right">Total Projects {{ $totalListing }}</p>
-               </h2> 
+                <h2>Project Details 
+                    <p class="pull-right">Total Projects {{ $totalListing }}</p>
+                </h2> 
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">
@@ -47,7 +47,7 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $project->project_id }}" name="id">
                                     
-                                    @if( ($project->confirmed !== "0" ||  $project->confirmed == "true") && ($project->confirmed !== "false" && $project->confirmed !== "Null" ))
+                                    @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
                                  <button type="button" class="btn btn-danger" {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called</button>
                                 @endif
                                         @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
@@ -57,6 +57,7 @@
                                     
                                     </div>       
                                 </form>
+                                </td>
                                 <td>{{  $project->confirmed }}</td>
                             <td><p>{{$project->updated_at}}</p></td> 
                             

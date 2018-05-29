@@ -27,7 +27,7 @@
 					    <!-- <th>Designation</th> -->
 						<th>Required</th>
 						<th>Quantity</th>
-						<th>Logistics Coordinator</th>
+						<th>Logistics Converter</th>
 						<th>Requirement Date</th>
 						<th>Payment Status</th>
 						<th>Dispatch Status</th>
@@ -117,18 +117,18 @@
 									</div>
 									<div class="modal-body" style="overflow-y:scroll; max-height:400px; height:400px;">
 										<br>
-										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->vehicle_no }}" alt="Vehicle No." title="Vehicle No." class="img img-responsive img-thumbnail">
+										<img src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->vehicle_no }}" alt="Vehicle No." title="Vehicle No." class="img img-responsive img-thumbnail">
 										<center><label for="above">Vehicle No.</label></center>
 										<br>
-										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->location_picture }}" alt="Location Picture" title="Location Picture" class="img img-responsive img-thumbnail">
+										<img src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->location_picture }}" alt="Location Picture" title="Location Picture" class="img img-responsive img-thumbnail">
 										<center><label for="above">Location Picture</label></center>
 										<br>
-										<img src="{{ URL::to('/') }}/delivery_details/{{ $rec->quality_of_material }}" alt="Quality Of Material" title="Quality Of Material" class="img img-responsive img-thumbnail">
+										<img src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->quality_of_material }}" alt="Quality Of Material" title="Quality Of Material" class="img img-responsive img-thumbnail">
 										<center><label for="above">Quality Of Material</label></center>
 										<br>
 										<video class="{{ $rec->delivery_video != null ? 'img img-responsive img-thumbnail' : 'hidden' }}" width="320" height="240" controls>
-											<source src="{{ $rec->delivery_video }}" type="video/mp4">
-											<source src="{{ $rec->delivery_video }}" type="video/ogg">
+											<source src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->delivery_video }}" type="video/mp4">
+											<source src="{{ URL::to('/') }}/public/delivery_details/{{ $rec->delivery_video }}" type="video/ogg">
 											Your browser does not support the video tag.
 										</video>
 										<center><label class="{{ $rec->delivery_video == null ? 'hidden': '' }}"  for="above">Delivery Video</label></div></center>

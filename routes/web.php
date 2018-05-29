@@ -20,13 +20,19 @@ Route::get('/', function () {
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
+ Route::get('/h','HomeController@hstore');
+
+Auth::routes();
+Route::get('/myreport','HomeController@myreport');
+
+Route::POST('/projectstore','HomeController@projectstore');
+Route::POST('/enquirystore','HomeController@enquirystore');
 // Shared View
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 Route::get('/invoice','logisticsController@getinvoice');
 Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
-
 
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
@@ -39,7 +45,6 @@ Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
 Route::get('/blocked_projects','HomeController@blocked');
-
 
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
@@ -85,6 +90,7 @@ Route::get('/scmaps','HomeController@tlMaps');
 Route::post('/{id}/converterassignWards','mamaController@assignWards');
 Route::get('/scenquirysheet','HomeController@enquirysheet');
 Route::get('/sctraining','HomeController@sctraining');
+Route::get('/enquirywise','HomeController@enqwise');
 
 
 //marketing
@@ -151,7 +157,10 @@ Route::get('/getleinfo','HomeController@getleinfo');
 Route::get('/gettodayleinfo','HomeController@gettodayleinfo');
 Route::get('/registrationrequests','HomeController@regReq');
 Route::get('/salesAddProject','HomeController@listingEngineer');
-Route::get('/salescompleted','HomeController@updateSalesAssignment');
+Route::get('/salescompleted','HomeController@projectwisedel');
+
+
+
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
 Route::get('/followupproject','HomeController@followup');
@@ -217,8 +226,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/approvePoint','HomeController@approvePoint');
     Route::get('/assignadmin','HomeController@assignadmin');
     Route::get('/admincompleted','mamaController@completedAssignment');
+    Route::get('/confidential','HomeController@confidential');
     Route::get('/letracking','HomeController@getLeTracking');
-
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
@@ -237,8 +246,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/addSubWard','mamaController@addSubWard');
     Route::post('/addState','mamaController@addState');
     Route::post('/addZone','mamaController@addZone');
-    Route::post('/{uid}/{rid}/giveGrade','mamaController@giveGrade')
-;    Route::post('/{uid}/{rid}/giveRemarks','mamaController@giveRemarks');
+    Route::post('/{uid}/{rid}/giveGrade','mamaController@giveGrade');
+    Route::post('/{uid}/{rid}/giveRemarks','mamaController@giveRemarks');
     Route::post('/{id}/{rid}/editGrade','mamaController@editGrade');
     Route::post('/grade','mamaController@gradetoEmp');
     Route::post('/edit/save','mamaController@saveEdit');
@@ -255,6 +264,8 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assignListSlots','HomeController@assignListSlots');
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
+    Route::get('/assign_project','HomeController@projectwise');
+    Route::get('/assign_enquiry','HomeController@enquirywise');
    
     Route::post('/store','HomeController@store');
     Route::post('/datestore','HomeController@datestore');
@@ -263,7 +274,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/teamdeletekra','amController@deletekra');
     Route::post('/teamupdatekra','amController@updatekra');
     Route::post('/addPoints','mamaController@addPoints');
-
+    Route::get('/tltracking','HomeController@getLeTracking');
 
 
     Route::get('/{id}/deleteReportImage','HomeController@deleteReportImage');
@@ -443,6 +454,7 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::get('/addBuilderProjects','aeController@addBuilderProjects');
     Route::post('/addBuilderDetails','aeController@postBuilderDetails');
     Route::post('/addBuilderProject','aeController@addBuilderProject');
+    Route::get('/deliveredOrders','aeController@getDeliveredOrders');
 });
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
