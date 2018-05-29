@@ -237,7 +237,7 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]" type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"  type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -246,9 +246,9 @@
                                    <td><input value="{{ old('budget') }}" id="budget" required placeholder="Budget in Crores" type="text" onkeyup="check('budget')" class="form-control input-sm" name="budget"></td>
                                </tr>
                                <tr>
-                                   <td>Project Image</td>
+                                   <td>Project Images</td>
                                    <td>:</td>
-                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
+                                   <td><input id="pImage" oninput="fileuploadimage()" required type="file" accept="image/*" class="form-control input-sm" name="pImage[]" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -964,7 +964,7 @@
       if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').attr('disabled',false);
+        $('#constructionType2').atuctr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
       }else{
@@ -978,6 +978,14 @@
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
+    function fileuploadimage(){ 
+      var count = document.getElementById('pImage').files.length;
+      if(count > 4){
+        document.getElementById('pImage').value="";
+        alert('You are allowed to upload a maximum of 4 files');
+      }
+    }
+
 </script>
 <script>
 function dis(){

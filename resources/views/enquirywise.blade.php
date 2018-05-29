@@ -39,7 +39,8 @@
                 </table>
             </div>
             <div class="panel-footer">
-                            </div>
+                <center>{{ $projects->links() }}</center>
+            </div>
         </div>
     </div>
 @endsection

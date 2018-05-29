@@ -218,6 +218,7 @@
     	       success: function(response)
     	       {
     	           console.log(response);
+    	           	 alert(response);
     	           $("#myordertable").load(location.href + " #myordertable>*", "");
     	       }
     	    });
