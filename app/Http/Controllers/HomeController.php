@@ -2245,6 +2245,7 @@ class HomeController extends Controller
             }
         }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
+                    ->where('quality',null)
                     ->select('project_details.*','project_id')
                     ->paginate(15);
         $requirements = array();
