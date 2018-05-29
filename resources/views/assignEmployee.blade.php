@@ -368,7 +368,7 @@ function getdesc(){
                     {
 
                          console.log(response);
-                         ;
+                         
                          for(var i=0;i<response.length;i++)
                         {
                            var text = response[i].description;
