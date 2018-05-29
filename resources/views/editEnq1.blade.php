@@ -47,65 +47,74 @@
 								<td><label>Select category:</label></td>
 								<td><button id="mybutton" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
+<?php
+	$subcategories = explode(", ",$enq->quantity);
+	$brands = explode(", ",$enq->brand);
+?>
 
 <!-- model -->
 <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog" style="width:80%">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: green;color: white;" >
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"><center>CATEGORY</center></h4>
-        </div>
-        <div class="modal-body" style="height:500px;overflow-y:scroll;">
-        <br>
-        <br>
-        <div class="row">
+<div class="modal-dialog" style="width:80%">
+<!-- Modal content-->
+<div class="modal-content">
+<div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;" >
+<button type="button" class="close" data-dismiss="modal">&times;</button>
+<h4 class="modal-title"><center>CATEGORY</center></h4>
+</div>
+<div class="modal-body" style="height:500px;overflow-y:scroll;">
+    <br><br>
+    <div class="row">
 		<?php
-			$subcategories = explode(", ",$enq->sub_category);
-			$brands = explode(", ",$enq->brand);
+			$i = 0;
 		?>
-		@foreach($category as $cat)
-			
-			<div class="col-md-4" >
-					<div class="thumbnail" style="border: 1px solid black;min-height: 100px;">
-	                  <button style="background-color:#b8b894;width:100%;color:black;" class="btn btn-default " name="mCategory[]" id="mCategory{{ $cat->id }}"   >{{$cat->category_name}}</button>
-
-	                  @foreach($cat->brand as $brand)
-	                   <div class="row">
-	                   		<div class="col-md-6">
-			                  	<b><u>{{$brand->brand}}</u></b><br>
-			                  @foreach($brand->subcategory as $subcategory)
-			                  		<!-- <div class="col-md-6"> -->
-			                  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			                  			<label class="checkbox-inline">
-			                  			 <input {{ in_array($subcategory->sub_cat_name, $subcategories) && in_array($brand->brand, $brands)  ? 'checked': ''}} type="checkbox" name="subcat[]" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-			                  			</label>
-			                  			<br>
-			                  		<!-- </div> -->
-			                  @endforeach
-			                  </div>
-			           </div>
-	                  @endforeach
-		    	 	</div>
-	        </div>
-	        @if($loop->iteration % 3==0)
-	        	</div>
-	        		<div class="row">
-	        @endif
-    	 @endforeach
-    	 </div>	
+        @foreach($category as $cat)
+        <div class="col-md-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">{{$cat->category_name}}</div>
+                <div class="panel-body" style="height:300px; max-height:300; overflow-y: scroll;">
+                @foreach($cat->brand as $brand)
+                <div class="row">
+                    <b class="btn btn-sm btn-warning form-control" style="border-radius: 0px;" data-toggle="collapse" data-target="#demo{{ $brand->id }}"><u>{{$brand->brand}}</u></b>
+                    <br>
+                    <div id="demo{{ $brand->id }}" class="collapse">
+                        @foreach($brand->subcategory as $subcategory)
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label class="checkbox-inline">
+                                <input type="hidden" id="quantity{{ $subcategory->id }}" value="{{ $subcategory->Quantity }}">
+                                <input {{ in_array($subcategory->sub_cat_name, explode(" :",$subcategories[$i])) ? 'checked' : '' }} type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+								<?php 
+									$qnt = explode(' :',$subcategories[$i]);
+								?>
+								<input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$subcategories[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
+                            </label>
+                            <br><br>
+                        @endforeach
+                        <center><span id="total" >total:</span></center>
+                    </div>
+                    <br>
+                </div><br>
+                @endforeach
+                </div>
+            </div>
         </div>
-       
-        <div class="modal-footer">
-        	
-         
-           <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
-          	
+        @if($loop->iteration % 3==0)
         </div>
-      </div>
+        <div class="row">
+        @endif
+		<?php
+			$i++;
+			if($i == count($subcategories)){
+				$i = 0;
+			}
+		?>
+        @endforeach
     </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+</div>
+</div>
+</div>
 </div>
 <!-- model end -->
 
@@ -114,41 +123,20 @@
 								<td><label>Initiator* : </label></td>
 								<td>	
 									<select required class="form-control"  name="initiator">
-										<option value="">--Select--</option>
 										@foreach($users as $user)
 										<option value="{{$user->id}}">{{$user->name}}</option>
 										@endforeach
 									</select>
 								</td>
 							</tr>
-<<<<<<< HEAD
-							@elseif(Auth::user()->group_id == 17)
-=======
 							@else
->>>>>>> MuraliHamsa
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
 									<select required class="form-control" name="initiator">
 										<option value="" required>--Select--</option>
-<<<<<<< HEAD
-										@foreach($users2 as $user)
-=======
 										@foreach($users1 as $user)
->>>>>>> MuraliHamsa
 										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
-									</select>
-								</td>
-							</tr>
-							@else
-							<tr>
-								<td><label>Initiator* : </label></td>
-								<td>	
-									<select class="form-control" name="initiator">
-										<option value="">--Select--</option>
-										@foreach($users1 as $user)
-										<option {{ $user->id == $enq->generated_by ? 'selected':''}} value="{{ $user->id }}">{{ $user->name }}</option>
 										@endforeach
 									</select>
 								</td>
@@ -160,7 +148,7 @@
 							</tr>
 							<tr>
 								<td><label>Quantity* : </label></td>
-								<td><input type="text" value="{{ $enq->quantity }}" name="equantity" id="equantity" class="form-control" /></td>
+								<td>{{ $enq->quantity }}</td>
 							</tr>
 							<tr>
 								<td><label>Remarks* : </label></td>
@@ -301,18 +289,4 @@
 		     }
 	}
 </script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<script>
-=======
->>>>>>> master
-<<<<<<< HEAD
->>>>>>> 7e303fad753443a75262790f1c9e5a49f2831c20
-=======
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
->>>>>>> MuraliHamsa
-=======
->>>>>>> b2b49d708803e00adfd451b104f0c77f6e541861
 @endsection
