@@ -238,7 +238,7 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]" type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"  type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -954,7 +954,7 @@
       if(countinput >= 5){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').attr('disabled',false);
+        $('#constructionType2').atuctr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
       }else if(countinput == 0){
@@ -970,12 +970,13 @@
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
-    function fileUploadimage(){
+    function fileuploadimage(){ 
       var count = document.getElementById('pImage').files.length;
       if(count > 4){
         document.getElementById('pImage').value="";
         alert('You are allowed to upload a maximum of 4 files');
       }
     }
+
 </script>
 @endsection

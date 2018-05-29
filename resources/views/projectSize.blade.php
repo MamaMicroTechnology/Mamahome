@@ -7,9 +7,9 @@
     <div class="panel-heading">
         Total No Of Projects In Zone 1 : {{$totalProjects}}
     </div>
-       {{-- Due To Database Change Electrical and Plumbing has been Splitted in to 2.<br>
+      <center> {{--  Due To Database Change Electrical and Plumbing has been Splitted in to 2.<br>
         Electrical and Plumbing (No. of Projects):{{ $eandpCount}}
-        Size (in Sq.Ft.):{{ $eandpSize}} --}}
+        Size (in Sq.Ft.):{{ $eandpSize}} --}}</center>
     <div class="panel-body">
         <div class="col-md-6">
             <center>Ward</center>
