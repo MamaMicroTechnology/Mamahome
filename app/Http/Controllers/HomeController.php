@@ -61,6 +61,7 @@ use App\UserLocation;
 use App\AssignStage;
 use App\History;
 use App\Assignenquiry;
+use App\ProjectImage;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
