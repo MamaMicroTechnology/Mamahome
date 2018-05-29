@@ -2207,24 +2207,33 @@ class HomeController extends Controller
             }
             $projectids = $rmcs;
         }
+
         if(count($projectids) != 0){
             $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
         }else{
             $project_types = ProjectDetails::where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
         }
+
         $projectids = $project_types;
         if(count($projectids) != 0){
             $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
         }else{
             $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
         }
-        $projectids = $project_sizes;
+
+        if(count($project_sizes) != 0){
+            $projectids = $project_sizes;
+        }
+        
         if(count($projectids) != 0){
             $budgets = ProjectDetails::whereIn('project_id',$projectids)->where('budget','>=',$budget != null ? $budget : 0 )->where('budget','<=',$budgetto != null ? $budgetto : 0 )->pluck('project_id');
         }else{
             $budgets = ProjectDetails::where('budget','>=',$budget != null ? $budget : 0 )->where('budget','<=',$budgetto != null ? $budgetto : 0 )->pluck('project_id');
         }
-        $projectids =$budgets;
+
+        if(count($budgets) > 0){
+            $projectids = $budgets;
+        }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     ->select('project_details.*','project_id')
                     ->paginate(15);
