@@ -179,7 +179,7 @@
           <tr>
             <td><b> Follow up date</b></td>
             <td>:</td>
-            <td ><input style="width:50%;" required type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
 
 
           </tr>
