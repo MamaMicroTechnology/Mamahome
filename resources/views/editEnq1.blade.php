@@ -129,7 +129,7 @@
 									</select>
 								</td>
 							</tr>
-							@if(Auth::user()->group_id == 6)
+							@elseif(Auth::user()->group_id == 6)
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
