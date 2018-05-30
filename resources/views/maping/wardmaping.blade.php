@@ -58,10 +58,12 @@
          });
 
       map.setZoom(11);
+      var line = parseInt('{{ $zones->color }}') + 12345;
       map.drawPolygon({
         paths: newpath,
-        strokeColor: '#{{ $zones->color }}',
+        strokeColor: '#'+line,
         strokeOpacity: 0.6,
+        fillColor: '#{{ $zones->color }}',
         strokeWeight: 2
       });
       map.setOptions({draggableCursor:'crosshair'});

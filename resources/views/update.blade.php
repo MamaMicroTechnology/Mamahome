@@ -42,16 +42,7 @@
                       {{ $projectdetails->quality }}
                       @endif
                     </center>
-                      @if($projectdetails->quality == NULL)
-                        <form method="POST" action="{{ URL::to('/') }}/markProject">
-                          {{ csrf_field() }}
-                          <input type="hidden" name="id" value="{{ $id }}">
-                        </form>
-                        @else
-                        <label style="font-size: 14px">Quality:</label>
-                        {{ $projectdetails->quality }}
-                        @endif
-                      <br>
+                      
                    <form method="POST" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
