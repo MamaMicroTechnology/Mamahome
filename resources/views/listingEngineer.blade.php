@@ -61,11 +61,11 @@
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
-                               <tr>
+                               <!-- <tr>
                                    <td>Road Name/Road No.</td>
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
-                               </tr>
+                               </tr> -->
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
