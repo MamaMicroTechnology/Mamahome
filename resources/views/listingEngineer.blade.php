@@ -236,8 +236,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"  type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="radio" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"  type="radio" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>

@@ -178,7 +178,7 @@
           <tr>
             <td><b> Follow up date</b></td>
             <td>:</td>
-            <td ><input style="width:50%;" required type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
 
 
           </tr>
@@ -315,10 +315,10 @@
                  <td style="padding:10px">:</td>
                  <td style="padding: 10px;">
                     <label required class="checkbox-inline">
-                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $project->budgetType }}" id="a">Structural Budget
+                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="radio" value="{{ $project->budgetType }}" id="a">Structural Budget
                     </label>
                     <label required class="checkbox-inline">
-                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $project->budgetType }}">Finishing Budget
+                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="radio" value="{{ $project->budgetType }}">Finishing Budget
                     </label>
                  </td>
                </tr>
