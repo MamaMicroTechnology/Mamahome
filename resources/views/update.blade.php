@@ -323,7 +323,7 @@
                                              <div class="row">
                                                  @for($i = 0; $i < count($images); $i++)
                                                      <div class="col-md-3">
-                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
                                                      </div>
                                                  @endfor
                                               </div>
@@ -336,7 +336,7 @@
                                                    <div class="row">
                                                        @for($i = 0; $i < count($images); $i++)
                                                            <div class="col-md-3">
-                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
                                                            </div>
                                                        @endfor
                                                     </div>
