@@ -14,6 +14,7 @@
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
                   <th>Action</th>
+                  <th>Quality</th>
                  <th> Customer History</th>
                 
                </thead>
@@ -32,7 +33,7 @@
                                     </td>
                     <td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
                     <!-- <td>{{ Count($projects)   }}</td> -->
-                  
+                    <td>{{ $project->quality }}</td>
                      <td><form method="post" action="{{ URL::to('/') }}/confirmedProject" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">

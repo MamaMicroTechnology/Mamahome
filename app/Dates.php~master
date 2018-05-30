@@ -6,9 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dates extends Model
 {
-<<<<<<< HEAD:app/Dates.php:app/Dates.php
     protected $table = 'dates';
-=======
-    //
->>>>>>> master:app/Checklist.php:app/Checklist.php
 }
