@@ -13,8 +13,8 @@
                   <th style="width:15%">Address</th>
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
-                  <th>Action</th>
                   <th>Quality</th>
+                  <th>Action</th>
                  <th> Customer History</th>
                 
                </thead>
