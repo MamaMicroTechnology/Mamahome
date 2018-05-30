@@ -2246,7 +2246,7 @@ class HomeController extends Controller
         }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     ->where('quality',"Unverified")
-                    ->orWhere('updated_at','LIKE',date('Y-m-d')."%")
+                    // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
