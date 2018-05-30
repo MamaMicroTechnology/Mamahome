@@ -882,7 +882,7 @@ class HomeController extends Controller
     {
         $genuine = ProjectDetails::where('quality',"GENUINE")->count();
         $fake = ProjectDetails::where('quality',"FAKE")->count();
-        $notConfirmed = ProjectDetails::where('quality',null)->count();
+        $notConfirmed = ProjectDetails::where('quality',"Unverified")->count();
         $le = User::where('group_id','6')->get();
         $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
         $count = array();

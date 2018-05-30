@@ -245,6 +245,7 @@ class logisticsController extends Controller
         return back();
 
     }
+}
     public function getinvoice()
     {
         $number = 48035;
