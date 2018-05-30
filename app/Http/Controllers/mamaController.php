@@ -51,6 +51,7 @@ use App\ZoneMap;
 use App\SubWardMap;
 use App\Asset;
 use App\MamahomeAsset;
+use App\ProjectImage;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -467,6 +468,7 @@ class mamaController extends Controller
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
+        $projectimage = "";
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
@@ -520,9 +522,22 @@ class mamaController extends Controller
                     $i++;
                 }
             }
-            $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
-            $request->pImage->move(public_path('projectImages'),$imageName3);
-            
+            $i = 0;
+            if($request->pImage){
+                foreach($request->pImage as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('projectImages'),$imageName3);
+                     if($i == 0){
+                        $projectimage .= $imageName3;
+                     }
+                     else{
+                            $projectimage .= ",".$imageName3;
+                     }
+                     $i++;
+                }
+        
+            }
+           
             $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
@@ -539,7 +554,7 @@ class mamaController extends Controller
             $projectdetails->project_type = $floor;
             $projectdetails->project_size = $request->pSize;
             $projectdetails->budget = $request->budget;
-            $projectdetails->image = $imageName3;
+            $projectdetails->image = $projectimage;
             $projectdetails->listing_engineer_id = Auth::user()->id;
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
@@ -651,8 +666,10 @@ class mamaController extends Controller
     }
     public function updateProject($id, Request $request)
     {
+
         $point = 0;
         $project = ProjectDetails::where('project_id',$id)->first();
+        $projectimages = ProjectImage::where('project_id',$id)->first();
         $today = date('Y-m-d');
         $created = date('Y-m-d',strtotime($project->created_at));
         $updated = date('Y-m-d',strtotime($project->updated_at));
@@ -761,13 +778,42 @@ class mamaController extends Controller
                 'other_approvals' => $otherApprovals
             ]);
         }
-        if($request->pImage != NULL){
-            $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
-            $request->pImage->move(public_path('projectImages'),$imageName3);
-            ProjectDetails::where('project_id',$id)->update([
-                'image' => $imageName3
-            ]);
+        if($request->pImage){
+                        if(count($request->pImage != 0)){
+                                   $i = 0;
+                                    $projectimage = ""; 
+
+                                    foreach($request->pImage as $pimage){
+                                         $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                                         $pimage->move(public_path('projectImages'),$imageName3);
+                                    
+                                           if($i == 0){
+                                                $projectimage .= $imageName3;
+                                           }
+                                           else{
+                                                $projectimage .= ",".$imageName3;
+                                           }
+                                   $i++;
+                                  }
+                             }
+                            $statusCount = count($request->status);
+                            $statuses = $request->status[0];
+                            if($statusCount > 1){
+                                for($i = 1; $i < $statusCount; $i++){
+                                    $statuses .= ", ".$request->status[$i];
+                                }
+                            }
+                            $project_image = new ProjectImage;
+                            $project_image->project_id = $id;
+                            $project_image->project_status = $statuses;
+                            $project_image->image = $projectimage;
+                            $project_image->save();
         }
+        else{
+             $project_image = new ProjectImage;
+             $project_image->image = '';
+        }
+
         if($request->remarks != NULL){
             ProjectDetails::where('project_id',$id)->update([
                 'remarks' => $request->remarks
@@ -785,6 +831,7 @@ class mamaController extends Controller
                 $statuses .= ", ".$request->status[$i];
             }
         }
+
         ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
@@ -792,7 +839,7 @@ class mamaController extends Controller
             'project_status' => $statuses,
             'basement' => $basement,
             'ground' => $ground,
-            'quality' => $request->quality,
+            'quality' => ($request->quality != null ? $request->quality : 'Unverified'),
             'project_type' => $floor,
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,
@@ -1648,8 +1695,19 @@ class mamaController extends Controller
             // fetching brands
         $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
         $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
-       $brandnames = implode(", ", $brand);
-       
+        $brandnames = implode(", ", $brand);
+        $get = implode(", ",array_filter($request->quan));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quan);
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub." :".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$sub." :".$another[$i];
+            }
+        }
 
         $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
@@ -1660,7 +1718,7 @@ class mamaController extends Controller
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
             'generated_by' => $request->initiator,
-            'quantity' => $request->equantity,
+            'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);

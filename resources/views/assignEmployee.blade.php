@@ -368,16 +368,16 @@ function getdesc(){
                     {
 
                          console.log(response);
-                         ;
+                         
                          for(var i=0;i<response.length;i++)
                         {
                            var text = response[i].description;
                          
                         }
                          document.getElementById('desc').value = text;
-                         document.getElementById('desc').disabled = text;  
+                        
                     }
                 });
             }
-</script>
+</script>       
 @endsection

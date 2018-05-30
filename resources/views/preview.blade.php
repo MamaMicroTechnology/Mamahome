@@ -51,8 +51,8 @@
 			 		
 			 		
 			 		<tr>
-			 			<td><img style=" height:50px; width:100px;" src="empsignature/{{ $info->emp_signature}}" ></td>
-			 			<td style="text-align: right;"><img style=" height:50px; width:100px;" src="managersignature/{{ $info->manager_signature}}" ></td>
+			 			<td><img style=" height:50px; width:100px;" src="public/empsignature/{{ $info->emp_signature}}" ></td>
+			 			<td style="text-align: right;"><img style=" height:50px; width:100px;" src="public/managersignature/{{ $info->manager_signature}}" ></td>
 			 		</tr>
 			 	
 				 	<tr>

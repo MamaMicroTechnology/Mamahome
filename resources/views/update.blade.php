@@ -42,16 +42,7 @@
                       {{ $projectdetails->quality }}
                       @endif
                     </center>
-                      @if($projectdetails->quality == NULL)
-                        <form method="POST" action="{{ URL::to('/') }}/markProject">
-                          {{ csrf_field() }}
-                          <input type="hidden" name="id" value="{{ $id }}">
-                        </form>
-                        @else
-                        <label style="font-size: 14px">Quality:</label>
-                        {{ $projectdetails->quality }}
-                        @endif
-                      <br>
+                      
                    <form method="POST" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
@@ -312,11 +303,37 @@
                                <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
-                                   <td>
-                                    <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage" multiple><br>
-                                    <div id="imagediv">
-                                      <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $projectdetails->image }}" class="img img-thumbnail">
-                                    </div>
+                                    <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
+                                       
+                                          @if($projectdetails->updated_by == Null)
+
+
+                                          <?php
+                                               $images = explode(",", $projectdetails->image);
+                                               ?>
+                                             <div class="row">
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
+                                            
+                                            @else
+                                             @foreach($projectimages as $projectimage)
+                                                  <?php
+                                                     $images = explode(",", $projectimage->image);
+                                                    ?>
+                                                   <div class="row">
+                                                       @for($i = 0; $i < count($images); $i++)
+                                                           <div class="col-md-3">
+                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                           </div>
+                                                       @endfor
+                                                    </div>
+                                              @endforeach
+                                            
+                                            @endif
                                    </td>
                                </tr>
                                <tr>

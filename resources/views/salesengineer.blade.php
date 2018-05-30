@@ -103,11 +103,11 @@
                    <td  id="x">
                     <div class="col-sm-6">
                       <label>Longitude:</label>
-                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress->latitude }}" id="longitude">
+                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="longitude">
                     </div>
                     <div class="col-sm-6">
                         <label>Latitude:</label>
-                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress->latitude }}" id="latitude">
+                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="latitude">
                     </div>
                    </td>
                </tr>  
@@ -124,7 +124,7 @@
                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                    <td>Full Address</td>
                    <td>:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress->address }}"></td>
+                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}"></td>
                </tr>
                <?php
                   $type = explode(", ",$project->construction_type);
@@ -178,7 +178,7 @@
           <tr>
             <td><b> Follow up date</b></td>
             <td>:</td>
-            <td ><input style="width:50%;" required type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
 
 
           </tr>
@@ -315,10 +315,10 @@
                  <td style="padding:10px">:</td>
                  <td style="padding: 10px;">
                     <label required class="checkbox-inline">
-                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $project->budgetType }}" id="a">Structural Budget
+                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="radio" value="{{ $project->budgetType }}" id="a">Structural Budget
                     </label>
                     <label required class="checkbox-inline">
-                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $project->budgetType }}">Finishing Budget
+                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="radio" value="{{ $project->budgetType }}">Finishing Budget
                     </label>
                  </td>
                </tr>

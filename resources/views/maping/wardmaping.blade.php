@@ -35,6 +35,7 @@
             lognitude = e.latLng.lng();
             path.push([latitude, lognitude]);
             marker[0] = path;
+            polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
               strokeColor: '#131540',
@@ -57,10 +58,12 @@
          });
 
       map.setZoom(11);
+      var line = parseInt('{{ $zones->color }}') + 12345;
       map.drawPolygon({
         paths: newpath,
-        strokeColor: '#{{ $zones->color }}',
+        strokeColor: '#'+line,
         strokeOpacity: 0.6,
+        fillColor: '#{{ $zones->color }}',
         strokeWeight: 2
       });
       map.setOptions({draggableCursor:'crosshair'});
@@ -101,6 +104,7 @@
             lognitude = e.latLng.lng();
             path.push([latitude, lognitude]);
             marker[0] = path;
+            polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
               strokeColor: '#131540',
