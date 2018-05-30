@@ -3430,7 +3430,7 @@ class HomeController extends Controller
                                                         ->get();                                       
         }
         $noOfCalls = array();
-        $users = User::where('group_id','7')->where('department_id',2)
+        $users = User::where('group_id','7')
                     ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                     ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                     ->select('users.*','sub_wards.sub_ward_name')
