@@ -42,16 +42,7 @@
                       {{ $projectdetails->quality }}
                       @endif
                     </center>
-                      @if($projectdetails->quality == NULL)
-                        <form method="POST" action="{{ URL::to('/') }}/markProject">
-                          {{ csrf_field() }}
-                          <input type="hidden" name="id" value="{{ $id }}">
-                        </form>
-                        @else
-                        <label style="font-size: 14px">Quality:</label>
-                        {{ $projectdetails->quality }}
-                        @endif
-                      <br>
+                      
                    <form method="POST" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
@@ -323,7 +314,7 @@
                                              <div class="row">
                                                  @for($i = 0; $i < count($images); $i++)
                                                      <div class="col-md-3">
-                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
                                                      </div>
                                                  @endfor
                                               </div>
@@ -336,7 +327,7 @@
                                                    <div class="row">
                                                        @for($i = 0; $i < count($images); $i++)
                                                            <div class="col-md-3">
-                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
                                                            </div>
                                                        @endfor
                                                     </div>

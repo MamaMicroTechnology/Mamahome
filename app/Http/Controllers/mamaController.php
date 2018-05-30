@@ -839,7 +839,7 @@ class mamaController extends Controller
             'project_status' => $statuses,
             'basement' => $basement,
             'ground' => $ground,
-            'quality' => $request->quality,
+            'quality' => ($request->quality != null ? $request->quality : 'Unverified'),
             'project_type' => $floor,
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,

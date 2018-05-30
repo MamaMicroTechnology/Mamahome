@@ -27,7 +27,7 @@
 					    <!-- <th>Designation</th> -->
 						<th>Required</th>
 						<th>Quantity</th>
-						<th>Logistics Converter</th>
+						<th>Logistics Coordinator</th>
 						<th>Requirement Date</th>
 						<th>Payment Status</th>
 						<th>Dispatch Status</th>

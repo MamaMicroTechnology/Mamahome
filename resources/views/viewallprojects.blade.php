@@ -56,7 +56,9 @@
 						<th>Budget</th>
 						<th>Image</th>
 						<th>Remarks</th>
+						@if(Auth::user()->group_id != 7 &&  Auth::user()->group_id != 17)
 						<th>Listed By</th>
+						@endif
 						<th>Called By</th>
 						<th>Listed On</th>
 						<th>Last update</th>
@@ -108,7 +110,9 @@
 							</td>
 							
 							<td>{{ $project->remarks }}</td>
+							@if(Auth::user()->group_id != 7 && Auth::user()->group_id != 17)
 							<td>{{ $project->name }}</td>
+							@endif
 							<td>
 								@foreach($users as $user)
 								@if($project->call_attended_by == $user->id)

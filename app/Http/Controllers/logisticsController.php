@@ -245,9 +245,8 @@ class logisticsController extends Controller
         return back();
 
     }
-   
 }
-    public  function getinvoice(Request $request)
+    public function getinvoice()
     {
         $number = 48035;
         $length = strlen($number);
