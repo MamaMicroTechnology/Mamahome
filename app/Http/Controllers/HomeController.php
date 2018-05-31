@@ -155,6 +155,7 @@ class HomeController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'subcat' => 'required'
+            ]);
             if ($validator->fails()) {
                 return back()
                 ->with('NotAdded','Select Category Before Submit')
