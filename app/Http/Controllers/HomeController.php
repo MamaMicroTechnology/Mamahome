@@ -155,7 +155,6 @@ class HomeController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'subcat' => 'required'
-            ]);
             if ($validator->fails()) {
                 return back()
                 ->with('NotAdded','Select Category Before Submit')
@@ -1202,7 +1201,7 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
+                                                    ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $genuine + $null;
@@ -1449,7 +1448,7 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
+                                                    ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $null + $genuine;
