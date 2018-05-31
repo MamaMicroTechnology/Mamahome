@@ -3950,7 +3950,7 @@ public function assigndate(request $request )
     }
 
 public function projectwise(request $request){
-     $depts = [7];
+     $depts = [1,2];
      $wardsAndSub = [];
     $users = User::whereIn('users.department_id',$depts)
               ->leftjoin('assignstage','assignstage.user_id','users.id')
