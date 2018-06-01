@@ -133,8 +133,15 @@
             <div class="row">
               <div class="col-sm-6">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Listed date</h4>
-
               <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
+              </div>
+              <div class="col-sm-4">
+               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Quality</h4>
+              <select style="width:40%;" class="form-control" name="quality">
+                <option value="Unverified">Unverified</option>
+                <option  value="Genuine">Genuine</option>
+                <option value="Fake">Fake</option>
+              </select>  
               </div>
             </div> <br>                                                      
             <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>

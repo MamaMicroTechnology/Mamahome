@@ -140,17 +140,24 @@ class HomeController extends Controller
     
     public function inputdata(Request $request)
     {
-        // for fetching sub categories
+
+           $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
+           $cat = category::where('id',$request->cat)->pluck('id')->first();
+          
+            
+           
+   // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
         $quantity = array_filter($request->quan);
+        dd($quantity);
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty = $sub." :".$another[$i];
+                $qnty = $sub.":".$another[$i];
             }else{
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty .= ", ".$sub." :".$another[$i];
+                $qnty .= ", ".$sub.":".$another[$i];
             }
         }
         $validator = Validator::make($request->all(), [
@@ -2112,6 +2119,9 @@ class HomeController extends Controller
         $Floor2 = AssignStage::where('user_id',Auth::user()->id)->pluck('Floor2')->first();
         
         $projectsize1 = AssignStage::where('user_id',Auth::user()->id)->pluck('projectsize')->first();
+
+        $quality = AssignStage::where('user_id',Auth::user()->id)->pluck('quality')->first();
+        
         
         
         // $project_type = AssignStage::where('user_id',Auth::user()->id)->pluck('project_type')->first();
@@ -2189,24 +2199,36 @@ class HomeController extends Controller
                 $projectids = $projectsat;            
             }
         }
-        
+         $sta = explode(", ", $constraction);
+         if($sta[0] != "null"){
         if(count($projectids) != 0){
-            $cons =ProjectDetails::whereIn('project_id',$projectids)->where('construction_type',$constraction)->pluck('project_id');
-        }else{
-            $cons =ProjectDetails::where('construction_type',$constraction)->pluck('project_id');            
+            for($i=0;$i<count($sta);$i++){
+
+            $cons =ProjectDetails::whereIn('project_id',$projectids)->where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
+            }
+        }
+        else{
+             for($i=0;$i<count($sta);$i++){
+            $cons =ProjectDetails::where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
+             //dd($cons);    
+            }        
         }
         if(Count($cons) > 0){
             $projectids  = $cons; 
         }
+    }
         
         if($date != "NULL"){
             if(count($projectids) != 0){
                 $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
             }else{
-                $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                //$datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                $datec = $projectids;
+            
             }
             $projectids = $datec;
         }
+      
         
         $rmcInt = explode(",", $rmc);
         if($rmcInt[0] != "null"){
@@ -2250,12 +2272,27 @@ class HomeController extends Controller
                 $projectids = $budgets;
             }
         }
+
+        if( $quality != null){
+            if(count( $projectids) != 0){
+                $qua = ProjectDetails::whereIn('project_id',$projectids)->where('quality', $quality )->pluck('project_id');
+            //dd($qua);
+            }else{
+                $qua = ProjectDetails::where('quality', $quality )->pluck('project_id');
+            }
+
+            if(count($qua) > 0){
+                $projectids = $qua;
+            }
+        }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                   
+                    // ->where('quality',"Unverified")
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
+                  
+
         $requirements = array();
         foreach($projects as $project){
             $req = Requirement::where('project_id',$project->project_id)->pluck('id')->toArray(); 
@@ -4068,6 +4105,7 @@ if(count($check) == 0){
            $projectassign->total = $request->total;
             $projectassign->projectsize = $request->projectsize;
              $projectassign->budgetto = $request->budgetto;
+              $projectassign->quality = $request->quality;
 
 
         $projectassign->save();
@@ -4096,6 +4134,7 @@ if(count($check) == 0){
            $check->total = $request->total;
             $check->projectsize = $request->projectsize;
              $check->budgetto = $request->budgetto;
+             $check->quality = $request->quality;
 
         $check->save(); 
 }
