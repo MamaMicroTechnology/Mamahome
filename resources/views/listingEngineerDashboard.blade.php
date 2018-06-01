@@ -40,24 +40,6 @@
                 </tr>
           </tbody>
         </table>
-         <!-- <!-- <label>
-           You have listed <strong>{{ $numbercount }}</strong> projects so far.<br>
-           You have listed {{ $total }} projects today.<br>
-           {{ $ordersInitiated }} orders has been initiated by you<br>
-           out of which {{ $ordersConfirmed }} has been confirmed
-         </label><br><br> -->
-            <!-- <center></center>
-            <div class="panel-panel-primary">
-                <div class="panel-heading text-center">
-                    <!--<b><u>CURRENT PRICE LIST</u></b>-->
-                <!-- </div>
-                <div class="panel-body">
-
-                            
-                </div>
-            </div>
-            
-         </label><br><br>  -->
        </div>
         <div class="pull-right col-lg-8">
           <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">
@@ -105,6 +87,18 @@
     var created = new Array();
     var updated = new Array();
     var status = new Array();
+    var newpath = [];
+    @if($subwardMap != "None")
+    var latlng = "{{ $subwardMap->lat }}";
+    var col = "{{ $subwardMap->color }}";
+    @else
+    var latlng = "";
+    var col = "456369"
+    @endif
+    var places = latlng.split(",");
+    for(var i=0;i<places.length;i+=2){
+          newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
+        }
     @foreach($projects as $project)
       locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}} {{$project->project_name}},{{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
       created.push("{{ $project->created_at}}");
@@ -149,6 +143,15 @@
         }
       })(marker, i));
     }
+    var subward = new google.maps.Polygon({
+        paths: newpath,
+        strokeColor: '#'+col,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#'+col,
+        fillOpacity: 0.35
+      });
+  subward.setMap(map);
   }
   </script>
 

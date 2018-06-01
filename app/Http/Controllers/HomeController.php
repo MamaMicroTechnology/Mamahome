@@ -1133,6 +1133,10 @@ class HomeController extends Controller
         $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->get();
+            $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+            if($subwardMap == Null){
+                $subwardMap = "None";
+            }
         // $total = $points_earned_so_far - $points_subtracted;
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
@@ -1147,6 +1151,7 @@ class HomeController extends Controller
                                                 'points_indetail'=>$points_indetail,
                                                 'points_earned_so_far'=>$points_earned_so_far,
                                                 'points_subtracted'=>$points_subtracted,
+                                                'subwardMap'=>$subwardMap
                                                 // 'total'=>$total
                                                 ]);
     }
@@ -4252,20 +4257,13 @@ function enquirystore(request $request){
 
         return view('enquirywise',['projects'=>$projects]);
     }
+    public function viewMap(Request $request)
+    {
+        $zones = ZoneMap::where('zone_id',$request->zoneId)->first();
+        if($request->subWardId){
+            $zones = SubWardMap::where('sub_ward_id',$request->subWardId)->first();
+        }
+        return view('maping.viewmap',['zones'=>$zones]);
+    }
 
  }
-
-
-
-
-
-
-
-    
-
-   
-     
- 
-
-    
-    
