@@ -84,17 +84,20 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
         @foreach($category as $cat)
         <div class="col-md-4">
             <div class="panel panel-success">
+            <input type="hidden" name="cat[]" value="{{$cat->id}}">
                 <div class="panel-heading">{{$cat->category_name}}</div>
                 <div class="panel-body" style="height:300px; max-height:300; overflow-y: scroll;">
                 @foreach($cat->brand as $brand)
                 <div class="row">
+                
                     <b class="btn btn-sm btn-warning form-control" style="border-radius: 0px;" data-toggle="collapse" data-target="#demo{{ $brand->id }}"><u>{{$brand->brand}}</u></b>
                     <br>
                     <div id="demo{{ $brand->id }}" class="collapse">
                         @foreach($brand->subcategory as $subcategory)
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label class="checkbox-inline">
-                                <input type="hidden" id="quantity{{ $subcategory->id }}" value="{{ $subcategory->Quantity }}">
+                            
+                               
                                 <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
                                 <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
                             </label>

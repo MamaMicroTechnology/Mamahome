@@ -848,6 +848,7 @@ class mamaController extends Controller
             'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
+            'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
