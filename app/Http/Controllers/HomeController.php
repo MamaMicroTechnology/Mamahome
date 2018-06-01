@@ -1207,7 +1207,7 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
+                                                    ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $genuine + $null;
@@ -1454,7 +1454,7 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
+                                                    ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $null + $genuine;
@@ -2251,7 +2251,7 @@ class HomeController extends Controller
             }
         }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                    ->where('quality',"Unverified")
+                   
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -3955,7 +3955,7 @@ public function assigndate(request $request )
     }
 
 public function projectwise(request $request){
-     $depts = [7];
+     $depts = [1,2];
      $wardsAndSub = [];
     $users = User::whereIn('users.department_id',$depts)
               ->leftjoin('assignstage','assignstage.user_id','users.id')

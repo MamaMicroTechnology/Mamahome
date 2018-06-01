@@ -5,7 +5,7 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-success">
     <div class="panel-heading">
-        Total No Of Projects In Zone 1 : {{$totalProjects}}
+       {{-- Total No Of Projects In Zone 1 : {{$totalProjects}}--}}
     </div>
     <div class="panel-body">
         <div class="col-md-6">

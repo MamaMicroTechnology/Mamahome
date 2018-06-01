@@ -69,7 +69,7 @@ Route::get('/showThisProject','HomeController@showProjectDetails');
 
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
 Route::get('/myenquirysheet','HomeController@myenquirysheet');
-Route::get('/editenq','HomeController@editEnq');
+Route::get('/editenq','HomeController@editEnq1');
 Route::get('/editenq1','HomeController@editEnq1');
 Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 

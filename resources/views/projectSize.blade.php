@@ -5,7 +5,7 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-success">
     <div class="panel-heading">
-        Total No Of Projects In Zone 1 : {{$totalProjects}}
+       {{-- Total No Of Projects In Zone 1 : {{$totalProjects}}--}}
     </div>
       <center> {{--  Due To Database Change Electrical and Plumbing has been Splitted in to 2.<br>
         Electrical and Plumbing (No. of Projects):{{ $eandpCount}}
