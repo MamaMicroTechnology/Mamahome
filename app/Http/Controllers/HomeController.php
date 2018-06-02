@@ -1140,10 +1140,14 @@ class HomeController extends Controller
         $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->get();
+        if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
-            if($subwardMap == Null){
-                $subwardMap = "None";
-            }
+        }else{
+            $subwardMap = "None";
+        }
+        if($subwardMap == Null){
+            $subwardMap = "None";
+        }
         // $total = $points_earned_so_far - $points_subtracted;
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
