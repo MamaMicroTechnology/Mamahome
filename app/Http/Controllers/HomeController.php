@@ -150,7 +150,7 @@ class HomeController extends Controller
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
         $quantity = array_filter($request->quan);
-        dd($quantity);
+       
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
