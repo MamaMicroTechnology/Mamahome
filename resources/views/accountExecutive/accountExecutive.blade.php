@@ -1,56 +1,5 @@
 @extends('layouts.aeheader')
 @section('content')
-{{--<div class="container">
-    <div class="row">
-        <div class="panel panel-warning">
-            <div class="panel-heading">Builder List
-                <div class="btn-group pull-right">
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addBD">Add Builder</button>
-                    <a href="{{ URL::to('/') }}/addBuilderProjects" class="btn btn-sm btn-success">Add project</a>
-                </div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-responsive">
-                    <thead>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Website</th>
-                        <th>CEO/GM</th>
-                        <th>CEO/GM Email</th>
-                        <th>Purchase Manager</th>
-                        <th>Projects</th>
-                    </thead>
-                    <tbody>
-                        @foreach($builders as $builder)
-                        <?php $count = 0; ?>
-                        <tr>
-                            <td>{{ $builder->builder_name }}</td>
-                            <td>{{ $builder->builder_address }}</td>
-                            <td>{{ $builder->builder_contact_no }}</td>
-                            <td><a href="mailto:{{ $builder->builder_email }}?Subject=Enquiry%20about%20project%20requirements." target="_top">{{ $builder->builder_email }}</a></td>
-                            <td><a href="http://{{ $builder->website }}" target="_none">{{ $builder->website }}</a></td>
-                            <td>{{ $builder->ceo_gm_name }}</td>
-                            <td>{{ $builder->ceo_email }}</td>
-                            <td>{{ $builder->purchase_manager }}</td>
-                            <td><a href="{{ URL::to('/') }}/builderprojects?builderId={{ $builder->builder_id }}">View <span class="badge">&nbsp;
-                            @foreach($projects as $project)
-                                @if($project->builder_id == $builder->builder_id)
-                                    <?php $count++; ?>
-                                @endif
-                            @endforeach
-                                {{ $count }}
-                            &nbsp;</span></a></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
---}}
 
 <div class='b'></div>
 <div class='bb'></div>
