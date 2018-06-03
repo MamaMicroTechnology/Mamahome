@@ -21,7 +21,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-          @if(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+          @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
