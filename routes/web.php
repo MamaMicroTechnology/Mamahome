@@ -457,14 +457,14 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::post('/addBuilderDetails','aeController@postBuilderDetails');
     Route::post('/addBuilderProject','aeController@addBuilderProject');
     Route::get('/deliveredOrders','aeController@getDeliveredOrders');
-    
+    });
     Route::get('/accountlistingEngineer','HomeController@listingEngineer');
     Route::get('/accountroads','HomeController@getRoads');
     Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
     Route::get('/accountreports','HomeController@getMyReports');
     
     
-});
+
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/lcodashboard','logisticsController@dashboard');
