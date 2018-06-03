@@ -1,6 +1,6 @@
 @extends('layouts.aeheader')
 @section('content')
-{{--<div class="container">
+<div class="container">
     <div class="row">
         <div class="panel panel-warning">
             <div class="panel-heading">Builder List
@@ -50,7 +50,7 @@
         </div>
     </div>
 </div>
---}}
+
 
 <div class='b'></div>
 <div class='bb'></div>
