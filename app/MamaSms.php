@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Checklist extends Model
+class MamaSms extends Model
 {
-    //
+    protected $table = 'mama_sms';
 }

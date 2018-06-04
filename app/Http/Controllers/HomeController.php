@@ -62,6 +62,8 @@ use App\AssignStage;
 use App\History;
 use App\Assignenquiry;
 use App\ProjectImage;
+use App\AssignNumber;
+use App\MamaSms;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -130,7 +132,7 @@ class HomeController extends Controller
 
         $depart1 = [6];
         $depart2 = [7];
-        $depart = [2,4,8,6,7,15,17,16,1];
+        $depart = [2,4,8,6,7,15,17,16,1,11];
         $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
@@ -758,6 +760,8 @@ class HomeController extends Controller
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $depart2 = [2,4,6,7,8,17];
         $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
+        $depart3 = [17];
+        $users3 = User::whereIn('group_id',$depart3)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -769,7 +773,7 @@ class HomeController extends Controller
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'users3'=>$users3]);
     }
     public function eqpipelineedit(Request $request)
     {
@@ -1025,16 +1029,16 @@ class HomeController extends Controller
          return view('/teamLeader');
     }
     public function assignListSlots(){          
-    $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
-        $users = User::where('group_id',$group)
-                        ->join('ward_assignments','ward_assignments.user_id','=','users.id')
-                        ->join('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
-                        ->join('wards','wards.id','=','sub_wards.ward_id' )
-                        ->join('employee_details','users.employeeId','=','employee_details.employee_id')
+    // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
+   $group = [6,11];
+        $users = User::whereIn('group_id',$group)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id')
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
-        
         $wards = Ward::orderby('ward_name','ASC')->get();
         $zones = Zone::all();
         $subwardsAssignment = WardAssignment::all();
@@ -1203,6 +1207,7 @@ class HomeController extends Controller
     }
     public function getRoads()
     {
+
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
         
@@ -2078,6 +2083,108 @@ class HomeController extends Controller
         $view = $view['newtext'];
         SiteAddress::where('project_id', $id)->update(['address' => $view]);
         return response()->json($view);
+    }
+    public function smstonumber(Request $request)
+    {
+         $projectids = new Collection();
+
+         //feching stages
+        $stage = AssignNumber::where('user_id',Auth::user()->id)->pluck('stage')->first(); 
+        $stagec = explode(", ", $stage);
+        // $projectids = new Collection>);
+             for($i = 0; $i<count($stagec); $i++)
+                {
+                    $projectsat = ProjectDetails::where('project_status' ,'LIKE', "%".$stagec[$i]."%")->where('quality','Genuine')->pluck('project_id');
+
+                }
+
+       // $projects =projectDetails::whereIn('project_details.project_id',$projectsat)
+       //      ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+       //      ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+       //      ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+       //      ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
+       //      ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
+       //      ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no')
+       //     ->get();
+
+
+
+           //fetch phonee numbers//
+            $procurement =ProcurementDetails::whereIn('project_id',$projectsat)->where('procurement_contact_no','!=',null)->pluck('procurement_contact_no')->toarray();
+          
+           
+            $siteeng =SiteEngineerDetails::whereIn('project_id',$projectsat)->where('site_engineer_contact_no','!=',null)->pluck('site_engineer_contact_no')->toarray();
+         
+            $contractor =ContractorDetails::whereIn('project_id',$projectsat)->where('contractor_contact_no','!=',null)->pluck('contractor_contact_no')->toarray();
+         
+            $consultant =ConsultantDetails::whereIn('project_id',$projectsat)->where('consultant_contact_no','!=',null)->pluck('consultant_contact_no')->toarray();
+           
+            $owner =OwnerDetails::whereIn('project_id',$projectsat)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
+           
+
+           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+
+           $filtered = array_unique($merge);
+           $unique = array_combine(range(1,count($filtered)), array_values($filtered));
+           $count = count($unique);
+
+           // dd($unique);
+           $phNoTable = "<table class='table' border=1>";
+            $phNoTable .= "<tbody>";
+           $count2 = 1;
+           if($request->next){
+                 // $users = MamaSms::where('user_id',Auth::user()->id)->delete();
+
+                for($i = ($request->next - 100) ; $i<=$request->next - 1; $i++)
+                   {
+                        if($count2 == 0){
+                            $phNoTable .= "<tr>";
+                        }
+                        $phNoTable .= "<td>".$unique[$i]."</td>";
+
+                        if($count2 == 5){
+
+                           $phNoTable .= "</tr>";
+                           $count2 = 0;
+                        }
+                        $count2++;
+                   }
+           }else{
+
+            for($i = 1 ; $i<=100; $i++)
+               {
+                    if($count2 == 0){
+                        $phNoTable .= "<tr>";
+                    }
+                    $phNoTable .= "<td>".$unique[$i]."</td>";
+
+                    if($count2 == 5){
+
+                       $phNoTable .= "</tr>";
+                       $count2 = 0;
+                    }
+                    $count2++;
+               }
+           }
+           $phNoTable .= "</tbody>";
+           $phNoTable .= "</table>";
+
+        
+           // dd($phNoTable);
+            // $combine = "<ul><li>".$pro . '</li><li>' . $site . '</li><li>' . $cont . '</li><li>' . $con . '</li><li> ' . $own."</li></ul>";
+ 
+            $users = MamaSms::all();
+
+            //fetch total count of numbers
+            $x =ProcurementDetails::whereIn('project_id',$projectsat)->where('procurement_contact_no','!=',null)->pluck('procurement_contact_no')->count();
+            $y =SiteEngineerDetails::whereIn('project_id',$projectsat)->where('site_engineer_contact_no','!=',null)->pluck('site_engineer_contact_no')->count();
+            $z =ContractorDetails::whereIn('project_id',$projectsat)->where('contractor_contact_no','!=',null)->pluck('contractor_contact_no')->count();
+            $a =ConsultantDetails::whereIn('project_id',$projectsat)->where('consultant_contact_no','!=',null)->pluck('consultant_contact_no')->count();
+            $b =OwnerDetails::whereIn('project_id',$projectsat)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->count();
+            $totalnum =$x+$y+$z+$a+$b;
+
+
+        return view('sms',['totalnum'=>$totalnum,'combine'=>$phNoTable,'users'=>$users]);
     }
     public function projectsUpdate(Request $request)
     {     
@@ -3992,6 +4099,59 @@ public function assigndate(request $request )
         }
         return view('confidential',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
     }
+public function numberwise(request $request){
+    $depts = [1,2];
+    $users = User::whereIn('users.department_id',$depts)
+              ->leftjoin('groups','groups.id','users.group_id')
+              ->leftjoin('assign_number','assign_number.user_id','users.id')
+             ->select('users.*','groups.group_name','assign_number.stage')->get();
+         return view('assign_number',['users'=>$users]);
+
+}
+public function savenumber(request $request){
+
+
+        $check = new MamaSms;
+        $check->sim_number = $request->phNo;
+        $check->user_id = Auth::user()->id;
+        $check->totalnumber = 100;
+        $check->save();
+        return back();
+ 
+}
+public function storenumber(request $request){
+
+    if($request->stage ){
+    $stages = implode(", ", $request->stage);
+    } else{
+        $stages ="null";
+    }
+    $validator = Validator::make($request->all(), [
+            'stage' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return back()
+                ->with('NotAdded','Select Stage Before Submit')
+                ->withErrors($validator)
+                ->withInput();
+            }
+    $check = AssignNumber::where('user_id',$request->user_id)->first();
+            if(count($check) == 0){
+            $anumber = new AssignNumber;
+            $anumber->user_id = $request->user_id ;
+            $anumber->stage = $stages;
+            $anumber->save();
+        
+    }
+    else{
+            $check->stage = $stages;
+            $check->save();
+
+    }
+
+     return redirect()->back()->with('Success','Assigned successfully');
+
+}
 
 public function projectwise(request $request){
      $depts = [1,2];
