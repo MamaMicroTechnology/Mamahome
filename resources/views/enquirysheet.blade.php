@@ -176,6 +176,33 @@
 		</div>
 	</div>
 </div>
+<table class="table table-hover">
+    <tr>
+        <th>Enquiries</th>
+        <th>Total Enquiry Of Cement</th>
+        <th>Quantity</th>
+    </tr>
+    <tr>
+        <td>Enquiry Confirmed</td>
+        <td>54</td>
+        <td>8220</td>
+    </tr>
+    <tr>
+        <td>Enquiry cancelled</td>
+        <td>148</td>
+        <td>36838</td>
+    </tr>
+    <tr>
+        <td>Enquiry on Process</td>
+        <td>165</td>
+        <td>25510</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>367</td>
+        <td>70568</td>
+    </tr>
+</table>
 <script type="text/javascript">
 	function edit(arg){
 		document.getElementById('now'+arg).className = "hidden";
