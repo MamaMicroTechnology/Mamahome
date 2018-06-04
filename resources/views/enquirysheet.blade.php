@@ -188,8 +188,8 @@
     	</tr>
     <tr>
         <td>Enquiry on Process</td>
-        <td>165</td>
-        <td>25510</td>
+        <td>219</td>
+        <td>33730</td>
     </tr>
     <tr>
         <td>Enquiry cancelled</td>
@@ -198,8 +198,8 @@
     </tr>
     <tr>
         <td>Total</td>
-        <td>313</td>
-        <td>62348</td>
+        <td>367</td>
+        <td>70568</td>
     </tr>
 </table>
 </div>
