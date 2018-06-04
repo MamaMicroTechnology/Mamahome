@@ -13,6 +13,7 @@
                   <th style="width:15%">Address</th>
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
+                  <th>Quality</th>
                   <th>Action</th>
                  <th> Customer History</th>
                 
@@ -20,6 +21,7 @@
                 <tbody>
              <?php $ii=0; ?>
             @foreach($projects as $project)
+            
                 <tr>
                     <td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
                                     <td  style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
@@ -31,7 +33,7 @@
                                     </td>
                     <td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
                     <!-- <td>{{ Count($projects)   }}</td> -->
-                  
+                    <td>{{ $project->quality }}</td>
                      <td><form method="post" action="{{ URL::to('/') }}/confirmedProject" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">
@@ -537,19 +539,44 @@
                </tr>
            </table>
             <table class="table" style="width: 40%;">
-        <tr>
-            <td style="padding: 10px;"><b>Quality</b></td>
-            <td style="padding: 10px;">
+        
+           
+            <tr id="quepanelright-{{$project->project_id}}">
+                                    <td><label>Questions</label></td>
+                                    <td>
+                                        <select style="width: 100%" class="form-control" id="select-{{$project->project_id}}" name="qstn">-->
+                                    <option disabled selected>--- Select ---</option>
+                                    <option {{ $project->with_cont == 'NOT INTERESTED'? 'selected':'' }} value="NOT INTERESTED">NOT INTERESTED</option>
+                                    <option {{ $project->with_cont == 'BUSY'? 'selected':'' }} value="BUSY">BUSY</option>
+                                    <option {{ $project->with_cont == 'WRONG NO'? 'selected':'' }} value="WRONG NO">WRONG NO</option>
+                                    <option {{ $project->with_cont == 'PROJECT CLOSED'? 'selected':'' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
+                                    <option {{ $project->with_cont == 'CALL BACK LATER'? 'selected':'' }} value="CALL BACK LATER">CALL BACK LATER</option>
+                                    <option {{ $project->with_cont == 'THEY WILL CALL BACK WHEN REQUIRED'? 'selected':'' }} value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
+                                    <option {{ $project->with_cont == 'CALL NOT ANSWERED'? 'selected':'' }} value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
+                                    <option {{ $project->with_cont == 'FINISHING'? 'selected':'' }} value="FINISHING">FINISHING</option>
+                                    <option {{ $project->with_cont == 'SWITCHED OFF'? 'selected':'' }} value="SWITCHED OFF">SWITCHED OFF</option>
+                                    <option {{ $project->with_cont == 'SAMPLE REQUEST'? 'selected':'' }} value="SAMPLE REQUEST">SAMPLE REQUEST</option>
+                                    <option {{ $project->with_cont == 'MATERIAL QUOTATION'? 'selected':'' }} value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
+                                    <option {{ $project->with_cont == 'WILL FOLLOW UP AFTER DISCUSSION WITH OWNER'? 'selected':'' }} value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
+                                                        <option {{ $project->with_cont == 'DUPLICATE NUMBER'? 'selected':'' }} value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
+                                                        <option {{ $project->with_cont == 'NOT REACHABLE'? 'selected':'' }} value="NOT REACHABLE">NOT REACHABLE</option>
+                                  </select>
+                                    </td>
+            <tr >                        <td style="padding: 10px;"><b>Quality</b></td>
+            <td >
                 <select  id="quality" onchange="fake()" class="form-control" name="quality">
                     <option value="null" disabled selected>--- Select ---</option>
                     <option {{ $project->quality == "Genuine" ? 'selected':''}} value="Genuine">Genuine</option>
                     <option {{ $project->quality == "Fake" ? 'selected':''}} value="Fake">Fake</option>
+                        <option {{ $project->quality == "Unverified" ? 'selected':''}} value="Unverified">Unverified</option>
                 </select>
             </td>
-        </tr>
+            </tr>
+    </tr>
+        
         
         </table>
-            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
+            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks" value={{$project->remarks }} ></textarea><br>
             <br>
                             
         <button style="width:10%;" type="submit" id="subid" class=" form-control btn btn-primary">Submit Data</button>
@@ -604,7 +631,9 @@
 
         <!-- Modal footer -->
         <div class="modal-footer" style="background-color: green;padding:5px;">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary"  data-toggle="tab" href="#menu1{{ $project->project_id }}">NEXT</button>
+          <button type="button" class="btn btn-secondary pull-left" data-toggle="tab" href="#home{{ $project->project_id }}" >Privious</button>
         </div>
         
       </div>

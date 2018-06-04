@@ -141,6 +141,18 @@
 								</td>
 							</tr>
 							@else
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control" name="initiator">
+										<option value="" required>--Select--</option>
+										@foreach($users2 as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							@else
 							@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
 									<tr>
 										<td><label>Initiator* : </label></td>

@@ -21,6 +21,7 @@ Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
  Route::get('/h','HomeController@hstore');
+ Route::get('/viewMap','HomeController@viewMap');
 
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');

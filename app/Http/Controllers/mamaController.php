@@ -848,6 +848,7 @@ class mamaController extends Controller
             'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
+            'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
@@ -1722,7 +1723,7 @@ class mamaController extends Controller
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
-         if($x)
+       if($x)
         {
             return back()->with('success','Enquiry updated Successfully !!!');
         }
@@ -1730,7 +1731,6 @@ class mamaController extends Controller
         {
             return back()->with('success','Error Occurred !!!');
         }
-       
     }
     public function saveMap(Request $request)
     {

@@ -541,7 +541,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Enquiry Wise</a>   
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
-  </div>
+</div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>

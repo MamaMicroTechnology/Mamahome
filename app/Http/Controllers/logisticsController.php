@@ -420,6 +420,7 @@ class logisticsController extends Controller
                 }
                 break;
         }
+
         return view('logistics.getinvoice',['text'=>$text]);
     }
     public function inputinvoice(Request $request)
