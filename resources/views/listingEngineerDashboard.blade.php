@@ -28,7 +28,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
           <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/ProjectsUpdate" id="updates">Projects details</a><br><br>
+           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Projects details</a><br><br>
           
           @endif
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
