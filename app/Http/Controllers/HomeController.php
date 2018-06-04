@@ -130,7 +130,7 @@ class HomeController extends Controller
 
         $depart1 = [6];
         $depart2 = [7];
-        $depart = [2,4,8,6,7,15,17,16,1];
+        $depart = [2,4,8,6,7,15,17,16,1,11];
         $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
