@@ -2340,7 +2340,8 @@ class HomeController extends Controller
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
         $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
-        $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+         $groupid = [6,11];
+        $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         $projects = DB::table('project_details')
             ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
             ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
