@@ -180,7 +180,7 @@
 @if(isset($_GET['category']))
 	@if($_GET['category'] == "CEMENT")
 <div class="col-md-4">
-	<table class="table table-hover">
+	<table class="table table-hover" border=1>
     	<tr>
        	 <th>Enquiries</th>
        	 <th>Total Enquiry Of Cement</th>
