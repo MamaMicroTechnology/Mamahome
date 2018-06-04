@@ -154,19 +154,19 @@
 						@endforeach   
 					</tbody>
 					<tr>
-						<td style="text-align    : center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center">Total</td>
-						 	<td style="text-align: center">{{ $totalofenquiry }}</td>
-						 	<td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
-					        <td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center">Total</td>
+						<td style="text-align: center">{{ $totalofenquiry }}</td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
+						<td style="text-align: center"></td>
 					</tr>
 				</table>
 			</div>

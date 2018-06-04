@@ -1,4 +1,4 @@
-<!DO    CTYPE html>
+<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -12,10 +12,13 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
     <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+
     <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -574,15 +577,16 @@ div#calendar{
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-      </div>
-@endif
-@endif
-
-
+        </div>
+        @endif
+        @endif
+        
+        
         @yield('content')
     </div>
-
+    
     <!-- Scripts -->
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -617,7 +621,7 @@ div#calendar{
         span.onclick = function() { 
             modal.style.display = "none";
         }
-</script>
-<script src="{{ asset('js/app.js') }}"></script>
+    </script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

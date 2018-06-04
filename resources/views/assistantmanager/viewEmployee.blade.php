@@ -36,7 +36,7 @@
                         </tr>
                         <tr>
                             <td>Department</td>
-                            <td>: {{ $user->department->dept_name }}</td>
+                            <td>: {{ $user->department != null ? $user->department->dept_name : '' }}</td>
                             <td>Designation</td>
                             <td>
                                 : {{ $user->group->group_name }}

@@ -2221,17 +2221,16 @@ class HomeController extends Controller
             $projectids  = $cons; 
         }
     }
-        
-        if($date != "NULL"){
-            if(count($projectids) != 0){
-                $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
-            }else{
-                //$datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
-                $datec = $projectids;
+    if($date != "NULL"){
+        if(count($projectids) != 0){
+            $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
+        }else{
+            $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+            // $datec = $projectids;
             
-            }
-            $projectids = $datec;
         }
+        $projectids = $datec;
+    }
       
         
         $rmcInt = explode(",", $rmc);
@@ -2296,7 +2295,6 @@ class HomeController extends Controller
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                   
-
         $requirements = array();
         foreach($projects as $project){
             $req = Requirement::where('project_id',$project->project_id)->pluck('id')->toArray(); 
