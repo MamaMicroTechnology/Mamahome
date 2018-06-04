@@ -756,7 +756,7 @@ class HomeController extends Controller
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $depart1 = [6];
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        $depart2 = [2,4,6,7,8,17];
+        $depart2 = [2,4,6,7,8,17,11];
         $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
