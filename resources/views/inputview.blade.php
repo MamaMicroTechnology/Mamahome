@@ -99,7 +99,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             
                                
                                 <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
+                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')"  name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach

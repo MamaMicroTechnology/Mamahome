@@ -520,6 +520,7 @@ div#calendar{
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
       <a href="{{ URL::to('/assign_project') }}">Assign Project</a>
+      <a href="{{ URL::to('/assign_number') }}">Assign Phone numbers</a>
       <a href="{{ URL::to('/assign_enquiry') }}">Assign Enquiry</a>
     <!-- <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> --> 
     <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
@@ -555,6 +556,7 @@ div#calendar{
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
      <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
+     <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->

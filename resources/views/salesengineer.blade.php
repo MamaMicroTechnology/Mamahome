@@ -24,7 +24,7 @@
             
                 <tr>
                     <td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
-                                    <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
+                                    <td  style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                     <td id="projsite-{{$project->project_id}}">
                                         {{ $project->siteaddress != null ? $project->siteaddress->address : '' }}
                                     </td>
