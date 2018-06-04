@@ -68,17 +68,14 @@
         </div>
         </div>
         </div>
-         @foreach($wards as $ward)
-          <div id="subwards{{ $ward->id }}" class="hidden">
+         @foreach($wardsAndSub as $ward)
+          <div id="subwards{{ $ward['ward'] }}" class="hidden">
             <h4 class="modal-title">Choose SubWard </h4>
-            <input type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward->id}}');">All
-         
+            <label class="checkbox-inline"><input id="check{{ $ward['ward'] }}" type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward['ward']}}');">All</label>
           <br><br>    
-          <div id="ward{{ $ward->id }}">
+          <div id="ward{{ $ward['ward'] }}">
           <div class="row"> 
-              @foreach($subwards as $subward)
-              
-              @if($subward->ward_id == $ward->id)
+              @foreach($ward['subWards'] as $subward)
               <div class="col-sm-2" >
                     <label class="checkbox-inline">
                       
@@ -86,14 +83,12 @@
                       &nbsp;&nbsp;{{$subward->sub_ward_name}}
                      </label>&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
-              @endif
-                   
               @endforeach
           </div>
           </div>
               
           </div>
-          <button id="back{{ $ward->id }}" onclick="back('{{$ward->id }}')" type="button" class="hidden">Back</button>
+          <button id="back{{ $ward['ward'] }}" onclick="back('{{$ward['ward'] }}')" type="button" class="hidden">Back</button>
           @endforeach
           <div class="page">
             <!-- Assign stages  -->
@@ -138,8 +133,15 @@
             <div class="row">
               <div class="col-sm-6">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Listed date</h4>
-
               <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
+              </div>
+              <div class="col-sm-4">
+               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Quality</h4>
+              <select style="width:40%;" class="form-control" name="quality">
+                <option value="Unverified">Unverified</option>
+                <option  value="Genuine">Genuine</option>
+                <option value="Fake">Fake</option>
+              </select>  
               </div>
             </div> <br>                                                      
             <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
@@ -372,11 +374,13 @@ function back(arg){
 <script>
 function checkall(arg){
 var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
-
-for (var i = 0; i < clist.length; ++i) 
-{ 
-  clist[i].checked = "checked"; 
-  }
+if(document.getElementById('check'+arg).checked == true){
+  for (var i = 0; i < clist.length; ++i) 
+    clist[i].checked = true; 
+}else{
+  for (var i = 0; i < clist.length; ++i) 
+    clist[i].checked = false; 
+}
   
 }
 </script>

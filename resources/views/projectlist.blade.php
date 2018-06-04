@@ -16,7 +16,7 @@
         </thead>
         <tbody>
           @foreach($projectlist as $project)
-          @if($project->quality == NULL || $project->quality == 'Genuine')
+          @if($project->quality == 'Unverified' || $project->quality == 'Genuine')
             <tr>
               <td>{{ $project->project_name }}</td>
               <td>

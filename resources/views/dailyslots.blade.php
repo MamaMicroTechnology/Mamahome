@@ -196,9 +196,13 @@
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
+                            if(response[0][i].quality == 'Fake'){
+                                var head = "<tr style='background-color:#d2d5db'><td>";
+                            }else{
+                                var head = "<tr><td>";
+                            }
                             document.getElementById('mainPanel').innerHTML += 
-                            "<tr><td>"
-                                +response[0][i].sub_ward_name+
+                            head + response[0][i].sub_ward_name+
                             "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -260,9 +264,13 @@
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
+                            if(response[0][i].quality == 'Fake'){
+                                var head = "<tr style='background-color:#d2d5db'><td>";
+                            }else{
+                                var head = "<tr><td>";
+                            }
                             document.getElementById('mainPanel').innerHTML += 
-                            "<tr><td>"
-                                +response[0][i].sub_ward_name+
+                            head+response[0][i].sub_ward_name+
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"

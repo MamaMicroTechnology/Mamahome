@@ -27,7 +27,10 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
+
 </head>
+
+
 <body onselectstart="return false">
   <div id="signature-pad" class="signature-pad">
     <div class="signature-pad--body">
@@ -41,6 +44,8 @@
           <button type="button" class="button clear" data-action="clear">Clear</button>
           <button type="button" class="button" data-action="change-color">Change color</button>
           <button type="button" class="button" data-action="undo">Undo</button>
+          <button><a href="{{url()->previous()}}">Back</a></button>
+
         </div>
         <div>
           <button type="button" class="button save" data-action="save-png">Save as PNG</button>

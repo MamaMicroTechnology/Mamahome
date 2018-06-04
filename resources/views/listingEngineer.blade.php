@@ -21,10 +21,12 @@
                 </div>
                 @if($subwards)
                 <div class="panel-body">
-                    <center> <label id="headingPanel"></label></center>
-                    <br>    
-                    <center>       
-                    <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
+                   <center> <label id="headingPanel"></label></center>
+                   <br>
+                    
+                                     
+                             <center>       
+                     <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
@@ -34,6 +36,11 @@
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
+                                <tr>
+                                         
+                                    
+                                       
+                              </tr>
                                <tr>
                                    <td>Location</td>
                                    <td>:</td>
@@ -55,9 +62,15 @@
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
                                <tr>
+                                   <td>Road Name/Road No.</td>
+                                   <td>:</td>
+                                   <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
+                               </tr>
+                               <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet"  class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                  
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                                    <td>Full Address</td>
@@ -92,6 +105,7 @@
                                     <option   value="" disabled selected>--- Select ---</option>
                                     <option    value="Labour Contract">Labour Contract</option>
                                     <option  value="Material Contract">Material Contract</option>
+                                     <option  value="None">None</option>
                                 </select>
                               </td>
                                <!-- <tr>
@@ -222,8 +236,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" onclick="dis()" name="budgetType" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"  type="checkbox" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -232,9 +246,9 @@
                                    <td><input value="{{ old('budget') }}" id="budget" required placeholder="Budget in Crores" type="text" onkeyup="check('budget')" class="form-control input-sm" name="budget"></td>
                                </tr>
                                <tr>
-                                   <td>Project Image</td>
+                                   <td>Project Images</td>
                                    <td>:</td>
-                                   <td><input id="pImage" required type="file" accept="image/*" class="form-control input-sm" name="pImage" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
+                                   <td><input id="pImage" oninput="fileuploadimage()" required type="file" accept="image/*" class="form-control input-sm" name="pImage[]" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -950,7 +964,7 @@
       if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').attr('disabled',false);
+        $('#constructionType2').atuctr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
       }else{
@@ -964,9 +978,17 @@
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
+    function fileuploadimage(){ 
+      var count = document.getElementById('pImage').files.length;
+      if(count > 4){
+        document.getElementById('pImage').value="";
+        alert('You are allowed to upload a maximum of 4 files');
+      }
+    }
+
 </script>
 <script>
-function dis(){
+function display(){
 
     if (document.getElementById("constructionType3").checked){
         document.getElementById('constructionType4').disabled=true;
@@ -974,4 +996,5 @@ function dis(){
 
 
 </script>
+
 @endsection

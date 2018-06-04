@@ -149,7 +149,7 @@
 <body>
 <div class="container">
   <div class="row">
-    <h1>{{ $page }} Mapping
+    <h1>Mapping
     </h1>
     <div class="row">
       <div class="span11">
@@ -160,9 +160,9 @@
         <form onsubmit="validate()" action="{{ URL::to('/') }}/saveMap" method="POST">
           {{ csrf_field() }}
             <div class="col-md-6">
-              {{ $page }}:<br>
+              :<br>
                 <input type="text" name="name" id="name" value="{{ $zones->name }}" class="form-control">
-                <input type="hidden" name="page" value="{{ $page }}">
+                <input type="hidden" name="page" value="    ">
                 <input type="hidden" name="zone" value="{{ $zones->id }}">
             </div>
             <div class="col-md-2">

@@ -166,13 +166,12 @@ class TokenController extends Controller
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id]);
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
         }else{
             return response()->json(['message' => 'false']);
         }
     }
-<<<<<<< HEAD
-=======
+
     public function saveLocation(Request $request)
     {
         $location = new UserLocation;
@@ -183,5 +182,5 @@ class TokenController extends Controller
         $messages = new Collection;
         return response()->json(['message'=>'true']);
     }
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
+
 }

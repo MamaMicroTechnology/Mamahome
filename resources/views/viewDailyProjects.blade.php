@@ -4,11 +4,12 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-heading">
-
-                            
-               <b style="color:white">Project Details
+               <div class="col-md-4">Project Details</div>
+               <div class="pull-center col-md-4"><center>Project Id {{ $details->project_id }}</center></div>
+               <div class="pull-right col-md-4">
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
-               </b> 
+               </div>
+              <br>
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
@@ -93,6 +94,7 @@
                                 <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
                                <td style="font-size:13px">
                                
+                            </td>
                             </td>
                             </td>
                         </tr>
@@ -294,6 +296,32 @@
     </div>
 </div>
         
+ <div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Owner Details</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Owner Name</th>
+                        <th>Owner Contact</th>
+                        <th>Owner Email</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                             <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
+                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_no : '' }}</td>
+                           <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
+                           
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>       
        
 
 @endsection
