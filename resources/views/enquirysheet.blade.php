@@ -176,12 +176,15 @@
 		</div>
 	</div>
 </div>
-<table class="table table-hover">
-    <tr>
-        <th>Enquiries</th>
-        <th>Total Enquiry Of Cement</th>
-        <th>Quantity</th>
-    </tr>
+@if(isset($_GET['category']) && isset($_GET['satus']))
+	@if($_GET['category'] == "Cement")
+<div class="col-md-4">
+	<table class="table table-hover">
+    	<tr>
+       	 <th>Enquiries</th>
+       	 <th>Total Enquiry Of Cement</th>
+       	 <th>Quantity</th>
+    	</tr>
     <tr>
         <td>Enquiry Confirmed</td>
         <td>54</td>
@@ -198,11 +201,14 @@
         <td>25510</td>
     </tr>
     <tr>
-        <td></td>
+        <td>Total</td>
         <td>367</td>
         <td>70568</td>
     </tr>
 </table>
+</div>
+@endif
+@endif
 <script type="text/javascript">
 	function edit(arg){
 		document.getElementById('now'+arg).className = "hidden";
