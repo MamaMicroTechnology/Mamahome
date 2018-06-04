@@ -187,11 +187,6 @@
        	 <th>Quantity</th>
     	</tr>
     <tr>
-        <td>Enquiry Confirmed</td>
-        <td>54</td>
-        <td>8220</td>
-    </tr>
-    <tr>
         <td>Enquiry cancelled</td>
         <td>148</td>
         <td>36838</td>
@@ -203,8 +198,8 @@
     </tr>
     <tr>
         <td>Total</td>
-        <td>367</td>
-        <td>70568</td>
+        <td>313</td>
+        <td>62348</td>
     </tr>
 </table>
 </div>
