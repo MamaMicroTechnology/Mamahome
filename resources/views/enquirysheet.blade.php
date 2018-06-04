@@ -177,7 +177,7 @@
 		</div>
 	</div>
 </div>
-@if(isset($_GET['category']) && isset($_GET['satus']))
+@if(isset($_GET['category']))
 	@if($_GET['category'] == "Cement")
 <div class="col-md-4">
 	<table class="table table-hover">
@@ -208,7 +208,6 @@
     </tr>
 </table>
 </div>
-@endif
 @endif
 <script type="text/javascript">
 	function edit(arg){
