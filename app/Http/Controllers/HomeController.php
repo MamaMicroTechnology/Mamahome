@@ -2209,7 +2209,9 @@ class HomeController extends Controller
             }        
         }
         if(Count($cons) > 0){
-            $projectids  = $cons; 
+            $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+         
+            //$projectids  = $cons; 
         }
     }
         
@@ -2217,8 +2219,8 @@ class HomeController extends Controller
             if(count($projectids) != 0){
                 $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
             }else{
-                //$datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
-                $datec = $projectids;
+                $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                //$datec = $projectids;
             
             }
             $projectids = $datec;
