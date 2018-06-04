@@ -2230,7 +2230,9 @@ class HomeController extends Controller
             // $datec = $projectids;
             
         }
-        $projectids = $datec;
+        if($datec != null){
+            $projectids = $datec;
+        }
     }
       
         
