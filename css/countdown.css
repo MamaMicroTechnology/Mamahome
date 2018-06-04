@@ -25,3 +25,11 @@
     padding-top: 5px;
     font-size: 16px;
 }
+.countdownContainer{
+    width: 40%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 9px;
+    background-image: url('https://mamahome360.com/webapp/bg.gif');
+    color: white;
+}
