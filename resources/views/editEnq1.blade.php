@@ -129,18 +129,42 @@
 									</select>
 								</td>
 							</tr>
-							@else
+							@elseif(Auth::user()->group_id == 6)
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
-									<select required class="form-control" name="initiator">
-										<option value="" required>--Select--</option>
+									<select required class="form-control"  name="initiator">
 										@foreach($users1 as $user)
 										<option value="{{$user->id}}">{{$user->name}}</option>
 										@endforeach
 									</select>
 								</td>
 							</tr>
+							@else
+							@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
+									<tr>
+										<td><label>Initiator* : </label></td>
+										<td>	
+											<select required class="form-control" name="initiator">
+												<option value="" required>--Select--</option>
+												@foreach($users2 as $user)
+												<option value="{{$user->id}}">{{$user->name}}</option>
+												@endforeach
+											</select>
+										</td>
+									</tr>
+									@else
+									<tr>
+										<td><label>Initiator* : </label></td>
+										<td>	
+											<select required class="form-control" name="initiator">
+												@foreach($users3 as $user)
+												<option value="{{$user->id}}">{{Auth::user()->name}}</option>
+												@endforeach
+											</select>
+										</td>
+									</tr>
+									@endif
 							@endif
 							<tr>
 								<td><label>Location* : </label></td>

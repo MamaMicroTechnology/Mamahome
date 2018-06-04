@@ -1,5 +1,3 @@
-
-
 @extends('layouts.leheader')
 @section('content')
 
@@ -14,12 +12,22 @@
       @if($subwards)
       <div class="col-md-3"> 
          You are in {{$subwards->sub_ward_name}}<br><br>
+        @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+         @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/') }}/projectsUpdate" id="updates">Projects</a><br><br>
+        @endif
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
                 <tr>
