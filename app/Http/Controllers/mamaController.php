@@ -1714,7 +1714,7 @@ class mamaController extends Controller
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
       
-        Requirement::where('id',$request->reqId)->update([
+        $x = Requirement::where('id',$request->reqId)->update([
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
@@ -1723,7 +1723,14 @@ class mamaController extends Controller
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
-        return back();
+       if($x)
+        {
+            return back()->with('success','Enquiry updated Successfully !!!');
+        }
+        else
+        {
+            return back()->with('success','Error Occurred !!!');
+        }
     }
     public function saveMap(Request $request)
     {

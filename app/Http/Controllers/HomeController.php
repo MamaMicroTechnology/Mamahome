@@ -1140,6 +1140,10 @@ class HomeController extends Controller
         $points_earned_so_far = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('confirmation',1)->where('created_at','LIKE',date('Y-m-d')."%")->get();
+            $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+            if($subwardMap == Null){
+                $subwardMap = "None";
+            }
         // $total = $points_earned_so_far - $points_subtracted;
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
@@ -1154,6 +1158,7 @@ class HomeController extends Controller
                                                 'points_indetail'=>$points_indetail,
                                                 'points_earned_so_far'=>$points_earned_so_far,
                                                 'points_subtracted'=>$points_subtracted,
+                                                'subwardMap'=>$subwardMap
                                                 // 'total'=>$total
                                                 ]);
     }
@@ -1209,7 +1214,7 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
+                                                    ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $genuine + $null;
@@ -1456,7 +1461,7 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality',null)
+                                                    ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $null + $genuine;
@@ -2283,7 +2288,7 @@ class HomeController extends Controller
             }
         }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                    //->where('quality',"Unverified")
+                    // ->where('quality',"Unverified")
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -4293,20 +4298,13 @@ function enquirystore(request $request){
 
         return view('enquirywise',['projects'=>$projects]);
     }
+    public function viewMap(Request $request)
+    {
+        $zones = ZoneMap::where('zone_id',$request->zoneId)->first();
+        if($request->subWardId){
+            $zones = SubWardMap::where('sub_ward_id',$request->subWardId)->first();
+        }
+        return view('maping.viewmap',['zones'=>$zones]);
+    }
 
  }
-
-
-
-
-
-
-
-    
-
-   
-     
- 
-
-    
-    
