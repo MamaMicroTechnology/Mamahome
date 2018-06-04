@@ -178,7 +178,7 @@
 	</div>
 </div>
 @if(isset($_GET['category']))
-	@if($_GET['category'] == "Cement")
+	@if($_GET['category'] == "CEMENT")
 <div class="col-md-4">
 	<table class="table table-hover">
     	<tr>
