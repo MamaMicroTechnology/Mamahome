@@ -1025,9 +1025,9 @@ class HomeController extends Controller
          return view('/teamLeader');
     }
     public function assignListSlots(){          
-   // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
+   
          $group = [6,11];
-        $users = User::where('group_id',$group)
+        $users = User::whereIn('group_id',$group)
                         ->join('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->join('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
                         ->join('wards','wards.id','=','sub_wards.ward_id' )
