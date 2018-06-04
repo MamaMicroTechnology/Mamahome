@@ -209,6 +209,7 @@
 </table>
 </div>
 @endif
+@endif
 <script type="text/javascript">
 	function edit(arg){
 		document.getElementById('now'+arg).className = "hidden";
