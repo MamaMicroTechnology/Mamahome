@@ -187,14 +187,14 @@
        	 <th>Quantity</th>
     	</tr>
     <tr>
-        <td>Enquiry cancelled</td>
-        <td>148</td>
-        <td>36838</td>
-    </tr>
-    <tr>
         <td>Enquiry on Process</td>
         <td>165</td>
         <td>25510</td>
+    </tr>
+    <tr>
+        <td>Enquiry cancelled</td>
+        <td>148</td>
+        <td>36838</td>
     </tr>
     <tr>
         <td>Total</td>
