@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
         <style>
             html, body {
                 background-color: #fff;
@@ -67,27 +66,6 @@
         </style>
     </head>
     <body>
-        <center>
-            <h1>Operation <i style="color:yellow; font-size: 50px;" class="fa fa-bolt"></i> Lightning</h1>
-            <div id="clockdiv">
-                <div>
-                    <span class="days"></span>
-                    <div class="smalltext">Days</div>
-                </div>
-                <div>
-                    <span class="hours"></span>
-                    <div class="smalltext">Hours</div>
-                </div>
-                <div>
-                    <span class="minutes"></span>
-                    <div class="smalltext">Minutes</div>
-                </div>
-                <div>
-                    <span class="seconds"></span>
-                    <div class="smalltext">Seconds</div>
-                </div>
-            </div>
-        </center>
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
@@ -103,7 +81,6 @@
                 </div>
             </div>
         </div>
-        <script src="{{ URL::to('/') }}/js/countdown.js"></script>
     </body>
     </html>
     

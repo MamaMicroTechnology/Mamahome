@@ -9,7 +9,7 @@
     We appreciate you services.
     </SMALL>
 </center></h2>
-<center>
+<center class="countdownContainer">
     <h1>Operation <i style="color:yellow; font-size: 50px;" class="fa fa-bolt"></i> Lightning</h1>
     <div id="clockdiv">
         <div>

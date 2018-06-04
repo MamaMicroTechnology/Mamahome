@@ -586,7 +586,6 @@ div#calendar{
     </div>
     
     <!-- Scripts -->
-    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -597,7 +596,7 @@ div#calendar{
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-    </script>
+        </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -621,7 +620,8 @@ div#calendar{
         span.onclick = function() { 
             modal.style.display = "none";
         }
-    </script>
+        </script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
 </body>
 </html>
