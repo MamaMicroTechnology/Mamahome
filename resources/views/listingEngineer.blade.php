@@ -960,7 +960,7 @@
       if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').atuctr('disabled',false);
+        $('#constructionType2').attr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
       }else{
