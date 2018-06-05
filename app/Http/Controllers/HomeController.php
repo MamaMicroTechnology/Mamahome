@@ -2363,7 +2363,15 @@ class HomeController extends Controller
                 4665,
                 4680,
                 4684,
-                4704
+                4704,
+                5769,
+                5882,
+                5920,
+                6035,
+                5520,
+                6028,
+                6047,
+                5638
             ];
         }elseif(Auth::user()->id == 93){
             $projectids = [
