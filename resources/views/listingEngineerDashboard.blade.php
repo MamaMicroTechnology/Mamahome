@@ -42,11 +42,11 @@
                   <td style="border: 1px solid gray;">{{ $total }}</td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders Initiated by You</label></td>
+                  <td style="border: 1px solid gray;"><label>Enquiries Initiated </label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed</label></td>
+                  <td style="border: 1px solid gray;"><label>Enquiries Confirmed</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
                 </tr>
           </tbody>
