@@ -10,7 +10,7 @@
 </head>
 <body>
 <br>
-<form action="/allProjectsWithWards" method="get">
+<form action="{{ URL::to('/') }}/allProjectsWithWards" method="get">
     <div class="col-md-2">
         <label for="wards">Select Wards:</label>
         <select required name="wards" class="form-control" id="wards">
