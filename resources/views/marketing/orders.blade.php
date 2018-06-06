@@ -15,7 +15,7 @@
                 <table class="table table-responsive table-striped table-hover" border="1">
     				<thead>
     				    <th style="text-align:center">Order ID</th>
-    				    
+    				    <th style="text-align:center">Project Id</th>
     					<th style="text-align:center">Main Category</th>
     					<th style="text-align:center">Sub Category</th>
     					<th style="text-align:center">Quantity</th>
@@ -29,6 +29,7 @@
 					        <td style="text-align:center">
 					            <a href="{{URL::to('/')}}/inputinvoice?id={{$view->orderid}}" target="_blank">{{$view->orderid}}</a>
 					        </td>
+							<td style="text-align:center">{{ $view->project_id }}</td>
 					        <td style="text-align:center">{{$view->main_category}}</td>
 					        <td style="text-align:center">{{$view->sub_category}}</td>
 					        <td style="text-align:center">{{$view->quantity}}</td>

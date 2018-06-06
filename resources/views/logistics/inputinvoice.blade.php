@@ -154,10 +154,10 @@
                         <td colspan=2>Mamahome Invoice Amount</td>
                         <td colspan=2><input required type="text" name="mhinvoice" placeholder="Mamahome Invoice Amount" id="" class="form-control"></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan=2>Manufacturer No.</td>
                         <td colspan=2>MH210</td>
-                    </tr>
+                    </tr> -->
                     <!-- <tr>
                         <td colspan=2>Quantity</td>
                         <td colspan=2><input type="text" name="" placeholder="Quantity" id="" class="form-control"></td>

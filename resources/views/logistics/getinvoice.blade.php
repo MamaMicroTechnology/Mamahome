@@ -112,6 +112,10 @@
                                     ?>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan=2>Transactional Profit</td>
+                                <td colspan=2>{{ $invoice->transactional_profit }}</td>
+                            </tr>
                         </table>
                     @endforeach
                     </div>
