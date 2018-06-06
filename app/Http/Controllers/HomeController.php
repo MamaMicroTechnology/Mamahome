@@ -2347,16 +2347,18 @@ class HomeController extends Controller
             ];
         }elseif(Auth::user()->id == 12){
             $projectids = [
-                1926,
-                1927,
-                1946,
-                1947,
-                2139,
-                2141,
-                2142,
-                1960,
-                2038,
-                2047
+                
+               
+                1925,
+                1935,
+                1940,
+                1950,
+                1951,
+                1958,
+                1963,
+                1966,
+                1990,
+                2128
             ];
         }elseif(Auth::user()->id == 13){
             $projectids = [
