@@ -22,6 +22,7 @@ Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
  Route::get('/h','HomeController@hstore');
  Route::get('/viewMap','HomeController@viewMap');
+ Route::post('/saveinvoice','marketingController@saveinvoice');
 
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
@@ -34,7 +35,7 @@ Route::get('/myreport','HomeController@myreport');
 Route::get('/invoice','logisticsController@getinvoice');
 Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
-
+Route::get('/allProjectsWithWards','HomeController@allProjectsWithWards');
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
@@ -81,6 +82,7 @@ Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
+Route::get('/ordersformarketing','marketingController@ordersformarketing');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');

@@ -62,6 +62,7 @@ use App\AssignStage;
 use App\History;
 use App\Assignenquiry;
 use App\ProjectImage;
+use App\EnquiryQuantity;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -2291,6 +2292,102 @@ class HomeController extends Controller
                 $projectids = $qua;
             }
         }
+        if(Auth::user()->id == 51){
+            $projectids = [
+                339,
+                342,
+                836,
+                4116,
+                4796,
+                5200,
+                5205,
+                5207,
+                5276,
+                5353,
+                5370,
+                5391,
+                5450,
+                8057,
+                5432,
+                7457,
+                8083,
+                11399,
+                11362,
+                8045,
+                8083,
+                11362,
+                11399,
+                8008,
+                8080,
+                7793,
+                7939
+            ];
+        }elseif(Auth::user()->id == 9){
+            $projectids = [
+                10092,
+                8727,
+                7236,
+                9549,
+                9548,
+                8771,
+                10097,
+                9542,
+                9543,
+                8751,
+                8771,
+                8764,
+                9542,
+                9543,
+                9544,
+                8748,
+                12281
+            ];
+        }elseif(Auth::user()->id == 12){
+            $projectids = [
+                1926,
+                1927,
+                1946,
+                1947,
+                2139,
+                2141,
+                2142,
+                1960,
+                2038,
+                2047
+            ];
+        }elseif(Auth::user()->id == 13){
+            $projectids = [
+                4573,
+                4624,
+                4629,
+                4650,
+                4665,
+                4680,
+                4684,
+                4704
+            ];
+        }elseif(Auth::user()->id == 93){
+            $projectids = [
+                3901,
+                3907,
+                3960,
+                3967,
+                4099,
+                3807,
+                3863,
+                3914,
+                3932,
+                3939,
+                3945,
+                3955,
+                3974,
+                3980,
+                4527,
+                9375,
+                9409,
+                9393
+            ];
+        }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     // ->where('quality',"Unverified")
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
@@ -2304,7 +2401,7 @@ class HomeController extends Controller
             $pid = $project->project_id;
             array_push($requirements, [$pid,$req]);
         }
-        $his = History::all();                     
+        $his = History::all();      
         return view('salesengineer',[
                 'projects'=>$projects,
                 'roomtypes'=>$roomtypes,            
@@ -4309,5 +4406,20 @@ function enquirystore(request $request){
         }
         return view('maping.viewmap',['zones'=>$zones]);
     }
-
+    public function allProjectsWithWards(Request $request)
+    {
+        $wardMaps = null;
+        $projects = null;
+        if($request->wards && $request->quality){
+            $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
+            $wardMaps = WardMap::where('ward_id',$request->wards);
+            $projects = ProjectDetails::leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+                        ->select('site_addresses.*','project_details.quality')
+                        ->where('project_details.quality',$request->quality)
+                        ->whereIn('project_details.sub_ward_id',$subwards)
+                        ->get();
+        }
+        $wards = Ward::all();
+        return view('maping.allProjectsWithWards',['wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards]);
+    }
  }

@@ -29,6 +29,7 @@ use App\attendance;
 use App\ContractorDetails;
 use App\salesassignment;
 use App\Report;
+use App\Order;
 use Auth;
 use DB;
 use App\EmployeeDetails;
@@ -130,5 +131,58 @@ class marketingController extends Controller
      public function marketingDashboard()
     {
         return view('marketingdashboard');
+    }
+    public function ordersformarketing()
+    {
+        $rec = Order::select('id as orderid','orders.*')->get();
+        $countrec = count($rec);   
+        return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec]);
+    }
+    public function saveinvoice(Request $request){
+        if($request->invoicePic != NULL){
+            $imageName1 = "invoice".time().'.'.request()->invoicePic->getClientOriginalExtension();
+            $request->invoicePic->move(public_path('invoiceImages'),$imageName1);
+        }else{
+            $imageName1 = null;
+        }
+        if($request->signature != NULL){
+            $imageName2 = "signature".time().'.'.request()->signature->getClientOriginalExtension();
+            $request->signature->move(public_path('invoiceImages'),$imageName2);
+        }else{
+            $imageName2 = null;
+        }
+        if($request->weighment != NULL){
+            $imageName3 = "weighment".time().'.'.request()->weighment->getClientOriginalExtension();
+            $request->weighment->move(public_path('invoiceImages'),$imageName3);
+        }else{
+            $imageName3 = null;
+        }
+        if($request->manufacturer_invoice != NULL){
+            $imageName4 = "manufacturer_invoice".time().'.'.request()->manufacturer_invoice->getClientOriginalExtension();
+            $request->manufacturer_invoice->move(public_path('invoiceImages'),$imageName4);
+        }else{
+            $imageName4 = null;
+        }
+        $mhinvoice = new MhInvoice;
+        $mhinvoice->project_id = $request->project_id;
+        $mhinvoice->requirement_id = $request->invoice_no;
+        $mhinvoice->customer_name = $request->customer_name;
+        $mhinvoice->deliver_location = $request->address;
+        $mhinvoice->delivery_date = $request->delivery_date;
+        $mhinvoice->item = $request->product;
+        $mhinvoice->quantity = $request->quantity;
+        $mhinvoice->price = $request->price;
+        $mhinvoice->invoice_pic = $imageName1;
+        $mhinvoice->signature = $imageName2;
+        $mhinvoice->weighment_slip = $imageName3;
+        $mhinvoice->amount_to_manufacturer = $request->amount_to_manufacturer;
+        $mhinvoice->mama_invoice_amount = $request->mhinvoice;
+        $mhinvoice->transactional_profit = $request->mhinvoice - $request->amount_to_manufacturer;
+        $mhinvoice->manufacturer_number = $request->manufacturer_no;
+        $mhinvoice->date_of_invoice = $request->dateOfInvoice;
+        $mhinvoice->total_amount = $request->quantity * $request->price;
+        $mhinvoice->manufacturer_invoice = $imageName4;
+        $mhinvoice->save();
+        return back();
     }
 }
