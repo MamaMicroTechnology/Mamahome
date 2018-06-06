@@ -2149,6 +2149,20 @@ class HomeController extends Controller
         if(count($budgettypes) != 0){
             $projectids = $budgettypes;
         }
+        
+            if($projectSize != null){
+            if(count($projectids) != 0){
+                $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
+            }else{
+                $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
+            }
+            if(count($project_sizes) != 0){
+                $projectids = $project_sizes;
+            }
+            
+        }
+        
+        
         //feching contracts 
         $contractInt = explode(",", $lab);
         if($contractInt[0] != "null"){
@@ -2256,17 +2270,7 @@ class HomeController extends Controller
         if(count($project_types) != 0){
             $projectids = $project_types;
         }
-        if($projectSize != null){
-            if(count($projectids) != 0){
-                $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
-            }else{
-                $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
-            }
-            if(count($project_sizes) != 0){
-                $projectids = $project_sizes;
-            }
-            
-        }
+    
         // dd($projectids);
         if($budget != null){
             if(count($projectids) != 0){
