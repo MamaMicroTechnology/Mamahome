@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Mamahome</title>
     <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
@@ -51,6 +51,17 @@
     var col = [];
     var places = [];
     var quality = [];
+    @if($wardMaps != "None")
+        var latlng = "{{ $wardMaps->lat }}";
+        var col = "{{ $wardMaps->color }}";
+    @else
+        var latlng = "";
+        var col = "456369"
+    @endif
+    var places = latlng.split(",");
+    for(var i=0;i<places.length;i+=2){
+          newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
+    }
     @foreach($projects as $project)
         locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}}, {{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
         created.push("{{ $project->created_at}}");
@@ -111,28 +122,15 @@
         }
         })(marker, i));
     }
-        @foreach($wardMaps as $wardMap)
-            latlng.push("{{ $wardMap->lat }}");
-            col.push("{{ $wardMap->color }}");
-        @endforeach
-        for(var c = 0; c<latlng.length; c++){
-            places.push(latlng[c].split(","));
-        }
-        for(var k=0;k<places.length;k++){
-            for(var i=0;i<places[k].length;i+=2){
-                mysubpath.push({lat: parseFloat(places[k][i]), lng: parseFloat(places[k][i+1])});
-            }
-            newpath.push(new google.maps.Polygon({
-                    paths: mysubpath,
-                    strokeColor: '#'+col,
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#'+col[k],
-                    fillOpacity: 0.35
-                })
-            );
-        }
-        newpath[newpath.length-1].setMap(map);
+    var subward = new google.maps.Polygon({
+        paths: newpath,
+        strokeColor: '#'+col,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#'+col,
+        fillOpacity: 0.35
+      });
+  subward.setMap(map);
     }
     </script>
     @endif

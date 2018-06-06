@@ -4425,7 +4425,10 @@ function enquirystore(request $request){
         $projects = null;
         if($request->wards && $request->quality){
             $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
-            $wardMaps = WardMap::where('ward_id',$request->wards);
+            $wardMaps = WardMap::where('ward_id',$request->wards)->first();
+            if($wardMaps == null){
+                $wardMaps = "None";
+            }
             $projects = ProjectDetails::leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
                         ->select('site_addresses.*','project_details.quality')
                         ->where('project_details.quality',$request->quality)

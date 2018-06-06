@@ -109,7 +109,7 @@
     var places = latlng.split(",");
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
-        }
+    }
     @foreach($projects as $project)
       locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}} {{$project->project_name}},{{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
       created.push("{{ $project->created_at}}");
