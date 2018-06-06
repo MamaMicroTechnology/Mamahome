@@ -28,7 +28,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
           <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/ProjectsUpdate" id="updates">Projects details</a><br><br>
+           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Projects details</a><br><br>
           
           @endif
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
@@ -42,11 +42,11 @@
                   <td style="border: 1px solid gray;">{{ $total }}</td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders Initiated by You</label></td>
+                  <td style="border: 1px solid gray;"><label>Enquiries Initiated </label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed</label></td>
+                  <td style="border: 1px solid gray;"><label>Enquiries Confirmed</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
                 </tr>
           </tbody>

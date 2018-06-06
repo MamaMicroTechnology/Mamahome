@@ -1026,9 +1026,9 @@ class HomeController extends Controller
          return view('/teamLeader');
     }
     public function assignListSlots(){          
-   // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
+   
          $group = [6,11];
-        $users = User::where('group_id',$group)
+        $users = User::whereIn('group_id',$group)
                         ->join('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->join('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
                         ->join('wards','wards.id','=','sub_wards.ward_id' )
@@ -2150,6 +2150,20 @@ class HomeController extends Controller
         if(count($budgettypes) != 0){
             $projectids = $budgettypes;
         }
+        
+            if($projectSize != null){
+            if(count($projectids) != 0){
+                $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
+            }else{
+                $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
+            }
+            if(count($project_sizes) != 0){
+                $projectids = $project_sizes;
+            }
+            
+        }
+        
+        
         //feching contracts 
         $contractInt = explode(",", $lab);
         if($contractInt[0] != "null"){
@@ -2257,17 +2271,7 @@ class HomeController extends Controller
         if(count($project_types) != 0){
             $projectids = $project_types;
         }
-        if($projectSize != null){
-            if(count($projectids) != 0){
-                $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
-            }else{
-                $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
-            }
-            if(count($project_sizes) != 0){
-                $projectids = $project_sizes;
-            }
-            
-        }
+    
         // dd($projectids);
         if($budget != null){
             if(count($projectids) != 0){
@@ -2344,16 +2348,16 @@ class HomeController extends Controller
             ];
         }elseif(Auth::user()->id == 12){
             $projectids = [
-                1926,
-                1927,
-                1946,
-                1947,
-                2139,
-                2141,
-                2142,
-                1960,
-                2038,
-                2047
+                1925,
+                1935,
+                1940,
+                1950,
+                1951,
+                1958,
+                1963,
+                1966,
+                1990,
+                2128
             ];
         }elseif(Auth::user()->id == 13){
             $projectids = [
@@ -2364,7 +2368,15 @@ class HomeController extends Controller
                 4665,
                 4680,
                 4684,
-                4704
+                4704,
+                5769,
+                5882,
+                5920,
+                6035,
+                5520,
+                6028,
+                6047,
+                5638
             ];
         }elseif(Auth::user()->id == 93){
             $projectids = [
@@ -2437,7 +2449,8 @@ class HomeController extends Controller
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
         $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
-        $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+         $groupid = [6,11];
+        $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         $projects = DB::table('project_details')
             ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
             ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
