@@ -4,7 +4,7 @@
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
 
-        <div class="panel-heading" style="background-color: green;color: white;">Fetch Numbers Here Than Assign to the Users 
+        <div class="panel-heading" style="background-color: green;color: white;">Fetch Numbers Here Than Assign to the Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOTAL : {{ $count }}
            <form method="GET" action="{{ URL::to('/') }}/assign_number">
                 <input type="hidden" name="delete" value="delete">
                 <input type="submit" value="Reset" class="pull-right btn-danger btn btn-sm">

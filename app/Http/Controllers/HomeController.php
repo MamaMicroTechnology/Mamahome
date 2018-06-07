@@ -4061,13 +4061,14 @@ public function numberwise(request $request){
               ->leftjoin('groups','groups.id','users.group_id')
               
              ->select('users.*','groups.group_name')->get();
+             $count = numbers::count();
  $number = numbers::paginate(100);
         if($request->delete){
             numbers::truncate();
             return back();
         }
 
-         return view('assign_number',['users'=>$users,'number'=>$number]);
+         return view('assign_number',['users'=>$users,'number'=>$number,'count'=>$count]);
 
 }
 public function savenumber(request $request){
