@@ -63,6 +63,10 @@ use App\History;
 use App\Assignenquiry;
 use App\ProjectImage;
 use App\EnquiryQuantity;
+use App\AssignNumber;
+use App\MamaSms;
+use App\numbercount;
+use App\numbers;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -759,6 +763,8 @@ class HomeController extends Controller
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $depart2 = [2,4,6,7,8,17,11];
         $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
+        $depart3 = [17];
+        $users3 = User::whereIn('group_id',$depart3)->where('department_id','!=',10)->get();
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -770,7 +776,7 @@ class HomeController extends Controller
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'users3'=>$users3]);
     }
     public function eqpipelineedit(Request $request)
     {
@@ -1036,7 +1042,6 @@ class HomeController extends Controller
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
-        
         $wards = Ward::orderby('ward_name','ASC')->get();
         $zones = Zone::all();
         $subwardsAssignment = WardAssignment::all();
@@ -1209,6 +1214,7 @@ class HomeController extends Controller
     }
     public function getRoads()
     {
+
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
         
@@ -2085,6 +2091,50 @@ class HomeController extends Controller
         SiteAddress::where('project_id', $id)->update(['address' => $view]);
         return response()->json($view);
     }
+    public function smstonumber(Request $request)
+    {
+        if(!$request->stage ){
+            $stages =null;
+        }else{
+            $stages = $request->stage;
+        }
+         $projectids = new Collection();
+         if($stages != null){
+             $projectids = ProjectDetails::whereIn('project_status',$stages)->where('quality','Genuine')->pluck('project_id');
+         }else{
+            $projectids = null;
+         }
+    if($projectids != null){
+
+           //fetch phonee numbers//
+            $procurement =ProcurementDetails::whereIn('project_id',$projectids)->where('procurement_contact_no','!=',null)->pluck('procurement_contact_no')->toarray();
+          
+           
+            $siteeng =SiteEngineerDetails::whereIn('project_id',$projectids)->where('site_engineer_contact_no','!=',null)->pluck('site_engineer_contact_no')->toarray();
+         
+            $contractor =ContractorDetails::whereIn('project_id',$projectids)->where('contractor_contact_no','!=',null)->pluck('contractor_contact_no')->toarray();
+         
+            $consultant =ConsultantDetails::whereIn('project_id',$projectids)->where('consultant_contact_no','!=',null)->pluck('consultant_contact_no')->toarray();
+           
+            $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
+           
+
+           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+        
+           $filtered = array_unique($merge);
+           $unique = array_combine(range(1,count($filtered)), array_values($filtered));
+            
+           for($ss=1;$ss<count($unique);$ss++){
+             DB::insert('insert into numbers (number) values(?)',[$unique[$ss] ]);
+            
+           }
+           $count = count($unique);
+        }else{
+            return "NO Numbers assigned";
+        }
+
+       return back();
+    }
     public function projectsUpdate(Request $request)
     {     
      $assigndate =AssignStage::where('user_id',Auth::user()->id)
@@ -2234,7 +2284,9 @@ class HomeController extends Controller
             }        
         }
         if(Count($cons) > 0){
-            $projectids  = $cons; 
+            $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+         
+            //$projectids  = $cons; 
         }
     }
     if($date != "NULL"){
@@ -2373,19 +2425,32 @@ class HomeController extends Controller
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                   
+     $projectcount = ProjectDetails::whereIn('project_id',$projectids)->count();
+     $scount = ProjectDetails::whereIn('project_id',$projectids)->count();
+     //dd($scount);
+
         $requirements = array();
         foreach($projects as $project){
             $req = Requirement::where('project_id',$project->project_id)->pluck('id')->toArray(); 
             $pid = $project->project_id;
             array_push($requirements, [$pid,$req]);
         }
-        $his = History::all();      
-        return view('salesengineer',[
+        $his = History::all();
+        // $assigncount = new  AssignStage();
+        $assigncount = AssignStage::where('user_id',Auth::user()->id)->first();
+        $assigncount->count = $scount;
+    
+        $assigncount->save();
+        $orders = Order::all();
+       return view('salesengineer',[
                 'projects'=>$projects,
                 'roomtypes'=>$roomtypes,            
                 'requirements' =>$requirements,
                 'subwardid' => $subwardid,
-                'his'=>$his
+                'his'=>$his,
+                'orders' => $orders,
+                'projectcount'=>$projectcount,
+                
             ]);
     }
     public function dailywiseProjects(Request $request){
@@ -4071,8 +4136,69 @@ public function assigndate(request $request )
         }
         return view('confidential',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
     }
+public function numberwise(request $request){
+    $depts = [1,2];
+    $users = User::whereIn('users.department_id',$depts)
+              ->leftjoin('groups','groups.id','users.group_id')
+              
+             ->select('users.*','groups.group_name')->get();
+             $count = numbers::count();
+ $number = numbers::paginate(100);
+        if($request->delete){
+            numbers::truncate();
+            return back();
+        }
+
+         return view('assign_number',['users'=>$users,'number'=>$number,'count'=>$count]);
+
+}
+public function savenumber(request $request){
+
+
+        $check = new MamaSms;
+        $check->sim_number = $request->phNo;
+        $check->user_id = Auth::user()->id;
+        $check->totalnumber = 100;
+        $check->save();
+        return back();
+ 
+}
+public function storenumber(request $request){
+    if($request->stage ){
+        $stages = implode(", ", $request->stage);
+    } else{
+        $stages ="null";
+    }
+    $validator = Validator::make($request->all(), ['stage' => 'required']);
+            if ($validator->fails()) {
+                return back()
+                ->with('NotAdded','Select Stage Before Submit')
+                ->withErrors($validator)
+                ->withInput();
+            }
+    $check = AssignNumber::where('user_id',$request->user_id)->first();
+            if(count($check) == 0){
+            $anumber = new AssignNumber;
+            $anumber->user_id = $request->user_id ;
+            $anumber->stage = $stages;
+            $anumber->save();
+        
+    }
+    else{
+            $check->stage = $stages;
+            $check->save();
+
+    }
+
+     return redirect()->back()->with('Success','Assigned successfully');
+
+}
 
 public function projectwise(request $request){
+
+
+      //$ss = $request->$scount;
+    
      $depts = [1,2];
      $wardsAndSub = [];
     $users = User::whereIn('users.department_id',$depts)
@@ -4095,7 +4221,7 @@ public function projectwise(request $request){
         $subward = SubWard::where('ward_id',$ward->id)->get();
         array_push($wardsAndSub,['ward'=>$ward->id,'subWards'=>$subward]);
     }
- return view('assign_project',['wardsAndSub'=>$wardsAndSub,'subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assign'=>$assign,'assignstage'=>$assignstage ]);
+ return view('assign_project',['wardsAndSub'=>$wardsAndSub,'subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assign'=>$assign,'assignstage'=>$assignstage]);
     
 }
 public function projectwisedel(request $request){
@@ -4404,4 +4530,32 @@ function enquirystore(request $request){
         $wards = Ward::all();
         return view('maping.allProjectsWithWards',['wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards]);
     }
- }
+ 
+    public function storecount(request $request){
+    $check = numbercount::where('user_id',$request->user_id)->first();
+    $numberexist = numbercount::where('num',$request->num)->first();
+    if($numberexist != null){
+        $userName = User::where('id',$numberexist->user_id)->pluck('name')->first();
+        $text = "These numbers are already assigned to ".$userName;
+        return back()->with('NotAdded',$text);
+    }
+            if(count($check) == 0){
+                $number = new numbercount;
+                $number ->user_id = $request->user_id;
+                $number->num = $request->num;
+                $number->save();
+            }else{
+                $check->num=$request->num;
+                $check->save(); 
+            }
+            return redirect()->back()->with('Assig   successfully');
+    }
+
+    public function sms(request $request){
+        $users = User::all();
+        $ss = numbercount::all();
+        $num =MamaSms::all();
+        return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
+    }
+
+}
