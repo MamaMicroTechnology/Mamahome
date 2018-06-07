@@ -417,7 +417,8 @@
     var x = document.getElementById(arg);
     if(x.value)
     {
-        if(x.value.length != 10)
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if(!x.value.match(phoneno))
         {
             alert('Please Enter 10 Digits in Phone Number');
             document.getElementById(arg).value = '';
@@ -568,6 +569,7 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
+      alert(basement);
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
@@ -988,6 +990,17 @@ function display(){
 
     if (document.getElementById("constructionType3").checked){
         document.getElementById('constructionType4').disabled=true;
+}
+function validateForm(arg)
+{
+    var x=document.getElementById(arg).value;
+    var atpos=x.indexOf("@");
+    var dotpos=x.lastIndexOf(".");
+    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+    {
+        alert("Please enter a valid email address.");
+        return false;
+    }
 }
 
 
