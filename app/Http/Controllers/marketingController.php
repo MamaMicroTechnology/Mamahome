@@ -134,7 +134,7 @@ class marketingController extends Controller
     }
     public function ordersformarketing()
     {
-        $rec = Order::select('id as orderid','orders.*')->get();
+        $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')->get();
         $countrec = count($rec);   
         return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec]);
     }
