@@ -4,7 +4,7 @@
     <div class="col-md-12" >
 
     <div class="panel panel-default" style="overflow: scroll;">
-            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp;{{(Count($projects)) }} </p></div>  
+            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp; {{ $projectcount }} </p></div>  
          <div class="panel-body" id="page">
        <table class="table table-hover table-striped">
                 <thead>
@@ -13,14 +13,15 @@
                   <th style="width:15%">Address</th>
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
-                  <th>Quality</th>
-                  <th>Action</th>
+                  <th>project Status</th>
+                 <th>Action</th>
                  <th> Customer History</th>
                 
                </thead>
                 <tbody>
              <?php $ii=0; ?>
             @foreach($projects as $project)
+
             
                 <tr>
                     <td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
@@ -32,8 +33,16 @@
                                         {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}
                                     </td>
                     <td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
+                    <td>
                     <!-- <td>{{ Count($projects)   }}</td> -->
-                    <td>{{ $project->quality }}</td>
+                    @foreach($orders as $order)
+                    @if($project->project_id == $order->project_id)
+                    {{ $order->status }}
+                    @endif
+                    @endforeach
+                    </td>
+                   
+                   
                      <td><form method="post" action="{{ URL::to('/') }}/confirmedProject" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">

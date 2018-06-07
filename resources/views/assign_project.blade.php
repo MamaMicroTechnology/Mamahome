@@ -9,9 +9,10 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                     <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
+                     <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
+                    
                 </div>
-                <div class="panel-body">
+                <div class="panel-body">  
                  
              <div class="panel-body">
              <table class="table table-responsive table-striped table-hover" class="table">
@@ -22,8 +23,9 @@
                             <th style="width:15%">Previously Assigned Sub Ward </th>
                             <th style="width:15%">Previously Assigned Date </th>
                             <th style="width:15%">Previously Assigned Stage </th>
+                            <th style="width:15%">COUNT </th>
                            <th style="width:15%">Action </th>
-                            <th></th>
+                            
                           </thead>
                           @foreach($users as $user)  
                            <tr>
@@ -35,6 +37,12 @@
                              <td>{{ $user->prv_subward }}</td>
                              <td>{{ $user->prv_date }}</td>
                              <td>{{ $user->prv_stage }}</td>
+                             <td>
+                              @foreach($assignstage as $qq)
+                              @if($user->id == $qq->user_id)
+                                  {{ $qq->count }}
+                             @endif
+                             @endforeach</td>
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
                           </tr>         
                            @endforeach

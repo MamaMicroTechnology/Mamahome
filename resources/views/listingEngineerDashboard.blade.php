@@ -122,7 +122,7 @@
 
     var infowindow = new google.maps.InfoWindow();
 
-    var marker, i;
+    var marker, i;uu
 
     for (i = 0; i < locations.length; i++) { 
     if(created[i] == updated[i]){

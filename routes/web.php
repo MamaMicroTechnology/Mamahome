@@ -159,7 +159,8 @@ Route::get('/gettodayleinfo','HomeController@gettodayleinfo');
 Route::get('/registrationrequests','HomeController@regReq');
 Route::get('/salesAddProject','HomeController@listingEngineer');
 Route::get('/salescompleted','HomeController@projectwisedel');
-Route::get('/sms','HomeController@smstonumber');
+Route::post('/sms','HomeController@smstonumber');\
+Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
@@ -269,6 +270,8 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assign_enquiry','HomeController@enquirywise');
     Route::get('/assign_number','HomeController@numberwise');
     Route::post('/storenumber','HomeController@storenumber');
+    Route::post('/storecount','HomeController@storecount');
+
 
     
 
