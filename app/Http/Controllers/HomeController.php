@@ -388,7 +388,7 @@ class HomeController extends Controller
                  
     
 
-            $totalofenquiry = Requirement::where('main_category',$request->category)->sum('quantity');
+            $totalofenquiry = Requirement::where('main_category',$request->category)->where('requirements.status','!=',"Enquiry Cancelled")->sum('quantity');
            
 
 
