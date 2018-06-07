@@ -153,7 +153,7 @@
 						@endif
 						@endforeach   
 					</tbody>
-					<!-- <tr>
+					 <tr>
 						<td style="text-align    : center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
@@ -168,7 +168,7 @@
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
 					</tr>
-					-->
+					
 				</table>
 			</div>
 			<div class="panel-footer">
