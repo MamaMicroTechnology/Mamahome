@@ -587,7 +587,7 @@
         
         
         </table>
-            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks" value={{$project->remarks }} ></textarea><br>
+            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks">{{$project->remarks }}</textarea><br>
             <br>
                             
         <button style="width:10%;" type="submit" id="subid" class=" form-control btn btn-primary">Submit Data</button>
