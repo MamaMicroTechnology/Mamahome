@@ -2202,16 +2202,27 @@ class HomeController extends Controller
         }
         
             if($projectSize != null){
+                $project_sizes = new Collection;
             if(count($projectids) != 0){
                 $projectSize = floatval($projectSize);
-                $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
+                for($i = 0; $i < count($projectids); $i++){
+                    $get_project = ProjectDetails::where('project_id',$projectids[$i])->first();
+                    if(round($get_project->project_size) >= $projectSize && round($get_project->project_size) <= $projectsize1){
+                        $project_sizes = $project_sizes->merge($get_project->project_id);
+                    }
+                }
             }else{
-                $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
+                $get_project = ProjectDetails::get();
+                foreach($get_project as $project){
+                    if(round($project->project_size) >= $projectSize && round($project->project_size) <= $projectsize1){
+                        $project_sizes = $project_sizes->merge($project->project_id);
+                    }
+                }
+                // $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
             }
             if(count($project_sizes) != 0){
                 $projectids = $project_sizes;
             }
-            
         }
         
         
