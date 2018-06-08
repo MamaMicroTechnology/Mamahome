@@ -502,7 +502,9 @@ class mamaController extends Controller
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
-            
+            $length = $request->length;
+            $breadth = $request->breadth;
+            $size = $length * $breadth;
             if($request->mApprove != NULL){
                 $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
                 $request->mApprove->move(public_path('projectImages'),$imageName1);
@@ -552,6 +554,9 @@ class mamaController extends Controller
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
             $projectdetails->project_type = $floor;
+            $projectdetails->length = $length;
+            $projectdetails->breadth = $breadth;
+            $projectdetails->plotsize = $size;
             $projectdetails->project_size = $request->pSize;
             $projectdetails->budget = $request->budget;
             $projectdetails->image = $projectimage;
@@ -1631,10 +1636,12 @@ class mamaController extends Controller
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
         }elseif($request->status != null){
-            Requirement::where('id',$request->id)->update(['status'=>$request->status]);
+
+            Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->name]);
             $requirement = Requirement::where('id',$request->id)->first();
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
+                
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();

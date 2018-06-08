@@ -146,6 +146,7 @@
               <div class="col-sm-4">
                <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Quality</h4>
               <select style="width:40%;" class="form-control" name="quality">
+                <option value="">--Select--</option>
                 <option value="Unverified">Unverified</option>
                 <option  value="Genuine">Genuine</option>
                 <option value="Fake">Fake</option>

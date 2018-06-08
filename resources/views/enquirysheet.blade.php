@@ -10,7 +10,12 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
+				
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
+					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					<p class="pull-left" >
+				Total Enquiry Count : {{ $totalenq }}</p>
+				
 					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
 				Enquiry Data
 			</div>
@@ -94,6 +99,8 @@
 							<th style="text-align: center">Product</th>
 							<th style="text-align: center">Quantity</th>
 							<th style="text-align: center">Initiator</th>
+							<th style="text-align: center">Converted by</th>
+							<th style="text-align: center">Last Update</th>
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
 							<th style="text-align: center">Update Status</th>
@@ -103,7 +110,7 @@
 					<tbody>
 						@foreach($enquiries as $enquiry)
 						@if($enquiry->status != "Not Processed")
-						<tr>
+						<tr class="{{ in_array($enquiry->project_id,$projectOrdersReceived) ? 'hidden' : '' }}">
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
@@ -123,6 +130,12 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
+								{{ $enquiry->converted_by}}
+							</td>
+							<td style="text-align: center">
+								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
+							</td>
+							<td style="text-align: center">
 								{{ $enquiry->status}}
 							</td>
 							<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
@@ -133,6 +146,7 @@
 									<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
 								</form>
 							</td>
+							
 							<td>
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
@@ -169,6 +183,11 @@
 					        <td style="text-align: center"></td>
 					</tr>
 					
+				</table>
+				<table>
+					<tbody>
+						<tr>total</tr>
+					</tbody>
 				</table>
 			</div>
 			<div class="panel-footer">
@@ -215,8 +234,9 @@ function myFunction() {
         tr[i].style.display = "";
 	  }
 	}else{
+
 		for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[9];
+	    td = tr[i].getElementsByTagName("td")[11];
 	    if (td) {
 	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 	        tr[i].style.display = "";
