@@ -34,6 +34,10 @@
                   <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
                 </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed in previous month</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $lastmonth}}</strong></td>
+                </tr>
                 <tr>  
                   <td style="border: 1px solid gray;"><label>Total Number of Projects Listed Today</label></td>
                   <td style="border: 1px solid gray;">{{ $total }}</td>

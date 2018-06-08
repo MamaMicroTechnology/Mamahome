@@ -64,6 +64,7 @@ use App\Assignenquiry;
 use App\ProjectImage;
 use App\AssignNumber;
 use App\MamaSms;
+use Carbon\Carbon;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -152,7 +153,7 @@ class HomeController extends Controller
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
         $quantity = array_filter($request->quan);
-        dd($quantity);
+        
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
@@ -270,7 +271,9 @@ class HomeController extends Controller
     }
     public function enquirysheet(Request $request)
     {
+
         $totalofenquiry = "";
+        $totalenq = "";
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();  
         $depart = [6,7,8,1,15,16,17];
@@ -387,11 +390,10 @@ class HomeController extends Controller
                         ->get();
 
                  
-    
+          
 
-            $totalofenquiry = Requirement::where('main_category',$request->category)->sum('quantity');
-           
-
+            $totalofenquiry = Requirement::where('main_category',$request->category)->where('requirements.status','!=',"Enquiry Cancelled")->sum('quantity');
+            
 
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -669,11 +671,13 @@ class HomeController extends Controller
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
+            $totalenq = count($enquiries);
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }
         return view('enquirysheet',[
+            'totalenq' =>$totalenq,
             'totalofenquiry'=>$totalofenquiry,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
@@ -684,6 +688,7 @@ class HomeController extends Controller
     }
     public function enquiryCancell(Request $request)
     {
+        $cancelcount = 0;
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
         $depart = [6,7];
@@ -694,14 +699,14 @@ class HomeController extends Controller
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->where('requirements.status',"Enquiry Cancelled")
-
-
                         ->get();
+        $cancelcount = count( $enquiries);
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         
         return view('enquiryCancell',[
+            'cancelcount' =>$cancelcount,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
             'wards'=>$wards,
@@ -735,6 +740,7 @@ class HomeController extends Controller
     }
     public function editEnq(Request $request)
     {
+       
         $category = Category::all();
         $depart = [2,4,6,7,8,17];
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
@@ -749,10 +755,12 @@ class HomeController extends Controller
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
+                   
         return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
     }
     public function editEnq1(Request $request)
     {
+
         $category = Category::all();
         $depart = [7];
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
@@ -760,8 +768,7 @@ class HomeController extends Controller
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $depart2 = [2,4,6,7,8,17];
         $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
-        $depart3 = [17];
-        $users3 = User::whereIn('group_id',$depart3)->where('department_id','!=',10)->get();
+      
         $enq = Requirement::where('requirements.id',$request->reqId)
                     ->leftjoin('users','users.id','=','requirements.generated_by')
                     ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
@@ -773,7 +780,7 @@ class HomeController extends Controller
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'users3'=>$users3]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
     public function eqpipelineedit(Request $request)
     {
@@ -1030,15 +1037,17 @@ class HomeController extends Controller
     }
     public function assignListSlots(){          
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
-   $group = [6,11];
+    $group = [6,11];
+   
         $users = User::whereIn('group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
                         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
-                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id')
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
+
         $wards = Ward::orderby('ward_name','ASC')->get();
         $zones = Zone::all();
         $subwardsAssignment = WardAssignment::all();
@@ -1149,10 +1158,13 @@ class HomeController extends Controller
                 $subwardMap = "None";
             }
         // $total = $points_earned_so_far - $points_subtracted;
+         $lastmonth = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where( 'created_at', '>=', Carbon::now()->firstOfMonth())->get());
+        
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
                                                 'projects'=>$projects,
                                                 'numbercount'=>$numbercount,
+                                                'lastmonth' =>$lastmonth,
                                                 'ldate'=>$ldate,
                                                 'lodate'=>$lodate,
                                                 'outtime'=>$outtime,
@@ -2442,7 +2454,8 @@ class HomeController extends Controller
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
         $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
-        $le = DB::table('users')->where('department_id','1')->where('group_id','6')->get();
+        $groupid = [6,11];
+        $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         $projects = DB::table('project_details')
             ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
             ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')

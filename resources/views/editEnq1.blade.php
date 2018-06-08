@@ -141,24 +141,12 @@
 								</td>
 							</tr>
 							@else
-							<tr>
-								<td><label>Initiator* : </label></td>
-								<td>	
-									<select required class="form-control" name="initiator">
-										<option value="" required>--Select--</option>
-										@foreach($users2 as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
-									</select>
-								</td>
-							</tr>
-							@else
-							@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
+									@if($enq->name == null)
 									<tr>
 										<td><label>Initiator* : </label></td>
 										<td>	
-											<select required class="form-control" name="initiator">
-												<option value="" required>--Select--</option>
+											<select required class="form-control"  name="initiator">
+												<option value="">--Select--</option>
 												@foreach($users2 as $user)
 												<option value="{{$user->id}}">{{$user->name}}</option>
 												@endforeach
@@ -170,9 +158,10 @@
 										<td><label>Initiator* : </label></td>
 										<td>	
 											<select required class="form-control" name="initiator">
-												@foreach($users3 as $user)
-												<option value="{{$user->id}}">{{Auth::user()->name}}</option>
-												@endforeach
+												
+												
+												<option value="{{$enq->name}}">{{$enq->name}}</option>
+												
 											</select>
 										</td>
 									</tr>

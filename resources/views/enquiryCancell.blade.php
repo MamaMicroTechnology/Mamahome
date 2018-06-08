@@ -8,6 +8,7 @@
 <div class="col-md-12">
 		<div class="panel panel-primary" >
 			 <div class="panel-heading text-center" ><b>
+			 	<p class="pull-left">Total Enquiry Count : {{$cancelcount}}</p>
 			 Enquiry Cancelled		 	
 			 </b>
                     @if(session('ErrorFile'))

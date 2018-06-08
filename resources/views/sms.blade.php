@@ -31,12 +31,13 @@
 			        	 		</table>
 		        </form>
             @if(isset($_GET['next']))
+            
               <a href="{{ URL::to('/') }}/sms?next={{ $_GET['next'] + 100 }}">Next</a>
             @else
               <a href="{{ URL::to('/') }}/sms?next=200">Next</a>
             @endif
             @foreach($users as $user)
-            @if($user->user_id == Auth::user()->id && $user->sim_number != null)
+            @if( $user->sim_number != null)
                  {!! $combine !!}		             
               @endif
                 @endforeach 

@@ -36,11 +36,7 @@
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
-                                <tr>
-                                         
-                                    
-                                       
-                              </tr>
+                                
                                <tr>
                                    <td>Location</td>
                                    <td>:</td>
@@ -61,11 +57,7 @@
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
-                               <tr>
-                                   <td>Road Name/Road No.</td>
-                                   <td>:</td>
-                                   <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
-                               </tr>
+                              
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
@@ -108,6 +100,7 @@
                                      <option  value="None">None</option>
                                 </select>
                               </td>
+                            </tr>
                                <!-- <tr>
                                    <td>Municipal Approval</td>
                                    <td>:</td>
@@ -223,6 +216,26 @@
                                       </div>
                                       <div class="col-md-3">
                                         <p id="total"></p>
+                                      </div>
+                                    </div>
+                                    </td>
+                               </tr>
+                               <tr>
+                                   <td>Plot Size</td>
+                                   <td>:</td>
+                                   <td>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                          <input value="{{ old('length') }}" onkeyup="checkthis('length')" id="length" name="length" type="text" autocomplete="off" class="form-control input-sm" placeholder="Length" >
+                                        </div>
+                                        <div class="col-md-2">
+                                          <b style="font-size: 20px; text-align: center">*</b>
+                                        </div>
+                                      <div class="col-md-3">
+                                        <input value="{{ old('breadth') }}" onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="breadth">
+                                      </div>
+                                      <div class="col-md-3">
+                                        <p id="totalsize"></p>
                                       </div>
                                     </div>
                                     </td>
@@ -561,6 +574,7 @@
     if(isNaN(input)){
       while(isNaN(document.getElementById(arg).value)){
       var str = document.getElementById(arg).value;
+      alert(str);
       str     = str.substring(0, str.length - 1);
       document.getElementById(arg).value = str;
       }
@@ -583,11 +597,38 @@
           document.getElementById("total").innerHTML = '';
       }
     }
+    
   }
     return false;
   }
 </script>
-<!--This line by Siddharth -->
+
+<script type="text/javascript">
+  function checkthis(arg)
+  {
+    
+    
+    var x = document.getElementById(arg);
+    if(arg == 'length' || arg == 'breadth'){
+     
+      var breadth = parseInt(document.getElementById("breadth").value);
+      var length   = parseInt(document.getElementById("length").value);
+      if(!isNaN(breadth) && !isNaN(length)){
+        
+        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+        sum          = length*breadth;
+        Size    += sum;
+        if(document.getElementById("totalsize").innerHTML != null)
+          document.getElementById("totalsize").innerHTML = Size;
+        else
+          document.getElementById("totalsize").innerHTML = '';
+      }
+    }
+    return false;
+  }
+</script>
+
+
 <!-- get location -->
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
@@ -964,7 +1005,7 @@
       if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').atuctr('disabled',false);
+        $('#constructionType2').attr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
       }else{
@@ -989,12 +1030,10 @@
 </script>
 <script>
 function display(){
-
     if (document.getElementById("constructionType3").checked){
         document.getElementById('constructionType4').disabled=true;
+    }
 }
-
-
 </script>
 
 @endsection

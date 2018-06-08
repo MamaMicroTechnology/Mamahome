@@ -125,7 +125,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 </div>
 </div>
 <!-- model end -->
-@if(Auth::user()->group_id == 6 || Auth::user()->group_id == 7)
+@if(Auth::user()->group_id == 6 || Auth::user()->group_id == 7 )
 <tr>
     <td><label>Initiator* : </label></td>
     <td>
