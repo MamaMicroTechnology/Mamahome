@@ -89,7 +89,47 @@
 </div>
 
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>
+@if(count($projects) == 0)
+<script type="text/javascript">
+    window.onload = function() {
+    var locations = new Array();
+    var created = new Array();
+    var updated = new Array();
+    var status = new Array();
+    var newpath = [];
+    @if($subwardMap != "None")
+    var latlng = "{{ $subwardMap->lat }}";
+    var col = "{{ $subwardMap->color }}";
+    @else
+    var latlng = "";
+    var col = "456369"
+    @endif
+    var places = latlng.split(",");
+    for(var i=0;i<places.length;i+=2){
+          newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
+    }
 
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(12.9716, 77.5946),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var subward = new google.maps.Polygon({
+        paths: newpath,
+        strokeColor: '#'+col,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#'+col,
+        fillOpacity: 0.35
+      });
+  subward.setMap(map);
+  }
+  </script>
+@else
   <script type="text/javascript">
     window.onload = function() {
     var locations = new Array();
@@ -123,7 +163,7 @@
 
     var infowindow = new google.maps.InfoWindow();
 
-    var marker, i;uu
+    var marker, i;
 
     for (i = 0; i < locations.length; i++) { 
     if(created[i] == updated[i]){
@@ -163,7 +203,7 @@
   subward.setMap(map);
   }
   </script>
-
+@endif
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 
 <script>
