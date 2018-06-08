@@ -4348,6 +4348,7 @@ if(count($check) == 0){
         $check->projectsize = $request->projectsize;
         $check->budgetto = $request->budgetto;
         $check->quality = $request->quality;
+        $check->project_ids = null;
         $check->save(); 
 }
        
