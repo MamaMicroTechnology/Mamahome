@@ -50,8 +50,15 @@
 												Payment
 											</div>
 											<div class="modal-body">
+												<label for="paymentMethod">Payment Method:</label>
+												<select name="payment_method" id="paymentMethod" class="form-control input-sm">
+													<option value="">--Select--</option>
+													<option value="Card">Card</option>
+													<option value="Cheque">Cheque</option>
+													<option value="Advanced">Advanced</option>
+												</select>
 												<label for="amount">Amount Received:</label>
-												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm"><br>
+												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm">
 												<label for="sign">Signature:</label>
 												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
 												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
