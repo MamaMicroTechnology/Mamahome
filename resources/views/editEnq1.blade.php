@@ -116,20 +116,7 @@
 </div>
 </div>
 </div>
-<!-- model end -->
-
-							@if(Auth::user()->group_id == 7)
-							<tr>
-								<td><label>Initiator* : </label></td>
-								<td>	
-									<select required class="form-control"  name="initiator">
-										@foreach($users as $user)
-										<option value="{{$user->id}}">{{$user->name}}</option>
-										@endforeach
-									</select>
-								</td>
-							</tr>
-							
+<!-- model end -->			
 								@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
 									<tr>
 										<td><label>Initiator* : </label></td>
