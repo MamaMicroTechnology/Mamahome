@@ -2438,7 +2438,9 @@ class HomeController extends Controller
         $his = History::all();
         // $assigncount = new  AssignStage();
         $assigncount = AssignStage::where('user_id',Auth::user()->id)->first();
-        $assigncount->count = $scount;
+        if($assigncount != null){
+            $assigncount->count = $scount;
+        }
     
         $assigncount->save();
         $orders = Order::all();
