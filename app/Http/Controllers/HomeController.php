@@ -676,13 +676,16 @@ class HomeController extends Controller
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
         }
+        $filtered = new Collection;
+        $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
         return view('enquirysheet',[
             'totalofenquiry'=>$totalofenquiry,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
             'wards'=>$wards,
             'category'=>$category,
-            'initiators'=>$initiators
+            'initiators'=>$initiators,
+            'projectOrdersReceived'=>$projectOrdersReceived
         ]);
     }
     public function enquiryCancell(Request $request)
@@ -2416,15 +2419,17 @@ class HomeController extends Controller
                 AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
             }
         }
+        $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
         $projects = ProjectDetails::whereIn('project_id',$projectids)
+                    ->whereNotIn('project_id',$projectOrdersReceived)
                     // ->where('quality',"Unverified")
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                   
-     $projectcount = ProjectDetails::whereIn('project_id',$projectids)->count();
-     $scount = ProjectDetails::whereIn('project_id',$projectids)->count();
+     $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+     $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      //dd($scount);
 
         $requirements = array();
