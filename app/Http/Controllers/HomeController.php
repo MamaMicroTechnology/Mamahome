@@ -2418,6 +2418,12 @@ class HomeController extends Controller
                 8420
             ];
         }
+        $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
+        if($checking != null){
+            $projectids = explode(", ",$checking);
+        }else{
+            AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
+        }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     // ->where('quality',"Unverified")
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
@@ -4309,14 +4315,12 @@ if(count($check) == 0){
         $projectassign->Floor = $request->Floor;
         
         $projectassign->basement = $request->basement;
-         $projectassign->base = $request->base;
-          $projectassign->Floor2 = $request->Floor2;
-           $projectassign->total = $request->total;
-            $projectassign->projectsize = $request->projectsize;
-             $projectassign->budgetto = $request->budgetto;
-              $projectassign->quality = $request->quality;
-
-
+        $projectassign->base = $request->base;
+        $projectassign->Floor2 = $request->Floor2;
+        $projectassign->total = $request->total;
+        $projectassign->projectsize = $request->projectsize;
+        $projectassign->budgetto = $request->budgetto;
+        $projectassign->quality = $request->quality;
         $projectassign->save();
 }else{
         $check->ward = $wards;
@@ -4338,13 +4342,12 @@ if(count($check) == 0){
         $check->Floor =$request->Floor;
         $check->basement =$request->basement;
         $check->basement = $request->basement;
-         $check->base = $request->base;
-          $check->Floor2 = $request->Floor2;
-           $check->total = $request->total;
-            $check->projectsize = $request->projectsize;
-             $check->budgetto = $request->budgetto;
-             $check->quality = $request->quality;
-
+        $check->base = $request->base;
+        $check->Floor2 = $request->Floor2;
+        $check->total = $request->total;
+        $check->projectsize = $request->projectsize;
+        $check->budgetto = $request->budgetto;
+        $check->quality = $request->quality;
         $check->save(); 
 }
        
