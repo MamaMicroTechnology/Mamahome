@@ -2434,7 +2434,11 @@ class HomeController extends Controller
         if($checking != null){
             $projectids = explode(", ",$checking);
         }else{
-            AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
+            if(is_array($projectids)){
+                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids)]);
+            }else{
+                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
+            }
         }
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     // ->where('quality',"Unverified")
@@ -2458,9 +2462,9 @@ class HomeController extends Controller
         $assigncount = AssignStage::where('user_id',Auth::user()->id)->first();
         if($assigncount != null){
             $assigncount->count = $scount;
+            $assigncount->save();
         }
     
-        $assigncount->save();
         $orders = Order::all();
        return view('salesengineer',[
                 'projects'=>$projects,
