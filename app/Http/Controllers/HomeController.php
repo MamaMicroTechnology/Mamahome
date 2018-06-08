@@ -2203,6 +2203,7 @@ class HomeController extends Controller
         
             if($projectSize != null){
             if(count($projectids) != 0){
+                $projectSize = floatval($projectSize);
                 $project_sizes = ProjectDetails::whereIn('project_id',$projectids)->where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');
             }else{
                 $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
