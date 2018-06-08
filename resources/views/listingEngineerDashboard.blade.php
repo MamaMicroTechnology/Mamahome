@@ -19,15 +19,16 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-         @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
+          @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
-         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-        <a class="btn btn-primary form-control" href="{{ URL::to('/') }}/projectsUpdate" id="updates">Projects</a><br><br>
-        @endif
+          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>
+          
+          @endif
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
                 <tr>
@@ -39,11 +40,11 @@
                   <td style="border: 1px solid gray;">{{ $total }}</td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders Initiated by You</label></td>
+                  <td style="border: 1px solid gray;"><label>Enquiries Initiated </label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed</label></td>
+                  <td style="border: 1px solid gray;"><label>Enquiries Confirmed</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
                 </tr>
           </tbody>
@@ -88,7 +89,47 @@
 </div>
 
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>
+@if(count($projects) == 0)
+<script type="text/javascript">
+    window.onload = function() {
+    var locations = new Array();
+    var created = new Array();
+    var updated = new Array();
+    var status = new Array();
+    var newpath = [];
+    @if($subwardMap != "None")
+    var latlng = "{{ $subwardMap->lat }}";
+    var col = "{{ $subwardMap->color }}";
+    @else
+    var latlng = "";
+    var col = "456369"
+    @endif
+    var places = latlng.split(",");
+    for(var i=0;i<places.length;i+=2){
+          newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
+    }
 
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(12.9716, 77.5946),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var subward = new google.maps.Polygon({
+        paths: newpath,
+        strokeColor: '#'+col,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#'+col,
+        fillOpacity: 0.35
+      });
+  subward.setMap(map);
+  }
+  </script>
+@else
   <script type="text/javascript">
     window.onload = function() {
     var locations = new Array();
@@ -106,7 +147,7 @@
     var places = latlng.split(",");
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
-        }
+    }
     @foreach($projects as $project)
       locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}} {{$project->project_name}},{{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
       created.push("{{ $project->created_at}}");
@@ -122,7 +163,7 @@
 
     var infowindow = new google.maps.InfoWindow();
 
-    var marker, i;uu
+    var marker, i;
 
     for (i = 0; i < locations.length; i++) { 
     if(created[i] == updated[i]){
@@ -162,7 +203,7 @@
   subward.setMap(map);
   }
   </script>
-
+@endif
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 
 <script>

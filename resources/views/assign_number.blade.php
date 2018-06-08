@@ -41,7 +41,7 @@
                         </td>
                      </tr> 
 
-                   <!-- <tr>
+                   <tr>
                      <td>
                        <?php
                           $numbers = array();
@@ -67,7 +67,7 @@
                        </table>
                       <input type="hidden" name="num" value="{{ $numb }}">
                      </td>
-                   </tr> -->
+                   </tr>
                 </table>  
               </form> 
 		{{ $number->links()  }}

@@ -12,10 +12,13 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
     <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+
     <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -509,6 +512,7 @@ div#calendar{
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <a href="{{ URL::to('/confidential') }}">Confidential</a>
+    <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -535,10 +539,11 @@ div#calendar{
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
+    <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Enquiry Wise</a>   
+    <!-- <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Enquiry Wise</a>    -->
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
@@ -550,6 +555,7 @@ div#calendar{
      <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
      <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
+      <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
@@ -560,7 +566,7 @@ div#calendar{
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
-      <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a>
+      <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
     <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
     <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
@@ -576,14 +582,14 @@ div#calendar{
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-      </div>
-@endif
-@endif
-
-
+        </div>
+        @endif
+        @endif
+        
+        
         @yield('content')
     </div>
-
+    
     <!-- Scripts -->
     <script>
         function openNav() {
@@ -595,7 +601,7 @@ div#calendar{
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-    </script>
+        </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -619,7 +625,8 @@ div#calendar{
         span.onclick = function() { 
             modal.style.display = "none";
         }
-</script>
-<script src="{{ asset('js/app.js') }}"></script>
+        </script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
 </body>
 </html>

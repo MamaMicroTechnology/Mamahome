@@ -246,8 +246,9 @@ class logisticsController extends Controller
 
     }
 }
-    public function getinvoice()
+    public function getinvoice(Request $request)
     {
+        $invoices = MhInvoice::where('requirement_id',$request->id)->get();
         $number = 48035;
         $length = strlen($number);
         if($number < 20){
@@ -421,7 +422,7 @@ class logisticsController extends Controller
                 break;
         }
 
-        return view('logistics.getinvoice',['text'=>$text]);
+        return view('logistics.getinvoice',['text'=>$text,'invoices'=>$invoices]);
     }
     public function inputinvoice(Request $request)
     {

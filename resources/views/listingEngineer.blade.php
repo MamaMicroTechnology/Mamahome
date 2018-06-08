@@ -61,11 +61,7 @@
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
-                               <tr>
-                                   <td>Road Name/Road No.</td>
-                                   <td>:</td>
-                                   <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
-                               </tr>
+                        
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
@@ -236,8 +232,8 @@
                                  <td>Budget Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]" type="checkbox" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"  type="checkbox" value="Finishing">Finishing </label> 
+                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]"   type="radio" value="Structural">Structural</label>
+                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"   type="radio" value="Finishing">Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -421,7 +417,8 @@
     var x = document.getElementById(arg);
     if(x.value)
     {
-        if(x.value.length != 10)
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if(!x.value.match(phoneno))
         {
             alert('Please Enter 10 Digits in Phone Number');
             document.getElementById(arg).value = '';
@@ -572,6 +569,7 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
+      alert(basement);
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
@@ -964,7 +962,7 @@
       if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
         $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
         $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').atuctr('disabled',false);
+        $('#constructionType2').attr('disabled',false);
         $('#constructionType3').attr('disabled',false);
         $('#constructionType4').attr('disabled',false);
       }else{
@@ -992,6 +990,17 @@ function display(){
 
     if (document.getElementById("constructionType3").checked){
         document.getElementById('constructionType4').disabled=true;
+}
+function validateForm(arg)
+{
+    var x=document.getElementById(arg).value;
+    var atpos=x.indexOf("@");
+    var dotpos=x.lastIndexOf(".");
+    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+    {
+        alert("Please enter a valid email address.");
+        return false;
+    }
 }
 
 
