@@ -27,7 +27,7 @@
                     <td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
                                     <td  style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                     <td id="projsite-{{$project->project_id}}">
-                                        {{ $project->siteaddress != null ? $project->siteaddress->address : '' }}
+                                     <a target="_blank" href="https://maps.google.co.in?q={{ $project->siteaddress != null ? $project->siteaddress->address : '' }}">{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}</a>
                                     </td>
                     <td id="projproc-{{$project->project_id}}">
                                         {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}

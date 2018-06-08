@@ -2177,21 +2177,12 @@ class HomeController extends Controller
         $projectsize1 = AssignStage::where('user_id',Auth::user()->id)->pluck('projectsize')->first();
 
         $quality = AssignStage::where('user_id',Auth::user()->id)->pluck('quality')->first();
-        
-        
-        
-        // $project_type = AssignStage::where('user_id',Auth::user()->id)->pluck('project_type')->first();
-        //  $projectsie =  AssignStage::where('user_id',Auth::user()->id)->pluck('project_size')->first();
-        // // $budget = AssignStage::where('user_id',Auth::user()->id)->pluck('budget')->first();
-        
         $roomtypes = RoomType::all();
         $projectids = new Collection();
-        //feching wardwise
         $projects = ProjectDetails::whereIn('sub_ward_id',$subwardid)->pluck('project_id');
         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
-        //feching budget types
         if(count($projectids) != 0){
             $budgettypes = ProjectDetails::whereIn('project_id',$projectids)->where('budgetType',"LIKE","%".$bud."%")->pluck('project_id');
         }else{
@@ -2200,9 +2191,8 @@ class HomeController extends Controller
         if(count($budgettypes) != 0){
             $projectids = $budgettypes;
         }
-        
-            if($projectSize != null){
-                $project_sizes = new Collection;
+        if($projectSize != null){
+            $project_sizes = new Collection;
             if(count($projectids) != 0){
                 $projectSize = floatval($projectSize);
                 for($i = 0; $i < count($projectids); $i++){
@@ -2218,151 +2208,137 @@ class HomeController extends Controller
                         $project_sizes = $project_sizes->merge($project->project_id);
                     }
                 }
-                // $project_sizes = ProjectDetails::where('project_size','>=',$projectSize != null ? $projectSize : 0)->where('project_size','<=',$projectsize1 != null ? $projectsize1 : 0)->pluck('project_id');            
-            }
-            if(count($project_sizes) != 0){
-                $projectids = $project_sizes;
-            }
-        }
-        
-        
-        //feching contracts 
-        $contractInt = explode(",", $lab);
-        if($contractInt[0] != "null"){
-            if(count($projectids) != 0){
-                $labc = ProjectDetails::whereIn('project_id',$projectids)->where('contract',$contractInt)->pluck('project_id');
-            }else{
-                $labc = ProjectDetails::where('contract',$contractInt)->pluck('project_id');
-            }
-            if(count($labc) != 0){
-                $projectids = $labc;
-            }
-        }
-        if($ground != null){
-            if(count($projectids) != 0){
-                $grd = ProjectDetails::whereIn('project_id',$projectids)->where('ground','<=',$ground  !=null ? $ground :0 )->where('ground','>=',$Floor2  !=null ? $Floor2 :0 )->pluck('project_id');
-            }else{
-                $grd = ProjectDetails::where('ground','>=',$ground  !=null ? $ground :0 )->where('ground','<=',$Floor2  !=null ? $Floor2 :0 )->pluck('project_id');
-            }
-            if(Count($grd) > 0){
-                $projectids = $grd;
-            }
-        }
-        if($basement != null){
-            if(count($projectids) != 0){
-                $base = ProjectDetails::whereIn('project_id',$projectids)->where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
-            }else{
-                $base = ProjectDetails::where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
-            }
-            if(Count($base) > 0){
-                $projectids = $base;
-            }   
-        }
-        //dd($projectids);
-        //feching stages
-        $stage = AssignStage::where('user_id',Auth::user()->id)->pluck('stage')->first(); 
-        $stagec = explode(", ", $stage);
-        // $projectids = new Collection>);
-        $projectsat = [];    
-        if($stagec[0] != "null"){
-            if(count($projectids) != 0){
-                for($i = 0; $i<count($stagec); $i++)
-                {
-                    $projectsat = ProjectDetails::whereIn('project_id',$projectids)->where('project_status' ,'LIKE', "%".$stagec[$i]."%")->pluck('project_id');
-                }                     
-            }else{
-                for($i = 0; $i<count($stagec); $i++)
-                {
-                    $projectsat = ProjectDetails::where('project_status' ,'LIKE', "%".$stagec[$i]."%")->pluck('project_id');
-                    //dd($projectsat);
+                }
+                if(count($project_sizes) != 0){
+                    $projectids = $project_sizes;
                 }
             }
-            if(count($projectsat) != 0){
-                $projectids = $projectsat;            
+            $contractInt = explode(",", $lab);
+            if($contractInt[0] != "null"){
+                if(count($projectids) != 0){
+                    $labc = ProjectDetails::whereIn('project_id',$projectids)->where('contract',$contractInt)->pluck('project_id');
+                }else{
+                    $labc = ProjectDetails::where('contract',$contractInt)->pluck('project_id');
+                }
+                if(count($labc) != 0){
+                    $projectids = $labc;
+                }
             }
-        }
-         $sta = explode(", ", $constraction);
-         if($sta[0] != "null"){
-        if(count($projectids) != 0){
-            for($i=0;$i<count($sta);$i++){
-
-            $cons =ProjectDetails::whereIn('project_id',$projectids)->where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
+            if($ground != null){
+                if(count($projectids) != 0){
+                    $grd = ProjectDetails::whereIn('project_id',$projectids)->where('ground','<=',$ground  !=null ? $ground :0 )->where('ground','>=',$Floor2  !=null ? $Floor2 :0 )->pluck('project_id');
+                }else{
+                    $grd = ProjectDetails::where('ground','>=',$ground  !=null ? $ground :0 )->where('ground','<=',$Floor2  !=null ? $Floor2 :0 )->pluck('project_id');
+                }
+                if(Count($grd) > 0){
+                    $projectids = $grd;
+                }
             }
-        }
-        else{
-             for($i=0;$i<count($sta);$i++){
-            $cons =ProjectDetails::where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
-             //dd($cons);    
-            }        
-        }
-        if(Count($cons) > 0){
-            $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
-         
-            //$projectids  = $cons; 
-        }
-    }
-    if($date != "NULL"){
-        if(count($projectids) != 0){
-            $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
-        }else{
-            $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
-            // $datec = $projectids;
+            if($basement != null){
+                if(count($projectids) != 0){
+                    $base = ProjectDetails::whereIn('project_id',$projectids)->where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
+                }else{
+                    $base = ProjectDetails::where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
+                }
+                if(Count($base) > 0){
+                    $projectids = $base;
+                }   
+            }
+            $stage = AssignStage::where('user_id',Auth::user()->id)->pluck('stage')->first(); 
+            $stagec = explode(", ", $stage);
+            $projectsat = new Collection;    
+            if($stagec[0] != "null"){
+                if(count($projectids) != 0){
+                    for($i = 0; $i<count($stagec); $i++)
+                    {
+                        $projectsats = ProjectDetails::whereIn('project_id',$projectids)->where('project_status' ,'LIKE', "%".$stagec[$i]."%")->pluck('project_id');
+                        $projectsat = $projectsat->merge($projectsats);
+                    }                     
+                }else{
+                    for($i = 0; $i<count($stagec); $i++)
+                    {
+                        $projectsat = ProjectDetails::where('project_status' ,'LIKE', "%".$stagec[$i]."%")->pluck('project_id');
+                    }
+                }
+                if(count($projectsat) != 0){
+                    $projectids = $projectsat;            
+                }
+            }
+            $sta = explode(", ", $constraction);
+            if($sta[0] != "null"){
+                if(count($projectids) != 0){
+                    for($i=0;$i<count($sta);$i++){
+                        
+                        $cons =ProjectDetails::whereIn('project_id',$projectids)->where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
+                    }
+                }
+                else{
+                    for($i=0;$i<count($sta);$i++){
+                        $cons =ProjectDetails::where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
+                    }        
+                }
+                if(Count($cons) > 0){
+                    $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                }
+            }
+            if($date != "NULL"){
+                if(count($projectids) != 0){
+                    $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                }else{
+                    $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                }
+                if($datec != null){
+                    $projectids = $datec;
+                }
+            }
             
-        }
-        if($datec != null){
-            $projectids = $datec;
-        }
-    }
-      
-        
-        $rmcInt = explode(",", $rmc);
-        if($rmcInt[0] != "null"){
+            
+            $rmcInt = explode(",", $rmc);
+            if($rmcInt[0] != "null"){
+                if(count($projectids) != 0){
+                    $rmcs = ProjectDetails::whereIn('project_id',$projectids)->whereIn('interested_in_rmc',$rmcInt)->pluck('project_id');
+                }else{
+                    $rmcs = ProjectDetails::whereIn('interested_in_rmc',$rmcInt)->pluck('project_id');
+                }
+                if(count($rmcs) != 0){
+                    $projectids = $rmcs;
+                }
+            }
+            
             if(count($projectids) != 0){
-                $rmcs = ProjectDetails::whereIn('project_id',$projectids)->whereIn('interested_in_rmc',$rmcInt)->pluck('project_id');
+                $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
             }else{
-                $rmcs = ProjectDetails::whereIn('interested_in_rmc',$rmcInt)->pluck('project_id');
+                $project_types = ProjectDetails::where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
             }
-            if(count($rmcs) != 0){
-                $projectids = $rmcs;
+            if(count($project_types) != 0){
+                $projectids = $project_types;
             }
-        }
-        
-        if(count($projectids) != 0){
-            $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
-        }else{
-            $project_types = ProjectDetails::where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
-        }
-        if(count($project_types) != 0){
-            $projectids = $project_types;
-        }
-    
-        // dd($projectids);
-        if($budget != null){
-            if(count($projectids) != 0){
-                $budgets = ProjectDetails::whereIn('project_id',$projectids)->where('budget','>=',$budget != null ? $budget : 0 )->where('budget','<=',$budgetto != null ? $budgetto : 0 )->pluck('project_id');
-            }else{
-                $budgets = ProjectDetails::where('budget','>=',$budget != null ? $budget : 0 )->where('budget','<=',$budgetto != null ? $budgetto : 0 )->pluck('project_id');
+            
+            if($budget != null){
+                if(count($projectids) != 0){
+                    $budgets = ProjectDetails::whereIn('project_id',$projectids)->where('budget','>=',$budget != null ? $budget : 0 )->where('budget','<=',$budgetto != null ? $budgetto : 0 )->pluck('project_id');
+                }else{
+                    $budgets = ProjectDetails::where('budget','>=',$budget != null ? $budget : 0 )->where('budget','<=',$budgetto != null ? $budgetto : 0 )->pluck('project_id');
+                }
+                if(count($budgets) > 0){
+                    $projectids = $budgets;
+                }
             }
-            if(count($budgets) > 0){
-                $projectids = $budgets;
+            
+            if( $quality != null){
+                if(count( $projectids) != 0){
+                    $qua = ProjectDetails::whereIn('project_id',$projectids)->where('quality', $quality )->pluck('project_id');
+                }else{
+                    $qua = ProjectDetails::where('quality', $quality )->pluck('project_id');
+                }
+                
+                if(count($qua) > 0){
+                    $projectids = $qua;
+                }
             }
-        }
-
-        if( $quality != null){
-            if(count( $projectids) != 0){
-                $qua = ProjectDetails::whereIn('project_id',$projectids)->where('quality', $quality )->pluck('project_id');
-            //dd($qua);
-            }else{
-                $qua = ProjectDetails::where('quality', $quality )->pluck('project_id');
-            }
-
-            if(count($qua) > 0){
-                $projectids = $qua;
-            }
-        }
         if(Auth::user()->id == 51){
             $projectids = [
-               4598,
+                4598,
                 4036,
                 4121,
                 4160,
@@ -2389,7 +2365,7 @@ class HomeController extends Controller
             ];
         }elseif(Auth::user()->id == 12){
             $projectids = [
-               2837,
+                2837,
                 2875,
                 1500,
                 1506,
@@ -2403,7 +2379,7 @@ class HomeController extends Controller
             ];
         }elseif(Auth::user()->id == 13){
             $projectids = [
-               8590,
+                8590,
                 4172,
                 4176,
                 8645,
@@ -2417,7 +2393,7 @@ class HomeController extends Controller
             ];
         }elseif(Auth::user()->id == 93){
             $projectids = [
-               2102,
+                2102,
                 8567,
                 6743,
                 1910,
