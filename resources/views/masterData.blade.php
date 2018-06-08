@@ -234,7 +234,7 @@
             document.getElementById("coutries").innerHTML = displaycountries;
         }
     };
-    xmlhttp.open("GET", "http://10.156.110.108:8000/countries.json", true);
+    xmlhttp.open("GET", "http://mamahome360.com/webapp/countries.json", true);
     xmlhttp.send();
     function countryCode(){
         var countrySelected = document.getElementById('country').value;
@@ -253,7 +253,7 @@
             document.getElementById("countriesAndStates").innerHTML = displayStates;
         }
     };
-    xmlhttp2.open("GET", "http://10.156.110.108:8000/countriesAndStates.json", true);
+    xmlhttp2.open("GET", "http://mamahome360.com/webapp/countriesAndStates.json", true);
     xmlhttp2.send();
 </script>
 @endsection
