@@ -165,7 +165,7 @@
 											</select>
 										</td>
 									</tr>
-									@endif
+								@endif
 							@endif
 							<tr>
 								<td><label>Location* : </label></td>

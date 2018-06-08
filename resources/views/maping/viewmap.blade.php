@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
   @if($zones->lat != null)
   <script type="text/javascript">
-  var count = 0;
+    var count = 0;
     var map, path = [], newpath = [];
     var marker = [];
     var latlng = "{{ $zones-> lat }}";
@@ -23,26 +23,13 @@
         }
         latt = latt/newpath.length;
         lngg = lngg/newpath.length;
-        var val = parseInt(document.getElementById('color').value);
+        var val = 345567;
         var line = "#"+String(val - 10);
         // for marking maps
         map = new GMaps({
           el: '#map',
           lat: latt,
           lng: lngg,
-          click: function(e){
-            latitude = e.latLng.lat();
-            lognitude = e.latLng.lng();
-            path.push([latitude, lognitude]);
-            marker[0] = path;
-            polygon = map.removePolylines();
-            polygon = map.drawPolyline({
-              path: path,
-              strokeColor: '#131540',
-              strokeOpacity: 0.6,
-              strokeWeight: 1
-            });
-          }
         });
 
          $("#undo").click(function(){
@@ -92,26 +79,13 @@
     var marker = [];
     $(document).ready(function(){
         var mymarker = [];
-        var val = parseInt(document.getElementById('color').value);
+        var val = 123456;
         var line = "#"+String(val - 10);
         // for marking maps
         map = new GMaps({
           el: '#map',
           lat: 12.9716,
           lng: 77.5946,
-          click: function(e){
-            latitude = e.latLng.lat();
-            lognitude = e.latLng.lng();
-            path.push([latitude, lognitude]);
-            marker[0] = path;
-            polygon = map.removePolylines();
-            polygon = map.drawPolyline({
-              path: path,
-              strokeColor: '#131540',
-              strokeOpacity: 0.6,
-              strokeWeight: 1
-            });
-          }
         });
         $("#undo").click(function(){
           path.pop();
@@ -149,35 +123,12 @@
 <body>
 <div class="container">
   <div class="row">
-    <h1>Mapping
-    </h1>
     <div class="row">
       <div class="span11">
-        <div id="map"></div>
+        <div id="map" style="height:500px;"></div>
       </div>
       <br>
-      <div class="col-md-8">
-        <form onsubmit="validate()" action="{{ URL::to('/') }}/saveMap" method="POST">
-          {{ csrf_field() }}
-            <div class="col-md-6">
-              :<br>
-                <input type="text" name="name" id="name" value="{{ $zones->name }}" class="form-control">
-                <input type="hidden" name="page" value="    ">
-                <input type="hidden" name="zone" value="{{ $zones->id }}">
-            </div>
-            <div class="col-md-2">
-              Color:
-              <input name="color" class="jscolor form-control" id="color" value="{{ $zones->color }}">
-              <div id="area"></div>
-            </div>
-            <div class="col-md-4">
-              <input type="hidden" value="{{ $zones->lat }}" name="path" id="path" class="form-control"><br>
-              <button type="button" class="btn btn-primary" id="undo">Undo</button>
-              <button type="button" id="draw" class="btn btn-primary">Preview</button>
-              <input type="submit" value="Save" class="btn btn-success" id="savebutton">
-            </div>
-        </form>
-      </div>
+      
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
   </div>
 </div>

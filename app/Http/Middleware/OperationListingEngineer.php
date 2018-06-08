@@ -24,7 +24,7 @@ class OperationListingEngineer
             if($department != "Operation" && $group != "Listing Engineer"){
                 if($group != "Admin"){
                     if($group != "Account Executive")
-                        return redirect()->back();
+                    return redirect()->back();
                 }
             }
         }

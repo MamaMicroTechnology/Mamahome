@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <style>
@@ -67,20 +67,20 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-
             <div class="content">
                 <div class="title m-b-md">
                     <img src="logo.png" height="60" width="70%">
                     <br> Mama Micro Technology <br>
-            @if (Route::has('login'))
+                    @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/home') }}" class="btn btn-success btn-lg" role="button">Home</a>
+                    <a href="{{ url('/home') }}" class="btn btn-success btn-lg" role="button">Home</a>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-success btn-lg" role="button">Login</a>
+                    <a href="{{ route('login') }}" class="btn btn-success btn-lg" role="button">Login</a>
                     @endauth
-            @endif
+                    @endif
                 </div>
             </div>
         </div>
     </body>
-</html>
+    </html>
+    

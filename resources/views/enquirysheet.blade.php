@@ -110,7 +110,7 @@
 					<tbody>
 						@foreach($enquiries as $enquiry)
 						@if($enquiry->status != "Not Processed")
-						<tr>
+						<tr class="{{ in_array($enquiry->project_id,$projectOrdersReceived) ? 'hidden' : '' }}">
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
@@ -167,7 +167,7 @@
 						@endif
 						@endforeach   
 					</tbody>
-					<tr>
+					 <tr>
 						<td style="text-align    : center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
@@ -182,6 +182,7 @@
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
 					</tr>
+					
 				</table>
 				<table>
 					<tbody>
@@ -195,6 +196,7 @@
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 	function edit(arg){
 		document.getElementById('now'+arg).className = "hidden";

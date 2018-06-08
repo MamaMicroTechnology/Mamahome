@@ -3,11 +3,17 @@
 @section('content')
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: green;color: white;pa">Assign Stage
-        <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+
+        <div class="panel-heading" style="background-color: green;color: white;">Fetch Numbers Here Than Assign to the Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOTAL : {{ $count }}
+           <form method="GET" action="{{ URL::to('/') }}/assign_number">
+                <input type="hidden" name="delete" value="delete">
+                <input type="submit" value="Reset" class="pull-right btn-danger btn btn-sm">
+              </form>
+       <center> <button class="btn btn-success " type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal">Fetch the Numbers</button></center>
+        
         </div>
         <div class="panel-body">
-        	 @if (session('Success'))
+           @if (session('Success'))
                         <div class="alert alert-success">
                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             {{ session('Success') }}
@@ -19,28 +25,53 @@
                           {{ session('NotAdded') }}
                           </div>
                 @endif
-									
-						 <table class="table table-responsive table-striped table-hover" class="table">
-                        <thead>
-                            <th style="width:15%">Name</th>
-                            <th style="width:15%">Designation</th>
-                            <th style="width:15%">Previously Assigned Stage </th>
-                           <th style="width:15%">Action </th>
-                           
-                          </thead>
+              <form method="POST" id="saveNumber" name="myform" action="{{ URL::to('/') }}/storecount" enctype="multipart/form-data">
+                {{ csrf_field() }}    
+<!--                 <input type="hidden" id="userId" name="user_id">
+                <input type="hidden" id="number" name="num">               -->
+             <table class="table table-responsive table-striped table-hover" class="table">       
+                      <tr>
+                        <td>
+                           <select name="user_id" onchange="this.form.submit()" class="form-control">
+                           <option value="">--Select--</option>
                           @foreach($users as $user)  
-                           <tr>
-                            <td>{{$user->name}}</td>
-                            <td>{{ $user->group_name }}</td>
-                             <td>{{ $user->stage }}</td>
-                             <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
-                             <input type="hidden"  name="user_id" value="{{ $user->id }}">
-                          </tr>         
+                            <option value="{{ $user->id }}">{{$user->name}}</option>
                            @endforeach
-                   
-                </table>  	
-		
-      <form method="POST" name="myform" action="{{ URL::to('/') }}/storenumber" enctype="multipart/form-data">
+                            </select>
+                        </td>
+                     </tr> 
+
+                   <tr>
+                     <td>
+                       <?php
+                          $numbers = array();
+                       ?>
+                       <table class="table table-striped">
+                       <tr>
+                       <?php $i = 0; ?>
+                        @foreach($number as $num)
+                         <td>{{ $num->number }}</td>
+                         <?php
+                            $i++;
+                            $temp = $num->number;
+                            array_push($numbers, $temp);
+                          ?>
+                         @if($i == 6)
+                          </tr>
+                          <?php $i = 0; ?>
+                          @endif
+                         @endforeach
+                         <?php
+                            $numb = implode(", ", $numbers);
+                         ?>
+                       </table>
+                      <input type="hidden" name="num" value="{{ $numb }}">
+                     </td>
+                   </tr>
+                </table>  
+              </form> 
+		{{ $number->links()  }}
+      <form method="POST" name="myform" action="{{ URL::to('/') }}/sms" enctype="multipart/form-data">
      {{ csrf_field() }}
      <input type="hidden" id="userId" name="user_id">
       <!-- Modal -->
@@ -109,6 +140,12 @@
   function makeUserId(arg){
   document.getElementById("userId").value = arg;
   
+}
+function submitMyNumber(arg){
+  document.getElementById("userId").value = document.getElementById(arg+"userId").value;
+  document.getElementById("number").value = document.getElementById(arg+"num").value;
+  var form = document.getElementById("saveNumber");
+  form.submit();
 }
 </script>
 @endsection

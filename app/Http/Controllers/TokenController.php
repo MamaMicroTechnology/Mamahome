@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Message;
 use App\Department;
 use App\UserLocation;
+use App\Aregister;
 use App\Http\Resources\Message as MessageResource;
 
 class TokenController extends Controller
@@ -181,6 +181,22 @@ class TokenController extends Controller
         $location->save();
         $messages = new Collection;
         return response()->json(['message'=>'true']);
+    }
+    public function getregister(Request $request){
+               $register = new Aregister();
+               $register->username =$request->username;
+               $register->email=$request->email;
+               $register->lastname =$request->lastname;
+               $register->password = $request->password;
+                 
+                 if($register->save()){
+                    return response()->json(['message'=>'Registered']);
+                 }else{
+                    return response()->json(['message'=>'Something went wrong']);
+                 }
+
+       
+        
     }
 
 }

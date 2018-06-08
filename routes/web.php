@@ -22,6 +22,7 @@ Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
  Route::get('/h','HomeController@hstore');
  Route::get('/viewMap','HomeController@viewMap');
+ Route::post('/saveinvoice','marketingController@saveinvoice');
 
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
@@ -34,7 +35,7 @@ Route::get('/myreport','HomeController@myreport');
 Route::get('/invoice','logisticsController@getinvoice');
 Route::get('/inputinvoice','logisticsController@inputinvoice');
 Route::get('/status_wise_projects','HomeController@index1');
-
+Route::get('/allProjectsWithWards','HomeController@allProjectsWithWards');
 Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
@@ -81,6 +82,7 @@ Route::get('/deleteRoomType','HomeController@deleteRoomType');
 Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
+Route::get('/ordersformarketing','marketingController@ordersformarketing');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -159,7 +161,8 @@ Route::get('/gettodayleinfo','HomeController@gettodayleinfo');
 Route::get('/registrationrequests','HomeController@regReq');
 Route::get('/salesAddProject','HomeController@listingEngineer');
 Route::get('/salescompleted','HomeController@projectwisedel');
-Route::get('/sms','HomeController@smstonumber');
+Route::post('/sms','HomeController@smstonumber');\
+Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
@@ -269,6 +272,8 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assign_enquiry','HomeController@enquirywise');
     Route::get('/assign_number','HomeController@numberwise');
     Route::post('/storenumber','HomeController@storenumber');
+    Route::post('/storecount','HomeController@storecount');
+
 
     
 
@@ -399,8 +404,8 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/getdesc','amController@getdesc');
     Route::post('/deleteassetsimcard','amController@deleteassetsim');
     Route::get('/deleteassets','amController@deleteassets');
-    Route::post('/deletesim','amcontroller@deletesim');
-    Route::post('/savesiminfo','amcontroller@savesiminfo');
+    Route::post('/deletesim','amController@deletesim');
+    Route::post('/savesiminfo','amController@savesiminfo');
     Route::get('/getbrand','amController@getbrand');
     Route::get('/signature','amController@signature');
     Route::get('/preview','amController@preview');
@@ -463,15 +468,13 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::post('/addBuilderDetails','aeController@postBuilderDetails');
     Route::post('/addBuilderProject','aeController@addBuilderProject');
     Route::get('/deliveredOrders','aeController@getDeliveredOrders');
-});
-
-
-//account executive//
-     Route::get('/accountlistingEngineer','HomeController@listingEngineer');
-     Route::get('/accountroads','HomeController@getRoads');
-     Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
-     Route::get('/accountreports','HomeController@getMyReports');
-
+    });
+    Route::get('/accountlistingEngineer','HomeController@listingEngineer');
+    Route::get('/accountroads','HomeController@getRoads');
+    Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
+    Route::get('/accountreports','HomeController@getMyReports');
+    
+    
 
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
