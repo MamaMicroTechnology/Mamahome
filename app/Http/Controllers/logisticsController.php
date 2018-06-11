@@ -36,6 +36,7 @@ use App\training;
 use App\Point;
 use App\SiteAddress;
 use App\OwnerDetails;
+use App\Payment;
 
 class logisticsController extends Controller
 {
@@ -85,17 +86,19 @@ class logisticsController extends Controller
         }
     }
     
-    public function orders()
+    public function orders(Request $request)
     {
         $view = Order::orderBy('project_id','DESC')
                 ->leftJoin('users','orders.delivery_boy','=','users.id')
                 ->leftJoin('delivery_details','delivery_details.order_id','orders.id')
+                ->leftJoin('payment','payment.order_id','orders.id')
                 ->select('orders.*','orders.id as orderid','users.name','users.group_id','delivery_details.vehicle_no',
-                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video')
+                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','payment.payment_status as paymentStatus','payment.signature','payment.signature1','payment.amount','payment.id as paymentId','payment.advance_amount')
                 ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
         $countview = Order::where('delivery_boy',Auth::user()->id)->count();
-        return view('logistics.orders',['view' => $view,'count' => $countview]);
+        $payment = Payment::all();
+        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment]);
     }
     
     public function showProjectDetails(Request $id)
@@ -145,27 +148,88 @@ class logisticsController extends Controller
     {
         return view('logistics.takesignature');
     }
-    public function saveSignature(Request $request)
-    {
-        $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
-        $request->signature->move(public_path('signatures'),$signatureName);
-        $signature = Order::where('id',$request->orderId)->first();
-        $signature->signature = $signatureName;
+    // public function saveSignature(Request $request)
+    // {
+    //     $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
+    //     $request->signature->move(public_path('signatures'),$signatureName);
+    //     $signature = Order::where('id',$request->orderId)->first();
+    //     $signature->signature = $signatureName;
 
-        $signature->payment_status = "Payment Received";
-        $signature->save();
+    //     $signature->payment_status = "Payment Received";
+    //     $signature->save();
 
-        $signature->total = $request->amount;
-        $signature->payment_status = "Payment Received";
-        $signature->save();
+    //     $signature->total = $request->amount;
+    //     $signature->payment_status = "Payment Received";
+    //     $signature->save();
+    //     $points = new Point;
+    //     $points->user_id = Auth::user()->id;
+    //     $points->point = 400;
+    //     $points->type = "Add";
+    //     $points->reason = "Receiving payment";
+    //     $points->save();
+
+    //     return back()->with('Success','Payment Received');
+    // }
+    public function payment(Request $request){
+
+            $signatureName = Auth::user()->id."signature".time().'.'.request()->signature->getClientOriginalExtension();
+             $request->signature->move(public_path('signatures'),$signatureName);
+             if($request->signature1){
+
+            $signatureName1 = Auth::user()->id."cheque".time().'.'.request()->signature1->getClientOriginalExtension();
+            $request->signature1->move(public_path('signatures'),$signatureName1);
+             }else{
+                $signatureName1 = "";
+             }
+             // dd($request->advanceAmount);
+             if($request->advanceAmount){
+                $pay = Payment::where('id',$request->advanceAmount)->first();
+                $pay->payment_status = "Payment Received";
+                $pay->project_id = $request->project_id;
+                $pay->amount = $request->amount;
+                $pay->p_method = $request->payment_method;
+                $pay->log_name = $request->log_name;
+                $pay->order_id = $request->orderId;
+                $pay->signature=$signatureName;
+                $pay->signature1=$signatureName1;
+                $pay->c_name = $request->c_name;
+                $pay->save();
+             }else{
+                   $pay = new Payment();
+                   
+                    $pay->amount= $request->amount;
+                   
+                    if($request->payment_method == "Advanced") {
+                         $pay->payment_status = "Advance Received";
+                         $pay->advance_amount = $request->amount;
+                         $pay->save();
+                         
+                    }else{
+                         $pay->payment_status = "Payment Received";
+                        
+                    $pay->save();
+                    }
+                   $pay->project_id = $request->project_id;
+                   $pay->p_method = $request->payment_method;
+                   $pay->log_name = $request->log_name;
+                   $pay->order_id = $request->orderId;
+                   $pay->signature=$signatureName;
+
+                   $pay->signature1=$signatureName1;
+                   $pay->c_name = $request->c_name;
+                   $pay->save();
+             }
         $points = new Point;
         $points->user_id = Auth::user()->id;
         $points->point = 400;
         $points->type = "Add";
         $points->reason = "Receiving payment";
         $points->save();
+       return back();
 
-        return back()->with('Success','Payment Received');
+
+
+
     }
     public function saveDeliveryDetails(Request $request)
     {
@@ -427,9 +491,10 @@ class logisticsController extends Controller
     public function inputinvoice(Request $request)
     {
         $orders = Order::where('id',$request->id)->first();
+        $project = projectdetails::all();
         $address = SiteAddress::where('project_id',$orders->project_id)->first();
         $owner = OwnerDetails::where('project_id',$orders->project_id)->first();
-        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner]);
+        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner,]);
 
     }
 }

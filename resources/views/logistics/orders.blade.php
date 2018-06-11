@@ -1,3 +1,4 @@
+
 @extends('layouts.logisticslayout')
 @section('title','Logistics Orders')
 @section('content')
@@ -38,30 +39,46 @@
 						@endif    
 						</td>
 				        <td style="text-align: center;">
-                            @if($rec->payment_status != "Payment Received" && $rec->dispatch_status == 'Yes')
+				      
+				             
+                            @if($rec->paymentStatus != "Payment Received" && $rec->dispatch_status == 'Yes')
 							<button data-toggle="modal" data-target="#PaymentModal{{$rec->orderid}}" class="btn btn-success btn-sm">Payment Details</button>
-                                <form method="POST" action="{{ URL::to('/') }}/saveSignature" enctype="multipart/form-data">
+                                <form method="POST" action="{{ URL::to('/') }}/payment" enctype="multipart/form-data">
                                     {{ csrf_field() }}
 									<div id="PaymentModal{{$rec->orderid}}" class="modal fade" role="dialog">
 										<div class="modal-dialog modal-sm">
 											<!-- Modal content-->
 											<div class="modal-content">
 											<div class="modal-header">
-												Payment
+												Payment<br>
+												@if($rec->status="Advance Received")
+												<span class="pull-left" style="color:green;">Advance Amount:{{ $rec->advance_amount }}</span>
+												<input type="hidden" name="advanceAmount" value="{{ $rec->paymentId }}">
+												@endif
 											</div>
 											<div class="modal-body">
-												<label for="paymentMethod">Payment Method:</label>
-												<select name="payment_method" id="paymentMethod" class="form-control input-sm">
+											<label for="PaymentDoneBy">Payment Done By Name</label>
+											<input type="text" name="c_name" class="form-control input-sm">
+												<label for="paymentMethod">Payment Mode:</label>
+												<select name="payment_method"  class="form-control input-sm" id="ad" onchange="changeValue(this.value, '{{ $rec->project_id }}')">
 													<option value="">--Select--</option>
-													<option value="Card">Card</option>
-													<option value="Cheque">Cheque</option>
-													<option value="Advanced">Advanced</option>
+													<option value="RTGS">RTGS(Online Payment)</option>
+													<option  value="Cheque">Cheque</option>
+													<option   value="Advanced">Advance</option>
 												</select>
 												<label for="amount">Amount Received:</label>
 												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm">
 												<label for="sign">Signature:</label>
 												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
+												<div id="show{{ $rec->project_id }}" class="hidden">
+													<label for="amount">Payment Picture</label>
+													<input id="adv"  type="file" name="signature1" id="sign" class="form-control input-sm" accept="image/*">
+												</div>
+												
 												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+												<input type="hidden" name="project_id" value="{{ $rec->project_id }}">
+												<input type="hidden" name="log_name" value="{{ $rec->delivery_boy }}">
+												
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-success pull-left">Save</button>
@@ -71,8 +88,9 @@
 									</div>
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>
+                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->status }}</a>
                             @endif
+                           
                         </td>
                         <td style="text-align:center">
                             @if($rec->delivery_status == "Not Delivered")
@@ -143,12 +161,15 @@
                             @endif
                         </td>
                         <td style="text-align:center">
-                            @if($rec->payment_status == "Payment Received")
-                                {{ $rec->payment_status }}
+                            @if($rec->paymentStatus == "Payment Received")
+                                {{ $rec->paymentStatus }}
+                              @elseif($rec->paymentStatus == "Advance Received")
+                                {{ $rec->paymentStatus }}
                             @elseif($rec->delivery_status != "Delivered")
     				            <a onclick="cancelOrder('{{$rec->orderid}}')" class="btn btn-sm btn-danger" style="width:99%" >
     				                <b>Cancel Order</b>
     				            </a>
+
                             @else
                                 Order Delivered
                             @endif
@@ -242,6 +263,13 @@ $(document).ready(function(){
     	    });
 	    }
 	 }
-
+function changeValue(val, id){
+//use comparison operator   
+if(val=="Cheque")
+     document.getElementById('show'+id).className = "";
+ else{
+ 	 document.getElementById('show'+id).className="hidden";
+ }
+}
 </script>
 @endsection
