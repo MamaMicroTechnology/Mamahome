@@ -3883,7 +3883,8 @@ public function assigndate(request $request )
     }
     public function getLeTracking(Request $request)
     {
-        $users = User::where('group_id','6')->get();
+        $groupid = [6,11,17];
+        $users = User::whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         if($request->userId){
             $track = UserLocation::where('user_id',$request->userId)
                         ->where('created_at','LIKE',date('Y-m-d')."%")
