@@ -136,7 +136,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <br>
                     <h3>Room Types</h3>
                     <table class="table table-responsive">
                          <thead>
@@ -154,7 +153,23 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <br>
+                    <h3>Owner Details</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%;"><b>Owner Name</b></td>
+                                <td>{{$rec->ownerdetails->owner_name}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Owner Contact No</b></td>
+                                <td>{{$rec->ownerdetails->owner_contact_no}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%;"><b>Owner Email</b></td>
+                                <td>{{$rec->ownerdetails->owner_email}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <h3>Procurement Details</h3>
                     <table class="table table-responsive">
                         <tbody>
@@ -203,23 +218,6 @@
                             <tr>
                                 <td style="width:40%;"><b>Contractor Email</b></td>
                                 <td>{{$rec->contractordetails->contractor_email}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <h3>Owner Details</h3>
-                    <table class="table table-responsive">
-                        <tbody>
-                            <tr>
-                                <td style="width:40%;"><b>Owner Name</b></td>
-                                <td>{{$rec->ownerdetails->owner_name}}</td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%;"><b>Owner Contact No</b></td>
-                                <td>{{$rec->ownerdetails->owner_contact_no}}</td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%;"><b>Owner Email</b></td>
-                                <td>{{$rec->ownerdetails->owner_email}}</td>
                             </tr>
                         </tbody>
                     </table>

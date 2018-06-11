@@ -19,22 +19,28 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-          @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+         @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br> 
+        @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
-          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>
-          
+        <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
           @endif
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
-                <tr>
+                <!-- <tr>
                   <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed in previous month</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $lastmonth}}</strong></td>
