@@ -61,7 +61,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth" onkeyup="check('rWidth')"  required type="text" placeholder="Road Width in feet" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                   
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
@@ -312,7 +312,7 @@
                                <tr>
                                    <td>Contractor Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="edName" onblur="checkmail('cEmail')" ></td>
+                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Contractor Contact No.</td>
@@ -434,7 +434,7 @@
     var x = document.getElementById(arg);
     if(x.value)
     {
-        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        var phoneno = /^[6-9][0-9]\d{8}$/;
         if(!x.value.match(phoneno))
         {
             alert('Please Enter 10 Digits in Phone Number');
@@ -845,7 +845,7 @@
  function checkmail(arg){
     var mail = document.getElementById(arg);
     if(mail.value.length > 0 ){
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value))  {  
+      if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(mail.value))  {  
         return true;  
       }  
       else{
