@@ -33,3 +33,4 @@ Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
 //Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']);
 Route::post('getregister', 'TokenController@getregister');
+Route::post('addProject','mamaController@addProject');

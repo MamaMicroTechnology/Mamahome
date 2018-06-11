@@ -19,6 +19,12 @@
 						<h3 style="font-size:1.8em">{{SESSION('success')}}</h3>
 					</div>
 					@endif
+					@if(session('Error'))
+					<div class="alert alert-danger alert-dismissable">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					{{ session('Error') }}
+					</div>
+					@endif
 					<table class="table table-responsive table-hover">
 						<tbody>
 							<tr>

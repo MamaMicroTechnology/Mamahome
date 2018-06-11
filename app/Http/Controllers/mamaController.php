@@ -547,6 +547,8 @@ class mamaController extends Controller
             $projectdetails->road_width = $request->rWidth;
             $projectdetails->construction_type = $type;
             $projectdetails->interested_in_rmc = $request->rmcinterest;
+            $projectdetails->interested_in_loan = $request->loaninterest;
+            $projectdetails->interested_in_doorsandwindows = $request->dandwinterest;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
             $projectdetails->other_approvals = $otherApprovals;
@@ -1696,6 +1698,17 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+        'subcat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return back()
+            ->with('Error','Select Category Before Submit')
+            ->withErrors($validator)
+            ->withInput();
+        }
+
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
