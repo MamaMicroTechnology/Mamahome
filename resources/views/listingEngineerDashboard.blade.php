@@ -47,7 +47,7 @@
                 </tr>
                 <tr>  
                   <td style="border: 1px solid gray;"><label>Total Number of Projects Listed Today</label></td>
-                  <td style="border: 1px solid gray;">{{ $total }}</td>
+                  <td style="border: 1px solid gray;"><strong>{{ $total }}</strong></td>
                 </tr>
                 <tr>
                   <td style="border: 1px solid gray;"><label>Enquiries Initiated </label></td>
@@ -59,6 +59,32 @@
                 </tr>
           </tbody>
         </table>
+         @if(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+        <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody >
+                <!-- <tr>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
+                </tr> -->
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>TOtal number of projects in {{$subwards->sub_ward_name}}</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $totalprojects}}</strong></td>
+                </tr>
+                <tr>  
+                  <td style="border: 1px solid gray;"><label>Genuine Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $genuineprojects }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Unverified Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $unverifiedprojects }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Fake Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
+                </tr>
+          </tbody>
+        </table>
+        @endif
        </div>
         <div class="pull-right col-lg-8">
           <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">
