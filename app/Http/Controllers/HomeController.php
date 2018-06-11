@@ -767,6 +767,7 @@ class HomeController extends Controller
     public function editEnq1(Request $request)
     {
 
+
         $category = Category::all();
         $depart = [7];
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
@@ -786,6 +787,7 @@ class HomeController extends Controller
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
+                  
         return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
     public function eqpipelineedit(Request $request)
@@ -1232,7 +1234,6 @@ class HomeController extends Controller
 
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
-        
         $projectCount = array();
         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
         foreach($roads as $road){
@@ -2115,10 +2116,10 @@ class HomeController extends Controller
         }
          $projectids = new Collection();
          if($stages != null){
-             $projectids = ProjectDetails::whereIn('project_status',$stages)->where('quality','Genuine')->pluck('project_id');
+             $projectids = ProjectDetails::whereIn('project_status',$stages)->where('quality','!=','Fake')->pluck('project_id');
          }else{
             $projectids = null;
-         }
+         }     
     if($projectids != null){
 
            //fetch phonee numbers//
@@ -3883,7 +3884,8 @@ public function assigndate(request $request )
     }
     public function getLeTracking(Request $request)
     {
-        $users = User::where('group_id','6')->get();
+        $groupid = [6,11,17];
+        $users = User::whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         if($request->userId){
             $track = UserLocation::where('user_id',$request->userId)
                         ->where('created_at','LIKE',date('Y-m-d')."%")
@@ -4160,7 +4162,7 @@ public function numberwise(request $request){
               
              ->select('users.*','groups.group_name')->get();
              $count = numbers::count();
- $number = numbers::paginate(100);
+        $number = numbers::paginate(100);
         if($request->delete){
             numbers::truncate();
             return back();

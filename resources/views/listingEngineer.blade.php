@@ -89,6 +89,31 @@
                                     </div>
                                  </td>
                                </tr>
+                                <tr>
+                                 <td>Interested in Bank loans?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input required value="Yes" id="loan1" type="radio" name="loaninterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="No" id="loan2" type="radio" name="loaninterest">No</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in Doors and Windows?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                 </td>
+                               </tr>
+
                                <tr>
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
@@ -723,6 +748,10 @@
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(loan1.checked == false && loan2.checked == false){
+            window.alert("Please tell us whether the customer is interested in taking loan or not");
+          }else if(dandw1.checked == false && dandw2.checked == false){
+            window.alert("Please tell us whether the customer is interested in purchasing doors and windows");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
