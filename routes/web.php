@@ -487,6 +487,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/deliveredorders','logisticsController@deliveredorders');
     Route::get('/takesignature','logisticsController@takesignature');
     Route::post('/saveSignature','logisticsController@saveSignature');
+    Route::post('/payment','logisticsController@payment');
     Route::post('/saveDeliveryDetails','logisticsController@saveDeliveryDetails');
 });
 
