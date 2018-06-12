@@ -349,7 +349,7 @@
                                     </div>
                                   </td>
                                </tr>
-                               <tr>
+                              <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
                                     <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
