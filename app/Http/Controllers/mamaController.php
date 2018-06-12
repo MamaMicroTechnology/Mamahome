@@ -1738,7 +1738,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' => $request->initiator,
+            'generated_by' => Auth::user()->id,
             'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
