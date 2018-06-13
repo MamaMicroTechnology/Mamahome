@@ -1204,6 +1204,11 @@ class mamaController extends Controller
             View::share('name',$request->name);
             Mail::to($request->email)->send(new registration($user));
         }
+         if($user->save()){  
+                    return response()->json(['message'=>'Registered']);
+                 }else{
+                    return response()->json(['message'=>'Something went wrong']);
+                 }
         return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
     }
     public function confirmUser(Request $request)
