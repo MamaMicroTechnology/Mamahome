@@ -36,4 +36,5 @@ Route::post('getregister', 'TokenController@getregister');
 Route::post('addProject','mamaController@addProject');
 
 Route::post('/register','mamaController@postRegistration');
+Route::get('/authlogin','HomeController@authlogin');
 
