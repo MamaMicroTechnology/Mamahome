@@ -754,9 +754,9 @@
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
-          }else if(loan1.checked == false && loan2.checked == false ){
+          }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
-          }else if(dandw1.checked == false && dandw2.checked == false ){
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
             window.alert("Please tell us whether the customer is interested in purchasing doors and windows");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
