@@ -354,7 +354,7 @@
                                    <td>:</td>
                                     <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
                                        
-                                          @if($projectdetails->updated_by == Null)
+                                          @if($projectdetails->updated_by == Null || $projectdetails->updated_by != Null)
 
 
                                           <?php
