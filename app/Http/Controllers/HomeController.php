@@ -2814,7 +2814,7 @@ class HomeController extends Controller
                 $carpentryCount     = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Carpentry')->count();
                 $carpentrySize      = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Carpentry')->sum('project_size');
                 $closedCount        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Closed')->count();
-                $closedSize         = ProjectDetails::whereIn('sub_ward_id',$subwards)->wehre('project_status','Closed')->sum('project_size');
+                $closedSize         = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Closed')->sum('project_size');
                 $wardname = Ward::where('id',$request->ward)->first();
                 $subwards = SubWard::where('ward_id',$request->ward)->get();
             }
@@ -2907,7 +2907,7 @@ class HomeController extends Controller
             $Cdigging = ProjectDetails::where('sub_ward_id',$request->subward)->where('project_status','Digging')->count();
             $Cenp = ProjectDetails::where('sub_ward_id',$request->subward)->where('project_status','Electrical')->count();
             $Cplumb = ProjectDetails::where('sub_ward_id',$request->subward)->where('project_status','Plumbing')->count();
-            $eandpCount           = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Electrical & Plumbing')->count();
+            $eandpCount  = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Electrical & Plumbing')->count();
             $eandpSize            = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','Electrical & Plumbing')->sum('project_size');
             $Ccarpentry = ProjectDetails::where('sub_ward_id',$request->subward)->where('project_status','Carpentry')->count();
             $Cclosed = ProjectDetails::where('sub_ward_id',$request->subward)->where('project_status','Closed')->count();
@@ -2954,7 +2954,7 @@ class HomeController extends Controller
                 'Cwalls'=>$Cwalls,
                 'Ccompletion'=>$Ccompletion,
                 'Cfixtures'=>$Cfixtures,
-                'Cpillars'=>$Cpillars,
+                'Cpillars'=>$Cpillars,  
                 'Cpainting'=>$Cpainting,
                 'Cflooring'=>$Cflooring,
                 'Cplastering'=>$Cplastering,
