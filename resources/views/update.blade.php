@@ -129,10 +129,13 @@
                                     <div class="radio">
                                       <label><input id="loan2" {{ $projectdetails->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
                                     </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
+                                    </div>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Doors and Windows?</td>
+                                 <td>Interested in UPVC Doors and Windows?</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
@@ -140,6 +143,9 @@
                                     </div>
                                     <div class="radio">
                                       <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
                                     </div>
                                  </td>
                                </tr>
