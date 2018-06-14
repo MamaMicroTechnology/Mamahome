@@ -68,6 +68,7 @@ use App\MamaSms;
 use Carbon\Carbon;
 use App\numbercount;
 use App\numbers;
+use App\Payment;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -1272,7 +1273,10 @@ class HomeController extends Controller
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
             $projectCount[$road] = $genuine + $null;
+
         }
+  
+
         return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount]);
     }
     public function viewProjectList(Request $request)
@@ -4527,10 +4531,12 @@ function enquirystore(request $request){
      //    $projectids= $projectids->merge($sublist);
         
      //    }
+
         $projects = Requirement::whereIn('requirements.project_id',$projectids)
                         ->leftjoin('procurement_details','requirements.project_id', '=' ,'procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no')
                         ->paginate(20);
+            
 
         return view('enquirywise',['projects'=>$projects]);
     }
@@ -4588,8 +4594,13 @@ function enquirystore(request $request){
         $num =MamaSms::all();
         return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
     }
-    public function payment(){
-        return view('/payment');
+    public function payment( request $request){
+
+       $payment = Payment::all();
+       $pay = Payment::all()->count();
+
+
+        return view('/payment',['payment'=>$payment,'pay'=>$pay]);
     }
 
 }

@@ -492,7 +492,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/saveDeliveryDetails','logisticsController@saveDeliveryDetails');
 });
 
-
+Route::get('/payment','HomeController@payment');
 
 
 Route::post('/toggle-approve',"HomeController@approval");

@@ -513,6 +513,7 @@ div#calendar{
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <a href="{{ URL::to('/confidential') }}">Confidential</a>
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
+    <a href="{{ URL::to('payment') }}">Payment Details</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -543,7 +544,7 @@ div#calendar{
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <!-- <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Enquiry Wise</a>    -->
+    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
@@ -557,6 +558,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
+       <a href="{{ URL::to('payment') }}">Payment Details</a>
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
