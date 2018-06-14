@@ -114,7 +114,9 @@ class HomeController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has logged in to the system at ".date('H:i A');
         $activity->save();
-        return redirect('/home');
+    
+         return response()->json(['message'=>'login sucuss']);
+         return redirect('/home');
     }
     public function authlogout(Request $request)
     {

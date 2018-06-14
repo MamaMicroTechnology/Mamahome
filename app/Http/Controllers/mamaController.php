@@ -668,6 +668,10 @@ class mamaController extends Controller
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
         return back()->with('Success','Project added successfully');
+
+        return response()->json(['message'=>'project is added']);
+
+
     }
     public function updateProject($id, Request $request)
     {
@@ -1202,6 +1206,14 @@ class mamaController extends Controller
             View::share('name',$request->name);
             Mail::to($request->email)->send(new registration($user));
         }
+       
+        if($user->save()){  
+                    return response()->json(['message'=>'Registered']);
+                 }else{
+                    return response()->json(['message'=>'Something went wrong']);
+                 }
+
+
         return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
     }
     public function confirmUser(Request $request)
