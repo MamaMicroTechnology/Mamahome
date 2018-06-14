@@ -114,9 +114,7 @@ class HomeController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has logged in to the system at ".date('H:i A');
         $activity->save();
-    
-         return response()->json(['message'=>'login sucuss']);
-         return redirect('/home');
+    return redirect('/home');
     }
     public function authlogout(Request $request)
     {
@@ -4573,6 +4571,9 @@ function enquirystore(request $request){
         $ss = numbercount::all();
         $num =MamaSms::all();
         return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
+    }
+    public function payment(){
+        return view('/payment');
     }
 
 }
