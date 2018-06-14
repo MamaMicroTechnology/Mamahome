@@ -868,6 +868,14 @@ class HomeController extends Controller
         $users = User::where('department_id','!=',0)->paginate(10);
         $departments = Department::all();
         $groups = Group::where('group_name','!=','Admin')->get();
+        $loggedInUsers = attendance::where('date',date('Y-m-d'))
+                        ->join('users','empattendance.empId','users.employeeId')
+                        ->select('users.name','empattendance.*')
+                        ->get();
+        $leLogins = loginTime::where('logindate',date('Y-m-d'))
+                        ->join('users','login_times.user_id','users.id')
+                        ->select('users.name','users.employeeId','login_times.*')
+                        ->get();
         if($group == "Team Lead" && $dept == "Operation"){
             return redirect('teamLead');
         }else if($group == "Listing Engineer" && $dept == "Operation"){
@@ -883,7 +891,7 @@ class HomeController extends Controller
         }else if($group == "Account Executive"){
             return redirect('accountExecutive');
         }else if($group == "Admin"){
-            return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
+            return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins]);
         }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
@@ -895,6 +903,7 @@ class HomeController extends Controller
         }else {
             return redirect('chat');
         }
+
         return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
     }
     public function amDept()
