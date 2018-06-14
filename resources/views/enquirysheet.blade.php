@@ -110,7 +110,7 @@
 					<tbody>
 						@foreach($enquiries as $enquiry)
 						@if($enquiry->status != "Not Processed")
-						<tr class="{{ in_array($enquiry->project_id,$projectOrdersReceived) ? 'hidden' : '' }}">
+						{{--<tr class="{{ in_array($enquiry->project_id,$projectOrdersReceived) ? 'hidden' : '' }}">--}}
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>

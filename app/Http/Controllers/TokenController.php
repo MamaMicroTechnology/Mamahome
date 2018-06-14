@@ -165,7 +165,17 @@ class TokenController extends Controller
     public function getLogin(Request $request)
     {
         $messages = new Collection;
-        if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
+        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+            $userdetails = User::where('id',Auth::user()->id)->first();
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+        }else{
+            return response()->json(['message' => 'false']);
+        }
+    }
+    public function buyerLogin(Request $request)
+    {
+        $messages = new Collection;
+        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
             return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
         }else{
