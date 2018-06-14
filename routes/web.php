@@ -106,6 +106,7 @@ Route::get('/marketingpricing','amController@getPricing');
 Route::post('/marketinginsertcat','mamaController@insertCat');
 Route::get('/marketmanufacturerdetails','HomeController@manufacturerDetails');
 Route::get('/mrenquirysheet','HomeController@enquirysheet');
+Route::get('/viewInvoices','marketingController@viewInvoices');
 
 // Orders
 Route::get('/orders','HomeController@amorders');

@@ -61,7 +61,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth" onkeyup="check('rWidth')"  required type="text" placeholder="Road Width in feet" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                   
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
@@ -89,6 +89,37 @@
                                     </div>
                                  </td>
                                </tr>
+                                <tr>
+                                 <td>Interested in Bank loans?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input required value="Yes" id="loan1" type="radio" name="loaninterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="No" id="loan2" type="radio" name="loaninterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="None" id="loan3" type="radio" name="loaninterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in UPVC Doors and Windows?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input required value="None" id="dandw3" type="radio" name="dandwinterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+
                                <tr>
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
@@ -312,7 +343,7 @@
                                <tr>
                                    <td>Contractor Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="edName" onblur="checkmail('cEmail')" ></td>
+                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Contractor Contact No.</td>
@@ -434,7 +465,7 @@
     var x = document.getElementById(arg);
     if(x.value)
     {
-        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        var phoneno = /^[6-9][0-9]\d{8}$/;
         if(!x.value.match(phoneno))
         {
             alert('Please Enter 10 Digits in Phone Number');
@@ -723,6 +754,10 @@
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in taking loan or not");
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in purchasing doors and windows");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
@@ -845,7 +880,7 @@
  function checkmail(arg){
     var mail = document.getElementById(arg);
     if(mail.value.length > 0 ){
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value))  {  
+      if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(mail.value))  {  
         return true;  
       }  
       else{

@@ -120,6 +120,36 @@
                                  </td>
                                </tr>
                                <tr>
+                                 <td>Interested in Bank loans?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $projectdetails->interested_in_loan == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="loaninterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $projectdetails->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in UPVC Doors and Windows?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
                                  <td>Type of Contract ? </td>
                                   <td>:</td>
                                   <td>
@@ -267,6 +297,31 @@
                                     </div>
                                     </td>
                                </tr>
+                                <tr>
+                                   <td>Plot Size</td>
+                                   <td>:</td>
+                                   <td>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                          <label>Length</label>
+                                          <input value="{{ $projectdetails->length }}" onkeyup="checkthis('length')" id="length" name="length" type="text" autocomplete="off" class="form-control input-sm" placeholder="Length">
+                              
+                                        </div>
+                                        <div class="col-md-2">
+                                          <b style="font-size: 20px; text-align: center">*</b>
+                                        </div>
+                                      <div class="col-md-3">
+                                         <label>breadth</label>
+                                        <input value="{{ $projectdetails->breadth }}" onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="breadth">
+                                      </div>
+                                      <div class="col-md-3">
+                                        <p id="totalsize">
+                                          L({{ $projectdetails->length }}) * B({{ $projectdetails->breadth }}) = {{ $projectdetails->length * $projectdetails->breadth}}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    </td>
+                               </tr>
                                <tr>
                                    <td>Project Size</td>
                                    <td>:</td>
@@ -300,12 +355,12 @@
                                     </div>
                                   </td>
                                </tr>
-                               <tr>
+                              <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
                                     <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
                                        
-                                          @if($projectdetails->updated_by == Null)
+                                          @if($projectdetails->updated_by == Null || $projectdetails->updated_by != Null)
 
 
                                           <?php

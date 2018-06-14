@@ -547,6 +547,8 @@ class mamaController extends Controller
             $projectdetails->road_width = $request->rWidth;
             $projectdetails->construction_type = $type;
             $projectdetails->interested_in_rmc = $request->rmcinterest;
+            $projectdetails->interested_in_loan = $request->loaninterest;
+            $projectdetails->interested_in_doorsandwindows = $request->dandwinterest;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
             $projectdetails->other_approvals = $otherApprovals;
@@ -1200,6 +1202,7 @@ class mamaController extends Controller
         $user->category = $request->category;
         $user->password = bcrypt($request->password);
         $user->save();
+<<<<<<< HEAD
         if($request->category == "Buyer"){
             View::share('password',$request->password);
             View::share('email',$request->email);
@@ -1208,13 +1211,26 @@ class mamaController extends Controller
         }
        
         if($user->save()){  
+=======
+        // if($request->category == "Buyer"){
+        //     View::share('password',$request->password);
+        //     View::share('email',$request->email);
+        //     View::share('name',$request->name);
+        //     Mail::to($request->email)->send(new registration($user));
+        // }
+         if($user->save()){  
+>>>>>>> 8f2dd203c033bb94f1f3351ade2b7b63abe751a1
                     return response()->json(['message'=>'Registered']);
                  }else{
                     return response()->json(['message'=>'Something went wrong']);
                  }
+<<<<<<< HEAD
 
 
         return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
+=======
+        // return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
+>>>>>>> 8f2dd203c033bb94f1f3351ade2b7b63abe751a1
     }
     public function confirmUser(Request $request)
     {
@@ -1708,6 +1724,17 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+        'subcat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return back()
+            ->with('Error','Select Category Before Submit')
+            ->withErrors($validator)
+            ->withInput();
+        }
+
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -1737,7 +1764,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' => $request->initiator,
+            'generated_by' => Auth::user()->id,
             'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate

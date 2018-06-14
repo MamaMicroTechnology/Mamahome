@@ -7,9 +7,6 @@
     <div class="panel-heading">
        {{-- Total No Of Projects In Zone 1 : {{$totalProjects}}--}}
     </div>
-      <center> {{--  Due To Database Change Electrical and Plumbing has been Splitted in to 2.<br>
-        Electrical and Plumbing (No. of Projects):{{ $eandpCount}}
-        Size (in Sq.Ft.):{{ $eandpSize}} --}}</center>
     <div class="panel-body">
         <div class="col-md-6">
             <center>Ward</center>
@@ -29,8 +26,8 @@
             @endif
             @if($planningCount != NULL)
             Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
-            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount +$plumbCount + $roofingCount + $wallsCount}}
-            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize +$plumbSize + $roofingSize + $wallsSize}}</b>
+            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount }}
+            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize }}</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -68,15 +65,11 @@
                         <td class="text-center">{{ $roofingCount }}</td>
                         <td>{{ $roofingSize }}</td>
                     </tr>
+                    
                     <tr>
-                        <td>Electrical</td>
+                        <td>Electrical &amp; Plumbing</td>
                         <td class="text-center">{{ $enpCount }}</td>
                         <td>{{ $enpSize }}</td>
-                    </tr>
-                    <tr>
-                        <td>Plumbing</td>
-                        <td class="text-center">{{ $plumbCount }}</td>
-                        <td>{{ $plumbSize }}</td>
                     </tr>
                     <tr>
                         <td>Plastering</td>
@@ -188,19 +181,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Electrical </td>
+                        <td>Electrical &amp; Plumbing</td>
                         <td class="text-center">{{ $Cenp }}</td>
                         <td>
                             
                             {{ $enp }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Plumbing </td>
-                        <td class="text-center">{{ $Cplumb }}</td>
-                        <td>
-                            
-                            {{ $plumb }}
                         </td>
                     </tr>
                     <tr>

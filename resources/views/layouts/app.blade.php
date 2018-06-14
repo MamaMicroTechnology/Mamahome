@@ -554,6 +554,7 @@ div#calendar{
      <a href="{{ URL::to('/marketmanufacturerdetails') }}">Manufacturer Details</a>
      <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
      <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
+    <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
       <a href="{{ URL::to('/') }}/kra">KRA</a>

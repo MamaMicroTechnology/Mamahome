@@ -21,7 +21,7 @@
     					<th style="text-align:center">Quantity</th>
     					<th style="text-align:center">Status</th>
     					<th style="text-align:center">Requirement Date</th>
-                        <th style="text-aligh:center">View Invoice</th>
+                        <!-- <th style="text-aligh:center">View Invoice</th> -->
     				</thead>
     				<tbody>
 					    @foreach($rec as $view)
@@ -34,10 +34,10 @@
 					        <td style="text-align:center">{{$view->sub_category}}</td>
 					        <td style="text-align:center">{{$view->quantity}}</td>
 					        <td style="text-align:center">{{$view->status}}</td>
-					        <td style="text-align:center">{{$view->requirement_date}}</td>
-                            <td style="text-align:center">
+					        <td style="text-align:center">{{ date('d-m-Y', strtotime($view->requirement_date)) }}</td>
+                            <!-- <td style="text-align:center">
                                 <a href="{{ URL::to('/') }}/invoice?id={{ $view->orderid }}">View Invoice</a>
-                            </td>
+                            </td> -->
 					    </tr>
 					    @endforeach
     			    </tbody>

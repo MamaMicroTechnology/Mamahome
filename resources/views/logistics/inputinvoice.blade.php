@@ -4,7 +4,7 @@
     $products = explode(",",$orders->main_category);
 ?>
 @for($i = 0;$i<count($products);$i++)
-<form method="POST" action="/saveinvoice" enctype="multipart/form-data">
+<form method="POST" action="{{ URL::to('/') }}/saveinvoice" enctype="multipart/form-data">
 {{ csrf_field() }}
 <div class="container">
         <div class="row">
@@ -51,8 +51,9 @@
                     </tr>
                     <tr>
                         <td colspan="2">Invoice No</td>
-                        <td colspan="2">{{ $_GET['id'] }}</td>
+                        <td colspan="2"><input type="text" class="form-control" placeholder="Invoice Number" name="invoice_id"></td>
                         <input type="hidden" name="invoice_no" value="{{ $_GET['id'] }}">
+                        
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -79,8 +80,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">Customer Name</td>
-                        <td colspan="2">{{ $owner->owner_name }}</td>
-                        <input type="hidden" name="customer_name" value="{{ $owner->owner_name }}">
+                        <td colspan="2"><input type="text" placeholder="Customer Name" class="form-control" name="customer_name" value="{{ $owner->owner_name }}"></td>
+                        
                     </tr>
                     <tr>
                         <td colspan=2>Date of Invoice</td>

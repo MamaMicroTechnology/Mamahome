@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use App\Message;
 use App\Department;
+use Validator;
 use App\UserLocation;
 use App\Aregister;
 use App\Http\Resources\Message as MessageResource;
@@ -183,20 +184,26 @@ class TokenController extends Controller
         return response()->json(['message'=>'true']);
     }
     public function getregister(Request $request){
-               $register = new Aregister();
-               $register->username =$request->username;
-               $register->email=$request->email;
-               $register->lastname =$request->lastname;
-               $register->password = $request->password;
-                 
-                 if($register->save()){
-                    return response()->json(['message'=>'Registered']);
-                 }else{
-                    return response()->json(['message'=>'Something went wrong']);
-                 }
-
-       
-        
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|unique:users',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>'This email/phone number has already been used.']);
+        }
+        $user = new User;
+        $user->employeeId = $request->email;
+        $user->department_id = 100;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->contactNo = $request->number;
+        $user->category = $request->category;
+        $user->password = bcrypt($request->password);
+        $user->save();
+        if($user->save()){
+            return response()->json(['message'=>'Registered']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
     }
 
 }
