@@ -153,10 +153,10 @@
 
     var infowindow = new google.maps.InfoWindow();
     var everythingElse = [
-      new google.maps.LatLng(90, 90),
-      new google.maps.LatLng(90, -90),
-      new google.maps.LatLng(0, 90),
       new google.maps.LatLng(0, -90),
+      new google.maps.LatLng(0, 90),
+      new google.maps.LatLng(90, -90),
+      new google.maps.LatLng(90, 90),
     ];
     var marker, i;
     var subward = new google.maps.Polygon({
