@@ -305,7 +305,6 @@ class HomeController extends Controller
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->where('status','like','%'.$request->status)
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
                 
