@@ -1198,18 +1198,18 @@ class mamaController extends Controller
         $user->category = $request->category;
         $user->password = bcrypt($request->password);
         $user->save();
-        if($request->category == "Buyer"){
-            View::share('password',$request->password);
-            View::share('email',$request->email);
-            View::share('name',$request->name);
-            Mail::to($request->email)->send(new registration($user));
-        }
+        // if($request->category == "Buyer"){
+        //     View::share('password',$request->password);
+        //     View::share('email',$request->email);
+        //     View::share('name',$request->name);
+        //     Mail::to($request->email)->send(new registration($user));
+        // }
          if($user->save()){  
                     return response()->json(['message'=>'Registered']);
                  }else{
                     return response()->json(['message'=>'Something went wrong']);
                  }
-        return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
+        // return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
     }
     public function confirmUser(Request $request)
     {
