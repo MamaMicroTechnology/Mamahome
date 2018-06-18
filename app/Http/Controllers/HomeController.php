@@ -1289,6 +1289,7 @@ class HomeController extends Controller
 
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
+        
         $projectCount = array();
         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
         foreach($roads as $road){
@@ -1300,12 +1301,19 @@ class HomeController extends Controller
                                                     ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
+          $ro = ProjectDetails::where('road_name',$road)->pluck('project_id');
+          $ros = ProjectDetails::where('project_id',$ro)->pluck('created_at');
+          //dd($ros);
+
+
+                                                
+
             $projectCount[$road] = $genuine + $null;
 
         }
   
 
-        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount,'ros'=>$ros]);
     }
     public function viewProjectList(Request $request)
     {
@@ -4201,13 +4209,13 @@ public function assigndate(request $request )
         }
         return view('confidential',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
     }
-public function numberwise(request $request){
+ public function numberwise(request $request){
     $depts = [1,2];
     $users = User::whereIn('users.department_id',$depts)
               ->leftjoin('groups','groups.id','users.group_id')
               
              ->select('users.*','groups.group_name')->get();
-             $count = numbers::count();
+        $count = numbers::count();
         $number = numbers::paginate(100);
         if($request->delete){
             numbers::truncate();
@@ -4622,6 +4630,9 @@ function enquirystore(request $request){
         $num =MamaSms::all();
         return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
     }
+   
+
+
     public function payment( request $request){
 
        $payment = Payment::all();

@@ -142,114 +142,80 @@
                                    <td>:</td>
                                    <td><input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
                                </tr>
-                               <tr>
+                                <tr>
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
-                                      <table class="table table-responsive">
-                                        <tr>
-                                          <td>
+                                          <div class="col-md-3" >
                                             <label class="checkbox-inline">
-                                              <input id="planning" type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
+                                              <input style="width: 33px;" id="planning" type="checkbox" onchange="count()" name="status[]" value="Planning"><span>&nbsp;&nbsp;&nbsp;</span>Planning
                                             </label>
-                                          </td>
-                                          <td>
+                                          
                                              <label class="checkbox-inline">
                                               <input id="digging" type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
                                             </label>
-                                          </td>
-                                          <td>
+                                          
                                              <label class="checkbox-inline">
                                               <input id="foundation" type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
                                             </label>
-                                          </td>
-                                          <td>
+                                         
                                              <label class="checkbox-inline">
                                               <input id="pillars" type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
                                             </label>
-                                          </td>
-                                          <td>
-                                             <label class="checkbox-inline">
-                                              <input id="walls" type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
-                                            </label>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                         <td>
+
+                                            <label class="checkbox-inline">
+                                            <input id="walls" type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
+                                          </label>
+                                          </div>
+                                         <div class="col-md-3">
+                                          
                                           <label class="checkbox-inline">
-                                          <input id="roofing" type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
+                                          <input id="roofing" style="width: 33px;" type="checkbox" onchange="count()" name="status[]" value="Roofing"><span>&nbsp;&nbsp;&nbsp;</span>Roofing
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="electrical" type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="plumbing" type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
                                         </label>
-                                        </td>
-                                         <td>
-                                          <label class="checkbox-inline">
+
+                                        <label class="checkbox-inline">
                                           <input id="plastering" type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="flooring" type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
                                         </label>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                         <td>
+
+                                      </div>
+                                       <div class="col-md-3">
+                                          
+                                       
                                           <label class="checkbox-inline">
-                                          <input id="carpentry" type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
+                                          <input id="carpentry" style="width: 33px;" type="checkbox" onchange="count()" name="status[]" value="Carpentry"><span>&nbsp;&nbsp;&nbsp;</span>Carpentry
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="paintings" type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
                                         </label>
-                                        </td>
-                                         <td>
-                                          <label class="checkbox-inline">
+
+                                        <label class="checkbox-inline">
                                           <input id="fixtures" type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
                                         </label>
-                                        </td>
-                                         <td>
+                                      
                                           <label class="checkbox-inline">
                                           <input id="completion" type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
                                         </label>
-                                        </td>
-                                         <td>
+                                        
                                           <label class="checkbox-inline">
                                           <input id="closed" type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
                                         </label>
-                                        </td>
-                                        </tr>
-                                      </table>
+                                       </div>
+                                       
+
                                    </td>
-                               </tr>
-                               <tr>
-                                   <td>Project Type</td>
-                                   <td>:</td>
-                                   <td>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                          <input value="{{ old('basement') }}" onkeyup="check('basement')" id="basement" name="basement" type="text" autocomplete="off" class="form-control input-sm" placeholder="Basement" id="email">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <b style="font-size: 20px; text-align: center">+</b>
-                                        </div>
-                                      <div class="col-md-3">
-                                        <input value="{{ old('ground') }}" onkeyup="check('ground');" autocomplete="off" name="ground" id="ground" type="text" class="form-control" placeholder="Floor">
-                                      </div>
-                                      <div class="col-md-3">
-                                        <p id="total"></p>
-                                      </div>
-                                    </div>
-                                    </td>
                                </tr>
                                <tr>
                                    <td>Plot Size</td>
