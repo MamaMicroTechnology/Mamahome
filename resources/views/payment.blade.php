@@ -20,7 +20,7 @@
     					<th style="text-align:center">Payment Method</th>
     					<th style="text-align:center">Advance Amount</th>
     					<th style="text-align:center">Total Amount</th>
-    					<th style="text-align:center">log_Name</th>
+    					<th style="text-align:center">Logistic co-ordinator Name</th>
                         <th style="text-align:center">Payment Status</th>
 
                         <!-- <th style="text-aligh:center">View Invoice</th> -->
@@ -36,7 +36,14 @@
 					        <td style="text-align:center">{{ $pay->p_method }} </td>
 					        <td style="text-align:center">{{ $pay->advance_amount }}</td>
 					        <td style="text-align:center">{{ $pay->amount }}</td>
-					        <td style="text-align:center">{{ $pay->log_name }}</td>
+
+					        <td style="text-align:center">
+                          @foreach($converter as $con)
+                            @if($pay->log_name == $con->id)
+                                {{ $con->name}}
+                            @endif
+                            @endforeach               
+                            </td>
                             <td style="text-align:center">{{ $pay->payment_status }}</td>
                            </td> 
 					    </tr>

@@ -57,7 +57,7 @@
 												@endif
 											</div>
 											<div class="modal-body">
-											<label for="PaymentDoneBy">Payment Done By Name</label>
+											<label for="PaymentDoneBy">Customer Name</label>
 											<input type="text" name="c_name" class="form-control input-sm">
 												<label for="paymentMethod">Payment Mode:</label>
 												<select name="payment_method"  class="form-control input-sm" id="ad" onchange="changeValue(this.value, '{{ $rec->project_id }}')">

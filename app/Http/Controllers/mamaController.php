@@ -1651,7 +1651,7 @@ class mamaController extends Controller
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
         }elseif($request->status != null){
 
-            Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->name]);
+            Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
