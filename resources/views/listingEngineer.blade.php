@@ -81,42 +81,40 @@
                                  <td>Interested in RMC</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" id="rmc" type="radio" name="rmcinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" id="rmc2" type="radio" name="rmcinterest">No</label>
-                                    </div>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="rmcinterest"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="rmcinterest"><span>&nbsp;</span>No</label> 
                                  </td>
                                </tr>
                                 <tr>
                                  <td>Interested in Bank loans?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" id="loan1" type="radio" name="loaninterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" id="loan2" type="radio" name="loaninterest">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="None" id="loan3" type="radio" name="loaninterest">None</label>
-                                    </div>
+                                    
+                                      <label><input required value="Yes" id="loan1" type="radio" name="loaninterest"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="loan2" type="radio" name="loaninterest"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="loan3" type="radio" name="loaninterest"><span>&nbsp;</span>None</label>
+                                   
                                  </td>
                                </tr>
                                <tr>
                                  <td>Interested in UPVC Doors and Windows?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="None" id="dandw3" type="radio" name="dandwinterest">None</label>
-                                    </div>
+                                    
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
 
@@ -276,12 +274,13 @@
                                    <td>:</td>
                                    <td><input value="{{ old('pSize') }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class="form-control input-sm" name="pSize" onkeyup="check('pSize')"></td>
                                </tr>
-                                 <tr>
+                               <tr>
                                  <td>Budget Type</td>
                                  <td>:</td>
-                                 <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]"   type="radio" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"   type="radio" value="Finishing">Finishing </label> 
+                                 <td >
+                                    <label ><input id="constructionType3" name="budgetType[]"  type="radio" value="Structural"><span>&nbsp;</span>Structural</label>
+                                    <span>&nbsp;&nbsp;</span>
+                                    <label ><input id="constructionType4" name="budgetType[]"  type="radio" value="Finishing"><span>&nbsp;</span>Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
