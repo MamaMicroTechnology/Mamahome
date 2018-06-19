@@ -568,6 +568,8 @@ div#calendar{
      <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
+      <a href="{{ URL::to('/seenquirysheet') }}">Enquiry Sheet</a>
+      <a href="{{ URL::to('/enquiryCancell') }}">Enquiry Cancelled</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
     <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
