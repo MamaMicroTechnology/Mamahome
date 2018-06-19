@@ -42,7 +42,7 @@
         
         
             @foreach($loggedInUsers as $loggedInUser)
-            @if( $loggedInUser->id = 2)
+            @if( $loggedInUser->id = 0)
                 <tr>
                     <td>{{ $loggedInUser->empId }}</td>
                     <td>{{ $loggedInUser->name }}</td>
@@ -53,7 +53,7 @@
                 
             @endforeach
             @foreach($leLogins as $leLogin)
-            @if( $leLogin->id == 2)
+            @if( $leLogin->id == 0)
                 <tr>
                     <td>{{ $leLogin->employeeId }}</td>
                     <td>{{ $leLogin->name }}</td>
