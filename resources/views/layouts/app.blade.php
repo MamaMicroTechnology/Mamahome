@@ -513,7 +513,8 @@ div#calendar{
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <a href="{{ URL::to('/confidential') }}">Confidential</a>
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
-    <a href="{{ URL::to('payment') }}">Payment Details</a>
+    <a href="{{ URL::to('payment') }}">Delivery order Details</a>
+     <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -558,7 +559,7 @@ div#calendar{
     <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
-       <a href="{{ URL::to('payment') }}">Payment Details</a>
+       <a href="{{ URL::to('payment') }}">Delivery Order Details</a>
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)

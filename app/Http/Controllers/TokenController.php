@@ -13,7 +13,9 @@ use Validator;
 use App\UserLocation;
 use App\Aregister;
 use App\ProjectDetails;
-use App\SiteAddress;
+use App\SiteAddress;  
+use DB;  
+use App\loginTime;
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -167,11 +169,18 @@ class TokenController extends Controller
     }
     public function getLogin(Request $request)
     {
+         date_default_timezone_set("Asia/Kolkata");
         $messages = new Collection;
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+        if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
-        }else{
+        $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
+         if(count($check)==0){
+           DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
+          }else{
+             loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
+                    return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+        }
+        else{
             return response()->json(['message' => 'false']);
         }
     }

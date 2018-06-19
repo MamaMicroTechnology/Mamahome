@@ -88,7 +88,7 @@
 									</div>
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->status }}</a>
+                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
                             @endif
                            
                         </td>

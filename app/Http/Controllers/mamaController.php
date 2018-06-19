@@ -671,8 +671,7 @@ class mamaController extends Controller
         $activity->save();
         return back()->with('Success','Project added successfully');
 
-        return response()->json(['message'=>'project is added']);
-
+      
 
     }
     public function updateProject($id, Request $request)
@@ -1750,7 +1749,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' => Auth::user()->id,
+            
             'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate

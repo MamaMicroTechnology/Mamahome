@@ -1069,8 +1069,22 @@ class HomeController extends Controller
         return view('viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates]);
     }
     public function teamLeadHome(){
+         $loggedInUsers = attendance::where('date',date('Y-m-d'))
+                        ->join('users','empattendance.empId','users.employeeId')
+                        ->leftjoin('departments','users.department_id','departments.id')
+                        ->select('users.name','empattendance.*','departments.id')
+                        ->get();
+                        $depts=[1,2];
+                        $users = User::where('department_id',$depts)->get();
+                        
+                       
+        $leLogins = loginTime::where('logindate',date('Y-m-d'))
+                        ->join('users','login_times.user_id','users.id')
+                        ->leftjoin('departments','users.department_id','departments.id')
+                        ->select('users.name','users.employeeId','login_times.*','departments.id')
+                        ->get();
          
-         return view('/teamLeader');
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users]);
     }
     public function assignListSlots(){          
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
