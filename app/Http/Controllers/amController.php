@@ -57,7 +57,15 @@ class amController extends Controller
     }
     public function getAMDashboard(){
         $prices = CategoryPrice::all();
-        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home']);
+         $loggedInUsers = attendance::where('date',date('Y-m-d'))
+                        ->join('users','empattendance.empId','users.employeeId')
+                        ->select('users.name','empattendance.*')
+                        ->get();
+        $leLogins = loginTime::where('logindate',date('Y-m-d'))
+                        ->join('users','login_times.user_id','users.id')
+                        ->select('users.name','users.employeeId','login_times.*')
+                        ->get();
+        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins]);
     }
     public function getPricing(){
         $prices = CategoryPrice::all();
