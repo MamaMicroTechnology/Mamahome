@@ -165,6 +165,7 @@ Route::get('/salescompleted','HomeController@projectwisedel');
 Route::post('/sms','HomeController@smstonumber');\
 Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
+Route::get('/seenquirysheet','HomeController@enquirysheet');
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
