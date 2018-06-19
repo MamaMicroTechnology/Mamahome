@@ -24,8 +24,6 @@
 				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
 			@elseif(Auth::user()->group_id == 17)
 				<form method="GET" action="{{ URL::to('/') }}/scenquirysheet">
-			@elseif(Auth::user()->group_id == 7)
-				<form method="GET" action="{{ URL::to('/') }}/seenquirysheet">
 			@else
 				<form method="GET" action="{{ URL::to('/') }}/tlenquirysheet">
 			@endif
