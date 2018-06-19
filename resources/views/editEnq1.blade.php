@@ -125,31 +125,18 @@
 <!-- model end -->
 
 							@if(Auth::user()->group_id == 7)
-							@if($enq->name == null)
-									<tr>
-										<td><label>Initiator* : </label></td>
-										<td>	
-											<select required class="form-control"  name="initiator">
-												<option value="">--Select--</option>
-												@foreach($users2 as $user)
-												<option value="{{$user->id}}">{{$user->name}}</option>
-												@endforeach
-											</select>
-										</td>
-									</tr>
-									@else
-									<tr>
-										<td><label>Initiator* : </label></td>
-										<td>	
-											<select required class="form-control" name="initiator">
-												
-												
-												<option value="{{$enq->name}}">{{$enq->name}}</option>
-												
-											</select>
-										</td>
-									</tr>
-								@endif
+							
+							<tr>
+								<td><label>Initiator* : </label></td>
+								<td>	
+									<select required class="form-control"  name="initiator">
+										@foreach($users as $user)
+										<option value="{{$user->id}}">{{$user->name}}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+								
 							@elseif(Auth::user()->group_id == 6)
 							<tr>
 								<td><label>Initiator* : </label></td>
