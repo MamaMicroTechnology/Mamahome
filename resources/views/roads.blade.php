@@ -16,7 +16,7 @@
 				</li>
 				@foreach($roads as $road)
 				@if($projectCount[$road] > 0)
-				<li class="list-group-item"><a href="{{ URL::to('/') }}/projectlist?road={{ $road }}">{{ $road }} ({{ $projectCount[$road] }} projects [ {{ $ros }} ])</a></li>
+				<li class="list-group-item"><a href="{{ URL::to('/') }}/projectlist?road={{ $road }}">{{ $road }} ({{ $projectCount[$road] }} projects)</a></li>
 				@endif
 				@endforeach
 			</ul>
