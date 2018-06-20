@@ -146,7 +146,7 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 14,
+      zoom: 15.5,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -192,7 +192,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
+      zoom: 15.5,
       center: new google.maps.LatLng(locations[0][1], locations[0][2]),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
