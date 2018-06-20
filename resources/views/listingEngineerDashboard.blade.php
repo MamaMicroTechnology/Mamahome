@@ -233,7 +233,7 @@
       var subward = new google.maps.Polygon({
           paths: newpath,
           strokeColor: '#'+col,
-          strokeOpacity: 1,
+          strokeOpacity: 0,
           strokeWeight: 2,
           fillColor: '#'+col,
           fillOpacity: 0.1
