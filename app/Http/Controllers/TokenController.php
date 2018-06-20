@@ -241,12 +241,7 @@ class TokenController extends Controller
              $type=null;
         }
 
-        // $bType = count($request->budgetType);
-        // if(count($request->budgetType != 0)){
-        //     $type2 = implode(", ",$request->budgetType);
-        // }else{
-        //     $type2 = null;
-        // }
+        
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
             if($statusCount > 1){
@@ -350,8 +345,7 @@ class TokenController extends Controller
 
             $siteaddress = New SiteAddress;
             $siteaddress->project_id = $projectdetails->id;
-            // $siteaddress->latitude = $request->latitude;
-            // $siteaddress->longitude = $request->longitude;
+            
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
@@ -361,16 +355,5 @@ class TokenController extends Controller
         }
     }
 
-            $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
-            // $siteaddress->latitude = $request->latitude;
-            // $siteaddress->longitude = $request->longitude;
-            $siteaddress->address = $request->address;
-            $siteaddress->save();
-        if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
-        }else{
-            return response()->json(['message'=>'Something went wrong']);
-        }
-    }
+           
 }
