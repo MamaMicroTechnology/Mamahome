@@ -192,6 +192,9 @@ class TokenController extends Controller
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
             return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+        }elseif(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password])){
+            $userdetails = User::where('id',Auth::user()->id)->first();
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
         }else{
             return response()->json(['message' => 'false']);
         }
