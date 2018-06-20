@@ -146,7 +146,7 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
+      zoom: 14,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -233,10 +233,10 @@
       var subward = new google.maps.Polygon({
           paths: newpath,
           strokeColor: '#'+col,
-          strokeOpacity: 0,
+          strokeOpacity: 1,
           strokeWeight: 2,
           fillColor: '#'+col,
-          fillOpacity: 0.1
+          fillOpacity: 0.4
         });
     subward.setMap(map);
     }
