@@ -541,7 +541,7 @@ div#calendar{
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
-    <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
+    {{--<a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>--}}
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
@@ -566,7 +566,7 @@ div#calendar{
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
      <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
-     <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
+    {{-- <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>--}}
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
      
