@@ -97,7 +97,7 @@
                                   
                                       <label><input required value="No" id="loan2" type="radio" name="loaninterest"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
-                                n
+                                
                                       <label><input required value="None" id="loan3" type="radio" name="loaninterest"><span>&nbsp;</span>None</label>
                                    
                                  </td>
