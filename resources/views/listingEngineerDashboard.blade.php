@@ -229,14 +229,9 @@
       })(marker, i));
     }
     if(newpath.length > 1){
-      var everythingElse = [
-        new google.maps.LatLng(0, -90),
-        new google.maps.LatLng(0, 90),
-        new google.maps.LatLng(90, -90),
-        new google.maps.LatLng(90, 90),
-      ];
+    
       var subward = new google.maps.Polygon({
-          paths: [everythingElse, newpath],
+          paths: newpath,
           strokeColor: '#'+col,
           strokeOpacity: 1,
           strokeWeight: 2,
