@@ -180,6 +180,7 @@ class TokenController extends Controller
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
                     return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
         }
+    }
         else{
             return response()->json(['message' => 'false']);
         }
