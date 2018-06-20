@@ -526,7 +526,7 @@ div#calendar{
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
       <a href="{{ URL::to('/assign_project') }}">Assign Project</a>
-      <a href="{{ URL::to('/assign_number') }}">Assign Phone numbers</a>
+     {{-- <a href="{{ URL::to('/assign_number') }}">Assign Phone numbers</a>--}}
       <a href="{{ URL::to('/assign_enquiry') }}">Assign Enquiry</a>
     <!-- <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> --> 
     <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
