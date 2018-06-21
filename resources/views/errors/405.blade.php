@@ -9,7 +9,8 @@
     <style>
         body{
             background-image: url('https://cdn.pixabay.com/photo/2016/07/22/16/29/fog-1535201_960_720.jpg');
-            background-size: cover;
+            background-repeat: no-repeat;
+            background-size: 100%;
         }
         .error-container{
             padding: 40px;
@@ -21,6 +22,20 @@
         }
         .error-container h1{
             font-size: 70px;
+        }
+        @media only screen and (max-width: 600px) {
+            .error-container{
+                padding: 40px;
+                border-radius: 5px;
+                background-color: rgba(123,123,123,0.5);
+                width: 90%;
+                margin: auto;
+                color:white;
+            }
+            body{
+                background-repeat: no-repeat;
+                background-size: auto;
+            }
         }
     </style>
 </head>

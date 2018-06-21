@@ -42,8 +42,8 @@
     <br><br><br><br><br><br>
     <div class="error-container">
         <center>
-            <h1>404<br></h1>
-            <p>Page Not Found</p>
+            <h1>403<br></h1>
+            <p>Access Forbidden</p>
         </center>
         <br>
         <center>
