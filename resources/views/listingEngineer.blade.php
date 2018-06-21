@@ -103,10 +103,9 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in UPVC Doors and Windows?</td>
+                                 <td>Interested in  and Windows?</td>
                                  <td>:</td>
                                  <td>
-                                    
                                       <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                    
@@ -117,7 +116,6 @@
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
-
                                <tr>
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
@@ -140,7 +138,7 @@
                                    <td>:</td>
                                    <td><input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
                                </tr>
-                                <tr>
+                               <tr>
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
@@ -214,6 +212,26 @@
                                        
 
                                    </td>
+                               </tr>
+                               <tr>
+                                   <td>Project Type</td>
+                                   <td>:</td>
+                                   <td>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                          <input value="{{ old('basement') }}" onkeyup="check('basement')" id="basement" name="basement" type="text" autocomplete="off" class="form-control input-sm" placeholder="Basement" id="email">
+                                        </div>
+                                        <div class="col-md-2">
+                                          <b style="font-size: 20px; text-align: center">+</b>
+                                        </div>
+                                      <div class="col-md-3">
+                                        <input value="{{ old('ground') }}" onkeyup="check('ground');" autocomplete="off" name="ground" id="ground" type="text" class="form-control" placeholder="Floor">
+                                      </div>
+                                      <div class="col-md-3">
+                                        <p id="total"></p>
+                                      </div>
+                                    </div>
+                                    </td>
                                </tr>
                                <tr>
                                    <td>Plot Size</td>

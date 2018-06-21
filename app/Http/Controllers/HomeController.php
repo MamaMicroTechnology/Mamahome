@@ -2935,8 +2935,8 @@ class HomeController extends Controller
             $flooring   = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Flooring%')->sum('project_size');
             $plastering = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Plastering%')->sum('project_size');
             $digging    = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Digging%')->sum('project_size');
-            $ele2        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Electrical%')->pluck('project_id');
-            $plum2       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plumbing%')->pluck('project_id');
+            $ele2        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Electrical%')->where('sub_ward_id',$request->subward)->pluck('project_id');
+            $plum2       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plumbing%')->where('sub_ward_id',$request->subward)->pluck('project_id');
             $ele2        = $ele2->merge($plum2);
             $enp    = ProjectDetails::whereIn('project_id',$ele2)->sum('project_size');
             $carpentry  = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Carpentry%')->sum('project_size');
@@ -3673,10 +3673,21 @@ class HomeController extends Controller
                     ->where('activity','LIKE','%Updated a project%')->get();
         }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
             $date = $request->fromdate;
+            $from= $request->fromdate;
+            $to= $request->todate;
+            if($from == $to){
+              
+            $str = ActivityLog::where('time','like',$from.'%')
+                ->where('time','LIKE',$to."%")
+                ->where('employee_id',$request->se)
+                ->where('activity','LIKE','%Updated a project%')->get();
+            }
+            else{
             $str = ActivityLog::where('time','>',$request->fromdate)
                     ->where('time','<',$request->todate)
                     ->where('employee_id',$request->se)
                     ->where('activity','LIKE','%Updated a project%')->get();
+            }
         }else{
             $date = date('Y-m-d');
             $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
