@@ -355,6 +355,22 @@ class TokenController extends Controller
             return response()->json(['message'=>'Something went wrong']);
         }
     }
+public function enquiry(request $request){
+        $enquiry = new Requirement;
+        $enquiry->project_id = $request->project_id;
+        $enquiry->main_caegory = $request->main_caegory;
+        $enquiry->brand = $request->brand;
+        $enquiry->sub_category = $request->sub_category;
+        $enquiry->reqirement_date = $request->reqirement_date;
+        $enquiry->notes = $request->remark;
+        $enquiry->A_contact = $request->A_contact;
+        $enquiry->save();
+          if($enquiry->save() ){
+            return response()->json(['message'=>'Enquiry Added sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
 
            
 }
