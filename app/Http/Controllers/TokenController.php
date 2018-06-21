@@ -359,7 +359,7 @@ class TokenController extends Controller
 public function enquiry(request $request){
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
-        $enquiry->main_caegory = $request->main_category;
+        $enquiry->main_category = $request->main_category;
         $enquiry->brand = $request->brand;
         $enquiry->sub_category = $request->sub_category;
         $enquiry->reqirement_date = $request->reqirement_date;
