@@ -16,6 +16,7 @@ use App\ProjectDetails;
 use App\SiteAddress;  
 use DB;  
 use App\loginTime;
+use App\Requirement;
 
 use App\Http\Resources\Message as MessageResource;
 
