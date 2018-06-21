@@ -58,6 +58,10 @@
   <div class="container">
       <button id="hide" onclick="hideCaption()" class="btn btn-primary">Turn Off Caption</button>
       <button id="show" onclick="showCaption()" class="hidden">Turn On Caption</button>
+      <div class="slidecontainer">
+        <input oninput="changeFont()" type="range" min="1" max="50" value="10" class="slider" id="myRange">
+      </div>
+      <div style="float:right">Font Size: &nbsp;&nbsp;&nbsp;&nbsp;</div>
   <div class="row">
     <div class="row">
       <div class="span11">
@@ -85,6 +89,13 @@
     }
     document.getElementById('show').className = "hidden";
     document.getElementById('hide').className = "btn btn-primary"
+  }
+  function changeFont(){
+    var divs = document.getElementsByClassName("overlay");
+    var size = parseInt(document.getElementById("myRange").value);
+    for(var i=0;i<divs.length;i++){
+      divs[i].style.fontSize = size+'px';
+    }
   }
 </script>
 @endsection
