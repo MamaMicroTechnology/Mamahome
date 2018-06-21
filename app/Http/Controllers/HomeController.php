@@ -294,7 +294,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-
+                $converter = user::get();
 
                 
                 foreach($enquiries as $enquiry){
@@ -308,7 +308,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -324,7 +324,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -337,7 +337,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -356,6 +356,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+            $converter = user::get();
             }else{
                 $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
                             ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
@@ -366,6 +367,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+            $converter = user::get();
             }
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -380,6 +382,7 @@ class HomeController extends Controller
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
+            $converter = user::get();
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -394,7 +397,7 @@ class HomeController extends Controller
                         ->get();
 
                  
-          
+          $converter = user::get();
 
             $totalofenquiry = Requirement::where('main_category',$request->category)->where('requirements.status','!=',"Enquiry Cancelled")->sum('quantity');
             
@@ -411,6 +414,7 @@ class HomeController extends Controller
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
+            $converter = user::get();
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -430,6 +434,7 @@ class HomeController extends Controller
                 ->where('requirements.main_category','LIKE',"%".$request->category."%")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+            $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -446,6 +451,7 @@ class HomeController extends Controller
                             ->where('requirements.main_category','LIKE',"%".$request->category."%")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -464,6 +470,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -478,6 +485,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -496,7 +504,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
-                
+               $converter = user::get(); 
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -511,7 +519,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
-                
+               $converter = user::get(); 
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -530,6 +538,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -544,6 +553,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -563,6 +573,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -578,6 +589,7 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -597,6 +609,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+                        $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -612,6 +625,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -631,6 +645,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -646,6 +661,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+                $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
                 }
@@ -662,6 +678,7 @@ class HomeController extends Controller
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
+            $converter = user::get();
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
@@ -675,6 +692,7 @@ class HomeController extends Controller
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
+            $converter = user::get();
             $totalenq = count($enquiries);
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -684,6 +702,7 @@ class HomeController extends Controller
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
+            'converter' =>$converter,
             'totalofenquiry'=>$totalofenquiry,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
@@ -1050,8 +1069,22 @@ class HomeController extends Controller
         return view('viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates]);
     }
     public function teamLeadHome(){
+         $loggedInUsers = attendance::where('date',date('Y-m-d'))
+                        ->join('users','empattendance.empId','users.employeeId')
+                        ->leftjoin('departments','users.department_id','departments.id')
+                        ->select('users.name','empattendance.*','departments.id')
+                        ->get();
+                        $depts=[1,2];
+                        $users = User::where('department_id',$depts)->get();
+                        
+                       
+        $leLogins = loginTime::where('logindate',date('Y-m-d'))
+                        ->join('users','login_times.user_id','users.id')
+                        ->leftjoin('departments','users.department_id','departments.id')
+                        ->select('users.name','users.employeeId','login_times.*','departments.id')
+                        ->get();
          
-         return view('/teamLeader');
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users]);
     }
     public function assignListSlots(){          
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
@@ -1270,6 +1303,7 @@ class HomeController extends Controller
 
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
+        
         $projectCount = array();
         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
         foreach($roads as $road){
@@ -1281,12 +1315,19 @@ class HomeController extends Controller
                                                     ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
+          $ro = ProjectDetails::where('road_name',$road)->pluck('project_id');
+          $ros = ProjectDetails::where('project_id',$ro)->pluck('created_at');
+          //dd($ros);
+
+
+                                                
+
             $projectCount[$road] = $genuine + $null;
 
         }
   
 
-        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount,'ros'=>$ros]);
     }
     public function viewProjectList(Request $request)
     {
@@ -2894,8 +2935,8 @@ class HomeController extends Controller
             $flooring   = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Flooring%')->sum('project_size');
             $plastering = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Plastering%')->sum('project_size');
             $digging    = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Digging%')->sum('project_size');
-            $ele2        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Electrical%')->pluck('project_id');
-            $plum2       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plumbing%')->pluck('project_id');
+            $ele2        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Electrical%')->where('sub_ward_id',$request->subward)->pluck('project_id');
+            $plum2       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plumbing%')->where('sub_ward_id',$request->subward)->pluck('project_id');
             $ele2        = $ele2->merge($plum2);
             $enp    = ProjectDetails::whereIn('project_id',$ele2)->sum('project_size');
             $carpentry  = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Carpentry%')->sum('project_size');
@@ -4203,13 +4244,13 @@ public function assigndate(request $request )
         }
         return view('confidential',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
     }
-public function numberwise(request $request){
+ public function numberwise(request $request){
     $depts = [1,2];
     $users = User::whereIn('users.department_id',$depts)
               ->leftjoin('groups','groups.id','users.group_id')
               
              ->select('users.*','groups.group_name')->get();
-             $count = numbers::count();
+        $count = numbers::count();
         $number = numbers::paginate(100);
         if($request->delete){
             numbers::truncate();
@@ -4572,9 +4613,17 @@ function enquirystore(request $request){
     }
     public function viewMap(Request $request)
     {
-        $zones = ZoneMap::where('zone_id',$request->zoneId)->first();
-        if($request->subWardId){
-            $zones = SubWardMap::where('sub_ward_id',$request->subWardId)->first();
+        $wards = Ward::where('zone_id',$request->zoneId)->pluck('id');
+        $zones = WardMap::whereIn('wards.id',$wards)
+                    ->leftJoin('wards','wards.id','ward_maps.ward_id')
+                    ->select('ward_maps.*','wards.ward_name as name')
+                    ->get();
+         if($request->wardId){
+             $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
+            $zones = SubWardMap::whereIn('sub_wards.id',$wards)
+                    ->leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
+                    ->get();
         }
         return view('maping.viewmap',['zones'=>$zones]);
     }
@@ -4628,9 +4677,9 @@ function enquirystore(request $request){
 
        $payment = Payment::all();
        $pay = Payment::all()->count();
-
-
-        return view('/payment',['payment'=>$payment,'pay'=>$pay]);
+       $converter = user::get();
+       
+        return view('/payment',['payment'=>$payment,'pay'=>$pay,'converter'=>$converter]);
     }
 
 }

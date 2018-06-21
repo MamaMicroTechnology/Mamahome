@@ -145,7 +145,11 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
-								{{ $enquiry->converted_by}}
+							@foreach($converter as $con)
+							@if($enquiry->converted_by == $con->id)
+								{{ $con->name}}
+							@endif
+							@endforeach
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}

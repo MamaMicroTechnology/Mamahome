@@ -31,7 +31,7 @@
                                     <div class="col-md-12">
                                         GST NO : 3495830948304958
                                         <div class="col-md-4 pull-right">
-                                            Invoice No. : 32132132132132<br>
+                                            Invoice No. : {{ $invoice->invoice_id }}<br>
                                             Invoice Date. : 12/02/2018
                                         </div>    
                                     </div>
@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">Invoice No</td>
-                                <td colspan="2">234234234</td>
+                                <td colspan="2">{{ $invoice->invoice_id }}</td>
                             </tr>
                             <tr>
                                 <td colspan="2">

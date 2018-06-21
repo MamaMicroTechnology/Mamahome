@@ -40,7 +40,7 @@
                         </tr>
                         <tr class="text-center">
                             <td>
-                                <a class="btn bn-md btn-success" style="width:100%" onclick="showrecordsle()">Get Date Range Details</a>
+                                <a class="btn bn-md btn-success" style="width:100%" onclick="displayGif()">Get Date Range Details</a>
                             </td>
                         </tr>
                         <!--<tr class="text-center">-->
@@ -110,6 +110,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <center>
+                    <div id="wait" style="display:none;width:200px;height:200px;"><img src='https://www.tradefinex.org/assets/images/icon/ajax-loader.gif' width="200" height="200" /></div>
+                </center>
             </div>
         </div>
     </div>
@@ -144,6 +147,10 @@
             
             
         });
+        function displayGif(){
+            document.getElementById('wait').style.display = "block";
+            showrecordsle();
+        }
         function showrecordsle()
         {
             var e = document.getElementById("selectle");
@@ -188,11 +195,10 @@
                     type: 'GET',
                     url: "{{ URL::to('/') }}/getleinfo",
                     data: { id: le_id, from: from_date, to: to_date },
-                    async: false,
+                    async: true,
                     success: function(response)
                     {
                         document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b> To "+orig_to_date+"  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-                        
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
@@ -218,6 +224,7 @@
                             "</td><td>"     
                                 +response[0][i].name+
                             "</td></tr>";
+                            document.getElementById('wait').style.display = "none";
                         }
                         console.log(response);   
                     }    
@@ -233,6 +240,7 @@
             var to_date =  document.getElementById('todate').value;
             if(!le_id || !from_date || !to_date){
                 alert('Please Select all 3 fields !!');
+                document.getElementById('wait').style.display = "none";
                 return false;
             }
             else

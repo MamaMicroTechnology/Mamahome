@@ -1206,6 +1206,14 @@ class mamaController extends Controller
             View::share('name',$request->name);
             Mail::to($request->email)->send(new registration($user));
         }
+       
+        if($user->save()){  
+                    return response()->json(['message'=>'Registered']);
+                 }else{
+                    return response()->json(['message'=>'Something went wrong']);
+                 }
+
+
         return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
     }
     public function confirmUser(Request $request)
@@ -1641,7 +1649,7 @@ class mamaController extends Controller
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
         }elseif($request->status != null){
 
-            Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->name]);
+            Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
@@ -1740,7 +1748,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' => $request->initiator,
+          
             'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate

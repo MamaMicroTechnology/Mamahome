@@ -1,3 +1,6 @@
+@extends('layouts.app')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,3 +140,4 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 </body>
 </html>
+@endsection

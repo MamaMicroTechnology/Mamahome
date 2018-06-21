@@ -63,7 +63,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth"  required type="text" placeholder="Road Width in feet" onclick="pageNext();" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth" onkeyup="check('rWidth')"  required type="text" placeholder="Road Width in feet" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                   
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
@@ -83,39 +83,41 @@
                                  <td>Interested in RMC</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" id="rmc" type="radio" name="rmcinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" id="rmc2" type="radio" name="rmcinterest">No</label>
-                                    </div>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="rmcinterest"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="rmcinterest"><span>&nbsp;</span>No</label> 
                                  </td>
                                </tr>
                                 <tr>
                                  <td>Interested in Bank loans?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" id="loan1" type="radio" name="loaninterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" id="loan2" type="radio" name="loaninterest">No</label>
-                                    </div>
+                                    
+                                      <label><input required value="Yes" id="loan1" type="radio" name="loaninterest"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="loan2" type="radio" name="loaninterest"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="loan3" type="radio" name="loaninterest"><span>&nbsp;</span>None</label>
+                                   
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Doors and Windows?</td>
+                                 <td>Interested in  and Windows?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
-                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest">No</label>
-                                    </div>
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
-
                                <tr>
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
@@ -142,89 +144,75 @@
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
-                                      <table class="table table-responsive">
-                                        <tr>
-                                          <td>
+                                          <div class="col-md-3" >
                                             <label class="checkbox-inline">
-                                              <input id="planning" type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
+                                              <input style="width: 33px;" id="planning" type="checkbox" onchange="count()" name="status[]" value="Planning"><span>&nbsp;&nbsp;&nbsp;</span>Planning
                                             </label>
-                                          </td>
-                                          <td>
+                                          
                                              <label class="checkbox-inline">
                                               <input id="digging" type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
                                             </label>
-                                          </td>
-                                          <td>
+                                          
                                              <label class="checkbox-inline">
                                               <input id="foundation" type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
                                             </label>
-                                          </td>
-                                          <td>
+                                         
                                              <label class="checkbox-inline">
                                               <input id="pillars" type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
                                             </label>
-                                          </td>
-                                          <td>
-                                             <label class="checkbox-inline">
-                                              <input id="walls" type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
-                                            </label>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                         <td>
+
+                                            <label class="checkbox-inline">
+                                            <input id="walls" type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
+                                          </label>
+                                          </div>
+                                         <div class="col-md-3">
+                                          
                                           <label class="checkbox-inline">
-                                          <input id="roofing" type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
+                                          <input id="roofing" style="width: 33px;" type="checkbox" onchange="count()" name="status[]" value="Roofing"><span>&nbsp;&nbsp;&nbsp;</span>Roofing
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="electrical" type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="plumbing" type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
                                         </label>
-                                        </td>
-                                         <td>
-                                          <label class="checkbox-inline">
+
+                                        <label class="checkbox-inline">
                                           <input id="plastering" type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="flooring" type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
                                         </label>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                         <td>
+
+                                      </div>
+                                       <div class="col-md-3">
+                                          
+                                       
                                           <label class="checkbox-inline">
-                                          <input id="carpentry" type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
+                                          <input id="carpentry" style="width: 33px;" type="checkbox" onchange="count()" name="status[]" value="Carpentry"><span>&nbsp;&nbsp;&nbsp;</span>Carpentry
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input id="paintings" type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
                                         </label>
-                                        </td>
-                                         <td>
-                                          <label class="checkbox-inline">
+
+                                        <label class="checkbox-inline">
                                           <input id="fixtures" type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
                                         </label>
-                                        </td>
-                                         <td>
+                                      
                                           <label class="checkbox-inline">
                                           <input id="completion" type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
                                         </label>
-                                        </td>
-                                         <td>
+                                        
                                           <label class="checkbox-inline">
                                           <input id="closed" type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
                                         </label>
-                                        </td>
-                                        </tr>
-                                      </table>
+                                       </div>
+                                       
+
                                    </td>
                                </tr>
                                <tr>
@@ -272,12 +260,13 @@
                                    <td>:</td>
                                    <td><input value="{{ old('pSize') }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class="form-control input-sm" name="pSize" onkeyup="check('pSize')"></td>
                                </tr>
-                                 <tr>
+                               <tr>
                                  <td>Budget Type</td>
                                  <td>:</td>
-                                 <td>
-                                    <label required class="checkbox-inline"><input id="constructionType3" name="budgetType[]"   type="radio" value="Structural">Structural</label>
-                                    <label required class="checkbox-inline"><input id="constructionType4" name="budgetType[]"   type="radio" value="Finishing">Finishing </label> 
+                                 <td >
+                                    <label ><input id="constructionType3" name="budgetType[]"  type="radio" value="Structural"><span>&nbsp;</span>Structural</label>
+                                    <span>&nbsp;&nbsp;</span>
+                                    <label ><input id="constructionType4" name="budgetType[]"  type="radio" value="Finishing"><span>&nbsp;</span>Finishing </label> 
                                  </td>
                                </tr>
                                <tr>
@@ -339,7 +328,7 @@
                                <tr>
                                    <td>Contractor Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="edName" onblur="checkmail('cEmail')" ></td>
+                                   <td><input value="{{ old('cEmail') }}" placeholder="Contractor Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Contractor Contact No.</td>
@@ -464,7 +453,7 @@
     var x = document.getElementById(arg);
     if(x.value)
     {
-        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        var phoneno = /^[6-9][0-9]\d{8}$/;
         if(!x.value.match(phoneno))
         {
             alert('Please Enter 10 Digits in Phone Number');
@@ -753,9 +742,9 @@
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
-          }else if(loan1.checked == false && loan2.checked == false){
+          }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
-          }else if(dandw1.checked == false && dandw2.checked == false){
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
             window.alert("Please tell us whether the customer is interested in purchasing doors and windows");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
@@ -879,7 +868,7 @@
  function checkmail(arg){
     var mail = document.getElementById(arg);
     if(mail.value.length > 0 ){
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value))  {  
+      if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(mail.value))  {  
         return true;  
       }  
       else{

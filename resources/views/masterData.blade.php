@@ -85,7 +85,7 @@
                                         <td>{{ $zone->country->country_name }} </td>
                                         <td>{{ $zone->zone_name }}</td>
                                         <td>{{ $zone->zone_number }}</td>
-                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/viewmap?zoneId={{ $zone->zone_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
+                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/viewMap?zoneId={{ $zone->id}}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
                                         <td>
                                             <a href="{{ URL::to('/') }}/wardmaping?zoneId={{ $zone->id }}" class="btn btn-success btn-sm">Edit</a>
                                             </td>
@@ -142,7 +142,7 @@
                                     <tr>
                                         <td style="width:20%">{{ $ward->ward_name }}</td>
                                        
-                                        <td style="width:33%"><center><a href="{{ URL::to('/') }}/public/wardImages/{{ $ward->ward_image }}" class="btn btn-sm btn-primary" target="_blank">View Image</a></center></td>
+                                        <td style="width:33%"><center><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
                                         <td><a href="{{ URL::to('/') }}/wardmaping?wardId={{ $ward->id }}" class="btn btn-success btn-sm form-control">Edit</a></td>
                                     </tr>
                                     @endforeach
@@ -234,7 +234,7 @@
             document.getElementById("coutries").innerHTML = displaycountries;
         }
     };
-    xmlhttp.open("GET", "http://10.156.104.216:8000/countries.json", true);
+    xmlhttp.open("GET", "https://mamahome360.com/webapp/countries.json", true);
     xmlhttp.send();
     function countryCode(){
         var countrySelected = document.getElementById('country').value;
@@ -253,7 +253,7 @@
             document.getElementById("countriesAndStates").innerHTML = displayStates;
         }
     };
-    xmlhttp2.open("GET", "http://10.156.104.216:8000/countriesAndStates.json", true);
+    xmlhttp2.open("GET", "https://mamahome360.com/webapp/countriesAndStates.json", true);
     xmlhttp2.send();
 </script>
 @endsection

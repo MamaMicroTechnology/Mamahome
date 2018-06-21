@@ -129,10 +129,13 @@
                                     <div class="radio">
                                       <label><input id="loan2" {{ $projectdetails->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
                                     </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
+                                    </div>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Doors and Windows?</td>
+                                 <td>Interested in UPVC Doors and Windows?</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
@@ -140,6 +143,9 @@
                                     </div>
                                     <div class="radio">
                                       <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
                                     </div>
                                  </td>
                                </tr>
@@ -349,12 +355,12 @@
                                     </div>
                                   </td>
                                </tr>
-                               <tr>
+                              <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
                                     <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
                                        
-                                          @if($projectdetails->updated_by == Null)
+                                          @if($projectdetails->updated_by == Null || $projectdetails->updated_by != Null)
 
 
                                           <?php
@@ -636,7 +642,7 @@
      
   }
 
-  function check(arg){
+function check(arg){
     var input = document.getElementById(arg).value;
     if(isNaN(input)){
       while(isNaN(document.getElementById(arg).value)){
@@ -674,6 +680,7 @@
 
     return false;
   }
+ 
 </script>
 <!--This line by Siddharth -->
 

@@ -72,8 +72,11 @@ class BuyerController extends Controller
     //Siddharth
     public function postBuyerLogin(Request $request){
         if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password])){
+             return response()->json(['message'=>'sucuss']);
             return redirect('/buyerhome');
         }else{
+
+            return response()->json(['message'=>'Something went wrong']);
             return back();
         }
     }

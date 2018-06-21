@@ -106,6 +106,7 @@ Route::get('/marketingpricing','amController@getPricing');
 Route::post('/marketinginsertcat','mamaController@insertCat');
 Route::get('/marketmanufacturerdetails','HomeController@manufacturerDetails');
 Route::get('/mrenquirysheet','HomeController@enquirysheet');
+Route::get('/viewInvoices','marketingController@viewInvoices');
 
 // Orders
 Route::get('/orders','HomeController@amorders');
@@ -164,6 +165,7 @@ Route::get('/salescompleted','HomeController@projectwisedel');
 Route::post('/sms','HomeController@smstonumber');\
 Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
+
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
 Route::get('/{id}/updatemat','HomeController@updateMat');
@@ -491,7 +493,7 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/saveDeliveryDetails','logisticsController@saveDeliveryDetails');
 });
 
-
+Route::get('/payment','HomeController@payment');
 
 
 Route::post('/toggle-approve',"HomeController@approval");

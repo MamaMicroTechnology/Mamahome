@@ -234,6 +234,12 @@ class logisticsController extends Controller
     public function saveDeliveryDetails(Request $request)
     {
 
+
+
+    $check = DeliveryDetails::where('order_id',$request->orderId);
+     
+     if($check != null){
+
         if(!$request->vid){
             $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
             $request->vno->move(public_path('delivery_details'),$vehicleNo);
@@ -274,6 +280,31 @@ class logisticsController extends Controller
             $request->vid->move(public_path('delivery_details'),$video);
             $deliveryDetails->delivery_video = $video;
         }
+         $deliveryDetails->save();
+     }
+ }
+
+     else
+
+     {
+         if(!$request->vid){
+            $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+            $request->vno->move(public_path('delivery_details'),$vehicleNo);
+
+            $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+            $request->lp->move(public_path('delivery_details'),$locationPicture);
+
+            $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+            $request->qm->move(public_path('delivery_details'),$quality);
+            $check->order_id = $request->orderId;
+            $check->vehicle_no = $vehicleNo;
+            $check->location_picture = $locationPicture;
+            $check->quality_of_material = $quality;
+            $check->delivery_date = date('Y-m-d h:i:s A');
+            $check->save();
+        }
+        else
+        {
 
         $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
         $request->vno->move(public_path('delivery_details'),$vehicleNo);
@@ -283,19 +314,23 @@ class logisticsController extends Controller
         
         $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
         $request->qm->move(public_path('delivery_details'),$quality);
-        
-        $deliveryDetails = new DeliveryDetails;
-        $deliveryDetails->order_id = $request->orderId;
-        $deliveryDetails->vehicle_no = $vehicleNo;
-        $deliveryDetails->location_picture = $locationPicture;
-        $deliveryDetails->quality_of_material = $quality;
-        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        $check->order_id = $request->orderId;
+        $check->vehicle_no = $vehicleNo;
+        $check->location_picture = $locationPicture;
+        $check->quality_of_material = $quality;
+        $check->delivery_date = date('Y-m-d h:i:s A');
         if($request->vid){
+
             $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
             $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails->delivery_video = $video;
+            $check->delivery_video = $video;
         }
-        $deliveryDetails->save();
+         
+     }
+ }
+        
+       
+
         Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered",'delivered_on'=>date('Y-m-d')]);
 
         $reasonText = date('H:i:s') > "20:00:00" ? "Delivering material at night" : "Delivering material";
@@ -309,10 +344,12 @@ class logisticsController extends Controller
         return back();
 
     }
-}
+
+    
+
     public function getinvoice(Request $request)
     {
-        $invoices = MhInvoice::where('requirement_id',$request->id)->get();
+        $invoices = MhInvoice::where('invoice_id',$request->id)->get();
         $number = 48035;
         $length = strlen($number);
         if($number < 20){

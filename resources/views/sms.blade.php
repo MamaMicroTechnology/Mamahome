@@ -23,8 +23,7 @@
           
                         @foreach($ss as $s)
                           @if($s->user_id == Auth::user()->id)
-                          @foreach($num as $sim)
-                          @if($sim->sim_number != 0)
+                        
                             <table class="table table-striped">
                               <tr>
                             <?php
@@ -41,8 +40,7 @@
                             ?>
                               </tr>
                             </table>
-                            @endif
-                            @endforeach
+                           
                           @endif
                         @endforeach	             
               

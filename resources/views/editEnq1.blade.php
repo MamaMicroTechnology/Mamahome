@@ -125,6 +125,7 @@
 <!-- model end -->
 
 							@if(Auth::user()->group_id == 7)
+							
 							<tr>
 								<td><label>Initiator* : </label></td>
 								<td>	
@@ -135,6 +136,7 @@
 									</select>
 								</td>
 							</tr>
+								
 							@elseif(Auth::user()->group_id == 6)
 							<tr>
 								<td><label>Initiator* : </label></td>

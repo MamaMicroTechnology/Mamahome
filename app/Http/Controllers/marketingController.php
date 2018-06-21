@@ -166,6 +166,7 @@ class marketingController extends Controller
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;
+        $mhinvoice->invoice_id = $request->invoice_id;
         $mhinvoice->customer_name = $request->customer_name;
         $mhinvoice->deliver_location = $request->address;
         $mhinvoice->delivery_date = $request->delivery_date;
@@ -184,5 +185,10 @@ class marketingController extends Controller
         $mhinvoice->manufacturer_invoice = $imageName4;
         $mhinvoice->save();
         return back();
+    }
+    public function viewInvoices()
+    {
+        $invoices = MhInvoice::all();
+        return view('marketing.viewInvoices',['invoices'=>$invoices]);
     }
 }
