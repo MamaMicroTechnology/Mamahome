@@ -3673,10 +3673,21 @@ class HomeController extends Controller
                     ->where('activity','LIKE','%Updated a project%')->get();
         }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
             $date = $request->fromdate;
+            $from= $request->fromdate;
+            $to= $request->todate;
+            if($from == $to){
+              
+            $str = ActivityLog::where('time','like',$from.'%')
+                ->where('time','LIKE',$to."%")
+                ->where('employee_id',$request->se)
+                ->where('activity','LIKE','%Updated a project%')->get();
+            }
+            else{
             $str = ActivityLog::where('time','>',$request->fromdate)
                     ->where('time','<',$request->todate)
                     ->where('employee_id',$request->se)
                     ->where('activity','LIKE','%Updated a project%')->get();
+            }
         }else{
             $date = date('Y-m-d');
             $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
