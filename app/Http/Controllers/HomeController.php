@@ -2786,6 +2786,7 @@ class HomeController extends Controller
         $ele                = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Electrical%')->pluck('project_id');
         $plum               = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Plumbing%')->pluck('project_id');
         $ele                = $ele->merge($plum);
+
         $enpCount           = ProjectDetails::whereIn('project_id',$ele)->count();
         $enpSize            = ProjectDetails::where('project_id',$ele)->sum('project_size');
         $carpentryCount     = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Carpentry%')->count();
@@ -2859,6 +2860,7 @@ class HomeController extends Controller
                 $ele                = $ele->merge($plum);
                 $enpCount           = ProjectDetails::whereIn('project_id',$ele)->count();
                 $enpSize            = ProjectDetails::whereIn('project_id',$ele)->sum('project_size');
+
                 $carpentryCount     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Carpentry%')->count();
                 $carpentrySize      = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Carpentry%')->sum('project_size');
                 $closedCount        = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Closed%')->count();
@@ -2935,8 +2937,8 @@ class HomeController extends Controller
             $flooring   = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Flooring%')->sum('project_size');
             $plastering = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Plastering%')->sum('project_size');
             $digging    = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Digging%')->sum('project_size');
-            $ele2        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Electrical%')->pluck('project_id');
-            $plum2       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plumbing%')->pluck('project_id');
+            $ele2        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Electrical%')->where('sub_ward_id',$request->subward)->pluck('project_id');
+            $plum2       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plumbing%')->where('sub_ward_id',$request->subward)->pluck('project_id');
             $ele2        = $ele2->merge($plum2);
             $enp    = ProjectDetails::whereIn('project_id',$ele2)->sum('project_size');
             $carpentry  = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->where('project_status','LIKE','Carpentry%')->sum('project_size');
@@ -4655,5 +4657,27 @@ function enquirystore(request $request){
        
         return view('/payment',['payment'=>$payment,'pay'=>$pay,'converter'=>$converter]);
     }
+public function display(request $request){
 
+ $wardMaps = null;
+        $projects = null;
+        if($request->wards && $request->quality){
+            $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
+            $wardMaps = WardMap::where('ward_id',$request->wards)->first();
+            if($wardMaps == null){
+                $wardMaps = "None";
+            }
+            $projects = ProjectDetails::leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+                        ->select('site_addresses.*','project_details.quality')
+                        ->where('project_details.quality',$request->quality)
+                        ->whereIn('project_details.sub_ward_id',$subwards)
+                        ->get();
+        }
+        $wards = Ward::all();
+        $war = WardMap::all();
+        
+        return view('maping.map',['wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards,'war'=>$war]);
+
+    
+}
 }

@@ -1,3 +1,6 @@
+@extends('layouts.app')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,9 +17,9 @@
     <div class="col-md-2">
         <label for="wards">Select Wards:</label>
         <select required name="wards" class="form-control" id="wards">
-            @foreach($wards as $ward)
-            <option {{ isset($_GET['wards']) ? $_GET['wards'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
-            @endforeach
+            '@foreach($wards as $ward)
+                        <option {{ isset($_GET['wards']) ? $_GET['wards'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
+                        @endforeach'
         </select>
         <label for="quality">Select Quality:</label>
         <select required name="quality" class="form-control" id="quality">
@@ -71,7 +74,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
+        zoom: 12,
         center: new google.maps.LatLng(locations[0][1], locations[0][2]),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -137,3 +140,5 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 </body>
 </html>
+
+@endsection

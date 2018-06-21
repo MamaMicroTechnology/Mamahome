@@ -16,6 +16,7 @@ use App\ProjectDetails;
 use App\SiteAddress;  
 use DB;  
 use App\loginTime;
+use App\Requirement;
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -178,8 +179,9 @@ class TokenController extends Controller
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
-                    return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
         }
+        return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+    }
         else{
             return response()->json(['message' => 'false']);
         }
@@ -240,12 +242,6 @@ class TokenController extends Controller
              $type=null;
         }
 
-        // $bType = count($request->budgetType);
-        // if(count($request->budgetType != 0)){
-        //     $type2 = implode(", ",$request->budgetType);
-        // }else{
-        //     $type2 = null;
-        // }
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
             if($statusCount > 1){
@@ -324,6 +320,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
+            $projectdetails->user_id = $request->user_id;
            
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
@@ -349,8 +346,6 @@ class TokenController extends Controller
 
             $siteaddress = New SiteAddress;
             $siteaddress->project_id = $projectdetails->id;
-            // $siteaddress->latitude = $request->latitude;
-            // $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
@@ -359,17 +354,22 @@ class TokenController extends Controller
             return response()->json(['message'=>'Something went wrong']);
         }
     }
+    public function enquiry(request $request){
+        $enquiry = new Requirement;
+        $enquiry->project_id = $request->project_id;
+        $enquiry->main_caegory = $request->main_caegory;
+        $enquiry->brand = $request->brand;
+        $enquiry->sub_category = $request->sub_category;
+        $enquiry->reqirement_date = $request->reqirement_date;
+        $enquiry->notes = $request->remark;
+        $enquiry->A_contact = $request->A_contact;
+        $enquiry->save();
+          if($enquiry->save() ){
+            return response()->json(['message'=>'Enquiry Added sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
 
-            $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
-            // $siteaddress->latitude = $request->latitude;
-            // $siteaddress->longitude = $request->longitude;
-            $siteaddress->address = $request->address;
-            $siteaddress->save();
-        if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
-        }else{
-            return response()->json(['message'=>'Something went wrong']);
-        }
-    }
 }
+           

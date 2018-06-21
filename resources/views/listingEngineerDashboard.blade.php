@@ -146,21 +146,21 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
+      zoom: 16,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
     var infowindow = new google.maps.InfoWindow();
-    var everythingElse = [
-      new google.maps.LatLng(0, -90),
-      new google.maps.LatLng(0, 90),
-      new google.maps.LatLng(90, -90),
-      new google.maps.LatLng(90, 90),
-    ];
+    // var everythingElse = [
+    //   new google.maps.LatLng(0, -90),
+    //   new google.maps.LatLng(0, 90),
+    //   new google.maps.LatLng(90, -90),
+    //   new google.maps.LatLng(90, 90),
+    // ];
     var marker, i;
     var subward = new google.maps.Polygon({
-        paths: [everythingElse, newpath],
+        paths: newpath,
         strokeColor: '#'+col,
         strokeOpacity: 1,
         strokeWeight: 2,
