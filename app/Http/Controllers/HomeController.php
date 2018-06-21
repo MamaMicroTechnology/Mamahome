@@ -4592,10 +4592,11 @@ function enquirystore(request $request){
     }
     public function viewMap(Request $request)
     {
-        $zones = ZoneMap::where('zone_id',$request->zoneId)->first();
-        if($request->subWardId){
-            $zones = SubWardMap::where('sub_ward_id',$request->subWardId)->first();
-        }
+        $wards = Ward::where('zone_id',$request->zoneId)->pluck('id');
+        $zones = WardMap::whereIn('wards.id',$wards)
+                    ->leftJoin('wards','wards.id','ward_maps.ward_id')
+                    ->select('ward_maps.*','wards.ward_name as name')
+                    ->get();
         return view('maping.viewmap',['zones'=>$zones]);
     }
     public function allProjectsWithWards(Request $request)

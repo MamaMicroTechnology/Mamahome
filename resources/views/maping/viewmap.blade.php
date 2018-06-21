@@ -6,119 +6,53 @@
   <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
-  @if($zones->lat != null)
   <script type="text/javascript">
     var count = 0;
     var map, path = [], newpath = [];
-    var marker = [];
-    var latlng = "{{ $zones-> lat }}";
+    var marker = [],latlng, places;
+    var latt, lngg;
     $(document).ready(function(){
-      var places = latlng.split(",");
-        var mymarker = [];
-        var latt = 0,lngg = 0;
-        for(var i=0;i<places.length;i+=2){
-          newpath.push([parseFloat(places[i]), parseFloat(places[i+1])]);
-          latt += parseFloat(places[i]);
-          lngg += parseFloat(places[i+1]);
-        }
-        latt = latt/newpath.length;
-        lngg = lngg/newpath.length;
-        var val = 345567;
-        var line = "#"+String(val - 10);
-        // for marking maps
-        map = new GMaps({
-          el: '#map',
-          lat: latt,
-          lng: lngg,
-        });
-
-         $("#undo").click(function(){
-          path.pop();
-            marker[0] = path;
-            polygon = map.removePolylines();
-            polygon = map.drawPolyline({
-              path: path,
-              strokeColor: '#131540',
-              strokeOpacity: 0.6,
-              strokeWeight: 1
-            });
-         });
-
+      map = new GMaps({
+        el: '#map',
+        lat: 12.9716,
+        lng: 77.5946,
+      });
+      
+    @foreach($zones as $zone)
+      latlng = "{{ $zone-> lat }}";
+      places = latlng.split(",");
+      path = [];
+      newpath = [];
+      latt = 0;
+      lngg = 0;
+      // for marking maps
+      for(var i=0;i<places.length;i+=2){
+        newpath.push([parseFloat(places[i]), parseFloat(places[i+1])]);
+        latt += parseFloat(places[i]);
+        lngg += parseFloat(places[i+1]);
+      }
+      latt = latt/newpath.length;
+      lngg = lngg/newpath.length;
       map.setZoom(11);
-      var line = parseInt('{{ $zones->color }}') + 12345;
+      var line = parseInt('{{ $zone->color }}') + 12345;
       map.drawPolygon({
         paths: newpath,
         strokeColor: '#'+line,
         strokeOpacity: 0.6,
-        fillColor: '#{{ $zones->color }}',
+        fillColor: '#{{ $zone->color }}',
         strokeWeight: 2
       });
-      map.setOptions({draggableCursor:'crosshair'});
-      $("#draw").click(function(){
-        var val = parseInt(document.getElementById('color').value);
-        var color = "#"+document.getElementById('color').value;
-        document.getElementById('path').value = marker;
-        var line = "#"+String(val - 10);
-        count = 1;
-        polygon = map.removePolylines();
-        polygon = map.removePolygons();
-        polygon = map.drawPolygon({
-          paths: marker,
-          strokeColor: line,
-          strokeOpacity: 1,
-          strokeWeight: 1,
-          fillColor: color,
-          fillOpacity: 0.2
+      map.drawOverlay({
+          lat: latt,
+          lng: lngg,
+          layer: 'overlayLayer',
+          content: '<div class="overlay">{{ $zone->name }}</div>',
+          verticalAlign: 'top',
+          horizontalAlign: 'center'
         });
-      });
+    @endforeach
     });
   </script>
-@else
-<script type="text/javascript">
-    var map, path = [], newpath = [];
-    var marker = [];
-    $(document).ready(function(){
-        var mymarker = [];
-        var val = 123456;
-        var line = "#"+String(val - 10);
-        // for marking maps
-        map = new GMaps({
-          el: '#map',
-          lat: 12.9716,
-          lng: 77.5946,
-        });
-        $("#undo").click(function(){
-          path.pop();
-            marker[0] = path;
-            polygon = map.removePolylines();
-            polygon = map.drawPolyline({
-              path: path,
-              strokeColor: '#131540',
-              strokeOpacity: 0.6,
-              strokeWeight: 1
-            });
-         });
-      map.setZoom(10);
-      map.setOptions({draggableCursor:'crosshair'});
-      $("#draw").click(function(){
-        var val = parseInt(document.getElementById('color').value);
-        var color = "#"+document.getElementById('color').value;
-        document.getElementById('path').value = marker;
-        var line = "#"+String(val - 10);
-        polygon = map.removePolylines();
-        polygon = map.removePolygons();
-        polygon = map.drawPolygon({
-          paths: marker,
-          strokeColor: line,
-          strokeOpacity: 1,
-          strokeWeight: 1,
-          fillColor: color,
-          fillOpacity: 0.2
-        });
-      });
-    });
-  </script>
-@endif
 </head>
 <body>
 <div class="container">
