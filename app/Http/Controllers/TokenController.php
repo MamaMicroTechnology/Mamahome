@@ -16,6 +16,7 @@ use App\ProjectDetails;
 use App\SiteAddress;  
 use DB;  
 use App\loginTime;
+use App\Requirement;
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -355,6 +356,22 @@ class TokenController extends Controller
             return response()->json(['message'=>'Something went wrong']);
         }
     }
+public function enquiry(request $request){
+        $enquiry = new Requirement;
+        $enquiry->project_id = $request->project_id;
+        $enquiry->main_category = $request->main_category;
+        $enquiry->brand = $request->brand;
+        $enquiry->sub_category = $request->sub_category;
+        $enquiry->requirement_date = $request->requirement_date;
+        $enquiry->notes = $request->remark;
+        $enquiry->A_contact = $request->A_contact;
+        $enquiry->save();
+          if($enquiry->save() ){
+            return response()->json(['message'=>'Enquiry Added sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
 
            
 }

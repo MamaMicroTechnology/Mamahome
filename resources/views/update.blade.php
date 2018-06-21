@@ -642,7 +642,7 @@
      
   }
 
-  function check(arg){
+function check(arg){
     var input = document.getElementById(arg).value;
     if(isNaN(input)){
       while(isNaN(document.getElementById(arg).value)){
@@ -680,6 +680,7 @@
 
     return false;
   }
+ 
 </script>
 <!--This line by Siddharth -->
 
