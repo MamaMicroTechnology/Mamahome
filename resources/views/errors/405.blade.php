@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
         body{
-            background-image: url('https://cdn.pixabay.com/photo/2016/07/22/16/29/fog-1535201_960_720.jpg');
+            background-image: url('https://mamahome360.com/webapp/errorBackground.jpg');
             background-repeat: no-repeat;
             background-size: 100%;
         }
