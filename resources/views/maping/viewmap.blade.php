@@ -55,7 +55,9 @@
   </script>
 </head>
 <body>
-<div class="container">
+  <div class="container">
+      <button id="hide" onclick="hideCaption()" class="btn btn-primary">Turn Off Caption</button>
+      <button id="show" onclick="showCaption()" class="hidden">Turn On Caption</button>
   <div class="row">
     <div class="row">
       <div class="span11">
@@ -68,23 +70,21 @@
 </div>
 
 <script>
-  function getWards(){
-    var id = document.getElementById('Zones').value;
-    var wards = "";
-    $.ajax({
-        type: 'GET',
-        url: "{{URL::to('/')}}/getWards",
-        data: {id:id},
-        async: false,
-        success: function(response)
-        {
-          for(var i = 0; i < response.length; i++){
-            wards += "<option value="+response[i].id+" onclick=makelines('"+response[i].lat+"')>"+response[i].ward_name+"</option>"
-          }
-          document.getElementById('wards').innerHTML = wards;
-          console.log(response);
-        }
-    });
+  function hideCaption(){
+    var divs = document.getElementsByClassName("overlay");
+    for(var i=0;i<divs.length;i++){
+      divs[i].style.display = "none";
+    }
+    document.getElementById('hide').className = "hidden";
+    document.getElementById('show').className = "btn btn-primary ";
+  }
+  function showCaption(){
+    var divs = document.getElementsByClassName("overlay");
+    for(var i=0;i<divs.length;i++){
+      divs[i].style.display = "";
+    }
+    document.getElementById('show').className = "hidden";
+    document.getElementById('hide').className = "btn btn-primary"
   }
 </script>
 @endsection
