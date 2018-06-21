@@ -642,7 +642,7 @@
      
   }
 
-  function check(arg){
+ function check(arg){
     var input = document.getElementById(arg).value;
     if(isNaN(input)){
       while(isNaN(document.getElementById(arg).value)){
@@ -659,16 +659,52 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
-      var opts = "<option value=''>--Floor--</option>";
+      var opts = "<option value=''>--Floor--</option><option value='Ground'>Ground</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         floor       += sum;
-      
+        
         if(document.getElementById("total").innerHTML != null)
         {
           document.getElementById("total").innerHTML = floor;
-          for(var i = 1; i<=sum; i++){
+          var ctype1 = document.getElementById('constructionType1');
+          var ctype2 = document.getElementById('constructionType2');
+          if(ctype1.checked == true && ctype2.checked == true){
+            // both residential and commercial
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<option value='1RK'>1RK</option>"+
+                      "<option value='1BHK'>1BHK</option>"+
+                      "<option value='2BHK'>2BHK</option>"+
+                      "<option value='3BHK'>3BHK</option></select>"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses / No. Of Flats\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }else if(ctype1.checked == true && ctype2.checked == false){
+            // residential only
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<option value='1RK'>1RK</option>"+
+                      "<option value='1BHK'>1BHK</option>"+
+                      "<option value='2BHK'>2BHK</option>"+
+                      "<option value='3BHK'>3BHK</option></select>"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }else if(ctype1.checked == false && ctype2.checked == true){
+            // commercial only
+            var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
+                      "</select></td>"+
+                      "<td><input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "</td><td>"+
+                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+            document.getElementById('selection').innerHTML = sel;
+          }
+          for(var i = 1; i<sum; i++){
             opts += "<option value='"+i+"'>Floor "+i+"</option>";
           }
           document.getElementById("floorNo").innerHTML = opts;
@@ -680,6 +716,7 @@
 
     return false;
   }
+
 </script>
 <!--This line by Siddharth -->
 
