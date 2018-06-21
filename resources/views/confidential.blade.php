@@ -10,9 +10,9 @@
     <div class="panel-body">
         <div class="col-md-6">
             <center>Ward</center>
-            <form method="GET" action="{{ URL::to('/') }}/confidential">
+            <form id="thisForm" method="GET" action="{{ URL::to('/') }}/confidential">
                 <label class="checkbox">
-                    <input {{ isset($_GET['quality']) ? in_array("Genuine",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Genuine" id="genuine">Genuine<br>
+                    <input {{ isset($_GET['quality']) ? in_array("Genuine",$_GET['quality'])? 'checked': '' : '' }}  type="checkbox" name="quality[]" value="Genuine" id="genuine">Genuine<br>
                 </label>
                 <label class="checkbox">
                     <input {{ isset($_GET['quality']) ? in_array("Fake",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Fake" id="fake">Fake<br>
@@ -27,7 +27,7 @@
                     <option value="{{ $ward->id}}" {{ $ward->id == $wardId? 'selected':'' }}>{{ $ward->ward_name }}</option>
                 @endforeach
                 </select><br>
-                <button class="btn btn-primary form-control" type="submit">Fetch</button>
+                <button class="btn btn-primary form-control" onclick="check()" type="button">Fetch</button>
             </form>
             <br>
             @if(session('Error'))
@@ -121,7 +121,7 @@
         @if($subwards != NULL && $_GET['ward'] != "All")
         <div class="col-md-6">
             <center>Sub Ward</center>
-            <form method="GET" action="{{ URL::to('/') }}/confidential">
+            <form  id="thisForm1" method="GET" action="{{ URL::to('/') }}/confidential">
                 <!-- ward quality -->
                 <label class="hidden">
                     <input {{ isset($_GET['quality']) ? in_array("Genuine",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Genuine" id="genuine">Genuine<br>
@@ -134,22 +134,22 @@
                 </label>
                 <!-- subward quality -->
                 <label class="checkbox">
-                    <input {{ isset($_GET['subwardquality']) ? in_array("Genuine",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Genuine" id="genuine">Genuine<br>
+                    <input {{ isset($_GET['subwardquality']) ? in_array("Genuine",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Genuine" id="genuine1">Genuine<br>
                 </label>
                 <label class="checkbox">
-                    <input {{ isset($_GET['subwardquality']) ? in_array("Fake",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Fake" id="fake">Fake<br>
+                    <input {{ isset($_GET['subwardquality']) ? in_array("Fake",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Fake" id="fake1">Fake<br>
                 </label>
                 <label class="checkbox">
-                    <input {{ isset($_GET['subwardquality']) ? in_array("Unverified",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Unverified" id="unverified">Unverified<br>
+                    <input {{ isset($_GET['subwardquality']) ? in_array("Unverified",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Unverified" id="unverified1">Unverified<br>
                 </label>
                 <input type="hidden" name="ward" value="{{ $wardId }}">
                 <select required class="form-control" name="subward">
                     <option value="">--Select--</option>
                     @foreach($subwards as $ward)
-                        <option value="{{ $ward->id}}" {{ $subwardId == $ward->id? 'selected':'' }}>{{ $ward->sub_ward_name }}</option>
+                        <option value="{{ $ward->id}}"  required {{ $subwardId == $ward->id? 'selected':'' }}>{{ $ward->sub_ward_name }}</option>
                     @endforeach
                 </select><br>
-                <button class="btn btn-primary form-control" type="submit">Fetch</button>
+                <button class="btn btn-primary form-control" onclick="checkthis()" type="button">Fetch</button>
             </form>
             <br>
             @if(session('Error'))
@@ -280,4 +280,32 @@
     </div>
 </div>
 </div>
+<script type="text/javascript">
+function check()
+{
+    if(genuine.checked == false && fake.checked == false && unverified.checked == false )
+    {
+            window.alert("You have to Select altest One Quality");
+           
+    }
+    else{
+        var form = document.getElementById("thisForm");
+        form.submit();
+    }
+}
+function checkthis()
+{
+   
+    if(genuine1.checked == false && fake1.checked == false && unverified1.checked == false )
+    {
+           
+            window.alert("You have to Select altest One Quality");     
+    }
+    else{
+        var form = document.getElementById("thisForm1");
+        form.submit();
+    }
+}
+</script>
+
 @endsection
