@@ -4609,7 +4609,7 @@ function enquirystore(request $request){
                     ->select('ward_maps.*','wards.ward_name as name')
                     ->get();
          if($request->ward_id){
-             $wards = SubWard::where('ward_id',$request->ward_id)->pluck('id')
+             $wards = SubWard::where('ward_id',$request->ward_id)->pluck('id');
             $zones = SubWardMap::whereIn('sub_wards.id',$wards)
                     ->leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
                     ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
