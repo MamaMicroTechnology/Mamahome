@@ -13,7 +13,7 @@
 				
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-					<p class="pull-left"  style="padding-left: 50px;" id="display" >
+					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
 					
 					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
@@ -145,11 +145,7 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
-							@foreach($converter as $con)
-							@if($enquiry->converted_by == $con->id)
-								{{ $con->name}}
-							@endif
-							@endforeach
+								{{ $enquiry->converted_by}}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
@@ -270,13 +266,13 @@ function myFunction() {
 	  }
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
-		document.getElementById("display").innerHTML = "Enquiry On Process   :  {{  $pro }}"
+		document.getElementById("display").innerHTML = "Enquiry On Process:  {{  $pro }}"
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
-		document.getElementById("display").innerHTML = "Enquiry Confirmed   :  {{  $con }}"
+		document.getElementById("display").innerHTML = "Enquiry Confirmed:  {{  $con }}"
 	}
 	else {
-		document.getElementById("display").innerHTML = "Total Enquiry Count   :  {{  $total }}"
+		document.getElementById("display").innerHTML = "Total Enquiry Count:  {{  $total }}"
 	}
 }
 </script>
