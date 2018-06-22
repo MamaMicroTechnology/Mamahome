@@ -27,11 +27,14 @@
 <body>
     <br><br><br><br><br><br>
     <div class="error-container">
+
         <center>
-            <h1>405<br></h1>
-            <p>Method Not Allowed</p>
-            <br>(Usually happens because of Internet Connection)
+            <h1>Network Error<br></h1>
+            <p>Due to network failure your project is not listed <br> Please try  again to add the project </p>
+            <p>If this error ocuures several times, refresh your mobile Network <br>(Usually happens because of Internet Connection)
         </center>
+        <p>If this is problem is not solved contact MAMA MICRO TECHNOLOGY </p>
+        <h1>Thank you </h1>
         <br>
         <center>
             <a href="{{ URL::previous() }}" class="btn btn-success btn-lg">Click Here To Go Back!</a>

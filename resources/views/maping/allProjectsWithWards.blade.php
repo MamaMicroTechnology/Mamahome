@@ -15,14 +15,22 @@
 <br>
 <form action="{{ URL::to('/') }}/allProjectsWithWards" method="get">
     <div class="col-md-2">
+     <label for="wards">Select Zones:</label>
+        <select required name="zone" class="form-control" id="wards">
+            @foreach($zone as $zoo)
+            <option {{ isset($_GET['zones']) ? $_GET['zones'] == $zone->id ? 'selected' : '' : '' }} value="{{ $zoo->id }}">{{ $zoo->zone_name }}</option>
+            @endforeach
+        </select>
         <label for="wards">Select Wards:</label>
         <select required name="wards" class="form-control" id="wards">
+            <option>---select---</option>
             @foreach($wards as $ward)
             <option {{ isset($_GET['wards']) ? $_GET['wards'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
             @endforeach
         </select>
         <label for="quality">Select Quality:</label>
         <select required name="quality" class="form-control" id="quality">
+           <option>---select---</option> 
             <option {{ isset($_GET['quality']) ? $_GET['quality'] == "Genuine" ? 'selected' : '' : ''}} value="Genuine">Genuine</option>
             <option {{ isset($_GET['quality']) ? $_GET['quality'] == "Fake" ? 'selected' : '' : ''}} value="Fake">Fake</option>
         </select>

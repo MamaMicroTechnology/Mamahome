@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<script>
+<!-- <script>
   function getWards(){
     var id = document.getElementById('Zones').value;
     var wards = "";
@@ -86,5 +86,5 @@
         }
     });
   }
-</script>
+</script> -->
 @endsection

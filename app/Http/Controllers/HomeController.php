@@ -69,7 +69,7 @@ use Carbon\Carbon;
 use App\numbercount;
 use App\numbers;
 use App\Payment;
-
+use Response;
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -275,6 +275,7 @@ class HomeController extends Controller
     }
     public function enquirysheet(Request $request)
     {
+                         // dd( $enquiries); 
 
         $totalofenquiry = "";
         $totalenq = "";
@@ -294,6 +295,9 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+
+                       $enquiries = Response::Json( $enquiries);
+
                 $converter = user::get();
 
                 
@@ -308,6 +312,7 @@ class HomeController extends Controller
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
+                             $enquiries = Response::Json( $enquiries);
                 $converter = user::get();
                 foreach($enquiries as $enquiry){
                     $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
@@ -1154,6 +1159,7 @@ class HomeController extends Controller
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
         $states = State::all();
         $zones = Zone::all();
+
         return view('masterData',['wards'=>$wards,'countries'=>$countries,'subwards'=>$subwards,'states'=>$states,'zones'=>$zones]);
     }
    
@@ -2538,6 +2544,7 @@ class HomeController extends Controller
             $assigncount->count = $scount;
             $assigncount->save();
         }
+            
     
         $orders = Order::all();
        return view('salesengineer',[
@@ -4608,16 +4615,24 @@ function enquirystore(request $request){
                     ->leftJoin('wards','wards.id','ward_maps.ward_id')
                     ->select('ward_maps.*','wards.ward_name as name')
                     ->get();
+        if($request->wardId){
+             $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
+            $zones = SubWardMap::whereIn('sub_wards.id',$wards)
+                    ->leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
+                    ->get();
+        }
         return view('maping.viewmap',['zones'=>$zones]);
     }
     public function allProjectsWithWards(Request $request)
     {
         $wardMaps = null;
         $projects = null;
-        if($request->wards && $request->quality){
+        if($request->wards && $request->quality ){
+           
             $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
             $wardMaps = WardMap::where('ward_id',$request->wards)->first();
-            if($wardMaps == null){
+            if($wardMaps == null ){
                 $wardMaps = "None";
             }
             $projects = ProjectDetails::leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
@@ -4626,8 +4641,24 @@ function enquirystore(request $request){
                         ->whereIn('project_details.sub_ward_id',$subwards)
                         ->get();
         }
+        // $zonemap== null;
+        // if( $request->zone){
+        //     $zones = Zone::where('id',$request->zone)->pluck('id')->toArray();
+        //     $zonemap = ZoneMap::where('zone_id',$request->zone)->first();
+        //     if($zonemap== null ){
+        //         $zonemap = "None";
+        //     }
+        // }
+        // $projects = Zone::leftjoin('wards','wards.zone_id','zones.id')
+        //  ->leftjoin('sub_wards','sub_wards.ward_id','wards.id')
+        //  ->leftjoin('project_details','project_details.sub_ward_id','sub_wards.id')
+        //  ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+        //  ->select('site_addresses.*','project_details.quality')
+        //  ->get();
+
         $wards = Ward::all();
-        return view('maping.allProjectsWithWards',['wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards]);
+        $zone = Zone::all();
+        return view('maping.allProjectsWithWards',['wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards,'zone'=>$zone]);
     }
  
     public function storecount(request $request){

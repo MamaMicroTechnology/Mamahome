@@ -76,7 +76,7 @@
                                 <th>Country</th>
                                 <th>Zone Name</th>
                                 <th>Zone No</th>
-                                <th>Zone Image</th>
+                                <th>Zone Map</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>
@@ -134,7 +134,7 @@
                         <table class="table table-responsive">
                             <thead>
                                 <th>Ward Name</th>
-                                <th><center>Ward Image</center></th>
+                                <th><center>Ward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>
@@ -142,7 +142,7 @@
                                     <tr>
                                         <td style="width:20%">{{ $ward->ward_name }}</td>
                                        
-                                        <td style="width:33%"><center><a href="{{ URL::to('/') }}/public/wardImages/{{ $ward->ward_image }}" class="btn btn-sm btn-primary" target="_blank">View Image</a></center></td>
+                                        <td style="width:33%"><center><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
                                         <td><a href="{{ URL::to('/') }}/wardmaping?wardId={{ $ward->id }}" class="btn btn-success btn-sm form-control">Edit</a></td>
                                     </tr>
                                     @endforeach

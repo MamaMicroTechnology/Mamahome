@@ -190,10 +190,12 @@ class TokenController extends Controller
     public function buyerLogin(Request $request)
     {
         $messages = new Collection;
-        if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+        if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
+        {
             $userdetails = User::where('id',Auth::user()->id)->first();
             return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
-        }else{
+        }
+        else{
             return response()->json(['message' => 'false']);
         }
     }
