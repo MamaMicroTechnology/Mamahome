@@ -366,7 +366,7 @@ public function enquiry(request $request){
         $enquiry->brand = $request->brand;
         $enquiry->sub_category = $request->sub_category;
         $enquiry->requirement_date = $request->requirement_date;
-        $enquiry->notes = $request->remark;
+        $enquiry->notes = $request->eremarks;
         $enquiry->A_contact = $request->A_contact;
         $enquiry->save();
           if($enquiry->save() ){
