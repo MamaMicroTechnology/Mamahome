@@ -46,7 +46,7 @@
                             @foreach($wards as $ward)
                             <tr>
                                 <td style="text-align: center;">{{ $ward->ward_name }}</td>
-                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}">Image</a></td>
+                                <td style="text-align: center;"><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank">View Map</a></td>
                             </tr>
                             @endforeach
                         </tbody>
