@@ -76,7 +76,7 @@
                                 <th>Country</th>
                                 <th>Zone Name</th>
                                 <th>Zone No</th>
-                                <th>Zone Image</th>
+                                <th>Zone Map</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>
@@ -134,7 +134,7 @@
                         <table class="table table-responsive">
                             <thead>
                                 <th>Ward Name</th>
-                                <th><center>Ward Image</center></th>
+                                <th><center>Ward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>
@@ -176,7 +176,7 @@
                         <table class="table table-responsive table-hover">
                             <thead>
                                 <th>Subward Name</th>
-                                <th><center>Ward Image</center></th>
+                                <th><center>Ward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>
