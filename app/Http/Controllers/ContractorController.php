@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Collection;
 use App\ContractorDetails;
 use App\ProjectDetails;
-use App\RoomType;
+use App\ProcurementDetails;
+use App\SiteEngineerDetails;
 use App\OwnerDetails;
+use App\ConsultantDetails;
+use App\RoomType;
 use DB;
 use Auth;
 use App\training;
@@ -86,10 +90,20 @@ class ContractorController extends Controller
    	public function getNoOfProjects(Request $request)
    	{
       if($request->phone){
-        $conName = ContractorDetails::where('contractor_contact_no',$request->phone)->first();
+        $projectIds = new Collection;
+        $conName = ContractorDetails::where('contractor_contact_no',$request->phone)->pluck('project_id')->first();
+        $projectIds = $projectIds->merge($conName);
+        $procurement=ProcurementDetails::where('procurement_contact_no',$request->phone)->pluck('project_id')->first();
+        $projectIds = $projectIds->merge($procurement);
+        $consultant=ConsultantDetails::where('consultant_contact_no',$request->phone)->pluck('project_id')->first();
+        $projectIds = $projectIds->merge($consultant);
+        $siteEngineer=SiteEngineerDetails::where('site_engineer_contact_no',$request->phone)->pluck('project_id')->first();
+        $projectIds = $projectIds->merge($siteEngineer);
+        $owner=OwnerDetails::where('owner_contact_no',$request->phone)->pluck('project_id')->first();
+        $projectIds = $projectIds->merge($owner);
         $projects = array();
         $projectIds = ContractorDetails::where('contractor_contact_no',$request->phone)->pluck('project_id');
-        $projects[$conName->contractor_contact_no] = ProjectDetails::whereIn('project_id',$projectIds)->count();
+        $projects[$request->phone] = ProjectDetails::whereIn('project_id',$projectIds)->count();
       }else{
         $contractors = ContractorDetails::groupby('contractor_contact_no')->pluck('contractor_contact_no');
         $conName = ContractorDetails::wherein('contractor_contact_no',$contractors)->paginate(10);
@@ -121,10 +135,13 @@ class ContractorController extends Controller
       $mcb = 0;
       $tpn = 0;
       $dbdoor = 0;
-      $table = "<tr><td colspan='8'><center>ESTIMATE</center></td></tr>
+      $table = "<tr><td colspan='8'><center>Material Estimation prices may vary according to Market Price</center></td></tr>
+     
       <tr><th>Category</th><th>Products</th><th>UOM</th><th>Nos.</th>
-        <th>Total Material</th><th>MRP</th><th>TOTAL</th><th>MHP</th></tr>";
+        <th>Total Material</th><th>MRP</th><th>Total</th><th>Total MHP</th></tr>";
       $projectIds = ContractorDetails::where('contractor_contact_no',$request->no)->pluck('project_id');
+      $procurement = ProcurementDetails::where('procurement_contact_no',$request->no)->pluck('project_id');
+      $projectIds = $projectIds->merge($procurement);
       $projects = ProjectDetails::whereIn('project_id',$projectIds)->get();
       $roomTypes = RoomType::whereIn('project_id',$projectIds)->get();
       foreach($roomTypes as $type){
@@ -717,23 +734,25 @@ class ContractorController extends Controller
             # code...
             break;
         }
-        $totalcementOPC+=$cementOPC[$i];
-        $totalcementPPC+=$cementPPC[$i];
-        $totalmSandConcreteCft+=$mSandConcreteCft[$i];
-        $totalmSandConcreteTons+=$mSandConcreteTons[$i];
-        $totalmSandPlasteringCft+=$mSandPlasteringCft[$i];
-        $totalmSandPlasteringTons+=$mSandPlasteringTons[$i];
-        $totaljelly12mmCft+=$jelly12mmCft[$i];
-        $totaljelly12mmTons+=$jelly12mmTons[$i];
-        $totaljelly20mmCft+=$jelly20mmCft[$i];
-        $totaljelly20mmTons+=$jelly20mmTons[$i];
-        $totalblocks6+=$blocks6[$i];
-        $totalblocks4+=$blocks4[$i];
-        $totalSteel+=$steelTot[$i];
-        $totalsteel8 += $steel8[$i];
-        $totalsteel10 += $steel10[$i];
-        $totalsteel12 += $steel12[$i];
-        $totalsteel18 += $steel18[$i];
+        if(count($cementOPC) > $i){
+          $totalcementOPC+=$cementOPC[$i];
+          $totalcementPPC+=$cementPPC[$i];
+          $totalmSandConcreteCft+=$mSandConcreteCft[$i];
+          $totalmSandConcreteTons+=$mSandConcreteTons[$i];
+          $totalmSandPlasteringCft+=$mSandPlasteringCft[$i];
+          $totalmSandPlasteringTons+=$mSandPlasteringTons[$i];
+          $totaljelly12mmCft+=$jelly12mmCft[$i];
+          $totaljelly12mmTons+=$jelly12mmTons[$i];
+          $totaljelly20mmCft+=$jelly20mmCft[$i];
+          $totaljelly20mmTons+=$jelly20mmTons[$i];
+          $totalblocks6+=$blocks6[$i];
+          $totalblocks4+=$blocks4[$i];
+          $totalSteel+=$steelTot[$i];
+          $totalsteel8 += $steel8[$i];
+          $totalsteel10 += $steel10[$i];
+          $totalsteel12 += $steel12[$i];
+          $totalsteel18 += $steel18[$i];
+        }
         $i++;
       }
         $table .="<tr><td>Cement</td><td>OPC</td><td>Bags</td>

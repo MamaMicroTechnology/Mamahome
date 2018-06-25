@@ -16,7 +16,7 @@
                             <thead>       
                                     <th style="padding-left: 50px;">Zone Name</th>
                                     <th style="padding-right: 50px;">Zone No</th>
-                                    <th  >Zone Image</th>   
+                                    <th  >Zone Map</th>   
                             </thead>
                             <tbody>
                                     @foreach($zones as $zone)
@@ -40,14 +40,18 @@
                     <table class="table">
                         <thead>
                             <th style="text-align: center;">Ward Name</th>
-                            <th style="text-align: center;">Ward Image</th>
+                            <th style="text-align: center;">Ward Image and Map</th>
                         </thead>
                         <tbody>
                             @foreach($wards as $ward)
                             <tr>
                                 <td style="text-align: center;">{{ $ward->ward_name }}</td>
-                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}">Image</a></td>
+                                <td style="text-align: center;"><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank"> Click here to View Map</a></td>
                             </tr>
+                             <td>
+                                
+                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}"> click here to View Image</a></td>
+                            </td>
                             @endforeach
                         </tbody>
                     </table>

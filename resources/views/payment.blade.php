@@ -29,7 +29,7 @@
 					   @foreach($payment as $pay)
 					    <tr>
                             <td style="text-align:center">
-                                <a href="{{URL::to('/')}}/inputinvoice?id={{$pay->order_id}}" target="_blank">{{ $pay->order_id }}</a>
+                                 <a href="#" onclick="myFunction('{{ $pay->order_id }}')" id="voice">{{ $pay->order_id }}</a>
                             </td>
 					        <td style="text-align:center">{{ $pay->project_id}}</td>
 					        <td style="text-align:center">{{ $pay->c_name }}</td>
@@ -54,4 +54,18 @@
         </div>
     </div>
 </div>
+<script>
+function myFunction(arg) {
+
+var r = confirm("Do you want to edit invoice");
+    if (r == true) {
+      window.location.assign("{{URL::to('/')}}/inputinvoice?id="+arg);
+    } else {
+        document.getElementsById('voice').style.display ="none";
+    }
+
+
+   
+}
+</script>
 @endsection

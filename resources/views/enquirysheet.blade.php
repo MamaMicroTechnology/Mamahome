@@ -13,13 +13,15 @@
 				
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-					<p class="pull-left" >
-				Total Enquiry Count : {{ $totalenq }}</p>
-				
+					<p class="pull-left" style="padding-left: 50px;" id="display" >
+				</p>
+					
 					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
 				Enquiry Data
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
+			
+					
 			@if(Auth::user()->group_id == 1)
 				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
 			@elseif(Auth::user()->group_id == 17)
@@ -108,6 +110,19 @@
 						</tr>
 					</thead>
 					<tbody>
+						<?php $pro=0; $con=0; $total=0; ?>
+						@foreach($enquiries as $enquiry)
+
+							@if($enquiry->status == "Enquiry On Process")
+							<?php	$pro++; ?>
+							@endif
+							@if($enquiry->status == "Enquiry Confirmed")
+							<?php	$con++; ?>
+							@endif
+							<?php	$total++; ?>
+
+                        @endforeach
+                        
 						@foreach($enquiries as $enquiry)
 						@if($enquiry->status != "Not Processed")
 						{{--<tr class="{{ in_array($enquiry->project_id,$projectOrdersReceived) ? 'hidden' : '' }}">--}}
@@ -130,11 +145,7 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
-							@foreach($converter as $con)
-							@if($enquiry->converted_by == $con->id)
-								{{ $con->name}}
-							@endif
-							@endforeach
+								{{ $enquiry->converted_by}}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
@@ -168,8 +179,10 @@
 							</td>
 							
 						</tr>
+
 						@endif
 						@endforeach   
+						
 					</tbody>
 					 <tr>
 						<td style="text-align    : center"></td>
@@ -228,7 +241,9 @@ function myFunction() {
   // Declare variables
   var input, filter, table, tr, td, i;
   input = document.getElementById("myInput");
+
   filter = input.value.toUpperCase();
+
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
   // Loop through all table rows, and hide those who don't match the search query
@@ -249,6 +264,15 @@ function myFunction() {
 	      }
 	    }
 	  }
+	}
+	if(document.getElementById("myInput").value  == "Enquiry On Process"){
+		document.getElementById("display").innerHTML = "Enquiry On Process:  {{  $pro }}"
+	}
+	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
+		document.getElementById("display").innerHTML = "Enquiry Confirmed:  {{  $con }}"
+	}
+	else {
+		document.getElementById("display").innerHTML = "Total Enquiry Count:  {{  $total }}"
 	}
 }
 </script>
