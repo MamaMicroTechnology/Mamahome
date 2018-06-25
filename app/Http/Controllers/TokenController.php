@@ -319,7 +319,7 @@ class TokenController extends Controller
             $projectdetails->budgetType = $request->budgetType;
             $projectdetails->budget = $request->budget;
             $projectdetails->image = $projectimage;
-            $projectdetails->user_id = $request->user_id;
+            $projectdetails->user_id = $request->userid;
             
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
