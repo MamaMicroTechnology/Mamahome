@@ -303,15 +303,14 @@
     }
     ?>
     
-    function myFunction() {
+      <script type="text/javascript">
+        
+       
+function myFunction() {
 
- var x = document.getElementById("invoice");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-    window.print();
+ document.getElementById("invoice").style.display="none";
+   window.print();
+   document.getElementById("invoice").style.display="";
 }
     </script>
 @endsection
