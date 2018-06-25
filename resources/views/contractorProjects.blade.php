@@ -36,10 +36,7 @@
 					@endforeach
 					@else
 					<tr>
-						<td>{{ $conName->contractor_name }}</td>
-						<td>{{ $conName->contractor_contact_no }}</td>
-						<td>{{ $projects[$conName->contractor_contact_no]}}</td>
-						<td><a href="{{ URL::to('/') }}/viewProjects?no={{ $conName->contractor_contact_no }}">View Projects</a></td>
+						<td><a href="{{ URL::to('/') }}/viewProjects?no={{ $_GET['phone'] }}">View Projects</a></td>
 					</tr>
 					@endif
 				</tbody>

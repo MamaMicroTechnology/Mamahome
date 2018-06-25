@@ -18,6 +18,8 @@ use DB;
 use App\loginTime;
 use App\Requirement;
 
+use App\RoomType;
+
 use App\Http\Resources\Message as MessageResource;
 
 class TokenController extends Controller
@@ -261,6 +263,8 @@ class TokenController extends Controller
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
+
+
             if($request->municipality_approval != NULL){
                 $imageName1 = time().'.'.request()->municipality_approval->getClientOriginalExtension();
                 $request->municipality_approval->move(public_path('projectImages'),$imageName1);
@@ -375,5 +379,29 @@ public function enquiry(request $request){
         }
  } 
 
-           
+  public function getproject(request $request){
+
+    $project = ProjectDetails::where('user_id',$request->user_id)->get();
+    $projectIds = $project->pluck('project_id')->toArray();
+    $siteaddress = SiteAddress::where('project_id',$projectIds)->get();
+    $room = RoomType::where('project_id',$projectIds)->get();
+   //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
+     
+      if($project != null){
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectDetails'=>$siteaddress,'roomtypes'=>$room,'project_details'=>$project]);
+
+      }else{
+         return response()->json(['message'=>'No projects Found']);
+      }
+
+  }      
+  public function getenq(request $request){
+    $enq = Requirement::where('project_id',$request->project_id)->get();
+    if($enq != null){
+         return response()->json(['message' => 'true','project_id'=>$request->project_id,'EnqDetails'=>$enq]);
+
+      }else{
+         return response()->json(['message'=>'No enquires Found']);
+      }
+  }   
 }

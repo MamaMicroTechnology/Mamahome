@@ -621,6 +621,7 @@ class mamaController extends Controller
         $procurementDetails->procurement_email = $request->pEmail;
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
+        $no = $request->prPhone;
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
@@ -669,10 +670,8 @@ class mamaController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
-        return back()->with('Success','Project added successfully');
-
-      
-
+        $text = "Project added successfully.<br>Click <a href='viewProjects?no=".$no."'>here</a> to view material calculation";
+        return back()->with('Success',$text);
     }
     public function updateProject($id, Request $request)
     {

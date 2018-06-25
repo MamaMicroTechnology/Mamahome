@@ -2438,76 +2438,7 @@ class HomeController extends Controller
                     $projectids = $qua;
                 }
             }
-        if(Auth::user()->id == 51){
-            $projectids = [
-                4598,
-                4036,
-                4121,
-                4160,
-                4693,
-                5629,
-                5789,
-                10785
-            ];
-        }elseif(Auth::user()->id == 9){
-            $projectids = [
-                2957,
-                2990,
-                3029,
-                3030,
-                3055,
-                3074,
-                3165,
-                3171,
-                3181,
-                3204,
-                2206,
-                2216,
-                2254
-            ];
-        }elseif(Auth::user()->id == 12){
-            $projectids = [
-                2837,
-                2875,
-                1500,
-                1506,
-                1549,
-                1755,
-                1772,
-                1800,
-                3113,
-                3120,
-                10749
-            ];
-        }elseif(Auth::user()->id == 13){
-            $projectids = [
-                8590,
-                4172,
-                4176,
-                8645,
-                4179,
-                4229,
-                8739,
-                8757,
-                8801,
-                8861,
-                8906
-            ];
-        }elseif(Auth::user()->id == 93){
-            $projectids = [
-                2102,
-                8567,
-                6743,
-                1910,
-                6986,
-                2474,
-                2503,
-                6811,
-                1147,
-                1654,
-                8420
-            ];
-        }
+       
         $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
         if($checking != null){
             $projectids = explode(", ",$checking);
@@ -3675,10 +3606,20 @@ class HomeController extends Controller
                     ->where('activity','LIKE','%Updated a project%')->get();
         }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
             $date = $request->fromdate;
+            $from= $request->fromdate;
+            $to= $request->todate;
+            if($from == $to){
+                 $str = ActivityLog::where('time','like',$from.'%')
+                ->where('time','LIKE',$to."%")
+                ->where('activity','LIKE','%Updated a project%')->get();
+            }
+            else{
             $str = ActivityLog::where('time','>',$request->fromdate)
                     ->where('time','<',$request->todate)
                     ->where('activity','LIKE','%Updated a project%')->get();
+            }
         }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
+
             $date = $request->fromdate;
             $from= $request->fromdate;
             $to= $request->todate;
@@ -4687,9 +4628,6 @@ function enquirystore(request $request){
         $num =MamaSms::all();
         return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
     }
-   
-
-
     public function payment( request $request){
 
        $payment = Payment::all();

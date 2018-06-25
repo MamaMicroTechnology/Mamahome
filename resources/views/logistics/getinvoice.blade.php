@@ -6,6 +6,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">Mamahome Invoice</div>
                     <div class="panel-body">
+                   <center> <button onclick="myFunction()" id="invoice" class="btn btn-primary">Print The Invoice</button></center><br>
                     @foreach($invoices as $invoice)
                         <table class="table table-hover" border=1>
                             <tr>
@@ -301,4 +302,15 @@
         return $text;
     }
     ?>
+
+    <script type="text/javascript">
+        
+       
+function myFunction() {
+
+ document.getElementById("invoice").style.display="none";
+   window.print();
+   document.getElementById("invoice").style.display="";
+}
+    </script>
 @endsection

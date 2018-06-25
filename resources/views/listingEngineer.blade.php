@@ -11,8 +11,10 @@
                   @else
                   Your Assigned Ward is  {{$subwards->sub_ward_name}}
                   @endif
+                   
                   @if(session('Success'))
-                    <div class="alert-success pull-right">{{ session('Success')}} </div>
+
+                   <div class="btn btn-default btn-sm alert-success pull-right">{!! session('Success') !!} </div>
                   @endif
                   @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
@@ -380,7 +382,7 @@
                        <div id="seventh" class="hidden">
                             <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
                             <br>
-                            <button type="submit" class="form-control btn btn-primary">Submit Data</button>
+                            <button type="submit" class="form-control btn btn-primary" onsubmit="show()">Submit Data</button>
                        </div>                        
                        <ul class="pager">
                           <li class="previous"><a onclick="pagePrevious()" href="#">Previous</a></li>
@@ -399,6 +401,9 @@
   //   var current = new Date();
   //   document.getElementById("currentTime").innerHTML = current.toLocaleTimeString();
   // }
+  
+
+   
   function doDate()
   {
       var str = "";
