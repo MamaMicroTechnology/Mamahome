@@ -375,6 +375,18 @@ public function enquiry(request $request){
             return response()->json(['message'=>'Something went wrong']);
         }
  } 
+ public function getproject(request $request){
 
+    $project = ProjectDetails::where('user_id',$request->user_id)->get();
+   //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
+     
+      if($project != null){
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectDetails'=>$project]);
+
+      }else{
+         return response()->json(['message'=>'No projects Found']);
+      }
+
+  }  
            
 }
