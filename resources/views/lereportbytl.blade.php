@@ -75,9 +75,14 @@
 			<label>Morning</label>
 			<table class="table">
 				<tr>
-					<td>Login Time</td>
+					<td>Login Time in Web App</td>
 					<td>:</td>
 					<td>{{ $loginTimes->loginTime }}</td>
+				</tr>
+				<tr>
+					<td>Login Time in Tracking App</td>
+					<td>:</td>
+					<td>{{ $loginTimes->tracktime }}</td>
 				</tr>
 				<tr>
 					<td>Login Time to ward</td>
