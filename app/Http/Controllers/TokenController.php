@@ -386,11 +386,12 @@ public function enquiry(request $request){
  } 
 public function getproject(request $request){
     $projects = ProjectDetails::where('project_details.user_id',$request->user_id)
-                ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
-                ->leftJoin('room_types','project_details.project_id','room_types.project_id')
-                ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude',
-                       'room_types.room_type','room_types.floor_no','room_types.no_of_rooms')
-                ->get();
+                    ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+                    ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude')
+                    ->get();
+        $proj = $projects->pluck('project_id');
+        $rooms = RoomType::whereIn('project_id',$proj)->get();
+        $projects = $projects->merge($rooms);
    //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
       if($projects != null){
          return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
