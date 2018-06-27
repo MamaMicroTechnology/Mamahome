@@ -392,7 +392,7 @@ public function getproject(request $request){
                        'room_types.room_type','room_types.floor_no','room_types.no_of_rooms')
                 ->get();
    //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
-      if($project != null){
+      if($projects != null){
          return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
 
       }else{
