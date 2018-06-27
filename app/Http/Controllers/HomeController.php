@@ -1302,32 +1302,31 @@ class HomeController extends Controller
     {
 
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-        $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
-        
-        $projectCount = array();
+        $roads = ProjectDetails::where('sub_ward_id',$assignment)->select('road_name')->groupby('road_name')->paginate(10);
+
+        $roadname = ProjectDetails::where('sub_ward_id',$assignment)->groupby('road_name')->pluck('road_name');
+      
         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
-        foreach($roads as $road){
-            $genuine = ProjectDetails::where('road_name',$road)
+       
+        $projectcount = array();
+
+        foreach($roadname as $roadname){
+            $genuine = ProjectDetails::where('road_name',$roadname)
                                                     ->where('quality','Genuine')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
-            $null = ProjectDetails::where('road_name',$road)
+            $null = ProjectDetails::where('road_name',$roadname)
                                                     ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
-          $ro = ProjectDetails::where('road_name',$road)->pluck('project_id');
-          $ros = ProjectDetails::where('project_id',$ro)->pluck('created_at');
-          //dd($ros);
-
-
-                                                
-
-            $projectCount[$road] = $genuine + $null;
+            $projectCount[$roadname] = $null + $genuine;
 
         }
-  
 
-        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount,'ros'=>$ros]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname]);
+
+        
+
     }
     public function viewProjectList(Request $request)
     {
@@ -1560,21 +1559,26 @@ class HomeController extends Controller
     public function getRequirementRoads()
     {
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-        $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
-        $projectCount = array();
+        $roadname = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
+        $roads = ProjectDetails::where('sub_ward_id',$assignment)->select('road_name')->groupBy('road_name')->paginate(10);
+        $projectcount = array();
         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
-        foreach($roads as $road){
-            $genuine = ProjectDetails::where('road_name',$road)
+        
+        
+        $name = ProjectDetails::where('sub_ward_id',$assignment)->where('quality','Genuine')->select("road_name")->groupBy('road_name')->pluck("project_id");
+       
+        foreach($roadname as $roadw){
+            $genuine = ProjectDetails::where('road_name',$roadw)
                                                     ->where('quality','Genuine')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
-            $null = ProjectDetails::where('road_name',$road)
+            $null = ProjectDetails::where('road_name',$roadw)
                                                     ->where('quality','Unverified')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->count();
-            $projectCount[$road] = $null + $genuine;
+            $projectcount[$roadw] = $null + $genuine;
         }
-        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$road_name]);
     }
     public function projectRequirement(Request $request)
     {
@@ -1680,6 +1684,7 @@ class HomeController extends Controller
     public function getPayment(Request $request)
     {
         $total = $request->total;
+
         return view('payment.payment',['total'=>$total]);
     }
     public function getAMReports()
@@ -3670,15 +3675,36 @@ class HomeController extends Controller
                     ->where('activity','LIKE','%Updated a project%')->get();
         }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
             $date = $request->fromdate;
+            $from= $request->fromdate;
+            $to= $request->todate;
+            if($from == $to){
+                 $str = ActivityLog::where('time','like',$from.'%')
+                ->where('time','LIKE',$to."%")
+                ->where('activity','LIKE','%Updated a project%')->get();
+            }
+            else{
             $str = ActivityLog::where('time','>',$request->fromdate)
                     ->where('time','<',$request->todate)
                     ->where('activity','LIKE','%Updated a project%')->get();
+            }
         }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
+
             $date = $request->fromdate;
+            $from= $request->fromdate;
+            $to= $request->todate;
+            if($from == $to){
+              
+            $str = ActivityLog::where('time','like',$from.'%')
+                ->where('time','LIKE',$to."%")
+                ->where('employee_id',$request->se)
+                ->where('activity','LIKE','%Updated a project%')->get();
+            }
+            else{
             $str = ActivityLog::where('time','>',$request->fromdate)
                     ->where('time','<',$request->todate)
                     ->where('employee_id',$request->se)
                     ->where('activity','LIKE','%Updated a project%')->get();
+            }
         }else{
             $date = date('Y-m-d');
             $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
@@ -4594,9 +4620,17 @@ function enquirystore(request $request){
     }
     public function viewMap(Request $request)
     {
-        $zones = ZoneMap::where('zone_id',$request->zoneId)->first();
-        if($request->subWardId){
-            $zones = SubWardMap::where('sub_ward_id',$request->subWardId)->first();
+        $wards = Ward::where('zone_id',$request->zoneId)->pluck('id');
+        $zones = WardMap::whereIn('wards.id',$wards)
+                    ->leftJoin('wards','wards.id','ward_maps.ward_id')
+                    ->select('ward_maps.*','wards.ward_name as name')
+                    ->get();
+         if($request->wardId){
+             $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
+            $zones = SubWardMap::whereIn('sub_wards.id',$wards)
+                    ->leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
+                    ->get();
         }
         return view('maping.viewmap',['zones'=>$zones]);
     }
@@ -4646,14 +4680,11 @@ function enquirystore(request $request){
         $num =MamaSms::all();
         return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
     }
-   
-
-
     public function payment( request $request){
 
        $payment = Payment::all();
        $pay = Payment::all()->count();
-       $converter = user::get();
+       $converter = user::all();
        
         return view('/payment',['payment'=>$payment,'pay'=>$pay,'converter'=>$converter]);
     }

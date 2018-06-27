@@ -152,15 +152,10 @@
     });
 
     var infowindow = new google.maps.InfoWindow();
-    // var everythingElse = [
-    //   new google.maps.LatLng(0, -90),
-    //   new google.maps.LatLng(0, 90),
-    //   new google.maps.LatLng(90, -90),
-    //   new google.maps.LatLng(90, 90),
-    // ];
+   
     var marker, i;
     var subward = new google.maps.Polygon({
-        paths: newpath,
+        paths:  newpat,
         strokeColor: '#'+col,
         strokeOpacity: 1,
         strokeWeight: 2,
@@ -197,7 +192,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
+      zoom: 15.5,
       center: new google.maps.LatLng(locations[0][1], locations[0][2]),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -234,19 +229,14 @@
       })(marker, i));
     }
     if(newpath.length > 1){
-      var everythingElse = [
-        new google.maps.LatLng(0, -90),
-        new google.maps.LatLng(0, 90),
-        new google.maps.LatLng(90, -90),
-        new google.maps.LatLng(90, 90),
-      ];
+    
       var subward = new google.maps.Polygon({
-          paths: [everythingElse, newpath],
+          paths: newpath,
           strokeColor: '#'+col,
           strokeOpacity: 1,
           strokeWeight: 2,
           fillColor: '#'+col,
-          fillOpacity: 0.9
+          fillOpacity: 0.4
         });
     subward.setMap(map);
     }

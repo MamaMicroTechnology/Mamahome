@@ -44,3 +44,6 @@ Route::get('/authlogin','HomeController@authlogin');
 Route::post('/addProject','mamaController@addProject');
 Route::post('/addProject','TokenController@addProject');
 Route::post('/addenquiry','TokenController@enquiry');
+Route::get('/getproject','TokenController@getproject');
+Route::get('/getenq','TokenController@getenq');
+

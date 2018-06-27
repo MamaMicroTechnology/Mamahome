@@ -17,6 +17,7 @@ use App\SiteAddress;
 use DB;  
 use App\loginTime;
 use App\Requirement;
+use App\RoomType;
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -179,23 +180,27 @@ class TokenController extends Controller
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
-        }
-        return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+                    }
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+        
     }
         else{
             return response()->json(['message' => 'false']);
         }
     }
-    public function buyerLogin(Request $request)
+  public function buyerLogin(Request $request)
     {
         $messages = new Collection;
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+        if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
+        {
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
-        }else{
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
+        }
+        else{
             return response()->json(['message' => 'false']);
         }
     }
+
 
     public function saveLocation(Request $request)
     {
@@ -242,6 +247,7 @@ class TokenController extends Controller
              $type=null;
         }
 
+        
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
             if($statusCount > 1){
@@ -257,43 +263,51 @@ class TokenController extends Controller
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
+            
             if($request->municipality_approval != NULL){
-                $imageName1 = time().'.'.request()->municipality_approval->getClientOriginalExtension();
-                $request->municipality_approval->move(public_path('projectImages'),$imageName1);
-            }else{
-                $imageName1 = "N/A";
+             $data = $request->all();
+                $png_url = $request->userid."municipality_approval-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_url;
+                $img = $data['municipality_approval'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['municipality_approval']);   
+                $success = file_put_contents($path, $decoded);
+               
+;
             }
-            $i = 0;
+            else{
+                 $png_url  = "N/A";
+            }
+            
+
+      
             if($request->other_approvals){
-                foreach($request->other_approvals as $oApprove){
-                    $imageName2 = $i.time().'.'.$other_approvals->getClientOriginalExtension();
-                    $other_approvals->move(public_path('projectImages'),$imageName2);
-                    if($i == 0){
-                        $otherApprovals .= $imageName2;
-                    }else{
-                        $otherApprovals .= ", ".$imageName2;
-                    }
-                    $i++;
-                }
-            }else{
-             $otherApprovals=null;   
+                $data = $request->all();
+                $png_other = $request->userid."other_approvals-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_other;
+                $img = $data['other_approvals'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['other_approvals']);   
+                $success = file_put_contents($path, $decoded);
+                  
+                
             }
-            $i = 0;
-            if($request->image){
-                foreach($request->image as $pimage){
-                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
-                     $pimage->move(public_path('projectImages'),$imageName3);
-                     if($i == 0){
-                        $projectimage .= $imageName3;
-                     }
-                     else{
-                            $projectimage .= ",".$imageName3;
-                     }
-                     $i++;
-                }
-        
-            }else{
-                $projectimage=null;
+            else{
+              $png_other = null;   
+            }
+          
+          if($request->image){
+                $data = $request->all();
+                $png_project =$request->userid."project_image-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_project;
+                $img = $data['image'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['image']);   
+                $success = file_put_contents($path, $decoded);
+
+            }
+            else{
+                $png_project = null;
             }
            
             
@@ -306,13 +320,14 @@ class TokenController extends Controller
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
             $projectdetails->road_name = $request->road_name;
-            $projectdetails->municipality_approval = $imageName1;
-            $projectdetails->other_approvals = $otherApprovals;
+            $projectdetails->municipality_approval = $png_url;
+            $projectdetails->other_approvals = $png_other;
             $projectdetails->project_status = $statuses;
             $projectdetails->project_size = $request->project_size;
             $projectdetails->budgetType = $request->budgetType;
             $projectdetails->budget = $request->budget;
-            $projectdetails->image = $projectimage;
+            $projectdetails->image = $png_project;
+            $projectdetails->user_id = $request->userid;
             
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
@@ -346,6 +361,7 @@ class TokenController extends Controller
 
             $siteaddress = New SiteAddress;
             $siteaddress->project_id = $projectdetails->id;
+            
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
@@ -354,14 +370,14 @@ class TokenController extends Controller
             return response()->json(['message'=>'Something went wrong']);
         }
     }
-    public function enquiry(request $request){
+public function enquiry(request $request){
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
-        $enquiry->main_caegory = $request->main_caegory;
+        $enquiry->main_category = $request->main_category;
         $enquiry->brand = $request->brand;
         $enquiry->sub_category = $request->sub_category;
-        $enquiry->reqirement_date = $request->reqirement_date;
-        $enquiry->notes = $request->remark;
+        $enquiry->requirement_date = $request->requirement_date;
+        $enquiry->notes = $request->notes;
         $enquiry->A_contact = $request->A_contact;
         $enquiry->save();
           if($enquiry->save() ){
@@ -371,5 +387,31 @@ class TokenController extends Controller
         }
  } 
 
+ public function getproject(request $request){
+
+    $project = ProjectDetails::where('user_id',$request->user_id)->get();
+    $projectIds = $project->pluck('project_id')->toArray();
+    $siteaddress = SiteAddress::where('project_id',$projectIds)->get();
+    $room = RoomType::where('project_id',$projectIds)->get();
+   //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
+     
+      if($project != null){
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectDetails'=>$siteaddress,'roomtypes'=>$room,'project_details'=>$project]);
+
+      }else{
+         return response()->json(['message'=>'No projects Found']);
+      }
+
+  }      
+  public function getenq(request $request){
+    $enq = Requirement::where('project_id',$request->project_id)->get();
+    if($enq != null){
+         return response()->json(['message' => 'true','project_id'=>$request->project_id,'EnqDetails'=>$enq]);
+
+      }else{
+         return response()->json(['message'=>'No enquires Found']);
+      }
+  }   
+           
 }
            
