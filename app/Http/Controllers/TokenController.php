@@ -385,23 +385,15 @@ public function enquiry(request $request){
         }
  } 
 public function getproject(request $request){
-    $project_details = array();
-    $project = ProjectDetails::where('user_id',$request->user_id)->get();
-
-    $projectIds = $project->pluck('project_id')->toArray();
-    $siteaddress = SiteAddress::where('project_id',$projectIds)->get();
-    $room = RoomType::where('project_id',$projectIds)->get();
-    foreach($projectIds as $ids){
-        $proj = ProjectDetails::where('project_id',$ids)->first();
-        $siteaddress = SiteAddress::where('project_id',$ids)->first();
-        $room = RoomType::where('project_id',$ids)->get();
-        array_push($project_details, $proj->toArray());
-        array_push($project_details, $siteaddress->toArray());
-        array_push($project_details, $room->toArray());
-    }
+    $projects = ProjectDetails::where('project_details.user_id',$request->user_id)
+                leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+                leftJoin('room_types','project_details.project_id','room_types.project_id')
+                select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude',
+                       'room_types.room_type','room_types.floor_no','room_types.no_of_rooms')
+                ->get();
    //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
       if($project != null){
-         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$project_details]);
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
 
       }else{
          return response()->json(['message'=>'No projects Found']);
