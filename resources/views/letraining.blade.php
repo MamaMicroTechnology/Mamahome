@@ -19,7 +19,7 @@
 							
 									<div class="col-md-4 " style="border: solid 1px green;">
 		    						<br>
-									<video class="img img-responsive" >
+									<video class="img img-responsive" controls >
 		                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/mp4">
 		                                      <source src="{{ URL::to('/') }}/public/trainingvideo/{{ $video->upload }}" type="video/ogg">
 		                              
