@@ -534,6 +534,7 @@ div#calendar{
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
+     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
     <a href="{{ URL::to('/tltracking') }}">Tracking</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>  
