@@ -179,7 +179,7 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15.5,
+      zoom: 16,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -283,3 +283,4 @@
 </script>
 @endif
 @endsection
+
