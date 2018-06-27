@@ -34,5 +34,35 @@
         </div>
     </div>
 </center>
-
+<div class="col-md-4 col-md-offset-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">MINI ATTENDANCE ({{ date('d-m-Y') }})</div>
+        <div class="panel-body">
+        <table class="table table-hover">
+        
+        
+            @foreach($loggedInUsers as $loggedInUser)
+            @if($loggedInUser->id = 1|| $loggedInUser->id = 2)
+                <tr>
+                    <td>{{ $loggedInUser->empId }}</td>
+                    <td>{{ $loggedInUser->name }}</td>
+                    <td>{{ $loggedInUser->inTIme }}</td>
+                    <td>{{ $loggedInUser->outTime }}</td>
+               </tr>
+                @endif
+                
+            @endforeach
+            @foreach($leLogins as $leLogin)
+            @if($leLogin->id ==1 || $leLogin->id == 2)
+                <tr>
+                    <td>{{ $leLogin->employeeId }}</td>
+                    <td>{{ $leLogin->name }}</td>
+                    <td>{{ $leLogin->loginTime }}</td>
+                </tr>
+                @endif
+            @endforeach
+        </table>
+        </div>
+    </div>
+</div>
 @endsection

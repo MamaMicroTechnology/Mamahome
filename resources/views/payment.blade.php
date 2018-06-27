@@ -68,4 +68,8 @@ var r = confirm("Do you want to edit invoice");
    
 }
 </script>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> master

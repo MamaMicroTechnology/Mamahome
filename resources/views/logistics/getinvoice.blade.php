@@ -302,8 +302,13 @@
         return $text;
     }
     ?>
+<<<<<<< HEAD
 
     <script type="text/javascript">
+=======
+    
+      <script type="text/javascript">
+>>>>>>> master
         
        
 function myFunction() {
@@ -313,4 +318,8 @@ function myFunction() {
    document.getElementById("invoice").style.display="";
 }
     </script>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> master

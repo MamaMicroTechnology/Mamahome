@@ -136,9 +136,9 @@ class ContractorController extends Controller
       $tpn = 0;
       $dbdoor = 0;
       $table = "<tr><td colspan='8'><center>Material Estimation prices may vary according to Market Price</center></td></tr>
-      <tr><td colspan='8'><center>MAMAHOME provides Discount of 15 to 20% of the  total cost</center></td></tr>
+     
       <tr><th>Category</th><th>Products</th><th>UOM</th><th>Nos.</th>
-        <th>Total Material</th><th>MRP</th><th>TOTAL</th><th>MHP</th></tr>";
+        <th>Total Material</th><th>MRP</th><th>Total</th><th>Total MHP</th></tr>";
       $projectIds = ContractorDetails::where('contractor_contact_no',$request->no)->pluck('project_id');
       $procurement = ProcurementDetails::where('procurement_contact_no',$request->no)->pluck('project_id');
       $projectIds = $projectIds->merge($procurement);

@@ -82,7 +82,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
+        zoom: 12,
         center: new google.maps.LatLng(locations[0][1], locations[0][2]),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });

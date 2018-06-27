@@ -17,8 +17,8 @@ use App\SiteAddress;
 use DB;  
 use App\loginTime;
 use App\Requirement;
-
 use App\RoomType;
+
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -189,7 +189,7 @@ class TokenController extends Controller
             return response()->json(['message' => 'false']);
         }
     }
-    public function buyerLogin(Request $request)
+  public function buyerLogin(Request $request)
     {
         $messages = new Collection;
         if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
@@ -201,6 +201,7 @@ class TokenController extends Controller
             return response()->json(['message' => 'false']);
         }
     }
+
 
     public function saveLocation(Request $request)
     {
@@ -263,45 +264,51 @@ class TokenController extends Controller
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
-
-
+            
             if($request->municipality_approval != NULL){
-                $imageName1 = time().'.'.request()->municipality_approval->getClientOriginalExtension();
-                $request->municipality_approval->move(public_path('projectImages'),$imageName1);
-            }else{
-                $imageName1 = "N/A";
+             $data = $request->all();
+                $png_url = $request->userid."municipality_approval-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_url;
+                $img = $data['municipality_approval'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['municipality_approval']);   
+                $success = file_put_contents($path, $decoded);
+               
+;
             }
-            $i = 0;
+            else{
+                 $png_url  = "N/A";
+            }
+            
+
+      
             if($request->other_approvals){
-                foreach($request->other_approvals as $oApprove){
-                    $imageName2 = $i.time().'.'.$other_approvals->getClientOriginalExtension();
-                    $other_approvals->move(public_path('projectImages'),$imageName2);
-                    if($i == 0){
-                        $otherApprovals .= $imageName2;
-                    }else{
-                        $otherApprovals .= ", ".$imageName2;
-                    }
-                    $i++;
-                }
-            }else{
-             $otherApprovals=null;   
+                $data = $request->all();
+                $png_other = $request->userid."other_approvals-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_other;
+                $img = $data['other_approvals'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['other_approvals']);   
+                $success = file_put_contents($path, $decoded);
+                  
+                
             }
-            $i = 0;
-            if($request->image){
-                foreach($request->image as $pimage){
-                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
-                     $pimage->move(public_path('projectImages'),$imageName3);
-                     if($i == 0){
-                        $projectimage .= $imageName3;
-                     }
-                     else{
-                            $projectimage .= ",".$imageName3;
-                     }
-                     $i++;
-                }
-        
-            }else{
-                $projectimage=null;
+            else{
+              $png_other = null;   
+            }
+          
+          if($request->image){
+                $data = $request->all();
+                $png_project =$request->userid."project_image-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_project;
+                $img = $data['image'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['image']);   
+                $success = file_put_contents($path, $decoded);
+
+            }
+            else{
+                $png_project = null;
             }
            
             
@@ -314,13 +321,14 @@ class TokenController extends Controller
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
             $projectdetails->road_name = $request->road_name;
-            $projectdetails->municipality_approval = $imageName1;
-            $projectdetails->other_approvals = $otherApprovals;
+            $projectdetails->municipality_approval = $png_url;
+            $projectdetails->other_approvals = $png_other;
             $projectdetails->project_status = $statuses;
             $projectdetails->project_size = $request->project_size;
             $projectdetails->budgetType = $request->budgetType;
             $projectdetails->budget = $request->budget;
-            $projectdetails->image = $projectimage;
+            $projectdetails->image = $png_project;
+            $projectdetails->user_id = $request->userid;
             
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
@@ -328,6 +336,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
+            $projectdetails->user_id = $request->user_id;
            
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
@@ -369,7 +378,7 @@ public function enquiry(request $request){
         $enquiry->brand = $request->brand;
         $enquiry->sub_category = $request->sub_category;
         $enquiry->requirement_date = $request->requirement_date;
-        $enquiry->notes = $request->remark;
+        $enquiry->notes = $request->notes;
         $enquiry->A_contact = $request->A_contact;
         $enquiry->save();
           if($enquiry->save() ){
@@ -379,7 +388,7 @@ public function enquiry(request $request){
         }
  } 
 
-  public function getproject(request $request){
+ public function getproject(request $request){
 
     $project = ProjectDetails::where('user_id',$request->user_id)->get();
     $projectIds = $project->pluck('project_id')->toArray();
@@ -404,4 +413,6 @@ public function enquiry(request $request){
          return response()->json(['message'=>'No enquires Found']);
       }
   }   
+           
 }
+           

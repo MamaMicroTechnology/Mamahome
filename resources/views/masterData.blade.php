@@ -176,7 +176,7 @@
                         <table class="table table-responsive table-hover">
                             <thead>
                                 <th>Subward Name</th>
-                                <th><center>Ward Image</center></th>
+                                <th><center>Ward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>

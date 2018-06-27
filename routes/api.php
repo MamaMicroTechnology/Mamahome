@@ -47,4 +47,3 @@ Route::post('/addenquiry','TokenController@enquiry');
 Route::get('/getproject','TokenController@getproject');
 Route::get('/getenq','TokenController@getenq');
 
-
