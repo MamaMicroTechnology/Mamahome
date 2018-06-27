@@ -126,7 +126,6 @@
 								
 							@endif
 
-
 							@if($enquiry->status == "Enquiry Confirmed")
 							<?php	$con++; 
 							 $quantity = explode(", ",$enquiry->quantity); ?>
@@ -137,6 +136,7 @@
 								@endfor
 
 							@endif
+
 							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")
 							<?php  $total++; 
 							 $quantity = explode(", ",$enquiry->quantity); ?>
@@ -169,7 +169,11 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
-								{{ $enquiry->converted_by}}
+							@foreach($converter as $convert)
+								@if($enquiry->converted_by == $convert->id)
+								{{ $convert->name}}
+								@endif
+							@endforeach
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
@@ -277,7 +281,6 @@ function myFunction() {
         tr[i].style.display = "";
 	  }
 	}else{
-
 		for (i = 0; i < tr.length; i++) {
 	    td = tr[i].getElementsByTagName("td")[11];
 	    if (td) {
@@ -295,10 +298,9 @@ function myFunction() {
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		
-		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed :  {{ $sum1 }}"
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ $sum1 }}"
 	}
 	else {
-		
 		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{  $sum2 }}"
 	}
 }

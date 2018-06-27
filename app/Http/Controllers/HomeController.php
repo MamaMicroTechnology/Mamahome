@@ -1166,6 +1166,28 @@ class HomeController extends Controller
     }
     public function leDashboard()
     {
+
+        $date = date('Y-m-d');
+        $users = User::where('department_id','1')->where('group_id','6')
+                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
+                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
+        $accusers = User::where('department_id','2')->where('group_id','11')
+                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
+                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
+        foreach($accusers as $user){
+                $totalaccount[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+        }
+        foreach($users as $user){
+                $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+        }
         $ordersInitiated = Requirement::where('generated_by',Auth::user()->id)
                             ->count();
         $ordersConfirmed = Requirement::where('generated_by',Auth::user()->id)
@@ -1255,8 +1277,11 @@ class HomeController extends Controller
                                                 'totalprojects'=>$totalprojects,
                                                 'genuineprojects'=>$genuineprojects,
                                                 'unverifiedprojects'=>$unverifiedprojects,
-                                                'fakeprojects'=>$fakeprojects
-
+                                                'fakeprojects'=>$fakeprojects,
+                                                'totalListing'=> $totalListing,
+                                                'users'=>$users,
+                                                'accusers'=>$accusers,
+                                                'totalaccount'=>$totalaccount
                                                 // 'total'=>$total
                                                 ]);
     }
