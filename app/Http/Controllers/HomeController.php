@@ -3777,6 +3777,7 @@ class HomeController extends Controller
                 $projectIds[$i]['enquiryInitiated'] = "";
                 $projectIds[$i]['enquiryInitiatedBy'] = "";
            }
+            
         }
         $noOfCalls = array();
         $users = User::where('department_id',2)
