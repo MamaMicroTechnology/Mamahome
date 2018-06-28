@@ -385,19 +385,27 @@ public function enquiry(request $request){
         }
  } 
 public function getproject(request $request){
-     $projects = ProjectDetails::where('project_details.user_id',$request->user_id)
+  $project = ProjectDetails::where('project_details.user_id',$request->user_id)
                     ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
                     ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude')
                     ->get();
-        
-      if($projects != null){
-         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
+      if($project != null){
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$project]);
 
       }else{
          return response()->json(['message'=>'No projects Found']);
       }
 
-  }      
+  }  
+ public function getsingleProject(Request $request)
+    {
+        $project = ProjectDetails::where('project_details.project_id',$request->project_id)
+                    ->leftJoin('room_types','project_details.project_id','room_types.project_id')
+                    ->select('room_types.*')
+                    ->get();
+       
+        return response()->json(['projectdetails'=>$project]);
+    }       
   public function getenq(request $request){
     $enq = Requirement::where('project_id',$request->project_id)->get();
     if($enq != null){
