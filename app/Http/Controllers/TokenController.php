@@ -333,7 +333,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
-            $projectdetails->user_id = $request->user_id;
+            
            
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
