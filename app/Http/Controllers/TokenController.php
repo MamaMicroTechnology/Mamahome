@@ -389,13 +389,9 @@ public function getproject(request $request){
                     ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
                     ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude')
                     ->get();
-        $project_details = array();
-        foreach($projects as $project){
-            $rooms = RoomType::where('project_id',$project->project_id)->get();
-            array_push($project_details,['project_details'=>$project,'room_types'=>$rooms]);
-        }
+        
       if($projects != null){
-         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$project_details]);
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
 
       }else{
          return response()->json(['message'=>'No projects Found']);
