@@ -3758,17 +3758,25 @@ class HomeController extends Controller
             }
             $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->first();
             if($project != null){
-            $projectIds[$i]['quality'] = $project->quality;
-            $projectIds[$i]['followup'] = $project->followup;
-            $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
-            $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
-            $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
-            $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
-            $projectIds[$i]['enquiryInitiatedBy'] = Requirement::where('requirements.project_id',$projectIds[$i]['projectId'])
-                                                        ->leftjoin('users','requirements.generated_by','users.id')
-                                                        ->select('users.name','requirements.id')
-                                                        ->get();   
-            }
+                $projectIds[$i]['quality'] = $project->quality;
+                $projectIds[$i]['followup'] = $project->followup;
+                $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
+                $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
+                $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
+                $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
+                $projectIds[$i]['enquiryInitiatedBy'] = Requirement::where('requirements.project_id',$projectIds[$i]['projectId'])
+                                                            ->leftjoin('users','requirements.generated_by','users.id')
+                                                            ->select('users.name','requirements.id')
+                                                            ->get();
+            }else{
+                $projectIds[$i]['quality'] = "";
+                $projectIds[$i]['followup'] = "";
+                $projectIds[$i]['followupby'] = "";
+                $projectIds[$i]['caller'] = "";
+                $projectIds[$i]['sub_ward_name'] = "";
+                $projectIds[$i]['enquiryInitiated'] = "";
+                $projectIds[$i]['enquiryInitiatedBy'] = "";
+           }
         }
         $noOfCalls = array();
         $users = User::where('department_id',2)
