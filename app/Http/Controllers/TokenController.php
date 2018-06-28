@@ -402,7 +402,7 @@ public function getproject(request $request){
         $project = ProjectDetails::where('project_details.project_id',$request->project_id)
                     ->leftJoin('room_types','project_details.project_id','room_types.project_id')
                     ->select('room_types.*')
-                    ->get();
+                    ->first();
        
         return response()->json(['projectdetails'=>$project]);
     }       
