@@ -424,6 +424,6 @@ public function getproject(request $request){
         $brand = brand::all();
         $sub_cat = SubCategory::all();   
 
-        return response()->json(['category'=>$category,'brand '=>$brand,'$sub_cat'=>$sub_cat]);    
+        return response()->json(['category'=>$category,'brand'=>$brand,'sub_cat'=>$sub_cat]);    
       }         
 }
