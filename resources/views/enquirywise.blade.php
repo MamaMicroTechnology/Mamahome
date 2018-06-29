@@ -31,7 +31,7 @@
                             <td>{{ $project->status }}  </td> 
                             <td>{{ $project->notes }} </td>
                             
-                            <td><a href="{{ URL::to('/') }}/editenq?reqId={{ $project->project_id }}" class="btn btn-xs btn-primary">Edit</a></td>
+                            <td><a href="{{ URL::to('/') }}/editenq?reqId={{ $project->id }}" class="btn btn-xs btn-primary">Edit</a></td>
 
                        </tr>
                        @endforeach

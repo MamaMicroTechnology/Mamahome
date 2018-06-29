@@ -784,7 +784,7 @@ class HomeController extends Controller
                     ->leftjoin('site_engineer_details','requirements.project_id','site_engineer_details.project_id')
                     ->leftjoin('consultant_details','requirements.project_id','consultant_details.project_id')
                     ->leftjoin('site_addresses','requirements.project_id','=','site_addresses.project_id')
-                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
+                    ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no','requirements.id')
                     ->first();
                    
         return view('editEnq',['enq'=>$enq,'category'=>$category,'users'=>$users]);
@@ -1584,7 +1584,7 @@ class HomeController extends Controller
                                                     ->count();
             $projectcount[$roadw] = $null + $genuine;
         }
-        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$road_name]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadsname]);
     }
     public function projectRequirement(Request $request)
     {
@@ -3666,7 +3666,10 @@ class HomeController extends Controller
                 $projectIds[$i]['updater'] = $exploded[$i][$name-1];
             }
             $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->first();
+            dd($project);
+             
             $projectIds[$i]['quality'] = $project->quality;
+
             $projectIds[$i]['followup'] = $project->followup;
             $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
             $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
@@ -3676,6 +3679,7 @@ class HomeController extends Controller
                                                         ->leftjoin('users','requirements.generated_by','users.id')
                                                         ->select('users.name','requirements.id')
                                                         ->get();                                       
+
         }
         $noOfCalls = array();
         $users = User::where('department_id',2)

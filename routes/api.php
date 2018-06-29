@@ -45,5 +45,9 @@ Route::post('/addProject','mamaController@addProject');
 Route::post('/addProject','TokenController@addProject');
 Route::post('/addenquiry','TokenController@enquiry');
 Route::get('/getproject','TokenController@getproject');
+Route::get('/getsingleproject','TokenController@getsingleProject');
+
+
+
 Route::get('/getenq','TokenController@getenq');
 
