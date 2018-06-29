@@ -18,6 +18,10 @@ use DB;
 use App\loginTime;
 use App\Requirement;
 use App\RoomType;
+use App\Category;
+use App\SubCategory;
+use App\brand;
+
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -415,5 +419,11 @@ public function getproject(request $request){
          return response()->json(['message'=>'No enquires Found']);
       }
   }   
-           
+   public function getbrands(Request $request){
+        $category = Category::all();
+        $brand = brand::all();
+        $sub_cat = SubCategory::all();   
+
+        return response()->json(['category'=>$category,'brand '=>$brand,'$sub_cat'=>$sub_cat]);    
+      }         
 }
