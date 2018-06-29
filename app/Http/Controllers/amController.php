@@ -311,7 +311,7 @@ class amController extends Controller
         $mhome->description= $request->desc;
         $mhome->company= $request->cmp;
         $mhome->date= $request->tdate;
-        $mhome->bill= '';
+        $mhome->bill= $billimage;
         $mhome->remark =$request->remark;
         $mhome->save();
 
