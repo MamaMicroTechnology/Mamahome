@@ -17,6 +17,7 @@ use App\SiteAddress;
 use DB;  
 use App\loginTime;
 use App\Requirement;
+use App\RoomType;
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -374,7 +375,30 @@ public function enquiry(request $request){
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }
- } 
+    }
+    public function getprojects(request $request){
+        $projects = ProjectDetails::where('user_id',$request->user_id)
+                    ->get();
+        if($projects != null){
+            return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
 
-           
+        }else{
+            return response()->json(['message'=>'No projects Found']);
+        }
+    }
+    public function getProject(Request $request)
+    {
+        $project = ProjectDetails::where('project_details.project_id',$request->project_id)
+                    ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+                    ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude')
+                    ->first();
+        $rooms = RoomType::where('project_id',$request->project_id)->get();
+        $project = $project->toArray();
+        foreach($rooms as $room){
+            array_push($project,$room->room_type);
+            array_push($project,$room->floor_no);
+            array_push($project,$room->no_of_rooms);
+        }
+        return response()->json(['projectdetails'=>$project]);
+    }          
 }

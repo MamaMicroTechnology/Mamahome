@@ -3973,8 +3973,8 @@ public function assigndate(request $request )
     }
     public function getLeTracking(Request $request)
     {
-        $groupid = [6,11,17];
-        $users = User::whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
+        $tracking = UserLocation::where('created_at','LIKE',date('Y-m-d')."%")->pluck('user_id')->toArray();
+        $users = User::whereIn('id',$tracking)->get();
         if($request->userId){
             $track = UserLocation::where('user_id',$request->userId)
                         ->where('created_at','LIKE',date('Y-m-d')."%")
@@ -4681,5 +4681,17 @@ function enquirystore(request $request){
        
         return view('/payment',['payment'=>$payment,'pay'=>$pay,'converter'=>$converter]);
     }
-
+    public function sendSMS(Request $request)
+    {
+        // $nexmo = app('Nexmo\Client');
+        // if($request->number && $request->content){
+            // $nexmo->message()->send([
+            //     'to'   => $request->number,
+            //     'from' => "MAMAHOME",
+            //     'text' => $request->content
+            // ]);
+            // return redirect('/sendSMS');
+        // }
+        return view('sendSMS');
+    }
 }

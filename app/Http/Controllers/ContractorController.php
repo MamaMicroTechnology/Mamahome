@@ -757,7 +757,7 @@ class ContractorController extends Controller
       }
         $table .="<tr><td>Cement</td><td>OPC</td><td>Bags</td>
                 <td>".round($totalcementOPC)."</td><td rowspan='2'>".round($totalcementPPC+$totalcementOPC)."</td>
-                <td>380</td><td rowspan='2'>".(round($totalcementPPC+$totalcementOPC)*380)."</td><td rowspan='2'>".((round($totalcementPPC+$totalcementOPC)*380)*0.8)."</td></tr>";
+                <td>380</td><td rowspan='2'>".(round($totalcementPPC+$totalcementOPC)*380)."</td><td rowspan='2'>".((round($totalcementPPC+$totalcementOPC)*270)*0.8)."</td></tr>";
         $table .="<tr><td></td><td>PPC</td><td>Bags</td>
                 <td>".round($totalcementPPC)."</td>
                 <td>375</td></tr>";
@@ -769,85 +769,85 @@ class ContractorController extends Controller
                 <td>1500</td></tr>";
         $table .="<tr><td>Jelly</td><td>12mm</td><td>Tons</td>
                 <td>".round($totaljelly12mmTons)."</td><td rowspan='2'>".round($totaljelly12mmTons+$totaljelly20mmTons)."</td>
-                <td>400</td><td rowspan='2'>".(round($totaljelly12mmTons + $totaljelly20mmTons) * 400)."</td><td rowspan='2'>0</td></tr>";
+                <td>800</td><td rowspan='2'>".(round($totaljelly12mmTons + $totaljelly20mmTons) * 800)."</td><td rowspan='2'>".(round($totaljelly12mmTons + $totaljelly20mmTons) * 750)."</td></tr>";
         $table .="<tr><td></td><td>20mm</td><td>Tons</td>
                 <td>".round($totaljelly20mmTons)."</td>
-                <td>400</td></tr>";
+                <td></td></tr>";
         $table .="<tr><td>Steel</td><td>8mm</td><td>Tons</td>
                 <td>".round($totalsteel8)."</td><td rowspan='5'>".round($totalSteel)."</td>
-                <td>54000</td><td>".(round($totalsteel8) * 54000)."</td><td>0</td></tr>";
+                <td>5350</td><td>".(round($totalsteel8) * 53500)."</td><td>".(round($totalsteel8) * 52540)."</td></tr>";
         $table .="<tr><td></td><td>10mm</td><td>Tons</td>
                 <td>".round($totalsteel10)."</td>
-                <td>53000</td><td>".(round($totalsteel10) * 53000)."</td><td>0</td></tr>";
+                <td rowspan='3'>53000</td><td rowspan='3'>".(round($totalsteel10) * 53000)."</td><td rowspan='3'>".(round($totalsteel10) * 51540)."</td></tr>";
         $table .="<tr><td></td><td>12mm</td><td>Tons</td>
                 <td>".round($totalsteel12)."</td>
-                <td>53000</td><td>".(round($totalsteel12) * 53000)."</td><td>0</td></tr>";
+                </tr>";
         $table .="<tr><td></td><td>16mm</td><td>Tons</td>
                 <td>".round($totalsteel18)."</td>
-                <td>53000</td><td>".(round($totalsteel18) * 53000)."</td><td>0</td></tr>";
+                </tr>";
         $table .="<tr><td></td><td>20mm</td><td>Tons</td>
                 <td></td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td></td><td></td><td></td></tr>";
         $table .="<tr><td>Blocks</td><td>6\"</td><td>Nos</td>
                 <td>".round($totalblocks6)."</td><td rowspan='2'>".round($totalblocks6+$totalblocks4)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>35</td><td>".round($totalblocks6 * 35)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>4\"</td><td>Nos</td>
                 <td>".round($totalblocks4)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
+                <td>30</td><td>".round($totalblocks4 * 30)."</td><td>0</td></tr>";
         $table .="<tr><td>Electrical</td><td>Fan</td><td>Nos</td>
                 <td>".$fan."</td><td></td>
-                <td>380</td><td>".($fan * 380)."</td><td>0</td></tr>";
+                <td>2510</td><td>".($fan * 2510)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>LED Tube Light</td><td>Nos</td>
                 <td>".$led."</td><td></td>
-                <td>380</td><td>".($led * 380)."</td><td>0</td></tr>";
+                <td>790</td><td>".($led * 790)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>8M Metal Box</td><td>Nos</td>
                 <td>".$metalbox8."</td><td></td>
-                <td>380</td><td>".($metalbox8 * 380)."</td><td>0</td></tr>";
+                <td>132</td><td>".($metalbox8 * 132)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>8M Cover Frame</td><td>Nos</td>
                 <td>".$cover."</td><td></td>
-                <td>380</td><td>".($cover * 380)."</td><td>0</td></tr>";
+                <td>177</td><td>".($cover * 177)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>15 A Sockets</td><td>Nos</td>
                 <td>".$socket15a."</td><td></td>
-                <td>380</td><td>".($socket15a * 380)."</td><td>0</td></tr>";
+                <td>168</td><td>".($socket15a * 168)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>15 A Switches</td><td>Nos</td>
                 <td>".$switches15a."</td><td></td>
-                <td>380</td><td>".($switches15a * 380)."</td><td>0</td></tr>";
+                <td>115</td><td>".($switches15a * 115)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Two way switches</td><td>Nos</td>
                 <td>".$twoway."</td><td></td>
-                <td>380</td><td>".($twoway * 380)."</td><td>0</td></tr>";
+                <td>107</td><td>".($twoway * 107)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>5 A Switches</td><td>Nos</td>
                 <td>".$switches5a."</td><td></td>
-                <td>380</td><td>".($switches5a * 380)."</td><td>0</td></tr>";
+                <td>51</td><td>".($switches5a * 51)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>5 A Sockets </td><td>Nos</td>
                 <td>".$sockets5a."</td><td></td>
-                <td>380</td><td>".($sockets5a * 380)."</td><td>0</td></tr>";
+                <td>107</td><td>".($sockets5a * 107)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Plastic Exhaust Fan</td><td>Nos</td>
                 <td>".$plasticexhaust."</td><td></td>
-                <td>380</td><td>".($plasticexhaust * 380)."</td><td>0</td></tr>";
+                <td>1560</td><td>".($plasticexhaust * 1560)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Metal Exhaust Fan</td><td>Nos</td>
                 <td>".$metalexhaust."</td><td></td>
-                <td>380</td><td>".($metalexhaust * 380)."</td><td>0</td></tr>";
+                <td>1460</td><td>".($metalexhaust * 1460)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>LED Bulb</td><td>Nos</td>
                 <td>".$ledbulb."</td><td></td>
-                <td>380</td><td>".($ledbulb * 380)."</td><td>0</td></tr>";
+                <td>120</td><td>".($ledbulb * 120)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Wiring 14/2 90MTS</td><td>Nos</td>
                 <td>".round($wiring142)."</td><td></td>
-                <td>380</td><td>".(round($wiring142) * 380)."</td><td>0</td></tr>";
+                <td>2590</td><td>".(round($wiring142) * 2590)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Wiring 12/2 90MTS</td><td>Nos</td>
                 <td>".round($wiring122)."</td><td></td>
-                <td>380</td><td>".(round($wiring122) * 380)."</td><td>0</td></tr>";
+                <td>3800</td><td>".(round($wiring122) * 3800)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>Wiring 14/3 90MTS</td><td>Nos</td>
                 <td>".round($wiring143)."</td><td></td>
-                <td>380</td><td>".(round($wiring143) * 380)."</td><td>0</td></tr>";
+                <td>1600</td><td>".(round($wiring143) * 1600)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>MCB 25A</td><td>Nos</td>
                 <td>".$mcb."</td><td></td>
                 <td>380</td><td>".($mcb * 380)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>TPN Distribution Board</td><td>Nos</td>
                 <td>".$tpn."</td><td></td>
-                <td>380</td><td>".($tpn * 380)."</td><td>0</td></tr>";
+                <td>3910</td><td>".($tpn * 3910)."</td><td>0</td></tr>";
         $table .="<tr><td></td><td>DB Door</td><td>Nos</td>
                 <td>".$dbdoor."</td><td></td>
-                <td>380</td><td>".($dbdoor * 380)."</td><td>0</td></tr>";
+                <td>780</td><td>".($dbdoor * 780)."</td><td>0</td></tr>";
       return view('detailProjects',['projects'=>$projects,'table'=>$table]);
     }
 }

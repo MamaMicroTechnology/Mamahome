@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="col-md-2">
+<div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px;">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
                 <b style="color:white">Sales Report</b>
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-<div class="col-md-10" >
+<div class="col-md-8" >
     <div class="panel panel-primary" style="overflow-x:scroll">
         <div class="panel-heading" id="panelhead">
             <label>
@@ -98,7 +98,7 @@
             </label>
             <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="overflow-y:scroll; height:500px; max-height:500px;">
             <table class='table table-responsive table-striped' style="color:black" border="1">
                 <thead>
                     <tr>

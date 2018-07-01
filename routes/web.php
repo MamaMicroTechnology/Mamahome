@@ -498,3 +498,5 @@ Route::get('/payment','HomeController@payment');
 
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
+
+Route::get('/sendSMS', 'HomeController@sendSMS');
