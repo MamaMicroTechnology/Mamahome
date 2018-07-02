@@ -62,7 +62,7 @@
 						</div>
 						<div class="col-md-2">
 							<label>Category:</label>
-							<select class="form-control" name="category">
+							<select id="categ" class="form-control" name="category">
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
