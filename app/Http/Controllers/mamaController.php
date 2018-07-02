@@ -566,6 +566,7 @@ class mamaController extends Controller
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
+          $projectdetails->automation=$request->automation;
            
             $projectdetails->save();
             
@@ -1348,6 +1349,7 @@ class mamaController extends Controller
             'quality'=>$request->quality,
             'contract'=>$request->contract,
             'note'=>$request->note,
+            'automation'=>$request->automation,
             'follow_up_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
             ]);
