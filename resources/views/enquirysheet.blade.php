@@ -84,7 +84,7 @@
 					</div>
 					<div class="col-md-4">
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
-							
+							<option value="">--Select--</option>
 							<option value="all">All</option>
 							<option value="Enquiry On Process">Enquiry On Process</option>
 							<option value="Enquiry Confirmed">Enquiry Confirmed</option>
