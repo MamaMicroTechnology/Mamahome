@@ -18,6 +18,10 @@ use DB;
 use App\loginTime;
 use App\Requirement;
 use App\RoomType;
+use App\Category;
+use App\SubCategory;
+use App\brand;
+
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -235,9 +239,7 @@ class TokenController extends Controller
         }
     }
       public function addProject(Request $request)
-    {
-          
-        $cType = count($request->constructionType);
+    { $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
         $projectimage = "";
@@ -336,6 +338,7 @@ class TokenController extends Controller
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
             $projectdetails->user_id = $request->user_id;
+            
            
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
@@ -386,23 +389,28 @@ public function enquiry(request $request){
             return response()->json(['message'=>'Something went wrong']);
         }
  } 
-
- public function getproject(request $request){
-
-    $project = ProjectDetails::where('user_id',$request->user_id)->get();
-    $projectIds = $project->pluck('project_id')->toArray();
-    $siteaddress = SiteAddress::where('project_id',$projectIds)->get();
-    $room = RoomType::where('project_id',$projectIds)->get();
-   //$project =  DB::table('project_details')->where('user_id',Auth::user()->id)->get();
-     
+public function getproject(request $request){
+  $project = ProjectDetails::where('project_details.user_id',$request->user_id)
+                    ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
+                    ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude')
+                    ->get();
       if($project != null){
-         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectDetails'=>$siteaddress,'roomtypes'=>$room,'project_details'=>$project]);
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$project]);
 
       }else{
          return response()->json(['message'=>'No projects Found']);
       }
 
-  }      
+  }  
+ public function getsingleProject(Request $request)
+    {
+        $project = ProjectDetails::where('project_details.project_id',$request->project_id)
+                    ->leftJoin('room_types','project_details.project_id','room_types.project_id')
+                    ->select('room_types.*')
+                    ->get();
+       
+        return response()->json(['projectdetails'=>$project]);
+    }       
   public function getenq(request $request){
     $enq = Requirement::where('project_id',$request->project_id)->get();
     if($enq != null){
@@ -412,6 +420,12 @@ public function enquiry(request $request){
          return response()->json(['message'=>'No enquires Found']);
       }
   }   
-           
+   public function getbrands(Request $request){
+        $category = Category::all();
+        $brand = brand::all();
+        $sub_cat = SubCategory::all();   
+
+        return response()->json(['category'=>$category,'brand'=>$brand,'sub_cat'=>$sub_cat]);    
+      }         
 }
            

@@ -16,8 +16,10 @@
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
 					
-					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
 				Enquiry Data
+					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+					
+				
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
 			
@@ -60,7 +62,7 @@
 						</div>
 						<div class="col-md-2">
 							<label>Category:</label>
-							<select class="form-control" name="category">
+							<select id="categ" class="form-control" name="category">
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
@@ -110,22 +112,44 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $pro=0; $con=0; $total=0; ?>
+						<?php $pro=0; $con=0; $total=0; $sum=0; $sum1=0; $sum2=0; ?>
 						@foreach($enquiries as $enquiry)
 
 							@if($enquiry->status == "Enquiry On Process")
-							<?php	$pro++; ?>
+							<?php	$pro++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+							
+								@for($i = 0; $i < count($quantity); $i++)
+								<?php $sum = $sum + $quantity[$i]; 
+								 ?>
+								@endfor
+								
 							@endif
-							@if($enquiry->status == "Enquiry Confirmed")
-							<?php	$con++; ?>
-							@endif
-							<?php	$total++; ?>
 
+							@if($enquiry->status == "Enquiry Confirmed")
+							<?php	$con++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+
+								@for($i = 0; $i < count($quantity); $i++)
+									<?php $sum1 = $sum1 + $quantity[$i]; 
+									 ?>
+								@endfor
+
+							@endif
+
+							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")
+							<?php  $total++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+								@for($i = 0; $i < count($quantity); $i++)
+									<?php $sum2 = $sum2 + $quantity[$i]; 
+									 ?>
+								@endfor
+							@endif
                         @endforeach
                         
 						@foreach($enquiries as $enquiry)
 						@if($enquiry->status != "Not Processed")
-						{{--<tr class="{{ in_array($enquiry->project_id,$projectOrdersReceived) ? 'hidden' : '' }}">--}}
+					
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
@@ -145,7 +169,11 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
-								{{ $enquiry->converted_by}}
+							@foreach($converter as $convert)
+								@if($enquiry->converted_by == $convert->id)
+								{{ $convert->name}}
+								@endif
+							@endforeach
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
@@ -184,7 +212,7 @@
 						@endforeach   
 						
 					</tbody>
-					 <tr>
+					<!--  <tr>
 						<td style="text-align    : center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
@@ -198,14 +226,14 @@
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
-					</tr>
+					</tr> -->
 					
 				</table>
-				<table>
+				<!-- <table>
 					<tbody>
 						<tr>total</tr>
 					</tbody>
-				</table>
+				</table> -->
 			</div>
 			<div class="panel-footer">
 				
@@ -253,7 +281,6 @@ function myFunction() {
         tr[i].style.display = "";
 	  }
 	}else{
-
 		for (i = 0; i < tr.length; i++) {
 	    td = tr[i].getElementsByTagName("td")[11];
 	    if (td) {
@@ -266,13 +293,37 @@ function myFunction() {
 	  }
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
-		document.getElementById("display").innerHTML = "Enquiry On Process:  {{  $pro }}"
+		
+		if(document.getElementById("categ").value  != "CEMENT"){
+				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ $sum }}"
+		 }
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
-		document.getElementById("display").innerHTML = "Enquiry Confirmed:  {{  $con }}"
+		if(document.getElementById("categ").value  != "CEMENT"){
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ $sum1 }}"
+		}
 	}
 	else {
-		document.getElementById("display").innerHTML = "Total Enquiry Count:  {{  $total }}"
+		if(document.getElementById("categ").value  != "CEMENT"){
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{  $sum2 }}"
+		}
+	}
+	if(document.getElementById("myInput").value  == "Enquiry On Process"){
+
+		if(document.getElementById("categ").value  == "CEMENT"){
+		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ 87273 }}"
+		}
+	}
+	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
+		
+		if(document.getElementById("categ").value  == "CEMENT"){
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ 16146 }}"
+		}
+	}
+	else {
+		if(document.getElementById("categ").value  == "CEMENT"){
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429 }}"
+	}
 	}
 }
 </script>

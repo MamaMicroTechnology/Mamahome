@@ -20,7 +20,7 @@
                 <label class="checkbox">
                     <input {{ isset($_GET['quality']) ? in_array("Unverified",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Unverified" id="unverified">Unverified<br>
                 </label>
-                <select required class="form-control" name="ward">
+                <select id="select" required class="form-control" name="ward">
                     <option value="">--Select--</option>
                     <option value="All">All</option>
                 @foreach($wards as $ward)
@@ -143,7 +143,7 @@
                     <input {{ isset($_GET['subwardquality']) ? in_array("Unverified",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Unverified" id="unverified1">Unverified<br>
                 </label>
                 <input type="hidden" name="ward" value="{{ $wardId }}">
-                <select required class="form-control" name="subward">
+                <select id="select1" required class="form-control" name="subward">
                     <option value="">--Select--</option>
                     @foreach($subwards as $ward)
                         <option value="{{ $ward->id}}"  required {{ $subwardId == $ward->id? 'selected':'' }}>{{ $ward->sub_ward_name }}</option>
@@ -285,13 +285,24 @@ function check()
 {
     if(genuine.checked == false && fake.checked == false && unverified.checked == false )
     {
-            window.alert("You have to Select altest One Quality");
+            window.alert("Please Select altest One Quality");
            
+    }
+    else if(genuine.checked == true || fake.checked == true || unverified.checked == true){
+    var select = document.getElementById('select'); 
+                 if (select.value ) {
+                       var form = document.getElementById("thisForm");
+                     form.submit();
+                    }
+        else{
+                 window.alert("Please select an item in the list");
+                return false;
+        }
     }
     else{
         var form = document.getElementById("thisForm");
         form.submit();
-    }
+    }    
 }
 function checkthis()
 {
@@ -299,13 +310,25 @@ function checkthis()
     if(genuine1.checked == false && fake1.checked == false && unverified1.checked == false )
     {
            
-            window.alert("You have to Select altest One Quality");     
+            window.alert("Please Select altest One Quality");     
+    }
+    else if(genuine1.checked == true || fake1.checked == true || unverified1.checked == true){
+    var select = document.getElementById('select1'); 
+                 if (select.value ) {
+                       var form = document.getElementById("thisForm1");
+                     form.submit();
+                    }
+        else{
+                 window.alert("Please select an item in the list");
+                return false;
+        }
     }
     else{
         var form = document.getElementById("thisForm1");
         form.submit();
     }
 }
+
 </script>
 
 @endsection

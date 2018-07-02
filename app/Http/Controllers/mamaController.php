@@ -852,6 +852,8 @@ class mamaController extends Controller
             'project_type' => $floor,
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,
+            'interested_in_loan'=>$request->loaninterest,
+            'interested_in_doorsandwindows'=>$request->dandwinterest,
             'construction_type'=>$type,
             'follow_up_date' =>$request->follow_up_date,
             'followup' => $request->follow,
