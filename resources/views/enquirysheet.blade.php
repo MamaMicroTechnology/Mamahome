@@ -294,14 +294,14 @@ function myFunction() {
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
 		
-		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ $sum }}"
+		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ 87273 }}"
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		
-		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ $sum1 }}"
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ 16146 }}"
 	}
 	else {
-		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{  $sum2 }}"
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429   }}"
 	}
 }
 </script>
