@@ -50,4 +50,5 @@ Route::get('/getsingleproject','TokenController@getsingleProject');
 
 
 Route::get('/getenq','TokenController@getenq');
+Route::get('/brand','TokenController@getbrands');
 
