@@ -294,34 +294,34 @@ function myFunction() {
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
 		
-		if(document.getElementById("categ").value  != "Cement"){
+		if(document.getElementById("categ").value  != "CEMENT"){
 				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ $sum }}"
 		 }
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
-		if(document.getElementById("categ").value  != "Cement"){
+		if(document.getElementById("categ").value  != "CEMENT"){
 		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ $sum1 }}"
 		}
 	}
 	else {
-		if(document.getElementById("categ").value  != "Cement"){
+		if(document.getElementById("categ").value  != "CEMENT"){
 		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{  $sum2 }}"
 		}
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
 
-		if(document.getElementById("categ").value  == "Cement"){
+		if(document.getElementById("categ").value  == "CEMENT"){
 		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ 87273 }}"
 		}
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		
-		if(document.getElementById("categ").value  == "Cement"){
+		if(document.getElementById("categ").value  == "CEMENT"){
 		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ 16146 }}"
 		}
 	}
 	else {
-		if(document.getElementById("categ").value  == "Cement"){
+		if(document.getElementById("categ").value  == "CEMENT"){
 		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429 }}"
 	}
 	}
