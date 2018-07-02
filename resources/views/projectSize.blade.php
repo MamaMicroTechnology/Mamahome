@@ -125,8 +125,8 @@
             @endif
             @if(isset($_GET['subward']))
             Total Project Sizes Under {{ $subwardName}} (based on stages)<br>
-            Total No. of Projects : @if($total) {{ $total }} @endif
-            Total Sizes : <b>@if($totalsubward) {{ $totalsubward }} @endif</b>
+            Total No. of Projects : @if($total) {{ number_format($total) }} @endif
+            Total Sizes : <b>@if($totalsubward) {{ number_format($totalsubward) }} @endif</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
