@@ -63,7 +63,7 @@
 						<div class="col-md-2">
 							<label>Category:</label>
 							<select class="form-control" name="category">
-								
+								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
 								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
@@ -84,7 +84,7 @@
 					</div>
 					<div class="col-md-4">
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
-							<option value="">--Select--</option>
+							
 							<option value="all">All</option>
 							<option value="Enquiry On Process">Enquiry On Process</option>
 							<option value="Enquiry Confirmed">Enquiry Confirmed</option>
