@@ -63,7 +63,7 @@
 						<div class="col-md-2">
 							<label>Category:</label>
 							<select class="form-control" name="category">
-								<option value="">--Select--</option>
+								
 								<option value="">All</option>
 								@foreach($category as $category)
 								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
@@ -301,7 +301,7 @@ function myFunction() {
 		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ 16146 }}"
 	}
 	else {
-		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429   }}"
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429 }}"
 	}
 }
 </script>
