@@ -165,6 +165,21 @@
                                  </td>
                                </tr>
                                <tr>
+                                 <td>Interested in Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
                                  <td>Type of Contract ? </td>
                                   <td>:</td>
                                   <td>
