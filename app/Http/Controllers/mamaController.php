@@ -760,6 +760,7 @@ class mamaController extends Controller
                 $points->save();
             }
         }
+              $size = $length * $breadth;
 
         $basement = $request->basement;
         $ground = $request->ground;
@@ -862,6 +863,8 @@ class mamaController extends Controller
             'contract'=>$request->contract,
             'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
+             'automation'=> $request->automation,
+             'plotsize' => $size,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
