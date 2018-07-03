@@ -4510,7 +4510,7 @@ if(count($check) == 0){
 
 public function enquirywise(request $request){
 
- $depts = [17];
+ $depts = [17,6];
  $wardsAndSub = [];
  $users = User::where('users.group_id',$depts)
               ->leftjoin('departments','departments.id','users.department_id')
