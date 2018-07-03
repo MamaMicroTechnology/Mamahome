@@ -764,6 +764,7 @@ class mamaController extends Controller
         $basement = $request->basement;
         $ground = $request->ground;
         $floor = $basement + $ground + 1;
+         $size = $length * $breadth;
         if($request->mApprove != NULL){
             $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
             $request->mApprove->move(public_path('projectImages'),$imageName1);
@@ -862,6 +863,7 @@ class mamaController extends Controller
             'contract'=>$request->contract,
             'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
+            'automation'=> $request->automation,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
