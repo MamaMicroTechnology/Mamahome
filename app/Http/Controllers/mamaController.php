@@ -869,8 +869,8 @@ class mamaController extends Controller
             'budgetType' => $request->budgetType,
             'automation'=> $request->automation,
              'plotsize' => $size,
-            'length '= $length,
-            'breadth' = $breadth,
+            'length '=> $length,
+            'breadth' => $breadth,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
