@@ -502,6 +502,8 @@ class mamaController extends Controller
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
+           $length = $request->length;
+            $breadth = $request->breadth;
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
