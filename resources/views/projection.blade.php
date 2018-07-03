@@ -18,49 +18,89 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div class="col-md-3 col-md-offset-3">
-    <label for="">Material Projection (Cement)</label>
-    <form action="{{ URL::to('/') }}/projection" method="GET">
-        <label for="wards">Wards</label>
-        <select id="wards" required class="form-control" name="ward">
-            <option value="">--Select--</option>
-            <option value="All" {{ isset($_GET['ward']) ? $_GET['ward'] == "All" ? "selected" : "" : "" }}>All</option>
-            @foreach($wards as $ward)
-            <option value="{{ $ward->id}}" {{ $ward->id == $wardId? 'selected':'' }}>{{ $ward->ward_name }}</option>
-            @endforeach
-        </select><br>
-        <label for="categories">Categories</label>
-        <select id="categories" required class="form-control" name="category">
-            <option value="">--Select--</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "cement" ? "selected" : "" : ""}} value="cement">Cement</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "steel" ? "selected" : "" : ""}} value="steel">Steel</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "sand" ? "selected" : "" : ""}} value="sand">Sand</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "aggregates" ? "selected" : "" : ""}} value="aggregates">Aggregates</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "blocks" ? "selected" : "" : ""}} value="blocks">Blocks & Bricks</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "electrical" ? "selected" : "" : ""}} value="electrical">Electrical</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "plumbing" ? "selected" : "" : ""}} value="plumbing">Plumbing</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "flooring" ? "selected" : "" : ""}} value="flooring">Flooring</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "bathroom" ? "selected" : "" : ""}} value="bathroom">Bathroom & Sanitary</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "wood" ? "selected" : "" : ""}} value="wood">Wood & Adhesive</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "paints" ? "selected" : "" : ""}} value="paints">Paints</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "wardrobe" ? "selected" : "" : ""}} value="wardrobe">Wardrobes & Kitchen</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "appliences" ? "selected" : "" : ""}} value="appliences">Home Appliences</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "furnitures" ? "selected" : "" : ""}} value="furnitures">Furnitures</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "rails" ? "selected" : "" : ""}} value="rails">Handrails</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "glasses" ? "selected" : "" : ""}} value="glasses">Glasses & Facades</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "rmc" ? "selected" : "" : ""}} value="rmc">RMC</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "ceilling" ? "selected" : "" : ""}} value="ceilling">False Ceilling</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "fire" ? "selected" : "" : ""}} value="fire">Fire & Safety</option>
-            <option {{ isset($_GET['category']) ? $_GET['category'] == "automation" ? "selected" : "" : ""}} value="automation">Home Automation</option>
-        </select><br>
-        <label for="price">Price</label>
-        <input required value="{{ isset($_GET['bCycle']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control"><br>
-        <label for="bCycle">Business Cycle</label>
+<div class="col-md-6 col-md-offset-3">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="pull-center col-md-3 col-md-offset-5"><b>Projection</b></div>
+        <div class="pull-right">{{ date('d-m-Y') }}</div>    
+        <br>
+    </div>
+    <div class="panel-body">
+<div class="col-md-6">
+    <form class="form-horizontal" action="{{ URL::to('/') }}/projection" method="GET">
+        <div class="form-group">
+        <label style="text-align:left;" for="wards" class="control-label col-sm-6">Wards</label>
+        <div class="col-md-6">
+            <select id="wards" required class="form-control" name="ward">
+                <option value="">--Select--</option>
+                <option value="All" {{ isset($_GET['ward']) ? $_GET['ward'] == "All" ? "selected" : "" : "" }}>All</option>
+                @foreach($wards as $ward)
+                <option value="{{ $ward->id}}" {{ $ward->id == $wardId? 'selected':'' }}>{{ $ward->ward_name }}</option>
+                @endforeach
+            </select>
+        </div>
+        </div>
+        <div class="form-group">
+        <label style="text-align:left;" class="control-label col-sm-6" for="categories">Categories</label>
+        <div class="col-md-6">
+            <select id="categories" required class="form-control" name="category">
+                <option value="">--Select--</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "cement" ? "selected" : "" : ""}} value="cement">Cement</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "steel" ? "selected" : "" : ""}} value="steel">Steel</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "sand" ? "selected" : "" : ""}} value="sand">Sand</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "aggregates" ? "selected" : "" : ""}} value="aggregates">Aggregates</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "blocks" ? "selected" : "" : ""}} value="blocks">Blocks & Bricks</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "electrical" ? "selected" : "" : ""}} value="electrical">Electrical</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "plumbing" ? "selected" : "" : ""}} value="plumbing">Plumbing</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "flooring" ? "selected" : "" : ""}} value="flooring">Flooring</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "bathroom" ? "selected" : "" : ""}} value="bathroom">Bathroom & Sanitary</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "wood" ? "selected" : "" : ""}} value="wood">Wood & Adhesive</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "paints" ? "selected" : "" : ""}} value="paints">Paints</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "wardrobe" ? "selected" : "" : ""}} value="wardrobe">Wardrobes & Kitchen</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "appliences" ? "selected" : "" : ""}} value="appliences">Home Appliences</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "furnitures" ? "selected" : "" : ""}} value="furnitures">Furnitures</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "rails" ? "selected" : "" : ""}} value="rails">Handrails</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "glasses" ? "selected" : "" : ""}} value="glasses">Glasses & Facades</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "rmc" ? "selected" : "" : ""}} value="rmc">RMC</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "ceilling" ? "selected" : "" : ""}} value="ceilling">False Ceilling</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "fire" ? "selected" : "" : ""}} value="fire">Fire & Safety</option>
+                <option {{ isset($_GET['category']) ? $_GET['category'] == "automation" ? "selected" : "" : ""}} value="automation">Home Automation</option>
+            </select>
+        </div>
+        </div>
+        <div class="form-group">
+        <label style="text-align:left;" class="control-label col-sm-6" for="price">Price</label>
+        <div class="col-md-6">
+        <input required value="{{ isset($_GET['bCycle']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
+        </div>
+        </div>
+        <div class="form-group">
+        <label style="text-align:left;" class="control-label col-sm-6" for="bCycle">Business Cycle</label>
+        <div class="col-md-6">
         <input required value="{{ isset($_GET['bCycle']) ? $_GET['bCycle'] : '' }}" type="text" name="bCycle" id="bCycle" placeholder="Business Cycle" class="form-control"><br>
-        <button class="btn btn-success form-control">Calculate</button>
-    </form>   
+        </div>
+        </div>
+        <button class="btn btn-success form-control">Proceed</button>
+    </form>
+    <br>
+    <div>
+        <label for="target">Monthly Target</label>
+        <input id="percentage" type="text" class="form-control" placeholder="Input Your Percentage From Monthly Projection"><br>
+        <button onclick="calculateTarget()" class="btn btn-success form-control">Proceed</button>
+        <br>
+        <br>
+        <p id="monthlyTarget"></p>
+    </div>
+    <div id="lock" class="hidden">
+        <input class="form-control" type="text" placeholder="Perentage For Transactional Profit" id="per">
+        <br>
+        <p id="tp"></p>
+        <button onclick="transactionalProfit()" class="btn btn-primary form-control">Proceed</button>
+        <br><br>
+        <button class="btn btn-primary form-control">Lock Target</button>
+    </div>
 </div>
-<div class="col-md-4">
+<div class="col-md-6">
 @if($planningCount != NULL)
 <?php
         $price = $_GET['price'];
@@ -185,7 +225,7 @@
                         <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
+                        <th>Requirement</th>
                         <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                         <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
@@ -204,103 +244,103 @@
                 <tr>
                     <td>Planning</td>
                     <td>{{ number_format(($planningSize * 4)/1000) }}</td>
-                    <?php $totalSteel += (($planningSize * 4)/1000); ?>
+                    <?php $totalCementBags += (($planningSize * 4)/1000); ?>
                     <td>{{ number_format((($planningSize * 4)/1000) * $price) }}</td>
-                    <?php $totalSteelPrice += ((($planningSize * 4)/1000) * $price); ?>
+                    <?php $totalCementPrice += ((($planningSize * 4)/1000) * $price); ?>
                 </tr>
                 <tr>
                     <td>Digging</td>
                     <td>{{ number_format(($diggingSize * 4)/1000) }}</td>
-                    <?php $totalSteel += (($diggingSize * 4)/1000); ?>
+                    <?php $totalCementBags += (($diggingSize * 4)/1000); ?>
                     <td>{{ number_format((($diggingSize * 4)/1000) * $price) }}</td>
-                    <?php $totalSteelPrice += ((($diggingSize * 4)/1000) * $price); ?>
+                    <?php $totalCementPrice += ((($diggingSize * 4)/1000) * $price); ?>
                 </tr>
                 <tr>
                     <td>Foundation</td>
                     <td>{{ number_format((($foundationSize * 4)/1000)/100*70) }}</td>
-                    <?php $totalSteel += ((($foundationSize * 4)/1000)/100*70); ?>
+                    <?php $totalCementBags += ((($foundationSize * 4)/1000)/100*70); ?>
                     <td>{{ number_format(((($foundationSize * 4)/1000)/100*70) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($foundationSize * 4)/1000)/100*70) * $price); ?>
+                    <?php $totalCementPrice += (((($foundationSize * 4)/1000)/100*70) * $price); ?>
                 </tr>
                 <tr>
                     <td>Pillars</td>
                     <td>{{ number_format((($pillarsSize * 4)/1000)/100*35) }}</td>
-                    <?php $totalSteel += ((($pillarsSize * 4)/1000)/100*35); ?>
+                    <?php $totalCementBags += ((($pillarsSize * 4)/1000)/100*35); ?>
                     <td>{{ number_format(((($pillarsSize * 4)/1000)/100*35) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($pillarsSize * 4)/1000)/100*35) * $price); ?>
+                    <?php $totalCementPrice += (((($pillarsSize * 4)/1000)/100*35) * $price); ?>
                 </tr>
                 <tr>
                     <td>Walls</td>
                     <td>{{ number_format((($wallsSize * 4)/1000)/100*35) }}</td>
-                    <?php $totalSteel += ((($wallsSize * 4)/1000)/100*35); ?>
+                    <?php $totalCementBags += ((($wallsSize * 4)/1000)/100*35); ?>
                     <td>{{ number_format(((($wallsSize * 4)/1000)/100*35) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($wallsSize * 4)/1000)/100*35) * $price); ?>
+                    <?php $totalCementPrice += (((($wallsSize * 4)/1000)/100*35) * $price); ?>
                 </tr>
                 <tr>
                     <td>Roofing</td>
                     <td>{{ number_format((($roofingSize * 4)/1000)/100*35) }}</td>
-                    <?php $totalSteel += ((($roofingSize * 4)/1000)/100*35); ?>
+                    <?php $totalCementBags += ((($roofingSize * 4)/1000)/100*35); ?>
                     <td>{{ number_format(((($roofingSize * 4)/1000)/100*35) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($roofingSize * 4)/1000)/100*35) * $price); ?>
+                    <?php $totalCementPrice += (((($roofingSize * 4)/1000)/100*35) * $price); ?>
                 </tr>
                 <tr>
                     <td>Electrical & Plumbing</td>
                     <td>{{ number_format((($enpSize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($enpSize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($enpSize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($enpSize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($enpSize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($enpSize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <td>Plastering</td>
                     <td>{{ number_format((($plasteringSize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($plasteringSize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($plasteringSize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($plasteringSize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($plasteringSize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($plasteringSize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <td>Flooring</td>
                     <td>{{ number_format((($flooringSize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($flooringSize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($flooringSize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($flooringSize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($flooringSize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($flooringSize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <td>Carpentry</td>
                     <td>{{ number_format((($carpentrySize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($carpentrySize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($carpentrySize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($carpentrySize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($carpentrySize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($carpentrySize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <td>Paintings</td>
                     <td>{{ number_format((($paintingSize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($paintingSize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($paintingSize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($paintingSize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($paintingSize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($paintingSize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <td>Fixtures</td>
                     <td>{{ number_format((($fixturesSize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($fixturesSize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($fixturesSize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($fixturesSize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($fixturesSize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($fixturesSize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <td>Completion</td>
                     <td>{{ number_format((($completionSize * 4)/1000)/100*0) }}</td>
-                    <?php $totalSteel += ((($completionSize * 4)/1000)/100*0); ?>
+                    <?php $totalCementBags += ((($completionSize * 4)/1000)/100*0); ?>
                     <td>{{ number_format(((($completionSize * 4)/1000)/100*0) * $price) }}</td>
-                    <?php $totalSteelPrice += (((($completionSize * 4)/1000)/100*0) * $price); ?>
+                    <?php $totalCementPrice += (((($completionSize * 4)/1000)/100*0) * $price); ?>
                 </tr>
                 <tr>
                     <th>Total</th>
-                    <th>{{ number_format($totalSteel) }}</th>
-                    <th>{{ number_format($totalSteelPrice) }}</th>
+                    <th>{{ number_format($totalCementBags) }}</th>
+                    <th>{{ number_format($totalCementPrice) }}</th>
                 </tr>
                 <tr>
-                    <th>Monthly Requirement</th>
-                    <th>{{ number_format($totalSteel/$bCycle) }}</th>
-                    <th>{{ number_format($totalSteelPrice/$bCycle) }}</th>
+                    <th>Requirement</th>
+                    <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                    <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                 </tr>
             </tbody>
             </table>
@@ -309,6 +349,7 @@
             case "sand": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Tons Required</th>
                         <th>Amount</th>
@@ -317,103 +358,103 @@
                         <tr>
                             <td>Planning</td>
                             <td>{{ number_format(($planningSize * 1.2)/23.25) }}</td>
-                            <?php $totalSand += (($planningSize * 1.2)/23.25); ?>
+                            <?php $totalCementBags += (($planningSize * 1.2)/23.25); ?>
                             <td>{{ number_format((($planningSize * 1.2)/23.25) * $price) }}</td>
-                            <?php $totalSandPrice += ((($planningSize * 1.2)/23.25) * $price); ?>
+                            <?php $totalCementPrice += ((($planningSize * 1.2)/23.25) * $price); ?>
                         </tr>
                         <tr>
                             <td>Digging</td>
                             <td>{{ number_format(($diggingSize * 1.2)/23.25) }}</td>
-                            <?php $totalSand += (($diggingSize * 1.2)/23.25); ?>
+                            <?php $totalCementBags += (($diggingSize * 1.2)/23.25); ?>
                             <td>{{ number_format((($diggingSize * 1.2)/23.25) * $price) }}</td>
-                            <?php $totalSandPrice += ((($diggingSize * 1.2)/23.25) * $price); ?>
+                            <?php $totalCementPrice += ((($diggingSize * 1.2)/23.25) * $price); ?>
                         </tr>
                         <tr>
                             <td>Foundation</td>
                             <td>{{ number_format((($foundationSize * 1.2)/23.25)/100*90) }}</td>
-                            <?php $totalSand += ((($foundationSize * 1.2)/23.25)/100*90); ?>
+                            <?php $totalCementBags += ((($foundationSize * 1.2)/23.25)/100*90); ?>
                             <td>{{ number_format(((($foundationSize * 1.2)/23.25)/100*90) * $price) }}</td>
-                            <?php $totalSandPrice += (((($foundationSize * 1.2)/23.25)/100*90) * $price); ?>
+                            <?php $totalCementPrice += (((($foundationSize * 1.2)/23.25)/100*90) * $price); ?>
                         </tr>
                         <tr>
                             <td>Pillars</td>
                             <td>{{ number_format((($pillarsSize * 1.2)/23.25)/100*70) }}</td>
-                            <?php $totalSand += ((($pillarsSize * 1.2)/23.25)/100*70); ?>
+                            <?php $totalCementBags += ((($pillarsSize * 1.2)/23.25)/100*70); ?>
                             <td>{{ number_format(((($pillarsSize * 1.2)/23.25)/100*70) * $price) }}</td>
-                            <?php $totalSandPrice += (((($pillarsSize * 1.2)/23.25)/100*70) * $price); ?>
+                            <?php $totalCementPrice += (((($pillarsSize * 1.2)/23.25)/100*70) * $price); ?>
                         </tr>
                         <tr>
                             <td>Walls</td>
                             <td>{{ number_format((($wallsSize * 1.2)/23.25)/100*50) }}</td>
-                            <?php $totalSand += ((($wallsSize * 1.2)/23.25)/100*50); ?>
+                            <?php $totalCementBags += ((($wallsSize * 1.2)/23.25)/100*50); ?>
                             <td>{{ number_format(((($wallsSize * 1.2)/23.25)/100*50) * $price) }}</td>
-                            <?php $totalSandPrice += (((($wallsSize * 1.2)/23.25)/100*50) * $price); ?>
+                            <?php $totalCementPrice += (((($wallsSize * 1.2)/23.25)/100*50) * $price); ?>
                         </tr>
                         <tr>
                             <td>Roofing</td>
                             <td>{{ number_format((($roofingSize * 1.2)/23.25)/100*35) }}</td>
-                            <?php $totalSand += ((($roofingSize * 1.2)/23.25)/100*35); ?>
+                            <?php $totalCementBags += ((($roofingSize * 1.2)/23.25)/100*35); ?>
                             <td>{{ number_format(((($roofingSize * 1.2)/23.25)/100*35) * $price) }}</td>
-                            <?php $totalSandPrice += (((($roofingSize * 1.2)/23.25)/100*35) * $price); ?>
+                            <?php $totalCementPrice += (((($roofingSize * 1.2)/23.25)/100*35) * $price); ?>
                         </tr>
                         <tr>
                             <td>Electrical & Plumbing</td>
                             <td>{{ number_format((($enpSize * 1.2)/23.25)/100*35) }}</td>
-                            <?php $totalSand += ((($enpSize * 1.2)/23.25)/100*35); ?>
+                            <?php $totalCementBags += ((($enpSize * 1.2)/23.25)/100*35); ?>
                             <td>{{ number_format(((($enpSize * 1.2)/23.25)/100*35) * $price) }}</td>
-                            <?php $totalSandPrice += (((($enpSize * 1.2)/23.25)/100*35) * $price); ?>
+                            <?php $totalCementPrice += (((($enpSize * 1.2)/23.25)/100*35) * $price); ?>
                         </tr>
                         <tr>
                             <td>Plastering</td>
                             <td>{{ number_format((($plasteringSize * 1.2)/23.25)/100*10) }}</td>
-                            <?php $totalSand += ((($plasteringSize * 1.2)/23.25)/100*10); ?>
+                            <?php $totalCementBags += ((($plasteringSize * 1.2)/23.25)/100*10); ?>
                             <td>{{ number_format(((($plasteringSize * 1.2)/23.25)/100*10) * $price) }}</td>
-                            <?php $totalSandPrice += (((($plasteringSize * 1.2)/23.25)/100*10) * $price); ?>
+                            <?php $totalCementPrice += (((($plasteringSize * 1.2)/23.25)/100*10) * $price); ?>
                         </tr>
                         <tr>
                             <td>Flooring</td>
                             <td>{{ number_format((($flooringSize * 1.2)/23.25)/100*0) }}</td>
-                            <?php $totalSand += ((($flooringSize * 1.2)/23.25)/100*0); ?>
+                            <?php $totalCementBags += ((($flooringSize * 1.2)/23.25)/100*0); ?>
                             <td>{{ number_format(((($flooringSize * 1.2)/23.25)/100*0) * $price) }}</td>
-                            <?php $totalSandPrice += (((($flooringSize * 1.2)/23.25)/100*0) * $price); ?>
+                            <?php $totalCementPrice += (((($flooringSize * 1.2)/23.25)/100*0) * $price); ?>
                         </tr>
                         <tr>
                             <td>Carpentry</td>
                             <td>{{ number_format((($carpentrySize * 1.2)/23.25)/100*0) }}</td>
-                            <?php $totalSand += ((($carpentrySize * 1.2)/23.25)/100*0); ?>
+                            <?php $totalCementBags += ((($carpentrySize * 1.2)/23.25)/100*0); ?>
                             <td>{{ number_format(((($carpentrySize * 1.2)/23.25)/100*0) * $price) }}</td>
-                            <?php $totalSandPrice += (((($carpentrySize * 1.2)/23.25)/100*0) * $price); ?>
+                            <?php $totalCementPrice += (((($carpentrySize * 1.2)/23.25)/100*0) * $price); ?>
                         </tr>
                         <tr>
                             <td>Paintings</td>
                             <td>{{ number_format((($paintingSize * 1.2)/23.25)/100*0) }}</td>
-                            <?php $totalSand += ((($paintingSize * 1.2)/23.25)/100*0); ?>
+                            <?php $totalCementBags += ((($paintingSize * 1.2)/23.25)/100*0); ?>
                             <td>{{ number_format(((($paintingSize * 1.2)/23.25)/100*0) * $price) }}</td>
-                            <?php $totalSandPrice += (((($paintingSize * 1.2)/23.25)/100*0) * $price); ?>
+                            <?php $totalCementPrice += (((($paintingSize * 1.2)/23.25)/100*0) * $price); ?>
                         </tr>
                         <tr>
                             <td>Fixtures</td>
                             <td>{{ number_format((($fixturesSize * 1.2)/23.25)/100*0) }}</td>
-                            <?php $totalSand += ((($fixturesSize * 1.2)/23.25)/100*0); ?>
+                            <?php $totalCementBags += ((($fixturesSize * 1.2)/23.25)/100*0); ?>
                             <td>{{ number_format(((($fixturesSize * 1.2)/23.25)/100*0) * $price) }}</td>
-                            <?php $totalSandPrice += (((($fixturesSize * 1.2)/23.25)/100*0) * $price); ?>
+                            <?php $totalCementPrice += (((($fixturesSize * 1.2)/23.25)/100*0) * $price); ?>
                         </tr>
                         <tr>
                             <td>Completion</td>
                             <td>{{ number_format((($completionSize * 1.2)/23.25)/100*0) }}</td>
-                            <?php $totalSand += ((($completionSize * 1.2)/23.25)/100*0); ?>
+                            <?php $totalCementBags += ((($completionSize * 1.2)/23.25)/100*0); ?>
                             <td>{{ number_format(((($completionSize * 1.2)/23.25)/100*0) * $price) }}</td>
-                            <?php $totalSandPrice += (((($completionSize * 1.2)/23.25)/100*0) * $price); ?>
+                            <?php $totalCementPrice += (((($completionSize * 1.2)/23.25)/100*0) * $price); ?>
                         </tr>
                         <tr>
                             <th>Total</th>
-                            <th>{{ number_format($totalSand) }}</th>
-                            <th>{{ number_format($totalSandPrice) }}</th>
+                            <th>{{ number_format($totalCementBags) }}</th>
+                            <th>{{ number_format($totalCementPrice) }}</th>
                         </tr>
                         <tr>
-                            <th>Monthly Requirement</th>
-                            <th>{{ number_format($totalSand/$bCycle) }}</th>
-                            <th>{{ number_format($totalSandPrice/$bCycle) }}</th>
+                            <th>Requirement</th>
+                            <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                            <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                         </tr>
                     </tbody>
                 </table>
@@ -422,6 +463,7 @@
             case "aggregates": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Tons Required</th>
                         <th>Amount</th>
@@ -430,103 +472,103 @@
                     <tr>
                         <td>Planning</td>
                         <td>{{ number_format(($planningSize * 1.35)/23.25) }}</td>
-                        <?php $totalAggregates += (($planningSize * 1.35)/23.25); ?>
+                        <?php $totalCementBags += (($planningSize * 1.35)/23.25); ?>
                         <td>{{ number_format((($planningSize * 1.35)/23.25) * $price) }}</td>
-                        <?php $totalAggregatesPrice += ((($planningSize * 1.35)/23.25) * $price); ?>
+                        <?php $totalCementPrice += ((($planningSize * 1.35)/23.25) * $price); ?>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td>{{ number_format(($diggingSize * 1.35)/23.25) }}</td>
-                        <?php $totalAggregates += (($diggingSize * 1.35)/23.25); ?>
+                        <?php $totalCementBags += (($diggingSize * 1.35)/23.25); ?>
                         <td>{{ number_format((($diggingSize * 1.35)/23.25) * $price) }}</td>
-                        <?php $totalAggregatesPrice += ((($diggingSize * 1.35)/23.25) * $price); ?>
+                        <?php $totalCementPrice += ((($diggingSize * 1.35)/23.25) * $price); ?>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td>{{ number_format((($foundationSize * 1.35)/23.25)/100*80) }}</td>
-                        <?php $totalAggregates += ((($foundationSize * 1.35)/23.25)/100*80); ?>
+                        <?php $totalCementBags += ((($foundationSize * 1.35)/23.25)/100*80); ?>
                         <td>{{ number_format(((($foundationSize * 1.35)/23.25)/100*80) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($foundationSize * 1.35)/23.25)/100*80) * $price); ?>
+                        <?php $totalCementPrice += (((($foundationSize * 1.35)/23.25)/100*80) * $price); ?>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td>{{ number_format((($pillarsSize * 1.35)/23.25)/100*50) }}</td>
-                        <?php $totalAggregates += ((($pillarsSize * 1.35)/23.25)/100*50); ?>
+                        <?php $totalCementBags += ((($pillarsSize * 1.35)/23.25)/100*50); ?>
                         <td>{{ number_format(((($pillarsSize * 1.35)/23.25)/100*50) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($pillarsSize * 1.35)/23.25)/100*50) * $price); ?>
+                        <?php $totalCementPrice += (((($pillarsSize * 1.35)/23.25)/100*50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td>{{ number_format((($wallsSize * 1.35)/23.25)/100*50) }}</td>
-                        <?php $totalAggregates += ((($wallsSize * 1.35)/23.25)/100*50); ?>
+                        <?php $totalCementBags += ((($wallsSize * 1.35)/23.25)/100*50); ?>
                         <td>{{ number_format(((($wallsSize * 1.35)/23.25)/100*50) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($wallsSize * 1.35)/23.25)/100*50) * $price); ?>
+                        <?php $totalCementPrice += (((($wallsSize * 1.35)/23.25)/100*50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td>{{ number_format((($roofingSize * 1.35)/23.25)/100*50) }}</td>
-                        <?php $totalAggregates += ((($roofingSize * 1.35)/23.25)/100*50); ?>
+                        <?php $totalCementBags += ((($roofingSize * 1.35)/23.25)/100*50); ?>
                         <td>{{ number_format(((($roofingSize * 1.35)/23.25)/100*50) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($roofingSize * 1.35)/23.25)/100*50) * $price); ?>
+                        <?php $totalCementPrice += (((($roofingSize * 1.35)/23.25)/100*50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Electrical & Plumbing</td>
                         <td>{{ number_format((($enpSize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($enpSize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($enpSize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($enpSize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($enpSize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($enpSize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td>{{ number_format((($plasteringSize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($plasteringSize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($plasteringSize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($plasteringSize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($plasteringSize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($plasteringSize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td>{{ number_format((($flooringSize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($flooringSize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($flooringSize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($flooringSize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($flooringSize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($flooringSize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td>{{ number_format((($carpentrySize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($carpentrySize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($carpentrySize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($carpentrySize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($carpentrySize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($carpentrySize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td>{{ number_format((($paintingSize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($paintingSize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($paintingSize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($paintingSize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($paintingSize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($paintingSize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td>{{ number_format((($fixturesSize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($fixturesSize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($fixturesSize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($fixturesSize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($fixturesSize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($fixturesSize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td>{{ number_format((($completionSize * 1.35)/23.25)/100*0) }}</td>
-                        <?php $totalAggregates += ((($completionSize * 1.35)/23.25)/100*0); ?>
+                        <?php $totalCementBags += ((($completionSize * 1.35)/23.25)/100*0); ?>
                         <td>{{ number_format(((($completionSize * 1.35)/23.25)/100*0) * $price) }}</td>
-                        <?php $totalAggregatesPrice += (((($completionSize * 1.35)/23.25)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($completionSize * 1.35)/23.25)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>{{ number_format($totalAggregates) }}</th>
-                        <th>{{ number_format($totalAggregatesPrice) }}</th>
+                        <th>{{ number_format($totalCementBags) }}</th>
+                        <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
-                        <th>{{ number_format($totalAggregates/$bCycle) }}</th>
-                        <th>{{ number_format($totalAggregatesPrice/$bCycle) }}</th>
+                        <th>Requirement</th>
+                        <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                        <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
                     </tbody>
                 </table>
@@ -535,6 +577,7 @@
             case "blocks": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -543,103 +586,103 @@
                     <tr>
                         <td>Planning</td>
                         <td>{{ number_format(($planningSize * 4.167)/4.16) }}</td>
-                        <?php $totalBlocks += (($planningSize * 4.167)/4.16); ?>
+                        <?php $totalCementBags += (($planningSize * 4.167)/4.16); ?>
                         <td>{{ number_format((($planningSize * 4.167)/4.16) * $price) }}</td>
-                        <?php $totalBlocksPrice += ((($planningSize * 4.167)/4.16) * $price); ?>
+                        <?php $totalCementPrice += ((($planningSize * 4.167)/4.16) * $price); ?>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td>{{ number_format(($diggingSize * 4.167)/4.16) }}</td>
-                        <?php $totalBlocks += (($diggingSize * 4.167)/4.16); ?>
+                        <?php $totalCementBags += (($diggingSize * 4.167)/4.16); ?>
                         <td>{{ number_format((($diggingSize * 4.167)/4.16) * $price) }}</td>
-                        <?php $totalBlocksPrice += ((($diggingSize * 4.167)/4.16) * $price); ?>
+                        <?php $totalCementPrice += ((($diggingSize * 4.167)/4.16) * $price); ?>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td>{{ number_format((($foundationSize * 4.167)/4.16)) }}</td>
-                        <?php $totalBlocks += ((($foundationSize * 4.167)/4.16)); ?>
+                        <?php $totalCementBags += ((($foundationSize * 4.167)/4.16)); ?>
                         <td>{{ number_format(((($foundationSize * 4.167)/4.16)) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($foundationSize * 4.167)/4.16)) * $price); ?>
+                        <?php $totalCementPrice += (((($foundationSize * 4.167)/4.16)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td>{{ number_format((($pillarsSize * 4.167)/4.16)) }}</td>
-                        <?php $totalBlocks += ((($pillarsSize * 4.167)/4.16)); ?>
+                        <?php $totalCementBags += ((($pillarsSize * 4.167)/4.16)); ?>
                         <td>{{ number_format(((($pillarsSize * 4.167)/4.16)) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($pillarsSize * 4.167)/4.16)) * $price); ?>
+                        <?php $totalCementPrice += (((($pillarsSize * 4.167)/4.16)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td>{{ number_format((($wallsSize * 4.167)/4.16)) }}</td>
-                        <?php $totalBlocks += ((($wallsSize * 4.167)/4.16)); ?>
+                        <?php $totalCementBags += ((($wallsSize * 4.167)/4.16)); ?>
                         <td>{{ number_format(((($wallsSize * 4.167)/4.16)) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($wallsSize * 4.167)/4.16)) * $price); ?>
+                        <?php $totalCementPrice += (((($wallsSize * 4.167)/4.16)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td>{{ number_format((($roofingSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($roofingSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($roofingSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($roofingSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($roofingSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($roofingSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Electrical & Plumbing</td>
                         <td>{{ number_format((($enpSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($enpSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($enpSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($enpSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($enpSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($enpSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td>{{ number_format((($plasteringSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($plasteringSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($plasteringSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($plasteringSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($plasteringSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($plasteringSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td>{{ number_format((($flooringSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($flooringSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($flooringSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($flooringSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($flooringSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($flooringSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td>{{ number_format((($carpentrySize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($carpentrySize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($carpentrySize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($carpentrySize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($carpentrySize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($carpentrySize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td>{{ number_format((($paintingSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($paintingSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($paintingSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($paintingSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($paintingSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($paintingSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td>{{ number_format((($fixturesSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($fixturesSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($fixturesSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($fixturesSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($fixturesSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($fixturesSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td>{{ number_format((($completionSize * 4.167)/4.16)/100*0) }}</td>
-                        <?php $totalBlocks += ((($completionSize * 4.167)/4.16)/100*0); ?>
+                        <?php $totalCementBags += ((($completionSize * 4.167)/4.16)/100*0); ?>
                         <td>{{ number_format(((($completionSize * 4.167)/4.16)/100*0) * $price) }}</td>
-                        <?php $totalBlocksPrice += (((($completionSize * 4.167)/4.16)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($completionSize * 4.167)/4.16)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>{{ number_format($totalBlocks) }}</th>
-                        <th>{{ number_format($totalBlocksPrice) }}</th>
+                        <th>{{ number_format($totalCementBags) }}</th>
+                        <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
-                        <th>{{ number_format($totalBlocks/$bCycle) }}</th>
-                        <th>{{ number_format($totalBlocksPrice/$bCycle) }}</th>
+                        <th>Requirement</th>
+                        <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                        <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
                     </tbody>
                 </table>
@@ -648,111 +691,112 @@
             case "electrical": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                     <tbody>
                     <tr>
                         <td>Planning</td>
                         <td>{{ number_format(($planningSize * 84)/84) }}</td>
-                        <?php $totalElectricals += (($planningSize * 84)/84); ?>
+                        <?php $totalCementBags += (($planningSize * 84)/84); ?>
                         <td>{{ number_format((($planningSize * 84)/84) * $price) }}</td>
-                        <?php $totalElectricalsPrice += ((($planningSize * 84)/84) * $price); ?>
+                        <?php $totalCementPrice += ((($planningSize * 84)/84) * $price); ?>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td>{{ number_format(($diggingSize * 84)/84) }}</td>
-                        <?php $totalElectricals += (($diggingSize * 84)/84); ?>
+                        <?php $totalCementBags += (($diggingSize * 84)/84); ?>
                         <td>{{ number_format((($diggingSize * 84)/84) * $price) }}</td>
-                        <?php $totalElectricalsPrice += ((($diggingSize * 84)/84) * $price); ?>
+                        <?php $totalCementPrice += ((($diggingSize * 84)/84) * $price); ?>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td>{{ number_format((($foundationSize * 84)/84)/100*80) }}</td>
-                        <?php $totalElectricals += ((($foundationSize * 84)/84)/100*80); ?>
+                        <?php $totalCementBags += ((($foundationSize * 84)/84)/100*80); ?>
                         <td>{{ number_format(((($foundationSize * 84)/84)/100*80) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($foundationSize * 84)/84)/100*80) * $price); ?>
+                        <?php $totalCementPrice += (((($foundationSize * 84)/84)/100*80) * $price); ?>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td>{{ number_format((($pillarsSize * 84)/84)/100*50) }}</td>
-                        <?php $totalElectricals += ((($pillarsSize * 84)/84)/100*50); ?>
+                        <?php $totalCementBags += ((($pillarsSize * 84)/84)/100*50); ?>
                         <td>{{ number_format(((($pillarsSize * 84)/84)/100*50) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($pillarsSize * 84)/84)/100*50) * $price); ?>
+                        <?php $totalCementPrice += (((($pillarsSize * 84)/84)/100*50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td>{{ number_format((($wallsSize * 84)/84)/100*50) }}</td>
-                        <?php $totalElectricals += ((($wallsSize * 84)/84)/100*50); ?>
+                        <?php $totalCementBags += ((($wallsSize * 84)/84)/100*50); ?>
                         <td>{{ number_format(((($wallsSize * 84)/84)/100*50) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($wallsSize * 84)/84)/100*50) * $price); ?>
+                        <?php $totalCementPrice += (((($wallsSize * 84)/84)/100*50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td>{{ number_format((($roofingSize * 84)/84)/100*100) }}</td>
-                        <?php $totalElectricals += ((($roofingSize * 84)/84)/100*100); ?>
+                        <?php $totalCementBags += ((($roofingSize * 84)/84)/100*100); ?>
                         <td>{{ number_format(((($roofingSize * 84)/84)/100*100) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($roofingSize * 84)/84)/100*100) * $price); ?>
+                        <?php $totalCementPrice += (((($roofingSize * 84)/84)/100*100) * $price); ?>
                     </tr>
                     <tr>
                         <td>Electrical & Plumbing</td>
                         <td>{{ number_format((($enpSize * 84)/84)/100*100) }}</td>
-                        <?php $totalElectricals += ((($enpSize * 84)/84)/100*100); ?>
+                        <?php $totalCementBags += ((($enpSize * 84)/84)/100*100); ?>
                         <td>{{ number_format(((($enpSize * 84)/84)/100*100) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($enpSize * 84)/84)/100*100) * $price); ?>
+                        <?php $totalCementPrice += (((($enpSize * 84)/84)/100*100) * $price); ?>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td>{{ number_format((($plasteringSize * 84)/84)/100*0) }}</td>
-                        <?php $totalElectricals += ((($plasteringSize * 84)/84)/100*0); ?>
+                        <?php $totalCementBags += ((($plasteringSize * 84)/84)/100*0); ?>
                         <td>{{ number_format(((($plasteringSize * 84)/84)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($plasteringSize * 84)/84)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($plasteringSize * 84)/84)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td>{{ number_format((($flooringSize * 84)/84)/100*0) }}</td>
-                        <?php $totalElectricals += ((($flooringSize * 84)/84)/100*0); ?>
+                        <?php $totalCementBags += ((($flooringSize * 84)/84)/100*0); ?>
                         <td>{{ number_format(((($flooringSize * 84)/84)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($flooringSize * 84)/84)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($flooringSize * 84)/84)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td>{{ number_format((($carpentrySize * 84)/84)/100*0) }}</td>
-                        <?php $totalElectricals += ((($carpentrySize * 84)/84)/100*0); ?>
+                        <?php $totalCementBags += ((($carpentrySize * 84)/84)/100*0); ?>
                         <td>{{ number_format(((($carpentrySize * 84)/84)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($carpentrySize * 84)/84)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($carpentrySize * 84)/84)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td>{{ number_format((($paintingSize * 84)/84)/100*0) }}</td>
-                        <?php $totalElectricals += ((($paintingSize * 84)/84)/100*0); ?>
+                        <?php $totalCementBags += ((($paintingSize * 84)/84)/100*0); ?>
                         <td>{{ number_format(((($paintingSize * 84)/84)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($paintingSize * 84)/84)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($paintingSize * 84)/84)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td>{{ number_format((($fixturesSize * 84)/84)/100*0) }}</td>
-                        <?php $totalElectricals += ((($fixturesSize * 84)/84)/100*0); ?>
+                        <?php $totalCementBags += ((($fixturesSize * 84)/84)/100*0); ?>
                         <td>{{ number_format(((($fixturesSize * 84)/84)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($fixturesSize * 84)/84)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($fixturesSize * 84)/84)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td>{{ number_format((($completionSize * 84)/84)/100*0) }}</td>
-                        <?php $totalElectricals += ((($completionSize * 84)/84)/100*0); ?>
+                        <?php $totalCementBags += ((($completionSize * 84)/84)/100*0); ?>
                         <td>{{ number_format(((($completionSize * 84)/84)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($completionSize * 84)/84)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($completionSize * 84)/84)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>{{ number_format($totalElectricals) }}</th>
-                        <th>{{ number_format($totalElectricalsPrice) }}</th>
+                        <th>{{ number_format($totalCementBags) }}</th>
+                        <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
-                        <th>{{ number_format($totalElectricals/$bCycle) }}</th>
-                        <th>{{ number_format($totalElectricalsPrice/$bCycle) }}</th>
+                        <th>Requirement</th>
+                        <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                        <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
                     </tbody>
                 </table>
@@ -761,111 +805,112 @@
             case "plumbing": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                     <tbody>
                     <tr>
                         <td>Planning</td>
                         <td>{{ number_format(($planningSize * 50)/50) }}</td>
-                        <?php $totalElectricals += (($planningSize * 50)/50); ?>
+                        <?php $totalCementBags += (($planningSize * 50)/50); ?>
                         <td>{{ number_format((($planningSize * 50)/50) * $price) }}</td>
-                        <?php $totalElectricalsPrice += ((($planningSize * 50)/50) * $price); ?>
+                        <?php $totalCementPrice += ((($planningSize * 50)/50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td>{{ number_format(($diggingSize * 50)/50) }}</td>
-                        <?php $totalElectricals += (($diggingSize * 50)/50); ?>
+                        <?php $totalCementBags += (($diggingSize * 50)/50); ?>
                         <td>{{ number_format((($diggingSize * 50)/50) * $price) }}</td>
-                        <?php $totalElectricalsPrice += ((($diggingSize * 50)/50) * $price); ?>
+                        <?php $totalCementPrice += ((($diggingSize * 50)/50) * $price); ?>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td>{{ number_format((($foundationSize * 50)/50)) }}</td>
-                        <?php $totalElectricals += ((($foundationSize * 50)/50)); ?>
+                        <?php $totalCementBags += ((($foundationSize * 50)/50)); ?>
                         <td>{{ number_format(((($foundationSize * 50)/50)) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($foundationSize * 50)/50)) * $price); ?>
+                        <?php $totalCementPrice += (((($foundationSize * 50)/50)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td>{{ number_format((($pillarsSize * 50)/50)) }}</td>
-                        <?php $totalElectricals += ((($pillarsSize * 50)/50)); ?>
+                        <?php $totalCementBags += ((($pillarsSize * 50)/50)); ?>
                         <td>{{ number_format(((($pillarsSize * 50)/50)) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($pillarsSize * 50)/50)) * $price); ?>
+                        <?php $totalCementPrice += (((($pillarsSize * 50)/50)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td>{{ number_format((($wallsSize * 50)/50)) }}</td>
-                        <?php $totalElectricals += ((($wallsSize * 50)/50)); ?>
+                        <?php $totalCementBags += ((($wallsSize * 50)/50)); ?>
                         <td>{{ number_format(((($wallsSize * 50)/50)) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($wallsSize * 50)/50)) * $price); ?>
+                        <?php $totalCementPrice += (((($wallsSize * 50)/50)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td>{{ number_format((($roofingSize * 50)/50)/100*100) }}</td>
-                        <?php $totalElectricals += ((($roofingSize * 50)/50)/100*100); ?>
+                        <?php $totalCementBags += ((($roofingSize * 50)/50)/100*100); ?>
                         <td>{{ number_format(((($roofingSize * 50)/50)/100*100) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($roofingSize * 50)/50)/100*100) * $price); ?>
+                        <?php $totalCementPrice += (((($roofingSize * 50)/50)/100*100) * $price); ?>
                     </tr>
                     <tr> 
                         <td>Electrical & Plumbing</td>
                         <td>{{ number_format((($enpSize * 50)/50)/100*100) }}</td>
-                        <?php $totalElectricals += ((($enpSize * 50)/50)/100*100); ?>
+                        <?php $totalCementBags += ((($enpSize * 50)/50)/100*100); ?>
                         <td>{{ number_format(((($enpSize * 50)/50)/100*100) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($enpSize * 50)/50)/100*100) * $price); ?>
+                        <?php $totalCementPrice += (((($enpSize * 50)/50)/100*100) * $price); ?>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td>{{ number_format((($plasteringSize * 50)/50)/100*0) }}</td>
-                        <?php $totalElectricals += ((($plasteringSize * 50)/50)/100*0); ?>
+                        <?php $totalCementBags += ((($plasteringSize * 50)/50)/100*0); ?>
                         <td>{{ number_format(((($plasteringSize * 50)/50)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($plasteringSize * 50)/50)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($plasteringSize * 50)/50)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td>{{ number_format((($flooringSize * 50)/50)/100*0) }}</td>
-                        <?php $totalElectricals += ((($flooringSize * 50)/50)/100*0); ?>
+                        <?php $totalCementBags += ((($flooringSize * 50)/50)/100*0); ?>
                         <td>{{ number_format(((($flooringSize * 50)/50)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($flooringSize * 50)/50)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($flooringSize * 50)/50)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td>{{ number_format((($carpentrySize * 50)/50)/100*0) }}</td>
-                        <?php $totalElectricals += ((($carpentrySize * 50)/50)/100*0); ?>
+                        <?php $totalCementBags += ((($carpentrySize * 50)/50)/100*0); ?>
                         <td>{{ number_format(((($carpentrySize * 50)/50)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($carpentrySize * 50)/50)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($carpentrySize * 50)/50)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td>{{ number_format((($paintingSize * 50)/50)/100*0) }}</td>
-                        <?php $totalElectricals += ((($paintingSize * 50)/50)/100*0); ?>
+                        <?php $totalCementBags += ((($paintingSize * 50)/50)/100*0); ?>
                         <td>{{ number_format(((($paintingSize * 50)/50)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($paintingSize * 50)/50)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($paintingSize * 50)/50)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td>{{ number_format((($fixturesSize * 50)/50)/100*0) }}</td>
-                        <?php $totalElectricals += ((($fixturesSize * 50)/50)/100*0); ?>
+                        <?php $totalCementBags += ((($fixturesSize * 50)/50)/100*0); ?>
                         <td>{{ number_format(((($fixturesSize * 50)/50)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($fixturesSize * 50)/50)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($fixturesSize * 50)/50)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td>{{ number_format((($completionSize * 50)/50)/100*0) }}</td>
-                        <?php $totalElectricals += ((($completionSize * 50)/50)/100*0); ?>
+                        <?php $totalCementBags += ((($completionSize * 50)/50)/100*0); ?>
                         <td>{{ number_format(((($completionSize * 50)/50)/100*0) * $price) }}</td>
-                        <?php $totalElectricalsPrice += (((($completionSize * 50)/50)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($completionSize * 50)/50)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>{{ number_format($totalElectricals) }}</th>
-                        <th>{{ number_format($totalElectricalsPrice) }}</th>
+                        <th>{{ number_format($totalCementBags) }}</th>
+                        <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
-                        <th>{{ number_format($totalElectricals/$bCycle) }}</th>
-                        <th>{{ number_format($totalElectricalsPrice/$bCycle) }}</th>
+                        <th>Requirement</th>
+                        <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                        <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
                     </tbody>
                 </table>
@@ -874,111 +919,112 @@
             case "doors": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                     <tbody>
                     <tr>
                         <td>Planning</td>
                         <td>{{ number_format(($planningSize * 350)/350) }}</td>
-                        <?php $totalDoors += (($planningSize * 350)/350); ?>
+                        <?php $totalCementBags += (($planningSize * 350)/350); ?>
                         <td>{{ number_format((($planningSize * 350)/350) * $price) }}</td>
-                        <?php $totalDoorsPrice += ((($planningSize * 350)/350) * $price); ?>
+                        <?php $totalCementPrice += ((($planningSize * 350)/350) * $price); ?>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td>{{ number_format(($diggingSize * 350)/350) }}</td>
-                        <?php $totalDoors += (($diggingSize * 350)/350); ?>
+                        <?php $totalCementBags += (($diggingSize * 350)/350); ?>
                         <td>{{ number_format((($diggingSize * 350)/350) * $price) }}</td>
-                        <?php $totalDoorsPrice += ((($diggingSize * 350)/350) * $price); ?>
+                        <?php $totalCementPrice += ((($diggingSize * 350)/350) * $price); ?>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td>{{ number_format((($foundationSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($foundationSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($foundationSize * 350)/350)); ?>
                         <td>{{ number_format(((($foundationSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($foundationSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($foundationSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td>{{ number_format((($pillarsSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($pillarsSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($pillarsSize * 350)/350)); ?>
                         <td>{{ number_format(((($pillarsSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($pillarsSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($pillarsSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td>{{ number_format((($wallsSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($wallsSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($wallsSize * 350)/350)); ?>
                         <td>{{ number_format(((($wallsSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($wallsSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($wallsSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td>{{ number_format((($roofingSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($roofingSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($roofingSize * 350)/350)); ?>
                         <td>{{ number_format(((($roofingSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($roofingSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($roofingSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Electrical & Plumbing</td>
                         <td>{{ number_format((($enpSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($enpSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($enpSize * 350)/350)); ?>
                         <td>{{ number_format(((($enpSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($enpSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($enpSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td>{{ number_format((($plasteringSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($plasteringSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($plasteringSize * 350)/350)); ?>
                         <td>{{ number_format(((($plasteringSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($plasteringSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($plasteringSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td>{{ number_format((($flooringSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($flooringSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($flooringSize * 350)/350)); ?>
                         <td>{{ number_format(((($flooringSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($flooringSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($flooringSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td>{{ number_format((($carpentrySize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($carpentrySize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($carpentrySize * 350)/350)); ?>
                         <td>{{ number_format(((($carpentrySize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($carpentrySize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($carpentrySize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td>{{ number_format((($paintingSize * 350)/350)/100*0) }}</td>
-                        <?php $totalDoors += ((($paintingSize * 350)/350)/100*0); ?>
+                        <?php $totalCementBags += ((($paintingSize * 350)/350)/100*0); ?>
                         <td>{{ number_format(((($paintingSize * 350)/350)/100*0) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($paintingSize * 350)/350)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($paintingSize * 350)/350)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td>{{ number_format((($fixturesSize * 350)/350)/100*0) }}</td>
-                        <?php $totalDoors += ((($fixturesSize * 350)/350)/100*0); ?>
+                        <?php $totalCementBags += ((($fixturesSize * 350)/350)/100*0); ?>
                         <td>{{ number_format(((($fixturesSize * 350)/350)/100*0) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($fixturesSize * 350)/350)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($fixturesSize * 350)/350)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td>{{ number_format((($completionSize * 350)/350)/100*0) }}</td>
-                        <?php $totalDoors += ((($completionSize * 350)/350)/100*0); ?>
+                        <?php $totalCementBags += ((($completionSize * 350)/350)/100*0); ?>
                         <td>{{ number_format(((($completionSize * 350)/350)/100*0) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($completionSize * 350)/350)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($completionSize * 350)/350)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>{{ number_format($totalDoors) }}</th>
-                        <th>{{ number_format($totalDoorsPrice) }}</th>
+                        <th>{{ number_format($totalCementBags) }}</th>
+                        <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
-                        <th>{{ number_format($totalDoors/$bCycle) }}</th>
-                        <th>{{ number_format($totalDoorsPrice/$bCycle) }}</th>
+                        <th>Requirement</th>
+                        <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                        <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
                     </tbody>
                 </table>
@@ -987,6 +1033,7 @@
             case "": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -995,103 +1042,103 @@
                     <tr>
                         <td>Planning</td>
                         <td>{{ number_format(($planningSize * 350)/350) }}</td>
-                        <?php $totalDoors += (($planningSize * 350)/350); ?>
+                        <?php $totalCementBags += (($planningSize * 350)/350); ?>
                         <td>{{ number_format((($planningSize * 350)/350) * $price) }}</td>
-                        <?php $totalDoorsPrice += ((($planningSize * 350)/350) * $price); ?>
+                        <?php $totalCementPrice += ((($planningSize * 350)/350) * $price); ?>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td>{{ number_format(($diggingSize * 350)/350) }}</td>
-                        <?php $totalDoors += (($diggingSize * 350)/350); ?>
+                        <?php $totalCementBags += (($diggingSize * 350)/350); ?>
                         <td>{{ number_format((($diggingSize * 350)/350) * $price) }}</td>
-                        <?php $totalDoorsPrice += ((($diggingSize * 350)/350) * $price); ?>
+                        <?php $totalCementPrice += ((($diggingSize * 350)/350) * $price); ?>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td>{{ number_format((($foundationSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($foundationSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($foundationSize * 350)/350)); ?>
                         <td>{{ number_format(((($foundationSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($foundationSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($foundationSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td>{{ number_format((($pillarsSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($pillarsSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($pillarsSize * 350)/350)); ?>
                         <td>{{ number_format(((($pillarsSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($pillarsSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($pillarsSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td>{{ number_format((($wallsSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($wallsSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($wallsSize * 350)/350)); ?>
                         <td>{{ number_format(((($wallsSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($wallsSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($wallsSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td>{{ number_format((($roofingSize * 350)/350)/100*100) }}</td>
-                        <?php $totalDoors += ((($roofingSize * 350)/350)/100*100); ?>
+                        <?php $totalCementBags += ((($roofingSize * 350)/350)/100*100); ?>
                         <td>{{ number_format(((($roofingSize * 350)/350)/100*100) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($roofingSize * 350)/350)/100*100) * $price); ?>
+                        <?php $totalCementPrice += (((($roofingSize * 350)/350)/100*100) * $price); ?>
                     </tr>
                     <tr>
                         <td>Electrical & Plumbing</td>
                         <td>{{ number_format((($enpSize * 350)/350)/100*100) }}</td>
-                        <?php $totalDoors += ((($enpSize * 350)/350)/100*100); ?>
+                        <?php $totalCementBags += ((($enpSize * 350)/350)/100*100); ?>
                         <td>{{ number_format(((($enpSize * 350)/350)/100*100) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($enpSize * 350)/350)/100*100) * $price); ?>
+                        <?php $totalCementPrice += (((($enpSize * 350)/350)/100*100) * $price); ?>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td>{{ number_format((($plasteringSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($plasteringSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($plasteringSize * 350)/350)); ?>
                         <td>{{ number_format(((($plasteringSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($plasteringSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($plasteringSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td>{{ number_format((($flooringSize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($flooringSize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($flooringSize * 350)/350)); ?>
                         <td>{{ number_format(((($flooringSize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($flooringSize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($flooringSize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td>{{ number_format((($carpentrySize * 350)/350)) }}</td>
-                        <?php $totalDoors += ((($carpentrySize * 350)/350)); ?>
+                        <?php $totalCementBags += ((($carpentrySize * 350)/350)); ?>
                         <td>{{ number_format(((($carpentrySize * 350)/350)) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($carpentrySize * 350)/350)) * $price); ?>
+                        <?php $totalCementPrice += (((($carpentrySize * 350)/350)) * $price); ?>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td>{{ number_format((($paintingSize * 350)/350)/100*0) }}</td>
-                        <?php $totalDoors += ((($paintingSize * 350)/350)/100*0); ?>
+                        <?php $totalCementBags += ((($paintingSize * 350)/350)/100*0); ?>
                         <td>{{ number_format(((($paintingSize * 350)/350)/100*0) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($paintingSize * 350)/350)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($paintingSize * 350)/350)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td>{{ number_format((($fixturesSize * 350)/350)/100*0) }}</td>
-                        <?php $totalDoors += ((($fixturesSize * 350)/350)/100*0); ?>
+                        <?php $totalCementBags += ((($fixturesSize * 350)/350)/100*0); ?>
                         <td>{{ number_format(((($fixturesSize * 350)/350)/100*0) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($fixturesSize * 350)/350)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($fixturesSize * 350)/350)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td>{{ number_format((($completionSize * 350)/350)/100*0) }}</td>
-                        <?php $totalDoors += ((($completionSize * 350)/350)/100*0); ?>
+                        <?php $totalCementBags += ((($completionSize * 350)/350)/100*0); ?>
                         <td>{{ number_format(((($completionSize * 350)/350)/100*0) * $price) }}</td>
-                        <?php $totalDoorsPrice += (((($completionSize * 350)/350)/100*0) * $price); ?>
+                        <?php $totalCementPrice += (((($completionSize * 350)/350)/100*0) * $price); ?>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>{{ number_format($totalDoors) }}</th>
-                        <th>{{ number_format($totalDoorsPrice) }}</th>
+                        <th>{{ number_format($totalCementBags) }}</th>
+                        <th>{{ number_format($totalCementPrice) }}</th>
                     </tr>
                     <tr>
-                        <th>Monthly Requirement</th>
-                        <th>{{ number_format($totalDoors/$bCycle) }}</th>
-                        <th>{{ number_format($totalDoorsPrice/$bCycle) }}</th>
+                        <th>Requirement</th>
+                        <th>{{ number_format($totalCementBags/$bCycle) }}</th>
+                        <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                     </tr>
                     </tbody>
                 </table>
@@ -1100,6 +1147,7 @@
             case "automation": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -1202,7 +1250,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -1213,8 +1261,9 @@
             case "flooring": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                     <tbody>
@@ -1315,7 +1364,7 @@
                             <th>{{ number_format($totalCementPrice) }}</th>
                         </tr>
                         <tr>
-                            <th>Monthly Requirement</th>
+                            <th>Requirement</th>
                             <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                             <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                         </tr>
@@ -1326,8 +1375,9 @@
             case "bathroom": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                 <tbody>
@@ -1428,7 +1478,7 @@
                     <th>{{ number_format($totalCementPrice) }}</th>
                 </tr>
                 <tr>
-                    <th>Monthly Requirement</th>
+                    <th>Requirement</th>
                     <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                     <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                 </tr>
@@ -1439,8 +1489,9 @@
             case "wood": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                 <tbody>
@@ -1541,7 +1592,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -1552,8 +1603,9 @@
             case "paints"; ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                     <tbody>
@@ -1654,7 +1706,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -1665,8 +1717,9 @@
             case "wardrobe": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
-                        <th>Total Nos. Required</th>
+                        <th>Total Sqft. Required</th>
                         <th>Amount</th>
                     </thead>
                     <tbody>
@@ -1767,7 +1820,7 @@
                     <th>{{ number_format($totalCementPrice) }}</th>
                 </tr>
                 <tr>
-                    <th>Monthly Requirement</th>
+                    <th>Requirement</th>
                     <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                     <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                 </tr>
@@ -1778,6 +1831,7 @@
             case "appliences"; ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -1880,7 +1934,7 @@
                     <th>{{ number_format($totalCementPrice) }}</th>
                 </tr>
                 <tr>
-                    <th>Monthly Requirement</th>
+                    <th>Requirement</th>
                     <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                     <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                 </tr>
@@ -1891,6 +1945,7 @@
             case "furnitures": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -1993,7 +2048,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -2004,6 +2059,7 @@
             case "rails": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -2106,7 +2162,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -2117,6 +2173,7 @@
             case "glasses": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -2219,7 +2276,7 @@
                             <th>{{ number_format($totalCementPrice) }}</th>
                         </tr>
                         <tr>
-                            <th>Monthly Requirement</th>
+                            <th>Requirement</th>
                             <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                             <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                         </tr>
@@ -2230,6 +2287,7 @@
             case "rmc": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -2332,7 +2390,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -2342,6 +2400,7 @@
             case "ceilling": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -2444,7 +2503,7 @@
                             <th>{{ number_format($totalCementPrice) }}</th>
                         </tr>
                         <tr>
-                            <th>Monthly Requirement</th>
+                            <th>Requirement</th>
                             <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                             <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
                         </tr>
@@ -2455,6 +2514,7 @@
             case "fire": ?>
             <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -2557,7 +2617,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -2568,6 +2628,7 @@
             case "automation": ?>
                 <table class="table table-hover" border=1>
                     <thead>
+
                         <th>Stages</th>
                         <th>Total Nos. Required</th>
                         <th>Amount</th>
@@ -2670,7 +2731,7 @@
                 <th>{{ number_format($totalCementPrice) }}</th>
             </tr>
             <tr>
-                <th>Monthly Requirement</th>
+                <th>Requirement</th>
                 <th>{{ number_format($totalCementBags/$bCycle) }}</th>
                 <th>{{ number_format($totalCementPrice/$bCycle) }}</th>
             </tr>
@@ -2683,4 +2744,35 @@
         ?>
 </div>
 @endif
+@if(!isset($bCycle))
+<?php $bCycle = 1; ?>
+@endif
+</div>
+</div>
+</div>
+<script>
+    var calBag;
+    var calPrice;
+    function calculateTarget(){
+        var percent = document.getElementById('percentage').value;
+        var number = {{ $totalCementBags/$bCycle }};
+        var price = {{ $totalCementPrice/$bCycle }};
+        calBag = number/100*percent;
+        calPrice = price/100*percent;
+        calBag = Math.round(calBag);
+        calPrice = Math.round(calPrice);
+        var text = "<b>Bags : " + calBag.toLocaleString() + "&nbsp;&nbsp;&nbsp;&nbsp; Amount : " + calPrice.toLocaleString() + "</b>";
+        document.getElementById('monthlyTarget').innerHTML = text;
+        document.getElementById('lock').className = "";
+    }
+    function transactionalProfit(){
+        var percent = document.getElementById('per').value;
+        var calBag2 = calBag/100*percent;
+        var calPrice2 = calPrice/100*percent;
+        calBag2 = Math.round(calBag2);
+        calPrice2 = Math.round(calPrice2);
+        var text = "<b>Transactional Profit Amount : " + calPrice2.toLocaleString() + "</b>";
+        document.getElementById('tp').innerHTML = text;
+    }
+</script>
 @endsection
