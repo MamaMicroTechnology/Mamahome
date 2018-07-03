@@ -766,6 +766,8 @@ class mamaController extends Controller
         $basement = $request->basement;
         $ground = $request->ground;
         $floor = $basement + $ground + 1;
+        $length = $request->length;
+            $breadth = $request->breadth;
          $size = $length * $breadth;
         if($request->mApprove != NULL){
             $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
@@ -866,6 +868,7 @@ class mamaController extends Controller
             'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'automation'=> $request->automation,
+             'plotsize' => $size,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
