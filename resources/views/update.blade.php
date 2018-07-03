@@ -1066,5 +1066,29 @@ function sum(){
       }
     }
 </script>
+<script type="text/javascript">
+  function checkthis(arg)
+  {
+    
+    
+    var x = document.getElementById(arg);
+    if(arg == 'length' || arg == 'breadth'){
+     
+      var breadth = parseInt(document.getElementById("breadth").value);
+      var length   = parseInt(document.getElementById("length").value);
+      if(!isNaN(breadth) && !isNaN(length)){
+        
+        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+        sum          = length*breadth;
+        Size    += sum;
+        if(document.getElementById("totalsize").innerHTML != null)
+          document.getElementById("totalsize").innerHTML = Size;
+        else
+          document.getElementById("totalsize").innerHTML = '';
+      }
+    }
+    return false;
+  }
+</script>
 
 @endsection
