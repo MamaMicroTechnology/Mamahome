@@ -18,7 +18,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
-          <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
+          <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em" class="btn btn-primary form-control">Assigned Enquiry </a>   
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
