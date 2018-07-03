@@ -1768,16 +1768,18 @@ class mamaController extends Controller
     }
     public function saveMap(Request $request)
     {
+        $convert = str_replace('(', '', $request->path);
+        $path = str_replace(')','', $convert);
         if($request->page == "Zone"){
             if($check = ZoneMap::where('zone_id',$request->zone)->count() == 0){
                 $map = new ZoneMap;
                 $map->zone_id = $request->zone;
-                $map->lat = $request->path;
+                $map->lat = $path;
                 $map->color = $request->color;
                 $map->save();
             }else{
                 $check = ZoneMap::where('zone_id',$request->zone)->first();
-                $check->lat = $request->path;
+                $check->lat = $path;
                 $check->color = $request->color;
                 $check->save();
             }
@@ -1785,12 +1787,12 @@ class mamaController extends Controller
             if($check = WardMap::where('ward_id',$request->zone)->count() == 0){
                 $map = new WardMap;
                 $map->ward_id = $request->zone;
-                $map->lat = $request->path;
+                $map->lat = $path;
                 $map->color = $request->color;
                 $map->save();
             }else{
                 $check = WardMap::where('ward_id',$request->zone)->first();
-                $check->lat = $request->path;
+                $check->lat = $path;
                 $check->color = $request->color;
                 $check->save();
             }
@@ -1798,12 +1800,12 @@ class mamaController extends Controller
             if($check = SubWardMap::where('sub_ward_id',$request->zone)->count() == 0){
                 $map = new SubWardMap;
                 $map->sub_ward_id = $request->zone;
-                $map->lat = $request->path;
+                $map->lat = $path;
                 $map->color = $request->color;
                 $map->save();
             }else{
                 $check = SubWardMap::where('sub_ward_id',$request->zone)->first();
-                $check->lat = $request->path;
+                $check->lat = $path;
                 $check->color = $request->color;
                 $check->save();
             }
