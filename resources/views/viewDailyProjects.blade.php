@@ -91,10 +91,17 @@
                         <tr>
                             <td><b>Project Image</b></td>
                             <td>
-                                <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
-                               <td style="font-size:13px">
-                               
-                            </td>
+                                <!-- <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}"> -->
+                               <?php
+                                               $images = explode(",", $details->image);
+                                               ?>
+                                             <div class="row">
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350"  src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
                             </td>
                             </td>
                         </tr>

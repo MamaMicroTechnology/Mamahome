@@ -112,8 +112,9 @@
                 </thead>
                 <tbody id="mainPanel">
                 	@for($i = 0; $i<count($projectIds);$i++)
+                 
                     <tr>
-                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] }}</td>
+                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
                         <td style="text-align:center">
                         	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$projectIds[$i]['projectId']}}&&lename={{ $projectIds[$i]['updater'] }}">{{ $projectIds[$i]['projectId'] }}</a>
                         </td>
@@ -131,6 +132,7 @@
                         	@endif
                         </td>
                     </tr>
+                
                     @endfor
                 </tbody>
             </table>

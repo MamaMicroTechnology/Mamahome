@@ -522,7 +522,6 @@ div#calendar{
     <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
      
     <!-- <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> --> 
-<<<<<<< HEAD
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
@@ -544,16 +543,6 @@ div#calendar{
         </div>   
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
-=======
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
-    <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
-    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-    <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
-    <a href="{{ URL::to('/orders') }}">Orders</a>
-     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
-    <a href="{{ URL::to('/tltracking') }}">Tracking</a>
-    <a href="{{ URL::to('/') }}/kra">KRA</a>
->>>>>>> 325a96a518e27c2e536520a0b5f26283d862d1ea
 </div>  
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">

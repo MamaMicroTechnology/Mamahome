@@ -35,8 +35,8 @@
             @endif
             @if($planningCount != NULL)
             Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
-            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount }}
-            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize }}</b>
+            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount  }}
+            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize  }}</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -109,11 +109,7 @@
                         <td class="text-center">{{ $completionCount }}</td>
                         <td>{{ $completionSize }}</td>
                     </tr>
-                    <tr>
-                        <td>Closed</td>
-                        <td class="text-center">{{ $closedCount }}</td>
-                        <td>{{ $closedSize }}</td>
-                    </tr>
+                    
                 </tbody>
             </table> 
             @endif
@@ -266,11 +262,6 @@
                         <td> 
                             {{ $completion }}
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Closed</td>
-                        <td class="text-center">{{ $Cclosed }}</td>
-                        <td>{{ $closed }}</td>
                     </tr>
                 </tbody>
             </table> 

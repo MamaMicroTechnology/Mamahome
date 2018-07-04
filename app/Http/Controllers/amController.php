@@ -286,6 +286,7 @@ class amController extends Controller
         $rcount =AssetInfo::where('asset_type',$request->asset)->count();
         $remaining = $tcount-$rcount;
         $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get(); 
+      
         return view('hrasset',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
 
     }
@@ -311,7 +312,7 @@ class amController extends Controller
         $mhome->description= $request->desc;
         $mhome->company= $request->cmp;
         $mhome->date= $request->tdate;
-        $mhome->bill= '';
+        $mhome->bill= $billimage;
         $mhome->remark =$request->remark;
         $mhome->save();
 

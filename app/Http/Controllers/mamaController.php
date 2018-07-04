@@ -763,6 +763,9 @@ class mamaController extends Controller
         $basement = $request->basement;
         $ground = $request->ground;
         $floor = $basement + $ground + 1;
+        $length = $request->length;
+        $breadth = $request->breadth;
+        $size = $length * $breadth;
         if($request->mApprove != NULL){
             $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
             $request->mApprove->move(public_path('projectImages'),$imageName1);
@@ -848,6 +851,9 @@ class mamaController extends Controller
             'project_status' => $statuses,
             'basement' => $basement,
             'ground' => $ground,
+            'length' => $length,
+            'breadth' => $breadth,
+            'plotsize' => $size,
             'quality' => ($request->quality != null ? $request->quality : 'Unverified'),
             'project_type' => $floor,
             'project_size' => $request->pSize,
