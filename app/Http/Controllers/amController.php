@@ -695,13 +695,27 @@ class amController extends Controller
     }
     public function saveasset(Request $request){
 
+        if($request->upload != NULL){
+                $image = time().'.'.request()->upload->getClientOriginalExtension();
+                $request->upload->move(public_path('assettype'),$image);
+                  MamahomeAsset::where('id',$request->Id)->update([
+                'asset_image'=>$image    
+                 ]);              
+        }
+         if($request->bill != NULL){
+                $billimage = time().'.'.request()->bill->getClientOriginalExtension();
+                $request->bill->move(public_path('assetbill'),$billimage);
+                MamahomeAsset::where('id',$request->Id)->update([
+                'bill'=>$billimage
+                 ]);
+        }
          MamahomeAsset::where('id',$request->Id)->update([
         'name'=> $request->ename,
         'sl_no' => $request->serialno,
         'description' => $request->desc,
         'company' => $request->cmp,
         'remark' =>$request->remark,
-            
+        'date' =>$request->tdate
         ]);
          return redirect('/assets');
     }
