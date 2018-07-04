@@ -50,6 +50,7 @@
           path.pop();
             marker[0] = path;
             polygon = map.removePolylines();
+            document.getElementById('path').value = marker;
             polygon = map.drawPolyline({
               path: path,
               strokeColor: '#131540',
@@ -118,6 +119,7 @@
         $("#undo").click(function(){
           path.pop();
             marker[0] = path;
+            document.getElementById('path').value = marker;
             polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
