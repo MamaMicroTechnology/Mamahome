@@ -494,6 +494,7 @@ Route::group(['middleware'=>['Logistics']],function(){
 Route::get('/payment','HomeController@payment');
 Route::get('/projection','HomeController@getProjection');
 Route::post('/lockProjection','HomeController@getLockProjection');
+
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
 Route::get('/sendSMS', 'HomeController@sendSMS');

@@ -502,6 +502,8 @@ class mamaController extends Controller
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
+           $length = $request->length;
+            $breadth = $request->breadth;
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
@@ -566,6 +568,7 @@ class mamaController extends Controller
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
+          $projectdetails->automation=$request->automation;
            
             $projectdetails->save();
             
@@ -763,6 +766,9 @@ class mamaController extends Controller
         $basement = $request->basement;
         $ground = $request->ground;
         $floor = $basement + $ground + 1;
+        $length = $request->length;
+        $breadth = $request->breadth;
+        $size = $length * $breadth;
         if($request->mApprove != NULL){
             $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
             $request->mApprove->move(public_path('projectImages'),$imageName1);
@@ -848,10 +854,15 @@ class mamaController extends Controller
             'project_status' => $statuses,
             'basement' => $basement,
             'ground' => $ground,
+            'length' => $length,
+            'breadth' => $breadth,
+            'plotsize' => $size,
             'quality' => ($request->quality != null ? $request->quality : 'Unverified'),
             'project_type' => $floor,
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,
+            'interested_in_loan'=>$request->loaninterest,
+            'interested_in_doorsandwindows'=>$request->dandwinterest,
             'construction_type'=>$type,
             'follow_up_date' =>$request->follow_up_date,
             'followup' => $request->follow,
@@ -859,6 +870,10 @@ class mamaController extends Controller
             'contract'=>$request->contract,
             'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
+            'automation'=> $request->automation,
+             'plotsize' => $size,
+            'length'=> $length,
+            'breadth' => $breadth,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
@@ -1346,6 +1361,7 @@ class mamaController extends Controller
             'quality'=>$request->quality,
             'contract'=>$request->contract,
             'note'=>$request->note,
+            'automation'=>$request->automation,
             'follow_up_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
             ]);

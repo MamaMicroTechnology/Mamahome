@@ -18,6 +18,10 @@ use DB;
 use App\loginTime;
 use App\Requirement;
 use App\RoomType;
+use App\Category;
+use App\SubCategory;
+use App\brand;
+
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -235,9 +239,7 @@ class TokenController extends Controller
         }
     }
       public function addProject(Request $request)
-    {
-          
-        $cType = count($request->constructionType);
+    { $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
         $projectimage = "";
@@ -263,43 +265,51 @@ class TokenController extends Controller
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
+            
             if($request->municipality_approval != NULL){
-                $imageName1 = time().'.'.request()->municipality_approval->getClientOriginalExtension();
-                $request->municipality_approval->move(public_path('projectImages'),$imageName1);
-            }else{
-                $imageName1 = "N/A";
+             $data = $request->all();
+                $png_url = $request->userid."municipality_approval-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_url;
+                $img = $data['municipality_approval'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['municipality_approval']);   
+                $success = file_put_contents($path, $decoded);
+               
+;
             }
-            $i = 0;
+            else{
+                 $png_url  = "N/A";
+            }
+            
+
+      
             if($request->other_approvals){
-                foreach($request->other_approvals as $oApprove){
-                    $imageName2 = $i.time().'.'.$other_approvals->getClientOriginalExtension();
-                    $other_approvals->move(public_path('projectImages'),$imageName2);
-                    if($i == 0){
-                        $otherApprovals .= $imageName2;
-                    }else{
-                        $otherApprovals .= ", ".$imageName2;
-                    }
-                    $i++;
-                }
-            }else{
-             $otherApprovals=null;   
+                $data = $request->all();
+                $png_other = $request->userid."other_approvals-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_other;
+                $img = $data['other_approvals'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['other_approvals']);   
+                $success = file_put_contents($path, $decoded);
+                  
+                
             }
-            $i = 0;
-            if($request->image){
-                foreach($request->image as $pimage){
-                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
-                     $pimage->move(public_path('projectImages'),$imageName3);
-                     if($i == 0){
-                        $projectimage .= $imageName3;
-                     }
-                     else{
-                            $projectimage .= ",".$imageName3;
-                     }
-                     $i++;
-                }
-        
-            }else{
-                $projectimage=null;
+            else{
+              $png_other = null;   
+            }
+          
+          if($request->image){
+                $data = $request->all();
+                $png_project =$request->userid."project_image-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_project;
+                $img = $data['image'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['image']);   
+                $success = file_put_contents($path, $decoded);
+
+            }
+            else{
+                $png_project = null;
             }
            
             
@@ -312,13 +322,14 @@ class TokenController extends Controller
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
             $projectdetails->road_name = $request->road_name;
-            $projectdetails->municipality_approval = $imageName1;
-            $projectdetails->other_approvals = $otherApprovals;
+            $projectdetails->municipality_approval = $png_url;
+            $projectdetails->other_approvals = $png_other;
             $projectdetails->project_status = $statuses;
             $projectdetails->project_size = $request->project_size;
             $projectdetails->budgetType = $request->budgetType;
             $projectdetails->budget = $request->budget;
-            $projectdetails->image = $projectimage;
+            $projectdetails->image = $png_project;
+            $projectdetails->user_id = $request->userid;
             
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
@@ -326,6 +337,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
+            
            
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
@@ -367,7 +379,7 @@ public function enquiry(request $request){
         $enquiry->brand = $request->brand;
         $enquiry->sub_category = $request->sub_category;
         $enquiry->requirement_date = $request->requirement_date;
-        $enquiry->notes = $request->eremarks;
+        $enquiry->notes = $request->notes;
         $enquiry->A_contact = $request->A_contact;
         $enquiry->save();
           if($enquiry->save() ){
@@ -375,30 +387,43 @@ public function enquiry(request $request){
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }
-    }
-    public function getprojects(request $request){
-        $projects = ProjectDetails::where('user_id',$request->user_id)
-                    ->get();
-        if($projects != null){
-            return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$projects]);
-
-        }else{
-            return response()->json(['message'=>'No projects Found']);
-        }
-    }
-    public function getProject(Request $request)
-    {
-        $project = ProjectDetails::where('project_details.project_id',$request->project_id)
+ } 
+public function getproject(request $request){
+  $project = ProjectDetails::where('project_details.user_id',$request->user_id)
                     ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
                     ->select('project_details.*','site_addresses.address','site_addresses.latitude','site_addresses.longitude')
-                    ->first();
-        $rooms = RoomType::where('project_id',$request->project_id)->get();
-        $project = $project->toArray();
-        foreach($rooms as $room){
-            array_push($project,$room->room_type);
-            array_push($project,$room->floor_no);
-            array_push($project,$room->no_of_rooms);
-        }
+                    ->get();
+      if($project != null){
+         return response()->json(['message' => 'true','user_id'=>$request->user_id,'projectdetails'=>$project]);
+
+      }else{
+         return response()->json(['message'=>'No projects Found']);
+      }
+
+  }  
+ public function getsingleProject(Request $request)
+    {
+        $project = ProjectDetails::where('project_details.project_id',$request->project_id)
+                    ->leftJoin('room_types','project_details.project_id','room_types.project_id')
+                    ->select('room_types.*')
+                    ->get();
+       
         return response()->json(['projectdetails'=>$project]);
-    }          
+    }       
+  public function getenq(request $request){
+    $enq = Requirement::where('project_id',$request->project_id)->get();
+    if($enq != null){
+         return response()->json(['message' => 'true','project_id'=>$request->project_id,'EnqDetails'=>$enq]);
+
+      }else{
+         return response()->json(['message'=>'No enquires Found']);
+      }
+  }   
+   public function getbrands(Request $request){
+        $category = Category::all();
+        $brand = brand::all();
+        $sub_cat = SubCategory::all();   
+
+        return response()->json(['category'=>$category,'brand'=>$brand,'sub_cat'=>$sub_cat]);    
+      }         
 }

@@ -26,8 +26,8 @@
             @endif
             @if($planningCount != NULL)
             Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
-            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount }}
-            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize }}</b>
+            Total No. Of Projects : {{ number_format($planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount) }}
+            Total Sizes : <b>{{ number_format($planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize) }}</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -125,8 +125,8 @@
             @endif
             @if(isset($_GET['subward']))
             Total Project Sizes Under {{ $subwardName}} (based on stages)<br>
-            Total No. of Projects : @if($total) {{ $total }} @endif
-            Total Sizes : <b>@if($totalsubward) {{ $totalsubward }} @endif</b>
+            Total No. of Projects : @if($total) {{ number_format($total) }} @endif
+            Total Sizes : <b>@if($totalsubward) {{ number_format($totalsubward) }} @endif</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>

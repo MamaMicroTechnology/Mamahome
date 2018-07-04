@@ -38,6 +38,7 @@
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em;font-family:Times New Roman;"><b>Home</b></a></li>
                         <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em;font-family:Times New Roman;"><b>Chat</b></a></li>
                         <li><a href="{{ URL::to('/') }}/letraining" style="font-size:1.1em;font-family:Times New Roman;"><b>Training Video</b></a></li>
+                        <li> <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em;font-family:Times New Roman;"><b>Assigned Enquiry </b></a></li>  
                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman;"><b>Enquiry Pipelined</b></a></li>
                     </ul>
 

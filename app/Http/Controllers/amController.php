@@ -286,6 +286,7 @@ class amController extends Controller
         $rcount =AssetInfo::where('asset_type',$request->asset)->count();
         $remaining = $tcount-$rcount;
         $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get(); 
+      
         return view('hrasset',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
 
     }
@@ -311,7 +312,7 @@ class amController extends Controller
         $mhome->description= $request->desc;
         $mhome->company= $request->cmp;
         $mhome->date= $request->tdate;
-        $mhome->bill= '';
+        $mhome->bill= $billimage;
         $mhome->remark =$request->remark;
         $mhome->save();
 
@@ -694,13 +695,27 @@ class amController extends Controller
     }
     public function saveasset(Request $request){
 
+        if($request->upload != NULL){
+                $image = time().'.'.request()->upload->getClientOriginalExtension();
+                $request->upload->move(public_path('assettype'),$image);
+                  MamahomeAsset::where('id',$request->Id)->update([
+                'asset_image'=>$image    
+                 ]);              
+        }
+         if($request->bill != NULL){
+                $billimage = time().'.'.request()->bill->getClientOriginalExtension();
+                $request->bill->move(public_path('assetbill'),$billimage);
+                MamahomeAsset::where('id',$request->Id)->update([
+                'bill'=>$billimage
+                 ]);
+        }
          MamahomeAsset::where('id',$request->Id)->update([
         'name'=> $request->ename,
         'sl_no' => $request->serialno,
         'description' => $request->desc,
         'company' => $request->cmp,
         'remark' =>$request->remark,
-            
+        'date' =>$request->tdate
         ]);
          return redirect('/assets');
     }

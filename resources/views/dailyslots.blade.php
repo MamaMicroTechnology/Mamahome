@@ -54,7 +54,7 @@
         </div>
         <div class="panel panel-default" styke="border-color:green">
             <div class="panel-heading text-center" style="background-color:green">
-                <b style="color:white">Mini Report (Today)</b>
+                <b style="color:white">Mini Report of listing engineer  (Today)</b>
             </div>
             <div class="panel-body">
                 <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
@@ -64,6 +64,23 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default" styke="border-color:green">
+            <div class="panel-heading text-center" style="background-color:green">
+                <b style="color:white">Mini Report of Account Executive(Today)</b>
+            </div>
+            <div class="panel-body">
+               
+                <table class="table table-striped" border="1">
+                    @foreach($accusers as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                     </tr>
                     @endforeach
                 </table>
@@ -93,7 +110,11 @@
                     </thead>
                     <tbody id="mainPanel">
                         @foreach($projects as $project)
+                        @if($project->quality == "Fake")
+                        <tr style='background-color:#d2d5db'>
+                        @else
                         <tr>
+                        @endif
                             <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>

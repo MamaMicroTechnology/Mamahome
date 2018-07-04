@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px;">
+<div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
                 <b style="color:white">Sales Report</b>
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-<div class="col-md-8" >
+<div class="col-md-8">
     <div class="panel panel-primary" style="overflow-x:scroll">
         <div class="panel-heading" id="panelhead">
             <label>
@@ -98,7 +98,7 @@
             </label>
             <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
         </div>
-        <div class="panel-body" style="overflow-y:scroll; height:500px; max-height:500px;">
+        <div class="panel-body" style="overflow-y:scroll; height:500px; max-height:500px">
             <table class='table table-responsive table-striped' style="color:black" border="1">
                 <thead>
                     <tr>
@@ -112,8 +112,9 @@
                 </thead>
                 <tbody id="mainPanel">
                 	@for($i = 0; $i<count($projectIds);$i++)
+                 
                     <tr>
-                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] }}</td>
+                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
                         <td style="text-align:center">
                         	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$projectIds[$i]['projectId']}}&&lename={{ $projectIds[$i]['updater'] }}">{{ $projectIds[$i]['projectId'] }}</a>
                         </td>
@@ -131,6 +132,7 @@
                         	@endif
                         </td>
                     </tr>
+                
                     @endfor
                 </tbody>
             </table>
