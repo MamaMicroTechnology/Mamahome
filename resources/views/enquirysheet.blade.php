@@ -10,12 +10,10 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-				
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
-					
 					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
 				Enquiry Data
 			</div>

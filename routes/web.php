@@ -475,8 +475,6 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::get('/accountroads','HomeController@getRoads');
     Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
     Route::get('/accountreports','HomeController@getMyReports');
-    
-    
 
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
@@ -494,9 +492,10 @@ Route::group(['middleware'=>['Logistics']],function(){
 });
 
 Route::get('/payment','HomeController@payment');
-
-
+Route::get('/projection','HomeController@getProjection');
+Route::post('/lockProjection','HomeController@getLockProjection');
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
-
 Route::get('/sendSMS', 'HomeController@sendSMS');
+Route::get('/planning','HomeController@getLockedProjection');
+Route::get('/stage','HomeController@getLockedStage');
