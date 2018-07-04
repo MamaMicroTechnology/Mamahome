@@ -150,6 +150,21 @@
                                  </td>
                                </tr>
                                <tr>
+                                 <td>Interested in Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
                                  <td>Type of Contract ? </td>
                                   <td>:</td>
                                   <td>
@@ -334,10 +349,10 @@
                                  <td>:</td>
                                  <td>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="Structural">Structural Budget
+                                      <input {{ $projectdetails->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="radio" value="Structural">Structural Budget
                                     </label>
                                     <label required class="checkbox-inline">
-                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="Finishing">Finishing Budget
+                                      <input {{ $projectdetails->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="radio" value="Finishing">Finishing Budget
                                     </label>
                                  </td>
                                </tr>
@@ -1075,4 +1090,8 @@ function sum(){
     return false;
   }
 </script>
+<<<<<<< HEAD
+=======
+
+>>>>>>> c4f875dec0b2ce8db739d83ecf78e216cb6170d3
 @endsection
