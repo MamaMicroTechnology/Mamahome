@@ -665,44 +665,74 @@ class ContractorController extends Controller
 
 
                $table .="<tr><td>Cement</td>
-                <td>".round($totalcement)." (Bags)</td>
-                <td>".(round ($cement1 = ($totalcement) * 270))."</td></tr>";
+                 <td>".number_format($totalcement)." (Bags)</td>
+                    
+                <td>" .number_format(($cement1 = ($totalcement) * 270))."</td>
+                     </tr>";
 
                  $table .="<tr><td>Steel</td>
-                <td>".round($totalsteel)." (Ton)</td>
-                <td>".(round($steel1 = ($totalsteel) * 50000))."</td></tr>";
+
+                 <td>".number_format($totalsteel)." (Ton)</td>
+                      
+                 <td>".(number_format($steel1 = ($totalsteel) * 50000))."</td>
+                      </tr>";
+
 
                  $table .="<tr><td>Sand</td>
-                <td>".round($totalsand)." (Ton)</td>
-                <td>".(round($sand1 = ($totalsand) * 950))."</td></tr>";
+                               
+                <td>".number_format($totalsand)." (Ton)</td>
+                 
+                 <td>".(number_format($sand1 = ($totalsand) * 950))."</td></tr>";
+                 
+               
 
                 $table .="<tr><td>Aggregates</td>
-                <td>".round($totalaggregates)." (Ton)</td>
-                <td>".(round($agr=($totalaggregates) * 750))."</td></tr>";
+                <td>".number_format($totalaggregates)." (Ton)</td>
+                   
+                <td>".(number_format($agr=($totalaggregates) * 750))."</td>
+               </tr>";
 
                   $table .="<tr><td>Electrical</td>
-                <td>".round($totalelectrical)." (Sqft)</td>
-                <td>".(round($ele=($totalelectrical) * 84))."</td></tr>";
+                <td>".number_format($totalelectrical)." (Sqft)</td>
+                    
+                <td>".(number_format($ele=($totalelectrical) * 84))."</td>
+                     
+                     
+                </tr>";
 
 
                 $table .="<tr><td>Blocks and Bricks</td>
-                <td>".round($totalblocks)." (No.)</td>
-                <td>".(round($bl=($totalblocks) * 28))."</td></tr>";
+                <td>".number_format($totalblocks)." (No.)</td>
+                     
+                <td>".(number_format($bl=($totalblocks) * 28))."</td>
+                     </tr>";
 
         
                $table .="<tr><td>Plumbing</td>
-                <td>".round($totalPlumbing)." (Sqft)</td>
-                <td>".(round($pl =($totalPlumbing) * 50))."</td></tr>";
+                <td>".number_format($totalPlumbing)." (Sqft)</td>
+                    
+                <td>".(number_format($pl =($totalPlumbing) * 50))."</td>
+                     </tr>";
 
                 $table .="<tr><td>Doors and windows</td>
-                <td>".round($totaldoors)." (Sqft)</td>
-                <td>".(round($door=($totaldoors) * 350))."</td></tr>";
+                <td>".number_format($totaldoors)." (Sqft)</td>
+                    
+                <td>".(number_format($door=($totaldoors) * 350))."</td>
+                    </tr>";
 
                 $table .="<tr><td>Flooring</td>
-                <td>".round($totalflooring)." (Sqft)</td>
-                <td>".(round($floor=($totalflooring) * 45))."</td></tr>";
-
-     $total = round($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1);
+                <td>".number_format($totalflooring)." (Sqft)</td>
+                   
+                <td>".(number_format($floor=($totalflooring) * 45))."</td>
+                  
+                   </tr>";
+       $total = number_format($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1);
+       $table .="<tr><th></th>
+                <th>Total Approximate Estimation Amount:</th>
+                   
+                <th>".  $total ."</th>
+                  
+                   </tr>";
 
 
       return view('detailProjects',['projects'=>$projects,'table'=>$table,'total'=>$total]);

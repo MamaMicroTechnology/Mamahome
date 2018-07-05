@@ -390,7 +390,8 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/video','HomeController@trainingVideo');
 
 //human resource//
-    Route::get('/assets','amController@addassets');  
+    Route::get('/assets','amController@addassets'); 
+    Route::get('/mhemployee','amController@mhemployee'); 
     Route::get('/viewasset','amController@getasset');
     Route::post('/inputasset','amController@storeasset');
     Route::post('/assetsimcard','amController@assetsimcard');
@@ -411,6 +412,8 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/getbrand','amController@getbrand');
     Route::get('/signature','amController@signature');
     Route::get('/preview','amController@preview');
+    Route::get('/viewmhemployee','amController@viewmhemployee');
+
 
 
 
