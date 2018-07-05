@@ -91,10 +91,6 @@
                         <tr>
                             <td><b>Project Image</b></td>
                             <td>
-<<<<<<< HEAD
-                                <!-- <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}"> -->
-=======
->>>>>>> c4f875dec0b2ce8db739d83ecf78e216cb6170d3
                                <?php
                                                $images = explode(",", $details->image);
                                                ?>
