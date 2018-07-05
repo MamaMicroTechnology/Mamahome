@@ -36,19 +36,19 @@
                 </tr>
                 @foreach($projections as $projection)
                     <tr>
-                        <td>{{ $projection->stage }}</td>
+                        <td>{{ $projection['stage'] }}</td>
                         <td>
-                            @if($projection->stage == "Electrical & Plubming")
+                            @if($projection['stage'] == "Electrical & Plumbing")
                                 <?php $stage = "electrical"; ?>
                             @else
-                                <?php $stage = $projection->stage; ?>
+                                <?php $stage = $projection['stage']; ?>
                             @endif
-                            {{ number_format(($projection->size * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)])) }}
-                            <?php $totalRequirement += ($projection->size * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]); ?>
+                            {{ number_format(($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)])) }}
+                            <?php $totalRequirement += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]); ?>
                         </td>
                         <td>
-                            {{ number_format(($projection->size * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category->price) }}
-                            <?php $totalPrice += ($projection->size * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category->price; ?>
+                            {{ number_format(($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category->price) }}
+                            <?php $totalPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category->price; ?>
                         </td>
                     </tr>    
                 @endforeach
@@ -59,7 +59,7 @@
                     </tr>
                     <tr>
                         <th>Monthly Requirement</th>
-                        <th>{{ number_format($monthly = $totalRequirement/$category->business_cycle) }}</th>
+                              <th>{{ number_format($monthly = $totalRequirement/$category->business_cycle) }}</th>
                         <th>{{ number_format($monthlyPrice = $totalPrice/$category->business_cycle) }}</th>
                     </tr>
                 </table>

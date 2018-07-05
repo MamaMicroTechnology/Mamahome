@@ -83,7 +83,7 @@
         <button class="btn btn-success form-control">Proceed</button>
     </form>
     <br>
-    <div>
+    <div class="{{ !isset($_GET['ward']) ? 'hidden': '' }}">
         <label for="target">Monthly Target</label>
         <input id="percentage" type="text" class="form-control" placeholder="Input Your Percentage From Monthly Projection"><br>
         <button onclick="calculateTarget()" class="btn btn-success form-control">Proceed</button>
@@ -2749,7 +2749,7 @@
 </div>
 </div>
 </div>
-<form action="/lockProjection" id="lockProj" method="POST">
+<form action="{{ URL::to('/') }}/lockProjection" id="lockProj" method="POST">
     {{ csrf_field() }}
     <input type="hidden" name="monthlyTarget" id="mTarget">
     <input type="hidden" name="transactionalProfit" id="transactionalProfit">
@@ -2768,7 +2768,7 @@
         calPrice = price/100*percent;
         calBag = Math.round(calBag);
         calPrice = Math.round(calPrice);
-        var text = "<b>Bags : " + calBag.toLocaleString() + "&nbsp;&nbsp;&nbsp;&nbsp; Amount : " + calPrice.toLocaleString() + "</b>";
+        var text = "<b>{{ $conversion != null ? $conversion->unit : '' }} : " + calBag.toLocaleString() + "&nbsp;&nbsp;&nbsp;&nbsp; Amount : " + calPrice.toLocaleString() + "</b>";
         document.getElementById('monthlyTarget').innerHTML = text;
         document.getElementById('lock').className = "";
     }
