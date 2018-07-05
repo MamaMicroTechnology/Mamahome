@@ -24,8 +24,9 @@
                         <!-- <th style="text-aligh:center">View Invoice</th> -->
     				</thead>
     				<tbody>
-					    @foreach($rec as $view)
-					    <tr>
+                       
+                        @foreach($rec as $view)
+                        <tr class="{{ in_array($view->orderid, $invoice) ? 'hidden' : '' }}">
 					        <td style="text-align:center">
 					            <a href="{{URL::to('/')}}/inputinvoice?id={{$view->orderid}}" target="_blank">{{$view->orderid}}</a>
 					        </td>
@@ -39,7 +40,8 @@
                                 <a href="{{ URL::to('/') }}/invoice?id={{ $view->orderid }}">View Invoice</a>
                             </td> -->
 					    </tr>
-					    @endforeach
+                        @endforeach
+					   
     			    </tbody>
     			</table>    
             </div>

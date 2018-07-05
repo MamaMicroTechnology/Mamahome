@@ -53,6 +53,7 @@
                                     <option value="ALL">All Projects</option>
                                     <option value="FAKE">Fake Projects</option>
                                     <option value="GENUINE">Genuine Projects</option>
+                                     <option value="Unverified">Genuine Projects</option>
                                 </select>
                             </td>
                             <td style="width:25%">

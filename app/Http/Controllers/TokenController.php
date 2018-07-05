@@ -420,7 +420,7 @@ public function getproject(request $request){
          return response()->json(['message'=>'No enquires Found']);
       }
   }   
-   public function getbrands(Request $request){
+   public function getbrands(){
         $category = Category::all();
         $brand = brand::all();
         $sub_cat = SubCategory::all();   
