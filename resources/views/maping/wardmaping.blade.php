@@ -35,6 +35,7 @@
             lognitude = e.latLng.lng();
             path.push([latitude, lognitude]);
             marker[0] = path;
+            document.getElementById('path').value = marker;
             polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
@@ -49,6 +50,7 @@
           path.pop();
             marker[0] = path;
             polygon = map.removePolylines();
+            document.getElementById('path').value = marker;
             polygon = map.drawPolyline({
               path: path,
               strokeColor: '#131540',
@@ -104,6 +106,7 @@
             lognitude = e.latLng.lng();
             path.push([latitude, lognitude]);
             marker[0] = path;
+            document.getElementById('path').value = marker;
             polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
@@ -116,6 +119,7 @@
         $("#undo").click(function(){
           path.pop();
             marker[0] = path;
+            document.getElementById('path').value = marker;
             polygon = map.removePolylines();
             polygon = map.drawPolyline({
               path: path,
@@ -156,10 +160,10 @@
         <div id="map"></div>
       </div>
       <br>
-      <div class="col-md-8">
+      <div class="col-md-12">
         <form onsubmit="validate()" action="{{ URL::to('/') }}/saveMap" method="POST">
           {{ csrf_field() }}
-            <div class="col-md-6">
+            <div class="col-md-2">
               {{ $page }}:<br>
                 <input type="text" name="name" id="name" value="{{ $zones->name }}" class="form-control">
                 <input type="hidden" name="page" value="{{ $page }}">
@@ -170,11 +174,16 @@
               <input name="color" class="jscolor form-control" id="color" value="{{ $zones->color }}">
               <div id="area"></div>
             </div>
-            <div class="col-md-4">
-              <input type="hidden" value="{{ $zones->lat }}" name="path" id="path" class="form-control"><br>
-              <button type="button" class="btn btn-primary" id="undo">Undo</button>
-              <button type="button" id="draw" class="btn btn-primary">Preview</button>
-              <input type="submit" value="Save" class="btn btn-success" id="savebutton">
+            <div class="col-md-8">
+              <br>
+              <div class="col-md-8">
+                <input type="text" value="{{ $zones->lat }}" name="path" id="path" class="form-control">
+              </div>
+              <div class="col-md-4 btn-group">
+                <button type="button" class="btn btn-primary" id="undo">Undo</button>
+                <button type="button" id="draw" class="btn btn-primary">Preview</button>
+                <input type="submit" value="Save" class="btn btn-success" id="savebutton">
+              </div>
             </div>
         </form>
       </div>

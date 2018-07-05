@@ -3,7 +3,7 @@
 <div class="col-md-8 col-md-offset-2">
 	<div class="panel panel-primary">
 		<div class="panel-heading text-center">MATERIAL ESTIMATION  
-			<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+		<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>	
 		</div>
 		<div class="panel-body">
 			

@@ -115,10 +115,11 @@ class ContractorController extends Controller
       }
    		return view('contractorProjects',['projects'=>$projects,'conName'=>$conName]);
    	}
-    public function viewProjects(Request $request)
+  public function viewProjects(Request $request)
     {
      
       
+    
       $table = "<tr> <td colspan='8'><center>Material Estimation prices may vary according to Market Price</center> </td></center></tr>
      
       <tr><th>Category</th><th>Total Required</th><th>Total Amount</th></tr>";

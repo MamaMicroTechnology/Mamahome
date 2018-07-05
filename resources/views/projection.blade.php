@@ -18,7 +18,7 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div class="col-md-6 col-md-offset-3">
+<div id="projection" class="col-md-6 col-md-offset-3">
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-center col-md-3 col-md-offset-5"><b>Projection</b></div>
@@ -71,7 +71,7 @@
         <div class="form-group">
         <label style="text-align:left;" class="control-label col-sm-6" for="price">Price</label>
         <div class="col-md-6">
-        <input required value="{{ isset($_GET['bCycle']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
+        <input id="price" required value="{{ isset($_GET['bCycle']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
         </div>
         </div>
         <div class="form-group">
@@ -83,7 +83,7 @@
         <button class="btn btn-success form-control">Proceed</button>
     </form>
     <br>
-    <div>
+    <div class="{{ !isset($_GET['ward']) ? 'hidden': '' }}">
         <label for="target">Monthly Target</label>
         <input id="percentage" type="text" class="form-control" placeholder="Input Your Percentage From Monthly Projection"><br>
         <button onclick="calculateTarget()" class="btn btn-success form-control">Proceed</button>
@@ -97,7 +97,7 @@
         <p id="tp"></p>
         <button onclick="transactionalProfit()" class="btn btn-primary form-control">Proceed</button>
         <br><br>
-        <button class="btn btn-primary form-control">Lock Target</button>
+        <button class="btn btn-primary form-control" onclick="save()">Lock Target</button>
     </div>
 </div>
 <div class="col-md-6">
@@ -805,7 +805,6 @@
             case "plumbing": ?>
                 <table class="table table-hover" border=1>
                     <thead>
-
                         <th>Stages</th>
                         <th>Total Sqft. Required</th>
                         <th>Amount</th>
@@ -2740,7 +2739,7 @@
         <?php
             default:
                 echo("No category");
-        }
+            }
         ?>
 </div>
 @endif
@@ -2750,6 +2749,14 @@
 </div>
 </div>
 </div>
+<form action="{{URL::to('/') }}/lockProjection" id="lockProj" method="POST">
+    {{ csrf_field() }}
+    <input type="hidden" name="monthlyTarget" id="mTarget">
+    <input type="hidden" name="transactionalProfit" id="transactionalProfit">
+    <input type="hidden" name="price" id="priceSave">
+    <input type="hidden" name="businessCycle" id="businessCycle">
+    <input type="hidden" name="category" id="category">
+</form>
 <script>
     var calBag;
     var calPrice;
@@ -2761,7 +2768,7 @@
         calPrice = price/100*percent;
         calBag = Math.round(calBag);
         calPrice = Math.round(calPrice);
-        var text = "<b>Bags : " + calBag.toLocaleString() + "&nbsp;&nbsp;&nbsp;&nbsp; Amount : " + calPrice.toLocaleString() + "</b>";
+        var text = "<b>{{ $conversion != null ? $conversion->unit : '' }} : " + calBag.toLocaleString() + "&nbsp;&nbsp;&nbsp;&nbsp; Amount : " + calPrice.toLocaleString() + "</b>";
         document.getElementById('monthlyTarget').innerHTML = text;
         document.getElementById('lock').className = "";
     }
@@ -2773,6 +2780,15 @@
         calPrice2 = Math.round(calPrice2);
         var text = "<b>Transactional Profit Amount : " + calPrice2.toLocaleString() + "</b>";
         document.getElementById('tp').innerHTML = text;
+    }
+    function save(){
+        var form = document.getElementById('lockProj');
+        document.getElementById('mTarget').value = document.getElementById('percentage').value;
+        document.getElementById('transactionalProfit').value = document.getElementById('per').value;
+        document.getElementById('priceSave').value = document.getElementById('price').value;
+        document.getElementById('businessCycle').value = document.getElementById('bCycle').value;
+        document.getElementById('category').value = document.getElementById('categories').value;
+        form.submit();
     }
 </script>
 @endsection

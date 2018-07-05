@@ -286,6 +286,7 @@ class amController extends Controller
         $rcount =AssetInfo::where('asset_type',$request->asset)->count();
         $remaining = $tcount-$rcount;
         $mh = MamahomeAsset::where('asset_id','=',$id)->select('mamahome_assets.*')->get(); 
+      
         return view('hrasset',['asset'=>$request->asset,'mh'=>$mh,'tcount'=>$tcount,'rcount'=>$rcount,'remaining' =>$remaining]);
 
     }
@@ -694,13 +695,27 @@ class amController extends Controller
     }
     public function saveasset(Request $request){
 
+        if($request->upload != NULL){
+                $image = time().'.'.request()->upload->getClientOriginalExtension();
+                $request->upload->move(public_path('assettype'),$image);
+                  MamahomeAsset::where('id',$request->Id)->update([
+                'asset_image'=>$image    
+                 ]);              
+        }
+         if($request->bill != NULL){
+                $billimage = time().'.'.request()->bill->getClientOriginalExtension();
+                $request->bill->move(public_path('assetbill'),$billimage);
+                MamahomeAsset::where('id',$request->Id)->update([
+                'bill'=>$billimage
+                 ]);
+        }
          MamahomeAsset::where('id',$request->Id)->update([
         'name'=> $request->ename,
         'sl_no' => $request->serialno,
         'description' => $request->desc,
         'company' => $request->cmp,
         'remark' =>$request->remark,
-            
+        'date' =>$request->tdate
         ]);
          return redirect('/assets');
     }
@@ -759,5 +774,31 @@ class amController extends Controller
         $info = AssetInfo::where('id', $request->id)->get();
 
         return view('preview',['user'=>$user,'info'=>$info]);
+    }
+    public function mhemployee(Request $request)
+    {
+        $departments = Department::all();
+        $groups = Group::all();
+        $depts = array();
+        
+        foreach($departments as $department){
+            $depts[$department->dept_name] = User::where('department_id',$department->id)->count();
+        }
+        $depts["FormerEmployees"] = User::where('department_id',10)->count();
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts]);
+    }
+     public function viewmhemployee(Request $request){
+        if($request->dept == "FormerEmployees"){
+            $users = User::where('department_id',10)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->get();
+        return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        }
+        $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
+        $users = User::where('department_id',$deptId)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
+        return view('mhemp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
     }
 }
