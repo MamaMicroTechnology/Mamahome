@@ -66,7 +66,7 @@ input:checked + .slider:before {
   <div class="col-md-6">
    
    
-    <img src="http://mamahome360.com/public/android-icon-36x36.png" class="img1">
+    <img src="http://mamahome360.com/public/android-icon-36x36.png" >
     MAMA HOME PVT LTD
   </div>
   
