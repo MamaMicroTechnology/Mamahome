@@ -73,10 +73,10 @@ input:checked + .slider:before {
   <div class="col-md-6">
    
     @if($dept == "IT")
-    <img src="mamahome360.com/public/android-icon-36x36.png" height="50" width="100">
+    <img src="http://mamahome360.com/public/android-icon-36x36.png" height="50" width="100">
    
     @else
-    <img src="http://localhost/mamahome/public/android-icon-36x36.png">
+    <img src="http://mamahome360.com/public/android-icon-36x36.png">
     MAMA HOME PVT LTD
     @endif
   </div>
