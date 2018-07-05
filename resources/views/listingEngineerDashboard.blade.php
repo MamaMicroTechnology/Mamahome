@@ -18,6 +18,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+         
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
@@ -59,6 +60,24 @@
                 </tr>
           </tbody>
         </table>
+         @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
+         <table  class="table table-responsive table-striped table-hover" style="border: 2px  solid gray;">
+          <tbody>
+            <thead>
+              <th style="text-align: center;" colspan="2">Total Listings</th>
+          
+            </thead>
+         
+            @foreach($users as $user)
+              <tr>
+                  <td style="border: 1px solid gray;"><label>{{ $user->name }}</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $totalListing[$user->id] }}</strong></label></td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+        @endif
+
          @if(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
         <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
@@ -82,6 +101,21 @@
                   <td style="border: 1px solid gray;"><label>Fake Projects</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
                 </tr>
+          </tbody>
+        </table>
+        <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody>
+            <thead>
+              <th style="text-align: center;" colspan="2">Total Listings</th>
+             
+            </thead>
+         
+            @foreach($accusers as $user)
+              <tr>
+                  <td style="border: 1px solid gray;"><label>{{ $user->name }}</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $totalaccount[$user->id] }}</strong></label></td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
         @endif
@@ -250,3 +284,4 @@
 </script>
 @endif
 @endsection
+

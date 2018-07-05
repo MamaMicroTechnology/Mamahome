@@ -91,10 +91,16 @@
                         <tr>
                             <td><b>Project Image</b></td>
                             <td>
-                                <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
-                               <td style="font-size:13px">
-                               
-                            </td>
+                               <?php
+                                               $images = explode(",", $details->image);
+                                               ?>
+                                             <div class="row">
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350"  src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
                             </td>
                             </td>
                         </tr>
@@ -141,32 +147,7 @@
         </div>
     </div>
 </div>
- <div class="col-md-12">
-    <div class="col-md-10 col-md-offset-1">
-        <div class="panel panel-default" style="border-color:green">
-            <div class="panel-heading" style="background-color:green">
-               <b style="color:white">Owner Details</b> 
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <th>Owner Name</th>
-                        <th>Owner Contact</th>
-                        <th>Owner Email</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                             <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
-                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_no : '' }}</td>
-                           <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
-                           
-                        </tr>
-                    </tbody>
-                </table>        
-            </div>
-        </div>
-    </div>
-</div>
+ 
 <div class="col-md-12">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:orange">
@@ -194,7 +175,32 @@
         </div>
     </div>
 </div>
-
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Owner Details</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Owner Name</th>
+                        <th>Owner Contact</th>
+                        <th>Owner Email</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                             <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_name : '' }}</td>
+                              <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_contact_no : '' }}</td>
+                           <td>{{ $details->ownerdetails != null ? $details->ownerdetails->owner_email : '' }}</td>
+                           
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>
 <div class="col-md-12">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">

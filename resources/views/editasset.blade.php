@@ -13,7 +13,7 @@
                         </div>
                @endif
         	@foreach($post as $post)
-        	 <form method="POST" action="{{URL::to('/')}}/saveasset?Id={{ $post->id}}">
+        	 <form method="POST" action="{{URL::to('/')}}/saveasset?Id={{ $post->id}}"  enctype="multipart/form-data">
         	 	{{csrf_field()}}
 		        	
 		            <table class="table table-responsive">
@@ -27,6 +27,10 @@
 		            			<td><input type="text" class="form-control" value="{{ $post->sl_no}}" name="serialno" style="width: 50%;"></td>
 		            		</tr>
 		            		<tr>
+		            			<td><label>Asset Image</label></td>
+		            			 <td><input  type="file" name="upload"  class="form-control" accept="image/*" style="width:60%" /></td>
+		            		</tr>
+		            		<tr>
 		            			<td><label>Description</label></td>
 		            			<td><input type="text" class="form-control" value="{{ $post->description}}" name="desc" style="width: 50%;"></td>
 		            		</tr>
@@ -34,6 +38,14 @@
 		            			<td><label>Company</label></td>
 		            			<td><input type="text" class="form-control" value="{{ $post->company}}" name="cmp" style="width: 50%;"></td>
 		            		</tr>
+		            		<tr>
+                                <td ><label>Purchased Date:</label></td>
+                                <td ><input required type="date" name="tdate"  value="{{ $post->date}}" class="form-control" style="width:60%" /></td>
+                            </tr>
+                            <tr>
+                                <td ><label> Bill:</label></td>
+                                <td ><input type="file" name="bill"  class="form-control" accept="image/*" style="width:60%" /></td>
+                            </tr>
 		            		<tr>
 		            			<td><label>Remark</label></td>
 		            			<td><input type="text" class="form-control" value="{{ $post->remark}}" name="remark" style="width: 50%;"></td>

@@ -49,7 +49,7 @@
         <td style="width:20%">{{ $mh->description }} </td>
         <td>{{ $mh->company }} </td>
         <td>{{ date('d-m-Y ', strtotime("$mh->date")) }} </td>
-        <td><a href="{{ URL::to('/')}}/public/assetbill/{{ $mh->bill}}"  target="_blank">image</a></td>
+        <td><a href="{{ URL::to('/')}}/public/assetbill/{{ $mh->bill }}"  target="_blank">image</a></td>
         <td>{{ $mh->remark}}</td>
         <td style="width:15%;">
             <a href="{{ URL::to('/') }}/editasset?Id={{ $mh->id }}" class="btn btn-xs btn-success" >Edit</a>

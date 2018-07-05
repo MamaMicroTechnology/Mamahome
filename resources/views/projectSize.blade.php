@@ -26,8 +26,8 @@
             @endif
             @if($planningCount != NULL)
             Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
-            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount }}
-            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize }}</b>
+            Total No. Of Projects : {{ number_format($planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount) }}
+            Total Sizes : <b>{{ number_format($planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize) }}</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -38,68 +38,68 @@
                     <tr>
                         <td>Planning</td>
                         <td class="text-center"> {{ $planningCount }} </td>
-                        <td> {{ $planningSize }}</td>
+                        <td> {{ number_format(round($planningSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Digging</td>
                         <td class="text-center">{{ $diggingCount }}</td>
-                        <td>{{ $diggingSize }}</td>
+                        <td>{{ number_format(round($diggingSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td class="text-center">{{ $foundationCount }}</td>
-                        <td>{{ $foundationSize }}</td>
+                        <td>{{ number_format(round($foundationSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Pillars</td>
                         <td class="text-center">{{ $pillarsCount }}</td>
-                        <td>{{ $pillarsSize }}</td>
+                        <td>{{ number_format(round($pillarsSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Walls</td>
                         <td class="text-center">{{ $wallsCount }}</td>
-                        <td>{{ $wallsSize }}</td>
+                        <td>{{ number_format(round($wallsSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td class="text-center">{{ $roofingCount }}</td>
-                        <td>{{ $roofingSize }}</td>
+                        <td>{{ number_format(round($roofingSize)) }}</td>
                     </tr>
                     
                     <tr>
                         <td>Electrical &amp; Plumbing</td>
                         <td class="text-center">{{ $enpCount }}</td>
-                        <td>{{ $enpSize }}</td>
+                        <td>{{ number_format(round($enpSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Plastering</td>
                         <td class="text-center">{{ $plasteringCount }}</td>
-                        <td>{{ $plasteringSize }}</td>
+                        <td>{{ number_format(round($plasteringSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Flooring</td>
                         <td class="text-center">{{ $flooringCount }}</td>
-                        <td>{{ $flooringSize }}</td>
+                        <td>{{ number_format(round($flooringSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Carpentry</td>
                         <td class="text-center">{{ $carpentryCount }}</td>
-                        <td>{{ $carpentrySize }}</td>
+                        <td>{{ number_format(round($carpentrySize)) }}</td>
                     </tr>
                     <tr>
                         <td>Paintings</td>
                         <td class="text-center">{{ $paintingCount }}</td>
-                        <td>{{ $paintingSize }}</td>
+                        <td>{{ number_format(round($paintingSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Fixtures</td>
                         <td class="text-center">{{ $fixturesCount }}</td>
-                        <td>{{ $fixturesSize }}</td>
+                        <td>{{ number_format(round($fixturesSize)) }}</td>
                     </tr>
                     <tr>
                         <td>Completion</td>
                         <td class="text-center">{{ $completionCount }}</td>
-                        <td>{{ $completionSize }}</td>
+                        <td>{{ number_format(round($completionSize)) }}</td>
                     </tr>
                 </tbody>
             </table> 
@@ -125,8 +125,8 @@
             @endif
             @if(isset($_GET['subward']))
             Total Project Sizes Under {{ $subwardName}} (based on stages)<br>
-            Total No. of Projects : @if($total) {{ $total }} @endif
-            Total Sizes : <b>@if($totalsubward) {{ $totalsubward }} @endif</b>
+            Total No. of Projects : @if($total) {{ number_format($total) }} @endif
+            Total Sizes : <b>@if($totalsubward) {{ number_format($totalsubward) }} @endif</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>

@@ -145,7 +145,7 @@
                     </tr>
                     <tr>
                         <td colspan=2>Pic Manufacturer Invoice</td>
-                        <td colspan=2><input type="file" name="manufacturer_invoice" id="" class="form-control"></td>
+                        <td colspan=2><input type="file" name="manufacturer_invoice" id="" class="form-control" multiple></td>
                     </tr>
                     <tr>
                         <td colspan=2>Amount Given To Manufacturer</td>
@@ -165,7 +165,7 @@
                     </tr> -->
                     <tr>
                         <td colspan=4>
-                            <button type="submit" class="btn btn-primary form-control">Save</button>
+                            <button type="submit" class="btn btn-primary form-control" id ="voice" onclick="myFunction()">Save</button>
                         </td>
                     </tr>
                 </table>
@@ -174,4 +174,22 @@
     </div>
 </form>
 @endfor
+ <a href="#" onclick="myFunction('{{ $_GET['id'] }}')" id="voice">+</a>
+                           
 @endsection
+
+<script>
+function myFunction(arg) {
+
+
+var r = confirm("Do you want to Add invoice");
+    if (r == true) {
+      window.location.assign("{{URL::to('/')}}/inputinvoice?id="+arg);
+    } else {
+        document.getElementsById('voice').style.display ="none";
+    }
+
+
+   
+}
+</script>

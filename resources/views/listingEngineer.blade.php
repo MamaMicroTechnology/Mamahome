@@ -89,7 +89,7 @@
                                       <label ><input required value="No" id="rmc2" type="radio" name="rmcinterest"><span>&nbsp;</span>No</label> 
                                  </td>
                                </tr>
-                                <tr>
+                               <tr>
                                  <td>Interested in Bank loans?</td>
                                  <td>:</td>
                                  <td>
@@ -117,6 +117,22 @@
                                    
                                       <label><input required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                 </td>
+                               </tr>
+
+                               <tr>
+                                 <td>Interested in Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input required value="Yes" id="loan1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="loan2" type="radio" name="automation"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="loan3" type="radio" name="automation"><span>&nbsp;</span>None</label>
+                                   
                                  </td>
                                </tr>
 

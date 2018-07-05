@@ -390,7 +390,8 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/video','HomeController@trainingVideo');
 
 //human resource//
-    Route::get('/assets','amController@addassets');  
+    Route::get('/assets','amController@addassets'); 
+    Route::get('/mhemployee','amController@mhemployee'); 
     Route::get('/viewasset','amController@getasset');
     Route::post('/inputasset','amController@storeasset');
     Route::post('/assetsimcard','amController@assetsimcard');
@@ -411,6 +412,8 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/getbrand','amController@getbrand');
     Route::get('/signature','amController@signature');
     Route::get('/preview','amController@preview');
+    Route::get('/viewmhemployee','amController@viewmhemployee');
+
 
 
 
@@ -475,8 +478,6 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::get('/accountroads','HomeController@getRoads');
     Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
     Route::get('/accountreports','HomeController@getMyReports');
-    
-    
 
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
@@ -494,7 +495,11 @@ Route::group(['middleware'=>['Logistics']],function(){
 });
 
 Route::get('/payment','HomeController@payment');
-
+Route::get('/projection','HomeController@getProjection');
+Route::post('/lockProjection','HomeController@getLockProjection');
 
 Route::post('/toggle-approve',"HomeController@approval");
 Route::post('/toggle-approve1',"HomeController@approval1");
+Route::get('/sendSMS', 'HomeController@sendSMS');
+Route::get('/planning','HomeController@getLockedProjection');
+Route::get('/stage','HomeController@getLockedStage');

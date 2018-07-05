@@ -149,6 +149,36 @@
                                     </div>
                                  </td>
                                </tr>
+                                <tr>
+                                 <td>Interested in Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested in Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
                                <tr>
                                  <td>Type of Contract ? </td>
                                   <td>:</td>
@@ -365,24 +395,27 @@
                                     <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
                                        
                                           @if($projectdetails->updated_by == Null || $projectdetails->updated_by != Null)
-
-
                                           <?php
                                                $images = explode(",", $projectdetails->image);
                                                ?>
+                                             
                                              <div class="row">
+
                                                  @for($i = 0; $i < count($images); $i++)
                                                      <div class="col-md-3">
                                                           <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
                                                      </div>
                                                  @endfor
                                               </div>
-                                            
-                                            @else
+                                            @endif
+                                            <br>
                                              @foreach($projectimages as $projectimage)
+                                             @if($projectimage->project_id != Null )
+                                            
                                                   <?php
                                                      $images = explode(",", $projectimage->image);
                                                     ?>
+                                                     Project Status : {{ $projectimage->project_status}}
                                                    <div class="row">
                                                        @for($i = 0; $i < count($images); $i++)
                                                            <div class="col-md-3">
@@ -390,9 +423,9 @@
                                                            </div>
                                                        @endfor
                                                     </div>
+              
+                                                @endif
                                               @endforeach
-                                            
-                                            @endif
                                    </td>
                                </tr>
                                <tr>
@@ -1052,5 +1085,28 @@ function sum(){
       }
     }
 </script>
-
+<script type="text/javascript">
+  function checkthis(arg)
+  {
+    
+    
+    var x = document.getElementById(arg);
+    if(arg == 'length' || arg == 'breadth'){
+     
+      var breadth = parseInt(document.getElementById("breadth").value);
+      var length   = parseInt(document.getElementById("length").value);
+      if(!isNaN(breadth) && !isNaN(length)){
+        
+        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+        sum          = length*breadth;
+        Size    += sum;
+        if(document.getElementById("totalsize").innerHTML != null)
+          document.getElementById("totalsize").innerHTML = Size;
+        else
+          document.getElementById("totalsize").innerHTML = '';
+      }
+    }
+    return false;
+  }
+</script>
 @endsection

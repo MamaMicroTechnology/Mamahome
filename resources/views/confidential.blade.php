@@ -20,7 +20,7 @@
                 <label class="checkbox">
                     <input {{ isset($_GET['quality']) ? in_array("Unverified",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Unverified" id="unverified">Unverified<br>
                 </label>
-                <select required class="form-control" name="ward">
+                <select id="select" required class="form-control" name="ward">
                     <option value="">--Select--</option>
                     <option value="All">All</option>
                 @foreach($wards as $ward)
@@ -35,8 +35,8 @@
             @endif
             @if($planningCount != NULL)
             Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
-            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount }}
-            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize }}</b>
+            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount  }}
+            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize  }}</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -109,11 +109,7 @@
                         <td class="text-center">{{ $completionCount }}</td>
                         <td>{{ $completionSize }}</td>
                     </tr>
-                    <tr>
-                        <td>Closed</td>
-                        <td class="text-center">{{ $closedCount }}</td>
-                        <td>{{ $closedSize }}</td>
-                    </tr>
+                    
                 </tbody>
             </table> 
             @endif
@@ -143,7 +139,7 @@
                     <input {{ isset($_GET['subwardquality']) ? in_array("Unverified",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Unverified" id="unverified1">Unverified<br>
                 </label>
                 <input type="hidden" name="ward" value="{{ $wardId }}">
-                <select required class="form-control" name="subward">
+                <select id="select1" required class="form-control" name="subward">
                     <option value="">--Select--</option>
                     @foreach($subwards as $ward)
                         <option value="{{ $ward->id}}"  required {{ $subwardId == $ward->id? 'selected':'' }}>{{ $ward->sub_ward_name }}</option>
@@ -267,11 +263,6 @@
                             {{ $completion }}
                         </td>
                     </tr>
-                    <tr>
-                        <td>Closed</td>
-                        <td class="text-center">{{ $Cclosed }}</td>
-                        <td>{{ $closed }}</td>
-                    </tr>
                 </tbody>
             </table> 
         @endif
@@ -285,13 +276,24 @@ function check()
 {
     if(genuine.checked == false && fake.checked == false && unverified.checked == false )
     {
-            window.alert("You have to Select altest One Quality");
+            window.alert("Please Select altest One Quality");
            
+    }
+    else if(genuine.checked == true || fake.checked == true || unverified.checked == true){
+    var select = document.getElementById('select'); 
+                 if (select.value ) {
+                       var form = document.getElementById("thisForm");
+                     form.submit();
+                    }
+        else{
+                 window.alert("Please select an item in the list");
+                return false;
+        }
     }
     else{
         var form = document.getElementById("thisForm");
         form.submit();
-    }
+    }    
 }
 function checkthis()
 {
@@ -299,13 +301,25 @@ function checkthis()
     if(genuine1.checked == false && fake1.checked == false && unverified1.checked == false )
     {
            
-            window.alert("You have to Select altest One Quality");     
+            window.alert("Please Select altest One Quality");     
+    }
+    else if(genuine1.checked == true || fake1.checked == true || unverified1.checked == true){
+    var select = document.getElementById('select1'); 
+                 if (select.value ) {
+                       var form = document.getElementById("thisForm1");
+                     form.submit();
+                    }
+        else{
+                 window.alert("Please select an item in the list");
+                return false;
+        }
     }
     else{
         var form = document.getElementById("thisForm1");
         form.submit();
     }
 }
+
 </script>
 
 @endsection
