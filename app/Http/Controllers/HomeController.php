@@ -5146,15 +5146,26 @@ function enquirystore(request $request){
        $category = Projection::where('category',$request->category)->first();
        $conversion = Conversion::where('category',$request->category)->first();
        $wards = Ward::all();
+       $date = null;
+       $sizes = array();
        $utilizations = Utilization::where('category',$request->category)->first()->toArray();
        if($request->ward){
-            $projection = Detail::where('details.ward_id',$request->ward)
-                            ->leftJoin('wards','wards.id','details.ward_id')
-                            ->select('details.*','wards.ward_name')
-                            ->get();
-            $total = Detail::where('ward_id',$request->ward)->sum('size');
-            return view('projection.projectionStage',['projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
+           if($request->ward == "all"){
+                $projection = Detail::leftJoin('wards','wards.id','details.ward_id')
+                                ->select('details.*','wards.ward_name')
+                                ->get();
+                $total = Detail::where('ward_id',$request->ward)->sum('size');
+                $date = date('d-M-Y',strtotime($category->created_at));
+           }else{
+               $projection = Detail::where('details.ward_id',$request->ward)
+                               ->leftJoin('wards','wards.id','details.ward_id')
+                               ->select('details.*','wards.ward_name')
+                               ->get();
+               $total = Detail::where('ward_id',$request->ward)->sum('size');
+               $date = date('d-M-Y',strtotime($category->created_at));
+           }
+            return view('projection.projectionStage',['date'=>$date,'projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
         }
-       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category]);
+       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category,'date'=>$date]);
    }
 }

@@ -805,10 +805,6 @@
             case "plumbing": ?>
                 <table class="table table-hover" border=1>
                     <thead>
-<<<<<<< HEAD
-=======
-
->>>>>>> master
                         <th>Stages</th>
                         <th>Total Sqft. Required</th>
                         <th>Amount</th>
