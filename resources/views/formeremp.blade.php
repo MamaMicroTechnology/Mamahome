@@ -66,7 +66,7 @@ img {
   <div class="col-md-6">
    
    
-    <img src="http://localhost/mamahome/public/android-icon-36x36.png">
+    <img src="http://mamahome360.com/public/android-icon-36x36.png">
     MAMA HOME PVT LTD
   </div>
   
