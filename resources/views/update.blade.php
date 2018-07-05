@@ -1090,8 +1090,4 @@ function sum(){
     return false;
   }
 </script>
-<<<<<<< HEAD
-=======
-
->>>>>>> c4f875dec0b2ce8db739d83ecf78e216cb6170d3
 @endsection
