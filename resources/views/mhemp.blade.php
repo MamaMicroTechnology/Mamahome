@@ -92,7 +92,7 @@ input:checked + .slider:before {
 <div id="name">
 @foreach($users as $user)
   <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >
-    <div style="overflow: hidden;" class="col-md-3 col-md-offset-1 img-thumbnail">
+    <div style="overflow: hidden;" class="col-md-3 col-md-offset-1">
     <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
       <p style="text-align: center;">{{ $user->name }}</p>
       <small>{{ $user->email }}</small>
