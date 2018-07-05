@@ -145,7 +145,7 @@
                     </tr>
                     <tr>
                         <td colspan=2>Pic Manufacturer Invoice</td>
-                        <td colspan=2><input type="file" name="manufacturer_invoice" id="" class="form-control"></td>
+                        <td colspan=2><input type="file" name="manufacturer_invoice[]" id="" class="form-control"></td>
                     </tr>
                     <tr>
                         <td colspan=2>Amount Given To Manufacturer</td>
