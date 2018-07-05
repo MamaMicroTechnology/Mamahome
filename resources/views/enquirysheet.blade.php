@@ -10,7 +10,6 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-				
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
@@ -294,34 +293,34 @@ function myFunction() {
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
 		
-		if(document.getElementById("categ").value  != "Cement"){
+		if(document.getElementById("categ").value  != "CEMENT"){
 				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ $sum }}"
 		 }
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
-		if(document.getElementById("categ").value  != "Cement"){
+		if(document.getElementById("categ").value  != "CEMENT"){
 		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ $sum1 }}"
 		}
 	}
 	else {
-		if(document.getElementById("categ").value  != "Cement"){
+		if(document.getElementById("categ").value  != "CEMENT"){
 		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{  $sum2 }}"
 		}
 	}
 	if(document.getElementById("myInput").value  == "Enquiry On Process"){
 
-		if(document.getElementById("categ").value  == "Cement"){
+		if(document.getElementById("categ").value  == "CEMENT"){
 		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ 87273 }}"
 		}
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		
-		if(document.getElementById("categ").value  == "Cement"){
+		if(document.getElementById("categ").value  == "CEMENT"){
 		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ 16146 }}"
 		}
 	}
 	else {
-		if(document.getElementById("categ").value  == "Cement"){
+		if(document.getElementById("categ").value  == "CEMENT"){
 		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429 }}"
 	}
 	}

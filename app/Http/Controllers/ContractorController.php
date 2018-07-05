@@ -115,30 +115,13 @@ class ContractorController extends Controller
       }
    		return view('contractorProjects',['projects'=>$projects,'conName'=>$conName]);
    	}
-    public function viewProjects(Request $request)
+  public function viewProjects(Request $request)
     {
-      $fan = 0;
-      $led = 0;
-      $metalbox8 = 0;
-      $cover = 0;
-      $socket15a = 0;
-      $switches15a = 0;
-      $twoway = 0;
-      $switches5a = 0;
-      $sockets5a = 0;
-      $plasticexhaust = 0;
-      $metalexhaust = 0;
-      $ledbulb = 0;
-      $wiring142 = 0;
-      $wiring122 = 0;
-      $wiring143 = 0;
-      $mcb = 0;
-      $tpn = 0;
-      $dbdoor = 0;
-      $table = "<tr><td colspan='8'><center>Material Estimation prices may vary according to Market Price</center></td></tr>
      
-      <tr><th>Category</th><th>Products</th><th>UOM</th><th>Nos.</th>
-        <th>Total Material</th><th>MRP</th><th>Total</th><th>Total MHP</th></tr>";
+      
+      $table = "<tr> <td colspan='8'><center>Material Estimation prices may vary according to Market Price</center> </td></center></tr>
+     
+      <tr><th>Category</th><th>Total Required</th><th>Total Amount</th></tr>";
       $projectIds = ContractorDetails::where('contractor_contact_no',$request->no)->pluck('project_id');
       $procurement = ProcurementDetails::where('procurement_contact_no',$request->no)->pluck('project_id');
       $projectIds = $projectIds->merge($procurement);
@@ -181,59 +164,28 @@ class ContractorController extends Controller
               $flatsfloors=1;
             break;
         }
-        $fan += $hall+$bedroom+$flatsfloors;
-        $led += $kitchen+$hall+$bedroom+$bathroom * $floors;
-        $metalbox8 += $kitchen+$hall+$bedroom+$bathroom+2 * $floors;
-        $cover += $kitchen+$hall+$bedroom+$bathroom+2 * $floors;
-        $socket15a += $kitchen+$hall+$bedroom+$bathroom+2 * $floors;
-        $switches15a += $kitchen+$hall+$bedroom+$bathroom+2 * $floors;
-        $twoway += 4*$floors;
-        $switches5a += 30*$floors;
-        $sockets5a += 20*$floors;
-        $plasticexhaust += $bathroom;
-        $metalexhaust += $kitchen;
-        $ledbulb += 10*$floors;
-        $wiring142 += $size/290;
-        $wiring122 += $size/590;
-        $wiring143 += $size/590;
-        $mcb += 4*$flatsfloors*$floors;
-        $tpn += 1;
-        $dbdoor += 1;
+        
       }
-      $cementOPC = array();
-      $cementPPC = array();
-      $mSandConcreteCft = array();
-      $mSandConcreteTons = array();
-      $mSandPlasteringCft = array();
-      $mSandPlasteringTons = array();
-      $jelly12mmCft = array();
-      $jelly12mmTons = array();
-      $jelly20mmCft = array();
-      $jelly20mmTons = array();
-      $blocks6 = array();
-      $blocks4 = array();
-      $steel8 = array();
-      $steel10 = array();
-      $steel12 = array();
-      $steel18 = array();
-      $steelTot = array();
-      $totalcementOPC=0;
-      $totalcementPPC=0;
-      $totalmSandConcreteCft=0;
-      $totalmSandConcreteTons=0;
-      $totalmSandPlasteringCft=0;
-      $totalmSandPlasteringTons=0;
-      $totaljelly12mmCft=0;
-      $totaljelly12mmTons=0;
-      $totaljelly20mmCft=0;
-      $totaljelly20mmTons=0;
-      $totalblocks6=0;
-      $totalblocks4=0;
-      $totalSteel=0;
-      $totalsteel8=0;
-      $totalsteel10=0;
-      $totalsteel12=0;
-      $totalsteel18=0;
+      $steel = array();
+      $cement = array();
+      $plumbing = array();
+      $doors = array();
+      $flooring = array();
+      $sand = array();
+      $aggregates = array();
+      $blocks = array();
+      $electrical = array();
+
+     
+      $totalPlumbing =0;
+      $totaldoors=0;
+      $totalflooring=0;
+      $totalcement = 0;
+      $totalsteel = 0;
+      $totalsand = 0;
+      $totalaggregates = 0;
+      $totalblocks = 0;
+      $totalelectrical = 0;
       $i = 0;
       foreach($projects as $project){
         $Total_Flats = $project->project_type;
@@ -241,613 +193,519 @@ class ContractorController extends Controller
         $stage = $project->project_status;
         switch ($stage) {
           case 'Planning':
-              $cement_requirement = 100;
-              $steel_requirement = 100;
-              $m_sand_requirement = 100;
-              $jelly_requirement = 100;
-              $blocks_requirement = 100;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+             
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+              $cementRequirement = 100;
+              $steelRequirement  = 100;
+              $sandRequirement = 100;
+              $aggregatesRequirement = 100;
+              $blocksRequirement = 100;
+              $electricalRequirement = 100;
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
             break;
           case 'Digging':
-              $cement_requirement = 100;
-              $steel_requirement = 100;
-              $m_sand_requirement = 100;
-              $jelly_requirement = 100;
-              $blocks_requirement = 100;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
-              // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
-            break;
+             
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+              $cementRequirement = 100;
+              $steelRequirement  = 100;
+              $sandRequirement = 100;
+              $aggregatesRequirement = 100;
+              $blocksRequirement = 100;
+              $electricalRequirement = 100;
+
+// calculation Part
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+         break;
           case 'Foundation':
-              $cement_requirement = 100;
-              $steel_requirement = 100;
-              $m_sand_requirement = 90;
-              $jelly_requirement = 40;
-              $blocks_requirement = 100;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
-              // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement =85;
+               $steelRequirement  = 70;
+              $sandRequirement = 90;
+              $aggregatesRequirement = 80;
+              $blocksRequirement = 100;
+
+              $electricalRequirement = 100;
+
+
+// calculation Part
+              
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
             break;
           case 'Pillar':
-              $cement_requirement = 80;
-              $steel_requirement = 60;
-              $m_sand_requirement = 80;
-              $jelly_requirement = 40;
-              $blocks_requirement = 100;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
-              // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
-            break;
+             
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 70;
+               $steelRequirement  = 35;
+              $sandRequirement = 70;
+              $aggregatesRequirement = 50;
+              $blocksRequirement = 100;
+              $electricalRequirement = 100;
+
+
+// calculation Part
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100);
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+             break;
           case 'Walling':
-              $cement_requirement = 60;
-              $steel_requirement = 60;
-              $m_sand_requirement = 70;
-              $jelly_requirement = 40;
-              $blocks_requirement = 50;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
-              // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 55;
+               $steelRequirement  = 35;
+              $sandRequirement = 50;
+               $aggregatesRequirement = 50;
+              $blocksRequirement = 100;
+              $electricalRequirement = 100;
+// calculation Part
+             
+               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
             break;
           case 'Roofing':
-              $cement_requirement = 40;
-              $steel_requirement = 0;
-              $m_sand_requirement = 40;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
-              // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+            
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 25;
+               $steelRequirement  = 35;
+              $sandRequirement = 35;
+               $aggregatesRequirement = 50;
+              $blocksRequirement = 0;
+              $electricalRequirement = 100;
+
+ // calculation Part
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
             break;
           case 'Electrical':
-              $cement_requirement = 40;
-              $steel_requirement = 0;
-              $m_sand_requirement = 40;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 100;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
-              // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+              
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 25;
+               $steelRequirement  = 0;
+              $sandRequirement = 35;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+              $electricalRequirement = 100;
+
+ // calculation Part
+             
+               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100);
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+
+
             break;
           case 'Plumbing':
-              $cement_requirement = 40;
-              $steel_requirement = 0;
-              $m_sand_requirement = 40;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 100;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+            
+              $plumbingRequirement = 100;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 25;
+               $steelRequirement  = 0;
+              $sandRequirement = 35;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+              $electricalRequirement = 0;
+
+
+
+
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+
+
             break;
           case 'Plastering':
-              $cement_requirement = 40;
-              $steel_requirement = 0;
-              $m_sand_requirement = 0;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 0;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+             
+              $plumbingRequirement = 0;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 10;
+               $steelRequirement  = 0;
+              $sandRequirement = 10;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+              $electricalRequirement = 0;
+
+
+
+
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+
+
+
             break;
           case 'Flooring':
-              $cement_requirement = 5;
-              $steel_requirement = 0;
-              $m_sand_requirement = 0;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 0;
-              $flooring_requirement = 100;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+             
+              $plumbingRequirement = 0;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 5;
+               $steelRequirement  = 0;
+              $sandRequirement = 0;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+              $electricalRequirement = 0;
+
+
+
+
+
+
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100);
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+
+
             break;
           case 'Carpentry':
-              $cement_requirement = 0;
-              $steel_requirement = 0;
-              $m_sand_requirement = 0;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 0;
-              $flooring_requirement = 0;
-              $doors_requirement = 100;
-              $windows_requirement = 100;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 100;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+             
+              $plumbingRequirement = 0;
+              $doorsRequirement = 100;
+              $flooringRequirement = 100;
+               $cementRequirement = 0;
+               $steelRequirement  = 0;
+              $sandRequirement = 0;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+              $electricalRequirement = 0;
+
+
+
+
+
+
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+           
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+              
+
+
+
+
+
+
+
+
+            // dd($plumbing[$i] );
+
             break;
           case 'Painting':
-              $cement_requirement = 0;
-              $steel_requirement = 0;
-              $m_sand_requirement = 0;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 0;
-              $flooring_requirement = 0;
-              $doors_requirement = 0;
-              $windows_requirement = 0;
-              $sanitary_requirement = 100;
-              $paint_requirement = 100;
-              $wardrobe_requirement = 0;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+              
+              $plumbingRequirement = 0;
+              $doorsRequirement = 0;
+              $flooringRequirement = 100;
+               $cementRequirement = 0;
+               $steelRequirement  = 0;
+              $sandRequirement = 0;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+
+              $electricalRequirement = 0;
+
+
+
+
+
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+              
+               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+ 
+
+
+
             break;
           case 'Fixtures':
-              $cement_requirement = 0;
-              $steel_requirement = 0;
-              $m_sand_requirement = 0;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 0;
-              $flooring_requirement = 0;
-              $doors_requirement = 0;
-              $windows_requirement = 0;
-              $sanitary_requirement = 100;
-              $paint_requirement = 0;
-              $wardrobe_requirement = 0;
-              $kitchenCabinet_requirement = 100;
-              $buildingManagement_requirement = 100;
+              
+              $plumbingRequirement = 0;
+              $doorsRequirement = 0;
+              $flooringRequirement = 0;
+               $cementRequirement = 0;
+               $steelRequirement  = 0;
+              $sandRequirement = 0;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+              $electricalRequirement = 0;
+
+
+
+
+
+
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+           
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100); 
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+
+
             break;
           case 'Completion':
-              $cement_requirement = 0;
-              $steel_requirement = 0;
-              $m_sand_requirement = 0;
-              $jelly_requirement = 0;
-              $blocks_requirement = 0;
-              $electrical_requirement = 0;
-              $plumbing_requirement = 0;
-              $flooring_requirement = 0;
-              $doors_requirement = 0;
-              $windows_requirement = 0;
-              $sanitary_requirement = 0;
-              $paint_requirement = 0;
-              $wardrobe_requirement = 0;
-              $kitchenCabinet_requirement = 0;
-              $buildingManagement_requirement = 0;
+            
+              $plumbingRequirement = 0;
+              $doorsRequirement = 0;
+              $flooringRequirement = 0;
+              $cementRequirement = 0;
+               $steelRequirement  = 0;
+              $sandRequirement = 0;
+               $aggregatesRequirement = 0;
+              $blocksRequirement = 0;
+
+              $electricalRequirement = 0;
+
+              
+             
+
+
               // calculation Part
-              $cementOPC[$i] = (0.3*$Total_Area)*($cement_requirement/100);
-              $cementPPC[$i] = (0.01677*$Total_Area)*($cement_requirement/100);
-              $mSandConcreteCft[$i] = 1.2*$Total_Area;
-              $mSandConcreteTons[$i] = 0.0426*$mSandConcreteCft[$i];
-              $mSandPlasteringTons[$i] = 0.0125*$Total_Area;
-              $mSandPlasteringCft[$i] = 23.46*$mSandPlasteringTons[$i];
-              $jelly12mmCft[$i] = 0.7*$Total_Area;
-              $jelly12mmTons[$i] = 0.0426*$jelly12mmCft[$i];
-              $jelly20mmCft[$i] = 0.3*$Total_Area[$i];
-              $jelly20mmTons[$i] = 0.0426*$jelly20mmCft[$i];
-              $blocks6[$i] = 1.25*$Total_Area;
-              $blocks4[$i] = 0.8333*$Total_Area;
-              $steel8[$i] = (1.5*$Total_Area)/1000;
-              $steel10[$i] = (1.25*$Total_Area)/1000;
-              $steel12[$i] = (0.75*$Total_Area)/1000;
-              $steel18[$i] = (0.5*$Total_Area)/1000;
-              $steelTot[$i] = $steel8[$i] + $steel10[$i] + $steel12[$i] + $steel18[$i];
+             
+              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
+              $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
+              $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100);
+              $cement[$i] = ((15 * $Total_Area)/50) * ($cementRequirement/100);
+               $steel[$i] = ((4 * $Total_Area)/1000) *($steelRequirement/100);
+                $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
+                $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
+                $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+
+
+
+
+
+
+
+
+
             break;
           default:
             # code...
             break;
         }
-        if(count($cementOPC) > $i){
-          $totalcementOPC+=$cementOPC[$i];
-          $totalcementPPC+=$cementPPC[$i];
-          $totalmSandConcreteCft+=$mSandConcreteCft[$i];
-          $totalmSandConcreteTons+=$mSandConcreteTons[$i];
-          $totalmSandPlasteringCft+=$mSandPlasteringCft[$i];
-          $totalmSandPlasteringTons+=$mSandPlasteringTons[$i];
-          $totaljelly12mmCft+=$jelly12mmCft[$i];
-          $totaljelly12mmTons+=$jelly12mmTons[$i];
-          $totaljelly20mmCft+=$jelly20mmCft[$i];
-          $totaljelly20mmTons+=$jelly20mmTons[$i];
-          $totalblocks6+=$blocks6[$i];
-          $totalblocks4+=$blocks4[$i];
-          $totalSteel+=$steelTot[$i];
-          $totalsteel8 += $steel8[$i];
-          $totalsteel10 += $steel10[$i];
-          $totalsteel12 += $steel12[$i];
-          $totalsteel18 += $steel18[$i];
-        }
+        if(count(1) > $i){
+         
+          $totalPlumbing += $plumbing[$i];
+          $totaldoors += $doors[$i];
+           $totalsteel += $steel[$i];
+          $totalflooring +=  $flooring[$i];
+         $totalcement += $cement[$i];
+         $totalsand += $sand[$i];
+         $totalaggregates += $aggregates[$i]; 
+         $totalblocks += $blocks[$i]; 
+         $totalelectrical += $electrical[$i];      
+       }
         $i++;
       }
-        $table .="<tr><td>Cement</td><td>OPC</td><td>Bags</td>
-                <td>".round($totalcementOPC)."</td><td rowspan='2'>".round($totalcementPPC+$totalcementOPC)."</td>
-                <td>380</td><td rowspan='2'>".(round($totalcementPPC+$totalcementOPC)*380)."</td><td rowspan='2'>".((round($totalcementPPC+$totalcementOPC)*380)*0.8)."</td></tr>";
-        $table .="<tr><td></td><td>PPC</td><td>Bags</td>
-                <td>".round($totalcementPPC)."</td>
-                <td>375</td></tr>";
-        $table .="<tr><td>M-Sand</td><td>Concrete</td><td>Tons</td>
-                <td>".round($totalmSandConcreteTons)."</td><td rowspan='2'>".round($totalmSandPlasteringTons+$totalmSandConcreteTons)."</td>
-                <td>900</td><td rowspan='2'>".(round($totalmSandPlasteringTons+$totalmSandConcreteTons)*900)."</td><td rowspan='2'>".((round($totalmSandPlasteringTons+$totalmSandConcreteTons)*900)*0.8)."</td></tr>";
-        $table .="<tr><td></td><td>Plastering</td><td>Tons</td>
-                <td>".round($totalmSandPlasteringTons)."</td>
-                <td>1500</td></tr>";
-        $table .="<tr><td>Jelly</td><td>12mm</td><td>Tons</td>
-                <td>".round($totaljelly12mmTons)."</td><td rowspan='2'>".round($totaljelly12mmTons+$totaljelly20mmTons)."</td>
-                <td>400</td><td rowspan='2'>".(round($totaljelly12mmTons + $totaljelly20mmTons) * 400)."</td><td rowspan='2'>0</td></tr>";
-        $table .="<tr><td></td><td>20mm</td><td>Tons</td>
-                <td>".round($totaljelly20mmTons)."</td>
-                <td>400</td></tr>";
-        $table .="<tr><td>Steel</td><td>8mm</td><td>Tons</td>
-                <td>".round($totalsteel8)."</td><td rowspan='5'>".round($totalSteel)."</td>
-                <td>54000</td><td>".(round($totalsteel8) * 54000)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>10mm</td><td>Tons</td>
-                <td>".round($totalsteel10)."</td>
-                <td>53000</td><td>".(round($totalsteel10) * 53000)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>12mm</td><td>Tons</td>
-                <td>".round($totalsteel12)."</td>
-                <td>53000</td><td>".(round($totalsteel12) * 53000)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>16mm</td><td>Tons</td>
-                <td>".round($totalsteel18)."</td>
-                <td>53000</td><td>".(round($totalsteel18) * 53000)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>20mm</td><td>Tons</td>
-                <td></td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td>Blocks</td><td>6\"</td><td>Nos</td>
-                <td>".round($totalblocks6)."</td><td rowspan='2'>".round($totalblocks6+$totalblocks4)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>4\"</td><td>Nos</td>
-                <td>".round($totalblocks4)."</td>
-                <td>380</td><td>0</td><td>0</td></tr>";
-        $table .="<tr><td>Electrical</td><td>Fan</td><td>Nos</td>
-                <td>".$fan."</td><td></td>
-                <td>380</td><td>".($fan * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>LED Tube Light</td><td>Nos</td>
-                <td>".$led."</td><td></td>
-                <td>380</td><td>".($led * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>8M Metal Box</td><td>Nos</td>
-                <td>".$metalbox8."</td><td></td>
-                <td>380</td><td>".($metalbox8 * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>8M Cover Frame</td><td>Nos</td>
-                <td>".$cover."</td><td></td>
-                <td>380</td><td>".($cover * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>15 A Sockets</td><td>Nos</td>
-                <td>".$socket15a."</td><td></td>
-                <td>380</td><td>".($socket15a * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>15 A Switches</td><td>Nos</td>
-                <td>".$switches15a."</td><td></td>
-                <td>380</td><td>".($switches15a * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Two way switches</td><td>Nos</td>
-                <td>".$twoway."</td><td></td>
-                <td>380</td><td>".($twoway * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>5 A Switches</td><td>Nos</td>
-                <td>".$switches5a."</td><td></td>
-                <td>380</td><td>".($switches5a * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>5 A Sockets </td><td>Nos</td>
-                <td>".$sockets5a."</td><td></td>
-                <td>380</td><td>".($sockets5a * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Plastic Exhaust Fan</td><td>Nos</td>
-                <td>".$plasticexhaust."</td><td></td>
-                <td>380</td><td>".($plasticexhaust * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Metal Exhaust Fan</td><td>Nos</td>
-                <td>".$metalexhaust."</td><td></td>
-                <td>380</td><td>".($metalexhaust * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>LED Bulb</td><td>Nos</td>
-                <td>".$ledbulb."</td><td></td>
-                <td>380</td><td>".($ledbulb * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Wiring 14/2 90MTS</td><td>Nos</td>
-                <td>".round($wiring142)."</td><td></td>
-                <td>380</td><td>".(round($wiring142) * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Wiring 12/2 90MTS</td><td>Nos</td>
-                <td>".round($wiring122)."</td><td></td>
-                <td>380</td><td>".(round($wiring122) * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>Wiring 14/3 90MTS</td><td>Nos</td>
-                <td>".round($wiring143)."</td><td></td>
-                <td>380</td><td>".(round($wiring143) * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>MCB 25A</td><td>Nos</td>
-                <td>".$mcb."</td><td></td>
-                <td>380</td><td>".($mcb * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>TPN Distribution Board</td><td>Nos</td>
-                <td>".$tpn."</td><td></td>
-                <td>380</td><td>".($tpn * 380)."</td><td>0</td></tr>";
-        $table .="<tr><td></td><td>DB Door</td><td>Nos</td>
-                <td>".$dbdoor."</td><td></td>
-                <td>380</td><td>".($dbdoor * 380)."</td><td>0</td></tr>";
-      return view('detailProjects',['projects'=>$projects,'table'=>$table]);
+
+
+               $table .="<tr><td>Cement</td>
+                <td>".round($totalcement)." (Bags)</td>
+                <td>".(round ($cement1 = ($totalcement) * 270))."</td></tr>";
+
+                 $table .="<tr><td>Steel</td>
+                <td>".round($totalsteel)." (Ton)</td>
+                <td>".(round($steel1 = ($totalsteel) * 50000))."</td></tr>";
+
+                 $table .="<tr><td>Sand</td>
+                <td>".round($totalsand)." (Ton)</td>
+                <td>".(round($sand1 = ($totalsand) * 950))."</td></tr>";
+
+                $table .="<tr><td>Aggregates</td>
+                <td>".round($totalaggregates)." (Ton)</td>
+                <td>".(round($agr=($totalaggregates) * 750))."</td></tr>";
+
+                  $table .="<tr><td>Electrical</td>
+                <td>".round($totalelectrical)." (Sqft)</td>
+                <td>".(round($ele=($totalelectrical) * 84))."</td></tr>";
+
+
+                $table .="<tr><td>Blocks and Bricks</td>
+                <td>".round($totalblocks)." (No.)</td>
+                <td>".(round($bl=($totalblocks) * 28))."</td></tr>";
+
+        
+               $table .="<tr><td>Plumbing</td>
+                <td>".round($totalPlumbing)." (Sqft)</td>
+                <td>".(round($pl =($totalPlumbing) * 50))."</td></tr>";
+
+                $table .="<tr><td>Doors and windows</td>
+                <td>".round($totaldoors)." (Sqft)</td>
+                <td>".(round($door=($totaldoors) * 350))."</td></tr>";
+
+                $table .="<tr><td>Flooring</td>
+                <td>".round($totalflooring)." (Sqft)</td>
+                <td>".(round($floor=($totalflooring) * 45))."</td></tr>";
+
+     $total = round($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1);
+
+
+      return view('detailProjects',['projects'=>$projects,'table'=>$table,'total'=>$total]);
+   
     }
 }
