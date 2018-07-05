@@ -2749,7 +2749,7 @@
 </div>
 </div>
 </div>
-<form action="{{ URL::to('/') }}/lockProjection" id="lockProj" method="POST">
+<form action="{{URL::to('/') }}/lockProjection" id="lockProj" method="POST">
     {{ csrf_field() }}
     <input type="hidden" name="monthlyTarget" id="mTarget">
     <input type="hidden" name="transactionalProfit" id="transactionalProfit">
