@@ -23,15 +23,16 @@
     19 => 'Illuminate\\Translation\\TranslationServiceProvider',
     20 => 'Illuminate\\Validation\\ValidationServiceProvider',
     21 => 'Illuminate\\View\\ViewServiceProvider',
-    22 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    23 => 'Barryvdh\\Cors\\ServiceProvider',
+    22 => 'Barryvdh\\Cors\\ServiceProvider',
+    23 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     24 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    25 => 'App\\Providers\\AppServiceProvider',
-    26 => 'App\\Providers\\AuthServiceProvider',
-    27 => 'App\\Providers\\EventServiceProvider',
-    28 => 'App\\Providers\\RouteServiceProvider',
-    29 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
-    30 => 'Barryvdh\\Cors\\ServiceProvider',
+    25 => 'Nexmo\\Laravel\\NexmoServiceProvider',
+    26 => 'App\\Providers\\AppServiceProvider',
+    27 => 'App\\Providers\\AuthServiceProvider',
+    28 => 'App\\Providers\\EventServiceProvider',
+    29 => 'App\\Providers\\RouteServiceProvider',
+    30 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    31 => 'Barryvdh\\Cors\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -45,8 +46,8 @@
     7 => 'Illuminate\\Pagination\\PaginationServiceProvider',
     8 => 'Illuminate\\Session\\SessionServiceProvider',
     9 => 'Illuminate\\View\\ViewServiceProvider',
-    10 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    11 => 'Barryvdh\\Cors\\ServiceProvider',
+    10 => 'Barryvdh\\Cors\\ServiceProvider',
+    11 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     12 => 'App\\Providers\\AppServiceProvider',
     13 => 'App\\Providers\\AuthServiceProvider',
     14 => 'App\\Providers\\EventServiceProvider',
@@ -153,6 +154,7 @@
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
+    'Nexmo\\Client' => 'Nexmo\\Laravel\\NexmoServiceProvider',
   ),
   'when' => 
   array (
@@ -193,6 +195,9 @@
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
+    array (
+    ),
+    'Nexmo\\Laravel\\NexmoServiceProvider' => 
     array (
     ),
   ),

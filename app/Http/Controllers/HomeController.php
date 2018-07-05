@@ -69,6 +69,10 @@ use Carbon\Carbon;
 use App\numbercount;
 use App\numbers;
 use App\Payment;
+use App\Detail;
+use App\Projection;
+use App\Conversion;
+use App\Utilization;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -4023,8 +4027,8 @@ public function assigndate(request $request )
     }
     public function getLeTracking(Request $request)
     {
-        $groupid = [6,11,17];
-        $users = User::whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
+        $tracking = UserLocation::where('created_at','LIKE',date('Y-m-d')."%")->pluck('user_id')->toArray();
+        $users = User::whereIn('id',$tracking)->get();
         if($request->userId){
             $track = UserLocation::where('user_id',$request->userId)
                         ->where('created_at','LIKE',date('Y-m-d')."%")
@@ -4733,7 +4737,20 @@ function enquirystore(request $request){
        
         return view('/payment',['payment'=>$payment,'pay'=>$pay,'converter'=>$converter]);
     }
-public function getProjection(Request $request)
+    public function sendSMS(Request $request)
+    {
+        // $nexmo = app('Nexmo\Client');
+        // if($request->number && $request->content){
+            // $nexmo->message()->send([
+            //     'to'   => $request->number,
+            //     'from' => "MAMAHOME",
+            //     'text' => $request->content
+            // ]);
+            // return redirect('/sendSMS');
+        // }
+        return view('sendSMS');
+    }
+    public function getProjection(Request $request)
     {
         $wards = Ward::all();
        $projects = ProjectDetails::where('deleted',0)->get();
@@ -4995,5 +5012,149 @@ public function getProjection(Request $request)
            ]);
        }
        return view('projection',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
+    }
+    public function getLockProjection(Request $request){
+        $wardsselect = Ward::pluck('id');
+        $check = Detail::where('created_at','LIKE',date('Y-m').'%')->first();
+        if($check == null){
+            foreach($wardsselect as $wards){
+                // planning
+                $subwards = SubWard::where('ward_id',$wards)->pluck('id');
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Planning";
+                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Planning%')->sum('project_size'));
+                $details->save();
+                
+                // digging
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Digging";
+                $details->size        = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Digging%')->sum('project_size'));
+                $details->save();
+
+                // foundation
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Foundation";
+                $details->size     = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Foundation%')->sum('project_size'));
+                $details->save();
+
+                // pillars
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Pillars";
+                $details->size        = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Pillars%')->sum('project_size'));
+                $details->save();
+                
+                // walls
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Walls";
+                $details->size          = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Walls%')->sum('project_size'));
+                $details->save();
+                
+                
+                
+                // roofing
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Roofing";
+                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Roofing%')->sum('project_size'));
+                $details->save();
+                
+                $ele                = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Electrical%')->pluck('project_id');
+                $plum               = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Plumbing%')->pluck('project_id');
+                $ele                = $ele->merge($plum);
+    
+                // electrical & plumbing
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Electrical & Plubming";
+                $details->size            = round(ProjectDetails::whereIn('project_id',$ele)->sum('project_size'));
+                $details->save();
+
+                // plastering
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Plastering";
+                $details->size     = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Plastering%')->sum('project_size'));
+                $details->save();
+                
+                // flooring
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Flooring";
+                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Flooring%')->sum('project_size'));
+                $details->save();
+
+                // carpentry
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Carpentry";
+                $details->size      = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Carpentry%')->sum('project_size'));
+                $details->save();
+
+                // painting
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Painting";
+                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Paintings%')->sum('project_size'));
+                $details->save();
+
+                // fixture
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Fixture";
+                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Fixtures%')->sum('project_size'));
+                $details->save();
+
+                // completion
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Completion";
+                $details->size     = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Completion%')->sum('project_size'));
+                $details->save();
+
+                // closed
+                $details = new Detail;
+                $details->ward_id = $wards;
+                $details->stage = "Closed";
+                $details->size         = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Closed%')->sum('project_size'));
+                $details->save();
+            }
+        }
+        $check2 = Projection::where('category',$request->category)->first();
+        if($check2 == null){
+            $projection = new Projection;
+            $projection->category = $request->category;
+            $projection->price = $request->price;
+            $projection->business_cycle = $request->businessCycle;
+            $projection->target = $request->monthlyTarget;
+            $projection->transactional_profit = $request->transactionalProfit;
+            $projection->save();
+        }
+        return back();
+   }
+   public function getLockedProjection()
+   {
+       $projections = Projection::pluck('category')->toArray();
+       $categories = Utilization::all();
+       return view('projection.projectionFirst',['categories'=>$categories,'projections'=>$projections]);
+   }
+   public function getLockedStage(Request $request){
+       $category = Projection::where('category',$request->category)->first();
+       $conversion = Conversion::where('category',$request->category)->first();
+       $wards = Ward::all();
+       $utilizations = Utilization::where('category',$request->category)->first()->toArray();
+       if($request->ward){
+            $projection = Detail::where('details.ward_id',$request->ward)
+                            ->leftJoin('wards','wards.id','details.ward_id')
+                            ->select('details.*','wards.ward_name')
+                            ->get();
+            $total = Detail::where('ward_id',$request->ward)->sum('size');
+            return view('projection.projectionStage',['projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
+        }
+       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category]);
    }
 }

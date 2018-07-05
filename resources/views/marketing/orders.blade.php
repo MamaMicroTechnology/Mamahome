@@ -25,7 +25,7 @@
     				</thead>
     				<tbody>
 					    @foreach($rec as $view)
-					    <tr>
+					   <tr class="{{ in_array($view->orderid, $invoice) ? 'hidden' : '' }}">
 					        <td style="text-align:center">
 					            <a href="{{URL::to('/')}}/inputinvoice?id={{$view->orderid}}" target="_blank">{{$view->orderid}}</a>
 					        </td>

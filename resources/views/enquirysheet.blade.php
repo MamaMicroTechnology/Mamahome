@@ -10,7 +10,6 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-				
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 					<p class="pull-left" style="padding-left: 50px;" id="display" >

@@ -136,7 +136,8 @@ class marketingController extends Controller
     {
         $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')->get();
         $countrec = count($rec);   
-        return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec]);
+        $invoice = MhInvoice::pluck('requirement_id')->toArray(); 
+        return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec,'invoice' => $invoice]);
     }
     public function saveinvoice(Request $request){
         if($request->invoicePic != NULL){
