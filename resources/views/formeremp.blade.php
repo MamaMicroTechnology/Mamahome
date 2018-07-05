@@ -54,7 +54,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-img {
+.img1 {
     border-radius: 50%;
 
 }
@@ -66,7 +66,7 @@ img {
   <div class="col-md-6">
    
    
-    <img src="http://mamahome360.com/public/android-icon-36x36.png">
+    <img src="http://mamahome360.com/public/android-icon-36x36.png" class="img1">
     MAMA HOME PVT LTD
   </div>
   
