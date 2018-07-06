@@ -68,6 +68,7 @@ img {
    
     <img src="http://localhost/mamahome/public/android-icon-36x36.png">
     MAMA HOME PVT LTD
+     </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
   </div>
   
   <div class="col-md-4 pull-right">

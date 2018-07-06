@@ -792,13 +792,13 @@ class amController extends Controller
             $users = User::where('department_id',10)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->get();
-        return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
         }
         $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
         $users = User::where('department_id',$deptId)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
-        return view('mhemp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        return view('mhemp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
     }
 }

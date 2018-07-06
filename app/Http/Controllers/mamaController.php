@@ -811,6 +811,7 @@ class mamaController extends Controller
                                    $i++;
                                   }
                              }
+                            
                             $statusCount = count($request->status);
                             $statuses = $request->status[0];
                             if($statusCount > 1){

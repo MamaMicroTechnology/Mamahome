@@ -158,12 +158,30 @@ class marketingController extends Controller
         }else{
             $imageName3 = null;
         }
-        if($request->manufacturer_invoice != NULL){
-            $imageName4 = "manufacturer_invoice".time().'.'.request()->manufacturer_invoice->getClientOriginalExtension();
-            $request->manufacturer_invoice->move(public_path('invoiceImages'),$imageName4);
+        if(count($request->manufacturer_invoice !=0)){
+
+            $i= 0;
+            $invoiceimage = ""; 
+
+            foreach($request->manufacturer_invoice as $invimage){
+             $image = "manufacturer_invoice".$i.time().'.'.$invimage->getClientOriginalExtension();
+            $invimage->move(public_path('invoiceImages'),$image);
+           
+             if($i == 0){
+                                                 $invoiceimage .= $image;
+                                                
+                                           }
+                                           else{
+                                                $invoiceimage .= ",".$image;
+                                               
+                                           }
+                                   $i++;
+             }
+                           
         }else{
-            $imageName4 = null;
+            $invoiceimage = null;
         }
+      
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;
@@ -183,7 +201,7 @@ class marketingController extends Controller
         $mhinvoice->manufacturer_number = $request->manufacturer_no;
         $mhinvoice->date_of_invoice = $request->dateOfInvoice;
         $mhinvoice->total_amount = $request->quantity * $request->price;
-        $mhinvoice->manufacturer_invoice = $imageName4;
+        $mhinvoice->manufacturer_invoice = $invoiceimage;
         $mhinvoice->save();
         return back();
     }
