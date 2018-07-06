@@ -68,6 +68,7 @@ input:checked + .slider:before {
    
     <img src="http://mamahome360.com/public/android-icon-36x36.png" >
     MAMA HOME PVT LTD
+     </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
   </div>
   
   <div class="col-md-4 pull-right">

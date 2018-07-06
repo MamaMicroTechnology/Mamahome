@@ -181,6 +181,7 @@ class marketingController extends Controller
         }else{
             $invoiceimage = null;
         }
+      
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;

@@ -61,10 +61,18 @@ input:checked + .slider:before {
 /*#boxed {
     border: 1px solid green ;
 }*/
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;
+}
 </style>
 <div class="panel panel-default" style="border-color:green">
 <div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees on {{ $dept }}
  <a class="pull-right btn btn-xs btn-danger" href="{{url()->previous()}}">Back</a>
+
 </div>
 
 <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
@@ -75,9 +83,11 @@ input:checked + .slider:before {
     @if($dept == "IT")
     <img src="http://mamahome360.com/public/android-icon-36x36.png" >
      MAMA HOME PVT LTD
+    </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
     @else
     <img src="http://mamahome360.com/public/android-icon-36x36.png">
     MAMA HOME PVT LTD
+    </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
     @endif
   </div>
   
@@ -87,7 +97,7 @@ input:checked + .slider:before {
 </div>
 <br>
 <br>
-<br><br>
+<br><br><br>
 
 <div id="name">
 @foreach($users as $user)

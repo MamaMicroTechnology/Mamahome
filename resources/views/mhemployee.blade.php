@@ -136,7 +136,7 @@
 $(document).ready(function () {
     $("#{{ $con }}").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?count={{$depts[$department->dept_name]}}&&dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -148,7 +148,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $("#FormerEmployees").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?dept=FormerEmployees", function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?dept=FormerEmployees&&count={{$depts["FormerEmployees"]}}", function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });

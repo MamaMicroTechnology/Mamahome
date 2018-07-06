@@ -48,7 +48,7 @@
                     <br><br>
                     <table class="table table-responsive">
                         <tr>
-                            <td>Name</td>
+                          <!--   <td>Name</td> -->
                             <td>: {{ $user->name }}</td>
                             <td>User Id Of Mama</td>
                             <td>: {{ $user->email }}</td>
