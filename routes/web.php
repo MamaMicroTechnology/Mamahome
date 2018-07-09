@@ -407,6 +407,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/getserial','amController@getserial');
     Route::get('/getdesc','amController@getdesc');
     Route::post('/deleteassetsimcard','amController@deleteassetsim');
+    Route::post('/deleteAsset','amController@deleteAsset');
     Route::get('/deleteassets','amController@deleteassets');
     Route::post('/deletesim','amController@deletesim');
     Route::post('/savesiminfo','amController@savesiminfo');
