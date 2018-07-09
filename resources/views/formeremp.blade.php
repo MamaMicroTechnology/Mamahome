@@ -92,7 +92,7 @@ input:checked + .slider:before {
     <div style="overflow: hidden;" class="col-md-3 col-md-offset-1 ">
     <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
       <p style="text-align: center;">{{ $user->name }}</p>
-      <p style="text-align: center;">{{ $user->email }}</p>
+      <p style="text-align: center;">{{ $user->office_phone }}</p>
     </center>
     @if($loop->iteration % 3==0)
         </div>
