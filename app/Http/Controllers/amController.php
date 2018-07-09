@@ -790,8 +790,15 @@ class amController extends Controller
             ->where('id','!=',105) 
                ->count();
         }
+         $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
+             ->where('id','!=',7)
+            ->where('id','!=',27)
+            ->where('id','!=',28)
+            ->where('id','!=',101)
+            ->where('id','!=',105)
+        ->count();
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
-        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts]);
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount]);
     }
      public function viewmhemployee(Request $request){
         if($request->dept == "FormerEmployees"){
