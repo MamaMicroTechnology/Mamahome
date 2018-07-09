@@ -92,7 +92,7 @@ input:checked + .slider:before {
   </div>
   
   <div class="col-md-4 pull-right">
-            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." >
+            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names and Phone Number" >
   </div>
 </div>
 <br>
@@ -105,7 +105,11 @@ input:checked + .slider:before {
     <div style="overflow: hidden;" class="col-md-3 col-md-offset-1">
     <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
      <p style="text-align: center;">{{ $user->name }}</p>
-     <p style="text-align: center;">{{ $user->office_phone }}</p>
+     @if($user->department_id == 4)
+     <p style="text-align: center;">{{  $user->contactNo }}</p>
+     @else
+      <p style="text-align: center;">{{  $user->office_phone }}</p>
+     @endif
     </center>
     @if($loop->iteration % 3==0)
         </div>
