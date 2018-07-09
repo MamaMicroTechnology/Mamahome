@@ -788,6 +788,8 @@ class amController extends Controller
             ->where('id','!=',28) 
              ->where('id','!=',101)
             ->where('id','!=',105) 
+             ->where('id','!=',107) 
+              ->where('id','!=',112) 
                ->count();
         }
          $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
@@ -796,6 +798,8 @@ class amController extends Controller
             ->where('id','!=',28)
             ->where('id','!=',101)
             ->where('id','!=',105)
+             ->where('id','!=',107)
+              ->where('id','!=',112)
         ->count();
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
         return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount]);
@@ -814,6 +818,8 @@ class amController extends Controller
                 ->where('users.id','!=',28)
                 ->where('users.id','!=',101)
                 ->where('users.id','!=',105)
+                ->where('users.id','!=',107)
+                 ->where('users.id','!=',112)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
