@@ -782,7 +782,11 @@ class amController extends Controller
         $depts = array();
         
         foreach($departments as $department){
-            $depts[$department->dept_name] = User::where('department_id',$department->id)->count();
+            $depts[$department->dept_name] = User::where('department_id',$department->id)
+           ->where('id','!=',7)
+            ->where('id','!=',27)
+            ->where('id','!=',101) 
+               ->count();
         }
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
         return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts]);
@@ -796,6 +800,9 @@ class amController extends Controller
         }
         $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
         $users = User::where('department_id',$deptId)
+                ->where('users.id','!=',7)
+                ->where('users.id','!=',27)
+                ->where('users.id','!=',101)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
