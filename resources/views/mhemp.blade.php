@@ -82,12 +82,12 @@ input:checked + .slider:before {
    
     @if($dept == "IT")
     <img src="http://mamahome360.com/public/android-icon-36x36.png" >
-     MAMA HOME PVT LTD
-    </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
+     MAMA HOME PVT LTD &nbsp;&nbsp;&nbsp;
+    <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
     @else
     <img src="http://mamahome360.com/public/android-icon-36x36.png">
-    MAMA HOME PVT LTD
-    </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
+    MAMA HOME PVT LTD &nbsp;&nbsp;&nbsp;
+    <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
     @endif
   </div>
   
