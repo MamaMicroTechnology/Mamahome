@@ -38,7 +38,7 @@
                     <tr>
                         <td>{{ $projection['stage'] }}</td>
                         <td>
-                            @if($projection['stage'] == "Electrical & Plubming")
+                            @if($projection['stage'] == "Electrical & Plumbing")
                                 <?php $stage = "electrical"; ?>
                             @else
                                 <?php $stage = $projection['stage']; ?>
