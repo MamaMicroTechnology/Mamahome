@@ -58,6 +58,13 @@ input:checked + .slider:before {
     border-radius: 50%;
 
 }
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;
+}
 </style>
 <div class="panel panel-default" style="border-color:green">
 <div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white" >Employees on {{ $dept }}</div>
