@@ -20,13 +20,6 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
-  'nesbot/carbon' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Carbon\\Laravel\\ServiceProvider',
-    ),
-  ),
   'nexmo/laravel' => 
   array (
     'providers' => 
@@ -36,6 +29,13 @@
     'aliases' => 
     array (
       'Nexmo' => 'Nexmo\\Laravel\\Facade\\Nexmo',
+    ),
+  ),
+  'nesbot/carbon' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Carbon\\Laravel\\ServiceProvider',
     ),
   ),
 );

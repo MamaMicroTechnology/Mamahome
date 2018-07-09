@@ -621,7 +621,9 @@ class amController extends Controller
     }
     public function deleteAsset(Request $request)
     {
-         $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
+
+        
+        $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
         AssetInfo::where('id',$request->id)->delete();
         $mhasset = MamahomeAsset::where('id',$mh)->first();
         $mhasset->status = null;
@@ -670,6 +672,13 @@ class amController extends Controller
     
     }
     public function getview(Request $request){
+        if($request->dept == "FormerEmployees"){
+            $users = User::where('department_id',10)
+               ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
+        return view('hrformeremployees',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        }
        $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
         $users = User::where('department_id',$deptId)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
@@ -780,7 +789,7 @@ class amController extends Controller
         $departments = Department::all();
         $groups = Group::all();
         $depts = array();
-        
+
         foreach($departments as $department){
             $depts[$department->dept_name] = User::where('department_id',$department->id)
            ->where('id','!=',7)

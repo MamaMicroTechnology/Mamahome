@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+<style type="text/css">
+  .dot {
+    height: 9px;
+    width: 9px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;
+}
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-2">
@@ -15,7 +24,7 @@
                    {{ session('NotAdded') }}
                 </div>
             @endif
-            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee</button>
+            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee </button>
             <br><br>
             <div class="panel panel-default" style="border-color:#f4811f">
                 <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Departments</b></div>
@@ -44,6 +53,21 @@
     </div>
 </div>
 
+                      <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
+                        fghjkl;
+                              </div>
+                          </div> -->
+
+                          <br><br><br><br>
+                           <img src="http://mamahome360.com/public/android-icon-36x36.png">
+                           MAMA HOME PVT LTD&nbsp;&nbsp;
+                           Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
+    width: 9px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;"></span> {{ $totalcount }}
+        </div>
+ 
 <!--Modal-->
 <form method="post" action="{{ URL::to('/') }}/amaddEmployee">
     {{ csrf_field() }}
@@ -163,5 +187,7 @@ $(document).ready(function () {
     });
 });
 </script>
+
 @endforeach
+
 @endsection
