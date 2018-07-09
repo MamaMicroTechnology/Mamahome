@@ -158,7 +158,7 @@ class marketingController extends Controller
         }else{
             $imageName3 = null;
         }
-        if(count($request->manufacturer_invoice !=0)){
+       if(count($request->manufacturer_invoice !=0)){
 
             $i= 0;
             $invoiceimage = ""; 

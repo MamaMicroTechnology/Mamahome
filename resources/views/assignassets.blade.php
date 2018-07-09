@@ -28,6 +28,7 @@
                         ?>
                         <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }}</a>
                     @endforeach
+                    <a id="FormerEmployees" class="list-group-item" href="#">Former Employees</a>
                     
                 </div>
             </div>
@@ -112,6 +113,17 @@ $(document).ready(function () {
     });
 });
 </script>
-
+<script type="text/javascript">
+$(document).ready(function () {
+    $("#FormerEmployees").on('click',function(){
+        $(document.body).css({'cursor' : 'wait'});
+        $("#disp").load("{{ URL::to('/') }}/assetsview?dept=FormerEmployees", function(responseTxt, statusTxt, xhr){
+            if(statusTxt == "error")
+                alert("Error: " + xhr.status + ": " + xhr.statusText);
+        });
+        $(document.body).css({'cursor' : 'default'});
+    });
+});
+</script>
 @endforeach
 @endsection

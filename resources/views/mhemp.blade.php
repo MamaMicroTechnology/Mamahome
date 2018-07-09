@@ -62,8 +62,8 @@ input:checked + .slider:before {
     border: 1px solid green ;
 }*/
 .dot {
-    height: 10px;
-    width: 10px;
+    height: 9px;
+    width: 9px;
     background-color:green;
     border-radius: 50%;
     display: inline-block;
@@ -81,17 +81,18 @@ input:checked + .slider:before {
   <div class="col-md-6">
    
     @if($dept == "IT")
-    <img src="http://localhost/mamahome/public/MMT LOGO.JPG" height="50" width="100">
-     </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
+    <img src="http://mamahome360.com/public/android-icon-36x36.png" >
+     MAMA HOME PVT LTD&nbsp;&nbsp;
+    <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
     @else
-    <img src="http://localhost/mamahome/public/android-icon-36x36.png">
-      MAMA HOME PVT LTD<br>
-    </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
+    <img src="http://mamahome360.com/public/android-icon-36x36.png">
+    MAMA HOME PVT LTD&nbsp;&nbsp;
+     <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
     @endif
   </div>
   
   <div class="col-md-4 pull-right">
-            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." >
+            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names and Phone Number" >
   </div>
 </div>
 <br>
@@ -100,11 +101,16 @@ input:checked + .slider:before {
 
 <div id="name">
 @foreach($users as $user)
+
   <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >
-    <div style="overflow: hidden;" class="col-md-3 col-md-offset-1 img-thumbnail">
-    <center><img class="img1" src="http://localhost/mamahome/public/assetbill/1530183607.jpg" width="100" height="100">
+    <div style="overflow: hidden;" class="col-md-3 col-md-offset-1">
+    <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
       <p style="text-align: center;">{{ $user->name }}</p>
-      <small>{{ $user->email }}</small>
+      @if($user->department_id == 4)
+     <p style="text-align: center;">{{  $user->contactNo }}</p>
+     @else
+      <p style="text-align: center;">{{  $user->office_phone }}</p>
+     @endif
     </center>
     @if($loop->iteration % 3==0)
         </div>
@@ -113,6 +119,7 @@ input:checked + .slider:before {
         @endif
    </div>
   </a>
+ 
 @endforeach  
 </div>
 </div>
@@ -141,7 +148,8 @@ input:checked + .slider:before {
     p = ul.getElementsByTagName("a");
     for (i = 0; i < p.length; i++) {
         a = p[i].getElementsByTagName("p")[0];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        b = p[i].getElementsByTagName("p")[1];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
             p[i].style.display = "";
         } else {
             p[i].style.display = "none";

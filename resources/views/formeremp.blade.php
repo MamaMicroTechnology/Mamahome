@@ -54,9 +54,16 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-img {
+.img1 {
     border-radius: 50%;
 
+}
+.dot {
+    height: 9px;
+    width: 9px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;
 }
 </style>
 <div class="panel panel-default" style="border-color:green">
@@ -66,9 +73,9 @@ img {
   <div class="col-md-6">
    
    
-    <img src="http://localhost/mamahome/public/android-icon-36x36.png">
-    MAMA HOME PVT LTD
-     </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
+    <img src="http://mamahome360.com/public/android-icon-36x36.png" >
+    MAMA HOME PVT LTD&nbsp;&nbsp;&nbsp;
+     <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
   </div>
   
   <div class="col-md-4 pull-right">
@@ -81,11 +88,11 @@ img {
 
 <div id="name">
 @foreach($users as $user)
-  <a href="{{ URL::to('/') }}/amviewEmployee?UserId={{ $user->employeeId }}" >
-    <div style="overflow: hidden;" class="col-md-3 col-md-offset-1 img-thumbnail">
-    <center><img class="img1" src="http://localhost/mamahome/public/assetbill/1530183607.jpg" width="100" height="100">
+  <a href="{{ URL::to('/') }}/amviewEmployee?UserId={{ $user->employeeId }}"  >
+    <div style="overflow: hidden;" class="col-md-3 col-md-offset-1 ">
+    <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
       <p style="text-align: center;">{{ $user->name }}</p>
-      <small>{{ $user->email }}</small>
+      <small>{{ $user->office_phone }}</small>
     </center>
     @if($loop->iteration % 3==0)
         </div>

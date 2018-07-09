@@ -4752,10 +4752,15 @@ function enquirystore(request $request){
     }
     public function getProjection(Request $request)
     {
+        if($request->category){
+            $conversion = Conversion::where('category',$request->category)->first();
+            View::share('conversion', $conversion);
+        }else{
+            View::share('conversion',null);
+        }
         $wards = Ward::all();
        $projects = ProjectDetails::where('deleted',0)->get();
        $qualityCheck = ['Genuine','Fake','Unverified'];
-
        // getting total no of projects
        $wardsselect = Ward::pluck('id');
        $subwards = SubWard::whereIn('ward_id',$wardsselect)->pluck('id');
@@ -5016,6 +5021,7 @@ function enquirystore(request $request){
     public function getLockProjection(Request $request){
         $wardsselect = Ward::pluck('id');
         $check = Detail::where('created_at','LIKE',date('Y-m').'%')->first();
+        $qualityCheck = ['Genuine','Fake','Unverified'];
         if($check == null){
             foreach($wardsselect as $wards){
                 // planning
@@ -5023,35 +5029,35 @@ function enquirystore(request $request){
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Planning";
-                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Planning%')->sum('project_size'));
+                $details->size       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
                 $details->save();
                 
                 // digging
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Digging";
-                $details->size        = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Digging%')->sum('project_size'));
+                $details->size        = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Digging%')->sum('project_size');
                 $details->save();
 
                 // foundation
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Foundation";
-                $details->size     = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Foundation%')->sum('project_size'));
+                $details->size     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
                 $details->save();
 
                 // pillars
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Pillars";
-                $details->size        = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Pillars%')->sum('project_size'));
+                $details->size        = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Pillars%')->sum('project_size');
                 $details->save();
                 
                 // walls
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Walls";
-                $details->size          = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Walls%')->sum('project_size'));
+                $details->size          = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Walls%')->sum('project_size');
                 $details->save();
                 
                 
@@ -5060,7 +5066,7 @@ function enquirystore(request $request){
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Roofing";
-                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Roofing%')->sum('project_size'));
+                $details->size       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->sum('project_size');
                 $details->save();
                 
                 $ele                = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Electrical%')->pluck('project_id');
@@ -5070,58 +5076,58 @@ function enquirystore(request $request){
                 // electrical & plumbing
                 $details = new Detail;
                 $details->ward_id = $wards;
-                $details->stage = "Electrical & Plubming";
-                $details->size            = round(ProjectDetails::whereIn('project_id',$ele)->sum('project_size'));
+                $details->stage = "Electrical & Plumbing";
+                $details->size            = ProjectDetails::whereIn('project_id',$ele)->whereIn('quality',$qualityCheck)->sum('project_size');
                 $details->save();
 
                 // plastering
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Plastering";
-                $details->size     = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Plastering%')->sum('project_size'));
+                $details->size     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plastering%')->sum('project_size');
                 $details->save();
                 
                 // flooring
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Flooring";
-                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Flooring%')->sum('project_size'));
+                $details->size       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Flooring%')->sum('project_size');
                 $details->save();
 
                 // carpentry
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Carpentry";
-                $details->size      = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Carpentry%')->sum('project_size'));
+                $details->size      = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Carpentry%')->sum('project_size');
                 $details->save();
 
                 // painting
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Painting";
-                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Paintings%')->sum('project_size'));
+                $details->size       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Paintings%')->sum('project_size');
                 $details->save();
 
                 // fixture
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Fixture";
-                $details->size       = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Fixtures%')->sum('project_size'));
+                $details->size       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Fixtures%')->sum('project_size');
                 $details->save();
 
                 // completion
                 $details = new Detail;
                 $details->ward_id = $wards;
                 $details->stage = "Completion";
-                $details->size     = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Completion%')->sum('project_size'));
+                $details->size     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Completion%')->sum('project_size');
                 $details->save();
 
                 // closed
-                $details = new Detail;
-                $details->ward_id = $wards;
-                $details->stage = "Closed";
-                $details->size         = round(ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Closed%')->sum('project_size'));
-                $details->save();
+                // $details = new Detail;
+                // $details->ward_id = $wards;
+                // $details->stage = "Closed";
+                // $details->size         = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Closed%')->sum('project_size');
+                // $details->save();
             }
         }
         $check2 = Projection::where('category',$request->category)->first();
@@ -5146,15 +5152,38 @@ function enquirystore(request $request){
        $category = Projection::where('category',$request->category)->first();
        $conversion = Conversion::where('category',$request->category)->first();
        $wards = Ward::all();
+       $date = null;
        $utilizations = Utilization::where('category',$request->category)->first()->toArray();
        if($request->ward){
-            $projection = Detail::where('details.ward_id',$request->ward)
+           if($request->ward == "all"){
+               $projection = new Collection;
+                $t = Detail::where('details.ward_id',1)
                             ->leftJoin('wards','wards.id','details.ward_id')
-                            ->select('details.*','wards.ward_name')
+                            ->select('details.id','details.ward_id','details.stage','details.created_at','details.updated_at','wards.ward_name')
                             ->get();
-            $total = Detail::where('ward_id',$request->ward)->sum('size');
-            return view('projection.projectionStage',['projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
+               $detail = array();                
+                foreach($t as $project){
+                    $detail['id'] = $project->id;
+                    $detail['ward_id'] = $project->ward_id;
+                    $detail['stage'] = $project->stage;
+                    $detail['size'] = Detail::where('stage',$project->stage)->sum('size');
+                    $detail['created_at'] = date('Y-m-d H:i:s',strtotime($project->created_at));
+                    $detail['updated_at'] = date('Y-m-d H:i:s',strtotime($project->updated_at));
+                    $detail['ward_name'] = $project->ward_name;
+                    $projection = $projection->push($detail);
+                }
+                $total = Detail::sum('size');
+                $date = date('d-M-Y',strtotime($category->created_at));
+           }else{
+               $projection = Detail::where('details.ward_id',$request->ward)
+                               ->leftJoin('wards','wards.id','details.ward_id')
+                               ->select('details.*','wards.ward_name')
+                               ->get();
+               $total = Detail::where('ward_id',$request->ward)->sum('size');
+               $date = date('d-M-Y',strtotime($category->created_at));
+            }
+            return view('projection.projectionStage',['date'=>$date,'projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
         }
-       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category]);
+       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category,'date'=>$date]);
    }
 }

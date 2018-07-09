@@ -119,6 +119,7 @@ class ContractorController extends Controller
     {
      
       
+    
       $table = "<tr> <td colspan='8'><center>Material Estimation prices may vary according to Market Price</center> </td></center></tr>
      
       <tr><th>Category</th><th>Total Required</th><th>Total Amount</th></tr>";
@@ -175,7 +176,12 @@ class ContractorController extends Controller
       $aggregates = array();
       $blocks = array();
       $electrical = array();
-
+      $bathroom = array();
+      $wood = array();
+      $paints = array();
+      $wardk = array();
+      $rails = array();
+      $glass = array();
      
       $totalPlumbing =0;
       $totaldoors=0;
@@ -186,6 +192,12 @@ class ContractorController extends Controller
       $totalaggregates = 0;
       $totalblocks = 0;
       $totalelectrical = 0;
+      $totalbathroom = 0;
+      $totalwood = 0;
+      $totalpaints = 0;
+      $totalward = 0;
+      $totalrails = 0;
+       $totalglass = 0;
       $i = 0;
       foreach($projects as $project){
         $Total_Flats = $project->project_type;
@@ -203,6 +215,12 @@ class ContractorController extends Controller
               $aggregatesRequirement = 100;
               $blocksRequirement = 100;
               $electricalRequirement = 100;
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
               // calculation Part
              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
@@ -214,7 +232,12 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
-
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 *  $Total_Area)/25)* ($glassReqirement/100);
             break;
           case 'Digging':
              
@@ -227,8 +250,14 @@ class ContractorController extends Controller
               $aggregatesRequirement = 100;
               $blocksRequirement = 100;
               $electricalRequirement = 100;
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
 
-// calculation Part
+          // calculation Part
              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -239,8 +268,15 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
-         break;
-          case 'Foundation':
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
+
+             break;
+               case 'Foundation':
              
               $plumbingRequirement = 100;
               $doorsRequirement = 100;
@@ -250,11 +286,15 @@ class ContractorController extends Controller
               $sandRequirement = 90;
               $aggregatesRequirement = 80;
               $blocksRequirement = 100;
-
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
               $electricalRequirement = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
 
-
-// calculation Part
+          // calculation Part
               
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -266,8 +306,14 @@ class ContractorController extends Controller
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
 
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 *  $Total_Area)/25)* ($glassReqirement/100);
 
-            break;
+              break;
           case 'Pillar':
              
               $plumbingRequirement = 100;
@@ -279,10 +325,13 @@ class ContractorController extends Controller
               $aggregatesRequirement = 50;
               $blocksRequirement = 100;
               $electricalRequirement = 100;
-
-
-// calculation Part
-             
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
               $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100);
@@ -291,9 +340,15 @@ class ContractorController extends Controller
                 $sand[$i] = ((1.2 * $Total_Area)/23.35) * ($sandRequirement/100);
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
 
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
-             break;
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
+              break;
           case 'Walling':
              
               $plumbingRequirement = 100;
@@ -305,7 +360,14 @@ class ContractorController extends Controller
                $aggregatesRequirement = 50;
               $blocksRequirement = 100;
               $electricalRequirement = 100;
-// calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+
+   // calculation Part
              
                $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -317,8 +379,13 @@ class ContractorController extends Controller
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
 
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
-
-            break;
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
+                break;
           case 'Roofing':
             
               $plumbingRequirement = 100;
@@ -330,8 +397,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 50;
               $blocksRequirement = 0;
               $electricalRequirement = 100;
-
- // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+// calculation Part
              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -342,9 +414,13 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
-
-
-            break;
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
+                  break;
           case 'Electrical':
               
               $plumbingRequirement = 100;
@@ -356,8 +432,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
               $electricalRequirement = 100;
-
- // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+   // calculation Part
              
                $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -368,14 +449,16 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
 
 
 
-
-
-
-
-            break;
+break;
           case 'Plumbing':
             
               $plumbingRequirement = 100;
@@ -387,13 +470,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
               $electricalRequirement = 0;
-
-
-
-
-
-
-              // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+  // calculation Part
              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -404,14 +487,14 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
 
-
-
-
-
-
-
-            break;
+ break;
           case 'Plastering':
              
               $plumbingRequirement = 0;
@@ -423,13 +506,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
               $electricalRequirement = 0;
-
-
-
-
-
-
-              // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+// calculation Part
              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -440,15 +523,15 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
 
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
 
-
-
-
-
-
-
-            break;
+break;
           case 'Flooring':
              
               $plumbingRequirement = 0;
@@ -460,15 +543,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
               $electricalRequirement = 0;
-
-
-
-
-
-
-
-
-              // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+ // calculation Part
              $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
               $flooring [$i] = ((0.8 *$Total_Area)/0.8) *($flooringRequirement/100);
@@ -478,14 +559,15 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
 
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
 
-
-
-
-
-
-            break;
+ break;
           case 'Carpentry':
              
               $plumbingRequirement = 0;
@@ -497,15 +579,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
               $electricalRequirement = 0;
-
-
-
-
-
-
-
-
-              // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+ // calculation Part
            
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -516,16 +596,14 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+                $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
               
-
-
-
-
-
-
-
-
-            // dd($plumbing[$i] );
+// dd($plumbing[$i] );
 
             break;
           case 'Painting':
@@ -538,16 +616,14 @@ class ContractorController extends Controller
               $sandRequirement = 0;
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
-
-              $electricalRequirement = 0;
-
-
-
-
-
-
-
-              // calculation Part
+              $woodRequirement  = 100;
+             $electricalRequirement = 0;
+              $bathroomRequirement = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 100;
+              $railsReqirement = 100;
+              $glassReqirement = 100;
+// calculation Part
               
                $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -558,16 +634,15 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+              $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
 
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
 
-
-
-
- 
-
-
-
-            break;
+break;
           case 'Fixtures':
               
               $plumbingRequirement = 0;
@@ -579,15 +654,13 @@ class ContractorController extends Controller
                $aggregatesRequirement = 0;
               $blocksRequirement = 0;
               $electricalRequirement = 0;
-
-
-
-
-
-
-
-
-              // calculation Part
+              $bathroomRequirement = 100;
+              $woodRequirement  = 100;
+              $paintsReqirement = 100;
+              $wardReqirement = 0;
+              $railsReqirement = 100;
+              $glassReqirement = 0;
+ // calculation Part
            
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -598,14 +671,15 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+              $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
 
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
 
-
-
-
-
-
-            break;
+ break;
           case 'Completion':
             
               $plumbingRequirement = 0;
@@ -618,12 +692,16 @@ class ContractorController extends Controller
               $blocksRequirement = 0;
 
               $electricalRequirement = 0;
+              $bathroomRequirement = 0;
+              $woodRequirement  = 0;
+              $paintsReqirement = 0;
+              $wardReqirement = 0;
+              $railsReqirement = 100;
+              $glassReqirement = 0;
 
-              
-             
 
 
-              // calculation Part
+ // calculation Part
              
               $plumbing[$i] = ((50*$Total_Area)/50) * ($plumbingRequirement/100);
               $doors[$i] = ((350 *$Total_Area )/350) *($doorsRequirement/100);
@@ -634,75 +712,150 @@ class ContractorController extends Controller
                 $aggregates[$i] = ((1.35 * $Total_Area)/23.35) *($aggregatesRequirement/100);
                 $blocks[$i] = ((4.167 * $Total_Area)/4.16) * ($blocksRequirement/100);
                 $electrical[$i] = ((84 * $Total_Area)/84)*($electricalRequirement/100);
+                $bathroom[$i] = ((70 * $Total_Area)/70) * ($bathroomRequirement/100);
+                $wood[$i] = ((120 * $Total_Area)/120) * ($woodRequirement/100);
+                $paints[$i] = ((55 * $Total_Area)/55) *($paintsReqirement/100);
+              $wardk[$i] = ((60 * $Total_Area)/60) *($wardReqirement/100);
 
+                $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
 
-
-
-
-
-
-
-
-            break;
+                $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
+ break;
           default:
             # code...
             break;
         }
-        if(count(1) > $i){
+        //dd("dsfhsdj");
+        if( count(1) > $i){
          
-          $totalPlumbing += $plumbing[$i];
-          $totaldoors += $doors[$i];
-           $totalsteel += $steel[$i];
-          $totalflooring +=  $flooring[$i];
+         $totalPlumbing += $plumbing[$i];
+         $totaldoors +=  $doors[$i];
+         $totalsteel += $steel[$i];
+         $totalflooring +=  $flooring[$i];
          $totalcement += $cement[$i];
          $totalsand += $sand[$i];
          $totalaggregates += $aggregates[$i]; 
          $totalblocks += $blocks[$i]; 
-         $totalelectrical += $electrical[$i];      
+         $totalelectrical += $electrical[$i]; 
+         $totalbathroom += $bathroom[$i]; 
+          $totalwood += $wood[$i];
+          $totalpaints += $paints[$i]; 
+           $totalward += $wardk[$i];
+           $totalrails += $rails[$i];
+           $totalglass += $glass[$i]; 
        }
         $i++;
       }
 
-
                $table .="<tr><td>Cement</td>
-                <td>".round($totalcement)." (Bags)</td>
-                <td>".(round ($cement1 = ($totalcement) * 270))."</td></tr>";
+                 <td>".number_format($totalcement)." (Bags)</td>
+                    
+                <td>" .number_format(($cement1 = ($totalcement) * 270))."</td>
+                     </tr>";
 
                  $table .="<tr><td>Steel</td>
-                <td>".round($totalsteel)." (Ton)</td>
-                <td>".(round($steel1 = ($totalsteel) * 50000))."</td></tr>";
+
+                 <td>".number_format($totalsteel)." (Ton)</td>
+                      
+                 <td>".(number_format($steel1 = ($totalsteel) * 50000))."</td>
+                      </tr>";
+
 
                  $table .="<tr><td>Sand</td>
-                <td>".round($totalsand)." (Ton)</td>
-                <td>".(round($sand1 = ($totalsand) * 950))."</td></tr>";
+                               
+                <td>".number_format($totalsand)." (Ton)</td>
+                 
+                 <td>".(number_format($sand1 = ($totalsand) * 950))."</td></tr>";
+                 
+               
 
                 $table .="<tr><td>Aggregates</td>
-                <td>".round($totalaggregates)." (Ton)</td>
-                <td>".(round($agr=($totalaggregates) * 750))."</td></tr>";
+                <td>".number_format($totalaggregates)." (Ton)</td>
+                   
+                <td>".(number_format($agr=($totalaggregates) * 750))."</td>
+               </tr>";
 
                   $table .="<tr><td>Electrical</td>
-                <td>".round($totalelectrical)." (Sqft)</td>
-                <td>".(round($ele=($totalelectrical) * 84))."</td></tr>";
+                <td>".number_format($totalelectrical)." (Sqft)</td>
+                    
+                <td>".(number_format($ele=($totalelectrical) * 84))."</td>
+                     
+                     
+                </tr>";
 
 
                 $table .="<tr><td>Blocks and Bricks</td>
-                <td>".round($totalblocks)." (No.)</td>
-                <td>".(round($bl=($totalblocks) * 28))."</td></tr>";
+                <td>".number_format($totalblocks)." (No.)</td>
+                     
+                <td>".(number_format($bl=($totalblocks) * 28))."</td>
+                     </tr>";
 
         
                $table .="<tr><td>Plumbing</td>
-                <td>".round($totalPlumbing)." (Sqft)</td>
-                <td>".(round($pl =($totalPlumbing) * 50))."</td></tr>";
+                <td>".number_format($totalPlumbing)." (Sqft)</td>
+                    
+                <td>".(number_format($pl =($totalPlumbing) * 50))."</td>
+                     </tr>";
 
                 $table .="<tr><td>Doors and windows</td>
-                <td>".round($totaldoors)." (Sqft)</td>
-                <td>".(round($door=($totaldoors) * 350))."</td></tr>";
+                <td>".number_format($totaldoors)." (Sqft)</td>
+                    
+                <td>".(number_format($door=($totaldoors) * 350))."</td>
+                    </tr>";
 
                 $table .="<tr><td>Flooring</td>
-                <td>".round($totalflooring)." (Sqft)</td>
-                <td>".(round($floor=($totalflooring) * 45))."</td></tr>";
+                <td>".number_format($totalflooring)." (Sqft)</td>
+                   
+                <td>".(number_format($floor=($totalflooring) * 45))."</td>
+                  
+                   </tr>";
+                   $table .="<tr><td>Bathroom and sanitary</td>
+                <td>".number_format($totalbathroom)." (Sqft)</td>
+                   
+                <td>".(number_format($bathroom=($totalbathroom) * 70))."</td>
+                  
+                   </tr>";
 
-     $total = round($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1);
+                    $table .="<tr><td>Wood and Adhesive</td>
+                <td>".number_format($totalwood)." (Sqft)</td>
+                   
+                <td>".(number_format($wood=($totalwood) * 120))."</td>
+                  
+                   </tr>";
+
+                    $table .="<tr><td>Paints</td>
+                <td>".number_format($totalpaints)." (Sqft)</td>
+                   
+                <td>".(number_format($paints=($totalpaints) * 120))."</td>
+                  
+                   </tr>";
+                     $table .="<tr><td>Wardrobes and kitchen </td>
+                <td>".number_format($totalward)." (Sqft)</td>
+                   
+                <td>".(number_format($ward=($totalward) * 60))."</td>
+                  
+                   </tr>";
+                     $table .="<tr><td>HandRails</td>
+                <td>".number_format($totalrails)." (Sqft)</td>
+                   
+                <td>".(number_format($rail=($totalrails) * 50))."</td>
+                  
+                   </tr>";
+          $table .="<tr><td>Glasses and facades</td>
+                <td>".number_format($totalglass)." (Sqft)</td>
+                   
+                <td>".(number_format($glas=($totalglass) * 50))."</td>
+                  
+                   </tr>";
+       
+
+       $total = number_format($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1+$bathroom+$wood+$paints+$ward+$rail+$glas);
+       $table .="<tr><th></th>
+                <th>Total Approximate Estimation Amount</th>
+                   
+                <th>".  $total ."</th>
+                  
+                   </tr>";
 
 
       return view('detailProjects',['projects'=>$projects,'table'=>$table,'total'=>$total]);
