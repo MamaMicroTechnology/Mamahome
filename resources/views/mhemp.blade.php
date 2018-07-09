@@ -104,8 +104,8 @@ input:checked + .slider:before {
   <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >
     <div style="overflow: hidden;" class="col-md-3 col-md-offset-1">
     <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
-      <p style="text-align: center;">{{ $user->name }}</p>
-      <small>{{ $user->email }}</small>
+     <p style="text-align: center;">{{ $user->name }}</p>
+     <p style="text-align: center;">{{ $user->office_phone }}</p>
     </center>
     @if($loop->iteration % 3==0)
         </div>
@@ -142,7 +142,8 @@ input:checked + .slider:before {
     p = ul.getElementsByTagName("a");
     for (i = 0; i < p.length; i++) {
         a = p[i].getElementsByTagName("p")[0];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        b = p[i].getElementsByTagName("p")[1];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
             p[i].style.display = "";
         } else {
             p[i].style.display = "none";
