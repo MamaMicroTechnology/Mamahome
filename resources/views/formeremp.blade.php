@@ -79,7 +79,7 @@ input:checked + .slider:before {
   </div>
   
   <div class="col-md-4 pull-right">
-            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." >
+            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names and Phone Numbers" >
   </div>
 </div>
 <br>
