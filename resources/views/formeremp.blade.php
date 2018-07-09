@@ -59,8 +59,8 @@ input:checked + .slider:before {
 
 }
 .dot {
-    height: 10px;
-    width: 10px;
+    height: 9px;
+    width: 9px;
     background-color:green;
     border-radius: 50%;
     display: inline-block;
@@ -74,8 +74,8 @@ input:checked + .slider:before {
    
    
     <img src="http://mamahome360.com/public/android-icon-36x36.png" >
-    MAMA HOME PVT LTD
-     </p> <span class="dot"></span>&nbsp;&nbsp;&nbsp;{{ $count }} employees</p>
+    MAMA HOME PVT LTD &nbsp;&nbsp;&nbsp;
+    <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
   </div>
   
   <div class="col-md-4 pull-right">
