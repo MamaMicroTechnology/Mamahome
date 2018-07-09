@@ -62,8 +62,8 @@ input:checked + .slider:before {
     border: 1px solid green ;
 }*/
 .dot {
-    height: 10px;
-    width: 10px;
+    height: 9px;
+    width: 9px;
     background-color:green;
     border-radius: 50%;
     display: inline-block;
