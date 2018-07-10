@@ -208,9 +208,13 @@ class marketingController extends Controller
     public function viewInvoices( request $request )
     {
          $cat = Category::all();
-         if($request->cat)
-        $invoices = MhInvoice::where('item',$request->cat)->get();
-    
-        return view('marketing.viewInvoices',['invoices'=>$invoices,'cat'=>$cat]);
+        $invoice =count(MhInvoice::all());
+
+        
+        $inc = MhInvoice::where('item',$request->cat)->get();
+        $total = count($inc);
+         
+   
+        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'total'=>$total]);
     }
 }
