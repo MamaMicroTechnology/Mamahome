@@ -343,16 +343,6 @@
             @endif
         </div>
     </div>
-   <!--  <div class="panel panel-default"  style="border-color: green;">
-        <div class="panel-heading"  style="background-color: green;color:white;">Remark</div>
-        <div class="panel-body">
-          <form method="POST" action="{{ URL::to('/') }}/amedit/save">
-                {{ csrf_field() }}
-           <textarea style="resize: none;" class="form-control" name="remark" placeholder="Remark.." rows="3" max-row="5">{{ $employeeDetails != NULL? $employeeDetails->remark : '' }}</textarea>
-           <input type="submit" class="btn btn-success form-control" value="Save">
-         </form>
-        </div>
-    </div> -->
 </div>
 <div id="myModal" class="imgModal">
 
