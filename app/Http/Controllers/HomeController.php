@@ -1417,39 +1417,37 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $projectdetails = ProjectDetails::where('project_id',$id)->first();
         return view('viewDetails',['projectdetails'=>$projectdetails]);
     }
-    public function getRoads()
+  public function getRoads(request $request)
     {
 
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-        // $roads = ProjectDetails::where('sub_ward_id',$assignment)->select('road_name')->groupby('road_name')->paginate(10);
-
-        // $roadname = ProjectDetails::where('sub_ward_id',$assignment)->groupby('road_name')->pluck('road_name');
-      
-         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
-       
-        // $projectcount = array();
-
-        // foreach($roadname as $roadname){
-            $genuine = ProjectDetails::where('quality','Genuine')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->paginate(10);
-                                                  
-            $null = ProjectDetails::where('quality','Unverified')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->paginate(10);
-            $fake = ProjectDetails::where('quality','Fake')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->paginate(10);
-
-            // $projectCount = $null + $genuine; + $fake;
-
-        // }
-
-
-        return view('requirementsroad',['todays'=>$todays,'genuine'=>$genuine,'null'=>$null,'fake'=>$fake]);
-
+        $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
         
+        $projectCount = array();
+        $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
 
+        foreach($roads as $road){
+            $genuine = ProjectDetails::where('road_name',$road)
+                                                    ->where('quality','Genuine')
+                                                    ->where('sub_ward_id',$assignment)
+                                                    ->count();
+            $null = ProjectDetails::where('road_name',$road)
+                                                    ->where('quality','Unverified')
+                                                    ->where('sub_ward_id',$assignment)
+                                                    ->count();
+          $ro = ProjectDetails::where('road_name',$road)->pluck('project_id');
+          $ros = ProjectDetails::where('project_id',$ro)->pluck('created_at');
+          //dd($ros);
+
+
+                                                
+
+            $projectCount[$road] = $genuine + $null;
+
+        }
+  
+
+        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount,'ros'=>$ros]);
     }
     public function viewProjectList(Request $request)
     {
@@ -1707,7 +1705,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                     ->count();
             $projectcount[$roadw] = $null + $genuine;
         }
-        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadsname]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname]);
     }
     public function projectRequirement(Request $request)
     {
