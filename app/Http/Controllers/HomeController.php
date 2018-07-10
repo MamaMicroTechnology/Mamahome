@@ -4754,7 +4754,9 @@ function enquirystore(request $request){
     {
         if($request->category){
             $conversion = Conversion::where('category',$request->category)->first();
+            $utilizations = Utilization::where('category',$request->category)->first();
             View::share('conversion', $conversion);
+            View::share('utilization',$utilizations);
         }else{
             View::share('conversion',null);
         }
@@ -5129,6 +5131,102 @@ function enquirystore(request $request){
                 // $details->size         = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Closed%')->sum('project_size');
                 // $details->save();
             }
+            // planning
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Planning";
+            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
+            $details->save();
+            
+            // digging
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Digging";
+            $details->size        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Digging%')->sum('project_size');
+            $details->save();
+
+            // foundation
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Foundation";
+            $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
+            $details->save();
+
+            // pillars
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Pillars";
+            $details->size        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Pillars%')->sum('project_size');
+            $details->save();
+            
+            // walls
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Walls";
+            $details->size          = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Walls%')->sum('project_size');
+            $details->save();
+            
+            
+            
+            // roofing
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Roofing";
+            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->sum('project_size');
+            $details->save();
+            
+            $ele                = ProjectDetails::where('project_status','LIKE','Electrical%')->pluck('project_id');
+            $plum               = ProjectDetails::where('project_status','LIKE','Plumbing%')->pluck('project_id');
+            $ele                = $ele->merge($plum);
+
+            // electrical & plumbing
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Electrical & Plumbing";
+            $details->size            = ProjectDetails::whereIn('project_id',$ele)->whereIn('quality',$qualityCheck)->sum('project_size');
+            $details->save();
+
+            // plastering
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Plastering";
+            $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plastering%')->sum('project_size');
+            $details->save();
+            
+            // flooring
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Flooring";
+            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Flooring%')->sum('project_size');
+            $details->save();
+
+            // carpentry
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Carpentry";
+            $details->size      = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Carpentry%')->sum('project_size');
+            $details->save();
+
+            // painting
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Painting";
+            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Paintings%')->sum('project_size');
+            $details->save();
+
+            // fixture
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Fixture";
+            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Fixtures%')->sum('project_size');
+            $details->save();
+
+            // completion
+            $details = new Detail;
+            $details->ward_id = "all";
+            $details->stage = "Completion";
+            $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Completion%')->sum('project_size');
+            $details->save();
         }
         $check2 = Projection::where('category',$request->category)->first();
         if($check2 == null){
@@ -5138,6 +5236,8 @@ function enquirystore(request $request){
             $projection->business_cycle = $request->businessCycle;
             $projection->target = $request->monthlyTarget;
             $projection->transactional_profit = $request->transactionalProfit;
+            $projection->from_date = $request->from;
+            $projection->to_date = $request->to;
             $projection->save();
         }
         return back();
@@ -5148,42 +5248,120 @@ function enquirystore(request $request){
        $categories = Utilization::all();
        return view('projection.projectionFirst',['categories'=>$categories,'projections'=>$projections]);
    }
-   public function getLockedStage(Request $request){
-       $category = Projection::where('category',$request->category)->first();
-       $conversion = Conversion::where('category',$request->category)->first();
-       $wards = Ward::all();
-       $date = null;
-       $utilizations = Utilization::where('category',$request->category)->first()->toArray();
-       if($request->ward){
-           if($request->ward == "all"){
-               $projection = new Collection;
-                $t = Detail::where('details.ward_id',1)
+    public function getLockedStage(Request $request){
+        $categories = Projection::all();
+        $wards = Ward::all();
+        $text = "<br><br><br><br><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#reset'>Master Reset</button><br><br><table class='table table-hover' border=1>";
+        $totalRequirement = 0;
+        $totalPrice = 0;
+        $totalMonthly = 0;
+        $totalMonthlyPrice = 0;
+        $totalTP = 0;
+        $totalTarget = 0;
+        if($request->ward){
+            $projections = Detail::where('details.ward_id',$request->ward)
                             ->leftJoin('wards','wards.id','details.ward_id')
-                            ->select('details.id','details.ward_id','details.stage','details.created_at','details.updated_at','wards.ward_name')
+                            ->select('details.*','wards.ward_name')
                             ->get();
-               $detail = array();                
-                foreach($t as $project){
-                    $detail['id'] = $project->id;
-                    $detail['ward_id'] = $project->ward_id;
-                    $detail['stage'] = $project->stage;
-                    $detail['size'] = Detail::where('stage',$project->stage)->sum('size');
-                    $detail['created_at'] = date('Y-m-d H:i:s',strtotime($project->created_at));
-                    $detail['updated_at'] = date('Y-m-d H:i:s',strtotime($project->updated_at));
-                    $detail['ward_name'] = $project->ward_name;
-                    $projection = $projection->push($detail);
+            if($request->category == 'all'){
+                $category = Projection::all()->toArray();
+                foreach($category as $category){
+                    $totalCategory = 0;
+                    $totalCategoryPrice = 0;
+                    $conversion = Conversion::where('category',$category['category'])->first();
+                    $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
+                    $text .= "<tr><th colspan=3>".ucwords($category['category'])."</th></tr>";
+                    foreach($projections as $projection){
+                        if($projection['stage'] == "Electrical & Plumbing")
+                            $stage = "electrical";
+                        else
+                            $stage = $projection['stage'];
+                        $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
+                        $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
+                    }
+                    $text .= "<tr><th></th><th>Total ".$conversion['unit']."</th><th>Amount</th></tr>";
+                    $totalRequirement += $totalCategory;
+                    $totalPrice += $totalCategoryPrice;
+                    $text .= "<tr>
+                    <td>Total Requirement</td>
+                    <td style='text-align:right'>".number_format($totalCategory)."</td>
+                    <td style='text-align:right'>".number_format($totalCategoryPrice)."</td>
+                    </tr>
+                    <tr>
+                    <td>Monthly Requirement</td>
+                    <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
+                    <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>
+                    </tr>";
+                    $totalMonthly += $totalCategory/$category['business_cycle'];
+                    $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
+                    
+                    $totalMonthly/100*$category['target'];
+                    $totalTarget += $amount = $monthlyPrice/100*$category['target'];
+                    $totalTP += $tp = $amount/100*$category['transactional_profit'];
+                    $text .= "<tr><td colspan=3>".
+                                "Business Cycle : ".$category['business_cycle'].
+                                "<br>Amount : ".number_format($amount)." (".$category['target']."%)".
+                                "<br>Transactional Profit : ".number_format($tp)." (".$category['transactional_profit']."%)".
+                            "<br><br></td></tr>";
                 }
-                $total = Detail::sum('size');
-                $date = date('d-M-Y',strtotime($category->created_at));
-           }else{
-               $projection = Detail::where('details.ward_id',$request->ward)
-                               ->leftJoin('wards','wards.id','details.ward_id')
-                               ->select('details.*','wards.ward_name')
-                               ->get();
-               $total = Detail::where('ward_id',$request->ward)->sum('size');
-               $date = date('d-M-Y',strtotime($category->created_at));
+                $text .= "<tr><th colspan=3>Total</th></tr>
+                    <td>Total Requirement</td>
+                    <td style='text-align:right'>".number_format($totalRequirement)."</td>
+                    <td style='text-align:right'>".number_format($totalPrice)."</td>
+                    </tr>
+                    <tr>
+                    <td>Monthly Requirement</td>
+                    <td style='text-align:right'>".number_format($totalMonthly)."</td>
+                    <td style='text-align:right'>".number_format($totalMonthlyPrice)."</td>
+                    </tr>
+                    <tr>
+                    <td colspan='3'></td>
+                    </tr>
+                    <tr>
+                    <th>Total Amount</th>
+                    <th></th>
+                    <th style='text-align:right'>".number_format($totalTarget)."</th>
+                    </tr>
+                    <tr>
+                    <th>Total Transactional Profit</th>
+                    <th></th>
+                    <th style='text-align:right'>".number_format($totalTP)."</th>
+                    </tr>
+                    </table>";
+                return view('projection.projectionStage',['category'=>$category,'wards'=>$wards,'categories'=>$categories,'text'=>$text]);
+            }else{
+                $category = Projection::where('category',$request->category)->first();
+                $conversion = Conversion::where('category',$request->category)->first();
+                $utilizations = Utilization::where('category',$request->category)->first()->toArray();
             }
-            return view('projection.projectionStage',['date'=>$date,'projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
+            $total = Detail::where('ward_id',$request->ward)->sum('size');
+            return view('projection.projectionStage',['projections'=>$projections,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations,'categories'=>$categories]);
         }
-       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category,'date'=>$date]);
-   }
+       return view('projection.projectionStage',['wards'=>$wards,'categories'=>$categories]);
+    }
+    public function getReset(Request $request)
+    {
+        if($request->category == "all"){
+            Projection::truncate();
+            Detail::truncate();
+        }else{
+            Projection::where('category',$request->category)->delete();
+        }
+        return redirect('/stage');
+    }
+    public function getTotal()
+    {
+        $categories = Projection::all();
+        foreach($categories as $category){
+            $projections = Detail::where('ward_id','all')->get();
+            $conversion = Conversion::where('category',$category->category)->first();
+            $utilizations = Utilization::where('category',$category->category)->toArray();
+            echo($category->category."<br>");
+            foreach($projections as $projection){
+                echo(number_format(($projection->size * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations->stage)));
+                echo($projection->stage." - ".$projection->size."<br>");
+            }
+            echo("<br>");
+        }
+    }
 }

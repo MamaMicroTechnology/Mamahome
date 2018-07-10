@@ -470,8 +470,8 @@ div#calendar{
     <a href="{{ URL::to('/getprojectsize') }}">Listed Project & Sizes</a>
     <a href="#" data-toggle="collapse" data-target="#planning">Sales Projection & Planning &#x21F2;</a>
         <div id="planning" class="collapse">
-            <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Sales Projection</a>
-            <a href="{{ URL::to('/planning') }}">&nbsp;&nbsp;&nbsp; - Planning</a>
+            <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Projection</a>
+            <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Category Wise Planning</a>
         </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>

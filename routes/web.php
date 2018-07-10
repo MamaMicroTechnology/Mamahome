@@ -503,3 +503,5 @@ Route::post('/toggle-approve1',"HomeController@approval1");
 Route::get('/sendSMS', 'HomeController@sendSMS');
 Route::get('/planning','HomeController@getLockedProjection');
 Route::get('/stage','HomeController@getLockedStage');
+Route::get('/reset','HomeController@getReset');
+Route::get('/total','HomeController@getTotal');
