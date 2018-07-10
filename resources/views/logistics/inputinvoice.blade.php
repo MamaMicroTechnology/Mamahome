@@ -9,7 +9,7 @@
 <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <table class="table table-hover" border=1>
+                <table class="table table-hover" border=1 id="POITable">
                     <tr>
                         <th colspan="4" style="background-color:rgb(191, 191, 63)">
                             <center>GST INVOICE<br>
@@ -102,6 +102,7 @@
                         <input type="hidden" name="product" value="{{ $products[$i] }}">
                         <td><input type="text" required name="quantity" placeholder="Quantity" id="quantity{{ $i }}" class="form-control"></td>
                         <td><input type="text" required name="price" placeholder="Price" id="price{{ $i }}" class="form-control"></td>
+                        
                     </tr>
                     <!-- <tr>
                         <td colspan=3>
@@ -192,4 +193,5 @@ var r = confirm("Do you want to Add invoice");
 
    
 }
+
 </script>
