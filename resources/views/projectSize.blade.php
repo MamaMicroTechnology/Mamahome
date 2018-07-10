@@ -184,7 +184,6 @@
                         <td>Electrical &amp; Plumbing</td>
                         <td class="text-center">{{ $Cenp }}</td>
                         <td>
-                            
                             {{ $enp }}
                         </td>
                     </tr>

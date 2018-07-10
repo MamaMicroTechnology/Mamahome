@@ -97,5 +97,5 @@
       divs[i].style.fontSize = size+'px';
     }
   }
-</script>
+</script> -->
 @endsection

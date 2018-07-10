@@ -7,6 +7,7 @@
       <table class="table">
         <thead>
           <th>Project Name</th>
+          <th>project Id</th>
           <th>Address</th>
           <th>Status</th>
           <th>Procurement Name</th>
@@ -16,9 +17,12 @@
         </thead>
         <tbody>
           @foreach($projectlist as $project)
-          @if($project->quality == 'Unverified' || $project->quality == 'Genuine')
+          @if($project->quality == 'Unverified' || $project->quality == 'Genuine' || $project->quality == 'Fake')
             <tr>
               <td>{{ $project->project_name }}</td>
+              <td>
+                <a target="_none" href="{{ URL::to('/') }}/ameditProject?projectId={{ $project->project_id }}">{{ $project->project_id }}</a>
+              </td>
               <td>
                 <a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}">{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}</a>
               </td>
@@ -38,6 +42,7 @@
           @endforeach
         </tbody>
       </table>
+      {{ $projectlist->links() }}
     </div>
 </div>
 @endsection

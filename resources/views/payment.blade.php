@@ -29,7 +29,7 @@
 					   @foreach($payment as $pay)
 					    <tr>
                             <td style="text-align:center">
-                                 <a href="#" onclick="myFunction('{{ $pay->order_id }}')" id="voice">{{ $pay->order_id }}</a>
+                                <a href="#" onclick="myFunction('{{ $pay->order_id }}')" id="voice">{{ $pay->order_id }}</a>
                             </td>
 					        <td style="text-align:center">{{ $pay->project_id}}</td>
 					        <td style="text-align:center">{{ $pay->c_name }}</td>
@@ -68,4 +68,8 @@ var r = confirm("Do you want to edit invoice");
    
 }
 </script>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> master

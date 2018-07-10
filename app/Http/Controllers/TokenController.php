@@ -337,6 +337,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
+            $projectdetails->user_id = $request->user_id;
             
            
             $projectdetails->remarks = $request->remarks;
@@ -418,12 +419,34 @@ public function getproject(request $request){
       }else{
          return response()->json(['message'=>'No enquires Found']);
       }
+<<<<<<< HEAD
+  } 
+  public function getsingleProject(Request $request)
+    {
+        $project = ProjectDetails::where('project_details.project_id',$request->project_id)
+                    ->leftJoin('room_types','project_details.project_id','room_types.project_id')
+                    ->select('room_types.*')
+                    ->get();
+       
+        return response()->json(['projectdetails'=>$project]);
+    }  
+      
+
+      public function getbrands(Request $request){
+=======
   }   
-   public function getbrands(Request $request){
+   public function getbrands(){
+>>>>>>> master
         $category = Category::all();
         $brand = brand::all();
         $sub_cat = SubCategory::all();   
 
+<<<<<<< HEAD
+        return response()->json(['category'=>$category,'brand '=>$brand,'$sub_cat'=>$sub_cat]);    
+      } 
+=======
         return response()->json(['category'=>$category,'brand'=>$brand,'sub_cat'=>$sub_cat]);    
       }         
+>>>>>>> master
 }
+           
