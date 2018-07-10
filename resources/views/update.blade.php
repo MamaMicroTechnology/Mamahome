@@ -165,6 +165,21 @@
                                  </td>
                                </tr>
                                <tr>
+                                 <td>Interested in Premium Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="premium1" {{ $projectdetails->interested_in_premium == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="premium">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="premium2" {{ $projectdetails->interested_in_premium == "No" ? 'checked' : '' }} required value="No" type="radio" name="premium">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="premium3" {{ $projectdetails->interested_in_premium == "None" ? 'checked' : '' }} required value="None" type="radio" name="premium">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
                                  <td>Type of Contract ? </td>
                                   <td>:</td>
                                   <td>

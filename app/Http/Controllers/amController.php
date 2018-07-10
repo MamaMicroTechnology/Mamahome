@@ -648,8 +648,8 @@ class amController extends Controller
     }
     public function deleteassets(Request $request)
     {
-        MamahomeAsset::where('id',$request->Id)->delete();
-        return back();
+        MamahomeAsset::where('id',$request->id)->delete();
+        return response()->json('Deleted');
     }
     public function deleteCertificate(Request $request)
     {
