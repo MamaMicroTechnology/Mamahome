@@ -58,8 +58,20 @@
                             <td>{{ $details->construction_type }}</td>
                         </tr>
                         <tr>
-                            <td><b>Interested in RMC</b></td>
+                            <td><b>Interested in RMC?</b></td>
                             <td>{{ $details->interested_in_rmc }}</td>
+                        </tr>
+                         <tr>
+                            <td><b>Interested in UPVC Doors and Windows?</b></td>
+                            <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                         <tr>
+                            <td><b>Interested in Home Automation?</b></td>
+                            <td>{{ $details->automation }}</td>
+                        </tr>
+                         <tr>
+                            <td><b>Interested in Premium Products?</b></td>
+                            <td>{{ $details->interested_in_premium }}</td>
                         </tr>
                         <tr>
                             <td><b>Status</b></td>
@@ -70,9 +82,17 @@
                             <td><b>Project Type</b></td>
                             <td>B{{ $details->basement }} + G + {{ $details->ground }} = {{ $details->basement + $details->ground + 1 }}</td>
                         </tr>
-                            <tr>
+                         <tr>
                             <td><b>Project Size</b></td>
                             <td>{{ $details->project_size }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Plot type</b></td>
+                            <td>L({{ $details->length }}) * B ({{ $details->breadth }})</td>
+                        </tr>
+                        <tr>
+                            <td><b>Plot Size</b></td>
+                            <td>{{ $details->plotsize }}</td>
                         </tr>
                         <!-- <tr>
                             <td><b>Road</b></td>
