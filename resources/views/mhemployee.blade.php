@@ -41,17 +41,7 @@
             </div>
         </div>
         <div class="col-md-10" id="disp">
-                       <!-- <div class="panel panel-default" style="border-color:green">
-                      <div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Total employess 
-                       <a class="pull-right btn btn-xs btn-danger" href="{{url()->previous()}}">Back</a>
-
-                      </div>
-
-                      <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
-                        fghjkl;
-                              </div>
-                          </div> -->
-
+                       
                           <br><br><br><br>
                            <img src="http://mamahome360.com/public/android-icon-36x36.png">
                            MAMA HOME PVT LTD&nbsp;&nbsp;

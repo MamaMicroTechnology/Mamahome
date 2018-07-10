@@ -154,13 +154,13 @@
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
-                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                      <label><input id="home1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                      <label><input id="home2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                      <label><input id="home3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
                                     </div>
                                  </td>
                                </tr>
@@ -800,6 +800,14 @@ function sum(){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in taking loan or not");
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in purchasing UPVC doors and windows");
+          }else if(home1.checked == false && home2.checked == false && home3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in Home Automation");
+          }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in purchasing premium product");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){

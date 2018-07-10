@@ -123,13 +123,13 @@
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input required value="Yes" id="loan1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
+                                      <label><input required value="Yes" id="home1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                   
-                                      <label><input required value="No" id="loan2" type="radio" name="automation"><span>&nbsp;</span>No</label>
+                                      <label><input required value="No" id="home2" type="radio" name="automation"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
                                 
-                                      <label><input required value="None" id="loan3" type="radio" name="automation"><span>&nbsp;</span>None</label>
+                                      <label><input required value="None" id="home3" type="radio" name="automation"><span>&nbsp;</span>None</label>
                                    
                                  </td>
                                </tr>
@@ -284,7 +284,15 @@
                                       </div>
                                     </div>
                                     </td>
+                                   
                                </tr>
+                               <tr>
+                                    <td>Recommended project Size is : </td>
+                                     <td>:</td>
+                                    <td>
+                                      <p id= "totalofsize"></p>
+                                    </td>
+                                </tr>
                                <tr>
                                    <td>Project Size (Approx.)</td>
                                    <td>:</td>
@@ -667,12 +675,17 @@
       if(!isNaN(breadth) && !isNaN(length)){
         
         var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum          = length*breadth;
-        Size    += sum;
+        sum1          = length*breadth;
+        Size    += sum1;
+        var total = sum * sum1;
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
         else
           document.getElementById("totalsize").innerHTML = '';
+         if(document.getElementById("totalofsize").innerHTML != null)
+           document.getElementById("totalofsize").innerHTML = total;
+          else
+          document.getElementById("totalofsize").innerHTML = '';
       }
     }
     return false;
@@ -776,6 +789,8 @@
             window.alert("Please tell us whether the customer is interested in taking loan or not");
           }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
             window.alert("Please tell us whether the customer is interested in purchasing UPVC doors and windows");
+          }else if(home1.checked == false && home2.checked == false && home3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in Home Automation");
           }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
             window.alert("Please tell us whether the customer is interested in purchasing premium product");
           }else if(document.getElementById("contract").value == ""){
