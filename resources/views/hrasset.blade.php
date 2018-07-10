@@ -53,7 +53,7 @@
         <td>{{ $mh->remark}}</td>
         <td style="width:15%;">
             <a href="{{ URL::to('/') }}/editasset?Id={{ $mh->id }}" class="btn btn-xs btn-success" >Edit</a>
-            <a href="{{ URL::to('/') }}/deleteassets?Id={{ $mh->id }}" class="btn btn-xs btn-danger">Delete</a>
+            <a onclick="deleteassets('{{ $mh->id }}')" class="btn btn-xs btn-danger">Delete</a>
         </td>
         <td>{{ $mh->status }}</td>
     </tr>
@@ -141,3 +141,23 @@
 
   </div>
 </div>
+<script type="text/javascript">
+    function deleteassets(arg)
+    {
+        var ans = confirm('Are You Sure To Delete This Asset ? Note: This Asset cannot be Assigned');
+        if(ans)
+        {
+            $.ajax({
+               type:'GET',
+               url: "{{URL::to('/')}}/deleteassets",
+               data: {id : arg},
+               async: false,
+               success: function(response)
+               {
+                   alert(response);
+               }
+            });
+        }
+     }
+
+</script>

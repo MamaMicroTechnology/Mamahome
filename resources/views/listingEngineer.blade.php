@@ -133,6 +133,21 @@
                                    
                                  </td>
                                </tr>
+                                <tr>
+                                 <td>Interested in Premium Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input required value="Yes" id="premium1" type="radio" name="premium"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="premium2" type="radio" name="premium"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="premium3" type="radio" name="premium"><span>&nbsp;</span>None</label>
+                                   
+                                 </td>
+                               </tr>
                                <tr>
                                 <td>Type of Contract ? </td>
                                 <td>:</td>
@@ -760,7 +775,9 @@
           }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
           }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
-            window.alert("Please tell us whether the customer is interested in purchasing doors and windows");
+            window.alert("Please tell us whether the customer is interested in purchasing UPVC doors and windows");
+          }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in purchasing premium product");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){

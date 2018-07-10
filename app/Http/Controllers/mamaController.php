@@ -551,6 +551,7 @@ class mamaController extends Controller
             $projectdetails->interested_in_rmc = $request->rmcinterest;
             $projectdetails->interested_in_loan = $request->loaninterest;
             $projectdetails->interested_in_doorsandwindows = $request->dandwinterest;
+            $projectdetails->interested_in_premium = $request->premium;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
             $projectdetails->other_approvals = $otherApprovals;
@@ -864,6 +865,7 @@ class mamaController extends Controller
             'interested_in_rmc'=>$request->rmcinterest,
             'interested_in_loan'=>$request->loaninterest,
             'interested_in_doorsandwindows'=>$request->dandwinterest,
+             'interested_in_premium'=>$request->premium,
             'construction_type'=>$type,
             'follow_up_date' =>$request->follow_up_date,
             'followup' => $request->follow,
