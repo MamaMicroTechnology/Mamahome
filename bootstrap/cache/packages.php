@@ -31,4 +31,11 @@
       'Nexmo' => 'Nexmo\\Laravel\\Facade\\Nexmo',
     ),
   ),
+  'nesbot/carbon' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Carbon\\Laravel\\ServiceProvider',
+    ),
+  ),
 );

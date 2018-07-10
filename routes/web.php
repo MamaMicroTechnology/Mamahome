@@ -141,6 +141,7 @@ Route::post('/updateCategory','marketingController@updateCategory');
 Route::post('/updateSubCategory','marketingController@updateSubCategory');
 Route::post('/editEnquiry','mamaController@editEnquiry');
 Route::post('/editManualEnquiry','mamaController@editManualEnquiry');
+Route::get('/assignListSlots','HomeController@assignListSlots');
 
 // Sales Engineer
 Route::get('/date_wise_project','HomeController@datewise');
@@ -262,12 +263,12 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/edit/uploadCertificates','mamaController@uploadCertificates');
 });
 
+
 // Team Leader
 Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assignDailySlots','HomeController@getSalesTL');
     Route::get('/assigndate','HomeController@assigndate');
     Route::get('/tlenquirysheet','HomeController@enquirysheet');
-    Route::get('/assignListSlots','HomeController@assignListSlots');
     Route::get('/teamLead','HomeController@teamLeadHome');
     Route::get('/tltraining','HomeController@tltraining');
     Route::get('/assign_project','HomeController@projectwise');
@@ -406,6 +407,7 @@ Route::group(['middleware'=>['asst']],function(){
     Route::get('/getserial','amController@getserial');
     Route::get('/getdesc','amController@getdesc');
     Route::post('/deleteassetsimcard','amController@deleteassetsim');
+    Route::post('/deleteAsset','amController@deleteAsset');
     Route::get('/deleteassets','amController@deleteassets');
     Route::post('/deletesim','amController@deletesim');
     Route::post('/savesiminfo','amController@savesiminfo');
