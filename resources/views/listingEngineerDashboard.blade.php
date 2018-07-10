@@ -9,6 +9,7 @@
 
 <div class="container">
     <div class="row">
+   
       @if($subwards)
       <div class="col-md-3"> 
          You are in {{$subwards->sub_ward_name}}<br><br>
@@ -16,10 +17,14 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
-         
-         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
+        
+          @if( $totalprojects !=  $update)
+           <span class="">  <a  class="btn btn-primary form-control" onclick="vali({{ $bal }})" >Completed</a></span>
+            @else
+          <span class="">  <a href="{{ URL::to('/')}}/salescompleted" class="btn btn-primary form-control">Completed</a></span>
+        @endif
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
@@ -27,6 +32,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br> 
+         
         @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
@@ -36,6 +42,7 @@
         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
           @endif
+          <br><br>
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
                 <!-- <tr>
@@ -43,7 +50,7 @@
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
                 </tr> -->
                 <tr>
-                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed in previous month</label></td>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed in Last 30Days</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $lastmonth}}</strong></td>
                 </tr>
                 <tr>  
@@ -61,7 +68,7 @@
           </tbody>
         </table>
          @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
-         <table  class="table table-responsive table-striped table-hover" style="border: 2px  solid gray;">
+        <!--  <table  class="table table-responsive table-striped table-hover" style="border: 2px  solid gray;">
           <tbody>
             <thead>
               <th style="text-align: center;" colspan="2">Total Listings</th>
@@ -75,10 +82,10 @@
               </tr>
             @endforeach
           </tbody>
-        </table>
+        </table> -->
         @endif
 
-         @if(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+         
         <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
                 <!-- <tr>
@@ -101,33 +108,26 @@
                   <td style="border: 1px solid gray;"><label>Fake Projects</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
                 </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Updated Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $update  }}<strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>remaining Projects</label></td>
+                  <td style="border: 1px solid gray;">{{ $bal }}<strong><strong></td>
+                </tr>
           </tbody>
         </table>
-        <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
-          <tbody>
-            <thead>
-              <th style="text-align: center;" colspan="2">Total Listings</th>
-             
-            </thead>
-         
-            @foreach($accusers as $user)
-              <tr>
-                  <td style="border: 1px solid gray;"><label>{{ $user->name }}</label></td>
-                  <td style="border: 1px solid gray;"><strong>{{ $totalaccount[$user->id] }}</strong></label></td>
-              </tr>
-            @endforeach
-          </tbody>
-        </table>
+        
         @endif
        </div>
-        <div class="pull-right col-lg-8">
-          <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">
-        </div>
-       @else
-       No wards assigned to you yet
-       @endif
+        <div class="col-md-8"><br><br>
+     
+      <div id="map" style="width:1000px;height:500px"></div>
+      </div>
+
     </div>
-    <div class="row hidden">
+    <!-- <div class="row hidden">
       <div class="col-md-4 col-md-offset-4">
         <table class="table table-hover" border=1>
         <center><label for="Points">Your Points For Today</label></center>
@@ -149,15 +149,10 @@
           </tbody>
         </table>
         </div>
-    </div>
+    </div> -->
+   
+     
 </div>
-
-<br><br>
-
-<div class="col-md-8 col-md-offset-2" style="border-style: ridge;">
-<div id="map" style="width:100%;height:400px"></div>
-</div>
-
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>
 @if(count($projects) == 0)
 <script type="text/javascript">
@@ -283,5 +278,14 @@
 
 </script>
 @endif
+<script>
+  function vali(arg){
+
+    alert("Please Update The Remaing Projects:" +arg);
+
+  }
+
+
+</script>
 @endsection
 

@@ -5,6 +5,16 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Invoices</div>
         <div class="panel-body">
+ <center>  <form action="{{ URL::to('/') }}/viewInvoices" method="get">
+          <select class="form-control" name="cat" onchange="form.submit()" style="width:30%;">
+              <option value="select">----Select category----</option>
+              @foreach($cat as $cate)
+              <option value="{{ $cate->category_name }}">{{ $cate->category_name }}</option>
+              @endforeach
+
+          </select>
+</form></center>
+
         <table class="table table-hover">
             <thead>
                 <th>Invoice No</th>

@@ -762,7 +762,7 @@ class mamaController extends Controller
                 $points->save();
             }
         }
-              $size = $length * $breadth;
+              
 
         $basement = $request->basement;
         $ground = $request->ground;

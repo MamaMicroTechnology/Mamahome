@@ -187,11 +187,12 @@ class marketingController extends Controller
         $mhinvoice->save();
         return back();
     }
-    public function viewInvoices()
+    public function viewInvoices( request $request )
     {
-        $invoices = MhInvoice::all();
-       
-
-        return view('marketing.viewInvoices',['invoices'=>$invoices]);
+         $cat = Category::all();
+         if($request->cat)
+        $invoices = MhInvoice::where('item',$request->cat)->get();
+    
+        return view('marketing.viewInvoices',['invoices'=>$invoices,'cat'=>$cat]);
     }
 }

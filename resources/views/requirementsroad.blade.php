@@ -10,14 +10,18 @@
 				<li class="list-group-item">
 					<a href="{{ URL::to('/') }}/projectrequirement?road={{ $todays }}&today=today">Today's Listing ({{ $todays }} projects)</a>
 				</li>
-				@foreach($roads as $road)
 				
-				<li class="list-group-item"><a href="{{ URL::to('/') }}/projectlist?road={{ $road->road_name }}">{{ $road->road_name }} </a></li>
-				
-				@endforeach
 			</ul>
-			{{ $roads->links() }}
+			 <form method="GET" action="{{ URL::to('/') }}/projectrequirement">
+			<select name="quality" class="form-control" onchange="form.submit()" >
+			    <option value="">-----Select----</option>
+				<option value="Genuine">Genuine</option>
+					<option value="Unverified">Unverified</option>
+						<option value="Fake">Fake</option>
+			</select> 
+			</form>
 		</div>
+		
 	</div>
 </div>
 @endsection

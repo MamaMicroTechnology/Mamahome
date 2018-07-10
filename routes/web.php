@@ -322,6 +322,8 @@ Route::group(['middleware' => ['operationTL']],function(){
 Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
+    Route::get('/sales','HomeController@sales');
+
     // Route::get('/enquirysheet','HomeController@enquirysheet');
     // Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');

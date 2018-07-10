@@ -65,7 +65,7 @@
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center">
                                         <div class="btn-group">
-                                            <a href="{{URL::to('/')}}/completedAssignment?id={{$user->id}}" class="btn btn-sm btn-success"><b>Completed</b></a>
+                                            <a  class="btn btn-sm btn-success" id="sale" onclick="Subs('{{ $user->id }}')"><b>Completed</b></a>
                                             <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
                                         </div>
                                     </td>
@@ -160,4 +160,27 @@
         }
     }
 </script>
+<script>
+function Subs(arg)
+    {
+        var e = arg;
+      
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/sales",
+            async:false,
+            data:{userId: e },
+            success: function(response)
+            {
+                console.log(response);
+                  if(response == 0){
+                    window.location = "{{ URL::to('/') }}/completedAssignment?id="+arg;
+                  }else{
+                    alert('Not Completed. '+ response.balance +' projects remaining.');
+                  }
+                
+            }
+        });
+    }
+    </script>
 @endsection

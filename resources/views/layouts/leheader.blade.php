@@ -40,6 +40,9 @@
                         <li><a href="{{ URL::to('/') }}/letraining" style="font-size:1.1em;font-family:Times New Roman;"><b>Training Video</b></a></li>
                         <li> <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em;font-family:Times New Roman;"><b>Assigned Enquiry </b></a></li>  
                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman;"><b>Enquiry Pipelined</b></a></li>
+                        <li> <a href="{{ URL::to('/') }}/kra" style="font-size:1.1em;font-family:Times New Roman;"><b>KRA</b></a></li>
+                       <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -56,9 +59,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ URL::to('/') }}/profile ">Profile</a></li>
                                     @if(Auth::user()->department_id == 2 && Auth::user()->group_id == 7)
-                                    <li><a href="{{ URL::to('/')}}/salescompleted">Completed</a></li>
-                                    @else
-                				    <li><a href="{{URL::to('/')}}/completed?id={{Auth::user()->id}}">Completed</a></li>
+
+                                   
                                     <!--<li><a href="{{ URL::to('/')}}/completed">Completed</a></li> -->
                                     @endif
                                     <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
