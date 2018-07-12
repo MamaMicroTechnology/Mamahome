@@ -93,7 +93,7 @@
                         <p>Are you sure you want to reset this planning?</p>
                         </div>
                         <div class="modal-footer">
-                        <a href="/reset?category={{ $_GET['category'] }}" class="btn btn-danger pull-left">Yes</a>
+                        <a href="{{ URL::to('/') }}/reset?category={{ $_GET['category'] }}" class="btn btn-danger pull-left">Yes</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
         <p style="text-align:center">Are you sure you want to reset the entire planning?</p>
         </div>
         <div class="modal-footer">
-        <a href="/reset?category=all" class="btn btn-danger pull-left">Yes</a>
+        <a href="{{ URL::to('/') }}/reset?category=all" class="btn btn-danger pull-left">Yes</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         </div>
     </div>
