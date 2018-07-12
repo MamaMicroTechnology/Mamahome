@@ -1,4 +1,4 @@
-<?php
+    <?php
   $user = Auth::user()->group_id;
   $ext = ($user == 4? "layouts.amheader":"layouts.app");
 ?>
@@ -68,8 +68,4 @@ var r = confirm("Do you want to edit invoice");
    
 }
 </script>
-<<<<<<< HEAD
 @endsection
-=======
-@endsection
->>>>>>> master
