@@ -158,9 +158,10 @@ class marketingController extends Controller
         }else{
             $imageName3 = null;
         }
-       if(count($request->manufacturer_invoice !=0)){
 
-            $i= 0;
+        if($request->manufacturer_invoice != null){
+
+                $i= 0;
             $invoiceimage = ""; 
 
             foreach($request->manufacturer_invoice as $invimage){
@@ -181,7 +182,25 @@ class marketingController extends Controller
         }else{
             $invoiceimage = null;
         }
-      
+
+        
+
+
+        if($request->quantity){
+
+          $qnty = implode(", ", $request->quantity);
+        }else{
+            $qnty = "null";
+        }
+
+        if( $request->price){
+
+            $price = implode(" , ", $request->price);
+        }else{
+           $price = "null"; 
+        }
+
+
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;
@@ -190,8 +209,8 @@ class marketingController extends Controller
         $mhinvoice->deliver_location = $request->address;
         $mhinvoice->delivery_date = $request->delivery_date;
         $mhinvoice->item = $request->product;
-        $mhinvoice->quantity = $request->quantity;
-        $mhinvoice->price = $request->price;
+        $mhinvoice->quantity = $qnty;
+        $mhinvoice->price = $price;
         $mhinvoice->invoice_pic = $imageName1;
         $mhinvoice->signature = $imageName2;
         $mhinvoice->weighment_slip = $imageName3;
@@ -200,7 +219,7 @@ class marketingController extends Controller
         $mhinvoice->transactional_profit = $request->mhinvoice - $request->amount_to_manufacturer;
         $mhinvoice->manufacturer_number = $request->manufacturer_no;
         $mhinvoice->date_of_invoice = $request->dateOfInvoice;
-        $mhinvoice->total_amount = $request->quantity * $request->price;
+        $mhinvoice->total_amount = $qnty * $price;
         $mhinvoice->manufacturer_invoice = $invoiceimage;
         $mhinvoice->save();
         return back();
@@ -209,9 +228,10 @@ class marketingController extends Controller
     {
          $cat = Category::all();
         $invoice =count(MhInvoice::all());
-
+         
         
-        $inc = MhInvoice::where('item',$request->cat)->get();
+        $inc = MhInvoice::where('item',$request->cat)
+        ->orderBy('invoice_id','ASC')->get();
         $total = count($inc);
          
    
