@@ -249,6 +249,31 @@
                                    </td>
                                </tr>
                                <tr>
+                                      <td>Project Type</td>
+                                      <td>:</td>
+                                      <td>
+                                      <div class="row">
+                                      <div class="col-md-3">
+                                      <input value="{{ old('basement') }}" onkeyup="check('basement')"
+                                      id="basement" name="basement" type="text" autocomplete="off"
+                                      class="form-control input-sm" placeholder="Basement" id="email">
+                                      </div>
+                                      <div class="col-md-2">
+                                      <b style="font-size: 20px; text-align: center">+</b>
+                                      </div>
+                                      <div class="col-md-3">
+                                      <input value="{{ old('ground') }}" onkeyup="check('ground');"
+                                      autocomplete="off" name="ground" id="ground" type="text"
+                                      class="form-control" placeholder="Floor">
+                                      </div>
+                                      <div class="col-md-3">
+                                      <p id="total"></p>
+                                      </div>
+                                      </div>
+                                      </td>
+                              </tr>
+                               
+                               <tr>
                                    <td>Plot Size</td>
                                    <td>:</td>
                                    <td>
