@@ -509,3 +509,7 @@ Route::get('/planning','HomeController@getLockedProjection');
 Route::get('/stage','HomeController@getLockedStage');
 Route::get('/reset','HomeController@getReset');
 Route::get('/total','HomeController@getTotal');
+Route::get('/yearly','HomeController@getYearlyPlanning');
+Route::get('/fiveyears','HomeController@getFiveYears');
+Route::get('/daily','HomeController@getDaily');
+Route::post('/lockYearly','HomeController@lockYearly');

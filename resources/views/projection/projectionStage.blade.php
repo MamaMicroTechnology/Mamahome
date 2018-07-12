@@ -1,20 +1,13 @@
 @extends('layouts.app')
 @section('content')
     <?php $totalRequirement = 0; $totalPrice = 0; ?>
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-success">
             <div class="panel-heading">
-            @if(isset($_GET['category']))
-                {{ ucwords($_GET['category']) }}
-                <div class="pull-right">
-                @if($_GET['category'] != 'all')
-                {{ date('d-m-Y',strtotime($category->from_date)) }} to {{ date('d-m-Y',strtotime($category->to_date)) }}
-                @else
-                @endif
-                </div>
-            @else
-                Choose Categories and Wards
-            @endif
+            <center style="font-size: 17px;"><b>
+            Business Plan (Monthly)
+            </b></center>
+            
             </div>
             <div class="panel-body">
                 <form action="">
@@ -63,7 +56,7 @@
                     <tr>
                         <td>{{ $projection['stage'] }}</td>
                         <td>
-                            @if($projection['stage'] == "Electrical & Plubming")
+                            @if($projection['stage'] == "Electrical & Plumbing")
                                 <?php $stage = "electrical"; ?>
                             @else
                                 <?php $stage = $projection['stage']; ?>
