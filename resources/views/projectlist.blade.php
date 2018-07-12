@@ -42,7 +42,9 @@
           @endforeach
         </tbody>
       </table>
-      {{ $projectlist->links() }}
+      @if(isset($_GET['quality']))
+      {{ $projectlist->appends('quality',$_GET['quality'])->links() }}
+      @endif
     </div>
 </div>
 @endsection
