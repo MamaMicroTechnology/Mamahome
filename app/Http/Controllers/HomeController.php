@@ -1708,7 +1708,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                     ->count();
             $projectcount[$roadw] = $null + $genuine;
         }
-        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadsname]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname]);
     }
     public function projectRequirement(Request $request)
     {
