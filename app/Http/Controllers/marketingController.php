@@ -233,8 +233,9 @@ class marketingController extends Controller
         $inc = MhInvoice::where('item',$request->cat)
         ->orderBy('invoice_id','ASC')->get();
         $total = count($inc);
+         $invoic =MhInvoice::all(); 
          
    
-        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'total'=>$total]);
+        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'total'=>$total,'invoic'=>$invoic]);
     }
 }
