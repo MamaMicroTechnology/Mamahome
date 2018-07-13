@@ -24,14 +24,11 @@
                         <!-- <th style="text-aligh:center">View Invoice</th> -->
     				</thead>
     				<tbody>
-<<<<<<< HEAD
+
                        
                         @foreach($rec as $view)
                         <tr class="{{ in_array($view->orderid, $invoice) ? 'hidden' : '' }}">
-=======
-					    @foreach($rec as $view)
-					   <tr class="{{ in_array($view->orderid, $invoice) ? 'hidden' : '' }}">
->>>>>>> 938b5fb3b2b8e6324d6ee903e1a1c4ea9b64ab4d
+
 					        <td style="text-align:center">
 					            <a href="{{URL::to('/')}}/inputinvoice?id={{$view->orderid}}" target="_blank">{{$view->orderid}}</a>
 					        </td>
