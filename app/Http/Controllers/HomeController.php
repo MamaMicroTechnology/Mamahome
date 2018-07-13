@@ -920,7 +920,7 @@ class HomeController extends Controller
             return redirect('salesTL');
         }else if($group == "Sales Engineer" && $dept == "Sales"){
             return redirect('salesEngineer');
-        }else if($dept == "Human Resources"){
+        }else if($dept == "Management"){
             return redirect('amdashboard');
         }else if($group == "Logistic Co-ordinator (Sales)"){
             return redirect('lcodashboard');
