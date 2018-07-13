@@ -475,7 +475,7 @@ div#calendar{
             <a href="{{ URL::to('/fiveyears') }}">&nbsp;&nbsp;&nbsp; - Five Years Sales Projection</a>
             <a href="{{ URL::to('/yearly') }}">&nbsp;&nbsp;&nbsp; - Yearly Sales Projection</a>
             <a href="{{ URL::to('/daily') }}">&nbsp;&nbsp;&nbsp; - Daily Sales Target</a>
-            <!-- <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - Country Projection</a> -->
+            <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - Country Projection</a>
         </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>

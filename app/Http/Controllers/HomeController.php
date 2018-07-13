@@ -5528,4 +5528,12 @@ public function display(request $request){
         $planning->save();
         return back();
     }
+    public function getCountryProjection()
+    {
+        $planning = Planning::where('type','yearly')->first();
+        $zone = Zone::first();
+        $country = Country::where('id',$zone->id)->first();
+        $zone_name = "MH_".$country->country_code."_".$zone->zone_number;
+        return view('projection.country',['planning'=>$planning,'zone_name'=>$zone_name,'zone'=>$zone]);
+    }
 }
