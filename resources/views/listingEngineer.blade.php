@@ -324,7 +324,7 @@
                                         <table id="bhk" class="table table-responsive">
                                             <tr id="selection">
                                                 
-                                            </tr>F
+                                            </tr>
                                             <tr>
                                                 <td colspan=3>
                                                     <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add more</button>

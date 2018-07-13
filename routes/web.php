@@ -513,3 +513,4 @@ Route::get('/yearly','HomeController@getYearlyPlanning');
 Route::get('/fiveyears','HomeController@getFiveYears');
 Route::get('/daily','HomeController@getDaily');
 Route::post('/lockYearly','HomeController@lockYearly');
+Route::get('/countryProjection','HomeController@getCountryProjection');

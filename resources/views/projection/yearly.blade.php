@@ -12,12 +12,22 @@
             ?>
             <form action="">
             <div class="form-group">
+            <!-- <label style="text-align:left;" for="from" class="control-label col-sm-2">Category :</label> -->
+                <!-- <div class="col-md-2">
+                    <select name="category" id="category" class="form-control input-sm">
+                        <option value="">--Select Categories--</option>
+                        <option value="all">All</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->category }}">{{ ucwords($category->category) }}</option>
+                        @endforeach
+                    </select>
+                </div> -->
                 <label style="text-align:left;" for="from" class="control-label col-sm-5">Input Monthly Incremental Target Percentage :</label>
                 <div class="col-md-4">
                     <input value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}" required type="text" name="percent" id="percent" placeholder="Monthly Incremental Target Percentage" class="form-control">
                 </div>
             </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-primary" type="submit">Check</button>
                 </div>
             </form>

@@ -5474,7 +5474,8 @@ public function display(request $request){
             $totalTP += $tp = $amount/100*$category['transactional_profit'];   
         }
         $projection = Projection::pluck('from_date')->first();
-        return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP]);
+        $categories = Projection::all();
+        return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
     }
     public function getDaily()
     {
@@ -5509,7 +5510,7 @@ public function display(request $request){
             $totalMonthly += $totalCategory/$category['business_cycle'];
             $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
             
-            $totalMonthly/100*$category['target'];
+            // $totalMonthly/100*$category['target'];
             $totalTarget += $amount = $monthlyPrice/100*$category['target'];
             $totalTP += $tp = $amount/100*$category['transactional_profit'];   
         }
@@ -5526,5 +5527,9 @@ public function display(request $request){
         $planning->totalTP = $request->totalTP;
         $planning->save();
         return back();
+    }
+    public function getCountryProjection()
+    {
+        return view('projection.country');
     }
 }

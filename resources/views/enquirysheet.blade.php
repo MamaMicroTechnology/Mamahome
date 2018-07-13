@@ -119,8 +119,7 @@
 							 $quantity = explode(", ",$enquiry->quantity); ?>
 							
 								@for($i = 0; $i < count($quantity); $i++)
-								<?php $sum = $sum + $quantity[$i]; 
-								 ?>
+								<?php $sum = $sum + $quantity[$i]; ?>
 								@endfor
 								
 							@endif
