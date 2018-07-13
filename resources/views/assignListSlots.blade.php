@@ -56,6 +56,7 @@
                                 @if($user->status == 'Completed')
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center;">
+                
                                         <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary form-control"><b>Report</b></a>
                                     </td>
                                 @else
@@ -65,8 +66,7 @@
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center">
                                         <div class="btn-group">
-                                            <a  class="btn btn-sm btn-success" id="sale" onclick="Subs('{{ $user->id }}')"><b>
-                                            </b></a>
+                                            <a  class="btn btn-sm btn-success" id="sale" onclick="Subs('{{ $user->id }}')"><b>Completed</b></a>
                                             <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
                                         </div>
                                     </td>

@@ -224,7 +224,7 @@ class HomeController extends Controller
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
                                                 'unit_price'   => '',
                                                  'quantity'     =>$qnty,
-                                                 'quan'    =>$qu,
+                                             
                                                 'total'   =>0,
                                                 'notes'  =>$request->eremarks,
                                                 'created_at' => date('Y-m-d H:i:s'),
@@ -1708,7 +1708,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                     ->count();
             $projectcount[$roadw] = $null + $genuine;
         }
-        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadsname]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname]);
     }
     public function projectRequirement(Request $request)
     {
@@ -5527,9 +5527,5 @@ public function display(request $request){
         $planning->totalTP = $request->totalTP;
         $planning->save();
         return back();
-    }
-    public function getCountryProjection()
-    {
-        return view('projection.country');
     }
 }
