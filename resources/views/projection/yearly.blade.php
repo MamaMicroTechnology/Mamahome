@@ -24,7 +24,7 @@
                 </div> -->
                 <label style="text-align:left;" for="from" class="control-label col-sm-5">Input Monthly Incremental Target Percentage :</label>
                 <div class="col-md-4">
-                    <input value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}" required type="text" name="percent" id="percent" placeholder="Monthly Incremental Target Percentage" class="form-control">
+                    <input required value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}" required type="text" name="percent" id="percent" placeholder="Monthly Incremental Target Percentage" class="form-control">
                 </div>
             </div>
                 <div class="col-md-2">
@@ -63,7 +63,7 @@
                 @endif
             </table>
         </div>
-        <form action="{{ URL::to('/') }}/lockYearly" method="post">
+        <form class="{{ isset($_GET['percent']) ? '' : 'hidden' }}" action="{{ URL::to('/') }}/lockYearly" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="type" value="yearly">
             <input type="hidden" name="incremental_percentage" value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}">

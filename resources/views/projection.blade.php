@@ -18,7 +18,64 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div id="projection" class="col-md-6 col-md-offset-3">
+<div class="col-md-3">
+    <table class="table table-hover" border=1>
+    <tr>
+        <th style="text-align:center" colspan=2>Business Cycle</th>
+    </tr>
+	<tr>
+        <td>Planning</td>
+        <td style="text-align:center" rowspan=3><br><br>1</td>
+    </tr>
+    <tr>
+        <td>Digging</td>
+    </tr>
+    <tr>
+        <td>Foundation</td>
+    </tr>
+    <tr>
+        <td>Pillar</td>
+        <td style="text-align:center" rowspan=2><br>3</td>
+    </tr>
+    <tr>
+        <td>Roofing</td>
+    </tr>
+    <tr>
+        <td>Walling</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Electrical</td>
+        <td rowspan=2 style="text-align:center"><br>1</td>
+    </tr>
+    <tr>
+        <td>Plumbing</td>
+    </tr>
+    <tr>
+        <td>Plastering</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Fooring</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Carpentry</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Painting</td>
+        <td rowspan=3 style="text-align:center"><br><br>1</td>
+    </tr>
+    <tr>
+        <td>Fixtures</td>
+    </tr>
+    <tr>
+        <td>Completion</td>
+    </tr>
+    </table>
+</div>
+<div id="projection" class="col-md-6">
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-center col-md-3 col-md-offset-5"><b>Projection</b></div>

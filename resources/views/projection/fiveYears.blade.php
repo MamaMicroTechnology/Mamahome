@@ -53,7 +53,7 @@
                 @endif
             </table>
         </div>
-        <form action="{{ URL::to('/') }}/lockYearly" method="post">
+        <form class="{{ isset($_GET['percent']) ? '' : 'hidden' }}" action="{{ URL::to('/') }}/lockYearly" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="type" value="five_years">
             <input type="hidden" name="incremental_percentage" value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}">
