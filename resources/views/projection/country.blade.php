@@ -11,11 +11,11 @@
             </tr>
             <tr>
                 <td>Target</td>
-                <td>{{ number_format($planning->totalTarget) }}</td>
+                <td>{{ number_format($planning != null ? $planning->totalTarget : '0') }}</td>
             </tr>
             <tr>
                 <td>Transactional Profit</td>
-                <td>{{ number_format($planning->totalTP) }}</td>
+                <td>{{ number_format($planning != null ? $planning->totalTP : '0') }}</td>
             </tr>
         </table>
         <br>
@@ -26,6 +26,7 @@
         'D' Grade Zone : 90% of Model Zone Target &#215; 25
 
     </div>
+    @if($planning != null)
     <div class="col-md-4">
         <table border=1 class="table table-hover">
             <tr style="background-color: #e4ffe0;">
@@ -69,4 +70,5 @@
             </tr>
         </table>
     </div>
+    @endif
 @endsection

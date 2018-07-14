@@ -5424,6 +5424,7 @@ public function display(request $request){
         if($request->category == "all"){
             Projection::truncate();
             Detail::truncate();
+            Planning::truncate();
         }else{
             Projection::where('category',$request->category)->delete();
         }
