@@ -18,7 +18,7 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div class="col-md-3">
+<div class="col-md-3 col-md-offset-2">
     <table class="table table-hover" border=1>
     <tr>
         <th style="text-align:center" colspan=2>Business Cycle</th>
