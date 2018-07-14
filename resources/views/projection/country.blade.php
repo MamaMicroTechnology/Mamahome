@@ -18,6 +18,13 @@
                 <td>{{ number_format($planning->totalTP) }}</td>
             </tr>
         </table>
+        <br>
+        Projection Calculation:<br>
+        'A' Grade Zone : Model Zone Target &#215; 40 <br>
+        'B' Grade Zone : 30% of Model Zone Target &#215; 60<br>
+        'C' Grade Zone : 60% of Model Zone Target &#215; 60<br>
+        'D' Grade Zone : 90% of Model Zone Target &#215; 25
+
     </div>
     <div class="col-md-4">
         <table border=1 class="table table-hover">
@@ -32,33 +39,33 @@
             </tr>
             <tr>
                 <td style="text-align:center">'A' Grade Zones</td>
-                <td style="text-align:center">30</td>
-                <td style="text-align:center">{{ number_format($planning->totalTarget * 30) }}</td>
-                <td style="text-align:center">{{ number_format($planning->totalTP * 30) }}</td>
+                <td style="text-align:center">40</td>
+                <td style="text-align:center">{{ number_format($planning->totalTarget * 40) }}</td>
+                <td style="text-align:center">{{ number_format($planning->totalTP * 40) }}</td>
             </tr>
             <tr>
                 <td style="text-align:center">'B' Grade Zones</td>
-                <td style="text-align:center">46</td>
-                <td style="text-align:center">{{ number_format(($planning->totalTarget * 46)/100*70) }}</td>
-                <td style="text-align:center">{{ number_format(($planning->totalTP * 46)/100*70) }}</td>
+                <td style="text-align:center">60</td>
+                <td style="text-align:center">{{ number_format(($planning->totalTarget / 100*70 * 60)) }}</td>
+                <td style="text-align:center">{{ number_format(($planning->totalTP / 100*70 * 60)) }}</td>
             </tr>
             <tr>
                 <td style="text-align:center">'C' Grade Zones</td>
-                <td style="text-align:center">58</td>
-                <td style="text-align:center">{{ number_format(($planning->totalTarget * 58)/100*50) }}</td>
-                <td style="text-align:center">{{ number_format(($planning->totalTP * 58)/100*50) }}</td>
+                <td style="text-align:center">60</td>
+                <td style="text-align:center">{{ number_format(($planning->totalTarget / 100*40 * 60)) }}</td>
+                <td style="text-align:center">{{ number_format(($planning->totalTP / 100*40 * 60)) }}</td>
             </tr>
             <tr>
                 <td style="text-align:center">'D' Grade Zones</td>
-                <td style="text-align:center">58</td>
-                <td style="text-align:center">{{ number_format(($planning->totalTarget * 58)/100*10) }}</td>
-                <td style="text-align:center">{{ number_format(($planning->totalTP * 58)/100*10) }}</td>
+                <td style="text-align:center">25</td>
+                <td style="text-align:center">{{ number_format(($planning->totalTarget / 100*10 * 25)) }}</td>
+                <td style="text-align:center">{{ number_format(($planning->totalTP / 100*10 * 25)) }}</td>
             </tr>
             <tr>
                 <th style="text-align:center"></th>
                 <th style="text-align:center">Total</th>
-                <th style="text-align:center">{{ number_format(($planning->totalTarget * 30) + (($planning->totalTarget * 46)/100*70) + (($planning->totalTarget * 58)/100*50) + (($planning->totalTarget * 58)/100*10)) }}</th>
-                <th style="text-align:center">{{ number_format(($planning->totalTP * 30) + (($planning->totalTP * 46)/100*70) + (($planning->totalTP * 58)/100*50) + (($planning->totalTP * 58)/100*10)) }}</th>
+                <th style="text-align:center">{{ number_format(($planning->totalTarget * 40) + (($planning->totalTarget / 100*70 * 60)) + (($planning->totalTarget / 100*40 * 60)) + (($planning->totalTarget / 100*10 * 25))) }}</th>
+                <th style="text-align:center">{{ number_format(($planning->totalTP * 40) + (($planning->totalTP / 100*70 * 60)) + (($planning->totalTP / 100*40 * 60)) + (($planning->totalTP / 100*10 * 25))) }}</th>
             </tr>
         </table>
     </div>
