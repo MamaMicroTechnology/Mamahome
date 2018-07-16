@@ -30,6 +30,7 @@
 						<th>Logistics Coordinator</th>
 						<th>Requirement Date</th>
 						<th>Payment Status</th>
+						<th>Payment Mode</th>
 						<th>Dispatch Status</th>
 						<th>Delivery Status</th>
 						<!-- <th>Print Invoice</th> -->
@@ -57,12 +58,14 @@
 							<form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
 							{{ csrf_field() }}
 							<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+							@if($rec->payment_mode != NULL && $rec->payment_mode != "Check" )
 								<select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
 										<option value="">--Select--</option>
 									@foreach($users as $user)
 										<option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
 									@endforeach
 								</select>
+								@endif
 							</form>
 							@endif
 						</td>
@@ -95,6 +98,91 @@
 								{{ $rec->payment_status }}
 							@endif
                         </td>
+                        <td>
+							@if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
+								{{ $rec->payment_mode }}
+							@elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
+							<form method="POST" action="{{ URL::to('/') }}/paymentmode">
+							{{ csrf_field() }}
+							<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+								<select name="payment" id="pay" class="form-control">
+										<option value="">--Select--</option>
+									    <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
+									    <option value="CASH" id="cash" onclick="cash()">Cash</option>
+									    <option value="check" data-toggle="modal" data-target="#myModal" >Check</option>
+								</select>
+							</form>
+                             
+						@elseif($rec->payment_mode == "Cheq Clear")
+							<button class="btn btn-success btn-sm disabled">Cheq Clear</button>
+							@else
+							<button class="btn btn-success btn-sm disabled">Cheq Processing</button>
+							@endif
+
+							
+                             
+							 <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="width:100%;padding:1px;background-color: rgb(191, 191, 63);">
+          <h4 class="modal-title">Check Details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+        <form action="{{ URL::to('/') }}/check?id={{ $rec->orderid }}" method="POST" enctype="multipart/form-data"> 
+        {{ csrf_field() }}
+        <table class="table">
+        <input type="hidden" name="project_id" value="{{$rec->project_id}}">
+		<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+       <tr>
+        		<th>Check Number</th>
+        		<td>:</td>
+        		<td><input type="text" name="checkno" class="form-control" required></td>
+        	</tr>
+        	<tr>
+        		<th>Check Amount</th>
+        		<td>:</td>
+        		<td><input type="text" name="amount" class="form-control"  required></td>
+        	</tr>
+        	<tr>
+        		<th>Check Date</th>
+        		<td>:</td>
+        		<td><input type="text" name="date" class="form-control" required></td>
+        	</tr>
+        	<tr>
+        		<th>Check Picture</th>
+        		<td>:</td>
+        		<td><input type="file" name="image" class="form-control" required></td>
+        	</tr>
+        </table> 
+        <center><button type="submit" value="submit" class="btn btn-primary ">Submit</button> 
+        </form>    
+         </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" style="padding:1px">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  style="padding:2px;">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+						</td>
+
+
+
+
+
+
+
                         <td>
                             @if($rec->dispatch_status)
                             {{$rec->dispatch_status}}
@@ -149,7 +237,7 @@
 					    <td>
 					    	@if($rec->status == "Enquiry Confirmed")
 					    	<div class="btn-group">
-						    	<button class="btn btn-xs btn-success " onclick="confirmOrder('{{ $rec->orderid }}')">Confirm</button>
+						    	<a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
 						    	<button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
 					    	</div>
 					    	@else
@@ -243,6 +331,13 @@
     	    });
 	    }
 	 }
-
+function rtgs(){
+	
+	document.getElementById('rtgs').form.submit();
+}
+function cash(){
+	
+	document.getElementById('cash').form.submit();
+}
 </script>
 @endsection

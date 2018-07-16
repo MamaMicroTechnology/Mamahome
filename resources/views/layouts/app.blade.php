@@ -389,7 +389,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span></b></a></li>
+                        <!--  -->
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
                         @endif
@@ -470,8 +470,8 @@ div#calendar{
     <a href="{{ URL::to('/getprojectsize') }}">Listed Project & Sizes</a>
     <a href="#" data-toggle="collapse" data-target="#planning">Sales Projection & Planning &#x21F2;</a>
         <div id="planning" class="collapse">
-            <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Sales Projection</a>
-            <a href="{{ URL::to('/planning') }}">&nbsp;&nbsp;&nbsp; - Planning</a>
+            <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Projection</a>
+            <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Category Wise Planning</a>
         </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
@@ -553,8 +553,8 @@ div#calendar{
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
-    <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
+    <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
+    <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
@@ -570,16 +570,27 @@ div#calendar{
      <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
      <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
     <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
+    <a href="{{ URL::to('/') }}/pending">Pending Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
        <a href="{{ URL::to('payment') }}">Delivery Order Details</a>
+       <a href="{{ URL::to('checkdetailes') }}">Cheq Details</a>
+
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
-     <a href="{{ URL::to('/') }}/sms"  >SMS to Numbers</a>
+     @if(isset($stages))
+       @if($stages->project_ids == null)
+       <a href="#" data-toggle="modal" data-target="#myModal" >Assigned Task</a>
+       @else
+        <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+       @endif
+     @else
+     <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+     @endif
+     <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
      
@@ -587,7 +598,7 @@ div#calendar{
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
     <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
-    <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
+    <a href="{{ URL::to('/') }}/followupproject" >Follow Up projects</a>
     <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
     <a href="{{ URL::to('/') }}/kra" >KRA</a>           
   </div>
@@ -607,6 +618,97 @@ div#calendar{
         
         @yield('content')
     </div>
+
+ <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"  style="background-color:#f4811f;padding:2px">
+          <h4 class="modal-title">Instructions</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+         @if(isset($stages))
+        <center> <b> Instructions </b> </center>
+          <p>{{ $stages->instruction }}</p>
+        @endif
+       <table class="table table-hover ">
+                <thead>
+                  <th>Time To Complete</th>
+                  <th>Assign Ward</th>
+                  <th>Assiged Stage</th>
+                 <th> Assign Date</th>
+               </thead>
+                <tbody>
+                 @if(isset($stages))
+                <tr>
+                    <td>
+                      {{ date('h:i:s A', strtotime($stages->time )) }}
+                    </td>
+                    
+                   
+                    <td>{{ $stages->ward }}</td>
+                   
+                   
+                      <td>{{ $stages->assigndate }} </td>
+                  
+                </tr>
+                      @endif
+                    </tbody>
+                    </table>
+        <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
+         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal1">Reject</a></center>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- The Modal -->
+  <div class="modal" id="myModal1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
+          <h4 class="modal-title">Reason For Rejecting?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+        <form action="{{ URL::to('/') }}/reject" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        @if(isset($stages))
+         <input type="hidden" name="user_id" value="{{ $stages->user_id }}">
+         @endif
+         <label>Reason : </label>
+         <textarea type="text" name="remark" style="width:400px;" ></textarea>
+        </div>
+       <center> <button type="sunmit" value="submit" class="btn btn-primary">Submit</button></center> 
+        </form>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+
     
     <!-- Scripts -->
     <script>

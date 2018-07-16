@@ -20,7 +20,7 @@
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
                   <small id="currentTime" class="pull-right">
-                    Listed on {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
+                    Listed On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
                   </small><br>
                 </div>
                 <div class="panel-body">
@@ -28,7 +28,7 @@
                       <label id="headingPanel">Project Details</label><br>
                        @if(Auth::check())
                         @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6 && Auth::user()->group_id != 11)
-                      <label>{{ $username != null ? 'Listed by '.$username : '' }}</label><br>
+                      <label>{{ $username != null ? 'Listed By '.$username : '' }}</label><br>
                       @endif
                       @endif
                     </center>
@@ -108,19 +108,22 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in RMC</td>
+                                 <td>Interested In RMC</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
                                       <label><input id="rmc" {{ $projectdetails->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="rmc2" {{ $projectdetails->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
+                                     <label><input id="rmc2" {{ $projectdetails->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label> 
+                                    </div>
+                                    <div class="radio">
+                                     <label><input id="rmc3" {{ $projectdetails->interested_in_rmc == "None" ? 'checked' : '' }} required value="None" type="radio" name="rmcinterest">None</label> 
                                     </div>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Bank loans?</td>
+                                 <td>Interested In Bank loans?</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
@@ -135,7 +138,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in UPVC Doors and Windows?</td>
+                                 <td>Interested In UPVC Doors And Windows?</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
@@ -149,38 +152,38 @@
                                     </div>
                                  </td>
                                </tr>
-                                <tr>
-                                 <td>Interested in Home automation?</td>
+                               <tr>
+                                 <td>Interested In Home Automation?</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
-                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                      <label><input id="home1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                      <label><input id="home2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                      <label><input id="home3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
                                     </div>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Home automation?</td>
+                                 <td>Interested In Premium Products?</td>
                                  <td>:</td>
                                  <td>
                                      <div class="radio">
-                                      <label><input id="loan1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                      <label><input id="premium1" {{ $projectdetails->interested_in_premium == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="premium">Yes</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="loan2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                      <label><input id="premium2" {{ $projectdetails->interested_in_premium == "No" ? 'checked' : '' }} required value="No" type="radio" name="premium">No</label>
                                     </div>
                                     <div class="radio">
-                                      <label><input id="loan3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                      <label><input id="premium3" {{ $projectdetails->interested_in_premium == "None" ? 'checked' : '' }} required value="None" type="radio" name="premium">None</label>
                                     </div>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type of Contract ? </td>
+                                 <td>Type Of Contract ? </td>
                                   <td>:</td>
                                   <td>
                                    <select class="form-control" name="contract" id="contract" required>
@@ -215,92 +218,72 @@
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
-                                       <table class="table table-responsive">
-                                        <tr>
-                                          <td>
+                                          <div class="col-md-3" >
                                             <label class="checkbox-inline">
-                                              <input {{ in_array('Planning', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Planning">Planning
+                                              <input {{ in_array('Planning', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Planning" style="width: 33px;" ><span>&nbsp;&nbsp;&nbsp;</span>Planning
                                             </label>
-                                          </td>
-                                          <td>
+                                          
                                              <label class="checkbox-inline">
                                               <input {{ in_array('Digging', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Digging">Digging
                                             </label>
-                                          </td>
-                                          <td>
+                                         
                                              <label class="checkbox-inline">
                                               <input {{ in_array('Foundation', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Foundation">Foundation
                                             </label>
-                                          </td>
-                                          <td>
+                                         
                                              <label class="checkbox-inline">
                                               <input {{ in_array('Pillars', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Pillars">Pillars
                                             </label>
-                                          </td>
-                                          <td>
+                                          
                                              <label class="checkbox-inline">
                                               <input {{ in_array('Walls', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Walls">Walls
                                             </label>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                         <td>
+                                          </div>
+                                       <div class="col-md-3">
                                           <label class="checkbox-inline">
-                                          <input {{ in_array('Roofing', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Roofing">Roofing
+                                          <input {{ in_array('Roofing', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Roofing" style="width: 33px;"><span>&nbsp;&nbsp;&nbsp;</span>Roofing
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Electrical', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Electrical">Electrical
                                         </label>
-                                        </td>
-                                         <td>
+                                      
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Plumbing', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Plumbing">Plumbing
                                         </label>
-                                        </td>
-                                         <td>
+                                      
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Plastering', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Plastering">Plastering
                                         </label>
-                                        </td>
-                                         <td>
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Flooring', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Flooring">Flooring
                                         </label>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                         <td>
+                                      </div>
+
+                                        <div class="col-md-3">
                                           <label class="checkbox-inline">
-                                          <input {{ in_array('Carpentry', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Carpentry">Carpentry
+                                          <input {{ in_array('Carpentry', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Carpentry" style="width: 33px;"><span>&nbsp;&nbsp;&nbsp;</span>Carpentry
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Paintings', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Paintings">Paintings
                                         </label>
-                                        </td>
-                                         <td>
+                                       
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Fixtures', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Fixtures">Fixtures
                                         </label>
-                                        </td>
-                                         <td>
+                                        
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Completion', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Completion">Completion
                                         </label>
-                                        </td>
-                                         <td>
+                                        
                                           <label class="checkbox-inline">
                                           <input {{ in_array('Closed', $statuses) ? 'checked': ''}} type="checkbox" onchange="count()" name="status[]" value="Closed">Closed
                                         </label>
-                                        </td>
-                        
-                                        </tr>
-                                      </table>
+                                       </div>
                                    </td>
                                </tr>
+
                                <tr>
                                    <td>Project Type</td>
                                    <td>:</td>
@@ -341,7 +324,7 @@
                                           <b style="font-size: 20px; text-align: center">*</b>
                                         </div>
                                       <div class="col-md-3">
-                                         <label>breadth</label>
+                                         <label>Breadth</label>
                                         <input value="{{ $projectdetails->breadth }}" onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="breadth">
                                       </div>
                                       <div class="col-md-3">
@@ -375,7 +358,7 @@
                                     </label>
                                  </td>
                                </tr>
-                                   <td>Total Budget (in Cr.)</td>
+                                   <td>Total Budget (In Cr.)</td>
                                    <td>:</td>
                                    <td>
                                     <div class="col-md-4">
@@ -788,6 +771,7 @@ function sum(){
 
         var rmc = document.getElementById('rmc');
         var rmc2= document.getElementById('rmc2');
+        var rmc3= document.getElementById('rmc3');
         if(current == 'first')
         { 
           if(document.getElementById("pName").value == ""){
@@ -802,8 +786,16 @@ function sum(){
             window.alert("You have not entered  Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
             window.alert("Please choose the construction type");
-          }else if(rmc.checked == false && rmc2.checked == false){
+          }else if(rmc.checked == false && rmc2.checked == false && rmc3.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in taking loan or not");
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in purchasing UPVC doors and windows");
+          }else if(home1.checked == false && home2.checked == false && home3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in Home Automation");
+          }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in premium product");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
@@ -1110,3 +1102,4 @@ function sum(){
   }
 </script>
 @endsection
+

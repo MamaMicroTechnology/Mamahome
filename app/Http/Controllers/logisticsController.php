@@ -534,4 +534,14 @@ class logisticsController extends Controller
         return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner,]);
 
     }
+    public function lcinvoice(request $request){
+        $x = MhInvoice::leftJoin('orders','mh_invoice.requirement_id','orders.id')
+              ->where('orders.delivery_boy',Auth::user()->id)
+              ->select('mh_invoice.*')->get();
+
+               $invoice =count($x);
+        return view('lcinvoice',['invoice'=>$invoice,'x'=>$x]);
+   
+
+    }
 }

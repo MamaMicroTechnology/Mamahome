@@ -1417,37 +1417,39 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $projectdetails = ProjectDetails::where('project_id',$id)->first();
         return view('viewDetails',['projectdetails'=>$projectdetails]);
     }
-  public function getRoads(request $request)
+    public function getRoads()
     {
 
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-        $roads = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
+        // $roads = ProjectDetails::where('sub_ward_id',$assignment)->select('road_name')->groupby('road_name')->paginate(10);
+
+        // $roadname = ProjectDetails::where('sub_ward_id',$assignment)->groupby('road_name')->pluck('road_name');
+      
+         $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
+       
+        // $projectcount = array();
+
+        // foreach($roadname as $roadname){
+            $genuine = ProjectDetails::where('quality','Genuine')
+                                                    ->where('sub_ward_id',$assignment)
+                                                    ->paginate(10);
+                                                  
+            $null = ProjectDetails::where('quality','Unverified')
+                                                    ->where('sub_ward_id',$assignment)
+                                                    ->paginate(10);
+            $fake = ProjectDetails::where('quality','Fake')
+                                                    ->where('sub_ward_id',$assignment)
+                                                    ->paginate(10);
+
+            // $projectCount = $null + $genuine; + $fake;
+
+        // }
+
+
+        return view('requirementsroad',['todays'=>$todays,'genuine'=>$genuine,'null'=>$null,'fake'=>$fake]);
+
         
-        $projectCount = array();
-        $todays = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->count();
 
-        foreach($roads as $road){
-            $genuine = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality','Genuine')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->count();
-            $null = ProjectDetails::where('road_name',$road)
-                                                    ->where('quality','Unverified')
-                                                    ->where('sub_ward_id',$assignment)
-                                                    ->count();
-          $ro = ProjectDetails::where('road_name',$road)->pluck('project_id');
-          $ros = ProjectDetails::where('project_id',$ro)->pluck('created_at');
-          //dd($ros);
-
-
-                                                
-
-            $projectCount[$road] = $genuine + $null;
-
-        }
-  
-
-        return view('roads',['todays'=>$todays,'roads'=>$roads,'projectCount'=>$projectCount,'ros'=>$ros]);
     }
     public function viewProjectList(Request $request)
     {
@@ -1937,6 +1939,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->get();
         $total = $points_earned_so_far - $points_subtracted;
+        $stages = AssignStage::where('user_id',Auth::user()->id)->first();
         return view('sedashboard',[
             'projects'=>$projects,
             'reqcount'=>$reqcount,
@@ -1951,7 +1954,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             'points_indetail'=>$points_indetail,
             'points_earned_so_far'=>$points_earned_so_far,
             'points_subtracted'=>$points_subtracted,
-            'total'=>$total
+            'total'=>$total,
+            'stages'=>$stages
         ]);
     }
     public function printLPO($id, Request $request)
@@ -1987,7 +1991,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
-        return view('ordersadmin',['view' => $view,'users'=>$users]);
+        $req = Requirement::pluck('project_id');
+        return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
     }
     public function getSubCat(Request $request)
     {
@@ -2036,7 +2041,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     {
         $id = $request->id;
         $name =order::where('id',$id)->pluck('delivery_boy')->first();
-        if($name == null){
+        if($name != null){
             return response()->json('Select Logistic Coordinator');
            
         }
@@ -2045,12 +2050,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $x = Order::where('id', $id)->update(['status' => 'Order Confirmed','payment_status'=>'Payment Pending']);
             if($x)
             {
-                return response()->json('Success !!!');
+                return back();
             }
-            else
-            {
-                return response()->json($id);
-            }
+           
         }
     }
     public function cancelOrder(Request $request)
@@ -4487,6 +4489,7 @@ public function projectstore(request $request)
     $budgets = "null";
    }
 $check = AssignStage::where('user_id',$request->user_id)->first();
+
     
 if(count($check) == 0){
      
@@ -4521,6 +4524,7 @@ if(count($check) == 0){
         $projectassign->quality = $request->quality;
         $projectassign->save();
 }else{
+
         $check->ward = $wards;
         $check->subward = $subwards;
         $check->stage = $stages;
@@ -4547,6 +4551,8 @@ if(count($check) == 0){
         $check->budgetto = $request->budgetto;
         $check->quality = $request->quality;
         $check->project_ids = null;
+        $check->time = $request->settime;
+        $check->instruction = $request->inc;
         $check->save(); 
 }
        
@@ -4556,6 +4562,49 @@ if(count($check) == 0){
 
             
 }
+
+public function projectstore1(request $request){
+    $check = AssignStage::where('user_id',$request->user_id)->first();
+
+       if(count($check) != 0){
+
+
+     
+        $check->time = $request->settime;
+        $check->instruction = $request->inc;
+        $check->save(); 
+
+
+
+
+}
+ return redirect()->back()->with('Assig projects successfully');
+
+
+            
+}
+
+public function reject(request $request){
+    $check = AssignStage::where('user_id',$request->user_id)->first();
+
+       if(count($check) != 0){
+
+
+        
+        $check->remark = $request->remark;
+        
+        $check->save(); 
+
+
+
+
+}
+ return redirect()->back()->with('Assig projects successfully');
+
+
+            
+}
+
 
 public function enquirywise(request $request){
 

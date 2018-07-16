@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+<style type="text/css">
+  .dot {
+    height: 9px;
+    width: 9px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;
+}
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-2">
@@ -15,7 +24,7 @@
                    {{ session('NotAdded') }}
                 </div>
             @endif
-            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee</button>
+            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee </button>
             <br><br>
             <div class="panel panel-default" style="border-color:#f4811f">
                 <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Departments</b></div>
@@ -32,11 +41,17 @@
             </div>
         </div>
         <div class="col-md-10" id="disp">
-       
+                       
+                          <br><br><br><br>
+                           <img src="http://mamahome360.com/public/android-icon-36x36.png">
+                           MAMA HOME PVT LTD&nbsp;&nbsp;
+                           Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
+    width: 9px;
+    background-color:green;
+    border-radius: 50%;
+    display: inline-block;"></span> {{ $totalcount }}
         </div>
-    </div>
-</div>
-
+ 
 <!--Modal-->
 <form method="post" action="{{ URL::to('/') }}/amaddEmployee">
     {{ csrf_field() }}
@@ -136,7 +151,7 @@
 $(document).ready(function () {
     $("#{{ $con }}").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?count={{$depts[$department->dept_name]}}&&dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -148,7 +163,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $("#FormerEmployees").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?dept=FormerEmployees", function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?dept=FormerEmployees&&count={{$depts["FormerEmployees"]}}", function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -156,5 +171,7 @@ $(document).ready(function () {
     });
 });
 </script>
+
 @endforeach
+
 @endsection

@@ -37,15 +37,28 @@
                     <td>{{ $invoice->deliver_location }}</td>
                     <td>{{ $invoice->customer_name }}</td>
                     <td>
-                                              {{ date('d-m-Y', strtotime($invoice->delivery_date)) }}
-                                            </td>
-                                          <!--   <td>
-                                              {{ date('h:i:s A', strtotime($invoice->delivery_date )) }}
-                                            </td> -->
-                    
-                  
-                </tr>
+                       {{ date('d-m-Y', strtotime($invoice->delivery_date)) }}
+                    </td>
+                 </tr>
             @endforeach
+            
+             @foreach($x as $invoice)
+                <tr>
+                    <td><a href="{{ URL::to('/') }}/invoice?id={{ $invoice->invoice_id }}">{{ $invoice->invoice_id }}</td>
+                    <td>{{ $invoice->requirement_id }}</td>
+                    <td>
+                        
+                    <a href="{{ URL::to('/') }}/admindailyslots?projectId={{ $invoice->project_id }}" target="_blank">{{ $invoice->project_id }} </a>
+                    </td>
+                    
+                    <td>{{ $invoice->deliver_location }}</td>
+                    <td>{{ $invoice->customer_name }}</td>
+                    <td>
+                       {{ date('d-m-Y', strtotime($invoice->delivery_date)) }}
+                    </td>
+                 </tr>
+            @endforeach
+        
         </table>
         </div>
     </div>

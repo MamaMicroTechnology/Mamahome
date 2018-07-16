@@ -329,7 +329,9 @@ div#calendar{
     
     <a href="{{ URL::to('/') }}/lcoorders">Order Details</a>
     <a href="{{ URL::to('/') }}/deliveredorders">Delivered Orders</a>
+    <a href="{{ URL::to('/lcinvoice') }}">Invoices</a>
     <a href="{{ URL::to('/lcoreport') }}">My Report</a>
+
 </div>
 @endif
 @endif

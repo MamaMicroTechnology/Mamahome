@@ -351,6 +351,7 @@ class amController extends Controller
     public function editEmployee(Request $request){
         $user = User::where('employeeId', $request->UserId)->first();
         $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
+       
         $bankDetails = BankDetails::where('employeeId',$request->UserId)->first();
         $assets = Asset::all();
         $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();
@@ -621,7 +622,9 @@ class amController extends Controller
     }
     public function deleteAsset(Request $request)
     {
-         $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
+
+        
+        $mh = AssetInfo::where('id',$request->id)->pluck('mh_id')->first();
         AssetInfo::where('id',$request->id)->delete();
         $mhasset = MamahomeAsset::where('id',$mh)->first();
         $mhasset->status = null;
@@ -646,8 +649,8 @@ class amController extends Controller
     }
     public function deleteassets(Request $request)
     {
-        MamahomeAsset::where('id',$request->Id)->delete();
-        return back();
+        MamahomeAsset::where('id',$request->id)->delete();
+        return response()->json('Deleted');
     }
     public function deleteCertificate(Request $request)
     {
@@ -670,6 +673,13 @@ class amController extends Controller
     
     }
     public function getview(Request $request){
+        if($request->dept == "FormerEmployees"){
+            $users = User::where('department_id',10)
+               ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
+        return view('hrformeremployees',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        }
        $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
         $users = User::where('department_id',$deptId)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
@@ -780,25 +790,52 @@ class amController extends Controller
         $departments = Department::all();
         $groups = Group::all();
         $depts = array();
-        
+
         foreach($departments as $department){
-            $depts[$department->dept_name] = User::where('department_id',$department->id)->count();
+            $depts[$department->dept_name] = User::where('department_id',$department->id)
+           ->where('id','!=',7)
+            ->where('id','!=',27)
+            ->where('id','!=',28) 
+             ->where('id','!=',101)
+            ->where('id','!=',105) 
+             ->where('id','!=',107) 
+            ->where('id','!=',108) 
+              ->where('id','!=',112) 
+               ->count();
         }
+         $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
+             ->where('id','!=',7)
+            ->where('id','!=',27)
+            ->where('id','!=',28)
+            ->where('id','!=',101)
+            ->where('id','!=',105)
+             ->where('id','!=',107)
+             ->where('id','!=',108)
+              ->where('id','!=',112)
+        ->count();
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
-        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts]);
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount]);
     }
      public function viewmhemployee(Request $request){
         if($request->dept == "FormerEmployees"){
             $users = User::where('department_id',10)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->get();
-        return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
         }
         $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
         $users = User::where('department_id',$deptId)
+                ->where('users.id','!=',7)
+                ->where('users.id','!=',27)
+                ->where('users.id','!=',28)
+                ->where('users.id','!=',101)
+                ->where('users.id','!=',105)
+                ->where('users.id','!=',107)
+                ->where('users.id','!=',108)
+                 ->where('users.id','!=',112)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
-        return view('mhemp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR']);
+        return view('mhemp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
     }
 }

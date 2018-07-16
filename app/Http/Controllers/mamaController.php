@@ -50,6 +50,8 @@ use App\Point;
 use App\ZoneMap;
 use App\SubWardMap;
 use App\Asset;
+use App\Check;
+
 use App\MamahomeAsset;
 use App\ProjectImage;
 
@@ -551,6 +553,7 @@ class mamaController extends Controller
             $projectdetails->interested_in_rmc = $request->rmcinterest;
             $projectdetails->interested_in_loan = $request->loaninterest;
             $projectdetails->interested_in_doorsandwindows = $request->dandwinterest;
+            $projectdetails->interested_in_premium = $request->premium;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
             $projectdetails->other_approvals = $otherApprovals;
@@ -812,6 +815,7 @@ class mamaController extends Controller
                                    $i++;
                                   }
                              }
+                            
                             $statusCount = count($request->status);
                             $statuses = $request->status[0];
                             if($statusCount > 1){
@@ -864,6 +868,7 @@ class mamaController extends Controller
             'interested_in_rmc'=>$request->rmcinterest,
             'interested_in_loan'=>$request->loaninterest,
             'interested_in_doorsandwindows'=>$request->dandwinterest,
+             'interested_in_premium'=>$request->premium,
             'construction_type'=>$type,
             'follow_up_date' =>$request->follow_up_date,
             'followup' => $request->follow,
@@ -1858,6 +1863,48 @@ class mamaController extends Controller
     public function addDeliveryBoy(Request $request)
     {
         Order::where('id',$request->orderId)->update(['delivery_boy'=>$request->delivery]);
+
         return back();
     }
+     public function paymentmode(Request $request)
+    {
+
+        Order::where('id',$request->orderId)->update(['payment_mode'=>$request->payment]);
+        
+        return back();
+    }
+  public function clearcheck(Request $request)
+    {
+            
+          
+       
+       
+      Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
+        return back();
+    }
+
+
+    public function check(request $request){
+        
+        $empimage = time().'.'.request()->image->getClientOriginalExtension();
+        $request->image->move(public_path('empsignature'),$empimage);
+
+     $check = new Check;
+     $check->project_id=$request->project_id;
+     $check->orderId = $request->orderId;
+     $check->checkno  = $request->checkno; 
+     $check->amount = $request->amount;
+     $check->date = $request->date;
+     $check->image = $empimage;
+     $check->save();
+     $check = "Check";
+    Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
+     return back();
+}
+public function checkdetailes(request $request){
+    $details = Check::all();
+    $countrec = count($details);
+
+     return view('checkdetailes',['details' => $details,'countrec'=>$countrec]);
+}
 }

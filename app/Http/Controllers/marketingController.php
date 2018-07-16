@@ -134,9 +134,12 @@ class marketingController extends Controller
     }
     public function ordersformarketing()
     {
-        $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')->get();
+        $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')
+        ->get();
         $countrec = count($rec);   
-        $invoice = MhInvoice::pluck('requirement_id')->toArray(); 
+        $invoice = MhInvoice::pluck('requirement_id')->toArray();
+         
+
         return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec,'invoice' => $invoice]);
     }
     public function saveinvoice(Request $request){
@@ -158,12 +161,49 @@ class marketingController extends Controller
         }else{
             $imageName3 = null;
         }
-        if($request->manufacturer_invoice != NULL){
-            $imageName4 = "manufacturer_invoice".time().'.'.request()->manufacturer_invoice->getClientOriginalExtension();
-            $request->manufacturer_invoice->move(public_path('invoiceImages'),$imageName4);
+
+        if($request->manufacturer_invoice != null){
+
+                $i= 0;
+            $invoiceimage = ""; 
+
+            foreach($request->manufacturer_invoice as $invimage){
+             $image = "manufacturer_invoice".$i.time().'.'.$invimage->getClientOriginalExtension();
+            $invimage->move(public_path('invoiceImages'),$image);
+           
+             if($i == 0){
+                                                 $invoiceimage .= $image;
+                                                
+                                           }
+                                           else{
+                                                $invoiceimage .= ",".$image;
+                                               
+                                           }
+                                   $i++;
+             }
+                           
         }else{
-            $imageName4 = null;
+            $invoiceimage = null;
         }
+
+        
+
+
+        if($request->quantity){
+
+          $qnty = implode(", ", $request->quantity);
+        }else{
+            $qnty = "null";
+        }
+
+        if( $request->price){
+
+            $price = implode(" , ", $request->price);
+        }else{
+           $price = "null"; 
+        }
+
+
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;
@@ -172,8 +212,8 @@ class marketingController extends Controller
         $mhinvoice->deliver_location = $request->address;
         $mhinvoice->delivery_date = $request->delivery_date;
         $mhinvoice->item = $request->product;
-        $mhinvoice->quantity = $request->quantity;
-        $mhinvoice->price = $request->price;
+        $mhinvoice->quantity = $qnty;
+        $mhinvoice->price = $price;
         $mhinvoice->invoice_pic = $imageName1;
         $mhinvoice->signature = $imageName2;
         $mhinvoice->weighment_slip = $imageName3;
@@ -182,8 +222,8 @@ class marketingController extends Controller
         $mhinvoice->transactional_profit = $request->mhinvoice - $request->amount_to_manufacturer;
         $mhinvoice->manufacturer_number = $request->manufacturer_no;
         $mhinvoice->date_of_invoice = $request->dateOfInvoice;
-        $mhinvoice->total_amount = $request->quantity * $request->price;
-        $mhinvoice->manufacturer_invoice = $imageName4;
+        $mhinvoice->total_amount = $qnty * $price;
+        $mhinvoice->manufacturer_invoice = $invoiceimage;
         $mhinvoice->save();
         return back();
     }
@@ -191,12 +231,27 @@ class marketingController extends Controller
     {
          $cat = Category::all();
         $invoice =count(MhInvoice::all());
+            
 
+
+         $invoic =MhInvoice::all(); 
         
-        $inc = MhInvoice::where('item',$request->cat)->get();
-        $total = count($inc);
+        $inc = MhInvoice::where('item',$request->cat)
+        ->orderBy('invoice_id','ASC')->get();
+            
+         $total = count($inc);
          
    
-        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'total'=>$total]);
+        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'invoic'=>$invoic,'total'=>$total]);
+    }
+
+    public function pending(request $request){
+        $pending = Order::leftjoin('mh_invoice','mh_invoice.requirement_id','orders.id')->where('orders.id','!=','mh_invoice.requirement_id')->
+        where('orders.status','Order Confirmed')->select('orders.id as orderid','orders.*')->get();
+       
+           $countrec = count($pending);
+          $invoice = MhInvoice::pluck('requirement_id')->toArray();
+        
+        return view('pending',['rec'=>$pending,'countrec'=>$countrec,'invoice'=> $invoice]);
     }
 }

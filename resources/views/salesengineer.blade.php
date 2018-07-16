@@ -13,7 +13,7 @@
                   <th style="width:15%">Address</th>
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
-                  <th>project Status</th>
+                 
                  <th>Action</th>
                  <th> Customer History</th>
                 
@@ -33,21 +33,14 @@
                                         {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}
                                     </td>
                     <td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
-                    <td>
-                    <!-- <td>{{ Count($projects)   }}</td> -->
-                    @foreach($orders as $order)
-                    @if($project->project_id == $order->project_id)
-                    {{ $order->status }}
-                    @endif
-                    @endforeach
-                    </td>
+                    
                    
                    
                      <td><form method="post" action="{{ URL::to('/') }}/confirmedProject" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">
                                       <div class="btn-group">
-                                      <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button>
+                                      <!-- <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button> -->
                                       <a class="btn btn-sm btn-success " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
@@ -148,18 +141,97 @@
                     <label required class="checkbox-inline"><input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
                  </td>
                </tr>
-               <tr>
-                 <td>Interested in RMC</td>
-                 <td>:</td>
-                 <td style="padding: 20px;">
-                     <div class="radio">
-                      <label><input required value="Yes" id="rmc" {{ $project->interested_in_rmc == "Yes" ? 'checked' : '' }} type="radio" name="rmcinterest">Yes</label>
-                    </div>
-                    <div class="radio">
-                      <label><input required value="No" {{ $project->interested_in_rmc == "No" ? 'checked' : '' }} id="rmc2" type="radio" name="rmcinterest">No</label>
-                    </div>
-                 </td>
-               </tr>
+              <tr>
+                                 <td>Interested In RMC</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="rmc" {{ $project->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="rmc2" {{ $project->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="rmc2" {{ $project->interested_in_rmc == "none" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Bank loans?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $project->interested_in_loan == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="loaninterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $project->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $project->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In UPVC Doors and Windows?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="dandw1" {{ $project->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw2" {{ $project->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw3" {{ $project->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                                <tr>
+                                 <td>Interested In Home Automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $project->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $project->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $project->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="home1" {{ $project->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="home2" {{ $project->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="home3" {{ $project->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Premium Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="premium1" {{ $project->interested_in_premium == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="premium">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="premium2" {{ $project->interested_in_premium == "No" ? 'checked' : '' }} required value="No" type="radio" name="premium">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="premium3" {{ $project->interested_in_premium == "None" ? 'checked' : '' }} required value="None" type="radio" name="premium">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
         
                <tr>
                 <td>Type of Contract ? </td>
@@ -665,7 +737,7 @@
            <table class="">
                                        
                                         <tr>
-                                       <td style="padding: 10px;" > Project Created by</td>
+                                       <td style="padding: 10px;" > Project Created By</td>
                                        <td>:</td>
                                        <td style="padding: 10px;">{{ date('d-m-Y', strtotime( $project->created_at)) }}</td>
                                         <td>
@@ -673,7 +745,7 @@
                                             </td>
                                        </tr>
                                         <tr>
-                                       <td style="padding: 10px;" > Project Updated by</td>
+                                       <td style="padding: 10px;" > Project Updated By</td>
                                        <td>:</td>
                                        <td style="padding: 10px;">{{ date('d-m-Y', strtotime(  $project->updated_at)) }}</td>
                                         <td>
@@ -688,7 +760,7 @@
                                        <tbody>
                                        <thead>
                                           <!-- <th>User_id</th> -->
-                                          <th>SlNo</th>
+                                          <th>Serial No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
                                          <th> &nbsp;&nbsp; Name </th>

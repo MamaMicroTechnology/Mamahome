@@ -3,7 +3,7 @@
 
 <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: green;color: white;">SMS
+        <div class="panel-heading" style="background-color: green;color: white;">Assigned Phone Numbers
         <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
         </div>
         <div class="panel-body"> 
@@ -14,7 +14,7 @@
 	                       			<tbody>
 			        	 				<td><label>Enter Phone Number</label></td>
 			        	 				<td>:</td>
-			        	 				<td><input required type="text" id="num" class="form-control" name="phNo" onblur="checklength('scontact');" onkeyup="getnum()"></td>
+			        	 				<td><input required type="text" id="num" class="form-control" name="phNo" onblur="checklength('scontact');" onkeyup="getnum()" placeholder="Enter Your Mobile Number"></td>
                         <td><button type="submit">submit</button>
 			        	 		</tbody>
 			        	 		</table>

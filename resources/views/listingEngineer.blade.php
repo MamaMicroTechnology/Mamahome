@@ -11,11 +11,6 @@
                   @else
                   Your Assigned Ward is  {{$subwards->sub_ward_name}}
                   @endif
-                   
-                  @if(session('Success'))
-
-                   <div class="btn btn-default btn-sm alert-success pull-right">{!! session('Success') !!} </div>
-                  @endif
                   @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
                   @endif
@@ -24,10 +19,8 @@
                 @if($subwards)
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
-                   <br>
-                    
-                                     
-                             <center>       
+                   <br>              
+                     <center>       
                      <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
                    <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
@@ -80,17 +73,19 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in RMC</td>
+                                 <td>Interested In RMC</td>
                                  <td>:</td>
                                  <td>
                                      
                                       <label ><input required value="Yes" id="rmc" type="radio" name="rmcinterest"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label ><input required value="No" id="rmc2" type="radio" name="rmcinterest"><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input required value="None" id="rmc3" type="radio" name="rmcinterest"><span>&nbsp;</span>None</label>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Bank loans?</td>
+                                 <td>Interested In Bank loans?</td>
                                  <td>:</td>
                                  <td>
                                     
@@ -105,7 +100,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in UPVC Doors and Windows?</td>
+                                 <td>Interested In UPVC Doors And Windows?</td>
                                  <td>:</td>
                                  <td>
                                     
@@ -121,23 +116,38 @@
                                </tr>
 
                                <tr>
-                                 <td>Interested in Home automation?</td>
+                                 <td>Interested In Home Automation?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input required value="Yes" id="loan1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
+                                      <label><input required value="Yes" id="home1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                   
-                                      <label><input required value="No" id="loan2" type="radio" name="automation"><span>&nbsp;</span>No</label>
+                                      <label><input required value="No" id="home2" type="radio" name="automation"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
                                 
-                                      <label><input required value="None" id="loan3" type="radio" name="automation"><span>&nbsp;</span>None</label>
+                                      <label><input required value="None" id="home3" type="radio" name="automation"><span>&nbsp;</span>None</label>
+                                   
+                                 </td>
+                               </tr>
+                                <tr>
+                                 <td>Interested In Premium Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input required value="Yes" id="premium1" type="radio" name="premium"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="premium2" type="radio" name="premium"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="premium3" type="radio" name="premium"><span>&nbsp;</span>None</label>
                                    
                                  </td>
                                </tr>
 
                                <tr>
-                                <td>Type of Contract ? </td>
+                                <td>Type of Contract ?</td>
                                 <td>:</td>
                                 <td>
                                   <select class="form-control" name="contract" id="contract" class="requiredn">
@@ -154,7 +164,7 @@
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
                                <tr>
-                                   <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
+                                   <td>Govt. Approvals<br>(Municipal, BBMP, ETC)</td>
                                    <td>:</td>
                                    <td><input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
                                </tr>
@@ -207,8 +217,7 @@
 
                                       </div>
                                        <div class="col-md-3">
-                                          
-                                       
+                                        
                                           <label class="checkbox-inline">
                                           <input id="carpentry" style="width: 33px;" type="checkbox" onchange="count()" name="status[]" value="Carpentry"><span>&nbsp;&nbsp;&nbsp;</span>Carpentry
                                         </label>
@@ -234,6 +243,30 @@
                                    </td>
                                </tr>
                                <tr>
+                                      <td>Project Type</td>
+                                      <td>:</td>
+                                      <td>
+                                      <div class="row">
+                                      <div class="col-md-3">
+                                      <input value="{{ old('basement') }}" onkeyup="check('basement')"
+                                      id="basement" name="basement" type="text" autocomplete="off"
+                                      class="form-control input-sm" placeholder="Basement" id="email">
+                                      </div>
+                                      <div class="col-md-2">
+                                      <b style="font-size: 20px; text-align: center">+</b>
+                                      </div>
+                                      <div class="col-md-3">
+                                      <input value="{{ old('ground') }}" onkeyup="check('ground');"
+                                      autocomplete="off" name="ground" id="ground" type="text"
+                                      class="form-control" placeholder="Floor">
+                                      </div>
+                                      <div class="col-md-3">
+                                      <p id="total"></p>
+                                      </div>
+                                      </div>
+                                      </td>
+                              </tr>
+                               <tr>
                                    <td>Plot Size</td>
                                    <td>:</td>
                                    <td>
@@ -252,11 +285,24 @@
                                       </div>
                                     </div>
                                     </td>
+                                   
                                </tr>
+                               <!-- <tr>
+                                    <td>Recommended Project Size Is</td>
+                                     <td>:</td>
+                                    <td>
+                                     
+                                    </td>
+                                </tr> -->
                                <tr>
                                    <td>Project Size (Approx.)</td>
                                    <td>:</td>
-                                   <td><input value="{{ old('pSize') }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class="form-control input-sm" name="pSize" onkeyup="check('pSize')"></td>
+                                   <td id= "totalofsize">
+                                    <div class="col-md-4 pull-left">
+                                    <input value="{{ old('pSize') }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class="form-control input-sm" name="pSize" onkeyup="check('pSize')">
+                                    </div>
+                                    <div class="col-md-8 alert-success pull-right" id="pSizeTag"></div>
+                                  </td>
                                </tr>
                                <tr>
                                  <td>Budget Type</td>
@@ -284,10 +330,10 @@
                                         <table id="bhk" class="table table-responsive">
                                             <tr id="selection">
                                                 
-                                            </tr>F
+                                            </tr>
                                             <tr>
                                                 <td colspan=3>
-                                                    <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add more</button>
+                                                    <button onclick="addRow();" type="button" class="btn btn-primary form-control">Add More</button>
                                                 </td>
                                             </tr>
                                         </table>
@@ -635,12 +681,18 @@
       if(!isNaN(breadth) && !isNaN(length)){
         
         var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum          = length*breadth;
-        Size    += sum;
+        sum1          = length*breadth;
+        Size    += sum1;
+        var total = sum * sum1;
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
         else
           document.getElementById("totalsize").innerHTML = '';
+         if(document.getElementById("pSize").value != null){
+           document.getElementById("pSize").value = total;
+           document.getElementById("pSizeTag").innerHTML = "This Is Recommended Size. You Can Change If Required!!";
+         }else
+          document.getElementById("pSize").value = '';
       }
     }
     return false;
@@ -724,6 +776,7 @@
         var ctype2 = document.getElementById('constructionType2');
         var rmc = document.getElementById('rmc');
         var rmc2= document.getElementById('rmc2');
+         var rmc3= document.getElementById('rmc3');
         if(current == 'first')
         { 
           if(document.getElementById("pName").value == ""){
@@ -738,12 +791,16 @@
             window.alert("You have not entered Road Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
             window.alert("Please choose the construction type");
-          }else if(rmc.checked == false && rmc2.checked == false){
+          }else if(rmc.checked == false && rmc2.checked == false && rmc3.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
           }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
           }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
-            window.alert("Please tell us whether the customer is interested in purchasing doors and windows");
+            window.alert("Please tell us whether the customer is interested in purchasing UPVC doors and windows");
+          }else if(home1.checked == false && home2.checked == false && home3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in Home Automation");
+          }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
+            window.alert("Please tell us whether the customer is interested in premium products");
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
@@ -895,10 +952,12 @@
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
-      var opts = "<option value=''>--Floor--</option><option value='Ground'>Ground</option>";
+      var opts = "<option value=''>--Floor--</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
+        fsum          = ground+1;
+        var base         = basement;
         floor       += sum;
         
         if(document.getElementById("total").innerHTML != null)
@@ -942,9 +1001,15 @@
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }
-          for(var i = 1; i<sum; i++){
+
+          for(var i = base; i>0; i--){
+            opts += "<option value='"+i+"'>Base "+i+"</option>";
+          }
+          opts += "<option value='Ground'>Ground</option>";
+          for(var i = 1; i<fsum; i++){
             opts += "<option value='"+i+"'>Floor "+i+"</option>";
           }
+
           document.getElementById("floorNo").innerHTML = opts;
         }
         else
@@ -1069,7 +1134,31 @@ function validateForm(arg)
     }
 }
 
-
 </script>
+
+  <!-- Modal -->
+@if(session('Success'))
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #c9ced6;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Success</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('Success') !!}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#myModal").modal('show');
+  });
+</script>
+@endif
 
 @endsection

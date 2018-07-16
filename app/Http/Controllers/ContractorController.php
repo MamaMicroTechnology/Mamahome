@@ -851,7 +851,7 @@ break;
 
        $total = number_format($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1+$bathroom+$wood+$paints+$ward+$rail+$glas);
        $table .="<tr><th></th>
-                <th>Total Approximate Estimation Amount</th>
+                <th>Total Approximate Material Cost</th>
                    
                 <th>".  $total ."</th>
                   

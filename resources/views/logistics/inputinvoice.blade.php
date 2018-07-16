@@ -9,7 +9,7 @@
 <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <table class="table table-hover" border=1 id="POITable">
+                <table class="table table-hover" border=1 >
                     <tr>
                         <th colspan="4" style="background-color:rgb(191, 191, 63)">
                             <center>GST INVOICE<br>
@@ -90,41 +90,31 @@
                     <tr>
                         <td colspan="4" style="padding-bottom:20px;"></td>
                     </tr>
+                    
                     <tr style="background-color: rgba(127, 178, 76, 0.7)">
                         <td>S. No.</td>
                         <td>Description of Item</td>
-                        <td>Quantity</td>
-                        <td>Price</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>{{ $products[$i] }}</td>
-                        <input type="hidden" name="product" value="{{ $products[$i] }}">
-                        <td><input type="text" required name="quantity" placeholder="Quantity" id="quantity{{ $i }}" class="form-control"></td>
-                        <td><input type="text" required name="price" placeholder="Price" id="price{{ $i }}" class="form-control"></td>
+                        <td>Quantity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Price</td>
                         
                     </tr>
-                    <!-- <tr>
-                        <td colspan=3>
-                            <div class="col-md-5 col-md-offset-7">
-                                <p>CGST - Output Payable @ 2.5 %</p>
-                                <p>SGST - Output Payable @ 2.5 %</p>
-                                <p>Basic Total - </p>
-                                <hr>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    Total:</p>
-                            </div>
-                        </td>
+                    <tr >
+                    <td>1</td>
+                        <td>{{ $products[$i] }}</td>
                         <td>
-                            <p id="cgst">₹0</p>
-                            <p id="sgst">₹0</p>
-                            <p id="bTotal">₹0</p>
-                                <hr>
-                            <p id="total">₹0</p>
+                        <input type="hidden" name="product" value="{{ $products[$i] }}">
+                        <table id="POITable">
+                        <tr>
+                        <td><input type="text" required name="quantity[]" placeholder="Quantity" id="quantity{{ $i }}" class="form-control"></td>
+                        <td><input type="text" required name="price[]" placeholder="Price" id="price{{ $i }}" class="form-control">
                         </td>
-                    </tr> -->
+                        </tr>
+                        </table>
+                      <INPUT type="button" class="btn btn-primary btn-sm" value="ADD" onclick="addrow()"/>
+                        </td>
+                        
+                    </tr>
+                
                     <tr>
                         <td colspan=4 style="text-align: center;">
                             <center>
@@ -156,14 +146,7 @@
                         <td colspan=2>Mamahome Invoice Amount</td>
                         <td colspan=2><input required type="text" name="mhinvoice" placeholder="Mamahome Invoice Amount" id="" class="form-control"></td>
                     </tr>
-                    <!-- <tr>
-                        <td colspan=2>Manufacturer No.</td>
-                        <td colspan=2>MH210</td>
-                    </tr> -->
-                    <!-- <tr>
-                        <td colspan=2>Quantity</td>
-                        <td colspan=2><input type="text" name="" placeholder="Quantity" id="" class="form-control"></td>
-                    </tr> -->
+                    
                     <tr>
                         <td colspan=4>
                             <button type="submit" class="btn btn-primary form-control" id ="voice" onclick="myFunction()">Save</button>
@@ -194,4 +177,13 @@ var r = confirm("Do you want to Add invoice");
    
 }
 
+
+function addrow() {
+    var table = document.getElementById("POITable");
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.innerHTML = "<input type=\"text\" class=\"form-control\" name=\"quantity[]\" placeholder=\"Quantity\" >";
+    cell2.innerHTML = "<input type=\"text\" class=\"form-control\" name=\"price[]\" placeholder=\"price\" >";
+}
 </script>
