@@ -181,7 +181,7 @@
    
     var marker, i;
     var subward = new google.maps.Polygon({
-        paths:  newpat,
+        paths:  newpath,
         strokeColor: '#'+col,
         strokeOpacity: 1,
         strokeWeight: 2,
