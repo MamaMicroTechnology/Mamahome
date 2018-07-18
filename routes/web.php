@@ -17,12 +17,17 @@ Route::get('/', function () {
 });
 
 // chatting
+Route::get('/Unupdated','HomeController@Unupdated');
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
  Route::get('/h','HomeController@hstore');
  Route::get('/viewMap','HomeController@viewMap');
  Route::post('/saveinvoice','marketingController@saveinvoice');
+ Route::post('/price','marketingController@price');
+ Route::get('/allprice','HomeController@allprice');
+
+
  Route::get('/pending','marketingController@pending');
 Route::get('/map','HomeController@display');
 Auth::routes();
@@ -217,6 +222,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
+    Route::get('/setprice','HomeController@setprice');
+
     Route::get('/adtraining','HomeController@adtraining');
     Route::get('/adenquirysheet','HomeController@enquirysheet');
     Route::get('/{id}/attendance','HomeController@hrAttendance');
@@ -503,6 +510,8 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/saveSignature','logisticsController@saveSignature');
     Route::post('/payment','logisticsController@payment');
     Route::post('/saveDeliveryDetails','logisticsController@saveDeliveryDetails');
+    Route::post('/feedback','logisticsController@feedback');
+    Route::post('/deposit','logisticsController@deposit');
     Route::get('/lcinvoice','logisticsController@lcinvoice');
 });
 
@@ -518,3 +527,4 @@ Route::get('/stage','HomeController@getLockedStage');
 Route::get('/reset','HomeController@getReset');
 Route::get('/total','HomeController@getTotal');
 Route::post('/clearcheck','mamaController@clearcheck');
+Route::get('/cashdeposit','marketingController@cashdeposit');

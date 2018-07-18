@@ -179,6 +179,68 @@
 								<td><label>Location* : </label></td>
 								<td>{{ $enq->address }}</td>
 							</tr>
+
+                              <tr>
+    <td><label>Billing And Shipping Address : </label></td>
+    <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
+ Address
+</button>
+<!-- The Modal -->
+<div class="modal" id="myModal4">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Billing And Shipping Address </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+       
+        <label>Blling Adderss</label>
+            <textarea class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;" value="{{ $enq->billadress }}">{{ $enq->billadress }}
+        </textarea>
+            
+       <br>
+        <label>Shipping Adderss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br><br>
+        <div class="col-md-12">
+            <div class="col-md-9">
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;&nbsp;same Address</label><br><br>
+            </div>
+            
+        </div>
+        <label id="sp1">Shipping Adderss</label>
+            <textarea class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;" value="{{ $enq->ship }}">
+            {{ $enq->ship }}
+        </textarea>
+           <script type="text/javascript">
+               function myfunction(){
+          
+                document.getElementById('sp').style.display = "none";
+                document.getElementById('sp1').style.display = "none";
+               }
+
+
+           </script> 
+       <br>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+      </div>
+</div>
+
+      <!-- Modal footer -->
+
+    </div>
+  </div>
+
+
+
+    </td>
+</tr>
+
 							<tr>
 								<td><label>Quantity* : </label></td>
 								<td>{{ $enq->quantity }}</td>

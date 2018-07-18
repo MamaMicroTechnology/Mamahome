@@ -58,12 +58,20 @@
 							<form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
 							{{ csrf_field() }}
 							<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-							@if($rec->payment_mode != NULL && $rec->payment_mode != "Check" )
+					@if($rec->payment_mode != NULL && $rec->payment_mode != "Check" &&  $rec->status == "Order Confirmed")
+							  @if($rec->delivery_boy != NULL)
+							     @foreach($users as $user)
+							       @if($rec->delivery_boy == $user->id)
+							            {{ $user->name }}
+							     @endif
+							 @endforeach
+								@else
 								<select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
 										<option value="">--Select--</option>
 									@foreach($users as $user)
 										<option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
 									@endforeach
+									@endif
 								</select>
 								@endif
 							</form>
@@ -102,6 +110,7 @@
 							@if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
 								{{ $rec->payment_mode }}
 							@elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
+
 							<form method="POST" action="{{ URL::to('/') }}/paymentmode">
 							{{ csrf_field() }}
 							<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
@@ -109,12 +118,12 @@
 										<option value="">--Select--</option>
 									    <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
 									    <option value="CASH" id="cash" onclick="cash()">Cash</option>
-									    <option value="check" data-toggle="modal" data-target="#myModal" >Check</option>
+									    <option value="check" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}" >Cheque</option>
 								</select>
 							</form>
                              
 						@elseif($rec->payment_mode == "Cheq Clear")
-							<button class="btn btn-success btn-sm disabled">Cheq Clear</button>
+							<button class="btn btn-success btn-sm disabled">Cheque Cleared</button>
 							@else
 							<button class="btn btn-success btn-sm disabled">Cheq Processing</button>
 							@endif
@@ -122,13 +131,13 @@
 							
                              
 							 <!-- The Modal -->
-  <div class="modal" id="myModal">
+  <div class="modal" id="myModal{{ $rec->orderid }}">
     <div class="modal-dialog">
       <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header" style="width:100%;padding:1px;background-color: rgb(191, 191, 63);">
-          <h4 class="modal-title">Check Details</h4>
+        <div class="modal-header" style="width:100%;padding:2px;background-color:green;">
+        <center>  <h4 class="modal-title" style="color: white;">Cheque Details</h4></center>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -140,22 +149,27 @@
         <input type="hidden" name="project_id" value="{{$rec->project_id}}">
 		<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
        <tr>
-        		<th>Check Number</th>
+        		<th>Cheque Number</th>
         		<td>:</td>
         		<td><input type="text" name="checkno" class="form-control" required></td>
         	</tr>
         	<tr>
-        		<th>Check Amount</th>
+        		<th>Cheque Amount</th>
         		<td>:</td>
         		<td><input type="text" name="amount" class="form-control"  required></td>
         	</tr>
         	<tr>
-        		<th>Check Date</th>
+        		<th>Cheque Date</th>
         		<td>:</td>
         		<td><input type="text" name="date" class="form-control" required></td>
         	</tr>
         	<tr>
-        		<th>Check Picture</th>
+        		<th>Bank Name</th>
+        		<td>:</td>
+        		<td><input type="text" name="bank" class="form-control" required></td>
+        	</tr>
+        	<tr>
+        		<th>Cheque Picture</th>
         		<td>:</td>
         		<td><input type="file" name="image" class="form-control" required></td>
         	</tr>
@@ -165,8 +179,8 @@
          </div>
         
         <!-- Modal footer -->
-        <div class="modal-footer" style="padding:1px">
-          <button type="button" class="btn btn-danger" data-dismiss="modal"  style="padding:2px;">Close</button>
+        <div class="modal-footer" style="padding:2px">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
         
       </div>

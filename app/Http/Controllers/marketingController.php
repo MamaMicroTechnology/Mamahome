@@ -45,6 +45,8 @@ use App\MhInvoice;
 use App\brand;
 use App\Message;
 use App\training;
+use App\Pricing;
+use App\Deposit;
 
 class marketingController extends Controller
 {
@@ -236,8 +238,15 @@ class marketingController extends Controller
 
          $invoic =MhInvoice::all(); 
         
-        $inc = MhInvoice::where('item',$request->cat)
-        ->orderBy('invoice_id','ASC')->get();
+        // $inc = MhInvoice::where('item',$request->cat)
+        //      ->orderBy('invoice_id','ASC')->get();
+
+             if($request->cat == "ALL"){
+                $inc = MhInvoice::get();
+         }else{
+             $inc = MhInvoice::where('item',$request->cat)
+             ->orderBy('invoice_id','ASC')->get();
+         }
             
          $total = count($inc);
          
@@ -254,4 +263,30 @@ class marketingController extends Controller
         
         return view('pending',['rec'=>$pending,'countrec'=>$countrec,'invoice'=> $invoice]);
     }
+
+
+ public function price(request $request){
+
+           $price = new Pricing;
+           $price->cat = $request->cat;
+           $price->brand = $request->brand;
+           $price->suncat = $request->subcat;
+           $price->quantity = $request->quan;
+           // $price->asstl = $request->asstl;
+           $price->stl = $request->stl;
+           $price->leandse = $request->leandse;
+          $price->save();
+      
+        return back();
+ }
+
+ public function cashdeposit(request $request)
+ {
+     $cash = Deposit::all();
+     $dep = User::all();
+
+$countrec = count($cash);
+
+     return view('/cashdeposit',['cash'=>$cash,'dep'=>$dep,'countrec'=>$countrec]);
+ }
 }

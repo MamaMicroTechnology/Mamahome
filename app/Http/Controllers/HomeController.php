@@ -73,6 +73,7 @@ use App\Detail;
 use App\Projection;
 use App\Conversion;
 use App\Utilization;
+use App\Pricing;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -155,8 +156,12 @@ class HomeController extends Controller
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $cat = category::where('id',$request->cat)->pluck('id')->first();
           
-            
-           
+         if($request->name){
+
+              $shipadress = $request->billadress;     
+         }   
+           $shipadress = $request->billadress;   
+
    // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
@@ -230,7 +235,9 @@ class HomeController extends Controller
                                                 'updated_at' => date('Y-m-d H:i:s'),
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
-                                                'generated_by' => $request->initiator
+                                                'generated_by' => $request->initiator,
+                                                'billadress'=>$request->billadress,
+                                                'ship' =>$shipadress
                                         ]);
         if($x)
         {
@@ -1971,6 +1978,27 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $categories = Category::all();
         return view('updateprice',['prices'=>$prices,'categories'=>$categories]);
     }
+
+    public function setprice(Request $request){
+        $prices = CategoryPrice::all();
+        $categories = Category::all();
+        $myPrices = Pricing::leftJoin('category','pricing.cat','category.id')
+                            ->leftJoin('brands','pricing.brand','brands.id')
+                            ->leftJoin('category_sub','pricing.suncat','category_sub.id')
+                            ->get();
+        return view('setprice',['prices'=>$prices,'categories'=>$categories,'myPrices'=>$myPrices]);
+    }
+ public function allprice(Request $request){
+       $myPrices = Pricing::leftJoin('category','pricing.cat','category.id')
+                            ->leftJoin('brands','pricing.brand','brands.id')
+                            ->leftJoin('category_sub','pricing.suncat','category_sub.id')
+                            ->get();
+         $users = User::get();
+                         
+        return view('allprice',['myPrices'=>$myPrices,'users'=>$users]);
+    }
+
+
     public function amorders(Request $request)
     {
         if($request->projectId){
@@ -1992,6 +2020,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
+       
+        
         return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
     }
     public function getSubCat(Request $request)
@@ -5318,4 +5348,55 @@ public function display(request $request){
         }
        return view('projection.projectionStage',['wards'=>$wards,'category'=>$category,'date'=>$date]);
    }
+   public function Unupdated(Request $request){
+
+        $wards = Ward::orderby('ward_name','ASC')->get();
+         $wardid= $request->subward;
+        // if($request->subward){
+        //
+        // }else{
+        //     $wardid = NULL;
+        // }
+        if($request->from && $request->to && !$request->subward && !$request->ward){
+
+            $from=$request->from;
+            $to=$request->to;
+           $projectid = ProjectDetails::where('updated_at','<=',$from)
+                     ->where('updated_at','>=',$to)
+                     ->pluck('project_id');
+            $project = ProjectDetails::whereNotIn('project_id',$projectid)
+                    ->paginate(20);
+            $totalproject =count($projectid);
+            $site = SiteAddress::all();
+            $total = count($project);
+        
+             return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+        }
+        else if( $request->from && $request->to && $request->subward && $request->ward){
+            $from=$request->from;
+            $to=$request->to;
+           $projectid = ProjectDetails::where('updated_at','<=',$from)
+                     ->where('updated_at','>=',$to)
+                     ->where('sub_ward_id',$wardid)
+                     ->pluck('project_id');
+                      $project = ProjectDetails::where('sub_ward_id',$wardid)
+                                ->whereNotIn('project_id',$projectid)
+                                ->paginate(20);
+            $totalproject =count($projectid);
+            $site = SiteAddress::all();
+            $total = count($project);
+           
+             return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+        }
+        else{
+          
+                $project = null;
+                $total = "";
+                $from = "";
+                $to = "";
+                return view('unupdated',['project'=>$project,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total]);
+        }
+    }
+
+
 }

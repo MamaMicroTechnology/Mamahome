@@ -521,6 +521,12 @@ div#calendar{
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
      <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
+  <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
+  <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
+  <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
+
+
+
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -531,6 +537,8 @@ div#calendar{
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
+              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
@@ -553,6 +561,8 @@ div#calendar{
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
     <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
@@ -589,7 +599,10 @@ div#calendar{
        @endif
      @else
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+
      @endif
+    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>

@@ -1676,6 +1676,7 @@ class mamaController extends Controller
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
                 
+               
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1894,6 +1895,8 @@ class mamaController extends Controller
      $check->orderId = $request->orderId;
      $check->checkno  = $request->checkno; 
      $check->amount = $request->amount;
+     $check->bank = $request->bank;
+
      $check->date = $request->date;
      $check->image = $empimage;
      $check->save();

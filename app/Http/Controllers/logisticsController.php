@@ -37,7 +37,7 @@ use App\Point;
 use App\SiteAddress;
 use App\OwnerDetails;
 use App\Payment;
-
+use App\Deposit;
 class logisticsController extends Controller
 {
     public function __construct()
@@ -92,13 +92,15 @@ class logisticsController extends Controller
                 ->leftJoin('users','orders.delivery_boy','=','users.id')
                 ->leftJoin('delivery_details','delivery_details.order_id','orders.id')
                 ->leftJoin('payment','payment.order_id','orders.id')
+                ->leftJoin('deposit','deposit.orderId','orders.id')
                 ->select('orders.*','orders.id as orderid','users.name','users.group_id','delivery_details.vehicle_no',
-                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','payment.payment_status as paymentStatus','payment.signature','payment.signature1','payment.amount','payment.id as paymentId','payment.advance_amount')
+                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','payment.payment_status as paymentStatus','payment.signature','payment.signature1','payment.amount','payment.id as paymentId','payment.advance_amount','deposit.orderId as depo_order_id')
                 ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
         $countview = Order::where('delivery_boy',Auth::user()->id)->count();
         $payment = Payment::all();
-        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment]);
+        $deposit = Deposit::all();
+        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment,'deposit'=>$deposit]);
     }
     
     public function showProjectDetails(Request $id)
@@ -172,6 +174,8 @@ class logisticsController extends Controller
     // }
     public function payment(Request $request){
 
+
+
             $signatureName = Auth::user()->id."signature".time().'.'.request()->signature->getClientOriginalExtension();
              $request->signature->move(public_path('signatures'),$signatureName);
              if($request->signature1){
@@ -182,43 +186,42 @@ class logisticsController extends Controller
                 $signatureName1 = "";
              }
              // dd($request->advanceAmount);
-             if($request->advanceAmount){
-                $pay = Payment::where('id',$request->advanceAmount)->first();
+             if($request->payment_method){
+
+            $paymode = implode(", ", $request->payment_method);
+             }else{
+                  $paymode="null";
+             }
+            
+             $pays = Payment::where('order_id',$request->orderid)->first();
+
+               if($pays == NULL){
+               $pay = new Payment;
+                
                 $pay->payment_status = "Payment Received";
                 $pay->project_id = $request->project_id;
                 $pay->amount = $request->amount;
-                $pay->p_method = $request->payment_method;
+                $pay->p_method =  $paymode;
                 $pay->log_name = $request->log_name;
                 $pay->order_id = $request->orderId;
                 $pay->signature=$signatureName;
                 $pay->signature1=$signatureName1;
                 $pay->c_name = $request->c_name;
                 $pay->save();
-             }else{
-                   $pay = new Payment();
-                   
-                    $pay->amount= $request->amount;
-                   
-                    if($request->payment_method == "Advanced") {
-                         $pay->payment_status = "Advance Received";
-                         $pay->advance_amount = $request->amount;
-                         $pay->save();
-                         
-                    }else{
-                         $pay->payment_status = "Payment Received";
-                        
-                    $pay->save();
-                    }
-                   $pay->project_id = $request->project_id;
-                   $pay->p_method = $request->payment_method;
-                   $pay->log_name = $request->log_name;
-                   $pay->order_id = $request->orderId;
-                   $pay->signature=$signatureName;
-
-                   $pay->signature1=$signatureName1;
-                   $pay->c_name = $request->c_name;
-                   $pay->save();
              }
+               else{
+                   $pays->project_id = $request->project_id;
+                   $pays->p_method = $request-> $paymode;
+                   $pays->log_name = $request->log_name;
+                   $pays->order_id = $request->orderId;
+                   $pays->signature=$signatureName;
+                    $pays->signature1=$signatureName1;
+                   $pays->c_name = $request->c_name;
+                    $pays->payment_status = "Payment Received";
+                    $pays->amount = $request->amount;
+                   $pays->save();
+               }
+             
         $points = new Point;
         $points->user_id = Auth::user()->id;
         $points->point = 400;
@@ -544,4 +547,53 @@ class logisticsController extends Controller
    
 
     }
+
+     public function feedback(Request $request)
+    {
+             
+       $check = Order::where('id',$request->orderId)->first();
+        if($check != NULL){
+
+            $check->happy = $request->happy;
+            $check->quality = $request->quan;
+            $check->issue = $request->issue;
+            $check->feedback = $request->note;
+            $check->save();
+            return back();
+
+            }
+    }
+     public function deposit(Request $request){
+
+
+
+            $signatureName = Auth::user()->id."signature".time().'.'.request()->image->getClientOriginalExtension();
+             $request->image->move(public_path('signatures'),$signatureName);
+           
+             $pays = Deposit::where('orderId',$request->orderid)->first();
+
+               if($pays == NULL){
+               $pay = new Deposit;
+                $pay->orderId = $request->orderId;
+                $pay->user_id = $request->user_id;
+                $pay->bankname =  $request->bankname;
+                $pay->Amount = $request->Amount;
+                $pay->bdate = $request->bdate;
+                $pay->image=$signatureName;
+               
+                $pay->location = $request->location;
+                $pay->save();
+             }
+               else{
+                $pays->orderId = $request->orderId;
+                $pays->user_id = $request->user_id;
+                $pays->bankname =  $request->bankname;
+                $pays->Amount = $request->Amount;
+                $pays->bdate = $request->bdate;
+                $pays->image=$signatureName;
+                $pays->location = $request->location;
+                $pays->save();
+               }
+               return back();
+           }
 }
