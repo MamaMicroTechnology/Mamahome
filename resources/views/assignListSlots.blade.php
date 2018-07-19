@@ -1,28 +1,41 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
-                <div class="panel-heading" style="color:white">Listing Engineers
+                <div class="panel-heading" style="color:white;font-size: 15px;"> Total Listing Engineers : {{ $totalcount }}
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
                     <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
+
                 </div>
-                <div class="panel-body" style=" height:500px;max-height:500px;overflow-y:scroll; overflow-x: hidden;">
-                    <table class="table table-responsive table-striped">
+                <div class="panel-body">
+                  
+                        <div class="col-md-12">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-1">
+                                 <label>Search :</label>
+                            </div>
+                            <div class="col-md-3">
+                                 <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Names and Phone Number Search" >
+                            </div>
+                        </div>
+                            <br><br><br>
+                    <table id="myTable" class="table table-responsive table-striped">
                         <thead>
                             <th style="text-align: center;">Employee Id</th>
                             <th style="text-align: center;">Name</th>
                             <th style="text-align: center;">Ward Assigned</th>
                             <th style="text-align: center;">Previous Assigned Ward</th>  
                             <th style="text-align: center;">Ward Images</th>
+                            <th style="text-align: center;">Ward Map</th>
                             <th style="text-align: center;">Contact No.</th>
                             <th style="text-align: center;">Action</th>
                         </thead>
-                        <tbody>
+                        <tbody  >
                             @foreach($users as $user)
                             <tr>
                                 <td  style="text-align: center;">{{$user->employeeId}}</td>
@@ -48,6 +61,10 @@
                                 <td style="text-align:center">
                                     <a href="{{ URL::to('/')}}/public/subWardImages/{{$user->sub_ward_image}}" target="_blank">View Image
                                     </a>
+                                </td>
+                                <td style="text-align:center">
+                                    <a href="{{ URL::to('/')}}/viewwardmap?UserId={{$user->id}} && wardname={{ $user->sub_ward_name }}" target="_blank">View map
+                                    </a>                                   
                                 </td>
                                 <td style="text-align:center">
                                     {{ $user->office_phone }}
@@ -182,5 +199,24 @@ function Subs(arg)
             }
         });
     }
+    function myFunction()
+     {
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                td1 = tr[i].getElementsByTagName("td")[6];
+                if (td) {
+                  if (td.innerHTML.toUpperCase().indexOf(filter) > -1 || td1.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+      }
+}
     </script>
 @endsection

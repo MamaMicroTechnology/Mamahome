@@ -504,7 +504,7 @@ class mamaController extends Controller
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
-           $length = $request->length;
+            $length = $request->length;
             $breadth = $request->breadth;
             $length = $request->length;
             $breadth = $request->breadth;
@@ -676,7 +676,7 @@ class mamaController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
-        $text = "Project added successfully.<br>Click <a href='viewProjects?no=".$no."'>here</a> to view material calculation";
+        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('Success',$text);
     }
     public function updateProject($id, Request $request)
@@ -1691,7 +1691,7 @@ class mamaController extends Controller
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
-                $order->sub_category = $requirement->sub_category ;
+                $order->sub_category = $requirement->sub_category;
                 $order->material_spec = $requirement->material_spec;
                 $order->referral_image1 = $requirement->referral_image1;
                 $order->referral_image2 = $requirement->referral_image2;
@@ -1731,7 +1731,8 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
-
+       
+      
         $validator = Validator::make($request->all(), [
         'subcat' => 'required'
         ]);
@@ -1771,7 +1772,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-          
+            'updated_by' =>Auth::user()->id,
             'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
