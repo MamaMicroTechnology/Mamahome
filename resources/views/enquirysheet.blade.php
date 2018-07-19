@@ -319,18 +319,18 @@ function myFunction() {
 
 		if(document.getElementById("categ").value  == "All"){
 			
-		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}	/	Quantity On Process :  {{ 87273 }}"
+		document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
 		}
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		
 		if(document.getElementById("categ").value  == "All"){
-		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}	/	Quantity On Confirmed : {{ 16146 }}"
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
 		}
 	}
 	else {
 		if(document.getElementById("categ").value  == "All"){
-		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}	/   Total Qunatity : {{103429 }}"
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}"
 	}
 	}
 }
