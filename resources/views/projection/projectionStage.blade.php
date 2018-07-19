@@ -1,4 +1,12 @@
-@extends('layouts.app')
+<?php
+    $group = Auth::user()->group->group_name;
+    if($group == "Auditor"){
+        $content = "auditor.layout.auditor";
+    }else{
+        $content = "layouts.app";
+    }
+?>
+@extends($content)
 @section('content')
     <?php $totalRequirement = 0; $totalPrice = 0; ?>
     <div class="col-md-8 col-md-offset-2">
@@ -126,7 +134,7 @@
     @if(isset($_GET['ward']) && $_GET['category'] != 'all')
     <script>
         var text = "<label>Monthly Target:</label><br>"+
-        "<label>{{ $conversion->unit }} : {{ number_format($monthly/100*$category->target) }}</label><br>"+
+        "<label>{{ $conversion->unit }} : {{ number_format(($monthly/100*$category->target)/100*$category->incremental_percentage) }}</label><br>"+
         "<label>Amount : {{ number_format($amount = $monthlyPrice/100*$category->target) }}</label><br>"+
         "<label>Transactional Profit : {{ number_format($amount/100*$category->transactional_profit) }}</label></b>";
         document.getElementById("right").innerHTML = text;

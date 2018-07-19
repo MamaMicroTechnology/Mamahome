@@ -39,11 +39,9 @@
 						@endif    
 						</td>
 				        <td style="text-align: center;">
-				      
-				             
                             @if($rec->paymentStatus != "Payment Received" && $rec->dispatch_status == 'Yes')
 							<button data-toggle="modal" data-target="#PaymentModal{{$rec->orderid}}" class="btn btn-success btn-sm">Payment Details</button>
-                                <form method="POST" action="{{ URL::to('/') }}/payment" enctype="multipart/form-data">
+                                <form method="POST" onsubmit="return assign('{{ $rec->orderid }}');" action="{{ URL::to('/') }}/payment" enctype="multipart/form-data">
                                     {{ csrf_field() }}
 									<div id="PaymentModal{{$rec->orderid}}" class="modal fade" role="dialog">
 										<div class="modal-dialog modal-sm">
@@ -58,27 +56,27 @@
 											</div>
 											<div class="modal-body">
 											<label for="PaymentDoneBy">Customer Name</label>
-											<input type="text" name="c_name" class="form-control input-sm">
+											<input placeholder="Customer Name" type="text" name="c_name" class="form-control input-sm">
 												<label for="paymentMethod">Payment Mode:</label>
 												<select name="payment_method"  class="form-control input-sm" id="ad" onchange="changeValue(this.value, '{{ $rec->project_id }}')">
 													<option value="">--Select--</option>
 													<option value="RTGS">RTGS(Online Payment)</option>
-													<option  value="Cheque">Cheque</option>
-													<option   value="Advanced">Advance</option>
+													<option value="Cheque">Cheque</option>
+													<option value="Advanced">Advance</option>
 												</select>
 												<label for="amount">Amount Received:</label>
-												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm">
+												<input required type="text" name="amount" id="amount{{ $rec->orderid }}" placeholder="Amount Received" class="form-control input-sm">
+												<br>
 												<label for="sign">Signature:</label>
-												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
+												<button data-toggle="modal" data-target="#my_signature" type="button" class="btn btn-sm">Take Signature</button>
 												<div id="show{{ $rec->project_id }}" class="hidden">
 													<label for="amount">Payment Picture</label>
 													<input id="adv"  type="file" name="signature1" id="sign" class="form-control input-sm" accept="image/*">
 												</div>
-												
 												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 												<input type="hidden" name="project_id" value="{{ $rec->project_id }}">
 												<input type="hidden" name="log_name" value="{{ $rec->delivery_boy }}">
-												
+												<input type="hidden" required name="sign" id="sign{{ $rec->orderid }}">
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-success pull-left">Save</button>
@@ -88,7 +86,8 @@
 									</div>
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
+                                <!-- <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a> -->
+								<a href="{{ URL::to('/') }}/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
                             @endif
                            
                         </td>
@@ -183,10 +182,50 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="my_signature" role="dialog">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Signature Pad</h4>
+			</div>
+			<div class="modal-body">
+				<!-- take signature -->
+				<div id="signature-pad" class="signature-pad">
+					<div class="signature-pad--body">
+						<canvas></canvas>
+					</div>
+					<div class="signature-pad--footer">
+						<div class="description">Sign above</div>
+						<div class="signature-pad--actions">
+							<div>
+								<button type="button" class="button clear" data-action="clear">Clear</button>
+								<button type="button" class="hidden" data-action="change-color">Change color</button>
+								<button type="button" class="hidden" data-action="undo">Undo</button>
+								<button class="hidden"><a href="{{url()->previous()}}">Back</a></button>
+							</div>
+							<div>
+								<button type="button" class="hidden" data-action="save-png">Save as PNG</button>
+								<button type="button" class="button save" data-action="save-jpg" data-dismiss="modal">Save</button>
+								<button type="button" class="hidden" data-action="save-svg">Save as SVG</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="sign" id="sign">
+				<!-- signature taking ends -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-    $('[data-toggle="popover"]').popover({html:true});   
+	$('[data-toggle="popover"]').popover({html:true});  
+	
 });
 </script>
 <script type="text/javascript">
@@ -262,14 +301,30 @@ $(document).ready(function(){
     	       }
     	    });
 	    }
-	 }
+	}
 function changeValue(val, id){
-//use comparison operator   
-if(val=="Cheque")
-     document.getElementById('show'+id).className = "";
- else{
- 	 document.getElementById('show'+id).className="hidden";
- }
+	//use comparison operator   
+	if(val=="Cheque")
+		document.getElementById('show'+id).className = "";
+	else{
+		document.getElementById('show'+id).className="hidden";
+	}
+}
+function assign(arg){
+	var sign = document.getElementById('sign').value;
+	var amount = document.getElementById('amount'+arg).value;
+	if(isNaN(amount)){
+		alert("Please enter proper amount");
+		document.getElementById('amount'+arg).value = "";
+		return false;
+	}
+	if(sign != ""){
+		document.getElementById("sign"+arg).value = sign;
+	}else{
+		alert("Please Take Signature First");
+		return false;
+	}
+	return true;
 }
 </script>
 @endsection

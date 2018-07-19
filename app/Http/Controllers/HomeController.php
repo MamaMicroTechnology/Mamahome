@@ -74,6 +74,9 @@ use App\Projection;
 use App\Conversion;
 use App\Utilization;
 use App\Planning;
+use App\CapitalExpenditure;
+use App\OperationalExpenditure;
+use App\NumberOfZones;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -211,28 +214,29 @@ class HomeController extends Controller
         $var2 = count($category);
         $storesubcat =$request->subcat[0];
             
-        $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
-                                                'main_category' => $categoryNames,
-                                                'brand' => $brandnames,
-                                                'sub_category'  =>$subcategories,
-                                                'follow_up' =>'',
-                                                'follow_up_by' =>'',
-                                                'material_spec' =>'',
-                                                'referral_image1'   =>'',
-                                                'referral_image2'   =>'',
-                                                'requirement_date'  =>$request->edate,
-                                                'measurement_unit'  =>$request->measure != null?$request->measure:'',
-                                                'unit_price'   => '',
-                                                 'quantity'     =>$qnty,
-                                             
-                                                'total'   =>0,
-                                                'notes'  =>$request->eremarks,
-                                                'created_at' => date('Y-m-d H:i:s'),
-                                                'updated_at' => date('Y-m-d H:i:s'),
-                                                'status' => "Enquiry On Process",
-                                                'dispatch_status' => "Not yet dispatched",
-                                                'generated_by' => $request->initiator
-                                        ]);
+        $x = DB::table('requirements')
+            ->insert(['project_id'    =>$request->selectprojects,
+                'main_category' => $categoryNames,
+                'brand' => $brandnames,
+                'sub_category'  =>$subcategories,
+                'follow_up' =>'',
+                'follow_up_by' =>'',
+                'material_spec' =>'',
+                'referral_image1'   =>'',
+                'referral_image2'   =>'',
+                'requirement_date'  =>$request->edate,
+                'measurement_unit'  =>$request->measure != null?$request->measure:'',
+                'unit_price'   => '',
+                    'quantity'     =>$qnty,
+                
+                'total'   =>0,
+                'notes'  =>$request->eremarks,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'status' => "Enquiry On Process",
+                'dispatch_status' => "Not yet dispatched",
+                'generated_by' => $request->initiator
+            ]);
         if($x)
         {
             return back()->with('success','Enquiry Raised Successfully !!!');
@@ -933,10 +937,11 @@ class HomeController extends Controller
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
             return redirect('marketingdashboard');
         }else if(Auth::user()->department_id == 10){
-
             Auth()->logout();
             return view('errors.403error');
-        }else {
+        }else if($group = "Auditor"){
+            return redirect('auditor');
+        }else{
             return redirect('chat');
         }
 
@@ -4838,6 +4843,7 @@ public function display(request $request){
     // }
     public function getProjection(Request $request)
     {
+        $conversions = Conversion::all();
         if($request->category){
             $conversion = Conversion::where('category',$request->category)->first();
             $utilizations = Utilization::where('category',$request->category)->first();
@@ -4957,6 +4963,7 @@ public function display(request $request){
                $wardname = Ward::where('id',$request->ward)->first();
                $subwards = SubWard::where('ward_id',$request->ward)->get();
            }
+           
            return view('projection',[
                'planningCount'=>$planningCount,'planningSize'=>$planningSize,
                'foundationCount'=>$foundationCount,'foundationSize'=>$foundationSize,
@@ -4973,7 +4980,7 @@ public function display(request $request){
                'carpentryCount'=>$carpentryCount,'carpentrySize'=>$carpentrySize,
                'closedSize'=>$closedSize,'closedCount'=>$closedCount,
                'wards'=>$wards,
-               'wardname'=>$wardname,
+               'wardname'=>$wardname,'conversions'=>$conversions,
                'subwards'=>$subwards,'wardId'=>$request->ward,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects
            ]);
        }
@@ -5052,6 +5059,7 @@ public function display(request $request){
            
            $subwardname = SubWard::where('id',$request->subward)->pluck('sub_ward_name')->first();
            $totalsubward = ProjectDetails::where('sub_ward_id',$request->subward)->whereIn('quality',$subwardQuality)->sum('project_size');
+           
            return view('projection',[
                'planningCount'=>$planningCount,'planningSize'=>$planningSize,
                'foundationCount'=>$foundationCount,'foundationSize'=>$foundationSize,
@@ -5101,10 +5109,11 @@ public function display(request $request){
                'subwardId'=>$request->subward,
                'subwardName'=>$subwardname,
                'total'=>$total,
-               'totalsubward'=>$totalsubward
+               'totalsubward'=>$totalsubward,
+               'conversions'=>$conversions
            ]);
        }
-       return view('projection',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects]);
+       return view('projection',['wards'=>$wards,'planningCount'=>NULL,'subwards'=>NULL,'wardId'=>NULL,'planning'=>NULL,'subwardId'=>NULL,'subwardName'=>NULL,'totalProjects' => $totalProjects,'conversions'=>$conversions]);
     }
     public function getLockProjection(Request $request){
         $wardsselect = Ward::pluck('id');
@@ -5324,6 +5333,9 @@ public function display(request $request){
             $projection->transactional_profit = $request->transactionalProfit;
             $projection->from_date = $request->from;
             $projection->to_date = $request->to;
+            if($request->incrementalPercentage){
+                $projection->incremental_percentage = $request->incrementalPercentage;
+            }
             $projection->save();
         }
         return back();
@@ -5365,7 +5377,7 @@ public function display(request $request){
                         $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
                         $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
                     }
-                    $text .= "<tr>
+                        $text .= "<tr>
                                 <th></th>
                                 <th style='text-align:right'>Total ".$conversion['unit']."</th>
                                 <th style='text-align:right'>Amount</th>
@@ -5376,15 +5388,15 @@ public function display(request $request){
                             </tr>";
                     $totalRequirement += $totalCategory;
                     $totalPrice += $totalCategoryPrice;
-                    $text .= "<tr>
+                $text .= "<tr>
                     <td>Total Requirement In The Listed Projects</td>
-                    <td style='text-align:right'>".number_format($totalCategory)."</td>
-                    <td style='text-align:right'>".number_format($totalCategoryPrice)."</td><td></td><td></td><td></td>
+                    <td style='text-align:right'>".number_format($totalCategory + $totalCategory / 100 * $category['incremental_percentage'])."</td>
+                    <td style='text-align:right'>".number_format($totalCategoryPrice + $totalCategoryPrice / 100 * $category['incremental_percentage'])."</td><td></td><td></td><td></td>
                     </tr>
                     <tr>
                     <td>Monthly Requirement In The Listed Projects</td>
-                    <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
-                    <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>";
+                    <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'] + ($totalCategory/$category['business_cycle']) / 100 * $category['incremental_percentage'])."</td>
+                    <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'] + ($totalCategoryPrice/$category['business_cycle']) / 100 * $category['incremental_percentage'])."</td>";
                     $totalMonthly += $totalCategory/$category['business_cycle'];
                     $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
                     
@@ -5535,6 +5547,92 @@ public function display(request $request){
         $zone = Zone::first();
         $country = Country::where('id',$zone->id)->first();
         $zone_name = "MH_".$country->country_code."_".$zone->zone_number;
-        return view('projection.country',['planning'=>$planning,'zone_name'=>$zone_name,'zone'=>$zone]);
+        $dates = Projection::first();
+        $numberOfZones = NumberOfZones::all()->toArray();
+        return view('projection.country',['planning'=>$planning,'zone_name'=>$zone_name,'zone'=>$zone,'dates'=>$dates,'numberOfZones'=>$numberOfZones]);
+    }
+    public function getAuditorDashboard()
+    {
+        return view('auditor.dashboard');
+    }
+    public function getExpenditure(Request $request)
+    {
+        $capitalExpenditure = CapitalExpenditure::first();
+        $operationalExpenditure = OperationalExpenditure::first();
+        if(count($capitalExpenditure) != 0 && !$request->edit){
+            return redirect('/viewExpenditure');
+        }
+        return view('expenditure.expenditures',['capitalExpenditure'=>$capitalExpenditure,'operationalExpenditure'=>$operationalExpenditure]);
+    }
+    public function saveExpenditure(Request $request)
+    {
+        $check1 = CapitalExpenditure::first();
+        if($check1 == null){
+            $capital = new CapitalExpenditure;
+            $capital->rental = $request->deposit;
+            $capital->assets = $request->assets;
+            $capital->save();
+        }else{
+            $check1->rental = $request->deposit;
+            $check1->assets = $request->assets;
+            $check1->save();
+        }
+        $check2 = OperationalExpenditure::first();
+        if($check2 == null){
+            $operational = new OperationalExpenditure;
+            $operational->salary = $request->salary;
+            $operational->office_rent = $request->rent;
+            $operational->petrol = $request->petrol;
+            $operational->travelling = $request->travel;
+            $operational->mmt_user_fee = $request->mmt_fees;
+            $operational->telephone_charges = $request->phone_charges;
+            $operational->miscellineous = $request->miscellineous;
+            $operational->save();
+        }else{
+            $check2->salary = $request->salary;
+            $check2->office_rent = $request->rent;
+            $check2->petrol = $request->petrol;
+            $check2->travelling = $request->travel;
+            $check2->mmt_user_fee = $request->mmt_fees;
+            $check2->telephone_charges = $request->phone_charges;
+            $check2->miscellineous = $request->miscellineous;
+            $check2->save();
+        }
+        return redirect('/viewExpenditure');
+    }
+    public function viewExpenditure()
+    {
+        $capitalExpenditure = CapitalExpenditure::first();
+        $operationalExpenditure = OperationalExpenditure::first();
+        $planning = Planning::where('type','yearly')->first();
+        if(count($capitalExpenditure) == 0)
+            return redirect('/expenditure');
+        return view('expenditure.viewExpenditures',['capitalExpenditure'=>$capitalExpenditure,'operationalExpenditure'=>$operationalExpenditure,'planning'=>$planning]);
+    }
+    public function getFiveYearsExpenditure()
+    {
+        $capitalExpenditure = CapitalExpenditure::first();
+        $operationalExpenditure = OperationalExpenditure::first();
+        $planning = Planning::where('type','yearly')->first();
+        return view('expenditure.five_years',['capitalExpenditure'=>$capitalExpenditure,'operationalExpenditure'=>$operationalExpenditure,'planning'=>$planning]);
+    }
+    public function save(Request $request)
+    {
+        NumberOfZones::truncate();
+        for($i = 0; $i < count($request->month); $i++){
+            $zones = new NumberOfZones;
+            $zones->month = $request->month[$i];
+            $zones->grade_a = $request->gradeA[$i];
+            $zones->grade_b = $request->gradeB[$i];
+            $zones->grade_c = $request->gradeC[$i];
+            $zones->grade_d = $request->gradeD[$i];
+            $zones->save();
+        }
+        return back();
+    }
+    public function getExtensionPlanner()
+    {
+        $dates = Projection::first();
+        return view('projection.extension',['dates'=>$dates]);
     }
 }

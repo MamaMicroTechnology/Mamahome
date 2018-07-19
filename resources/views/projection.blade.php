@@ -1,4 +1,12 @@
-@extends('layouts.app')
+<?php
+    $group = Auth::user()->group->group_name;
+    if($group == "Auditor"){
+        $content = "auditor.layout.auditor";
+    }else{
+        $content = "layouts.app";
+    }
+?>
+@extends($content)
 @section('content')
 <?php
     $totalCementBags = 0;
@@ -18,7 +26,7 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div class="col-md-3 col-md-offset-2">
+<div class="col-md-3 pull-right">
     <table class="table table-hover" border=1>
     <tr>
         <th style="text-align:center" colspan=2>Business Cycle</th>
@@ -73,9 +81,16 @@
     <tr>
         <td>Completion</td>
     </tr>
+    <tr>
+        <th>Total</th>
+        <th style="text-align:center">10</th>
+    </tr>
     </table>
+    <small style="background-color:#c9dba4; padding:10px; text-align:center; width:100%;">
+            <marquee><i>** Note: Material Calculation Is Based On Status Of The Project And Business Cycle **</i></marquee>
+        </small>
 </div>
-<div id="projection" class="col-md-6">
+<div id="projection" class="col-md-6 col-md-offset-2">
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-center col-md-3 col-md-offset-5"><b>Projection</b></div>
@@ -166,7 +181,33 @@
         <p id="tp"></p>
         <button onclick="transactionalProfit()" class="btn btn-primary form-control">Proceed</button>
         <br><br>
-        <button class="btn btn-primary form-control" onclick="save()">Lock Target</button>
+        <button class="btn btn-primary form-control" data-toggle="modal" data-target="#myModal">Lock Target</button>
+        
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p style="text-align:center">Do you want to lock this with the existing data or projected data?</p>
+                        <label class="radio-inline">
+                            <input type="radio" onclick="document.getElementById('percentage1').className='hidden';" name="existing" id="existing"> Existing Data<br>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" onclick="document.getElementById('percentage1').className='';" name="existing" id="projected"> Projected Data
+                        </label>
+                        <p class="hidden" id="percentage1">
+                            <input type="text" name="percentage1" id="perc" class="form-control" placeholder="Incremental Percentage">
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="save()" class="btn btn-success pull-left">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="col-md-6">
@@ -309,6 +350,36 @@
 </div>
 </div>
 </div>
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-3">
+        <center>
+            <h2>
+                Thumb Rules<br>  
+            </h2>
+        </center>
+            @foreach($conversions as $con)
+            {{ ucwords($con->category) }} : Minimum 
+            @if($con->per == "Nos")
+                number
+            @elseif($con->per == "Rs")
+                amount
+            @else
+                requirement
+            @endif
+
+            of {{ ucwords($con->category) }} is {{ $con->category == "Flooring" ? $con->price_per_unit : $con->minimum_requirement }}
+            @if($con->category != "Flooring")
+            {{ $con->per }}/Sqft {{ $con->full_form != null ? "(".$con->per." = ". $con->full_form.")" : "" }}<br><br>
+            @else
+            {{ $con->per }}/Sqft {{ $con->full_form != null ? "(". $con->full_form.")" : "" }}<br><br>
+            @endif
+            @endforeach
+        <small style="background-color:#c9dba4; padding:10px; text-align:center; width:100%;">
+            <i>** Note: The Above Calculations Varies From Design To Design **</i>
+        </small>
+        <br><br>
+    </div>
+</div>
 <form action="{{URL::to('/') }}/lockProjection" id="lockProj" method="POST">
     {{ csrf_field() }}
     <input type="hidden" name="monthlyTarget" id="mTarget">
@@ -318,6 +389,7 @@
     <input type="hidden" name="category" id="category">
     <input type="hidden" name="from" id="from_date">
     <input type="hidden" name="to" id="to_date">
+    <input type="hidden" name="incrementalPercentage" id="incrementalPercentage">
 </form>
 <script>
     var calBag;
@@ -352,7 +424,14 @@
         document.getElementById('category').value = document.getElementById('categories').value;
         document.getElementById('from_date').value= document.getElementById('from').value;
         document.getElementById('to_date').value = document.getElementById('to').value;
-        form.submit();
+        if(document.getElementById('perc').value != "" && document.getElementById('projected').checked == true){
+            document.getElementById('incrementalPercentage').value = document.getElementById('perc').value;
+            form.submit();
+        }else if(document.getElementById('perc').value == "" && document.getElementById('projected').checked == true){
+            alert("Enter Incremental Percentage");
+        }else{
+            form.submit();
+        }
     }
 </script>
 @endsection

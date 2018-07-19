@@ -514,3 +514,11 @@ Route::get('/fiveyears','HomeController@getFiveYears');
 Route::get('/daily','HomeController@getDaily');
 Route::post('/lockYearly','HomeController@lockYearly');
 Route::get('/countryProjection','HomeController@getCountryProjection');
+Route::get('/expenditure','HomeController@getExpenditure');
+Route::post('/saveExpenditure','HomeController@saveExpenditure');
+Route::get('/viewExpenditure','HomeController@viewExpenditure');
+Route::get('/five_years_expenditure','HomeController@getFiveYearsExpenditure');
+Route::get('/extensionPlanner','HomeController@getExtensionPlanner');
+// Auditor Dashboard
+Route::get('/auditor','HomeController@getAuditorDashboard');
+Route::post('/save','HomeController@save');
