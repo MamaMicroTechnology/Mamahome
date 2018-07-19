@@ -73,7 +73,7 @@ use App\Detail;
 use App\Projection;
 use App\Conversion;
 use App\Utilization;
-use App\Planning;
+use App\Pricing;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -156,8 +156,12 @@ class HomeController extends Controller
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $cat = category::where('id',$request->cat)->pluck('id')->first();
           
-            
-           
+         if($request->name){
+
+              $shipadress = $request->billadress;     
+         }   
+           $shipadress = $request->billadress;   
+
    // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
@@ -210,7 +214,7 @@ class HomeController extends Controller
             
         $var2 = count($category);
         $storesubcat =$request->subcat[0];
-            
+
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
@@ -224,15 +228,26 @@ class HomeController extends Controller
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
                                                 'unit_price'   => '',
                                                  'quantity'     =>$qnty,
+<<<<<<< HEAD
                                              
+=======
+                                                
+>>>>>>> chaithra
                                                 'total'   =>0,
                                                 'notes'  =>$request->eremarks,
                                                 'created_at' => date('Y-m-d H:i:s'),
                                                 'updated_at' => date('Y-m-d H:i:s'),
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
-                                                'generated_by' => $request->initiator
+                                                'generated_by' => $request->initiator,
+                                                'billadress'=>$request->billadress,
+                                                'ship' =>$shipadress
                                         ]);
+        // $y = DB::table('quantity')->insert(['req_id' =>$request->requirements->id,
+        //                                     'project_id'=>$request->selectprojects
+                                           
+
+        //         ]);
         if($x)
         {
             return back()->with('success','Enquiry Raised Successfully !!!');
@@ -1085,15 +1100,16 @@ class HomeController extends Controller
         return view('viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates]);
     }
     public function teamLeadHome(){
+         $depts=[1,2];
          $loggedInUsers = attendance::where('date',date('Y-m-d'))
                         ->join('users','empattendance.empId','users.employeeId')
+                        ->whereIn('department_id',$depts)
                         ->leftjoin('departments','users.department_id','departments.id')
                         ->select('users.name','empattendance.*','departments.id')
                         ->get();
                         $depts=[1,2];
                         $users = User::where('department_id',$depts)->get();
-                        
-                       
+
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
                         ->leftjoin('departments','users.department_id','departments.id')
@@ -1105,7 +1121,7 @@ class HomeController extends Controller
     public function assignListSlots(){          
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
     $group = [6,11];
-   
+        
         $users = User::whereIn('group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
@@ -1114,13 +1130,17 @@ class HomeController extends Controller
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
-
+       $totalcount = User::whereIn('group_id',$group)
+                            ->where('department_id','!=','10')
+                            ->count();
         $wards = Ward::orderby('ward_name','ASC')->get();
         $zones = Zone::all();
         $subwardsAssignment = WardAssignment::all();
         $subwards = SubWard::orderby('sub_ward_name','ASC')->get();
         
-        return view('assignListSlots',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards,'zones'=>$zones]);
+
+        
+        return view('assignListSlots',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards,'zones'=>$zones,'totalcount'=>$totalcount]);
     }
      public function assignadmin(){          
     $group = Group::where('group_name','Admin')->pluck('id')->first();
@@ -1491,9 +1511,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                         .($loginTimes != null ? $loginTimes->firstListingTime : '').
                         "</td></tr><tr><td>First Update Time</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->firstUpdateTime : '').
-                        "</td></tr><tr><td>No. of projects listed <br> in the morning</td><td>:</td><td>"
+                        "</td></tr><tr><td>No. of Projects Listed <br> In The Morning</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->noOfProjectsListedInMorning : '').
-                        "</td></tr><tr><td>No. of projects updated <br> in the morning</td><td>:</td><td>"
+                        "</td></tr><tr><td>No. of Projects Updated <br> In The Morning</td><td>:</td><td>"
                         .($loginTimes != null ? $loginTimes->noOfProjectsUpdatedInMorning : '').
                         "</td></tr><tr><td>Meter Image</td><td>:</td><td>".
                         ($loginTimes != null ? ($loginTimes->morningMeter != null ? "<img src='"
@@ -1940,6 +1960,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $points_subtracted = Point::where('user_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->get();
         $total = $points_earned_so_far - $points_subtracted;
+        $stages = AssignStage::where('user_id',Auth::user()->id)->first();
         return view('sedashboard',[
             'projects'=>$projects,
             'reqcount'=>$reqcount,
@@ -1954,7 +1975,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             'points_indetail'=>$points_indetail,
             'points_earned_so_far'=>$points_earned_so_far,
             'points_subtracted'=>$points_subtracted,
-            'total'=>$total
+            'total'=>$total,
+            'stages'=>$stages
         ]);
     }
     public function printLPO($id, Request $request)
@@ -1970,8 +1992,30 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $categories = Category::all();
         return view('updateprice',['prices'=>$prices,'categories'=>$categories]);
     }
+
+    public function setprice(Request $request){
+        $prices = CategoryPrice::all();
+        $categories = Category::all();
+        $myPrices = Pricing::leftJoin('category','pricing.cat','category.id')
+                            ->leftJoin('brands','pricing.brand','brands.id')
+                            ->leftJoin('category_sub','pricing.suncat','category_sub.id')
+                            ->get();
+        return view('setprice',['prices'=>$prices,'categories'=>$categories,'myPrices'=>$myPrices]);
+    }
+ public function allprice(Request $request){
+       $myPrices = Pricing::leftJoin('category','pricing.cat','category.id')
+                            ->leftJoin('brands','pricing.brand','brands.id')
+                            ->leftJoin('category_sub','pricing.suncat','category_sub.id')
+                            ->get();
+         $users = User::get();
+                         
+        return view('allprice',['myPrices'=>$myPrices,'users'=>$users]);
+    }
+
+
     public function amorders(Request $request)
     {
+        $id = $request->projectId;
         if($request->projectId){
             $view = Order::orderby('orders.id','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
@@ -1980,17 +2024,23 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date')
                     ->where('project_id',$request->projectId)
                     ->paginate(25);
+               
         }else{
             $view = Order::orderby('orders.id','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                    ->select('orders.*','orders.id as orderid','users.name','users.group_id',
+                    ->leftjoin('requirements','orders.project_id','requirements.project_id')->where('requirements.status','=','Enquiry Confirmed')
+                    ->select('orders.*','requirements.*','orders.id as orderid','users.name','users.group_id',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date')
                     ->paginate(25);
         }
+  
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
-        return view('ordersadmin',['view' => $view,'users'=>$users]);
+        $req = Requirement::pluck('project_id');
+       
+        
+        return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
     }
     public function getSubCat(Request $request)
     {
@@ -2039,7 +2089,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     {
         $id = $request->id;
         $name =order::where('id',$id)->pluck('delivery_boy')->first();
-        if($name == null){
+        if($name != null){
             return response()->json('Select Logistic Coordinator');
            
         }
@@ -2048,12 +2098,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $x = Order::where('id', $id)->update(['status' => 'Order Confirmed','payment_status'=>'Payment Pending']);
             if($x)
             {
-                return response()->json('Success !!!');
+                return back();
             }
-            else
-            {
-                return response()->json($id);
-            }
+           
         }
     }
     public function cancelOrder(Request $request)
@@ -2337,7 +2384,12 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }
          $projectids = new Collection();
          if($stages != null){
-             $projectids = ProjectDetails::whereIn('project_status',$stages)->where('quality','!=','Fake')->pluck('project_id');
+             $projectids = ProjectDetails::leftjoin('orders','orders.project_id','project_details.project_id')
+             ->where('orders.status','!=','Order Confirmed')
+             ->whher('deleted','!=',1)
+             ->whereIn('project_status',$stages)
+             ->where('quality','!=','Fake')
+             ->pluck('project_id');
          }else{
             $projectids = null;
          }     
@@ -4490,6 +4542,7 @@ public function projectstore(request $request)
     $budgets = "null";
    }
 $check = AssignStage::where('user_id',$request->user_id)->first();
+
     
 if(count($check) == 0){
      
@@ -4524,6 +4577,7 @@ if(count($check) == 0){
         $projectassign->quality = $request->quality;
         $projectassign->save();
 }else{
+
         $check->ward = $wards;
         $check->subward = $subwards;
         $check->stage = $stages;
@@ -4550,6 +4604,8 @@ if(count($check) == 0){
         $check->budgetto = $request->budgetto;
         $check->quality = $request->quality;
         $check->project_ids = null;
+        $check->time = $request->settime;
+        $check->instruction = $request->inc;
         $check->save(); 
 }
        
@@ -4559,6 +4615,49 @@ if(count($check) == 0){
 
             
 }
+
+public function projectstore1(request $request){
+    $check = AssignStage::where('user_id',$request->user_id)->first();
+
+       if(count($check) != 0){
+
+
+     
+        $check->time = $request->settime;
+        $check->instruction = $request->inc;
+        $check->save(); 
+
+
+
+
+}
+ return redirect()->back()->with('Assig projects successfully');
+
+
+            
+}
+
+public function reject(request $request){
+    $check = AssignStage::where('user_id',$request->user_id)->first();
+
+       if(count($check) != 0){
+
+
+        
+        $check->remark = $request->remark;
+        
+        $check->save(); 
+
+
+
+
+}
+ return redirect()->back()->with('Assig projects successfully');
+
+
+            
+}
+
 
 public function enquirywise(request $request){
 
@@ -4840,9 +4939,7 @@ public function display(request $request){
     {
         if($request->category){
             $conversion = Conversion::where('category',$request->category)->first();
-            $utilizations = Utilization::where('category',$request->category)->first();
             View::share('conversion', $conversion);
-            View::share('utilization',$utilizations);
         }else{
             View::share('conversion',null);
         }
@@ -5217,102 +5314,6 @@ public function display(request $request){
                 // $details->size         = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Closed%')->sum('project_size');
                 // $details->save();
             }
-            // planning
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Planning";
-            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
-            $details->save();
-            
-            // digging
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Digging";
-            $details->size        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Digging%')->sum('project_size');
-            $details->save();
-
-            // foundation
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Foundation";
-            $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
-            $details->save();
-
-            // pillars
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Pillars";
-            $details->size        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Pillars%')->sum('project_size');
-            $details->save();
-            
-            // walls
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Walls";
-            $details->size          = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Walls%')->sum('project_size');
-            $details->save();
-            
-            
-            
-            // roofing
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Roofing";
-            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->sum('project_size');
-            $details->save();
-            
-            $ele                = ProjectDetails::where('project_status','LIKE','Electrical%')->pluck('project_id');
-            $plum               = ProjectDetails::where('project_status','LIKE','Plumbing%')->pluck('project_id');
-            $ele                = $ele->merge($plum);
-
-            // electrical & plumbing
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Electrical & Plumbing";
-            $details->size            = ProjectDetails::whereIn('project_id',$ele)->whereIn('quality',$qualityCheck)->sum('project_size');
-            $details->save();
-
-            // plastering
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Plastering";
-            $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plastering%')->sum('project_size');
-            $details->save();
-            
-            // flooring
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Flooring";
-            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Flooring%')->sum('project_size');
-            $details->save();
-
-            // carpentry
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Carpentry";
-            $details->size      = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Carpentry%')->sum('project_size');
-            $details->save();
-
-            // painting
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Painting";
-            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Paintings%')->sum('project_size');
-            $details->save();
-
-            // fixture
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Fixture";
-            $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Fixtures%')->sum('project_size');
-            $details->save();
-
-            // completion
-            $details = new Detail;
-            $details->ward_id = "all";
-            $details->stage = "Completion";
-            $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Completion%')->sum('project_size');
-            $details->save();
         }
         $check2 = Projection::where('category',$request->category)->first();
         if($check2 == null){
@@ -5322,8 +5323,6 @@ public function display(request $request){
             $projection->business_cycle = $request->businessCycle;
             $projection->target = $request->monthlyTarget;
             $projection->transactional_profit = $request->transactionalProfit;
-            $projection->from_date = $request->from;
-            $projection->to_date = $request->to;
             $projection->save();
         }
         return back();
@@ -5334,207 +5333,166 @@ public function display(request $request){
        $categories = Utilization::all();
        return view('projection.projectionFirst',['categories'=>$categories,'projections'=>$projections]);
    }
-    public function getLockedStage(Request $request){
-        $categories = Projection::all();
-        $wards = Ward::all();
-        $text = "<br><br><br><br><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#reset'>Master Reset</button><br><br><table class='table table-hover' border=1>";
-        $totalRequirement = 0;
-        $totalPrice = 0;
-        $totalMonthly = 0;
-        $totalMonthlyPrice = 0;
-        $totalTP = 0;
-        $totalTarget = 0;
-        if($request->ward){
-            $projections = Detail::where('details.ward_id',$request->ward)
+   public function getLockedStage(Request $request){
+       $category = Projection::where('category',$request->category)->first();
+       $conversion = Conversion::where('category',$request->category)->first();
+       $wards = Ward::all();
+       $date = null;
+       $utilizations = Utilization::where('category',$request->category)->first()->toArray();
+       if($request->ward){
+           if($request->ward == "all"){
+               $projection = new Collection;
+                $t = Detail::where('details.ward_id',1)
                             ->leftJoin('wards','wards.id','details.ward_id')
-                            ->select('details.*','wards.ward_name')
+                            ->select('details.id','details.ward_id','details.stage','details.created_at','details.updated_at','wards.ward_name')
                             ->get();
-            if($request->category == 'all'){
-                $category = Projection::all()->toArray();
-                foreach($category as $category){
-                    $totalCategory = 0;
-                    $totalCategoryPrice = 0;
-                    $conversion = Conversion::where('category',$category['category'])->first();
-                    $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
-                    $text .= "<tr><th colspan=6>".ucwords($category['category'])."</th></tr>";
-                    foreach($projections as $projection){
-                        if($projection['stage'] == "Electrical & Plumbing")
-                            $stage = "electrical";
-                        else
-                            $stage = $projection['stage'];
-                        $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
-                        $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
-                    }
-                    $text .= "<tr>
-                                <th></th>
-                                <th style='text-align:right'>Total ".$conversion['unit']."</th>
-                                <th style='text-align:right'>Amount</th>
-                                <th style='text-align:center'>Business Cycle</th>
-                                <td style='text-align:center'><b>Monthly Target</b><br>
-                                (".$category['target']."% From The Existing Monthly Requirement)</td>
-                                <td style='text-align:center'><b>Transactional Profit</b><br>(".$category['transactional_profit']."% From The Monthly Target)</td>
-                            </tr>";
-                    $totalRequirement += $totalCategory;
-                    $totalPrice += $totalCategoryPrice;
-                    $text .= "<tr>
-                    <td>Total Requirement In The Listed Projects</td>
-                    <td style='text-align:right'>".number_format($totalCategory)."</td>
-                    <td style='text-align:right'>".number_format($totalCategoryPrice)."</td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                    <td>Monthly Requirement In The Listed Projects</td>
-                    <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
-                    <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>";
-                    $totalMonthly += $totalCategory/$category['business_cycle'];
-                    $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
-                    
-                    $totalMonthly/100*$category['target'];
-                    $totalTarget += $amount = $monthlyPrice/100*$category['target'];
-                    $totalTP += $tp = $amount/100*$category['transactional_profit'];
-                    $text .= "<td style='text-align:center'>".$category['business_cycle'].
-                                "</td><td style='text-align:right'>".number_format($amount).
-                                "</td><td style='text-align:right'>".number_format($tp).
-                            "</td></tr>";
+               $detail = array();                
+                foreach($t as $project){
+                    $detail['id'] = $project->id;
+                    $detail['ward_id'] = $project->ward_id;
+                    $detail['stage'] = $project->stage;
+                    $detail['size'] = Detail::where('stage',$project->stage)->sum('size');
+                    $detail['created_at'] = date('Y-m-d H:i:s',strtotime($project->created_at));
+                    $detail['updated_at'] = date('Y-m-d H:i:s',strtotime($project->updated_at));
+                    $detail['ward_name'] = $project->ward_name;
+                    $projection = $projection->push($detail);
                 }
-                $text .= "<tr><th colspan=6></th></tr><tr><th style='background-color:#236281; color:white;' colspan=6><center>Total</center></th></tr>
-                    <tr>
-                    <th>Total Monthly Target</th><th></th><th></th><th></th>
-                    <th style='text-align:right'>".number_format($totalTarget)."</th>
-                    <th></th>
-                    </tr>
-                    <tr>
-                    <th>Total Monthly Transactional Profit</th>
-                    <th></th><th></th><th></th><th></th>
-                    <th style='text-align:right'>".number_format($totalTP)."</th>
-                    </tr>
-                    </table>";
-                return view('projection.projectionStage',['category'=>$category,'wards'=>$wards,'categories'=>$categories,'text'=>$text]);
-            }else{
-                $category = Projection::where('category',$request->category)->first();
-                $conversion = Conversion::where('category',$request->category)->first();
-                $utilizations = Utilization::where('category',$request->category)->first()->toArray();
+                $total = Detail::sum('size');
+                $date = date('d-M-Y',strtotime($category->created_at));
+           }else{
+               $projection = Detail::where('details.ward_id',$request->ward)
+                               ->leftJoin('wards','wards.id','details.ward_id')
+                               ->select('details.*','wards.ward_name')
+                               ->get();
+               $total = Detail::where('ward_id',$request->ward)->sum('size');
+               $date = date('d-M-Y',strtotime($category->created_at));
             }
-            $total = Detail::where('ward_id',$request->ward)->sum('size');
-            return view('projection.projectionStage',['projections'=>$projections,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations,'categories'=>$categories]);
+            return view('projection.projectionStage',['date'=>$date,'projections'=>$projection,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations]);
         }
-       return view('projection.projectionStage',['wards'=>$wards,'categories'=>$categories]);
-    }
-    public function getReset(Request $request)
-    {
-        if($request->category == "all"){
-            Projection::truncate();
-            Detail::truncate();
-            Planning::truncate();
+       return view('projection.projectionStage',['wards'=>$wards,'category'=>$category,'date'=>$date]);
+   }
+   // public function Unupdated(Request $request){
+
+   //      $wards = Ward::orderby('ward_name','ASC')->get();
+   //       $wardid= $request->subward;
+   //      // if($request->subward){
+   //      //
+   //      // }else{
+   //      //     $wardid = NULL;
+   //      // }
+   //      if($request->from && $request->to && !$request->subward && !$request->ward){
+
+   //          $from=$request->from;
+   //          $to=$request->to;
+   //         $projectid = ProjectDetails::where('updated_at','<=',$from)
+   //                   ->where('updated_at','>=',$to)
+   //                   ->pluck('project_id');
+   //          $project = ProjectDetails::whereNotIn('project_id',$projectid)
+   //                  ->paginate(20);
+   //          $totalproject =count($projectid);
+   //          $site = SiteAddress::all();
+   //          $total = count($project);
+        
+   //           return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+   //      }
+   //      else if( $request->from && $request->to && $request->subward && $request->ward){
+   //          $from=$request->from;
+   //          $to=$request->to;
+   //         $projectid = ProjectDetails::where('updated_at','<=',$from)
+   //                   ->where('updated_at','>=',$to)
+   //                   ->where('sub_ward_id',$wardid)
+   //                   ->pluck('project_id');
+   //                    $project = ProjectDetails::where('sub_ward_id',$wardid)
+   //                              ->whereNotIn('project_id',$projectid)
+   //                              ->paginate(20);
+   //          $totalproject =count($projectid);
+   //          $site = SiteAddress::all();
+   //          $total = count($project);
+           
+   //           return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+   //      }
+   //      else{
+          
+   //              $project = null;
+   //              $total = "";
+   //              $from = "";
+   //              $to = "";
+   //              return view('unupdated',['project'=>$project,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total]);
+   //      }
+   //  }
+    public function viewwardmap(Request $request){
+        $id=$request->UserId;
+        $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $subwards = SubWard::where('id',$wardsAssigned)->first();
+        $projects = ProjectDetails::join('site_addresses','project_details.project_id','=','site_addresses.project_id')
+                        ->leftJoin('requirements','project_details.project_id','=','requirements.project_id')
+                        ->where('project_details.sub_ward_id',$wardsAssigned)
+                        ->select('requirements.status','site_addresses.address','site_addresses.latitude','site_addresses.longitude','project_details.project_name','project_details.project_id','project_details.created_at','project_details.updated_at')
+                        ->get();
+        if($subwards != null){
+            $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+            // dd($subwardMap);
         }else{
-            Projection::where('category',$request->category)->delete();
+            $subwardMap = "None";
         }
-        return redirect('/stage');
+        if($subwardMap == Null){
+            $subwardMap = "None";
+        }
+        return view('viewwardmap',['subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
+
     }
-    public function getFiveYears()
-    {
-        $totalTarget = Planning::where('type','yearly')->pluck('totalTarget')->first();
-        $totalTP = Planning::where('type','yearly')->pluck('totalTP')->first();
-        $projection = Projection::pluck('from_date')->first();
-        return view('projection.fiveYears',['totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'projection'=>$projection]);
-    }
-    public function getYearlyPlanning(Request $request)
-    {
-        $totalRequirement = 0;
-        $totalPrice = 0;
-        $totalMonthly = 0;
-        $totalMonthlyPrice = 0;
-        $totalTP = 0;
-        $totalTarget = 0;
-        $projections = Detail::where('details.ward_id','all')
-                            ->leftJoin('wards','wards.id','details.ward_id')
-                            ->select('details.*','wards.ward_name')
-                            ->get();
-        $category = Projection::all()->toArray();
-        foreach($category as $category){
-            $totalCategory = 0;
-            $totalCategoryPrice = 0;
-            $conversion = Conversion::where('category',$category['category'])->first();
-            $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
-            foreach($projections as $projection){
-                if($projection['stage'] == "Electrical & Plumbing")
-                    $stage = "electrical";
-                else
-                    $stage = $projection['stage'];
-                $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
-                $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
+    public function Unupdated(Request $request){
+
+        $wards = Ward::orderby('ward_name','ASC')->get();
+        $wardid= $request->subward;
+        $previous = date('Y-m-d',strtotime('-45 days'));
+        $today = date('Y-m-d');
+        $total = "";
+        $site = SiteAddress::all();
+        if(!$request->subward && $request->ward){
+            $from="";
+            $to="";
+            if($request->ward == "All"){
+                $subwards = SubWard::pluck('id');
+            }else{
+                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
             }
-            $totalRequirement += $totalCategory;
-            $totalPrice += $totalCategoryPrice;
-            $monthly = $totalCategory/$category['business_cycle'];
-            $monthlyPrice = $totalCategoryPrice/$category['business_cycle'];
-            $totalMonthly += $totalCategory/$category['business_cycle'];
-            $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
-            
-            $totalMonthly/100*$category['target'];
-            $totalTarget += $amount = $monthlyPrice/100*$category['target'];
-            $totalTP += $tp = $amount/100*$category['transactional_profit'];   
+            $projectid = ProjectDetails::where( 'updated_at', '<=', $previous)
+                    ->whereIn('sub_ward_id',$subwards)
+                    ->paginate('20');
+            $totalproject =ProjectDetails::where( 'updated_at', '<=', $previous)
+                    ->whereIn('sub_ward_id',$subwards)->count();
+           
+             // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }
-        $projection = Projection::pluck('from_date')->first();
-        $categories = Projection::all();
-        return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
-    }
-    public function getDaily()
-    {
-        $totalRequirement = 0;
-        $totalPrice = 0;
-        $totalMonthly = 0;
-        $totalMonthlyPrice = 0;
-        $totalTP = 0;
-        $totalTarget = 0;
-        $projections = Detail::where('details.ward_id','all')
-                            ->leftJoin('wards','wards.id','details.ward_id')
-                            ->select('details.*','wards.ward_name')
-                            ->get();
-        $category = Projection::all()->toArray();
-        foreach($category as $category){
-            $totalCategory = 0;
-            $totalCategoryPrice = 0;
-            $conversion = Conversion::where('category',$category['category'])->first();
-            $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
-            foreach($projections as $projection){
-                if($projection['stage'] == "Electrical & Plumbing")
-                    $stage = "electrical";
-                else
-                    $stage = $projection['stage'];
-                $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
-                $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
-            }
-            $totalRequirement += $totalCategory;
-            $totalPrice += $totalCategoryPrice;
-            $monthly = $totalCategory/$category['business_cycle'];
-            $monthlyPrice = $totalCategoryPrice/$category['business_cycle'];
-            $totalMonthly += $totalCategory/$category['business_cycle'];
-            $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
-            
-            // $totalMonthly/100*$category['target'];
-            $totalTarget += $amount = $monthlyPrice/100*$category['target'];
-            $totalTP += $tp = $amount/100*$category['transactional_profit'];   
+        else if($request->subward && $request->ward){
+            $from=$request->from;
+            $to=$request->to;
+            $projectid = ProjectDetails::where('updated_at','<=',$previous)
+                        ->where('sub_ward_id',$request->subward)
+                        ->paginate('20');
+            $totalproject = ProjectDetails::where('updated_at','<=',$previous)
+                            ->where('sub_ward_id',$request->subward)->count();
+             // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }
-        $projection = Projection::pluck('from_date')->first();
-        $toDate = Projection::pluck('to_date')->first();
-        return view('projection.daily',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'toDate'=>$toDate]);
+        else{
+                $projectid = new Collection;
+                $total = "";
+                $from = "";
+                $to = "";
+                $totalproject = "";
+                $site = "";
+        }
+        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today]);
     }
-    public function lockYearly(Request $request)
-    {
-        $planning = new Planning;
-        $planning->incremental_percentage = $request->incremental_percentage;
-        $planning->type = $request->type;
-        $planning->totalTarget = $request->totalTarget;
-        $planning->totalTP = $request->totalTP;
-        $planning->save();
-        return back();
-    }
-    public function getCountryProjection()
-    {
-        $planning = Planning::where('type','yearly')->first();
-        $zone = Zone::first();
-        $country = Country::where('id',$zone->id)->first();
-        $zone_name = "MH_".$country->country_code."_".$zone->zone_number;
-        return view('projection.country',['planning'=>$planning,'zone_name'=>$zone_name,'zone'=>$zone]);
-    }
+    // public function storedate(Request $request){
+   
+    //     $today = date('Y-m-d');
+    //     $from=$request->from;
+    //     $to=$request->to;
+    //     $wards = Ward::orderby('ward_name','ASC')->get();
+        
+        
+       
+    // }
 }

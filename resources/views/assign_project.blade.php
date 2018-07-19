@@ -25,6 +25,9 @@
                             <th style="width:15%">Previously Assigned Stage </th>
                             <th style="width:15%">COUNT </th>
                            <th style="width:15%">Action </th>
+                           <th></th>
+
+                           <th style="width:15%">Status </th>
                             
                           </thead>
                           @foreach($users as $user)  
@@ -42,13 +45,111 @@
                               @if($user->id == $qq->user_id)
                                   {{ $qq->count }}
                              @endif
-                             @endforeach</td>
+                             @endforeach
+                             </td>
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
-                          </tr>         
-                           @endforeach
-                   
-                </table>
-           
+                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
+                              @foreach($assignstage as $qq)
+                              @if($user->id == $qq->user_id)
+                              @if($qq->remark != NULL)
+                             <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
+                             @else
+                             <td><button class="btn btn-primary btn-sm">Accept</button></td>
+                             @endif
+                             @endif
+                            @endforeach
+                          </tr> 
+ 
+
+
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal{{$user->id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header"  style="background-color:#f4811f;padding:2px">
+        <h4 class="modal-title">Task Reject Message</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+         @foreach($assignstage as $qq)
+         @if($user->id == $qq->user_id)
+          
+          <b style="font-size:20px;">Message:</b><br> <br>
+          <span style="font-size:15px;text-align:left; font-style: bold;" > {{ $qq->remark }} </span>
+         @endif
+         @endforeach
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer" style="padding: 1px;">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          <!-- The Modal -->  
+  @endforeach
+ </table>
+    
+    @foreach($users as $user)
+<div class="modal" id="myModal5{{ $user->id }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="background-color:#f4811f;padding:2px" >
+          <h4 class="modal-title">Set Time And Instructions</h4>
+          <button type="button" class="close" data-dismiss="modal" style="width:50%">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         <form action="{{ URL::to('/') }}/projectstore1" id="time" enctype="multipart/form-data" method="post" >
+          {{ csrf_field() }}
+           <input type="hidden"  name="user_id" value="{{ $user->id }}">
+         <div class="container">
+           <div class="row">
+             <div class="col-sm-6">
+             <b> Set Time  </b> <input type="time" name="settime" class="form-control" required style="width:50%"><br><br>
+           <b>Instructions</b> <textarea type="text" name="inc" cols="5" rows="7" class="form-control"   style="width:90%;resize:none;"></textarea>
+             </div>
+           </div><br>
+           <button type="submit" value="submit" id="time" onclick="submit()" class="btn btn-primary">Submit</button>
+         </div>  
+
+
+         </form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>      
+    @endforeach       
 
 <form method="POST" name="myform" action="{{ URL::to('/') }}/projectstore" enctype="multipart/form-data">
   {{ csrf_field() }}
@@ -262,7 +363,7 @@
 </div>
 </div>
 </div>
-</div>                                                   
+</div>   
 @endsection
 
 <script>
@@ -391,5 +492,8 @@ if(document.getElementById('check'+arg).checked == true){
     clist[i].checked = false; 
 }
   
+}
+function submit(){
+  document.getElementById('time').submit();
 }
 </script>

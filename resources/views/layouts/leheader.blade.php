@@ -41,8 +41,10 @@
                         <li> <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em;font-family:Times New Roman;"><b>Assigned Enquiry </b></a></li>  
                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman;"><b>Enquiry Pipelined</b></a></li>
                         <li> <a href="{{ URL::to('/') }}/kra" style="font-size:1.1em;font-family:Times New Roman;"><b>KRA</b></a></li>
-                       <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
+                        @if(Auth::user()->department_id != 2 && Auth::user()->group_id != 11)
 
+                       <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
+                       @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -45,6 +45,8 @@ use App\MhInvoice;
 use App\brand;
 use App\Message;
 use App\training;
+use App\Pricing;
+use App\Deposit;
 
 class marketingController extends Controller
 {
@@ -134,9 +136,12 @@ class marketingController extends Controller
     }
     public function ordersformarketing()
     {
-        $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')->get();
+        $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')
+        ->get();
         $countrec = count($rec);   
-        $invoice = MhInvoice::pluck('requirement_id')->toArray(); 
+        $invoice = MhInvoice::pluck('requirement_id')->toArray();
+         
+
         return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec,'invoice' => $invoice]);
     }
     public function saveinvoice(Request $request){
@@ -228,14 +233,60 @@ class marketingController extends Controller
     {
          $cat = Category::all();
         $invoice =count(MhInvoice::all());
-         
-        
-        $inc = MhInvoice::where('item',$request->cat)
-        ->orderBy('invoice_id','ASC')->get();
-        $total = count($inc);
+            
+
+
          $invoic =MhInvoice::all(); 
+        
+        // $inc = MhInvoice::where('item',$request->cat)
+        //      ->orderBy('invoice_id','ASC')->get();
+
+             if($request->cat == "ALL"){
+                $inc = MhInvoice::get();
+         }else{
+             $inc = MhInvoice::where('item',$request->cat)
+             ->orderBy('invoice_id','ASC')->get();
+         }
+            
+         $total = count($inc);
          
    
-        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'total'=>$total,'invoic'=>$invoic]);
+        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'invoic'=>$invoic,'total'=>$total]);
     }
+
+    public function pending(request $request){
+        $pending = Order::leftjoin('mh_invoice','mh_invoice.requirement_id','orders.id')->where('orders.id','!=','mh_invoice.requirement_id')->
+        where('orders.status','Order Confirmed')->select('orders.id as orderid','orders.*')->get();
+       
+           $countrec = count($pending);
+          $invoice = MhInvoice::pluck('requirement_id')->toArray();
+        
+        return view('pending',['rec'=>$pending,'countrec'=>$countrec,'invoice'=> $invoice]);
+    }
+
+
+ public function price(request $request){
+
+           $price = new Pricing;
+           $price->cat = $request->cat;
+           $price->brand = $request->brand;
+           $price->suncat = $request->subcat;
+           $price->quantity = $request->quan;
+           // $price->asstl = $request->asstl;
+           $price->stl = $request->stl;
+           $price->leandse = $request->leandse;
+          $price->save();
+      
+        return back();
+ }
+
+ public function cashdeposit(request $request)
+ {
+     $cash = Deposit::all();
+     $dep = User::all();
+
+$countrec = count($cash);
+
+     return view('/cashdeposit',['cash'=>$cash,'dep'=>$dep,'countrec'=>$countrec]);
+ }
 }

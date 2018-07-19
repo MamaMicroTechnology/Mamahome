@@ -37,6 +37,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
           @endif
           <br><br>
@@ -55,11 +56,11 @@
                   <td style="border: 1px solid gray;"><strong>{{ $total }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Enquiries Initiated </label></td>
+                  <td style="border: 1px solid gray;"><label>Total Number of Enquiries Initiated in Last 30Days</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Enquiries Confirmed</label></td>
+                  <td style="border: 1px solid gray;"><label>Total Number of Enquiries Confirmed in Last 30Days</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
                 </tr>
           </tbody>
@@ -120,7 +121,7 @@
        </div>
         <div class="col-md-8"><br><br>
      
-      <div id="map" style="width:1000px;height:500px"></div>
+      <div id="map" style="width:900px;height:500px"></div>
       </div>
 
     </div>
