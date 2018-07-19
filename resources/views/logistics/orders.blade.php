@@ -67,16 +67,13 @@
 											<input type="text" name="c_name" class="form-control input-sm">
 											 @if($rec->payment_mode != "Cheq Clear")
 												<label for="paymentMethod">Payment Mode:</label><br>
-                                          <label><input  value="RTGS"  type="checkbox" name="payment_method[]"><span>&nbsp;</span>RTGS(Online)</label>
-                                      
-                                  
-                                      <label><input  value="Cheque" type="checkbox" name="payment_method[]"><span>&nbsp;</span>Cheque</label>
-                                
-                                      <label><input  value="Cash"  type="checkbox" name="payment_method[]"><span>&nbsp;</span>Cash</label>
-
-                                     @endif
-												<label for="amount">Amount Received:</label>
-												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm">
+                                          <label><input  value="RTGS"  type="checkbox" name="payment_method[]" onclick="rtgs()"><span>&nbsp;</span>RTGS(Online)</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                          <label><input  value="Cash"  type="checkbox" name="payment_method[]" onclick="cash()"><span>&nbsp;</span>Cash</label>
+                                           @endif
+												<label for="amount">Cash Amount Received:</label>
+												<input  type="text" name="amount" id="cash" placeholder="Amount Received" class="form-control input-sm">
+												<label for="amount">RTGS Amount Received:</label>
+												<input  type="text" name="rtgs" id="rtgs" placeholder="Amount Received" class="form-control input-sm">
 												<label for="sign">Signature:</label>
 												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
 												<div id="show{{ $rec->project_id }}" class="show">
@@ -99,7 +96,6 @@
                             @else
                                 <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
                             @endif
-                           
                         </td>
                         <td style="text-align:center">
                             @if($rec->delivery_status == "Not Delivered")
@@ -177,20 +173,25 @@
                                 {{ $rec->paymentStatus }}
                              
                             @elseif($rec->delivery_status != "Delivered")
-    				            <a onclick="cancelOrder('{{$rec->orderid}}')" class="btn btn-sm btn-danger" style="width:99%" >
+    				           <!--  <a onclick="cancelOrder('{{$rec->orderid}}')" class="btn btn-sm btn-danger" style="width:99%" >
     				                <b>Cancel Order</b>
     				            </a>
-
+ -->
                             @else
                                 Order Delivered
                             @endif
 				        </td>
 				        <td>
-				       
+				        @if($rec->payment_status != "Closed" ) 
 				      @if($rec->paymentStatus == "Payment Received" ) 
                     <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal6{{ $rec->orderid }}">Deposit</button>
                     @endif
-                   
+                    @endif
+                    @if($rec->paymentStatus == "Payment Received" ) 
+                     @if($rec->payment_status == "Closed" ) 
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" >Closed</button>
+                    @endif
+                   @endif
                    
 <div class="modal" id="myModal6{{ $rec->orderid }}">
   <div class="modal-dialog">
@@ -204,7 +205,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-         <form action="{{ URL::to('/') }}/deposit" method="post" enctype="multipart/form-data">
+               <form action="{{ URL::to('/') }}/deposit" method="post" enctype="multipart/form-data">
                  {{ csrf_field() }}
 								<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 								<input type="hidden" name="user_id" value="{{ $rec->delivery_boy }}">
@@ -215,27 +216,36 @@
 											<tr>
 												<td>Bank Name</td>
 												<td>
-                                                 <input required class="form-control" type="text" name="bankname">
+                                                <select class="form-control" style="width: 40%" name="zone_id">
+                                                	<option value="select">----Select----</option>
+                                                	@foreach($zone as $zones)
+                                                   <option value="{{ $zones->id }}">{{ $zones->zone_name }}</option>
+                                                	@endforeach
+                                                </select>
+                                                 <select class="form-control" style="width: 40%;margin-top: -35px;margin-left:45%;" name="bankname">
+                                                	<option value="select">----Select----</option>
+                                                	<option value="AxisBank">Axis Bank</option>
+                                                </select>
                                                </td>
 											</tr>
 											<tr>
 												<td>Amount</td>
 												<td>
-                                                 <input required class="form-control" type="text" name="Amount">
+                                                 <input required class="form-control" type="text" name="Amount" value="{{ $rec->amount }}">
                                                </td>
 											</tr>
 											<tr>
 												<td>Date Of Deposit </td>
 												<td>
-                                                 <input required class="form-control" type="date" name="bdate">
+                                                 <input required class="form-control" type="date" name="bdate" >
                                                </td>
 											</tr>
-											<tr>
+											<!-- <tr>
 												<td>Location Of Bank</td>
 												<td>
                                                  <input required class="form-control" type="text" name="location">
                                                </td>
-											</tr>
+											</tr> -->
 											<tr>
 												<td>Cash Deposit Receipt Pic</td>
 												<td>
@@ -359,7 +369,6 @@
 		</div>
 	</div>
 </div>
-@endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -448,4 +457,8 @@ if(val=="Cheque" || val=="RTGS" || val=="Cash" )
  	 document.getElementById('show'+id).className="hidden";
  }
 }
+
+
 </script>
+
+@endsection

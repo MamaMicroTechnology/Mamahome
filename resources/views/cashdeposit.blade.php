@@ -48,7 +48,13 @@
                             <td style="text-align:center">{{$view->bdate}}</td>
                             <td style="text-align:center">{{$view->location}}</td>
                            <td> 
-                               <a style="margin-top:5px;margin-left:20%;" class="btn btn-success btn-sm" href="#" >Clear</button>
+                           <form  method="post" action="{{URL::to('/')}}/close"  >
+                            {{ csrf_field() }}
+                            <input type="hidden" name="orderid" value="{{ $view->orderId }}">
+                                  
+                               <button style="margin-top:5px;margin-left:20%;" class="btn btn-success btn-sm"  type="submit">Closed</button>
+
+                           </form>
                          </td>
 					      </tr>
                         @endforeach

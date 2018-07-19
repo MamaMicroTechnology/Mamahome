@@ -100,7 +100,8 @@ class logisticsController extends Controller
         $countview = Order::where('delivery_boy',Auth::user()->id)->count();
         $payment = Payment::all();
         $deposit = Deposit::all();
-        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment,'deposit'=>$deposit]);
+        $zone = Zone::all();
+        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment,'deposit'=>$deposit,'zone'=>$zone]);
     }
     
     public function showProjectDetails(Request $id)
@@ -197,10 +198,13 @@ class logisticsController extends Controller
 
                if($pays == NULL){
                $pay = new Payment;
+
                 
                 $pay->payment_status = "Payment Received";
                 $pay->project_id = $request->project_id;
                 $pay->amount = $request->amount;
+                $pay->rtgs = $request->rtgs;
+
                 $pay->p_method =  $paymode;
                 $pay->log_name = $request->log_name;
                 $pay->order_id = $request->orderId;
@@ -219,6 +223,8 @@ class logisticsController extends Controller
                    $pays->c_name = $request->c_name;
                     $pays->payment_status = "Payment Received";
                     $pays->amount = $request->amount;
+                    $pay->rtgs = $request->rtgs;
+
                    $pays->save();
                }
              
@@ -271,19 +277,19 @@ class logisticsController extends Controller
         $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
         $request->qm->move(public_path('delivery_details'),$quality);
         
-        $deliveryDetails = new DeliveryDetails;
-        $deliveryDetails->order_id = $request->orderId;
-        $deliveryDetails->vehicle_no = $vehicleNo;
-        $deliveryDetails->location_picture = $locationPicture;
-        $deliveryDetails->quality_of_material = $quality;
-        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-        if($request->vid){
+        // $deliveryDetails = new DeliveryDetails;
+        // $deliveryDetails->order_id = $request->orderId;
+        // $deliveryDetails->vehicle_no = $vehicleNo;
+        // $deliveryDetails->location_picture = $locationPicture;
+        // $deliveryDetails->quality_of_material = $quality;
+        // $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        // if($request->vid){
 
-            $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
-            $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails->delivery_video = $video;
-        }
-         $deliveryDetails->save();
+        //     $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
+        //     $request->vid->move(public_path('delivery_details'),$video);
+        //     $deliveryDetails->delivery_video = $video;
+        // }
+        //  $deliveryDetails->save();
      }
  }
 
@@ -580,6 +586,7 @@ class logisticsController extends Controller
                 $pay->Amount = $request->Amount;
                 $pay->bdate = $request->bdate;
                 $pay->image=$signatureName;
+                $pay->zone_id = $request->zone_id;
                
                 $pay->location = $request->location;
                 $pay->save();
@@ -590,10 +597,20 @@ class logisticsController extends Controller
                 $pays->bankname =  $request->bankname;
                 $pays->Amount = $request->Amount;
                 $pays->bdate = $request->bdate;
+                $pay->zone_id = $request->zone_id;
+                
                 $pays->image=$signatureName;
                 $pays->location = $request->location;
                 $pays->save();
                }
                return back();
+           }
+ public function close(request $request){
+
+         Order::where('id',$request->orderid)->update(['payment_status'=>"Closed"]);
+            return back();
+
+
+
            }
 }

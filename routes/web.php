@@ -528,3 +528,4 @@ Route::get('/reset','HomeController@getReset');
 Route::get('/total','HomeController@getTotal');
 Route::post('/clearcheck','mamaController@clearcheck');
 Route::get('/cashdeposit','marketingController@cashdeposit');
+Route::post('/close','logisticsController@close');
