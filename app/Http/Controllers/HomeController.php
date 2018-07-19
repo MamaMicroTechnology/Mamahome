@@ -5670,4 +5670,15 @@ public function display(request $request){
         $projection = Projection::pluck('from_date')->first();
         return view('projection.fiveYears',['totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'projection'=>$projection]);
     }
+    public function getReset(Request $request)
+    {
+        if($request->category == "all"){
+            Projection::truncate();
+            Detail::truncate();
+            Planning::truncate();
+        }else{
+            Projection::where('category',$request->category)->delete();
+        }
+        return redirect('/stage');
+    }
 }
