@@ -5367,55 +5367,55 @@ public function display(request $request){
         }
        return view('projection.projectionStage',['wards'=>$wards,'category'=>$category,'date'=>$date]);
    }
-   public function Unupdated(Request $request){
+   // public function Unupdated(Request $request){
 
-        $wards = Ward::orderby('ward_name','ASC')->get();
-         $wardid= $request->subward;
-        // if($request->subward){
-        //
-        // }else{
-        //     $wardid = NULL;
-        // }
-        if($request->from && $request->to && !$request->subward && !$request->ward){
+   //      $wards = Ward::orderby('ward_name','ASC')->get();
+   //       $wardid= $request->subward;
+   //      // if($request->subward){
+   //      //
+   //      // }else{
+   //      //     $wardid = NULL;
+   //      // }
+   //      if($request->from && $request->to && !$request->subward && !$request->ward){
 
-            $from=$request->from;
-            $to=$request->to;
-           $projectid = ProjectDetails::where('updated_at','<=',$from)
-                     ->where('updated_at','>=',$to)
-                     ->pluck('project_id');
-            $project = ProjectDetails::whereNotIn('project_id',$projectid)
-                    ->paginate(20);
-            $totalproject =count($projectid);
-            $site = SiteAddress::all();
-            $total = count($project);
+   //          $from=$request->from;
+   //          $to=$request->to;
+   //         $projectid = ProjectDetails::where('updated_at','<=',$from)
+   //                   ->where('updated_at','>=',$to)
+   //                   ->pluck('project_id');
+   //          $project = ProjectDetails::whereNotIn('project_id',$projectid)
+   //                  ->paginate(20);
+   //          $totalproject =count($projectid);
+   //          $site = SiteAddress::all();
+   //          $total = count($project);
         
-             return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
-        }
-        else if( $request->from && $request->to && $request->subward && $request->ward){
-            $from=$request->from;
-            $to=$request->to;
-           $projectid = ProjectDetails::where('updated_at','<=',$from)
-                     ->where('updated_at','>=',$to)
-                     ->where('sub_ward_id',$wardid)
-                     ->pluck('project_id');
-                      $project = ProjectDetails::where('sub_ward_id',$wardid)
-                                ->whereNotIn('project_id',$projectid)
-                                ->paginate(20);
-            $totalproject =count($projectid);
-            $site = SiteAddress::all();
-            $total = count($project);
+   //           return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+   //      }
+   //      else if( $request->from && $request->to && $request->subward && $request->ward){
+   //          $from=$request->from;
+   //          $to=$request->to;
+   //         $projectid = ProjectDetails::where('updated_at','<=',$from)
+   //                   ->where('updated_at','>=',$to)
+   //                   ->where('sub_ward_id',$wardid)
+   //                   ->pluck('project_id');
+   //                    $project = ProjectDetails::where('sub_ward_id',$wardid)
+   //                              ->whereNotIn('project_id',$projectid)
+   //                              ->paginate(20);
+   //          $totalproject =count($projectid);
+   //          $site = SiteAddress::all();
+   //          $total = count($project);
            
-             return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
-        }
-        else{
+   //           return view('unupdated',['project'=>$project,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+   //      }
+   //      else{
           
-                $project = null;
-                $total = "";
-                $from = "";
-                $to = "";
-                return view('unupdated',['project'=>$project,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total]);
-        }
-    }
+   //              $project = null;
+   //              $total = "";
+   //              $from = "";
+   //              $to = "";
+   //              return view('unupdated',['project'=>$project,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total]);
+   //      }
+   //  }
     public function viewwardmap(Request $request){
         $id=$request->UserId;
         $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
