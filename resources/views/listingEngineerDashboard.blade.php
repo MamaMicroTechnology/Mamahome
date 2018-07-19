@@ -186,7 +186,7 @@
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: '#'+col,
-        fillOpacity: 0.1
+        fillOpacity: 0.2
       });
   subward.setMap(map);
   }
