@@ -58,14 +58,14 @@ name="selectprojects" onchange="getAddress()">
 </select>
 </td>
 @else
-<td><label>Project_id : </label></td>
+<td><label>Project_Id : </label></td>
 <td >
 <input type="hidden" value="{{ $projects->project_id }}" name="selectprojects">
 {{ $projects->project_id }}</td>
 @endif
 </tr>
 <tr>
-<td><label>Product:</label></td>
+<td><label>Select Category:</label></td>
 <td><button required type="button" class="btn btn-success"
 data-toggle="modal" data-target="#myModal">Product</button></td>
 </tr>
@@ -160,7 +160,66 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     </td>
 </tr>
 <tr>
-<td><label>Remarks : </label></td>
+    <td><label>Billing And Shipping Address : </label></td>
+    <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
+ Address
+</button>
+<!-- The Modal -->
+<div class="modal" id="myModal4">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Billing And Shipping Address </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+       
+        <label>Blling Adderss</label>
+            <textarea class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;">
+        </textarea>
+            
+       <br>
+        <label>Shipping Adderss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br><br>
+        <div class="col-md-12">
+            <div class="col-md-9">
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;&nbsp;same Address</label><br><br>
+            </div>
+            
+        </div>
+        <label id="sp1">Shipping Adderss</label>
+            <textarea class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;">
+        </textarea>
+           <script type="text/javascript">
+               function myfunction(){
+          
+                document.getElementById('sp').style.display = "none";
+                document.getElementById('sp1').style.display = "none";
+               }
+
+
+           </script> 
+       <br>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+      </div>
+</div>
+
+      <!-- Modal footer -->
+
+    </div>
+  </div>
+
+
+
+    </td>
+</tr>
+<tr>
+<td><label>Remarks :</label></td>
 <td>
 <textarea style="resize: none;" rows="4" cols="40" name="eremarks"
 id="eremarks" class="form-control" /></textarea>
@@ -367,6 +426,12 @@ for (i = 0; i < acc.length; i++) {
         }
     });
 }
+
+
+
+
+
 </script>
+
 @endsection
 

@@ -429,9 +429,10 @@ div#calendar{
     <a href="{{ URL::to('/yearly') }}">Yearly Sales Projection</a>
     <a href="{{ URL::to('/fiveyears') }}">Five Years Sales Projection</a>
     <a href="{{ URL::to('/countryProjection') }}">One Year Country Projection</a>
-    <a href="{{ URL::to('/fiveYearsCountryProjection') }}">Five Years Country Projection</a>
+    <!-- <a href="{{ URL::to('/fiveYearsCountryProjection') }}">Five Years Country Projection</a> -->
     <a href="{{ URL::to('/expenditure') }}">Expenditure</a>
     <a href="{{ URL::to('/five_years_expenditure') }}">Five Years Expenditure</a>
+    <a href="{{ URL::to('/extensionPlanner') }}">Extension Planner</a>
 </div>
 @endif  
 @yield('content')

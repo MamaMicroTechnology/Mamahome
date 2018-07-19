@@ -50,6 +50,8 @@ use App\Point;
 use App\ZoneMap;
 use App\SubWardMap;
 use App\Asset;
+use App\Check;
+
 use App\MamahomeAsset;
 use App\ProjectImage;
 
@@ -502,7 +504,7 @@ class mamaController extends Controller
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
-           $length = $request->length;
+            $length = $request->length;
             $breadth = $request->breadth;
             $length = $request->length;
             $breadth = $request->breadth;
@@ -674,7 +676,7 @@ class mamaController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
-        $text = "Project added successfully.<br>Click <a href='viewProjects?no=".$no."'>here</a> to view material calculation";
+        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('Success',$text);
     }
     public function updateProject($id, Request $request)
@@ -1674,6 +1676,7 @@ class mamaController extends Controller
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
                 
+               
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1688,7 +1691,7 @@ class mamaController extends Controller
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
-                $order->sub_category = $requirement->sub_category ;
+                $order->sub_category = $requirement->sub_category;
                 $order->material_spec = $requirement->material_spec;
                 $order->referral_image1 = $requirement->referral_image1;
                 $order->referral_image2 = $requirement->referral_image2;
@@ -1728,7 +1731,8 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
-
+       
+      
         $validator = Validator::make($request->all(), [
         'subcat' => 'required'
         ]);
@@ -1768,7 +1772,7 @@ class mamaController extends Controller
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-          
+            'updated_by' =>Auth::user()->id,
             'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
@@ -1861,6 +1865,50 @@ class mamaController extends Controller
     public function addDeliveryBoy(Request $request)
     {
         Order::where('id',$request->orderId)->update(['delivery_boy'=>$request->delivery]);
+
         return back();
     }
+     public function paymentmode(Request $request)
+    {
+
+        Order::where('id',$request->orderId)->update(['payment_mode'=>$request->payment]);
+        
+        return back();
+    }
+  public function clearcheck(Request $request)
+    {
+            
+          
+       
+       
+      Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
+        return back();
+    }
+
+
+    public function check(request $request){
+        
+        $empimage = time().'.'.request()->image->getClientOriginalExtension();
+        $request->image->move(public_path('empsignature'),$empimage);
+
+     $check = new Check;
+     $check->project_id=$request->project_id;
+     $check->orderId = $request->orderId;
+     $check->checkno  = $request->checkno; 
+     $check->amount = $request->amount;
+     $check->bank = $request->bank;
+
+     $check->date = $request->date;
+     $check->image = $empimage;
+     $check->save();
+     $check = "Check";
+    Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
+     return back();
+}
+public function checkdetailes(request $request){
+    $details = Check::all();
+    $countrec = count($details);
+
+     return view('checkdetailes',['details' => $details,'countrec'=>$countrec]);
+}
 }

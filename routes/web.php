@@ -17,18 +17,29 @@ Route::get('/', function () {
 });
 
 // chatting
+Route::get('/Unupdated','HomeController@Unupdated');
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
  Route::get('/h','HomeController@hstore');
  Route::get('/viewMap','HomeController@viewMap');
  Route::post('/saveinvoice','marketingController@saveinvoice');
+ Route::post('/price','marketingController@price');
+ Route::get('/allprice','HomeController@allprice');
+
+
+ Route::get('/pending','marketingController@pending');
 Route::get('/map','HomeController@display');
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
 
 Route::POST('/projectstore','HomeController@projectstore');
+Route::POST('/projectstore1','HomeController@projectstore1');
+Route::POST('/reject','HomeController@reject');
+
 Route::POST('/enquirystore','HomeController@enquirystore');
+Route::POST('/check','mamaController@check');
+
 // Shared View
 Auth::routes();
 Route::get('/myreport','HomeController@myreport');
@@ -40,6 +51,7 @@ Route::get('/profile','HomeController@getMyProfile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/authlogin','HomeController@authlogin');
 Route::get('/payment','HomeController@getPayment');
+Route::get('/checkdetailes','mamaController@checkdetailes');
 Route::get('/changePassword','HomeController@changePassword');
 Route::get('/forgotpassword','mamaController@forgotPw');
 Route::get('/accept','HomeController@acceptConfidentiality');
@@ -166,6 +178,7 @@ Route::get('/salescompleted','HomeController@projectwisedel');
 Route::post('/sms','HomeController@smstonumber');\
 Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
+Route::get('/viewwardmap','HomeController@viewwardmap');
 
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
@@ -179,7 +192,7 @@ Route::get('/eqpipe','HomeController@eqpipeline');
 Route::get('/letraining','HomeController@letraining');
 Route::get('/setraining','HomeController@setraining');
 Route::post('/addDeliveryBoy','mamaController@addDeliveryBoy');
-
+Route::post('/paymentmode','mamaController@paymentmode');
 
 
 Route::post('/confirmUser','mamaController@confirmUser');
@@ -210,6 +223,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     Route::get('/getprojectsize','HomeController@getProjectSize');
     Route::get('/ampricing','HomeController@ampricing');
+    Route::get('/setprice','HomeController@setprice');
+
     Route::get('/adtraining','HomeController@adtraining');
     Route::get('/adenquirysheet','HomeController@enquirysheet');
     Route::get('/{id}/attendance','HomeController@hrAttendance');
@@ -235,6 +250,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/admincompleted','mamaController@completedAssignment');
     Route::get('/confidential','HomeController@confidential');
     Route::get('/letracking','HomeController@getLeTracking');
+    Route::get('/Unupdated','HomeController@Unupdated');
+    Route::post('/storedate','HomeController@storedate');
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
@@ -261,6 +278,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/edit/bank_account','mamaController@saveBankDetails');
     Route::post('/edit/saveAssetInfo','mamaController@saveAssetInfo');
     Route::post('/edit/uploadCertificates','mamaController@uploadCertificates');
+
 });
 
 
@@ -496,6 +514,9 @@ Route::group(['middleware'=>['Logistics']],function(){
     Route::post('/saveSignature','logisticsController@saveSignature');
     Route::post('/payment','logisticsController@payment');
     Route::post('/saveDeliveryDetails','logisticsController@saveDeliveryDetails');
+    Route::post('/feedback','logisticsController@feedback');
+    Route::post('/deposit','logisticsController@deposit');
+    Route::get('/lcinvoice','logisticsController@lcinvoice');
 });
 
 Route::get('/payment','HomeController@payment');
@@ -522,3 +543,6 @@ Route::get('/extensionPlanner','HomeController@getExtensionPlanner');
 // Auditor Dashboard
 Route::get('/auditor','HomeController@getAuditorDashboard');
 Route::post('/save','HomeController@save');
+Route::post('/clearcheck','mamaController@clearcheck');
+Route::get('/cashdeposit','marketingController@cashdeposit');
+Route::post('/close','logisticsController@close');

@@ -120,7 +120,7 @@ class ContractorController extends Controller
      
       
     
-      $table = "<tr> <td colspan='8'><center>Material Estimation prices may vary according to Market Price</center> </td></center></tr>
+      $table = "<tr> <td colspan='8'><center>Material Estimation prices May Vary According To Market Price</center> </td></center></tr>
      
       <tr><th>Category</th><th>Total Required</th><th>Total Amount</th></tr>";
       $projectIds = ContractorDetails::where('contractor_contact_no',$request->no)->pluck('project_id');
@@ -851,7 +851,7 @@ break;
 
        $total = number_format($cement1+$steel1+$floor+$door+$pl+$bl+$ele+$agr+$sand1+$bathroom+$wood+$paints+$ward+$rail+$glas);
        $table .="<tr><th></th>
-                <th>Total Approximate Estimation Amount</th>
+                <th>Total Approximate Material Cost</th>
                    
                 <th>".  $total ."</th>
                   
