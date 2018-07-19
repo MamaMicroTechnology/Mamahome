@@ -4963,7 +4963,9 @@ public function display(request $request){
         $conversions = Conversion::all();
         if($request->category){
             $conversion = Conversion::where('category',$request->category)->first();
+            $utilizations = Utilization::where('category',$request->category)->first();
             View::share('conversion', $conversion);
+            View::share('utilization',$utilizations);
         }else{
             View::share('conversion',null);
         }
