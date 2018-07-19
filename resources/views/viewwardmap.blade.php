@@ -12,7 +12,7 @@
 
                 </div>
                 <div class="panel-body">
-                	   <div id="map" style="width:1050px;height:530px"></div>
+                	   <div id="map" style="width:1000px;height:530px"></div>
                 </div>
                </div>
              </div>
