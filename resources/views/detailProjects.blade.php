@@ -10,7 +10,7 @@
 			<table class="table table-responsive" border="1">
 						{!! $table !!}
 			</table>
-			<table class="table table-responsive" >
+			<!-- <table class="table table-responsive" >
 			<tr>
 					<td style="text-align: center;">Do You Require Detail Material Calculation?</td>
 					<td >
@@ -18,7 +18,7 @@
 					<a class=" btn btn-sm btn-danger " href="{{url()->previous()}}">NO</a>
 				</td>
 			</tr>
-			</table>
+			</table> -->
 			
 		</div>
 	</div>

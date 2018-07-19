@@ -479,6 +479,7 @@ div#calendar{
         <div id="projects" class="collapse">
             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
+            <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
@@ -525,10 +526,6 @@ div#calendar{
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
 
-
-
-    <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
-    <a href="{{ URL::to('/') }}/Unupdated">UnUpdated Projects</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -614,7 +611,7 @@ div#calendar{
     <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
     <a href="{{ URL::to('/') }}/followupproject" >Follow Up projects</a>
-    <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
+    <a href="{{ URL::to('/') }}/myreport" >My Report</a>
     <a href="{{ URL::to('/') }}/kra" >KRA</a>           
   </div>
    @elseif(Auth::user()->group_id == 14)

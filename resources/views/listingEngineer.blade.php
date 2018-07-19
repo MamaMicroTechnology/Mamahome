@@ -344,7 +344,7 @@
 <button style="width: 100%;font-size: 20px;" class="btn btn-sm">Customer Details</button>
 <div class="tab"  id="second" style="overflow: hidden;
     border: 1px solid #ccc;
-    background-color: #098c26;
+    background-color: #337ab7;
    ">
   <button style="background-color: inherit;
     
@@ -1068,7 +1068,9 @@ function openCity(evt, cityName) {
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
-                      "<option value='3BHK'>3BHK</option></select>"+
+                      "<option value='3BHK'>3BHK</option>"+
+                      "<option value='4BHK'>4BHK</option>"+
+                      "<option value='5BHK'>5BHK</option></select>"+
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses\"></td>";
             document.getElementById('selection').innerHTML = sel;
@@ -1081,7 +1083,9 @@ function openCity(evt, cityName) {
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
-                      "<option value='3BHK'>3BHK</option></select>"+
+                      "<option value='3BHK'>3BHK</option>"+
+                      "<option value='4BHK'>4BHK</option>"+
+                      "<option value='5BHK'>5BHK</option></select>"+
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses/No. of Flats\"></td>";
             document.getElementById('selection').innerHTML = sel;
@@ -1128,6 +1132,8 @@ function openCity(evt, cityName) {
                                                           "<option value=\"1BHK\">1BHK</option>"+
                                                           "<option value=\"2BHK\">2BHK</option>"+
                                                           "<option value=\"3BHK\">3BHK</option>"+
+                                                          "<option value=\"4BHK\">4BHK</option>"+
+                                                          "<option value=\"5BHK\">5BHK</option>"+
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
@@ -1145,6 +1151,8 @@ function openCity(evt, cityName) {
                                                           "<option value=\"1BHK\">1BHK</option>"+
                                                           "<option value=\"2BHK\">2BHK</option>"+
                                                           "<option value=\"3BHK\">3BHK</option>"+
+                                                          "<option value=\"4BHK\">4BHK</option>"+
+                                                          "<option value=\"5BHK\">5BHK</option>"+
                                                       "</select>";
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
@@ -1228,7 +1236,6 @@ function validateForm(arg)
 }
 
 </script>
-@endif
 
   <!-- Modal -->
 @if(session('Success'))

@@ -5442,6 +5442,7 @@ public function display(request $request){
         $wards = Ward::orderby('ward_name','ASC')->get();
         $wardid= $request->subward;
         $previous = date('Y-m-d',strtotime('-45 days'));
+        $today = date('Y-m-d');
         $total = "";
         $site = SiteAddress::all();
         if(!$request->subward && $request->ward){
@@ -5478,7 +5479,7 @@ public function display(request $request){
                 $totalproject = "";
                 $site = "";
         }
-        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous]);
+        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today]);
     }
     // public function storedate(Request $request){
    
