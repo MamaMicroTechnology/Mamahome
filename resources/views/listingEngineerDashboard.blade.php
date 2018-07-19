@@ -172,7 +172,7 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 18,
+      zoom: 12,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -186,7 +186,7 @@
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: '#'+col,
-        fillOpacity: 0.2
+        fillOpacity: 0.5
       });
   subward.setMap(map);
   }
