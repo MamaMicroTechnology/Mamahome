@@ -120,7 +120,7 @@ class ContractorController extends Controller
      
       
     
-      $table = "<tr> <td colspan='8'><center>Material Estimation prices may vary according to Market Price</center> </td></center></tr>
+      $table = "<tr> <td colspan='8'><center>Material Estimation prices May Vary According To Market Price</center> </td></center></tr>
      
       <tr><th>Category</th><th>Total Required</th><th>Total Amount</th></tr>";
       $projectIds = ContractorDetails::where('contractor_contact_no',$request->no)->pluck('project_id');

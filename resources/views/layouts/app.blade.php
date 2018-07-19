@@ -520,7 +520,8 @@ div#calendar{
     <a href="{{ URL::to('/confidential') }}">Confidential</a>
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
-     <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
+    <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
+    <a href="{{ URL::to('/') }}/Unupdated">UnUpdated Projects</a>
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
 <div id="mySidenav" class="sidenav">

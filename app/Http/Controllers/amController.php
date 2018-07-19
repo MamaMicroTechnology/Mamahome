@@ -65,6 +65,7 @@ class amController extends Controller
                         ->join('users','login_times.user_id','users.id')
                         ->select('users.name','users.employeeId','login_times.*')
                         ->get();
+        
         return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins]);
     }
     public function getPricing(){

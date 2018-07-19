@@ -58,14 +58,14 @@ name="selectprojects" onchange="getAddress()">
 </select>
 </td>
 @else
-<td><label>Project_id : </label></td>
+<td><label>Project_Id : </label></td>
 <td >
 <input type="hidden" value="{{ $projects->project_id }}" name="selectprojects">
 {{ $projects->project_id }}</td>
 @endif
 </tr>
 <tr>
-<td><label>Product:</label></td>
+<td><label>Select Category:</label></td>
 <td><button required type="button" class="btn btn-success"
 data-toggle="modal" data-target="#myModal">Product</button></td>
 </tr>

@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row">
-      <b>List of projects under you:</b><br>
+     
       <table class="table">
         <thead>
           <th>Project Name</th>
-          <th>project Id</th>
+          <th>Project Id</th>
           <th>Address</th>
           <th>Status</th>
           <th>Procurement Name</th>
@@ -42,7 +42,9 @@
           @endforeach
         </tbody>
       </table>
-      {{ $projectlist->links() }}
+      @if(isset($_GET['quality']))
+      {{ $projectlist->appends('quality',$_GET['quality'])->links() }}
+      @endif
     </div>
 </div>
 @endsection

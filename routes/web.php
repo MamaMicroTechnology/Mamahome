@@ -166,6 +166,7 @@ Route::get('/salescompleted','HomeController@projectwisedel');
 Route::post('/sms','HomeController@smstonumber');\
 Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
+Route::get('/viewwardmap','HomeController@viewwardmap');
 
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
@@ -235,6 +236,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/admincompleted','mamaController@completedAssignment');
     Route::get('/confidential','HomeController@confidential');
     Route::get('/letracking','HomeController@getLeTracking');
+    Route::get('/Unupdated','HomeController@Unupdated');
+    Route::post('/storedate','HomeController@storedate');
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
     Route::post('/saveMap','mamaController@saveMap');
@@ -261,6 +264,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/edit/bank_account','mamaController@saveBankDetails');
     Route::post('/edit/saveAssetInfo','mamaController@saveAssetInfo');
     Route::post('/edit/uploadCertificates','mamaController@uploadCertificates');
+
 });
 
 
