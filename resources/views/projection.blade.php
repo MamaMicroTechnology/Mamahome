@@ -181,33 +181,7 @@
         <p id="tp"></p>
         <button onclick="transactionalProfit()" class="btn btn-primary form-control">Proceed</button>
         <br><br>
-        <button class="btn btn-primary form-control" data-toggle="modal" data-target="#myModal">Lock Target</button>
-        
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Confirmation</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p style="text-align:center">Do you want to lock this with the existing data or projected data?</p>
-                        <label class="radio-inline">
-                            <input type="radio" onclick="document.getElementById('percentage1').className='hidden';" name="existing" id="existing"> Existing Data<br>
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" onclick="document.getElementById('percentage1').className='';" name="existing" id="projected"> Projected Data
-                        </label>
-                        <p class="hidden" id="percentage1">
-                            <input type="text" name="percentage1" id="perc" class="form-control" placeholder="Incremental Percentage">
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button onclick="save()" class="btn btn-success pull-left">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <button class="btn btn-primary form-control" onclick="save()">Lock Target</button>
     </div>
 </div>
 <div class="col-md-6">
@@ -389,7 +363,6 @@
     <input type="hidden" name="category" id="category">
     <input type="hidden" name="from" id="from_date">
     <input type="hidden" name="to" id="to_date">
-    <input type="hidden" name="incrementalPercentage" id="incrementalPercentage">
 </form>
 <script>
     var calBag;
@@ -424,14 +397,7 @@
         document.getElementById('category').value = document.getElementById('categories').value;
         document.getElementById('from_date').value= document.getElementById('from').value;
         document.getElementById('to_date').value = document.getElementById('to').value;
-        if(document.getElementById('perc').value != "" && document.getElementById('projected').checked == true){
-            document.getElementById('incrementalPercentage').value = document.getElementById('perc').value;
-            form.submit();
-        }else if(document.getElementById('perc').value == "" && document.getElementById('projected').checked == true){
-            alert("Enter Incremental Percentage");
-        }else{
-            form.submit();
-        }
+        form.submit();
     }
 </script>
 @endsection
