@@ -5367,89 +5367,89 @@ public function display(request $request){
    }
    public function getLockedStage(Request $request){
     $categories = Projection::all();
-    $wards = Ward::all();
-    $text = "<br><br><br><br><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#reset'>Master Reset</button><br><br><table class='table table-hover' border=1>";
-    $totalRequirement = 0;
-    $totalPrice = 0;
-    $totalMonthly = 0;
-    $totalMonthlyPrice = 0;
-    $totalTP = 0;
-    $totalTarget = 0;
-    if($request->ward){
-        $projections = Detail::where('details.ward_id',$request->ward)
-                        ->leftJoin('wards','wards.id','details.ward_id')
-                        ->select('details.*','wards.ward_name')
-                        ->get();
-        if($request->category == 'all'){
-            $category = Projection::all()->toArray();
-            foreach($category as $category){
-                $totalCategory = 0;
-                $totalCategoryPrice = 0;
-                $conversion = Conversion::where('category',$category['category'])->first();
-                $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
-                $text .= "<tr><th colspan=6>".ucwords($category['category'])."</th></tr>";
-                foreach($projections as $projection){
-                    if($projection['stage'] == "Electrical & Plumbing")
-                        $stage = "electrical";
-                    else
-                        $stage = $projection['stage'];
-                    $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
-                    $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
+        $wards = Ward::all();
+        $text = "<br><br><br><br><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#reset'>Master Reset</button><br><br><table class='table table-hover' border=1>";
+        $totalRequirement = 0;
+        $totalPrice = 0;
+        $totalMonthly = 0;
+        $totalMonthlyPrice = 0;
+        $totalTP = 0;
+        $totalTarget = 0;
+        if($request->ward){
+            $projections = Detail::where('details.ward_id',$request->ward)
+                            ->leftJoin('wards','wards.id','details.ward_id')
+                            ->select('details.*','wards.ward_name')
+                            ->get();
+            if($request->category == 'all'){
+                $category = Projection::all()->toArray();
+                foreach($category as $category){
+                    $totalCategory = 0;
+                    $totalCategoryPrice = 0;
+                    $conversion = Conversion::where('category',$category['category'])->first();
+                    $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
+                    $text .= "<tr><th colspan=6>".ucwords($category['category'])."</th></tr>";
+                    foreach($projections as $projection){
+                        if($projection['stage'] == "Electrical & Plumbing")
+                            $stage = "electrical";
+                        else
+                            $stage = $projection['stage'];
+                        $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
+                        $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
+                    }
+                    $text .= "<tr>
+                                <th></th>
+                                <th style='text-align:right'>Total ".$conversion['unit']."</th>
+                                <th style='text-align:right'>Amount</th>
+                                <th style='text-align:center'>Business Cycle</th>
+                                <td style='text-align:center'><b>Monthly Target</b><br>
+                                (".$category['target']."% From The Existing Monthly Requirement)</td>
+                                <td style='text-align:center'><b>Transactional Profit</b><br>(".$category['transactional_profit']."% From The Monthly Target)</td>
+                            </tr>";
+                    $totalRequirement += $totalCategory;
+                    $totalPrice += $totalCategoryPrice;
+                    $text .= "<tr>
+                    <td>Total Requirement In The Listed Projects</td>
+                    <td style='text-align:right'>".number_format($totalCategory)."</td>
+                    <td style='text-align:right'>".number_format($totalCategoryPrice)."</td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                    <td>Monthly Requirement In The Listed Projects</td>
+                    <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
+                    <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>";
+                    $totalMonthly += $totalCategory/$category['business_cycle'];
+                    $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
+                    
+                    $totalMonthly/100*$category['target'];
+                    $totalTarget += $amount = $monthlyPrice/100*$category['target'];
+                    $totalTP += $tp = $amount/100*$category['transactional_profit'];
+                    $text .= "<td style='text-align:center'>".$category['business_cycle'].
+                                "</td><td style='text-align:right'>".number_format($amount).
+                                "</td><td style='text-align:right'>".number_format($tp).
+                            "</td></tr>";
                 }
-                $text .= "<tr>
-                            <th></th>
-                            <th style='text-align:right'>Total ".$conversion['unit']."</th>
-                            <th style='text-align:right'>Amount</th>
-                            <th style='text-align:center'>Business Cycle</th>
-                            <td style='text-align:center'><b>Monthly Target</b><br>
-                            (".$category['target']."% From The Existing Monthly Requirement)</td>
-                            <td style='text-align:center'><b>Transactional Profit</b><br>(".$category['transactional_profit']."% From The Monthly Target)</td>
-                        </tr>";
-                $totalRequirement += $totalCategory;
-                $totalPrice += $totalCategoryPrice;
-                $text .= "<tr>
-                <td>Total Requirement In The Listed Projects</td>
-                <td style='text-align:right'>".number_format($totalCategory)."</td>
-                <td style='text-align:right'>".number_format($totalCategoryPrice)."</td><td></td><td></td><td></td>
-                </tr>
-                <tr>
-                <td>Monthly Requirement In The Listed Projects</td>
-                <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
-                <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>";
-                $totalMonthly += $totalCategory/$category['business_cycle'];
-                $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
-                
-                $totalMonthly/100*$category['target'];
-                $totalTarget += $amount = $monthlyPrice/100*$category['target'];
-                $totalTP += $tp = $amount/100*$category['transactional_profit'];
-                $text .= "<td style='text-align:center'>".$category['business_cycle'].
-                            "</td><td style='text-align:right'>".number_format($amount).
-                            "</td><td style='text-align:right'>".number_format($tp).
-                        "</td></tr>";
+                $text .= "<tr><th colspan=6></th></tr><tr><th style='background-color:#236281; color:white;' colspan=6><center>Total</center></th></tr>
+                    <tr>
+                    <th>Total Monthly Target</th><th></th><th></th><th></th>
+                    <th style='text-align:right'>".number_format($totalTarget)."</th>
+                    <th></th>
+                    </tr>
+                    <tr>
+                    <th>Total Monthly Transactional Profit</th>
+                    <th></th><th></th><th></th><th></th>
+                    <th style='text-align:right'>".number_format($totalTP)."</th>
+                    </tr>
+                    </table>";
+                return view('projection.projectionStage',['category'=>$category,'wards'=>$wards,'categories'=>$categories,'text'=>$text]);
+            }else{
+                $category = Projection::where('category',$request->category)->first();
+                $conversion = Conversion::where('category',$request->category)->first();
+                $utilizations = Utilization::where('category',$request->category)->first()->toArray();
             }
-            $text .= "<tr><th colspan=6></th></tr><tr><th style='background-color:#236281; color:white;' colspan=6><center>Total</center></th></tr>
-                <tr>
-                <th>Total Monthly Target</th><th></th><th></th><th></th>
-                <th style='text-align:right'>".number_format($totalTarget)."</th>
-                <th></th>
-                </tr>
-                <tr>
-                <th>Total Monthly Transactional Profit</th>
-                <th></th><th></th><th></th><th></th>
-                <th style='text-align:right'>".number_format($totalTP)."</th>
-                </tr>
-                </table>";
-            return view('projection.projectionStage',['category'=>$category,'wards'=>$wards,'categories'=>$categories,'text'=>$text]);
-        }else{
-            $category = Projection::where('category',$request->category)->first();
-            $conversion = Conversion::where('category',$request->category)->first();
-            $utilizations = Utilization::where('category',$request->category)->first()->toArray();
+            $total = Detail::where('ward_id',$request->ward)->sum('size');
+            return view('projection.projectionStage',['projections'=>$projections,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations,'categories'=>$categories]);
         }
-        $total = Detail::where('ward_id',$request->ward)->sum('size');
-        return view('projection.projectionStage',['projections'=>$projections,'category'=>$category,'wards'=>$wards,'total'=>$total,'conversion'=>$conversion,'utilizations'=>$utilizations,'categories'=>$categories]);
+       return view('projection.projectionStage',['wards'=>$wards,'categories'=>$categories]);
     }
-   return view('projection.projectionStage',['wards'=>$wards,'categories'=>$categories]);
-}
     public function viewwardmap(Request $request){
         $id=$request->UserId;
         $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
