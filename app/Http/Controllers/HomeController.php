@@ -5663,4 +5663,11 @@ public function display(request $request){
         $dates = Projection::first();
         return view('projection.extension',['dates'=>$dates]);
     }
+    public function getFiveYears()
+    {
+        $totalTarget = Planning::where('type','yearly')->pluck('totalTarget')->first();
+        $totalTP = Planning::where('type','yearly')->pluck('totalTP')->first();
+        $projection = Projection::pluck('from_date')->first();
+        return view('projection.fiveYears',['totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'projection'=>$projection]);
+    }
 }
