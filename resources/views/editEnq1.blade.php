@@ -53,6 +53,7 @@
 								<td><label>Select category:</label></td>
 								<td><button id="mybutton" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
+							
 <?php
 	$sub = explode(", ",$enq->quantity);
 	$brands = explode(", ",$enq->brand);
@@ -245,6 +246,17 @@
 								<td><label>Quantity* : </label></td>
 								<td>{{ $enq->quantity }}</td>
 							</tr>
+							<tr>
+								<td><label>Enquiry Quantity : </label></td>
+								<td><input type="text" value="{{ $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" /></td>
+							</tr>
+							
+							<tr>
+								<td><label>Total Quantity : </label></td>
+								<td><input type="number" value="{{ $enq->total_quantity }}" name="totalquantity" id="tquantity" title="Three letter country code" class="form-control" /></td>
+
+							</tr>
+							
 							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>
