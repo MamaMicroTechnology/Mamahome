@@ -1770,7 +1770,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->where('sub_ward_id',$assignment)
                 ->paginate(10);
         }
-        return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
+        return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements"]);
     }
     public function getRequirements(Request $request)
     {
