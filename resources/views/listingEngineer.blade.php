@@ -767,8 +767,8 @@ function openCity(evt, cityName) {
       if(!isNaN(breadth) && !isNaN(length)){
         
         var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum          = length*breadth;
-        Size    += sum;
+        sum1   = length*breadth;
+        Size    += sum1;
         var total = sum * sum1;
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
