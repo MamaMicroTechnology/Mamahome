@@ -429,6 +429,8 @@
                                                         <option value="1BHK">1BHK</option>
                                                         <option value="2BHK">2BHK</option>
                                                         <option value="3BHK">3BHK</option>
+                                                        <option value="4BHK">4BHK</option>
+                                                        <option value="5BHK">5BHK</option>
                                                     </select>
                                                     @else
                                                     <select name="roomType[]" id="" class="form-control">
@@ -438,6 +440,8 @@
                                                         <option value="1BHK">1BHK</option>
                                                         <option value="2BHK">2BHK</option>
                                                         <option value="3BHK">3BHK</option>
+                                                        <option value="4BHK">4BHK</option>
+                                                        <option value="5BHK">5BHK</option>
                                                     </select>
                                                     @endif
                                                 </td>
@@ -494,7 +498,7 @@
 <button type="button" style="width: 100%;font-size: 20px;" class="btn btn-sm">Customer Details</button>
 <div class="tab" style="overflow: hidden;
     border: 1px solid #ccc;
-    background-color: #5b6d5c;
+    background-color: #337ab7;
    ">
   <button type="button" style="background-color: inherit;
     
@@ -964,7 +968,9 @@ function sum(){
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
-                      "<option value='3BHK'>3BHK</option></select>"+
+                      "<option value='3BHK'>3BHK</option>"+
+                      "<option value='4BHK'>4BHK</option>"+
+                      "<option value='5BHK'>5BHK</option></select>"+
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses / No. Of Flats\"></td>";
             document.getElementById('selection').innerHTML = sel;
