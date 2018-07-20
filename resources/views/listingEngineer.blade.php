@@ -147,7 +147,7 @@
                                </tr>
 
                                <tr>
-                                <td>Type of 
+                                <td>Type of &nbsp;&nbsp;
                                 Contract ?</td>
                                 <td>:</td>
                                 <td>
