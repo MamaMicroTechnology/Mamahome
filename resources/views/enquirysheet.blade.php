@@ -115,33 +115,30 @@
 						@foreach($enquiries as $enquiry)
 
 							@if($enquiry->status == "Enquiry On Process")
-							<?php	$pro++; 
-							 $quantity = explode(", ",$enquiry->quantity); ?>
-							
-								@for($i = 0; $i < count($quantity); $i++)
-								<?php $sum = $sum + $quantity[$i]; ?>
-								@endfor
+							<?php	$pro++; ?>
+								<?php $sum = $sum + $enquiry->total_quantity; 
+								 ?>
 								
 							@endif
 
 							@if($enquiry->status == "Enquiry Confirmed")
 							<?php	$con++; 
-							 $quantity = explode(", ",$enquiry->quantity); ?>
+							 ?>
 
-								@for($i = 0; $i < count($quantity); $i++)
-									<?php $sum1 = $sum1 + $quantity[$i]; 
+								
+									<?php $sum1 = $sum1 + $enquiry->total_quantity; 
 									 ?>
-								@endfor
+								
 
 							@endif
 
 							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")
 							<?php  $total++; 
-							 $quantity = explode(", ",$enquiry->quantity); ?>
-								@for($i = 0; $i < count($quantity); $i++)
-									<?php $sum2 = $sum2 + $quantity[$i]; 
+							?>
+								
+									<?php $sum2 = $sum2 + $enquiry->total_quantity; 
 									 ?>
-								@endfor
+								
 							@endif
                         @endforeach
                         
