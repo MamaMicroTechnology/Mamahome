@@ -5789,4 +5789,45 @@ public function display(request $request){
         }
         return redirect('/stage');
     }
+    public function getYearlyPlanning(Request $request)
+    {
+        $totalRequirement = 0;
+        $totalPrice = 0;
+        $totalMonthly = 0;
+        $totalMonthlyPrice = 0;
+        $totalTP = 0;
+        $totalTarget = 0;
+        $projections = Detail::where('details.ward_id','all')
+                            ->leftJoin('wards','wards.id','details.ward_id')
+                            ->select('details.*','wards.ward_name')
+                            ->get();
+        $category = Projection::all()->toArray();
+        foreach($category as $category){
+            $totalCategory = 0;
+            $totalCategoryPrice = 0;
+            $conversion = Conversion::where('category',$category['category'])->first();
+            $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
+            foreach($projections as $projection){
+                if($projection['stage'] == "Electrical & Plumbing")
+                    $stage = "electrical";
+                else
+                    $stage = $projection['stage'];
+                $totalCategory += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]);
+                $totalCategoryPrice += ($projection['size'] * $conversion->minimum_requirement/$conversion->conversion)/100*($utilizations[strtolower($stage)]) * $category['price'];
+            }
+            $totalRequirement += $totalCategory;
+            $totalPrice += $totalCategoryPrice;
+            $monthly = $totalCategory/$category['business_cycle'];
+            $monthlyPrice = $totalCategoryPrice/$category['business_cycle'];
+            $totalMonthly += $totalCategory/$category['business_cycle'];
+            $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
+            
+            $totalMonthly/100*$category['target'];
+            $totalTarget += $amount = $monthlyPrice/100*$category['target'];
+            $totalTP += $tp = $amount/100*$category['transactional_profit'];   
+        }
+        $projection = Projection::pluck('from_date')->first();
+        $categories = Projection::all();
+        return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
+    }
 }
