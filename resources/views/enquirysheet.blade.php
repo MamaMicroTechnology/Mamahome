@@ -101,6 +101,7 @@
 							<th style="text-align: center">Contact</th>
 							<th style="text-align: center">Product</th>
 							<th style="text-align: center">Quantity</th>
+							<th style="text-align: center">Total Quantity</th>
 							<th style="text-align: center">Initiator</th>
 							<th style="text-align: center">Converted by</th>
 							<th style="text-align: center">Last Update</th>
@@ -162,6 +163,7 @@
 								{{ $quantity[$i] }}<br>
 								@endfor
 							</td>
+							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
 							@foreach($converter as $convert)
@@ -296,17 +298,17 @@ function myFunction() {
 		
 		if(document.getElementById("categ").value  != "All"){
 		
-				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
+				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}   /  Quantity On Process : {{ $sum }} "
 		 }
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		if(document.getElementById("categ").value  != "All"){
-		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}   /   Quantity On Confirmed : {{ $sum1 }}"
 		}
 	}
 	else {
 		if(document.getElementById("categ").value  != "All"){
-		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }} "
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}   /   Total Quantity  :  {{ $sum2 }}  "
 		}
 	}
 
