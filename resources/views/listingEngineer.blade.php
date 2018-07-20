@@ -147,7 +147,8 @@
                                </tr>
 
                                <tr>
-                                <td>Type of Contract?</td>
+                                <td>Type of 
+                                Contract ?</td>
                                 <td>:</td>
                                 <td>
                                   <select class="form-control" name="contract" id="contract" class="requiredn">
