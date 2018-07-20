@@ -5343,7 +5343,103 @@ public function display(request $request){
                 // $details->size         = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Closed%')->sum('project_size');
                 // $details->save();
             }
-        }
+             // planning
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Planning";
+             $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
+             $details->save();
+             
+             // digging
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Digging";
+             $details->size        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Digging%')->sum('project_size');
+             $details->save();
+ 
+             // foundation
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Foundation";
+             $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
+             $details->save();
+ 
+             // pillars
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Pillars";
+             $details->size        = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Pillars%')->sum('project_size');
+             $details->save();
+             
+             // walls
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Walls";
+             $details->size          = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Walls%')->sum('project_size');
+             $details->save();
+             
+             
+             
+             // roofing
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Roofing";
+             $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->sum('project_size');
+             $details->save();
+             
+             $ele                = ProjectDetails::where('project_status','LIKE','Electrical%')->pluck('project_id');
+             $plum               = ProjectDetails::where('project_status','LIKE','Plumbing%')->pluck('project_id');
+             $ele                = $ele->merge($plum);
+ 
+             // electrical & plumbing
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Electrical & Plumbing";
+             $details->size            = ProjectDetails::whereIn('project_id',$ele)->whereIn('quality',$qualityCheck)->sum('project_size');
+             $details->save();
+ 
+             // plastering
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Plastering";
+             $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Plastering%')->sum('project_size');
+             $details->save();
+             
+             // flooring
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Flooring";
+             $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Flooring%')->sum('project_size');
+             $details->save();
+ 
+             // carpentry
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Carpentry";
+             $details->size      = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Carpentry%')->sum('project_size');
+             $details->save();
+ 
+             // painting
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Painting";
+             $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Paintings%')->sum('project_size');
+             $details->save();
+ 
+             // fixture
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Fixture";
+             $details->size       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Fixtures%')->sum('project_size');
+             $details->save();
+ 
+             // completion
+             $details = new Detail;
+             $details->ward_id = "all";
+             $details->stage = "Completion";
+             $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Completion%')->sum('project_size');
+             $details->save();
+         }
         $check2 = Projection::where('category',$request->category)->first();
         if($check2 == null){
             $projection = new Projection;
@@ -5409,15 +5505,27 @@ public function display(request $request){
                             </tr>";
                     $totalRequirement += $totalCategory;
                     $totalPrice += $totalCategoryPrice;
-                    $text .= "<tr>
-                    <td>Total Requirement In The Listed Projects</td>
-                    <td style='text-align:right'>".number_format($totalCategory)."</td>
-                    <td style='text-align:right'>".number_format($totalCategoryPrice)."</td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                    <td>Monthly Requirement In The Listed Projects</td>
-                    <td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
-                    <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>";
+                    $text .= "<tr><td>Total Requirement In The Listed Projects</td>";
+
+                    if($category['incremental_percentage'] != null){
+                        $text .= "<td style='text-align:right'>".number_format($totalCategory + $totalCategory / 100 * $category['incremental_percentage'])."</td>
+                        <td style='text-align:right'>".number_format($totalCategoryPrice + $totalCategoryPrice / 100 * $category['incremental_percentage'])."</td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                        <td>Monthly Requirement In The Listed Projects</td>";
+
+                        $text .="<td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'] + $totalCategory/$category['business_cycle'] / 100 * $category['incremental_percentage'])."</td>
+                        <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'] + $totalCategoryPrice/$category['business_cycle'] / 100 * $category['incremental_percentage'])."</td>";
+                    }else{
+                        $text .= "<td style='text-align:right'>".number_format($totalCategory)."</td>
+                        <td style='text-align:right'>".number_format($totalCategoryPrice)."</td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                        <td>Monthly Requirement In The Listed Projects</td>";
+
+                        $text .="<td style='text-align:right'>".number_format($monthly = $totalCategory/$category['business_cycle'])."</td>
+                        <td style='text-align:right'>".number_format($monthlyPrice = $totalCategoryPrice/$category['business_cycle'])."</td>";
+                    }
                     $totalMonthly += $totalCategory/$category['business_cycle'];
                     $totalMonthlyPrice += $totalCategoryPrice/$category['business_cycle'];
                     
