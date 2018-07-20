@@ -3,13 +3,16 @@
 <div class="container">
 <div class="col-md-12">
     <div class="panel panel-default" style="border-color:green;"> 
-                <div class="panel-heading " style="background-color: green;color:white;"><p class="pull-left">Projects To Be Updated</p>
+                <div class="panel-heading text-center" style="background-color: green;color:white;">
+                	  Projects To Be Updated 
+
                 @if($totalproject != 0)
-                 From <span>&nbsp;&nbsp;&nbsp;</span><b style="color: white;">{{ date('d-m-Y', strtotime($previous)) }} To {{ date('d-m-Y', strtotime($today)) }}</b>
+              <span>&nbsp;&nbsp;&nbsp;</span> <b style="color: white;">From {{ date('d-m-Y', strtotime($previous)) }} To {{ date('d-m-Y', strtotime($today)) }}</b>
 
                <b>Count : {{ $totalproject }}</b>
-  
+                <p class="pull-right"> Projects Not Been Updated In 45 Days.</p>
 
+                	
                 @endif
                 <b class="pull-right"> Projects Not Been Updated In 45 Days.</b>
 
