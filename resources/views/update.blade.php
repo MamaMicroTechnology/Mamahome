@@ -160,7 +160,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of Contract ? </td>
+                                 <td>Type Of &nbsp;&nbsp; Contract ? </td>
                                   <td>:</td>
                                   <td>
                                    <select class="form-control" name="contract" id="contract" required>
