@@ -27,13 +27,12 @@
     23 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     24 => 'Laravel\\Tinker\\TinkerServiceProvider',
     25 => 'Carbon\\Laravel\\ServiceProvider',
-    26 => 'Nexmo\\Laravel\\NexmoServiceProvider',
-    27 => 'App\\Providers\\AppServiceProvider',
-    28 => 'App\\Providers\\AuthServiceProvider',
-    29 => 'App\\Providers\\EventServiceProvider',
-    30 => 'App\\Providers\\RouteServiceProvider',
-    31 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
-    32 => 'Barryvdh\\Cors\\ServiceProvider',
+    26 => 'App\\Providers\\AppServiceProvider',
+    27 => 'App\\Providers\\AuthServiceProvider',
+    28 => 'App\\Providers\\EventServiceProvider',
+    29 => 'App\\Providers\\RouteServiceProvider',
+    30 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    31 => 'Barryvdh\\Cors\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -156,7 +155,6 @@
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
-    'Nexmo\\Client' => 'Nexmo\\Laravel\\NexmoServiceProvider',
   ),
   'when' => 
   array (
@@ -197,9 +195,6 @@
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
-    array (
-    ),
-    'Nexmo\\Laravel\\NexmoServiceProvider' => 
     array (
     ),
   ),
