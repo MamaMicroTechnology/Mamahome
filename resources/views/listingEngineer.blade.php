@@ -769,6 +769,7 @@ function openCity(evt, cityName) {
         var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
         sum          = length*breadth;
         Size    += sum;
+        var total = sum * sum1;
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
         else
