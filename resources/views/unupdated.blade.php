@@ -3,17 +3,15 @@
 <div class="container">
 <div class="col-md-12">
     <div class="panel panel-default" style="border-color:green;"> 
-                <div class="panel-heading text-center" style="background-color: green;color:white;"><b class="pull-left">Projects To Be Updated
+                <div class="panel-heading " style="background-color: green;color:white;"><p class="pull-left">Projects To Be Updated</p>
                 @if($totalproject != 0)
-                 From <span>&nbsp;&nbsp;&nbsp;</span><b style="color: white;">{{ date('d-m-Y', strtotime($previous)) }} To {{ date('d-m-Y', strtotime($today)) }}</b> </b>
+                 From <span>&nbsp;&nbsp;&nbsp;</span><b style="color: white;">{{ date('d-m-Y', strtotime($previous)) }} To {{ date('d-m-Y', strtotime($today)) }}</b>
 
                <b>Count : {{ $totalproject }}</b>
   
 
-                <b class="pull-right"> Projects Not Been Updated In 45 Days.</b>
-
-                	
                 @endif
+                <b class="pull-right"> Projects Not Been Updated In 45 Days.</b>
 
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
