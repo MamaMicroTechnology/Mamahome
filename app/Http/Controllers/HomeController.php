@@ -1233,6 +1233,7 @@ class HomeController extends Controller
 
         $check = loginTime::where('user_id',Auth::user()->id)
             ->where('logindate',date('Y-m-d'))->first();
+            dd(count($check) );
         if(count($check)==0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
