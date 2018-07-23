@@ -2406,14 +2406,13 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $stages = $request->stage;
         }
          $projectids = new Collection();
+         $orders = Order::where('status','Order Confirmed')->pluck('project_id');
          if($stages != null){
-             $projectids = ProjectDetails::leftjoin('orders','orders.project_id','project_details.project_id')
-                 
-             ->where('orders.status','!=','Order Confirmed')
-             ->where('project_details.deleted','!=',1)
-             ->whereIn('project_details.project_status',$stages)
-             ->where('project_details.quality','!=','Fake')
-             ->pluck('project_details.project_id');
+             $projectids = ProjectDetails::
+             whereIn('project_status',$stages)
+             ->where('quality','!=','Fake')
+             ->whereNotIn('project_id',$orders)
+             ->pluck('project_id'); 
          }else{
             $projectids = null;
          }     
