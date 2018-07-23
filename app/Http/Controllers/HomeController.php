@@ -2407,10 +2407,11 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }
          $projectids = new Collection();
          if($stages != null){
-             $projectids = ProjectDetails::leftjoin('orders','orders.project_id','project_details.project_id')
+             $projectids = ProjectDetails::where('project_details.deleted','!=',1)
+             ->whereIn('project_details.project_status',$stages)
+             ->leftjoin('orders','orders.project_id','project_details.project_id')
              ->where('orders.status','!=','Order Confirmed')
-             ->where('deleted','!=',1)
-             ->whereIn('project_status',$stages)
+             
              ->where('quality','!=','Fake')
              ->pluck('project_id');
          }else{
