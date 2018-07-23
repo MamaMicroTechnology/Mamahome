@@ -634,17 +634,17 @@
                                <tr>
                                    <td>Procurement Name</td>
                                    <td>:</td>
-                                   <td><input id="prName" value="{{ $projectdetails->procurementdetails->procurement_name }}"  type="text" placeholder="Procurement Name" class="form-control input-sm" id="pName" name="pName"></td>
+                                   <td><input id="prName" value="{{$projectdetails->procurementdetails != null ? $projectdetails->procurementdetails->procurement_name : '' }}"  type="text" placeholder="Procurement Name" class="form-control input-sm" id="pName" name="pName"></td>
                                </tr>
                                <tr>
                                    <td>Procurement Email</td>
                                    <td>:</td>
-                                   <td><input id="pEmail" value="{{ $projectdetails->procurementdetails->procurement_email }}" placeholder="Procurement Email" type="email" class="form-control input-sm" id="pEmail" name="pEmail"></td>
+                                   <td><input id="pEmail" value="{{ $projectdetails->procurementdetails !=null ? $projectdetails->procurementdetails->procurement_email : '' }}" placeholder="Procurement Email" type="email" class="form-control input-sm" id="pEmail" name="pEmail"></td>
                                </tr>
                                <tr>
                                    <td>Procurement Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input id="prPhone" value="{{ $projectdetails->procurementdetails->procurement_contact_no }}"  placeholder="Procurement Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="pContact" id="pContact"></td>
+                                   <td><input id="prPhone" value="{{ $projectdetails->procurementdetails != null ? $projectdetails->procurementdetails->procurement_contact_no : ''}}"  placeholder="Procurement Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="pContact" id="pContact"></td>
                                </tr>
                            </table>
                       </div>
