@@ -2408,7 +2408,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
          $projectids = new Collection();
          if($stages != null){
              $projectids = ProjectDetails::leftjoin('orders','orders.project_id','project_details.project_id')
-                 ->where('orders.project_id','=','project_details.project.id')
+                 
              ->where('orders.status','!=','Order Confirmed')
              ->where('project_details.deleted','!=',1)
              ->whereIn('project_details.project_status',$stages)
