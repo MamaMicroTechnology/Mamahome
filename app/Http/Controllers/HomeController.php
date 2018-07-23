@@ -2411,9 +2411,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
              ->whereIn('project_details.project_status',$stages)
              ->leftjoin('orders','orders.project_id','project_details.project_id')
              ->where('orders.status','!=','Order Confirmed')
-             
+     
              ->where('quality','!=','Fake')
-             ->pluck('project_id');
+             ->pluck('project_details.project_id');
          }else{
             $projectids = null;
          }     
