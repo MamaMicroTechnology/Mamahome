@@ -199,7 +199,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header" style="background-color:green">
-        <h4 class="modal-title"><CENTER style="color: white;">Cash Deposit  </CENTER></h4>
+        <h4 class="modal-title"><CENTER style="color: white;">Cash Collection  </CENTER></h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
@@ -278,10 +278,11 @@
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header" style="background-color:green">
-        <h4 class="modal-title"><CENTER style="color: white;>Customer Feedback Information </CENTER></h4>
+     <div class="modal-header" style="background-color:green">
+        <h4 class="modal-title"><CENTER style="color: white;">Coustomer Information  </CENTER></h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
+
 
       <!-- Modal body -->
       <div class="modal-body">

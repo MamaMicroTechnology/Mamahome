@@ -674,7 +674,7 @@ div#calendar{
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
-         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal1">Reject</a></center>
+         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
         </div>
         
         <!-- Modal footer -->
@@ -686,7 +686,7 @@ div#calendar{
     </div>
   </div>
 <!-- The Modal -->
-  <div class="modal" id="myModal1">
+  <div class="modal" id="myModal10">
     <div class="modal-dialog">
       <div class="modal-content">
       
