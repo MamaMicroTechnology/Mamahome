@@ -3,9 +3,15 @@
 <div class="container">
 <div class="col-md-12">
     <div class="panel panel-default" style="border-color:green;"> 
-                <div class="panel-heading" style="background-color: green;color:white;">  Projects To Be Updated
-                @if($total != 0)
-                 From <span>&nbsp;&nbsp;&nbsp;</span> <b style="color:white;">{{ date('d-m-Y', strtotime($from)) }}</b> &nbsp;&nbsp; To  &nbsp;&nbsp; <b style="color: white;">{{ date('d-m-Y', strtotime($to)) }}</b> : {{ $total }} 
+                <div class="panel-heading text-center" style="background-color: green;color:white;"><b class="pull-left">Projects To Be Updated
+                @if($totalproject != 0)
+                 From <span>&nbsp;&nbsp;&nbsp;</span><b style="color: white;">{{ date('d-m-Y', strtotime($previous)) }} To {{ date('d-m-Y', strtotime($today)) }}</b> </b>
+
+               <b>Count : {{ $totalproject }}</b>
+  
+
+                <b class="pull-right"> Projects Not Been Updated In 45 Days.</b>
+
                 	
                 @endif
 
@@ -16,11 +22,11 @@
                 <div class="panel-body">
                	    <div class="col-md-12">
                	    <form method="GET" action="{{ URL::to('/') }}/Unupdated">
-               	    	 {{csrf_field()}}
                	    	 	<div class="col-md-2">
 								<label>Choose Ward :</label><br>
 					                <select name="ward" class="form-control" id="ward" onchange="loadsubwards()">
 					                    <option value="">--Select--</option>
+					                    <option value="All">All</option>
 					                    @foreach($wards as $ward)
 					                    <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
 					                    @endforeach
@@ -31,21 +37,14 @@
 					                <select name="subward" class="form-control" id="subward">
 					                </select>
 							</div>
-                			<div class="col-md-2">
-								<label>From Date</label>
-								<input value = "{{ isset($_GET['from'])  }}" type="date" class="form-control" name="from">
-							</div>
-							<div class="col-md-2">
-								<label>To Date</label>
-								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
-							</div>
+                			
 							<div class="col-md-2">
 								<label></label>
 								<input type="submit" value="Fetch" class="form-control btn btn-primary">
 							</div>
 					</form>
 					</div>
-				
+				<br><br><br><br>
 					<table class="table table-hover">
 					<thead>
 						<th>Project Id</th>
@@ -57,28 +56,30 @@
 						<th>Update </th>
 						<th>Remarks</th>
 					</thead>
-					@if($project != null)
-					@foreach($project as $projects)
+					
+					@foreach($projects as $project)
 					<tbody>
-						<td>{{ $projects->project_id }}</td>
-						<td>{{ $projects->project_name }}</td>
+						<td>{{ $project->project_id }}</td>
+						<td>{{ $project->project_name }}</td>
 						
-						<td>{{ $projects->project_status }}</td>
-						<td>{{ $projects->quality }}</td>
+						<td>{{ $project->project_status }}</td>
+						<td>{{ $project->quality }}</td>
 						<td>
 						@foreach($site as $sites)
-							@if($sites->project_id == $projects->project_id)
+							@if($sites->project_id == $project->project_id)
 							<a href="#" >{{ $sites->address }}</a>
 							@endif
 							@endforeach
 						</td>
-						<td style="width:30%;">{{ date('d-m-Y', strtotime($projects->updated_at)) }}</td>
-						<td>{{ $projects->remarks }}</td>
+						<td style="width:10%;">{{ date('d-m-Y', strtotime($project->updated_at)) }}</td>
+						<td>{{ $project->remarks }}</td>
 					</tbody>
 					@endforeach
-					@endif
-                {{$projects->links()}}
-					</table>
+					
+				</table>
+				@if(count($projects) != 0)
+                {{ $projects->appends($_GET)->links() }}
+                @endif
                 </div>
              
                
@@ -120,4 +121,3 @@
     }
 </script>
 @endsection
-

@@ -108,78 +108,68 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In RMC</td>
+                                 <td>Interested In RMC ?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
+                                     
                                       <label><input id="rmc" {{ $projectdetails->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
                                      <label><input id="rmc2" {{ $projectdetails->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label> 
-                                    </div>
-                                    <div class="radio">
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
                                      <label><input id="rmc3" {{ $projectdetails->interested_in_rmc == "None" ? 'checked' : '' }} required value="None" type="radio" name="rmcinterest">None</label> 
-                                    </div>
+                                   
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Bank loans?</td>
+                                 <td>Interested In Bank Loans ?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
+                                    
                                       <label><input id="loan1" {{ $projectdetails->interested_in_loan == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="loaninterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
+                                    <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="loan2" {{ $projectdetails->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
-                                    </div>
-                                    <div class="radio">
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="loan3" {{ $projectdetails->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
-                                    </div>
+                                   
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In UPVC Doors And Windows?</td>
+                                 <td>Interested In UPVC Doors And Windows ?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
+                                    
                                       <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
-                                    </div>
-                                    <div class="radio">
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
-                                    </div>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Home Automation?</td>
+                                 <td>Interested In Home Automation ?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
+                                    
                                       <label><input id="home1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
-                                    </div>
-                                    <div class="radio">
+                                    <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="home2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
-                                    </div>
-                                    <div class="radio">
+                                  <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="home3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
-                                    </div>
+                                   
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Premium Products?</td>
+                                 <td>Interested In Premium Products ?</td>
                                  <td>:</td>
                                  <td>
-                                     <div class="radio">
+                                     
                                       <label><input id="premium1" {{ $projectdetails->interested_in_premium == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="premium">Yes</label>
-                                    </div>
-                                    <div class="radio">
+                                    <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="premium2" {{ $projectdetails->interested_in_premium == "No" ? 'checked' : '' }} required value="No" type="radio" name="premium">No</label>
-                                    </div>
-                                    <div class="radio">
+                                    <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label><input id="premium3" {{ $projectdetails->interested_in_premium == "None" ? 'checked' : '' }} required value="None" type="radio" name="premium">None</label>
-                                    </div>
+                                    
                                  </td>
                                </tr>
                                <tr>
@@ -325,7 +315,7 @@
                                         </div>
                                       <div class="col-md-3">
                                          <label>Breadth</label>
-                                        <input value="{{ $projectdetails->breadth }}" onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="breadth">
+                                        <input value="{{ $projectdetails->breadth }}" onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="Breadth">
                                       </div>
                                       <div class="col-md-3">
                                         <p id="totalsize">
@@ -340,11 +330,6 @@
                                    <td>:</td>
                                    <td><input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize"></td>
                                </tr>
-                               <tr>
-                        
-
-                             
-
                                 <tr>
                                
                                  <td>Budget Type</td>
@@ -358,11 +343,12 @@
                                     </label>
                                  </td>
                                </tr>
+                               <tr>
                                    <td>Total Budget (In Cr.)</td>
                                    <td>:</td>
                                    <td>
                                     <div class="col-md-4">
-                                      <input id="budget" value="{{ $projectdetails->budget }}"  placeholder="Budget" type="text" class="form-control input-sm" onkeyup="check('budget')" name="budget">
+                                      <input id="budget" value="{{ $projectdetails->budget }}"  placeholder="Budget In Crores" type="text" class="form-control input-sm" onkeyup="check('budget')" name="budget">
                                     </div>
                                     <div class="col-md-8">
                                       Budget (per sq.ft) :
@@ -425,8 +411,11 @@
                                               <td>
                                                 <select id="floorNo" name="floorNo[]" class="form-control">
                                                   <option value="">--Floor--</option>
+                                                  @for($i = $projectdetails->basement; $i>0; $i--)
+                                                    <option value="{{ $i }}">Base {{ $i }}</option>
+                                                  @endfor
                                                     <option value="Ground">Ground</option>
-                                                  @for($i = 1;$i<=$projectdetails->project_type;$i++)
+                                                   @for($i = 1;$i<=$projectdetails->ground;$i++)
                                                     <option value="{{ $i }}">Floor {{ $i }}</option>
                                                   @endfor
                                                 </select>
@@ -440,6 +429,8 @@
                                                         <option value="1BHK">1BHK</option>
                                                         <option value="2BHK">2BHK</option>
                                                         <option value="3BHK">3BHK</option>
+                                                        <option value="4BHK">4BHK</option>
+                                                        <option value="5BHK">5BHK</option>
                                                     </select>
                                                     @else
                                                     <select name="roomType[]" id="" class="form-control">
@@ -449,6 +440,8 @@
                                                         <option value="1BHK">1BHK</option>
                                                         <option value="2BHK">2BHK</option>
                                                         <option value="3BHK">3BHK</option>
+                                                        <option value="4BHK">4BHK</option>
+                                                        <option value="5BHK">5BHK</option>
                                                     </select>
                                                     @endif
                                                 </td>
@@ -463,7 +456,8 @@
                                             </tr>
                                             @foreach($roomtypes as $roomtype)
                                             <tr>
-                                              <td>Floor {{ $roomtype->floor_no }}</td>
+
+                                              <td>{{ $roomtype->floor_no }}</td>
                                               <td>{{ $roomtype->room_type }}</td>
                                               <td>{{ $roomtype->no_of_rooms }}</td>
                                               
@@ -499,8 +493,66 @@
                                </tr>
                            </table>
                        </div>
-                       <div id="second" class="hidden">
-                           <label>Owner Details</label>
+                      
+
+<button type="button" style="width: 100%;font-size: 20px;" class="btn btn-sm">Customer Details</button>
+<div class="tab" style="overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #337ab7;
+   ">
+  <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;"  class="tablinks" onclick="openCity(event, 'owner')">Owner Details</button><br>
+  <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'contractor')">Contractor Details </button><br>
+  <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'consultant')">Consultant Details</button><br>
+  <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'site')">Site Engineer Details</button><br>
+  <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button>
+</div>
+
+<div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;">
+    <br>
+  <center><label>Owner Details</label></center>
+  <br>
                            <table class="table">
                                <tr>
                                    <td>Owner Name</td>
@@ -518,9 +570,12 @@
                                    <td><input value="{{ $projectdetails->ownerdetails != null ? $projectdetails->ownerdetails->owner_contact_no : '' }}" onkeyup="check('oContact')" placeholder="Owner Contact No." type="text" class="form-control input-sm" maxlength="10" minlength="10" name="oContact" id="oContact"></td>
                                </tr>
                            </table>
-                       </div>
-                       <div id="third" class="hidden">
-                           <label>Contractor Details</label>
+</div>
+<div id="contractor" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Contractor Details</label></center>
+   <br>
                            <table class="table">
                                <tr>
                                    <td>Contractor Name</td>
@@ -538,10 +593,12 @@
                                    <td><input value="{{ $projectdetails->contractordetails->contractor_contact_no }}" placeholder="Contractor Contact No." onkeyup="check('cContact')" maxlength="10" minlength="10" type="text" class="form-control input-sm" id="cContact" name="cContact"></td>
                                </tr>
                            </table>
-                       </div>
-                       <div id="fourth" class="hidden">
-                           <label>Consultant Details</label>
-                           <table class="table">
+</div>
+<div id="consultant" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+  <center><label>Consultant Details</label></center><br>
+                          <table class="table">
                                <tr>
                                    <td>Consultant Name</td>
                                    <td>:</td>
@@ -558,9 +615,12 @@
                                    <td><input value="{{ $projectdetails->consultantdetails->consultant_contact_no }}" placeholder="Consultant Contact No." maxlength="10" minlength="10" onkeyup="check('coContact')" type="text" class="form-control input-sm" id="coContact" name="coContact"></td>
                                </tr>
                            </table>
-                       </div>
-                       <div id="fifth" class="hidden">
-                           <label>Site Engineer Details</label>
+
+</div>
+<div id="site" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Site Engineer Details</label></center><br>
                            <table class="table">
                                <tr>
                                    <td>Site Engineer Name</td>
@@ -578,10 +638,12 @@
                                    <td><input value="{{ $projectdetails->siteengineerdetails != null ? $projectdetails->siteengineerdetails->site_engineer_contact_no : '' }}" placeholder="Site Engineer Contact No." type="text" maxlength="10" onkeyup="check('eContact')" minlength="10" class="form-control input-sm" name="eContact" id="eContact"></td>
                                </tr>
                            </table>
-                       </div> 
-                       <div id="sixth" class="hidden">
-                           <label>Procurement Details</label>
-                           <table class="table">
+</div>
+<div id="procurement" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Procurement Details</label></center><br>
+                          <table class="table">
                                <tr>
                                    <td>Procurement Name</td>
                                    <td>:</td>
@@ -598,11 +660,12 @@
                                    <td><input id="prPhone" value="{{ $projectdetails->procurementdetails->procurement_contact_no }}"  placeholder="Procurement Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="pContact" id="pContact"></td>
                                </tr>
                            </table>
-                       </div> 
-                       <div id="seventh" class="hidden">
-                        <table class="table">
+                      </div>
+
+                      <table class="table">
                         <tr>
                             <td><b>Quality</b></td>
+                            <td>:</td>
                             <td>
                                 <select id="quality" onchange="fake()" class="form-control" name="quality">
                                     <option value="null" disabled selected>--- Select ---</option>
@@ -611,23 +674,36 @@
                                 </select>
                             </td>
                         </tr>
-                        
+                        <tr>
+                            <td><b>Remarks</b></td>
+                            <td>:</td>
+                            <td>
+                         <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea>
+                          </td>
+                        </tr>
                         </table>
-                            <textarea class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea><br>
-                            <button type="submit" class="form-control btn btn-primary">Submit Data</button>
-                       </div>                        
-                       <ul class="pager">
-                          <li class="previous"><a onclick="pagePrevious()" href="#">Previous</a></li>
-                          <li class="next"><a id="next" href="#" onclick="pageNext()">Next</a></li>
-                        </ul>
+                            <button type="submit" id="sub" onclick="pageNext()" class="form-control btn btn-primary">Submit Data</button>
                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-    
+<script type="text/javascript">
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "None";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}  
+</script>  
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <!--This line by Siddharth -->
 <script type="text/javascript">
@@ -768,14 +844,13 @@ function sum(){
     function pageNext(){
         var ctype1 = document.getElementById('constructionType1');
         var ctype2 = document.getElementById('constructionType2');
-
         var rmc = document.getElementById('rmc');
         var rmc2= document.getElementById('rmc2');
         var rmc3= document.getElementById('rmc3');
         if(current == 'first')
         { 
           if(document.getElementById("pName").value == ""){
-            window.alert("You have not entered Project Name");
+            window.alert("You Have Not Entered Project Name");
           }else if(document.getElementById("longitude").value == ""){
             window.alert("Please click on Get Location button");
           }else if(document.getElementById("latitude").value == ""){
@@ -800,17 +875,23 @@ function sum(){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
-            }else if(ctype1.checked == true || ctype2.checked == true){
-                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
-            }else {
-                countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
-            }
-            if(countinput == 0){
-                window.alert("Select at least one project status");
-            } else if(document.getElementById("basement").value == ""){
+          }else if(ctype1.checked == true || ctype2.checked == true){
+              countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+          }else {
+              countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+          }
+
+          if(countinput == 0){
+              window.alert("Select at least one project status");
+          } else if(document.getElementById("basement").value == ""){
             window.alert("You have not entered Basement value");
           } else if(document.getElementById("ground").value == ""){
             window.alert("You have not entered Floor value");
+          }
+          else if(document.getElementById("length").value == ""){
+            window.alert("You have not entered length value");
+          }else if(document.getElementById("breadth").value == ""){
+            window.alert("You have not entered breadth value");
           }else if(document.getElementById("pSize").value == ""){
             window.alert("You have not entered Project Size");
           }
@@ -818,91 +899,16 @@ function sum(){
             window.alert("Please choose the Budget type");
           }else if(document.getElementById("budget").value == ""){
             window.alert("You have not entered Budget");
-          }else {
-                document.getElementById("first").className = "hidden";
-                document.getElementById("second").className = "";
-                document.getElementById('headingPanel').innerHTML = 'Owner Details';
-                current = "second";
-            }
-        }
-     else if(current == 'second'){
-              document.getElementById("second").className = "hidden";
-              document.getElementById("third").className = "";
-              document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-              current = "third";    
-        }else if(current == 'third'){
-                document.getElementById("third").className = "hidden";
-                document.getElementById("fourth").className = "";
-                document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-                current = "fourth";
-        }else if(current == 'fourth'){
-            document.getElementById("fourth").className = "hidden";
-            document.getElementById("fifth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Site Engineer Details';
-            current = "fifth";
-        }else if(current == 'fifth'){
-            document.getElementById("fifth").className = "hidden";
-            document.getElementById("sixth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Procurement Details';
-            current = "sixth";
-        }else if(current == 'sixth'){  
-          if(document.getElementById('prName').value == ''){
-            alert('Please Enter a Name');
-            document.getElementById('prName').focus();
+          }else if(document.getElementById('prName').value == ''){
+                    alert('Please Enter a Procurement Name');
+                    document.getElementById('prName').focus();
           }else if(document.getElementById('prPhone').value== ''){
-            alert('Please Enter Phone Number');
-            document.getElementById('prPhone').focus();
-          }else if(document.getElementById("prName").value == ""){
-            window.alert("Please Enter Procurement Name");
-          }else if(document.getElementById("pContact") == ""){
-            window.alert("Please enter phone number");
-          }else { 
-            document.getElementById("sixth").className = "hidden";
-            document.getElementById("seventh").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Remarks';
-            current = "seventh";
-            document.getElementById("next").className = "hidden";
+                    alert('Please Enter Phone Number');
+                    document.getElementById('prPhone').focus();
           }
-         
-        } 
-    }
-    function pagePrevious(){
-        document.getElementById("next").className = "";
-        if(current == 'seventh'){
-            document.getElementById("seventh").className = "hidden";
-            document.getElementById("sixth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Procurement Details';
-            current = "sixth"
-        }else if(current == 'sixth'){
-            document.getElementById("sixth").className = "hidden";
-            document.getElementById("fifth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Site Engineer Details';
-            current = "fifth"
-        }
-        else if(current == 'fifth'){
-            document.getElementById("fifth").className = "hidden";
-            document.getElementById("fourth").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-            current = "fourth"
-        }
-        else if(current == 'fourth'){
-            document.getElementById("fourth").className = "hidden";
-            document.getElementById("third").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-            current = "third"
-        }
-        else if(current == 'third'){
-            document.getElementById("third").className = "hidden";
-            document.getElementById("second").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Owner Details';
-            current = "second"
-        }else if(current == 'second'){
-            document.getElementById("second").className = "hidden";
-            document.getElementById("first").className = "";
-            document.getElementById('headingPanel').innerHTML = 'Project Details';
-            current = "first";
-        }else{
-            document.getElementById("next").className = "disabled";
+          else{
+                         document.getElementById("sub").submit();
+           }
         }
     }
 </script>
@@ -940,10 +946,12 @@ function sum(){
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
-      var opts = "<option value=''>--Floor--</option><option value='Ground'>Ground</option>";
+      var opts = "<option value=''>--Floor--</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
+         fsum          = ground+1;
+        var base         = basement;
         floor       += sum;
         
         if(document.getElementById("total").innerHTML != null)
@@ -960,7 +968,9 @@ function sum(){
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
                       "<option value='2BHK'>2BHK</option>"+
-                      "<option value='3BHK'>3BHK</option></select>"+
+                      "<option value='3BHK'>3BHK</option>"+
+                      "<option value='4BHK'>4BHK</option>"+
+                      "<option value='5BHK'>5BHK</option></select>"+
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses / No. Of Flats\"></td>";
             document.getElementById('selection').innerHTML = sel;
@@ -985,7 +995,11 @@ function sum(){
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }
-          for(var i = 1; i<sum; i++){
+           for(var i = base; i>0; i--){
+            opts += "<option value='"+i+"'>Base "+i+"</option>";
+          }
+          opts += "<option value='Ground'>Ground</option>";
+          for(var i = 1; i<fsum; i++){
             opts += "<option value='"+i+"'>Floor "+i+"</option>";
           }
           document.getElementById("floorNo").innerHTML = opts;
