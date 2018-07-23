@@ -27,7 +27,7 @@
                     <center>
                       <label id="headingPanel">Project Details</label><br>
                        @if(Auth::check())
-                        @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6 && Auth::user()->group_id != 11)
+                        @if(Auth::user()->department_id != 2)
                       <label>{{ $username != null ? 'Listed By '.$username : '' }}</label><br>
                       @endif
                       @endif
