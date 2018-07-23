@@ -629,6 +629,7 @@ div#calendar{
    <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
+            <a href="{{ URL::to('/') }}/mhemployee">MAMAHOME Employee</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
