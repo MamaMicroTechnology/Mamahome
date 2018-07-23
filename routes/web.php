@@ -540,6 +540,7 @@ Route::post('/saveExpenditure','HomeController@saveExpenditure');
 Route::get('/viewExpenditure','HomeController@viewExpenditure');
 Route::get('/five_years_expenditure','HomeController@getFiveYearsExpenditure');
 Route::get('/extensionPlanner','HomeController@getExtensionPlanner');
+Route::get('/editProjectionPlanner','HomeController@getEditProjectionPlanner');
 // Auditor Dashboard
 Route::get('/auditor','HomeController@getAuditorDashboard');
 Route::post('/save','HomeController@save');

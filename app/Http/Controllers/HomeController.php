@@ -5485,7 +5485,7 @@ public function display(request $request){
                     $totalCategory = 0;
                     $totalCategoryPrice = 0;
                     $conversion = Conversion::where('category',$category['category'])->first();
-                    $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
+                    $utilizations = Utilization::where('category',$category['category'])->first();
                     $text .= "<tr><th colspan=6>".ucwords($category['category'])."</th></tr>";
                     foreach($projections as $projection){
                         if($projection['stage'] == "Electrical & Plumbing")
@@ -5763,6 +5763,7 @@ public function display(request $request){
             $zones->grade_b = $request->gradeB[$i];
             $zones->grade_c = $request->gradeC[$i];
             $zones->grade_d = $request->gradeD[$i];
+            $zones->grade_e = $request->gradeE[$i];
             $zones->save();
         }
         return back();
@@ -5807,7 +5808,7 @@ public function display(request $request){
             $totalCategory = 0;
             $totalCategoryPrice = 0;
             $conversion = Conversion::where('category',$category['category'])->first();
-            $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
+            $utilizations = Utilization::where('category',$category['category'])->first();
             foreach($projections as $projection){
                 if($projection['stage'] == "Electrical & Plumbing")
                     $stage = "electrical";
@@ -5830,5 +5831,11 @@ public function display(request $request){
         $projection = Projection::pluck('from_date')->first();
         $categories = Projection::all();
         return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
+    }
+    public function getEditProjectionPlanner()
+    {
+        $dates = Projection::first();
+        $projections = NumberOfZones::all()->toArray();
+        return view('projection.extension',['dates'=>$dates,'projections'=>$projections]);
     }
 }

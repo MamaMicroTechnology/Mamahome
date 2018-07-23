@@ -25,18 +25,19 @@
                     {{ csrf_field() }}
                     <table class="table table-hover" border=1>
                         <thead>
-                            <tr><th colspan=5><center>Expansion Plan</center></th></tr>
+                            <tr><th colspan=6><center>Expansion Plan</center></th></tr>
                             <tr>
                                 <th rowspan=3 style="text-align:center">Month<br><br></th>
                             </tr>
                             <tr>
-                                <th colspan="4" style="text-align:center">Wards</th>
+                                <th colspan="5" style="text-align:center">Wards</th>
                             </tr>
                             <tr>
                                 <th style="text-align:center">Grade A</th>
                                 <th style="text-align:center">Grade B</th>
                                 <th style="text-align:center">Grade C</th>
                                 <th style="text-align:center">Grade D</th>
+                                <th style="text-align:center">Grade E</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,10 +45,11 @@
                                 <tr>
                                     <input type="hidden" value="{{ date('M-Y',strtotime("+" . $i . " months", strtotime($dates->from_date))) }}" name="month[]">
                                     <td style="text-align:center">{{ date('M-Y',strtotime("+" . $i . " months", strtotime($dates->from_date))) }}</td>
-                                    <td><input type="text" oninput="check()" value="0" name="gradeA[]" id="" class="form-control"></td>
-                                    <td><input type="text" oninput="check()" value="0" name="gradeB[]" id="" class="form-control"></td>
-                                    <td><input type="text" oninput="check()" value="0" name="gradeC[]" id="" class="form-control"></td>
-                                    <td><input type="text" oninput="check()" value="0" name="gradeD[]" id="" class="form-control"></td>
+                                    <td><input type="text" oninput="check()" value="{{ isset($_GET['edit']) ? $projections[$i]['grade_a'] : '0' }}" name="gradeA[]" id="" class="form-control"></td>
+                                    <td><input type="text" oninput="check()" value="{{ isset($_GET['edit']) ? $projections[$i]['grade_b'] : '0' }}" name="gradeB[]" id="" class="form-control"></td>
+                                    <td><input type="text" oninput="check()" value="{{ isset($_GET['edit']) ? $projections[$i]['grade_c'] : '0' }}" name="gradeC[]" id="" class="form-control"></td>
+                                    <td><input type="text" oninput="check()" value="{{ isset($_GET['edit']) ? $projections[$i]['grade_d'] : '0' }}" name="gradeD[]" id="" class="form-control"></td>
+                                    <td><input type="text" oninput="check()" value="{{ isset($_GET['edit']) ? $projections[$i]['grade_e'] : '0' }}" name="gradeE[]" id="" class="form-control"></td>
                                 </tr>    
                             @endfor
                             <tr>
@@ -56,6 +58,7 @@
                                 <th id="totalB"></th>
                                 <th id="totalC"></th>
                                 <th id="totalD"></th>
+                                <th id="totalE"></th>
                             </tr>
                         </tbody>
                     </table>
@@ -70,11 +73,13 @@
         var totalB = 0;
         var totalC = 0;
         var totalD = 0;
+        var totalE = 0;
 
         var a_grades = document.getElementsByName("gradeA[]");
         var b_grades = document.getElementsByName("gradeB[]");
         var c_grades = document.getElementsByName("gradeC[]");
         var d_grades = document.getElementsByName("gradeD[]");
+        var e_grades = document.getElementsByName("gradeE[]");
         
         for(var i = 0; i < a_grades.length; i++){
             if(a_grades[i].value != ""){
@@ -95,6 +100,11 @@
         for(var i = 0; i < d_grades.length; i++){
             if(d_grades[i].value != ""){
                 totalD += parseInt(d_grades[i].value);
+            }
+        }
+        for(var i = 0; i < e_grades.length; i++){
+            if(e_grades[i].value != ""){
+                totalE += parseInt(e_grades[i].value);
             }
         }
 
@@ -128,6 +138,14 @@
         else{
             alert("You have exceeded maximum number of zones");
             d_grades[d_grades.length -1].value="";
+        }
+
+        if(totalE <= 25){
+            document.getElementById('totalE').innerHTML = totalE;
+        }
+        else{
+            alert("You have exceeded maximum number of zones");
+            e_grades[e_grades.length -1].value="";
         }
     }
 </script>
