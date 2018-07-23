@@ -59,6 +59,7 @@ class amController extends Controller
         $prices = CategoryPrice::all();
          $loggedInUsers = attendance::where('date',date('Y-m-d'))
                         ->join('users','empattendance.empId','users.employeeId')
+                        ->where('users.id','!=',34)
                         ->select('users.name','empattendance.*')
                         ->get();
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
