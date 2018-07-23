@@ -4962,8 +4962,8 @@ public function display(request $request){
     {
         $conversions = Conversion::all();
         if($request->category){
-            $conversion = Conversion::where('category',$request->category)->first();
-            $utilizations = Utilization::where('category',$request->category)->first();
+            $conversion = Conversion::where('id',$request->category)->first();
+            $utilizations = Utilization::where('id',$request->category)->first();
             View::share('conversion', $conversion);
             View::share('utilization',$utilizations);
         }else{
@@ -5440,10 +5440,11 @@ public function display(request $request){
              $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Completion%')->sum('project_size');
              $details->save();
          }
-        $check2 = Projection::where('category',$request->category)->first();
+         $cat = Conversion::where('id',$request->category)->pluck('category')->first();
+        $check2 = Projection::where('category',$cat)->first();
         if($check2 == null){
             $projection = new Projection;
-            $projection->category = $request->category;
+            $projection->category = $cat;
             $projection->price = $request->price;
             $projection->business_cycle = $request->businessCycle;
             $projection->target = $request->monthlyTarget;

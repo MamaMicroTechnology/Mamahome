@@ -129,41 +129,24 @@
         <div class="col-md-6">
             <select id="categories" required class="form-control" name="category">
                 <option value="">--Select--</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "cement" ? "selected" : "" : ""}} value="cement">Cement</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "steel" ? "selected" : "" : ""}} value="steel">Steel</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "sand" ? "selected" : "" : ""}} value="sand">Sand</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "aggregates" ? "selected" : "" : ""}} value="aggregates">Aggregates</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "blocks and bricks" ? "selected" : "" : ""}} value="blocks and bricks">Blocks & Bricks</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "electrical" ? "selected" : "" : ""}} value="electrical">Electrical</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "plumbing" ? "selected" : "" : ""}} value="plumbing">Plumbing</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "flooring" ? "selected" : "" : ""}} value="flooring">Flooring</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "bathroom and sanitary" ? "selected" : "" : ""}} value="bathroom and sanitary">Bathroom & Sanitary</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "wood and adhesive" ? "selected" : "" : ""}} value="wood and adhesive">Wood & Adhesive</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "paints" ? "selected" : "" : ""}} value="paints">Paints</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "wardrobes and kitchen" ? "selected" : "" : ""}} value="wardrobes and kitchen">Wardrobes & Kitchen</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "home appliences" ? "selected" : "" : ""}} value="home appliences">Home Appliences</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "furnitures" ? "selected" : "" : ""}} value="furnitures">Furnitures</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "handrails" ? "selected" : "" : ""}} value="handrails">Handrails</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "glasses and facades" ? "selected" : "" : ""}} value="glasses and facades">Glasses & Facades</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "rmc" ? "selected" : "" : ""}} value="rmc">RMC</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "ceilling" ? "selected" : "" : ""}} value="ceilling">False Ceilling</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "fire safety" ? "selected" : "" : ""}} value="fire safety">Fire & Safety</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "automation" ? "selected" : "" : ""}} value="automation">Home Automation</option>
+                @foreach($conversions as $conv)
+                    <option {{ isset($_GET['category']) ? $_GET['category'] == $conv->id ? "selected" : "" : ""}} value="{{ $conv->id }}">{{ ucwords($conv->category) }}</option>
+                @endforeach
             </select>
         </div>
         </div>
         <div class="form-group">
         <label style="text-align:left;" class="control-label col-sm-6" for="price">Price</label>
         <div class="col-md-6">
-        <input id="price" required value="{{ isset($_GET['bCycle']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
+        <input id="price" required value="{{ isset($_GET['price']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
         </div>
         </div>
-        <div class="form-group">
-        <label style="text-align:left;" class="control-label col-sm-6" for="bCycle">Business Cycle</label>
-        <div class="col-md-6">
-        <input required value="{{ isset($_GET['bCycle']) ? $_GET['bCycle'] : '' }}" type="text" name="bCycle" id="bCycle" placeholder="Business Cycle" class="form-control"><br>
-        </div>
-        </div>
+        <!-- <div class="form-group">
+            <label style="text-align:left;" class="control-label col-sm-6" for="bCycle">Business Cycle</label>
+            <div class="col-md-6">
+                <input required value="{{ isset($_GET['bCycle']) ? $_GET['bCycle'] : '' }}" type="text" name="bCycle" id="bCycle" placeholder="Business Cycle" class="form-control"><br>
+            </div>
+        </div> -->
         <button class="btn btn-success form-control">Proceed</button>
     </form>
     <br>
@@ -217,7 +200,7 @@
 @if($planningCount != NULL)
 <?php
     $price = $_GET['price'];
-    $bCycle = $_GET['bCycle'];
+    $bCycle = $conversion->business_cycle;
     $category = $_GET['category'];
     $planningSize = round($planningSize);
     $diggingSize = round($diggingSize);
@@ -231,8 +214,7 @@
     $carpentrySize = round($carpentrySize);
     $paintingSize = round($paintingSize);
     $fixturesSize = round($fixturesSize);
-    $completionSize = round($completionSize);
-        
+    $completionSize = round($completionSize);  
 ?>
             <table class="table table-hover" border=1>
                 <thead>
@@ -423,7 +405,7 @@
         document.getElementById('mTarget').value = document.getElementById('percentage').value;
         document.getElementById('transactionalProfit').value = document.getElementById('per').value;
         document.getElementById('priceSave').value = document.getElementById('price').value;
-        document.getElementById('businessCycle').value = document.getElementById('bCycle').value;
+        document.getElementById('businessCycle').value = {{ isset($conversion) ? $conversion->business_cycle : '' }};
         document.getElementById('category').value = document.getElementById('categories').value;
         document.getElementById('from_date').value= document.getElementById('from').value;
         document.getElementById('to_date').value = document.getElementById('to').value;

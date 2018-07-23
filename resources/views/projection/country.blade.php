@@ -94,6 +94,16 @@
             </table>
     </div>
     </div>
+    <?php 
+        $planningTargetA = 0;
+        $planningTPA = 0;
+        $planningTargetB = 0;
+        $planningTPB = 0;
+        $planningTargetC = 0;
+        $planningTPC = 0;
+        $planningTargetD = 0;
+        $planningTPD = 0;
+    ?>
     @if($planning != null)
     <?php
         $a = 0;
@@ -120,23 +130,23 @@
                 </tr>
                 <tr>
                     <td>A</td>
-                    <td>{{ number_format($planning->totalTarget + $planning->totalTarget * $a) }}</td>
-                    <td>{{ number_format($planning->totalTP + $planning->totalTP * $a) }}</td>
+                    <td>{{ number_format($planningTargetA += $planning->totalTarget * $a) }}</td>
+                    <td>{{ number_format($planningTPA += $planning->totalTP * $a) }}</td>
                 </tr>
                 <tr>
                     <td>B</td>
-                    <td>{{ number_format($bt + $bt * $b) }}</td>
-                    <td>{{ number_format($btp + $btp * $b) }}</td>
+                    <td>{{ number_format($planningTargetB += $bt * $b) }}</td>
+                    <td>{{ number_format($planningTPB += $btp * $b) }}</td>
                 </tr>
                 <tr>
                     <td>C</td>
-                    <td>{{ number_format($ct + $ct * $c) }}</td>
-                    <td>{{ number_format($ctp + $ctp * $c) }}</td>
+                    <td>{{ number_format($planningTargetC += $ct * $c) }}</td>
+                    <td>{{ number_format($planningTPC += $ctp * $c) }}</td>
                 </tr>
                 <tr>
                     <td>D</td>
-                    <td>{{ number_format($dt + $dt * $d) }}</td>
-                    <td>{{ number_format($dtp + $dtp * $d) }}</td>
+                    <td>{{ number_format($planningTargetD += $dt * $d) }}</td>
+                    <td>{{ number_format($planningTPD += $dtp * $d) }}</td>
                 </tr>
             </table>
             @endfor

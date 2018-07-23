@@ -98,25 +98,37 @@
             }
         }
 
-        if(totalA <= 40)
+        if(totalA <= 40){
             document.getElementById('totalA').innerHTML = totalA;
-        else
+        }
+        else{
             alert("You have exceeded maximum number of zones");
+            a_grades[a_grades.length - 1].value="";
+        }
 
-        if(totalB <= 60)
+        if(totalB <= 60){
             document.getElementById('totalB').innerHTML = totalB;
-        else
+        }
+        else{
             alert("You have exceeded maximum number of zones");
+            b_grades[b_grades.length - 1].value="";
+        }
 
-        if(totalC <= 60)
+        if(totalC <= 60){
             document.getElementById('totalC').innerHTML = totalC;
-        else
+        }
+        else{
             alert("You have exceeded maximum number of zones");
+            c_grades[c_grades.length - 1].value="";
+        }
 
-        if(totalD <= 25)
+        if(totalD <= 25){
             document.getElementById('totalD').innerHTML = totalD;
-        else
+        }
+        else{
             alert("You have exceeded maximum number of zones");
+            d_grades[d_grades.length -1].value="";
+        }
     }
 </script>
 @endsection
