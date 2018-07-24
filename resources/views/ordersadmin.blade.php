@@ -254,12 +254,10 @@
                                 <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
                                 <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
                             </div>
+                            @else
+                           {{ $rec->status }}
                             @endif
-                            @if($rec->status == "Order Confirmed")
-                            {{ $rec->status }}
-                            @endif
-                            {{ $rec->status }}
-                        </td>
+                          </td>
                        <td>
                                 <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
                        </td>
