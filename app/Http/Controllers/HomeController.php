@@ -2117,20 +2117,12 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     public function confirmOrder(Request $request)
     {
         $id = $request->id;
-        $name =order::where('id',$id)->pluck('delivery_boy')->first();
-        if($name != null){
-            return response()->json('Select Logistic Coordinator');
-           
-        }
-        else{
+       
 
             $x = Order::where('id', $id)->update(['status' => 'Order Confirmed','payment_status'=>'Payment Pending']);
-            if($x)
-            {
+            
                 return back();
-            }
-           
-        }
+          
     }
     public function cancelOrder(Request $request)
     {
