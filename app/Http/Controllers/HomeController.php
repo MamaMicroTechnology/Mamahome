@@ -2714,7 +2714,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->paginate(4);
              return view('dailywiseProjects', ['date' => $date,'today'=>$today,'projects'=> $projects,'projectCount'=>$projectCount]);
     }
-    public function dailyslots(Request $request)
+     public function dailyslots(Request $request)
     {
         $totalListing = array();
         $date = date('Y-m-d');
@@ -2743,7 +2743,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
 
             ->get();
-            
+           
             foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -2754,7 +2754,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
-        $projcount = count($projects);  
+        $projcount = count($projects); 
         return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist]);
     }
     public function getleinfo(Request $request)
