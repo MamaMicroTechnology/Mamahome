@@ -2751,7 +2751,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
-                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('updated_at','LIKE',$date.'%')
                                                 ->count();
             }
         $projcount = count($projects); 
