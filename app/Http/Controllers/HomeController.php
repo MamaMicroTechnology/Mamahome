@@ -1317,9 +1317,11 @@ class HomeController extends Controller
        
 
 
+       $today = date('Y-m-d');
+        $past = date('Y-m-d',strtotime("-30 days",strtotime($today)));
        $update =User::leftjoin('project_details','project_details.listing_engineer_id','users.id')
                     ->where('project_details.sub_ward_id',$wardsAssigned)
-                   ->where('project_details.updated_at','LIKE',date('Y-m-d')."%")->pluck('project_details.project_id')->count();
+                   ->where('project_details.updated_at',">=",$past)->pluck('project_details.project_id')->count();
      
          $bal = $totalprojects  -  $update;
 
