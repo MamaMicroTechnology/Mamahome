@@ -249,9 +249,14 @@
                             <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Invoice</a>
                         </td> -->
                         <td>
-                           
+                            @if($rec->status == "Order Confirmed")
+                            <div class="btn-group">
+                                <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
+                                <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
+                            </div>
+                            @else
                            {{ $rec->status }}
-                            
+                            @endif
                           </td>
                        <td>
                                 <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
