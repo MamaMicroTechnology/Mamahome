@@ -258,6 +258,7 @@
                             @if($rec->status == "Order Confirmed")
                             {{ $rec->status }}
                             @endif
+                            {{ $rec->status }}
                         </td>
                        <td>
                                 <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
