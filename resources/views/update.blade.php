@@ -185,7 +185,7 @@
                                   </td>
                                </tr>
                              <tr>
-              <td><b>Follow Up?</b></td>
+              <td>Follow Up?</td>
               <td>:</td>
               <td>
                   <div class="radio">
@@ -198,7 +198,7 @@
 
           </tr>
           <tr>
-            <td><b> Follow up date</b></td>
+            <td> Follow up date</td>
             <td>:</td>
             <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
 
