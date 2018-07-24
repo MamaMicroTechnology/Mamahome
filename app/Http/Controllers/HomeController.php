@@ -2049,7 +2049,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $view = Order::orderby('orders.id','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                    ->select('orders.*','orders.id as orderid','users.name','users.group_id',
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','orders.id as orderid','users.name','users.group_id',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date')
                     ->where('project_id',$request->projectId)
                     ->paginate(25);
@@ -2059,7 +2059,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.project_id','requirements.project_id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date')
                     ->paginate(25);
         }
