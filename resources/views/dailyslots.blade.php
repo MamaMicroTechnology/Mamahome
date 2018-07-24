@@ -71,7 +71,7 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccountlist[$user->id]  }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                     </tr>
                     @endforeach
