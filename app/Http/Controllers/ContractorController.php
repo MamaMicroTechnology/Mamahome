@@ -169,6 +169,7 @@ class ContractorController extends Controller
       }
       $steel = array();
       $cement = array();
+
       $plumbing = array();
       $doors = array();
       $flooring = array();
@@ -314,7 +315,7 @@ class ContractorController extends Controller
                 $glass[$i] = ((25 *  $Total_Area)/25)* ($glassReqirement/100);
 
               break;
-          case 'Pillar':
+          case 'Pillars':
              
               $plumbingRequirement = 100;
               $doorsRequirement = 100;
@@ -349,7 +350,7 @@ class ContractorController extends Controller
                 $rails[$i] = ((50 * $Total_Area)/50) * ($railsReqirement/100);
                 $glass[$i] = ((25 * $Total_Area)/25)* ($glassReqirement/100);
               break;
-          case 'Walling':
+          case 'Walls':
              
               $plumbingRequirement = 100;
               $doorsRequirement = 100;
@@ -606,7 +607,7 @@ break;
 // dd($plumbing[$i] );
 
             break;
-          case 'Painting':
+          case 'Paintings':
               
               $plumbingRequirement = 0;
               $doorsRequirement = 0;
@@ -725,9 +726,11 @@ break;
             # code...
             break;
         }
+
         //dd("dsfhsdj");
         if( count($cement[$i] || $plumbing[$i] ||  $doors[$i] || $flooring[$i] || $sand[$i] || $aggregates[$i] || $blocks[$i] || $electrical[$i] || $bathroom[$i] || $wood[$i] || $paints[$i] || $wardk[$i] || $rails[$i] || $glass[$i] ) > $i){
          
+
          $totalPlumbing += $plumbing[$i];
          $totaldoors +=  $doors[$i];
          $totalsteel += $steel[$i];
