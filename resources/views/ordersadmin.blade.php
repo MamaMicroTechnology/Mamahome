@@ -107,7 +107,7 @@
                             @endif
                         </td>
                         <td>
-                        {{ $rec->payment_mode }}
+                       
                             @if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
                                 {{ $rec->payment_mode }}
                             @elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
