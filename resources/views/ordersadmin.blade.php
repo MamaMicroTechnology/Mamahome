@@ -205,7 +205,7 @@
                             @endif
                         </td>
                         <td>
-                            @if($rec -> delivery_status == "Delivered")
+                            @if($rec -> order_delivery_status == "Delivered")
                             <a data-toggle="modal" data-target="#deliveryImage{{ $rec->orderid }}" href="#">Delivered</a>
                             <!-- Modal -->
                                 <div id="deliveryImage{{ $rec->orderid }}" class="modal fade" role="dialog">
@@ -242,7 +242,7 @@
                                 </div>
                                 </div>
                             @else
-                            {{$rec -> delivery_status}}
+                            {{$rec -> order_delivery_status}}
                             @endif
                         </td>
                         <!-- <td>
@@ -255,7 +255,7 @@
                                 <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
                             </div>
                             @else
-                           {{ $rec->status }}
+                           {{ $rec->order_status }}
                             @endif
                           </td>
                        <td>
