@@ -249,7 +249,7 @@
                             <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Invoice</a>
                         </td> -->
                         <td>
-                            {{ $rec->orderid }}, {{ $rec->project_id }}, {{ $rec->status }}
+                            {{ $rec->orderid }}, {{ $rec->project_id }}, {{ $rec->status }} {{ $rec->delivery_status }}
                             @if($rec->status == "Enquiry Confirmed")
                             <div class="btn-group">
                                 <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
