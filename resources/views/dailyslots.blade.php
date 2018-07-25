@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="col-md-2">
+    <div class="col-md-3">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
                 <b style="color:white">Custom Daily Slot</b>
@@ -59,10 +59,19 @@
             <div class="panel-body">
                 <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
                 <table class="table table-striped" border="1">
+                    <thead>
+                        <th style="font-size: 10px;">Name</th>
+                        <th style="font-size: 10px;">Ward Name</th>
+                        <th style="font-size: 10px;">Added</th>
+                
+                        <th style="font-size: 10px;">Total</th>
+                    </thead>
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                  
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                     </tr>
                     @endforeach
@@ -74,8 +83,13 @@
                 <b style="color:white">Mini Report of Account Executive(Today)</b>
             </div>
             <div class="panel-body">
-               
+              
                 <table class="table table-striped" border="1">
+                    <thead>
+                        <th style="font-size: 10px;">Name</th>
+                        <th style="font-size: 10px;">Ward Name</th>
+                        <th style="font-size: 10px;">Added</th>
+                    </thead>
                     @foreach($accusers as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -87,7 +101,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-10" >
+    <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
                 <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
@@ -146,7 +160,7 @@
             {
                 if(document.getElementById('listname-'+i))
                 {
-                    arr[i] = document.getElementById('listname-'+i).innerText; //Pulling all names in arr array 
+                    arr[i] = document.getElementById('listname-'+i).innerText; //Pulling all names in arr array
                     ids[i] = document.getElementById('hiddeninp-'+i).value;
                 }
             }
@@ -165,8 +179,8 @@
                     }
                 }
             }
-            
-            
+           
+           
         });
         function displayGif(){
             document.getElementById('wait').style.display = "block";
@@ -228,7 +242,7 @@
                             }else{
                                 var head = "<tr><td>";
                             }
-                            document.getElementById('mainPanel').innerHTML += 
+                            document.getElementById('mainPanel').innerHTML +=
                             head + response[0][i].sub_ward_name+
                             "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
@@ -242,13 +256,13 @@
                                 +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '') +
                             "</td><td>"
                                 +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
-                            "</td><td>"     
+                            "</td><td>"    
                                 +response[0][i].name+
                             "</td></tr>";
                             document.getElementById('wait').style.display = "none";
                         }
-                        console.log(response);   
-                    }    
+                        console.log(response);  
+                    }   
                 });
             }
             return false;
@@ -278,7 +292,7 @@
                     month = "0" + month;
                 }
                 orig_from_date = day + "-" + month + "-" + year;
-        
+       
                 document.getElementById('mainPanel').innerHTML = '';
                 document.getElementById('panelhead').innerHTML = '';
                 $.ajax({
@@ -289,7 +303,7 @@
                     success: function(response)
                     {
                         document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b>  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-                        
+                       
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
@@ -298,7 +312,7 @@
                             }else{
                                 var head = "<tr><td>";
                             }
-                            document.getElementById('mainPanel').innerHTML += 
+                            document.getElementById('mainPanel').innerHTML +=
                             head+response[0][i].sub_ward_name+
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
@@ -316,8 +330,8 @@
                                 +response[0][i].name+
                             "</td></tr>";
                         }
-                        console.log(response);   
-                    }    
+                        console.log(response);  
+                    }   
                 });
             }
             return false;
@@ -325,3 +339,4 @@
     </script>
 
 @endsection
+

@@ -1774,6 +1774,8 @@ class mamaController extends Controller
             'sub_category'  =>$subcategories,
             'updated_by' =>Auth::user()->id,
             'quantity' => $qnty,
+            'enquiry_quantity' =>$request->enquiryquantity,
+            'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);

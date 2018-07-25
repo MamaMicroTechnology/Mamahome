@@ -147,7 +147,20 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested in Premium Products?</td>
+                                 <td>Interested In Home Automation ?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input id="home1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="home2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                  <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="home3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                   
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Premium Products ?</td>
                                  <td>:</td>
                                  <td>
                                      
@@ -160,7 +173,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of &nbsp;&nbsp; Contract ? </td>
+                                 <td>Type Of Contract ? </td>
                                   <td>:</td>
                                   <td>
                                    <select class="form-control" name="contract" id="contract" required>
@@ -171,6 +184,28 @@
                                   </select>
                                   </td>
                                </tr>
+                             <tr>
+              <td>Follow Up?</td>
+              <td>:</td>
+              <td>
+                  <div class="radio">
+                                <label><input {{ $projectdetails->followup == 'No'?'checked':'' }} type="radio" name="follow" value="No">No</label>
+                              </div>
+                              <div class="radio">
+                                <label><input {{ $projectdetails->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
+                              </div>
+             </td>
+
+          </tr>
+          <tr>
+            <td> Follow up date</td>
+            <td>:</td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+
+
+          </tr>
+
+
                                <tr>
                                  <td>Sub Ward</td>
                                  <td>:</td>
@@ -647,8 +682,31 @@
                                    <td><input id="prPhone" value="{{ $projectdetails->procurementdetails->procurement_contact_no }}"  placeholder="Procurement Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="pContact" id="pContact"></td>
                                </tr>
                            </table>
-                      </div>
-
+                      </div><br>
+                      <tr id="quepanelright-{{$projectdetails->project_id}}">
+                                    <td><label>Questions</label></td><br>
+                                    <td>
+                                        <select style="width: 100%" class="form-control" id="select-{{$projectdetails->project_id}}" name="qstn">-->
+                                    <option disabled selected>--- Select ---</option>
+                                    <option {{ $projectdetails->with_cont == 'NOT INTERESTED'? 'selected':'' }} value="NOT INTERESTED">NOT INTERESTED</option>
+                                    <option {{ $projectdetails->with_cont == 'BUSY'? 'selected':'' }} value="BUSY">BUSY</option>
+                                    <option {{ $projectdetails->with_cont == 'WRONG NO'? 'selected':'' }} value="WRONG NO">WRONG NO</option>
+                                    <option {{ $projectdetails->with_cont == 'PROJECT CLOSED'? 'selected':'' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
+                                    <option {{ $projectdetails->with_cont == 'CALL BACK LATER'? 'selected':'' }} value="CALL BACK LATER">CALL BACK LATER</option>
+                                    <option {{ $projectdetails->with_cont == 'THEY WILL CALL BACK WHEN REQUIRED'? 'selected':'' }} value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
+                                    <option {{ $projectdetails->with_cont == 'CALL NOT ANSWERED'? 'selected':'' }} value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
+                                    <option {{ $projectdetails->with_cont == 'FINISHING'? 'selected':'' }} value="FINISHING">FINISHING</option>
+                                    <option {{ $projectdetails->with_cont == 'SWITCHED OFF'? 'selected':'' }} value="SWITCHED OFF">SWITCHED OFF</option>
+                                    <option {{ $projectdetails->with_cont == 'SAMPLE REQUEST'? 'selected':'' }} value="SAMPLE REQUEST">SAMPLE REQUEST</option>
+                                    <option {{ $projectdetails->with_cont == 'MATERIAL QUOTATION'? 'selected':'' }} value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
+                                    <option {{ $projectdetails->with_cont == 'WILL FOLLOW UP AFTER DISCUSSION WITH OWNER'? 'selected':'' }} value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
+                                    <option {{ $projectdetails->with_cont == 'DUPLICATE NUMBER'? 'selected':'' }} value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
+                                    <option {{ $projectdetails->with_cont == 'NOT REACHABLE'? 'selected':'' }} value="NOT REACHABLE">NOT REACHABLE</option>
+                                    <option {{ $projectdetails->with_cont == 'THEY HAVE REGULAR SUPPLIERS'? 'selected':'' }} value="THEY HAVE REGULAR SUPPLIERS">THEY HAVE REGULAR SUPPLIERS</option>
+                                    <option {{ $projectdetails->with_cont == 'CREDIT FACILITY'? 'selected':'' }} value="CREDIT FACILITY">CREDIT FACILITY</option>
+                                  </select>
+                                    </td>
+                                    </tr>
                       <table class="table">
                         <tr>
                             <td><b>Quality</b></td>
@@ -661,6 +719,9 @@
                                 </select>
                             </td>
                         </tr>
+
+
+
                         <tr>
                             <td><b>Remarks</b></td>
                             <td>:</td>
