@@ -218,29 +218,7 @@ class HomeController extends Controller
             
         $var2 = count($category);
         $storesubcat =$request->subcat[0];
-        $x = DB::table('requirements')
-            ->insert(['project_id'    =>$request->selectprojects,
-                'main_category' => $categoryNames,
-                'brand' => $brandnames,
-                'sub_category'  =>$subcategories,
-                'follow_up' =>'',
-                'follow_up_by' =>'',
-                'material_spec' =>'',
-                'referral_image1'   =>'',
-                'referral_image2'   =>'',
-                'requirement_date'  =>$request->edate,
-                'measurement_unit'  =>$request->measure != null?$request->measure:'',
-                'unit_price'   => '',
-                    'quantity'     =>$qnty,
-                
-                'total'   =>0,
-                'notes'  =>$request->eremarks,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'status' => "Enquiry On Process",
-                'dispatch_status' => "Not yet dispatched",
-                'generated_by' => $request->initiator
-            ]);
+       
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
