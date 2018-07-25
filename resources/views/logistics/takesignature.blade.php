@@ -56,8 +56,9 @@
     </div>
   </div>
   <div style="display: none;">
-    <form action="{{ URL::to('/') }}/saveSignature" id="saveSign" method="GET" enctype="multipart/form-data">
-      <input type="file" id="sign" name="sign">
+    <form action="{{ URL::to('/') }}/saveSignature" id="saveSign" method="POST" enctype="multipart/form-data">
+    {{ csrf_field() }}
+      <input type="text" id="sign" name="sign">
     </form>
   </div>
   <script src="{{ asset('js/app.js') }}"></script>

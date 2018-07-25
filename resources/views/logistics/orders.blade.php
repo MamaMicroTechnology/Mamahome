@@ -80,11 +80,10 @@
 													<label for="amount">Payment Picture</label>
 													<input id="adv"  type="file" name="signature1" id="sign" class="form-control input-sm" accept="image/*">
 												</div>
-												
 												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 												<input type="hidden" name="project_id" value="{{ $rec->project_id }}">
 												<input type="hidden" name="log_name" value="{{ $rec->delivery_boy }}">
-												
+												<input type="hidden" required name="sign" id="sign{{ $rec->orderid }}">
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-success pull-left">Save</button>
@@ -94,7 +93,8 @@
 									</div>
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
+                                <!-- <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a> -->
+								<a href="{{ URL::to('/') }}/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
                             @endif
                         </td>
                         <td style="text-align:center">
@@ -369,10 +369,50 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="my_signature" role="dialog">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Signature Pad</h4>
+			</div>
+			<div class="modal-body">
+				<!-- take signature -->
+				<div id="signature-pad" class="signature-pad">
+					<div class="signature-pad--body">
+						<canvas></canvas>
+					</div>
+					<div class="signature-pad--footer">
+						<div class="description">Sign above</div>
+						<div class="signature-pad--actions">
+							<div>
+								<button type="button" class="button clear" data-action="clear">Clear</button>
+								<button type="button" class="hidden" data-action="change-color">Change color</button>
+								<button type="button" class="hidden" data-action="undo">Undo</button>
+								<button class="hidden"><a href="{{url()->previous()}}">Back</a></button>
+							</div>
+							<div>
+								<button type="button" class="hidden" data-action="save-png">Save as PNG</button>
+								<button type="button" class="button save" data-action="save-jpg" data-dismiss="modal">Save</button>
+								<button type="button" class="hidden" data-action="save-svg">Save as SVG</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="sign" id="sign">
+				<!-- signature taking ends -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-    $('[data-toggle="popover"]').popover({html:true});   
+	$('[data-toggle="popover"]').popover({html:true});  
+	
 });
 </script>
 <script type="text/javascript">
@@ -448,7 +488,7 @@ $(document).ready(function(){
     	       }
     	    });
 	    }
-	 }
+	}
 function changeValue(val, id){
 //use comparison operator   
 if(val=="Cheque" || val=="RTGS" || val=="Cash" )

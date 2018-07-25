@@ -1,4 +1,12 @@
-@extends('layouts.app')
+<?php
+    $group = Auth::user()->group->group_name;
+    if($group == "Auditor"){
+        $content = "auditor.layout.auditor";
+    }else{
+        $content = "layouts.app";
+    }
+?>
+@extends($content)
 @section('content')
 <?php
     $totalCementBags = 0;
@@ -18,7 +26,71 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div id="projection" class="col-md-6 col-md-offset-3">
+<div class="col-md-3 pull-right">
+    <table class="table table-hover" border=1>
+    <tr>
+        <th style="text-align:center" colspan=2>Business Cycle</th>
+    </tr>
+	<tr>
+        <td>Planning</td>
+        <td style="text-align:center" rowspan=3><br><br>1</td>
+    </tr>
+    <tr>
+        <td>Digging</td>
+    </tr>
+    <tr>
+        <td>Foundation</td>
+    </tr>
+    <tr>
+        <td>Pillar</td>
+        <td style="text-align:center" rowspan=2><br>3</td>
+    </tr>
+    <tr>
+        <td>Roofing</td>
+    </tr>
+    <tr>
+        <td>Walling</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Electrical</td>
+        <td rowspan=2 style="text-align:center"><br>1</td>
+    </tr>
+    <tr>
+        <td>Plumbing</td>
+    </tr>
+    <tr>
+        <td>Plastering</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Fooring</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Carpentry</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Painting</td>
+        <td rowspan=3 style="text-align:center"><br><br>1</td>
+    </tr>
+    <tr>
+        <td>Fixtures</td>
+    </tr>
+    <tr>
+        <td>Completion</td>
+    </tr>
+    <tr>
+        <th>Total</th>
+        <th style="text-align:center">10</th>
+    </tr>
+    </table>
+    <small style="background-color:#c9dba4; padding:10px; text-align:center; width:100%;">
+            <marquee><i>** Note: Material Calculation Is Based On Status Of The Project And Business Cycle **</i></marquee>
+        </small>
+</div>
+<div id="projection" class="col-md-6 col-md-offset-2">
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-center col-md-3 col-md-offset-5"><b>Projection</b></div>
@@ -109,7 +181,36 @@
         <p id="tp"></p>
         <button onclick="transactionalProfit()" class="btn btn-primary form-control">Proceed</button>
         <br><br>
-        <button class="btn btn-primary form-control" onclick="save()">Lock Target</button>
+        <button class="btn btn-primary form-control" data-toggle="modal" data-target="#myModal">Lock Target</button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                <p>Do you want to lock the target with existing data or projected data?</p>
+                    <div class="radio">
+                        <label><input type="radio" onclick="document.getElementById('incrementalP').className='hidden';" name="optradio">Existing Data</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" onclick="document.getElementById('incrementalP').className='';" name="optradio">Projected Data</label>
+                    </div>
+                    <br>
+                    
+                    <div class="hidden" id="incrementalP">
+                        Enter Incremental Percentage<br>
+                        <input type="text" class="form-control" id="perc" name="incrementalPercentage">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button class="btn btn-danger pull-left" onclick="save()">Lock Target</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="col-md-6">
@@ -252,6 +353,36 @@
 </div>
 </div>
 </div>
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-3">
+        <center>
+            <h2>
+                Thumb Rules<br>  
+            </h2>
+        </center>
+            @foreach($conversions as $con)
+            {{ ucwords($con->category) }} : Minimum 
+            @if($con->per == "Nos")
+                number
+            @elseif($con->per == "Rs")
+                amount
+            @else
+                requirement
+            @endif
+
+            of {{ ucwords($con->category) }} is {{ $con->category == "Flooring" ? $con->price_per_unit : $con->minimum_requirement }}
+            @if($con->category != "Flooring")
+            {{ $con->per }}/Sqft {{ $con->full_form != null ? "(".$con->per." = ". $con->full_form.")" : "" }}<br><br>
+            @else
+            {{ $con->per }}/Sqft {{ $con->full_form != null ? "(". $con->full_form.")" : "" }}<br><br>
+            @endif
+            @endforeach
+        <small style="background-color:#c9dba4; padding:10px; text-align:center; width:100%;">
+            <i>** Note: The Above Calculations Varies From Design To Design **</i>
+        </small>
+        <br><br>
+    </div>
+</div>
 <form action="{{URL::to('/') }}/lockProjection" id="lockProj" method="POST">
     {{ csrf_field() }}
     <input type="hidden" name="monthlyTarget" id="mTarget">
@@ -261,6 +392,7 @@
     <input type="hidden" name="category" id="category">
     <input type="hidden" name="from" id="from_date">
     <input type="hidden" name="to" id="to_date">
+    <input type="hidden" name="incrementalPercentage" id="inc">
 </form>
 <script>
     var calBag;
@@ -295,7 +427,16 @@
         document.getElementById('category').value = document.getElementById('categories').value;
         document.getElementById('from_date').value= document.getElementById('from').value;
         document.getElementById('to_date').value = document.getElementById('to').value;
-        form.submit();
+        if(document.getElementById('incrementalP').className != "hidden"){
+            if(document.getElementById('perc').value == ""){
+                alert("Please Enter Incremental Percentage");
+            }else{
+                document.getElementById('inc').value = document.getElementById('perc').value;
+                form.submit();
+            }
+        }else{
+            form.submit();
+        }
     }
 </script>
 @endsection

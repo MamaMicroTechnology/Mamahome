@@ -116,9 +116,12 @@
 						@foreach($enquiries as $enquiry)
 
 							@if($enquiry->status == "Enquiry On Process")
-							<?php	$pro++; ?>
-								<?php $sum = $sum + $enquiry->total_quantity; 
-								 ?>
+							<?php	$pro++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+							
+								@for($i = 0; $i < count($quantity); $i++)
+								<?php $sum = $sum + $quantity[$i]; ?>
+								@endfor
 								
 							@endif
 

@@ -120,13 +120,13 @@
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input required value="Yes" id="home1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
+                                      <label><input required value="Yes" id="loan1" type="radio" name="automation"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                   
-                                      <label><input required value="No" id="home2" type="radio" name="automation"><span>&nbsp;</span>No</label>
+                                      <label><input required value="No" id="loan2" type="radio" name="automation"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
                                 
-                                      <label><input required value="None" id="home3" type="radio" name="automation"><span>&nbsp;</span>None</label>
+                                      <label><input required value="None" id="loan3" type="radio" name="automation"><span>&nbsp;</span>None</label>
                                    
                                  </td>
                                </tr>
@@ -147,7 +147,8 @@
                                </tr>
 
                                <tr>
-                                <td>Type of Contract ?</td>
+                                <td>Type of &nbsp;&nbsp;
+                                Contract ?</td>
                                 <td>:</td>
                                 <td>
                                   <select class="form-control" name="contract" id="contract" class="requiredn">
@@ -285,7 +286,6 @@
                                       </div>
                                     </div>
                                     </td>
-                                   
                                </tr>
                                <!-- <tr>
                                     <td>Recommended Project Size Is</td>
@@ -768,7 +768,7 @@ function openCity(evt, cityName) {
       if(!isNaN(breadth) && !isNaN(length)){
         
         var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum1          = length*breadth;
+        sum1   = length*breadth;
         Size    += sum1;
         var total = sum * sum1;
         if(document.getElementById("totalsize").innerHTML != null)

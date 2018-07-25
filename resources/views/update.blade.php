@@ -147,20 +147,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Home Automation ?</td>
-                                 <td>:</td>
-                                 <td>
-                                    
-                                      <label><input id="home1" {{ $projectdetails->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
-                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="home2" {{ $projectdetails->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
-                                  <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="home3" {{ $projectdetails->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
-                                   
-                                 </td>
-                               </tr>
-                               <tr>
-                                 <td>Interested In Premium Products ?</td>
+                                 <td>Interested in Premium Products?</td>
                                  <td>:</td>
                                  <td>
                                      
@@ -173,7 +160,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of Contract ? </td>
+                                 <td>Type Of &nbsp;&nbsp; Contract ? </td>
                                   <td>:</td>
                                   <td>
                                    <select class="form-control" name="contract" id="contract" required>

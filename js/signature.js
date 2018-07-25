@@ -22,6 +22,7 @@
 					this.each(function() {
 						sig = $(this).find('canvas')[0].toDataURL('image/' + options);
 					});
+					alert($ig);
 					return sig;
 				break;
 

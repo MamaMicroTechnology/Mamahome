@@ -353,7 +353,6 @@ class amController extends Controller
     public function editEmployee(Request $request){
         $user = User::where('employeeId', $request->UserId)->first();
         $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
-       
         $bankDetails = BankDetails::where('employeeId',$request->UserId)->first();
         $assets = Asset::all();
         $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();

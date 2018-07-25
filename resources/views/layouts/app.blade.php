@@ -471,7 +471,17 @@ div#calendar{
     <a href="#" data-toggle="collapse" data-target="#planning">Sales Projection & Planning &#x21F2;</a>
         <div id="planning" class="collapse">
             <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Projection</a>
-            <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Category Wise Planning</a>
+            <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Target</a>
+            <a href="{{ URL::to('/yearly') }}">&nbsp;&nbsp;&nbsp; - Yearly Sales Projection</a>
+            <a href="{{ URL::to('/fiveyears') }}">&nbsp;&nbsp;&nbsp; - Five Years Sales Projection</a>
+            <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - One Year Country Projection</a>
+            <a href="{{ URL::to('/daily') }}">&nbsp;&nbsp;&nbsp; - Daily Sales Target</a>
+            <a href="{{ URL::to('/extensionPlanner') }}">&nbsp;&nbsp;&nbsp; - Extension Planner</a>
+        </div>
+        <a href="#" data-toggle="collapse" data-target="#Expenditure">Expenditure &#x21F2;</a>
+        <div id="Expenditure" class="collapse">
+            <a href="{{ URL::to('/expenditure') }}">&nbsp;&nbsp;&nbsp; - Expenditure</a>
+            <a href="{{ URL::to('/five_years_expenditure') }}">&nbsp;&nbsp;&nbsp; - Five Years Expenditure</a>
         </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>

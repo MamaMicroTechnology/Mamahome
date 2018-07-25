@@ -20,11 +20,7 @@
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         
-          @if( $totalprojects !=  $update)
-           <span class="">  <a  class="btn btn-primary form-control" onclick="vali({{ $bal }})" >Completed</a></span>
-            @else
-          <span class="">  <a href="{{ URL::to('/')}}/salescompleted" class="btn btn-primary form-control">Completed</a></span>
-        @endif
+         
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
@@ -39,6 +35,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
@@ -176,7 +173,7 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
+      zoom: 20,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -185,12 +182,12 @@
    
     var marker, i;
     var subward = new google.maps.Polygon({
-        paths:  newpat,
+        paths:  newpath,
         strokeColor: '#'+col,
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: '#'+col,
-        fillOpacity: 0.9
+        fillOpacity: 0.5
       });
   subward.setMap(map);
   }
@@ -222,7 +219,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15.5,
+      zoom: 12,
       center: new google.maps.LatLng(locations[0][1], locations[0][2]),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });

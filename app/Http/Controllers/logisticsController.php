@@ -151,28 +151,35 @@ class logisticsController extends Controller
     {
         return view('logistics.takesignature');
     }
-    // public function saveSignature(Request $request)
-    // {
-    //     $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
-    //     $request->signature->move(public_path('signatures'),$signatureName);
-    //     $signature = Order::where('id',$request->orderId)->first();
-    //     $signature->signature = $signatureName;
+    public function saveSignature(Request $request)
+    {
+        $data = $request->all();
+        $png_project = "project_image-".time().".jpg";
+        $path = public_path() . "/signatures/" . $png_project;
+        $img = $request->sign;
+        $img = substr($img, strpos($img, ",")+1);
+        $decoded = base64_decode($img);
+        $success = file_put_contents($path, $decoded);
+        // $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
+        // $request->signature->move(public_path('signatures'),$signatureName);
+        // $signature = Order::where('id',$request->orderId)->first();
+        // $signature->signature = $signatureName;
 
-    //     $signature->payment_status = "Payment Received";
-    //     $signature->save();
+        // $signature->payment_status = "Payment Received";
+        // $signature->save();
 
-    //     $signature->total = $request->amount;
-    //     $signature->payment_status = "Payment Received";
-    //     $signature->save();
-    //     $points = new Point;
-    //     $points->user_id = Auth::user()->id;
-    //     $points->point = 400;
-    //     $points->type = "Add";
-    //     $points->reason = "Receiving payment";
-    //     $points->save();
+        // $signature->total = $request->amount;
+        // $signature->payment_status = "Payment Received";
+        // $signature->save();
+        // $points = new Point;
+        // $points->user_id = Auth::user()->id;
+        // $points->point = 400;
+        // $points->type = "Add";
+        // $points->reason = "Receiving payment";
+        // $points->save();
 
-    //     return back()->with('Success','Payment Received');
-    // }
+        return back()->with('Success','Payment Received');
+    }
     public function payment(Request $request){
 
 
@@ -180,9 +187,8 @@ class logisticsController extends Controller
             $signatureName = Auth::user()->id."signature".time().'.'.request()->signature->getClientOriginalExtension();
              $request->signature->move(public_path('signatures'),$signatureName);
              if($request->signature1){
-
-            $signatureName1 = Auth::user()->id."cheque".time().'.'.request()->signature1->getClientOriginalExtension();
-            $request->signature1->move(public_path('signatures'),$signatureName1);
+                $signatureName1 = Auth::user()->id."cheque".time().'.'.request()->signature1->getClientOriginalExtension();
+                $request->signature1->move(public_path('signatures'),$signatureName1);
              }else{
                 $signatureName1 = "";
              }
@@ -208,7 +214,7 @@ class logisticsController extends Controller
                 $pay->p_method =  $paymode;
                 $pay->log_name = $request->log_name;
                 $pay->order_id = $request->orderId;
-                $pay->signature=$signatureName;
+                $pay->signature=$png_project;
                 $pay->signature1=$signatureName1;
                 $pay->c_name = $request->c_name;
                 $pay->save();

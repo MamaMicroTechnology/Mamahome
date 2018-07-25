@@ -73,6 +73,7 @@
                                 @if($user->status == 'Completed')
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center;">
+                
                                         <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary form-control"><b>Report</b></a>
                                     </td>
                                 @else
@@ -190,7 +191,7 @@ function Subs(arg)
             success: function(response)
             {
                 console.log(response);
-                  if(response == 0){
+                  if(response != 0){
                     window.location = "{{ URL::to('/') }}/completedAssignment?id="+arg;
                   }else{
                     alert('Not Completed. '+ response.balance +' projects remaining.');
