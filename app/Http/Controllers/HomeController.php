@@ -111,7 +111,7 @@ class HomeController extends Controller
     {
         date_default_timezone_set("Asia/Kolkata");
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
-        if(count($check)==0){
+        if(count($check) == 0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
             $login->logindate = date('Y-m-d');
@@ -1260,7 +1260,8 @@ class HomeController extends Controller
 
         $check = loginTime::where('user_id',Auth::user()->id)
             ->where('logindate',date('Y-m-d'))->first();
-        if(count($check)==0){
+      
+        if($check == NULL){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
             $login->logindate = date('Y-m-d');
@@ -2403,6 +2404,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }else{
             $stages = $request->stage;
         }
+         $orders = Order::where('status','Order Confirmed')->pluck('project_id');
          $projectids = new Collection();
          $orders = Order::where('status','Order Confirmed')->pluck('project_id');
          if($stages != null){
@@ -2428,8 +2430,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
            
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
            
+           
 
-           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+           $merge = array_merge($procurement,$siteeng,$contractor,$consultant,$owner);
         
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
@@ -2749,13 +2752,34 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            foreach($users as $user){
+                $totalupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','!=',null)
+                                                ->count();
+            }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
-        $projcount = count($projects); 
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist]);
+            foreach($accusers as $user){
+                $totalaccupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','!=',null)
+                                                ->count();
+            }
+            // $userss = User::pluck('id');
+            // foreach ($userss as $key) {
+            //           $ss[$key] = ProjectDetails::where('listing_engineer_id',$key)
+            //               ->where('updated_at','LIKE',$date.'%')
+            //                                     ->count();
+                
+
+            // }
+
+        $projcount = count($projects);  
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
     }
     public function getleinfo(Request $request)
     {

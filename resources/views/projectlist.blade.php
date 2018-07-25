@@ -33,6 +33,7 @@
               <td>
               @if($pageName == "Update")
                 <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-success input-sm">Edit</a>
+
               @else
                 <div class="btn-group">
                <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-success btn-xs">Edit</a>
