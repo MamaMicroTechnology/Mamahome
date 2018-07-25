@@ -80,7 +80,7 @@
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
 							<td><a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}" target="_blank">{{ $project->address }}</a></td>
-							<td>B({{ $project->basement}})+G({{ $project->ground }})+1={{ $project->basement + $project->ground + 1 }}</td>
+							<td>B({{ $project->basement}})+G+F({{ $project->ground }})={{ $project->basement + $project->ground + 1 }}</td>
 
 							<td>{{ $project->project_size }}</td>
 							<td>{{ $project->budget }}</td>

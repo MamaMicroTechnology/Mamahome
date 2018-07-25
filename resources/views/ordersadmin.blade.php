@@ -58,7 +58,7 @@
                             <form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
                             {{ csrf_field() }}
                             <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-                    @if($rec->payment_mode != NULL && $rec->payment_mode != "Check")
+                    @if($rec->payment_mode != NULL && $rec->payment_mode != "Check" && $rec->order_status == "Order Confirmed")
                               @if($rec->delivery_boy != NULL)
                                  @foreach($users as $user)
                                    @if($rec->delivery_boy == $user->id)
@@ -107,6 +107,7 @@
                             @endif
                         </td>
                         <td>
+                       
                             @if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
                                 {{ $rec->payment_mode }}
                             @elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
@@ -205,7 +206,7 @@
                             @endif
                         </td>
                         <td>
-                            @if($rec -> delivery_status == "Delivered")
+                            @if($rec -> order_delivery_status == "Delivered")
                             <a data-toggle="modal" data-target="#deliveryImage{{ $rec->orderid }}" href="#">Delivered</a>
                             <!-- Modal -->
                                 <div id="deliveryImage{{ $rec->orderid }}" class="modal fade" role="dialog">
@@ -242,23 +243,22 @@
                                 </div>
                                 </div>
                             @else
-                            {{$rec -> delivery_status}}
+                            {{$rec -> order_delivery_status}}
                             @endif
                         </td>
                         <!-- <td>
                             <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Invoice</a>
                         </td> -->
                         <td>
-                            @if($rec->status == "Enquiry Confirmed")
+                            @if($rec->order_status == "Enquiry Confirmed")
                             <div class="btn-group">
                                 <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
                                 <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
                             </div>
+                            @else
+                           {{ $rec->order_status }}
                             @endif
-                            @if($rec->status == "Order Confirmed")
-                            {{ $rec->status }}
-                            @endif
-                        </td>
+                          </td>
                        <td>
                                 <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
                        </td>

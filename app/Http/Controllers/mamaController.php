@@ -705,7 +705,7 @@ class mamaController extends Controller
             // road width
             $point = $request->rWidth != null && $project->road_width != $request->rWidth ? $point+4 : $point+0;
             // Construction type
-            if(count($request->construction_type) != 0){
+            if($request->construction_type != 0){
                 $construction_types = implode(", ",$request->constructionType);
             }else{
                 $construction_types = $project->construction_type;
@@ -781,7 +781,7 @@ class mamaController extends Controller
                 'municipality_approval' => $imageName1
             ]);
         }
-        if(count($request->oApprove) != 0){
+        if($request->oApprove != 0){
             $i = 0;
             $otherApprovals = "";
             foreach($request->oApprove as $oApprove){

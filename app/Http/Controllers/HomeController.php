@@ -113,7 +113,7 @@ class HomeController extends Controller
     {
         date_default_timezone_set("Asia/Kolkata");
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
-        if(count($check)==0){
+        if(count($check) == 0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
             $login->logindate = date('Y-m-d');
@@ -220,29 +220,6 @@ class HomeController extends Controller
             
         $var2 = count($category);
         $storesubcat =$request->subcat[0];
-        $x = DB::table('requirements')
-            ->insert(['project_id'    =>$request->selectprojects,
-                'main_category' => $categoryNames,
-                'brand' => $brandnames,
-                'sub_category'  =>$subcategories,
-                'follow_up' =>'',
-                'follow_up_by' =>'',
-                'material_spec' =>'',
-                'referral_image1'   =>'',
-                'referral_image2'   =>'',
-                'requirement_date'  =>$request->edate,
-                'measurement_unit'  =>$request->measure != null?$request->measure:'',
-                'unit_price'   => '',
-                    'quantity'     =>$qnty,
-                
-                'total'   =>0,
-                'notes'  =>$request->eremarks,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'status' => "Enquiry On Process",
-                'dispatch_status' => "Not yet dispatched",
-                'generated_by' => $request->initiator
-            ]);
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
@@ -267,11 +244,8 @@ class HomeController extends Controller
                                                 'billadress'=>$request->billadress,
                                                 'ship' =>$shipadress
                                         ]);
-        // $y = DB::table('quantity')->insert(['req_id' =>$request->requirements->id,
-        //                                     'project_id'=>$request->selectprojects
-                                           
+        
 
-        //         ]);
         if($x)
         {
             return back()->with('success','Enquiry Raised Successfully !!!');
@@ -1262,7 +1236,8 @@ class HomeController extends Controller
 
         $check = loginTime::where('user_id',Auth::user()->id)
             ->where('logindate',date('Y-m-d'))->first();
-        if(count($check)==0){
+      
+        if($check == NULL){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
             $login->logindate = date('Y-m-d');
@@ -2115,7 +2090,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $id = $request->id;
         $name =order::where('id',$id)->pluck('delivery_boy')->first();
         if($name != null){
-            return response()->json('Select Logistic Coordinator');
+            return back();
            
         }
         else{
@@ -2407,14 +2382,15 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }else{
             $stages = $request->stage;
         }
-         $projectids = new Collection();
          $orders = Order::where('status','Order Confirmed')->pluck('project_id');
+         $projectids = new Collection();
          if($stages != null){
              $projectids = ProjectDetails::
              whereIn('project_status',$stages)
              ->where('quality','!=','Fake')
              ->whereNotIn('project_id',$orders)
              ->pluck('project_id'); 
+           
          }else{
             $projectids = null;
          }     
@@ -2432,8 +2408,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
            
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
            
+           
 
-           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+           $merge = array_merge($procurement,$siteeng,$contractor,$consultant,$owner);
         
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
@@ -2753,13 +2730,36 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            foreach($users as $user){
+                $totalupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+                                                
+                                                
+            }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            foreach($accusers as $user){
+                $totalaccupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
+            // $userss = User::pluck('id');
+            // foreach ($userss as $key) {
+            //           $ss[$key] = ProjectDetails::where('listing_engineer_id',$key)
+            //               ->where('updated_at','LIKE',$date.'%')
+            //                                     ->count();
+                
+
+            // }
+
         $projcount = count($projects);  
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
     }
     public function getleinfo(Request $request)
     {
@@ -4964,8 +4964,8 @@ public function display(request $request){
     {
         $conversions = Conversion::all();
         if($request->category){
-            $conversion = Conversion::where('id',$request->category)->first();
-            $utilizations = Utilization::where('id',$request->category)->first();
+            $conversion = Conversion::where('category',$request->category)->first();
+            $utilizations = Utilization::where('category',$request->category)->first();
             View::share('conversion', $conversion);
             View::share('utilization',$utilizations);
         }else{
@@ -5442,11 +5442,10 @@ public function display(request $request){
              $details->size     = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Completion%')->sum('project_size');
              $details->save();
          }
-         $cat = Conversion::where('id',$request->category)->pluck('category')->first();
-        $check2 = Projection::where('category',$cat)->first();
+        $check2 = Projection::where('category',$request->category)->first();
         if($check2 == null){
             $projection = new Projection;
-            $projection->category = $cat;
+            $projection->category = $request->category;
             $projection->price = $request->price;
             $projection->business_cycle = $request->businessCycle;
             $projection->target = $request->monthlyTarget;
@@ -5487,7 +5486,7 @@ public function display(request $request){
                     $totalCategory = 0;
                     $totalCategoryPrice = 0;
                     $conversion = Conversion::where('category',$category['category'])->first();
-                    $utilizations = Utilization::where('category',$category['category'])->first();
+                    $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
                     $text .= "<tr><th colspan=6>".ucwords($category['category'])."</th></tr>";
                     foreach($projections as $projection){
                         if($projection['stage'] == "Electrical & Plumbing")
@@ -5765,7 +5764,6 @@ public function display(request $request){
             $zones->grade_b = $request->gradeB[$i];
             $zones->grade_c = $request->gradeC[$i];
             $zones->grade_d = $request->gradeD[$i];
-            $zones->grade_e = $request->gradeE[$i];
             $zones->save();
         }
         return back();
@@ -5810,7 +5808,7 @@ public function display(request $request){
             $totalCategory = 0;
             $totalCategoryPrice = 0;
             $conversion = Conversion::where('category',$category['category'])->first();
-            $utilizations = Utilization::where('category',$category['category'])->first();
+            $utilizations = Utilization::where('category',$category['category'])->first()->toArray();
             foreach($projections as $projection){
                 if($projection['stage'] == "Electrical & Plumbing")
                     $stage = "electrical";

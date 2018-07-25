@@ -108,7 +108,7 @@
                   <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Updated Projects</label></td>
+                  <td style="border: 1px solid gray;"><label>Last 30 Days Updated Projects</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $update  }}<strong></td>
                 </tr>
                 <tr>
