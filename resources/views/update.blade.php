@@ -844,7 +844,7 @@ function check(arg){
         sum1          = length*breadth;
         Size    += sum1;
         var total = sum * sum1;
-       alert(total);
+      
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
         else
