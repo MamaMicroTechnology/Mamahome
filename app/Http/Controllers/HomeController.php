@@ -2749,13 +2749,27 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            foreach($users as $user){
+                $totalupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','!=',null)
+                                                ->count();
+            }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            
+            foreach($accusers as $user){
+                $totalaccupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','!=',null)
+                                                ->count();
+            }
+         
         $projcount = count($projects); 
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
     }
     public function getleinfo(Request $request)
     {
