@@ -1260,8 +1260,8 @@ class HomeController extends Controller
 
         $check = loginTime::where('user_id',Auth::user()->id)
             ->where('logindate',date('Y-m-d'))->first();
-           
-        if(count($check)==0){
+      
+        if($check == NULL){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
             $login->logindate = date('Y-m-d');
@@ -2754,22 +2754,34 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            foreach($users as $user){
+                $totalupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','!=',null)
+                                                ->count();
+            }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
-            $userss = User::pluck('id');
-            foreach ($userss as $key) {
-                      $ss[$key] = ProjectDetails::where('listing_engineer_id',$key)
-                          ->where('updated_at','LIKE',$date.'%')
+            foreach($accusers as $user){
+                $totalaccupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
+                                                ->where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','!=',null)
                                                 ->count();
+            }
+            // $userss = User::pluck('id');
+            // foreach ($userss as $key) {
+            //           $ss[$key] = ProjectDetails::where('listing_engineer_id',$key)
+            //               ->where('updated_at','LIKE',$date.'%')
+            //                                     ->count();
                 
 
-            }
+            // }
 
         $projcount = count($projects);  
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'ss'=>$ss]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
     }
     public function getleinfo(Request $request)
     {

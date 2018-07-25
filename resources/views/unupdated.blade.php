@@ -38,10 +38,10 @@
 					                <select name="subward" class="form-control" id="subward">
 					                </select>
 							</div>
-							<div class="col-md-2">
+							<!-- <div class="col-md-2">
 								<label></label>
 								<input type="button" value="Select Status" style="background-color:#444743;color:white;"  class="form-control btn btn-primary" data-toggle="modal" data-target="#myModal">
-							</div>
+							</div> -->
 							<div class="col-md-2">
 								<label></label>
 								<input type="submit" value="Fetch" class="form-control btn btn-primary">
