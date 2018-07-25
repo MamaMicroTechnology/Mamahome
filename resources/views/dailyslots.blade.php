@@ -73,7 +73,6 @@
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
-                     
                     </tr>
                     @endforeach
                 </table>
@@ -100,7 +99,6 @@
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
-                       
                     </tr>
                     @endforeach
                 </table>
