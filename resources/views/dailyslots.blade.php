@@ -63,7 +63,7 @@
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
-                
+                        <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
                     @foreach($users as $user)
@@ -71,8 +71,8 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
-                  
-                        <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
                 </table>
@@ -89,12 +89,16 @@
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
+                        <th style="font-size: 10px;">Updated</th>
+                        <th style="font-size: 10px;">Total</th>
                     </thead>
                     @foreach($accusers as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
                 </table>
