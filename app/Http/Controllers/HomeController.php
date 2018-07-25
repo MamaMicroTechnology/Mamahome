@@ -2750,10 +2750,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->count();
             }
             foreach($users as $user){
-                $totalupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
-                                                ->where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','!=',null)
+                $totalupdates[$user->id] = ProjectDetails::where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
                                                 ->count();
+
             }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
@@ -2762,10 +2762,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             }
             
             foreach($accusers as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
-                                                ->where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','!=',null)
+                $totalaccupdates[$user->id] = ProjectDetails::where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
                                                 ->count();
+
             }
          
         $projcount = count($projects); 
