@@ -246,6 +246,16 @@
 								<td>{{ $enq->quantity }}</td>
 							</tr>
 							<tr>
+								<td><label>Enquiry Quantity : </label></td>
+								<td><input type="text" value="{{ $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" /></td>
+							</tr>
+							
+							<tr>
+								<td><label>Total Quantity : </label></td>
+								<td><input type="number" value="{{ $enq->total_quantity }}" name="totalquantity" id="tquantity" title="Three letter country code" class="form-control" /></td>
+
+							</tr>
+							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>
 									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" />{{ $enq->notes }}</textarea>

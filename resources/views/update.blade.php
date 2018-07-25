@@ -328,7 +328,12 @@
                                <tr>
                                    <td>Project Size</td>
                                    <td>:</td>
-                                   <td><input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize"></td>
+                                   <td>
+                                     <div class="col-md-4 pull-left">
+                                    <input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize">
+                                  </div>
+                                  <div class="col-md-8 alert-success pull-right" id="pSizeTag"></div>
+                                  </td>
                                </tr>
                                 <tr>
                                
@@ -776,7 +781,35 @@ function check(arg){
 
     return false;
   }
- 
+ function checkthis(arg)
+  {
+    
+    
+    var x = document.getElementById(arg);
+    if(arg == 'length' || arg == 'breadth'){
+     
+      var breadth = parseInt(document.getElementById("breadth").value);
+      var length   = parseInt(document.getElementById("length").value);
+      if(!isNaN(breadth) && !isNaN(length)){
+        var sum          = basement+ground+1;
+        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+        sum1          = length*breadth;
+        Size    += sum1;
+        var total = sum * sum1;
+       alert(total);
+        if(document.getElementById("totalsize").innerHTML != null)
+          document.getElementById("totalsize").innerHTML = Size;
+        else
+          document.getElementById("totalsize").innerHTML = '';
+         if(document.getElementById("pSize").value != null){
+           document.getElementById("pSize").value = total;
+           document.getElementById("pSizeTag").innerHTML = "This Is Recommended Size. You Can Change If Required!!";
+         }else
+          document.getElementById("pSize").value = '';
+      }
+    }
+    return false;
+  }
 </script>
 <!--This line by Siddharth -->
 
@@ -1092,28 +1125,6 @@ function sum(){
     }
 </script>
 <script type="text/javascript">
-  function checkthis(arg)
-  {
-    
-    
-    var x = document.getElementById(arg);
-    if(arg == 'length' || arg == 'breadth'){
-     
-      var breadth = parseInt(document.getElementById("breadth").value);
-      var length   = parseInt(document.getElementById("length").value);
-      if(!isNaN(breadth) && !isNaN(length)){
-        
-        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum          = length*breadth;
-        Size    += sum;
-        if(document.getElementById("totalsize").innerHTML != null)
-          document.getElementById("totalsize").innerHTML = Size;
-        else
-          document.getElementById("totalsize").innerHTML = '';
-      }
-    }
-    return false;
-  }
-</script>
+ 
 @endsection
 

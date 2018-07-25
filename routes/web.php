@@ -250,7 +250,6 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/admincompleted','mamaController@completedAssignment');
     Route::get('/confidential','HomeController@confidential');
     Route::get('/letracking','HomeController@getLeTracking');
-    Route::get('/Unupdated','HomeController@Unupdated');
     Route::post('/storedate','HomeController@storedate');
 
     Route::post('/uploadvideo','HomeController@uploadvideo');

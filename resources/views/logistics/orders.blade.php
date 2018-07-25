@@ -50,7 +50,7 @@
                               
 							<button data-toggle="modal" data-target="#PaymentModal{{$rec->orderid}}" class="btn btn-success btn-sm">Payment Details</button>
 
-                                <form method="POST" action="{{ URL::to('/') }}/payment" enctype="multipart/form-data">
+                                <form method="POST" action="{{ URL::to('/') }}/payment" id="orderSubmit" enctype="multipart/form-data">
                                     {{ csrf_field() }}
 									<div id="PaymentModal{{$rec->orderid}}" class="modal fade" role="dialog">
 										<div class="modal-dialog modal-sm">
@@ -457,7 +457,15 @@ if(val=="Cheque" || val=="RTGS" || val=="Cash" )
  	 document.getElementById('show'+id).className="hidden";
  }
 }
-
+function rtgs(){
+	var myForm = document.getElementById('orderSubmit');
+	alert(myForm);
+	myForm.submit();
+}
+function cash(){
+	var myForm = document.getElementById('orderSubmit');
+	myForm.submit();
+}
 
 </script>
 

@@ -101,6 +101,7 @@
 							<th style="text-align: center">Contact</th>
 							<th style="text-align: center">Product</th>
 							<th style="text-align: center">Quantity</th>
+							<th style="text-align: center">Total Quantity</th>
 							<th style="text-align: center">Initiator</th>
 							<th style="text-align: center">Converted by</th>
 							<th style="text-align: center">Last Update</th>
@@ -115,34 +116,30 @@
 						@foreach($enquiries as $enquiry)
 
 							@if($enquiry->status == "Enquiry On Process")
-							<?php	$pro++; 
-							 $quantity = explode(", ",$enquiry->quantity); ?>
-							
-								@for($i = 0; $i < count($quantity); $i++)
-								<?php $sum = $sum + $quantity[$i]; 
+							<?php	$pro++; ?>
+								<?php $sum = $sum + $enquiry->total_quantity; 
 								 ?>
-								@endfor
 								
 							@endif
 
 							@if($enquiry->status == "Enquiry Confirmed")
 							<?php	$con++; 
-							 $quantity = explode(", ",$enquiry->quantity); ?>
+							 ?>
 
-								@for($i = 0; $i < count($quantity); $i++)
-									<?php $sum1 = $sum1 + $quantity[$i]; 
+								
+									<?php $sum1 = $sum1 + $enquiry->total_quantity; 
 									 ?>
-								@endfor
+								
 
 							@endif
 
 							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")
 							<?php  $total++; 
-							 $quantity = explode(", ",$enquiry->quantity); ?>
-								@for($i = 0; $i < count($quantity); $i++)
-									<?php $sum2 = $sum2 + $quantity[$i]; 
+							?>
+								
+									<?php $sum2 = $sum2 + $enquiry->total_quantity; 
 									 ?>
-								@endfor
+								
 							@endif
                         @endforeach
                         
@@ -166,6 +163,7 @@
 								{{ $quantity[$i] }}<br>
 								@endfor
 							</td>
+							<td style="text-align: center">{{ $enquiry -> total_quantity }}</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
 							@foreach($converter as $convert)
@@ -286,7 +284,7 @@ function myFunction() {
 	  }
 	}else{
 		for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[11];
+	    td = tr[i].getElementsByTagName("td")[12];
 	    if (td) {
 	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 	        tr[i].style.display = "";
@@ -300,36 +298,37 @@ function myFunction() {
 		
 		if(document.getElementById("categ").value  != "All"){
 		
-				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
+				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}   /  Quantity On Process : {{ $sum }} "
 		 }
 	}
 	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		if(document.getElementById("categ").value  != "All"){
-		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}   /   Quantity On Confirmed : {{ $sum1 }}"
 		}
 	}
 	else {
+
 		if(document.getElementById("categ").value  != "All"){
-		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }} "
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}   /   Total Quantity  :  {{ $sum2 }} "
 		}
 	}
 
 
 	// if(document.getElementById("myInput").value  == "Enquiry On Process"){
 
-	// 	if(document.getElementById("categ").value  == "All"){
+	// 	if(document.getElementById("categ").value  == "All Category"){
 			
 	// 	document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
 	// 	}
 	// }
 	// else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
 		
-	// 	if(document.getElementById("categ").value  == "All"){
+	// 	if(document.getElementById("categ").value  == "All Category"){
 	// 	document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
 	// 	}
 	// }
 	// else {
-	// 	if(document.getElementById("categ").value  == "All"){
+	// 	if(document.getElementById("categ").value  == "All Category"){
 	// 	document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}"
 	// }
 	// }

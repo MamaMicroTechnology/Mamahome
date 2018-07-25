@@ -107,7 +107,7 @@ class HomeController extends Controller
     {
         date_default_timezone_set("Asia/Kolkata");
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
-        if(count($check)==0){
+        if(count($check) == 0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
             $login->logindate = date('Y-m-d');
@@ -1233,7 +1233,7 @@ class HomeController extends Controller
 
         $check = loginTime::where('user_id',Auth::user()->id)
             ->where('logindate',date('Y-m-d'))->first();
-            dd(count($check) );
+           
         if(count($check)==0){
             $login = New loginTime;
             $login->user_id = Auth::user()->id;
@@ -2087,7 +2087,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $id = $request->id;
         $name =order::where('id',$id)->pluck('delivery_boy')->first();
         if($name != null){
-            return response()->json('Select Logistic Coordinator');
+            return back();
            
         }
         else{
@@ -2379,14 +2379,15 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }else{
             $stages = $request->stage;
         }
+         $orders = Order::where('status','Order Confirmed')->pluck('project_id');
          $projectids = new Collection();
          if($stages != null){
-             $projectids = ProjectDetails::leftjoin('orders','orders.project_id','project_details.project_id')
-             ->where('orders.status','!=','Order Confirmed')
-             ->whher('deleted','!=',1)
-             ->whereIn('project_status',$stages)
+             $projectids = ProjectDetails::
+             whereIn('project_status',$stages)
              ->where('quality','!=','Fake')
-             ->pluck('project_id');
+             ->whereNotIn('project_id',$orders)
+             ->pluck('project_id'); 
+           
          }else{
             $projectids = null;
          }     
@@ -2404,8 +2405,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
            
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
            
+           
 
-           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+           $merge = array_merge($procurement,$siteeng,$contractor,$consultant,$owner);
         
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
@@ -2730,8 +2732,17 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            $userss = User::pluck('id');
+            foreach ($userss as $key) {
+                      $ss[$key] = ProjectDetails::where('listing_engineer_id',$key)
+                          ->where('updated_at','LIKE',$date.'%')
+                                                ->count();
+                
+
+            }
+
         $projcount = count($projects);  
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'ss'=>$ss]);
     }
     public function getleinfo(Request $request)
     {
