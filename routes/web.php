@@ -547,3 +547,6 @@ Route::post('/save','HomeController@save');
 Route::post('/clearcheck','mamaController@clearcheck');
 Route::get('/cashdeposit','marketingController@cashdeposit');
 Route::post('/close','logisticsController@close');
+Route::get('/addManufacturer','HomeController@addManufacturer');
+Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
+Route::get('/viewManufacturer','HomeController@viewManufacturer');

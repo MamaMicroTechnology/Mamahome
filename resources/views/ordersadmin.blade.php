@@ -58,7 +58,7 @@
                             <form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
                             {{ csrf_field() }}
                             <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-                    @if($rec->payment_mode != NULL && $rec->payment_mode != "Check" &&  $rec->status == "Order Confirmed")
+                    @if($rec->payment_mode != NULL && $rec->payment_mode != "Check")
                               @if($rec->delivery_boy != NULL)
                                  @foreach($users as $user)
                                    @if($rec->delivery_boy == $user->id)

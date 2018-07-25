@@ -51,7 +51,8 @@ use App\ZoneMap;
 use App\SubWardMap;
 use App\Asset;
 use App\Check;
-
+use App\Manufacturer;
+use App\ManufacturerProduce;
 use App\MamahomeAsset;
 use App\ProjectImage;
 
@@ -1907,10 +1908,37 @@ class mamaController extends Controller
     Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
      return back();
 }
-public function checkdetailes(request $request){
-    $details = Check::all();
-    $countrec = count($details);
+    public function checkdetailes(request $request){
+        $details = Check::all();
+        $countrec = count($details);
+        return view('checkdetailes',['details' => $details,'countrec'=>$countrec]);
+    }
+    public function postSaveManufacturer(Request $request)
+    {
+        $modes = implode(", ", $request->paymentMode);
+        $manufacturer = new Manufacturer;
+        $manufacturer->name = $request->name;
+        $manufacturer->address = $request->address;
+        $manufacturer->area = $request->area;
+        $manufacturer->capacity = $request->capacity;
+        $manufacturer->present_utilization = $request->utilization;
+        $manufacturer->cement_requirement = $request->cement_requirement;
+        $manufacturer->prefered_cement_brand = $request->brand;
+        $manufacturer->deliverability = $request->deliverability;
+        $manufacturer->sand_requirement = $request->sand_requirement;
+        $manufacturer->type = $request->manufacturing_type;
+        $manufacturer->payment_mode = $modes;
+        $manufacturer->save();
 
-     return view('checkdetailes',['details' => $details,'countrec'=>$countrec]);
-}
+        // saving product details
+        for($i = 0; $i < count($request->blockType); $i++){
+            $products = new ManufacturerProduce;
+            $products->manufacturer_id = $manufacturer->id;
+            $products->block_type = $request->blockType[$i];
+            $products->block_size = $request->blockSize[$i];
+            $products->price = $request->price[$i];
+            $products->save();
+        }
+        return back()->with('Success','Manufacturer Saved Successfully');;
+    }
 }

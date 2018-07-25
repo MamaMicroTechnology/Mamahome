@@ -78,6 +78,8 @@ use App\CapitalExpenditure;
 use App\OperationalExpenditure;
 use App\NumberOfZones;
 use App\Pricing;
+use App\Manufacturer;
+use App\ManufacturerProduce;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -5837,5 +5839,14 @@ public function display(request $request){
         $dates = Projection::first();
         $projections = NumberOfZones::all()->toArray();
         return view('projection.extension',['dates'=>$dates,'projections'=>$projections]);
+    }
+    public function addManufacturer()
+    {
+        return view('addManufacturer');
+    }
+    public function viewManufacturer()
+    {
+        $manufacturers = Manufacturer::all();
+        return view('viewManufacturer',['manufacturers'=>$manufacturers]);
     }
 }
