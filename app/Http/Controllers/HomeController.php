@@ -218,7 +218,6 @@ class HomeController extends Controller
             
         $var2 = count($category);
         $storesubcat =$request->subcat[0];
-       
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
@@ -243,11 +242,8 @@ class HomeController extends Controller
                                                 'billadress'=>$request->billadress,
                                                 'ship' =>$shipadress
                                         ]);
-        // $y = DB::table('quantity')->insert(['req_id' =>$request->requirements->id,
-        //                                     'project_id'=>$request->selectprojects
-                                           
+        
 
-        //         ]);
         if($x)
         {
             return back()->with('success','Enquiry Raised Successfully !!!');
