@@ -889,7 +889,7 @@ function openCity(evt, cityName) {
           }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
             window.alert("Please Tell Us Whether The Customer Is Interested In Premium Products");
           }else if(document.getElementById("contract").value == ""){
-            alert("Please Select Contract Type");
+            window.alert("Please Select Contract Type");
           }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
           }else if(ctype1.checked == true || ctype2.checked == true){
