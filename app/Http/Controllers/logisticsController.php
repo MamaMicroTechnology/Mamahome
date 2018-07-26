@@ -180,15 +180,16 @@ class logisticsController extends Controller
 
         return back()->with('Success','Payment Received');
     }
-    public function payment(Request $request){
+   public function payment(Request $request){
 
 
 
             $signatureName = Auth::user()->id."signature".time().'.'.request()->signature->getClientOriginalExtension();
              $request->signature->move(public_path('signatures'),$signatureName);
              if($request->signature1){
-                $signatureName1 = Auth::user()->id."cheque".time().'.'.request()->signature1->getClientOriginalExtension();
-                $request->signature1->move(public_path('signatures'),$signatureName1);
+
+            $signatureName1 = Auth::user()->id."cheque".time().'.'.request()->signature1->getClientOriginalExtension();
+            $request->signature1->move(public_path('signatures'),$signatureName1);
              }else{
                 $signatureName1 = "";
              }
@@ -214,7 +215,7 @@ class logisticsController extends Controller
                 $pay->p_method =  $paymode;
                 $pay->log_name = $request->log_name;
                 $pay->order_id = $request->orderId;
-                $pay->signature=$png_project;
+                $pay->signature=$signatureName;
                 $pay->signature1=$signatureName1;
                 $pay->c_name = $request->c_name;
                 $pay->save();
