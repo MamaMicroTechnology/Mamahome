@@ -400,7 +400,7 @@ div#calendar{
                                     @if(Auth::user()->department_id == 0 && Auth::user()->group_id == 1)
                                     <li><a href="{{ URL::to('/') }}/admincompleted?id={{ Auth::user()->id }}">Completed</a></li>
                                     @endif
-                                    <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
+                                    
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
