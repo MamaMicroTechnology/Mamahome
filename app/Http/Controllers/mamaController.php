@@ -1915,29 +1915,55 @@ class mamaController extends Controller
     }
     public function postSaveManufacturer(Request $request)
     {
-        $modes = implode(", ", $request->paymentMode);
-        $manufacturer = new Manufacturer;
-        $manufacturer->name = $request->name;
-        $manufacturer->address = $request->address;
-        $manufacturer->area = $request->area;
-        $manufacturer->capacity = $request->capacity;
-        $manufacturer->present_utilization = $request->utilization;
-        $manufacturer->cement_requirement = $request->cement_requirement;
-        $manufacturer->prefered_cement_brand = $request->brand;
-        $manufacturer->deliverability = $request->deliverability;
-        $manufacturer->sand_requirement = $request->sand_requirement;
-        $manufacturer->type = $request->manufacturing_type;
-        $manufacturer->payment_mode = $modes;
-        $manufacturer->save();
+        if($request->type == "blocks"){
+            $modes = implode(", ", $request->paymentMode);
+            $manufacturer = new Manufacturer;
+            $manufacturer->name = $request->name;
+            $manufacturer->address = $request->address;
+            $manufacturer->area = $request->area;
+            $manufacturer->capacity = $request->capacity;
+            $manufacturer->present_utilization = $request->utilization;
+            $manufacturer->cement_requirement = $request->cement_requirement;
+            $manufacturer->prefered_cement_brand = $request->brand;
+            $manufacturer->deliverability = $request->deliverability;
+            $manufacturer->sand_requirement = $request->sand_requirement;
+            $manufacturer->type = $request->manufacturing_type;
+            $manufacturer->payment_mode = $modes;
+            $manufacturer->save();
 
-        // saving product details
-        for($i = 0; $i < count($request->blockType); $i++){
-            $products = new ManufacturerProduce;
-            $products->manufacturer_id = $manufacturer->id;
-            $products->block_type = $request->blockType[$i];
-            $products->block_size = $request->blockSize[$i];
-            $products->price = $request->price[$i];
-            $products->save();
+            // saving product details
+            for($i = 0; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
+        }else{
+            $manufacturer = new Manufacturer;
+            $manufacturer->name = $request->name;
+            $manufacturer->address = $request->address;
+            $manufacturer->area = $request->area;
+            $manufacturer->capacity = $request->capacity;
+            $manufacturer->present_utilization = $request->utilization;
+            $manufacturer->cement_requirement = $request->cement_requirement;
+            $manufacturer->cement_used = $request->cement_used;
+            $manufacturer->prefered_cement_brand = $request->brand;
+            $manufacturer->deliverability = $request->deliverability;
+            $manufacturer->sand_requirement = $request->sand_requirement;
+            $manufacturer->moq = $request->moq;
+            $manufacturer->save();
+
+            // saving product details
+            for($i = 0; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                // $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
         }
         return back()->with('Success','Manufacturer Saved Successfully');;
     }

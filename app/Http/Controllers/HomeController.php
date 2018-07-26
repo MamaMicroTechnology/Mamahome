@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\orderconfirmation;
+use Response;
 use App\Mail\invoice;
 use App\Department;
 use App\User;
@@ -307,7 +308,17 @@ class HomeController extends Controller
         $depart = [1,6,7,8,11,15,16,17];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
+        $requestedEnquiry = array();
+        $i = 0;
 
+        $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")->get();
+
+        foreach($enquiries as $enquiry){
+            array_push($requestedEnquiry,[$enquiry,$enquiry->project->project_name]);
+        }
+        return Response::Json($requestedEnquiry);
+
+        return $enquiries;
         if($request->status && !$request->category){
             if($request->status != "all"){
                 
@@ -319,7 +330,7 @@ class HomeController extends Controller
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
 
-                       $enquiries = Response::Json( $enquiries);
+                       $enquiries = Response::Json($enquiries);
 
                 $converter = user::get();
 
@@ -4885,8 +4896,9 @@ function enquirystore(request $request){
         //  ->get();
 
         $wards = Ward::all();
+        $zoneMap = WardMap::all();
         $zone = Zone::all();
-        return view('maping.allProjectsWithWards',['wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards,'zone'=>$zone]);
+        return view('maping.allProjectsWithWards',['zoneMap'=>$zoneMap,'wardMaps'=>$wardMaps,'projects'=>$projects,'wards'=>$wards,'zone'=>$zone]);
     }
  
     public function storecount(request $request){
