@@ -251,7 +251,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 							</tr>
 							<tr>
 								<td><label>Enquiry Quantity : </label></td>
-								<td><input type="text" value="{{ $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" /></td>
+								<td><input type="text"  name="enquiryquantity" id="tquantity" class="form-control" /></td>
 							</tr>
 							
 							<tr>
