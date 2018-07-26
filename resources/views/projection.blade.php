@@ -130,7 +130,7 @@
             <select id="categories" required class="form-control" name="category">
                 <option value="">--Select--</option>
                 @foreach($conversions as $conv)
-                    <option {{ isset($_GET['category']) ? $_GET['category'] == $conv->id ? "selected" : "" : ""}} value="{{ $conv->id }}">{{ ucwords($conv->category) }}</option>
+                    <option {{ isset($_GET['category']) ? $_GET['category'] == $conv->category ? "selected" : "" : ""}} value="{{ $conv->category }}">{{ ucwords($conv->category) }}</option>
                 @endforeach
             </select>
         </div>

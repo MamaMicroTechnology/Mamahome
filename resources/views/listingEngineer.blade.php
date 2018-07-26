@@ -1161,12 +1161,137 @@ function openCity(evt, cityName) {
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
     }
+    var numbers = [];
     function count(){
-      var ctype1 = document.getElementById('constructionType1');
-      var ctype2 = document.getElementById('constructionType2');
-      var ctype3 = document.getElementById('constructionType3');
-      var ctype4 = document.getElementById('constructionType4');
-      var countinput;
+      var status = document.getElementsByName('status[]');
+      var selected = "";
+      var check = 0;
+      // first 3 stages + last stage
+      for(var i = 0; i < status.length; i++){
+        if(status[i].checked == true)
+          check += 1;
+      }
+      if(check == 0){
+        for(var i = 0; i < status.length; i++){
+          status[i].disabled = false;
+        }
+      }
+      if(check == 1){
+        if(status[0].checked == true || status[1].checked == true || status[2].checked == true || status[status.length - 1].checked == true){
+          for(var i = 0; i < status.length; i++){
+            if(status[i].checked != true)
+              status[i].disabled = true;
+          }
+        }else if(status[3].checked == true){
+          // pillars
+          numbers = [3,4,5];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[4].checked == true){
+          // walls
+          numbers = [3,4,5,6,7];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[5].checked == true){
+          // roofing
+          numbers = [4,5,6,7];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[6].checked == true){
+          // electrical
+          numbers = [6,7,9,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[7].checked == true){
+          // plumbing
+          numbers = [6,7,8,10,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[8].checked == true){
+          // plastering
+          numbers = [6,7,8];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[9].checked == true){
+          // flooring
+          numbers = [9,10,12,13];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[10].checked == true){
+          // carpentry
+          numbers = [10,11,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[11].checked == true){
+          // paintings
+          numbers = [6,10,11,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[12].checked == true){
+          // fixtures
+          numbers = [10,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[13].checked == true){
+          // plastering
+          numbers = [8,11,12,13];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else{
+          for(var i = 0; i < status.length; i++){
+            status[i].disabled = false;
+          }
+        }
+      }
+      // var ctype1 = document.getElementById('constructionType1');
+      // var ctype2 = document.getElementById('constructionType2');
+      // var ctype3 = document.getElementById('constructionType3');
+      // var ctype4 = document.getElementById('constructionType4');
+      // var countinput;
     //   if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
     //     //   both construction type
     //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
@@ -1195,15 +1320,15 @@ function openCity(evt, cityName) {
     //   }else{
     //     $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
     //   }
-      if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
-        $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
-        $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').attr('disabled',false);
-        $('#constructionType3').attr('disabled',false);
-        $('#constructionType4').attr('disabled',false);
-      }else{
-        $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
-      }
+      // if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
+      //   $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+      //   $('#constructionType1').attr('disabled',false);
+      //   $('#constructionType2').attr('disabled',false);
+      //   $('#constructionType3').attr('disabled',false);
+      //   $('#constructionType4').attr('disabled',false);
+      // }else{
+      //   $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+      // }
     }
     function fileUpload(){
       var count = document.getElementById('oApprove').files.length;
