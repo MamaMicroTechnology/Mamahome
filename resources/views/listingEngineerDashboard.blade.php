@@ -9,13 +9,13 @@
 
 <div class="container">
     <div class="row">
-   
+      
       @if($subwards)
       <div class="col-md-3"> 
          You are in {{$subwards->sub_ward_name}}<br><br>
         @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
+        <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br> -->
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
@@ -117,7 +117,12 @@
                 </tr>
           </tbody>
         </table>
-        
+        @else
+        <div style="text-align: center;">
+          <div class="col-md-6 col-md-offset-3">
+            <p style="font-size: 25px;padding-top: 70px;color:gray;">No Ward Is Assigned To You, Please Contact Your Team Leader. </p>
+          </div>
+        </div>
         @endif
        </div>
         <div class="col-md-8"><br><br>

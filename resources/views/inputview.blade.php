@@ -102,7 +102,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             
                                
                                 <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')"  name="quan[]" class="form-control">
+                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"  name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -249,10 +249,15 @@ style="width:40%" />
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 function check(arg){
-    document.getElementById('econtact').style.borderColor = '';
     var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+               document.getElementById(arg).value = "";
+    }
+    document.getElementById('econtact').style.borderColor = '';
     if(input){
+       
         if(isNaN(input)){
+            
             while(isNaN(document.getElementById(arg).value)){
                 var str = document.getElementById(arg).value;
                 str = str.substring(0, str.length - 1);

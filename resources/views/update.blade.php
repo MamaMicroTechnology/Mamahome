@@ -69,11 +69,11 @@
                                    <td id="x">
                                     <div class="col-sm-6">
                                         <label>Longitude:</label>
-                                        <input disabled value="{{ $projectdetails->siteaddress->longitude }}" placeholder="Longitude" class="form-control input-sm"  type="text" name="longitude" value="" id="longitude">
+                                        <input disabled value="{{ $projectdetails->siteaddress != null ? $projectdetails->siteaddress->longitude : ""  }}"  class="form-control input-sm"  type="text" name="longitude" value="" id="longitude">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Latitude:</label>
-                                        <input disabled value="{{ $projectdetails->siteaddress->latitude }}" placeholder="Latitude" class="form-control input-sm"  type="text" name="latitude" value="" id="latitude">
+                                        <input disabled value="{{ $projectdetails->siteaddress != null ? $projectdetails->siteaddress->latitude : " " }}"  class="form-control input-sm"  type="text" name="latitude" value="" id="latitude">
                                     </div>
                                    </td>
                                </tr>
@@ -90,7 +90,11 @@
                                  <tr>
                                    <td>Full Address</td>
                                    <td>:</td>
+                                   @if($projectdetails->siteaddress ==null)
+                                   <td style="color:red;">This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+                                   @else
                                    <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+                                   @endif
                                </tr>
                                <tr>
                                 <?php
