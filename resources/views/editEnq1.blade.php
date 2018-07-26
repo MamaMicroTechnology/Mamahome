@@ -256,7 +256,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 								(Ex : 53 Grade:1500 )</td>
 							</tr>
 							<tr>
-							<td>Brand :</td>
+							<td><label>Brand :</label></td>
 							<td>{{ $enq->brand }}(Note: Only One Brand For One Enquiry)</td>
 							</tr>
 							<tr>
