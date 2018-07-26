@@ -12,11 +12,13 @@
         <form action="orders" method="get">
                 <div class="input-group col-md-3 pull-right">
                     <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
+                    
                     <div class="input-group-btn">
                         <button type="submit" class="btn btn-success">Search</button>
                     </div>
                 </div>
             </form>
+                
             <br><br>
             <table class="table table-responsive table-striped" border="1">
                 <thead>
@@ -58,6 +60,7 @@
                             <form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
                             {{ csrf_field() }}
                             <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+
                     @if($rec->payment_mode != NULL && $rec->payment_mode != "Check" && $rec->order_status == "Order Confirmed")
                               @if($rec->delivery_boy != NULL)
                                  @foreach($users as $user)
@@ -109,7 +112,7 @@
                         <td>
                        
                             @if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
-                                {{ $rec->payment_mode }}
+                                {{ $rec->payment_mode }} 
                             @elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
 
                             <form method="POST" action="{{ URL::to('/') }}/paymentmode">
