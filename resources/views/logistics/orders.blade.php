@@ -100,9 +100,9 @@
                         <td style="text-align:center">
                             @if($rec->delivery_status == "Not Delivered")
 								<!-- Trigger the modal with a button -->
-								 @if($rec->paymentStatus == "Payment Received" )
+								
 							<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}">Deliver</button>
-                             @endif
+                            
 							<!-- Modal -->
 							
 							<form action="{{ URL::to('/') }}/saveDeliveryDetails" method="post" enctype="multipart/form-data">
