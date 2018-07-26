@@ -1,7 +1,7 @@
 
-@extends('layouts.logisticslayout')
-@section('title','Logistics Orders')
+@extends('layouts.app')
 @section('content')
+
 <div class="col-md-12 col-sm-12">
 	<div class="panel panel-primary" style="overflow-x: scroll;">
 		<div class="panel-heading text-center">
