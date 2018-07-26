@@ -44,7 +44,7 @@
                             <td>{{ $details->project_name }}</td>
                         </tr>
                         <tr>
-                            <td><b>Road Name/Road No. : <b></td>
+                            <td><b>Road Name/Road No./Landmark : <b></td>
                             <td>{{ $details->road_name }}</td>
                         </tr>
                         <tr>
@@ -94,8 +94,13 @@
                             <td>{{ $subward }}</td>
                         </tr>
                         <tr>
+                            @if($details->municipality_approval == "N/A")
+                            <td><b>Govt. Approvals(Municipal, BBMP, etc) : </b></td>
+                            <td>None</td>
+                            @else
                             <td><b>Govt. Approvals(Municipal, BBMP, etc) : </b></td>
                             <td><img height="350" width="350"  src="{{ URL::to('/') }}/public/projectImages/{{ $details->municipality_approval }}" class="img img-thumbnail"></td>
+                            @endif
                         </tr>
                          <tr>
                             <td><b>Project Status : </b></td>
@@ -179,7 +184,7 @@
                     <tbody>
                         @foreach($roomtypes as $roomtype)
                         <tr>
-                            <td>Floor {{ $roomtype->floor_no }}</td>
+                            <td>{{ $roomtype->floor_no }}</td>
                             <td>{{ $roomtype->room_type }}</td>
                             <td>{{ $roomtype->no_of_rooms }}</td>
                         </tr>

@@ -78,7 +78,7 @@
                                    </td>
                                </tr>
                                <tr>
-                                   <td>Road Name / Road No.</td>
+                                   <td>Road Name/Road No./Landmark</td>
                                    <td>:</td>
                                    <td><input id="road" value="{{ $projectdetails->road_name }}"  type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName"></td>
                                </tr>
@@ -173,7 +173,8 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of Contract ? </td>
+                                 <td>Type Of &nbsp; &nbsp;
+                                  Contract ? </td>
                                   <td>:</td>
                                   <td>
                                    <select class="form-control" name="contract" id="contract" required>

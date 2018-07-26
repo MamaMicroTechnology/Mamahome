@@ -476,7 +476,7 @@ class mamaController extends Controller
         }
 
         $bType = count($request->budgetType);
-        if(count($request->budgetType != 0)){
+        if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
         $statusCount = count($request->status);
@@ -628,6 +628,8 @@ class mamaController extends Controller
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
         $no = $request->prPhone;
+        $pid = $projectdetails->id;
+       
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
@@ -676,7 +678,7 @@ class mamaController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
-        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no."'>Click Here</a><br>To View Approximate Material Calculation";
+        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('Success',$text);
     }
     public function updateProject($id, Request $request)

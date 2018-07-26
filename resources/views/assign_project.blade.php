@@ -23,7 +23,7 @@
                             <th style="width:15%">Previously Assigned Sub Ward </th>
                             <th style="width:15%">Previously Assigned Date </th>
                             <th style="width:15%">Previously Assigned Stage </th>
-                            <th style="width:15%">COUNT </th>
+                            <th style="width:15%">Count Of Projects</th>
                            <th style="width:15%">Action </th>
                            <th></th>
 

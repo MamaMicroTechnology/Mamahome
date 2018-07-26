@@ -9,6 +9,9 @@
 		<div class="panel panel-default" style="border-color: #f4811f">
 			<div class="panel-heading" style="background-color: #f4811f;text-align:center">
 				<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+				<br><br>
+<p>(Add Only One Category With One Enquiry,<br>
+Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 			</div>
 			<div class="panel-body">
 				<form method="POST" action="{{URL::to('/')}}/editinputdata">
@@ -253,7 +256,7 @@
 							
 							<tr>
 								<td><label>Total Quantity : </label></td>
-								<td><input type="number" value="{{ $enq->total_quantity }}" name="totalquantity" id="tquantity" title="Three letter country code" class="form-control" /></td>
+								<td><input type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" /></td>
 
 							</tr>
 							
@@ -395,5 +398,14 @@
 				myform.equantity.focus();
 		     }
 	}
+	function checkthis(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+               document.getElementById(arg).value = "";
+    }
+
+}
+
+
 </script>
 @endsection

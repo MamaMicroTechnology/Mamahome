@@ -106,6 +106,8 @@ Route::post('/{id}/converterassignWards','mamaController@assignWards');
 Route::get('/scenquirysheet','HomeController@enquirysheet');
 Route::get('/sctraining','HomeController@sctraining');
 Route::get('/enquirywise','HomeController@enqwise');
+Route::get('/storedetails','HomeController@storedetails');
+
 
 
 //marketing

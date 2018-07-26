@@ -728,7 +728,7 @@ break;
         }
 
         //dd("dsfhsdj");
-        if( count($cement[$i] || $plumbing[$i] ||  $doors[$i] || $flooring[$i] || $sand[$i] || $aggregates[$i] || $blocks[$i] || $electrical[$i] || $bathroom[$i] || $wood[$i] || $paints[$i] || $wardk[$i] || $rails[$i] || $glass[$i] ) > $i){
+        if( ($cement[$i] || $plumbing[$i] ||  $doors[$i] || $flooring[$i] || $sand[$i] || $aggregates[$i] || $blocks[$i] || $electrical[$i] || $bathroom[$i] || $wood[$i] || $paints[$i] || $wardk[$i] || $rails[$i] || $glass[$i] ) > $i){
          
 
          $totalPlumbing += $plumbing[$i];
@@ -859,8 +859,6 @@ break;
                 <th>".  $total ."</th>
                   
                    </tr>";
-
-
-      return view('detailProjects',['projects'=>$projects,'table'=>$table,'total'=>$total]);
+      return view('detailProjects',['projects'=>$projects->toArray(),'table'=>$table,'total'=>$total]);
     }
 }

@@ -48,7 +48,7 @@
                                </tr>
                               
                                <tr>
-                                   <td>Road Name/Road No.</td>
+                                   <td>Road Name/Road No./Landmark</td>
                                    <td>:</td>
                                    <td><input id="road" required type="text" placeholder="Road Name / Road No." class="form-control input-sm" name="rName" value="{{ old('rName') }}"></td>
                                </tr>
@@ -81,7 +81,7 @@
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                       <label ><input required value="No" id="rmc2" type="radio" name="rmcinterest"><span>&nbsp;</span>No</label> 
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input required value="None" id="rmc3" type="radio" name="rmcinterest"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" value="None" id="rmc3" type="radio" name="rmcinterest"><span>&nbsp;</span>None</label>
                                  </td>
                                </tr>
                                <tr>
@@ -95,7 +95,7 @@
                                       <label><input required value="No" id="loan2" type="radio" name="loaninterest"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
                                 
-                                      <label><input required value="None" id="loan3" type="radio" name="loaninterest"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" required value="None" id="loan3" type="radio" name="loaninterest"><span>&nbsp;</span>None</label>
                                    
                                  </td>
                                </tr>
@@ -110,7 +110,7 @@
                                       <label><input required value="No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                    
-                                      <label><input required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
@@ -126,7 +126,7 @@
                                       <label><input required value="No" id="loan2" type="radio" name="automation"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
                                 
-                                      <label><input required value="None" id="loan3" type="radio" name="automation"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" required value="None" id="loan3" type="radio" name="automation"><span>&nbsp;</span>None</label>
                                    
                                  </td>
                                </tr>
@@ -141,7 +141,7 @@
                                       <label><input required value="No" id="premium2" type="radio" name="premium"><span>&nbsp;</span>No</label>
                                        <span>&nbsp;&nbsp;&nbsp;  </span>
                                 
-                                      <label><input required value="None" id="premium3" type="radio" name="premium"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" required value="None" id="premium3" type="radio" name="premium"><span>&nbsp;</span>None</label>
                                    
                                  </td>
                                </tr>
@@ -892,13 +892,17 @@ function openCity(evt, cityName) {
             window.alert("Please Select Contract Type");
           }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+                alert(1);
           }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+                 alert(2);
           }else{
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                 alert(3);
           }
 
           if(countinput == 0){
+           
               window.alert("Select Atleast One Project Status");
           
           } else if(document.getElementById("basement").value == ""){

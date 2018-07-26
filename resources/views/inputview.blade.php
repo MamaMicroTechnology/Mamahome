@@ -9,6 +9,9 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 <div class="panel panel-default" style="border-color: #f4811f">
 <div class="panel-heading" style="background-color: #f4811f;text-align:center">
 <b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+<br><br>
+<p>(Add Only One Category With One Enquiry,<br>
+Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 </div>
 <div class="panel-body">
 <form method="POST" name="myform" action="{{URL::to('/')}}/inputdata">
@@ -219,6 +222,11 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     </td>
 </tr>
 <tr>
+<tr>
+            <td><label>Total Quantity : </label></td>
+            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity" title="Three letter country code" class="form-control" /></td>
+
+</tr>
 <td><label>Remarks :</label></td>
 <td>
 <textarea style="resize: none;" rows="4" cols="40" name="eremarks"
@@ -426,7 +434,14 @@ for (i = 0; i < acc.length; i++) {
         }
     });
 }
+function checkthis(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+        
+               document.getElementById(arg).value = "";
+    }
 
+}
 
 
 
