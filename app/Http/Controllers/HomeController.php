@@ -5833,8 +5833,8 @@ public function display(request $request){
         return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
     }
     public function storedetails(Request $request){
-            $id = $request->id;
-           $value= $request->value;
+         $id = $request->id;
+         $value= $request->value;
           $x = ProjectDetails::where('project_id',$id)->update([
                 'detailed_mcal' => $request->value
             ]);
@@ -5842,8 +5842,10 @@ public function display(request $request){
         {
             return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
         }
-        else
+        else{
             return back()->with('success','Thank You :)');
+        }
+    }
     public function getEditProjectionPlanner()
     {
         $dates = Projection::first();
