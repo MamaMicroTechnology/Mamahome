@@ -95,7 +95,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 								<?php 
 									$qnt = explode(' :',$sub[$i]);
 								?>
-								<input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$sub[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
+								<input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$sub[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -288,8 +288,11 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 	function check(arg){
+	 var input = document.getElementById(arg).value;
+	    if(isNaN(input)){
+		       document.getElementById(arg).value = "";
+	    }
 	    document.getElementById('econtact').style.borderColor = '';
-	    var input = document.getElementById(arg).value;
 	    if(input){
 		    if(isNaN(input)){
 		      while(isNaN(document.getElementById(arg).value)){
