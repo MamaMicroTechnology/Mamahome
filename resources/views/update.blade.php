@@ -845,16 +845,12 @@ function check(arg){
         sum1          = length*breadth;
         Size    += sum1;
         var total = sum * sum1;
-       alert(total);
+      
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
         else
           document.getElementById("totalsize").innerHTML = '';
-         if(document.getElementById("pSize").value != null){
-           document.getElementById("pSize").value = total;
-           document.getElementById("pSizeTag").innerHTML = "This Is Recommended Size. You Can Change If Required!!";
-         }else
-          document.getElementById("pSize").value = '';
+        
       }
     }
     return false;

@@ -78,6 +78,8 @@ use App\CapitalExpenditure;
 use App\OperationalExpenditure;
 use App\NumberOfZones;
 use App\Pricing;
+use App\Manufacturer;
+use App\ManufacturerProduce;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -242,11 +244,8 @@ class HomeController extends Controller
                                                 'billadress'=>$request->billadress,
                                                 'ship' =>$shipadress
                                         ]);
-        // $y = DB::table('quantity')->insert(['req_id' =>$request->requirements->id,
-        //                                     'project_id'=>$request->selectprojects
-                                           
+        
 
-        //         ]);
         if($x)
         {
             return back()->with('success','Enquiry Raised Successfully !!!');
@@ -5845,5 +5844,19 @@ public function display(request $request){
         }
         else
             return back()->with('success','Thank You :)');
+    public function getEditProjectionPlanner()
+    {
+        $dates = Projection::first();
+        $projections = NumberOfZones::all()->toArray();
+        return view('projection.extension',['dates'=>$dates,'projections'=>$projections]);
+    }
+    public function addManufacturer()
+    {
+        return view('addManufacturer');
+    }
+    public function viewManufacturer()
+    {
+        $manufacturers = Manufacturer::all();
+        return view('viewManufacturer',['manufacturers'=>$manufacturers]);
     }
 }
