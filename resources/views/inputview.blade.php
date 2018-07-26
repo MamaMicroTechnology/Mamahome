@@ -256,7 +256,9 @@ function check(arg){
     document.getElementById('econtact').style.borderColor = '';
    
     if(input){
+       
         if(isNaN(input)){
+            
             while(isNaN(document.getElementById(arg).value)){
                 var str = document.getElementById(arg).value;
                 str = str.substring(0, str.length - 1);

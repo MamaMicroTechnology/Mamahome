@@ -5584,7 +5584,37 @@ public function display(request $request){
         $today = date('Y-m-d');
         $total = "";
         $site = SiteAddress::all();
-        if(!$request->subward && $request->ward){
+        $names = user::get();
+        $status =  $request->status;
+        if($status != null){
+            $projectsat = new Collection;
+            for($i = 0; $i<count($status); $i++)
+            {
+                $project = ProjectDetails::where('project_status' ,'LIKE', "%".$status[$i]."%")->pluck('project_id');
+                $projectsat = $projectsat->merge($project);
+            }
+
+        }
+        if(!$request->subward && $request->ward && $request->status){
+            $from="";
+            $to="";
+            if($request->ward == "All"){
+                $subwards = SubWard::pluck('id');
+            }else{
+                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
+            }
+            $projectid = ProjectDetails::where( 'updated_at', '<=', $previous)
+                    ->whereIn('sub_ward_id',$subwards)
+                    ->whereIn('project_id',$projectsat)
+                    ->paginate('20');
+
+            $totalproject =ProjectDetails::where( 'updated_at', '<=', $previous)
+                    ->whereIn('sub_ward_id',$subwards)
+                    ->whereIn('project_id',$projectsat)
+                    ->count();
+
+        }
+        else if(!$request->subward && $request->ward){
             $from="";
             $to="";
             if($request->ward == "All"){
@@ -5595,10 +5625,24 @@ public function display(request $request){
             $projectid = ProjectDetails::where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)
                     ->paginate('20');
+
             $totalproject =ProjectDetails::where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)->count();
            
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+        }
+        else if($request->subward && $request->ward && $request->status){
+         $from=$request->from;
+        $to=$request->to;
+
+        $projectid = ProjectDetails::whereIn('project_id',$projectsat)
+                        ->where('sub_ward_id',$request->subward)
+                        ->where('updated_at','<=',$previous)
+                        ->paginate('20');
+        $totalproject = ProjectDetails::where('updated_at','<=',$previous)
+                        ->where('sub_ward_id',$request->subward)
+                        ->whereIn('project_id',$projectsat)
+                        ->count();
         }
         else if($request->subward && $request->ward){
             $from=$request->from;
@@ -5610,6 +5654,7 @@ public function display(request $request){
                             ->where('sub_ward_id',$request->subward)->count();
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }
+
         else{
                 $projectid = new Collection;
                 $total = "";
@@ -5617,8 +5662,9 @@ public function display(request $request){
                 $to = "";
                 $totalproject = "";
                 $site = "";
+                
         }
-        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today]);
+        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names]);
     }
 
     public function getDaily()
@@ -5825,7 +5871,20 @@ public function display(request $request){
         $categories = Projection::all();
         return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
     }
-    
+    public function storedetails(Request $request){
+         $id = $request->id;
+         $value= $request->value;
+          $x = ProjectDetails::where('project_id',$id)->update([
+                'detailed_mcal' => $request->value
+            ]);
+         if($x && $value== "yes")
+        {
+            return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
+        }
+        else{
+            return back()->with('success','Thank You :)');
+        }
+    }
     public function getEditProjectionPlanner()
     {
         $dates = Projection::first();
@@ -5840,19 +5899,5 @@ public function display(request $request){
     {
         $manufacturers = Manufacturer::all();
         return view('viewManufacturer',['manufacturers'=>$manufacturers]);
-    }
-    public function storedetails(Request $request){
-         $id = $request->id;
-         $value= $request->value;
-          $x = ProjectDetails::where('project_id',$id)->update([
-                'detailed_mcal' => $request->value
-            ]);
-         if($x && $value== "yes")
-        {
-            return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
-        }
-        else{
-            return back()->with('success','Thank You :)');
-        }
     }
 }
