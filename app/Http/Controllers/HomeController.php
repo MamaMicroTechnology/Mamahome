@@ -5832,20 +5832,7 @@ public function display(request $request){
         $categories = Projection::all();
         return view('projection.yearly',['projection'=>$projection,'totalTarget'=>$totalTarget,'totalTP'=>$totalTP,'categories'=>$categories]);
     }
-    public function storedetails(Request $request){
-         $id = $request->id;
-         $value= $request->value;
-          $x = ProjectDetails::where('project_id',$id)->update([
-                'detailed_mcal' => $request->value
-            ]);
-         if($x && $value== "yes")
-        {
-            return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
-        }
-        else{
-            return back()->with('success','Thank You :)');
-        }
-    }
+    
     public function getEditProjectionPlanner()
     {
         $dates = Projection::first();
@@ -5860,5 +5847,19 @@ public function display(request $request){
     {
         $manufacturers = Manufacturer::all();
         return view('viewManufacturer',['manufacturers'=>$manufacturers]);
+    }
+    public function storedetails(Request $request){
+         $id = $request->id;
+         $value= $request->value;
+          $x = ProjectDetails::where('project_id',$id)->update([
+                'detailed_mcal' => $request->value
+            ]);
+         if($x && $value== "yes")
+        {
+            return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
+        }
+        else{
+            return back()->with('success','Thank You :)');
+        }
     }
 }
