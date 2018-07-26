@@ -97,6 +97,7 @@ class logisticsController extends Controller
                 'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','payment.payment_status as paymentStatus','payment.signature','payment.signature1','payment.amount','payment.id as paymentId','payment.advance_amount','deposit.orderId as depo_order_id')
                 ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
+        
         $countview = Order::where('delivery_boy',Auth::user()->id)->count();
         $payment = Payment::all();
         $deposit = Deposit::all();
