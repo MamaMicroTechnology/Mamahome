@@ -100,7 +100,8 @@
 							<th style="text-align: center">Enquiry Date</th>
 							<th style="text-align: center">Contact</th>
 							<th style="text-align: center">Product</th>
-							<th style="text-align: center">Quantity</th>
+							<th style="text-align: center">Old Quantity</th>
+							<th style="text-align: center">Enquiry Quantity</th>
 							<th style="text-align: center">Total Quantity</th>
 							<th style="text-align: center">Initiator</th>
 							<th style="text-align: center">Converted by</th>
@@ -163,6 +164,7 @@
 								{{ $quantity[$i] }}<br>
 								@endfor
 							</td>
+							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
