@@ -251,12 +251,16 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 							</tr>
 							<tr>
 								<td><label>Enquiry Quantity : </label></td>
-								<td><input type="text"  name="enquiryquantity" id="tquantity" class="form-control" /></td>
+								<td><input type="text" value="{{ $enq->enquiry_quantity !=null ? $enq->enquiry_qantity : $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" />
+								Before Entering the Enquiry Quantity Make Sure You Have Selected The Proper Sub-Category And Brand From Above Selection.<br>
+								(Ex : 53 Grade:1500 )</td>
 							</tr>
 							
 							<tr>
 								<td><label>Total Quantity : </label></td>
-								<td><input type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" /></td>
+								<td>{{ $enq->brand }}<input type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
+								
+								</td>
 
 							</tr>
 							
