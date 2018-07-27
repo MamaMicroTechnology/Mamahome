@@ -157,8 +157,26 @@
         </table>
         </div>
     </div> -->
-   
+ <!-- Modal -->
      
+</div>
+<div id="question" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Please Choose</h4>
+      </div>
+      <div class="modal-body">
+        <p>What kind of manufacturer are you adding?</p><br>
+        <a class="btn btn-success" href="{{ URL::to('/')}}/addManufacturer?type=blocks">Blocks</a>
+        <a class="btn btn-warning pull-right" href="{{ URL::to('/')}}/addManufacturer?type=rmc">&nbsp;RMC&nbsp;&nbsp;</a><br><br>
+      </div>
+    </div>
+
+  </div>
 </div>
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>
 @if(count($projects) == 0)

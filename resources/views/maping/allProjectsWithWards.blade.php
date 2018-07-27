@@ -33,12 +33,15 @@
            <option>---select---</option> 
             <option {{ isset($_GET['quality']) ? $_GET['quality'] == "Genuine" ? 'selected' : '' : ''}} value="Genuine">Genuine</option>
             <option {{ isset($_GET['quality']) ? $_GET['quality'] == "Fake" ? 'selected' : '' : ''}} value="Fake">Fake</option>
+            <option {{ isset($_GET['quality']) ? $_GET['quality'] == "Unverified" ? 'selected' : '' : ''}} value="Unverified">Unverified</option>
         </select>
         <br>
         <input type="submit" value="Fetch" class="btn btn-primary form-control">
         <br><br>
         @if(isset($_GET['wards']))
-            Total Projects : {{ count($projects) }}
+            Total Projects : {{ count($projects) }}<br>
+            <br>
+            <button onclick="viewZoneMaps()" type="button" class="btn btn-success form-control">View All Wards Map</button>
         @endif
     </div>
 </form>
@@ -126,6 +129,20 @@
             });
         }
 
+        if(quality[i] == "Unverified"){
+            var icon = {
+                url: "https://cdn2.iconfinder.com/data/icons/IconsLandVistaMapMarkersIconsDemo/256/MapMarker_Flag_Right_Chartreuse.png", // url
+                scaledSize: new google.maps.Size(50, 50), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
+            marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map,
+            icon: icon
+            });
+        }
+
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
             infowindow.setContent(locations[i][0]);
@@ -145,6 +162,40 @@
     }
     </script>
     @endif
+
+    <script>
+        function viewZoneMaps(){
+            map = new GMaps({
+                el: '#map',
+                lat: 12.9716,
+                lng: 77.5946,
+            });
+            @foreach($zoneMap as $zone)
+                latlng = "{{ $zone-> lat }}";
+                places = latlng.split(",");
+                path = [];
+                newpath = [];
+                latt = 0;
+                lngg = 0;
+                // for marking maps
+                for(var i=0;i<places.length;i+=2){
+                    newpath.push([parseFloat(places[i]), parseFloat(places[i+1])]);
+                    latt += parseFloat(places[i]);
+                    lngg += parseFloat(places[i+1]);
+                }
+                latt = latt/newpath.length;
+                lngg = lngg/newpath.length;
+                var line = parseInt('{{ $zone->color }}') + 12345;
+                map.drawPolygon({
+                    paths: newpath,
+                    strokeColor: '#'+line,
+                    strokeOpacity: 0.6,
+                    fillColor: '#{{ $zone->color }}',
+                    strokeWeight: 2
+                });
+            @endforeach
+        };
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 </body>
 </html>
