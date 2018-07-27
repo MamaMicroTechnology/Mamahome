@@ -727,7 +727,7 @@ break;
             break;
         }
 
-        //dd("dsfhsdj");
+     
         if( ($cement[$i] || $plumbing[$i] ||  $doors[$i] || $flooring[$i] || $sand[$i] || $aggregates[$i] || $blocks[$i] || $electrical[$i] || $bathroom[$i] || $wood[$i] || $paints[$i] || $wardk[$i] || $rails[$i] || $glass[$i] ) > $i){
          
 

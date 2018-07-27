@@ -2657,8 +2657,6 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $assigncount->count = $scount;
             $assigncount->save();
         }
-            
-    
         $orders = Order::all();
        return view('salesengineer',[
                 'projects'=>$projects,
@@ -3303,10 +3301,17 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $username = User::where('name',Auth::user()->name)->pluck('name')->first();
            $call  =  ProjectDetails::where('project_id',$request->id)->pluck('updated_at')->first();
+           $today = date('Y-m-d h:i:s'); 
            
-    DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
+    // DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$today,$username]);
        
-        
+        $list = New History;
+        $list->user_id=$user_id;
+        $list->project_id= $project_id;
+        $list->called_Time= $today;
+        $list->username=$username;
+        $list->save();
+
         if($check->confirmed == null || $check->confirmed == "true" || $check->confirmed == "false"){
             ProjectDetails::where('project_id',$request->id)->update(['confirmed'=>1]);
         }else{
@@ -5900,4 +5905,19 @@ public function display(request $request){
         $manufacturers = Manufacturer::all();
         return view('viewManufacturer',['manufacturers'=>$manufacturers]);
     }
+    public function lebrands(){
+
+        return view('lebrands');
+    }
+    public function storequery(Request $request){
+
+       
+        $id = History::where('project_id',$request->id)->pluck('id')->last();
+        History::where('id',$id)->update(['question'=>$request->qstn,
+                                            'remarks'=>$request->remarks
+            ]);
+        
+         return redirect()->back();
+    }
+
 }

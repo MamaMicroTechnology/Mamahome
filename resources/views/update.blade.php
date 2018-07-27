@@ -693,30 +693,6 @@
                                </tr>
                            </table>
                       </div><br>
-                      <tr id="quepanelright-{{$projectdetails->project_id}}">
-                                    <td><label>Questions</label></td><br>
-                                    <td>
-                                        <select style="width: 100%" class="form-control" id="select-{{$projectdetails->project_id}}" name="qstn">-->
-                                    <option disabled selected>--- Select ---</option>
-                                    <option {{ $projectdetails->with_cont == 'NOT INTERESTED'? 'selected':'' }} value="NOT INTERESTED">NOT INTERESTED</option>
-                                    <option {{ $projectdetails->with_cont == 'BUSY'? 'selected':'' }} value="BUSY">BUSY</option>
-                                    <option {{ $projectdetails->with_cont == 'WRONG NO'? 'selected':'' }} value="WRONG NO">WRONG NO</option>
-                                    <option {{ $projectdetails->with_cont == 'PROJECT CLOSED'? 'selected':'' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
-                                    <option {{ $projectdetails->with_cont == 'CALL BACK LATER'? 'selected':'' }} value="CALL BACK LATER">CALL BACK LATER</option>
-                                    <option {{ $projectdetails->with_cont == 'THEY WILL CALL BACK WHEN REQUIRED'? 'selected':'' }} value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
-                                    <option {{ $projectdetails->with_cont == 'CALL NOT ANSWERED'? 'selected':'' }} value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
-                                    <option {{ $projectdetails->with_cont == 'FINISHING'? 'selected':'' }} value="FINISHING">FINISHING</option>
-                                    <option {{ $projectdetails->with_cont == 'SWITCHED OFF'? 'selected':'' }} value="SWITCHED OFF">SWITCHED OFF</option>
-                                    <option {{ $projectdetails->with_cont == 'SAMPLE REQUEST'? 'selected':'' }} value="SAMPLE REQUEST">SAMPLE REQUEST</option>
-                                    <option {{ $projectdetails->with_cont == 'MATERIAL QUOTATION'? 'selected':'' }} value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
-                                    <option {{ $projectdetails->with_cont == 'WILL FOLLOW UP AFTER DISCUSSION WITH OWNER'? 'selected':'' }} value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
-                                    <option {{ $projectdetails->with_cont == 'DUPLICATE NUMBER'? 'selected':'' }} value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
-                                    <option {{ $projectdetails->with_cont == 'NOT REACHABLE'? 'selected':'' }} value="NOT REACHABLE">NOT REACHABLE</option>
-                                    <option {{ $projectdetails->with_cont == 'THEY HAVE REGULAR SUPPLIERS'? 'selected':'' }} value="THEY HAVE REGULAR SUPPLIERS">THEY HAVE REGULAR SUPPLIERS</option>
-                                    <option {{ $projectdetails->with_cont == 'CREDIT FACILITY'? 'selected':'' }} value="CREDIT FACILITY">CREDIT FACILITY</option>
-                                  </select>
-                                    </td>
-                                    </tr>
                       <table class="table">
                         <tr>
                             <td><b>Quality</b></td>

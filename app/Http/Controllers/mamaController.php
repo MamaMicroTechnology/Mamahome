@@ -877,7 +877,7 @@ class mamaController extends Controller
             'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
-            'with_cont'=>$request->qstn,
+            // 'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'automation'=> $request->automation,
              'plotsize' => $size,

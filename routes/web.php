@@ -107,6 +107,9 @@ Route::get('/scenquirysheet','HomeController@enquirysheet');
 Route::get('/sctraining','HomeController@sctraining');
 Route::get('/enquirywise','HomeController@enqwise');
 Route::get('/storedetails','HomeController@storedetails');
+Route::get('/lebrands','HomeController@lebrands');
+Route::get('/storequery','HomeController@storequery');
+
 
 
 
