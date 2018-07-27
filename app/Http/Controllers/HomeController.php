@@ -311,14 +311,14 @@ class HomeController extends Controller
         $requestedEnquiry = array();
         $i = 0;
 
-        $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")->get();
+        // $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")->get();
 
-        foreach($enquiries as $enquiry){
-            array_push($requestedEnquiry,[$enquiry,$enquiry->project->project_name]);
-        }
-        return Response::Json($requestedEnquiry);
+        // foreach($enquiries as $enquiry){
+        //     array_push($requestedEnquiry,[$enquiry,$enquiry->project->project_name]);
+        // }
+        // return Response::Json($requestedEnquiry);
 
-        return $enquiries;
+        // return $enquiries;
         if($request->status && !$request->category){
             if($request->status != "all"){
                 
