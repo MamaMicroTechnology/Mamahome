@@ -15,10 +15,16 @@
                             <td>
                                 <select class="form-control" id="selectle">
                                     <option disabled selected value="">(-- SELECT LE --)</option>
+                                    @if(Auth::user()->group_id != 22)
                                     <option value="ALL">All Listing Engineers</option>
                                     @foreach($le as $list)
                                     <option value="{{$list->id}}">{{$list->name}}</option>
                                     @endforeach
+                                    @else
+                                    @foreach($tlUsers as $list)
+                                    <option value="{{$list->id}}">{{$list->name}}</option>
+                                    @endforeach
+                                    @endif
                                 </select>
                             </td>
                         </tr>
@@ -59,6 +65,7 @@
             <div class="panel-body">
                 <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
                 <table class="table table-striped" border="1">
+                  @if(Auth::user()->group_id != 22)
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -66,6 +73,15 @@
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    @else
+                     @foreach($tlUsers as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                    @endif
                 </table>
             </div>
         </div>
@@ -76,6 +92,7 @@
             <div class="panel-body">
                
                 <table class="table table-striped" border="1">
+                @if(Auth::user()->group_id != 22)
                     @foreach($accusers as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -83,6 +100,15 @@
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    @else
+                    @foreach($tlUsers1 as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                    @endif
                 </table>
             </div>
         </div>

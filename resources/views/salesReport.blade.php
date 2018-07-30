@@ -17,14 +17,20 @@
 	                        <tr>
 	                            <td>Select Sales Employee</td>
 	                        </tr>
-	                        <tr>
-	                            <td>
-	                                <select name="se" class="form-control" id="selectle">
-	                                    <option disabled selected value="">(-- SELECT SE --)</option>
-	                                    <option value="ALL">All Sales Engineers</option>
-	                                    @foreach($users as $list)
-	                                    <option {{ isset($_GET['se']) ? $_GET['se'] == $list->employeeId ? 'selected' : '' : ''}}  value="{{$list->employeeId}}">{{$list->name}}</option>
-	                                    @endforeach
+                            <tr>
+                                <td>
+                                    <select name="se" class="form-control" id="selectle">
+                                        <option disabled selected value="">(-- SELECT SE --)</option>
+                                        <option value="ALL">All Sales Engineers</option>
+                                        @if(Auth::user()->group_id != 22)
+                                            @foreach($users as $list)
+                                            <option {{ isset($_GET['se']) ? $_GET['se'] == $list->employeeId ? 'selected' : '' : ''}}  value="{{$list->employeeId}}">{{$list->name}}</option>
+                                            @endforeach
+                                        @else
+                                            @foreach($tlUsers as $user)
+                                                <option>{{ $user->name }}</option>
+    	                                    @endforeach
+                                        @endif 
 	                                </select>
 	                            </td>
 	                        </tr>
@@ -68,7 +74,8 @@
                 		<th>Genuine</th>
                 		<th>Initiated</th>
                 	</tr>
-                    @foreach($users as $user)
+                       @if(Auth::user()->group_id != 22)
+                    @foreach($tlUsers as $user)
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
@@ -78,6 +85,18 @@
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['initiated'] }}</td>
                     </tr>
                     @endforeach
+                    @else
+                     @foreach($tluser as $user)
+                    <tr>
+                        <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['fake'] }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['genuine'] }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['initiated'] }}</td>
+                    </tr>
+                    @endforeach
+                    @endif
                 </table>
             </div>
         </div>

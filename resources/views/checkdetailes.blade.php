@@ -17,8 +17,9 @@
                         <th style="text-align:center">Cheq Id</th>
     				    <th style="text-align:center">Project Id</th>
                         <th style="text-align:center">Order ID</th>
-    					<th style="text-align:center">Check Number</th>
+    					<th style="text-align:center">Cheque Number</th>
                         <th style="text-align:center">Amount</th>
+                        <th style="text-align:center">cheque Image</th>
                         <th style="text-align:center">Check Date</th>
     					<th style="text-align:center">Cheq status</th>
                         
@@ -38,19 +39,51 @@
 					        <td style="text-align:center">{{$view->checkno}}</td>
                             <td style="text-align:center">{{$view->amount}}</td>
                             <td style="text-align:center">{{$view->date}}</td>
-                           <td> <form action="{{URL::to('/')}}/clearcheck" method="post" enctype="multipart/form-data">
+                            <td style="text-align:center">
+                                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{{$view->id }}">
+                                    Cheque Image
+                                  </button>
+                            </td>   
+  
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal{{ $view->id }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+    <div class="modal-header" style="background-color:#337ab7;padding:1px;">
+          <h4 class="modal-title" style="color:white;">Cheque Image</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         <img src="{{ URL::to('/')}}/public/chequeimages/{{ $view->image }}" style="width: 500px;height:500px">
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div><td>
+<form action="{{URL::to('/')}}/clearcheck" method="post" enctype="multipart/form-data">
                                    {{ csrf_field() }}
                                   <input type="hidden" name="id" value="{{ $view->orderId }}">
-                                <select class="form-control" name="satus" style="width:50%;">
+                                <select class="form-control" name="satus" style="width:50%;" >
 
                                   <option value="">----Select----</option>
-                                 
-                                  <option value="Cheq Clear">Cheq Clear</option>
-                                  <option value="Cheq processing">Cheq Processing</option>
+                                  
+                                  <option  {{ $view->orders->payment_mode == "Cheq Clear" ? 'selected' : '' }}  value="Cheq Clear">Cheq Clear</option>
+                                  <option  {{ $view->orders->payment_mode == "Cheq processing" ? 'selected' : '' }} value="Cheq processing">Cheq Processing</option>
 
                                 </select>
                                <button style="margin-top:-55px;margin-left:60%;" class="btn btn-success btn-sm" type="submit" value="submit" >submit</button>
-
                             </form>
                             </td>
 					      </tr>

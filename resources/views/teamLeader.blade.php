@@ -9,6 +9,7 @@
 <h2><center>WELCOME TO TEAM LEADER 
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
+<h2>Assigned Ward:</h2>
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
     </SMALL>

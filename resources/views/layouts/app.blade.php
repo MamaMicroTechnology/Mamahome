@@ -527,18 +527,18 @@ div#calendar{
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
 
 </div>
-@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
+@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
-     
-    <!-- <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> --> 
+      <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+   
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
+
         <div id="sales" class="collapse">
-              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
+              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
               <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
@@ -557,6 +557,8 @@ div#calendar{
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
 </div>  
+
+
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>

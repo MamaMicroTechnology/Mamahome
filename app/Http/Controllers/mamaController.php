@@ -1877,11 +1877,7 @@ class mamaController extends Controller
     }
   public function clearcheck(Request $request)
     {
-            
-          
-       
-       
-      Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
+       Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
         return back();
     }
 
@@ -1889,7 +1885,7 @@ class mamaController extends Controller
     public function check(request $request){
         
         $empimage = time().'.'.request()->image->getClientOriginalExtension();
-        $request->image->move(public_path('empsignature'),$empimage);
+        $request->image->move(public_path('chequeimages'),$empimage);
 
      $check = new Check;
      $check->project_id=$request->project_id;
@@ -1908,7 +1904,8 @@ class mamaController extends Controller
 public function checkdetailes(request $request){
     $details = Check::all();
     $countrec = count($details);
+    $check = Order::all();
 
-     return view('checkdetailes',['details' => $details,'countrec'=>$countrec]);
+     return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
 }
 }

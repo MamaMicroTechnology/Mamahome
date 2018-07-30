@@ -573,8 +573,8 @@ class logisticsController extends Controller
 
 
 
-            $signatureName = Auth::user()->id."signature".time().'.'.request()->image->getClientOriginalExtension();
-             $request->image->move(public_path('signatures'),$signatureName);
+            $signatureName = Auth::user()->id."deposit".time().'.'.request()->image->getClientOriginalExtension();
+             $request->image->move(public_path('lcpayment'),$signatureName);
            
              $pays = Deposit::where('orderId',$request->orderid)->first();
 
@@ -606,6 +606,8 @@ class logisticsController extends Controller
                return back();
            }
  public function close(request $request){
+
+             //dd($request->orderid);            
 
          Order::where('id',$request->orderid)->update(['payment_status'=>"Closed"]);
             return back();
