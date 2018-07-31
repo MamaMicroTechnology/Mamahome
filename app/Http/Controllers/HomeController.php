@@ -1721,9 +1721,12 @@ class HomeController extends Controller
                         ->leftjoin('departments','users.department_id','departments.id')
                         ->select('users.name','users.employeeId','login_times.*','departments.id')
                         ->get();
+         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
 
-                     
-         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users]);
+
+         $x = Ward::where('id',$tl)->pluck('ward_name')->first();
+                  
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x]);
     }
     public function assignListSlots(){          
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
@@ -6753,7 +6756,6 @@ public function display(request $request){
             ->paginate(10);
             $def =[0,4,3,5,6];
             $user1 = User::whereNotIn('department_id',$def)->get();
-          $ward = Ward::all();
 
         return view('/assigntl',['users'=>$users,'ward'=>$ward,'user1'=>$user1]);
     }
