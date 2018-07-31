@@ -10,7 +10,7 @@
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
 @if(Auth::user()->group_id == 22)
-<h2>Assigned Ward:{{$x}}</h2>
+<h2>Assigned Ward : {{$x}}</h2>
 @endif
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
@@ -26,6 +26,7 @@
         <div>
             <span class="hours"></span>
             <div class="smalltext">Hours</div>
+
         </div>
         <div>
             <span class="minutes"></span>
