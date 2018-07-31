@@ -584,7 +584,7 @@ div#calendar{
     <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
-    <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
+    <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
@@ -621,7 +621,7 @@ div#calendar{
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
 
      @endif
-    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+    <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
