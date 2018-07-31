@@ -175,7 +175,16 @@ class HomeController extends Controller
         $quantity = array_filter($request->quan);
         $qu = implode(", ", $quantity);     
             
-
+       
+        $validator = Validator::make($request->all(), [
+            'subcat' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return back()
+                ->with('NotAdded','Select Category Before Submit')
+                ->withErrors($validator)
+                ->withInput();
+            }
        
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
@@ -187,15 +196,7 @@ class HomeController extends Controller
               
             }
         }
-        $validator = Validator::make($request->all(), [
-            'subcat' => 'required'
-            ]);
-            if ($validator->fails()) {
-                return back()
-                ->with('NotAdded','Select Category Before Submit')
-                ->withErrors($validator)
-                ->withInput();
-            }
+
             $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
             $subcategories = implode(", ", $sub_cat_name);
             // fetching brands
@@ -1213,6 +1214,8 @@ class HomeController extends Controller
     public function leDashboard()
     {
 
+        $today = date('y-m-d');
+        $thirtydays = date('y-m-d',strtotime('-30 days',strtotime($today)));
         $date = date('Y-m-d');
         $users = User::where('department_id','1')->where('group_id','6')
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
@@ -1234,10 +1237,14 @@ class HomeController extends Controller
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
         }
-        $ordersInitiated = Requirement::where('generated_by',Auth::user()->id)
-                            ->where( 'created_at', '>=', Carbon::now()->firstOfMonth())
-                            ->count();
-       
+        // $ordersInitiated = Requirement::where('generated_by',Auth::user()->id)
+        //                     ->where( 'created_at', '>=', Carbon::now()->firstOfMonth())
+        //                     ->count();
+        
+       $ordersInitiated = ActivityLog::where('employee_id',Auth::user()->employeeId)
+        ->where('activity','LIKE','%requirement for project%')
+        ->where('created_at','>=',$thirtydays)
+        ->pluck('id')->count();
 
         $ordersConfirmed = Requirement::where('generated_by',Auth::user()->id)
                            ->where( 'created_at', '>=', Carbon::now()->firstOfMonth())
@@ -1305,10 +1312,15 @@ class HomeController extends Controller
        
 
 
-       $update =User::leftjoin('project_details','project_details.listing_engineer_id','users.id')
-                    ->where('project_details.sub_ward_id',$wardsAssigned)
-                   ->where('project_details.updated_at','LIKE',date('Y-m-d')."%")->pluck('project_details.project_id')->count();
-     
+       // $update =User::leftjoin('project_details','project_details.listing_engineer_id','users.id')
+       //              ->where('project_details.sub_ward_id',$wardsAssigned)
+       //             ->where('project_details.updated_at','LIKE',date('Y-m-d')."%")->pluck('project_details.project_id')->count();
+      $update = ActivityLog::where('employee_id',Auth::user()->employeeId)
+        ->where('activity','LIKE','%Updated a project%')
+        ->where('created_at','>=',$thirtydays)
+        ->pluck('id')->count();
+
+
          $bal = $totalprojects  -  $update;
 
 
@@ -1326,8 +1338,13 @@ class HomeController extends Controller
             $subwardMap = "None";
         }
         // $total = $points_earned_so_far - $points_subtracted;
-         $lastmonth = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where( 'created_at', '>=', Carbon::now()->firstOfMonth())->get());
-        
+         // $lastmonth = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)->where( 'created_at', '>=', Carbon::now()->firstOfMonth())->get());
+
+         $lastmonth = ActivityLog::where('employee_id',Auth::user()->employeeId)
+        ->where('activity','LIKE','%added a new project%')
+        ->where('created_at','>=',$thirtydays)
+        ->pluck('id')->count();
+
         return view('listingEngineerDashboard',['prices'=>$prices,
                                                 'subwards'=>$subwards,
                                                 'projects'=>$projects,
