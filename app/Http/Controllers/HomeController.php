@@ -6756,7 +6756,7 @@ public function display(request $request){
           $users = User::where('group_id',22)
             ->paginate(10);
             $def =[1,2];
-            $user1 = User::where('department_id',$def)
+            $user1 = User::whereIn('department_id',$def)
             ->where('users.group_id','!=',2)
             ->get();
           $ward = Ward::all();
