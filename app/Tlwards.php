@@ -11,4 +11,7 @@ class Tlwards extends Model
     function ward(){
     	return $this->belongsTo(Ward::class,'id','ward_id');
     }
+    function user(){
+    	return $this->belongsTo(User::class,'user_id','id');
+    }
 }
