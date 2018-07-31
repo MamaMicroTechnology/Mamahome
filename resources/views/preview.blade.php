@@ -42,7 +42,7 @@
 			 	</tbody>
 			 </table>
 			 	
-			 <p style="text-align: justify;">I, {{ $user->name }}, understand the guidelines and policies for MAMA HOME equipment use.  I will only be using MAMA HOME asses for business purposes only.  Any software or hardware installed is required to have prior approval before installation.  Upon my termination with MAMA HOME (whether voluntary or involuntary), I will return all above-mentioned assets within 24 hours.  Failure to do so will result in a penalty. In addition, I acknowledge that I will not receive my last pay check, unless I return the above-mentioned assets.  Should final pay check not cover expenses, MAMA HOME retains the right to file for reimbursement through court proceedings.</p>
+			 <p style="text-align: justify;">I, {{ $user->name }}, understand the guidelines and policies for MAMA HOME equipment use.  I will only be using MAMA HOME assets for business purposes only.  Any software or hardware installed is required to have prior approval before installation.  Upon my termination with MAMA HOME (whether voluntary or involuntary), I will return all above-mentioned assets within 24 hours.  Failure to do so will result in a penalty. In addition, I acknowledge that I will not receive my last pay check, unless I return the above-mentioned assets.  Should final pay check not cover expenses, MAMA HOME retains the right to file for reimbursement through court proceedings.</p>
 			 
 			 <br>
 			 <br>
@@ -51,8 +51,8 @@
 			 		
 			 		
 			 		<tr>
-			 			<td><img style=" height:50px; width:100px;" src="empsignature/{{ $info->emp_signature}}" ></td>
-			 			<td style="text-align: right;"><img style=" height:50px; width:100px;" src="managersignature/{{ $info->manager_signature}}" ></td>
+			 			<td><img style=" height:50px; width:100px;" src="public/empsignature/{{ $info->emp_signature}}" ></td>
+			 			<td style="text-align: right;"><img style=" height:50px; width:100px;" src="public/managersignature/{{ $info->manager_signature}}" ></td>
 			 		</tr>
 			 	
 				 	<tr>

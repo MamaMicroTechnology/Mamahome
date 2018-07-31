@@ -50,7 +50,10 @@ use App\Point;
 use App\ZoneMap;
 use App\SubWardMap;
 use App\Asset;
+use App\Check;
+
 use App\MamahomeAsset;
+use App\ProjectImage;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -467,6 +470,7 @@ class mamaController extends Controller
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
+        $projectimage = "";
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
@@ -500,7 +504,11 @@ class mamaController extends Controller
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
-            
+            $length = $request->length;
+            $breadth = $request->breadth;
+            $length = $request->length;
+            $breadth = $request->breadth;
+            $size = $length * $breadth;
             if($request->mApprove != NULL){
                 $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
                 $request->mApprove->move(public_path('projectImages'),$imageName1);
@@ -520,9 +528,22 @@ class mamaController extends Controller
                     $i++;
                 }
             }
-            $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
-            $request->pImage->move(public_path('projectImages'),$imageName3);
-            
+            $i = 0;
+            if($request->pImage){
+                foreach($request->pImage as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('projectImages'),$imageName3);
+                     if($i == 0){
+                        $projectimage .= $imageName3;
+                     }
+                     else{
+                            $projectimage .= ",".$imageName3;
+                     }
+                     $i++;
+                }
+        
+            }
+           
             $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
@@ -530,6 +551,9 @@ class mamaController extends Controller
             $projectdetails->road_width = $request->rWidth;
             $projectdetails->construction_type = $type;
             $projectdetails->interested_in_rmc = $request->rmcinterest;
+            $projectdetails->interested_in_loan = $request->loaninterest;
+            $projectdetails->interested_in_doorsandwindows = $request->dandwinterest;
+            $projectdetails->interested_in_premium = $request->premium;
             $projectdetails->road_name = $request->rName;
             $projectdetails->municipality_approval = $imageName1;
             $projectdetails->other_approvals = $otherApprovals;
@@ -537,13 +561,17 @@ class mamaController extends Controller
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
             $projectdetails->project_type = $floor;
+            $projectdetails->length = $length;
+            $projectdetails->breadth = $breadth;
+            $projectdetails->plotsize = $size;
             $projectdetails->project_size = $request->pSize;
             $projectdetails->budget = $request->budget;
-            $projectdetails->image = $imageName3;
+            $projectdetails->image = $projectimage;
             $projectdetails->listing_engineer_id = Auth::user()->id;
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
+          $projectdetails->automation=$request->automation;
            
             $projectdetails->save();
             
@@ -599,6 +627,7 @@ class mamaController extends Controller
         $procurementDetails->procurement_email = $request->pEmail;
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
+        $no = $request->prPhone;
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
@@ -647,12 +676,15 @@ class mamaController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
-        return back()->with('Success','Project added successfully');
+        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no."'>Click Here</a><br>To View Approximate Material Calculation";
+        return back()->with('Success',$text);
     }
     public function updateProject($id, Request $request)
     {
+
         $point = 0;
         $project = ProjectDetails::where('project_id',$id)->first();
+        $projectimages = ProjectImage::where('project_id',$id)->first();
         $today = date('Y-m-d');
         $created = date('Y-m-d',strtotime($project->created_at));
         $updated = date('Y-m-d',strtotime($project->updated_at));
@@ -733,10 +765,14 @@ class mamaController extends Controller
                 $points->save();
             }
         }
+              
 
         $basement = $request->basement;
         $ground = $request->ground;
         $floor = $basement + $ground + 1;
+        $length = $request->length;
+        $breadth = $request->breadth;
+        $size = $length * $breadth;
         if($request->mApprove != NULL){
             $imageName1 = time().'.'.request()->mApprove->getClientOriginalExtension();
             $request->mApprove->move(public_path('projectImages'),$imageName1);
@@ -761,13 +797,43 @@ class mamaController extends Controller
                 'other_approvals' => $otherApprovals
             ]);
         }
-        if($request->pImage != NULL){
-            $imageName3 = time().'.'.request()->pImage->getClientOriginalExtension();
-            $request->pImage->move(public_path('projectImages'),$imageName3);
-            ProjectDetails::where('project_id',$id)->update([
-                'image' => $imageName3
-            ]);
+        if($request->pImage){
+                        if(count($request->pImage != 0)){
+                                   $i = 0;
+                                    $projectimage = ""; 
+
+                                    foreach($request->pImage as $pimage){
+                                         $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                                         $pimage->move(public_path('projectImages'),$imageName3);
+                                    
+                                           if($i == 0){
+                                                $projectimage .= $imageName3;
+                                           }
+                                           else{
+                                                $projectimage .= ",".$imageName3;
+                                           }
+                                   $i++;
+                                  }
+                             }
+                            
+                            $statusCount = count($request->status);
+                            $statuses = $request->status[0];
+                            if($statusCount > 1){
+                                for($i = 1; $i < $statusCount; $i++){
+                                    $statuses .= ", ".$request->status[$i];
+                                }
+                            }
+                            $project_image = new ProjectImage;
+                            $project_image->project_id = $id;
+                            $project_image->project_status = $statuses;
+                            $project_image->image = $projectimage;
+                            $project_image->save();
         }
+        else{
+             $project_image = new ProjectImage;
+             $project_image->image = '';
+        }
+
         if($request->remarks != NULL){
             ProjectDetails::where('project_id',$id)->update([
                 'remarks' => $request->remarks
@@ -785,6 +851,7 @@ class mamaController extends Controller
                 $statuses .= ", ".$request->status[$i];
             }
         }
+
         ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
@@ -792,16 +859,27 @@ class mamaController extends Controller
             'project_status' => $statuses,
             'basement' => $basement,
             'ground' => $ground,
-            'quality' => $request->quality,
+            'length' => $length,
+            'breadth' => $breadth,
+            'plotsize' => $size,
+            'quality' => ($request->quality != null ? $request->quality : 'Unverified'),
             'project_type' => $floor,
             'project_size' => $request->pSize,
             'interested_in_rmc'=>$request->rmcinterest,
+            'interested_in_loan'=>$request->loaninterest,
+            'interested_in_doorsandwindows'=>$request->dandwinterest,
+             'interested_in_premium'=>$request->premium,
             'construction_type'=>$type,
             'follow_up_date' =>$request->follow_up_date,
             'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
+            'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
+            'automation'=> $request->automation,
+             'plotsize' => $size,
+            'length'=> $length,
+            'breadth' => $breadth,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
@@ -1149,6 +1227,14 @@ class mamaController extends Controller
             View::share('name',$request->name);
             Mail::to($request->email)->send(new registration($user));
         }
+       
+        if($user->save()){  
+                    return response()->json(['message'=>'Registered']);
+                 }else{
+                    return response()->json(['message'=>'Something went wrong']);
+                 }
+
+
         return back()->with('Success','Thank you for your registration. Mama team will contact you shortly.');
     }
     public function confirmUser(Request $request)
@@ -1281,6 +1367,7 @@ class mamaController extends Controller
             'quality'=>$request->quality,
             'contract'=>$request->contract,
             'note'=>$request->note,
+            'automation'=>$request->automation,
             'follow_up_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
             ]);
@@ -1583,10 +1670,13 @@ class mamaController extends Controller
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
         }elseif($request->status != null){
-            Requirement::where('id',$request->id)->update(['status'=>$request->status]);
+
+            Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
+                
+               
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1601,7 +1691,7 @@ class mamaController extends Controller
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
-                $order->sub_category = $requirement->sub_category ;
+                $order->sub_category = $requirement->sub_category;
                 $order->material_spec = $requirement->material_spec;
                 $order->referral_image1 = $requirement->referral_image1;
                 $order->referral_image2 = $requirement->referral_image2;
@@ -1641,6 +1731,18 @@ class mamaController extends Controller
     }
     public function editinputdata(Request $request)
     {
+       
+      
+        $validator = Validator::make($request->all(), [
+        'subcat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return back()
+            ->with('Error','Select Category Before Submit')
+            ->withErrors($validator)
+            ->withInput();
+        }
+
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -1648,37 +1750,56 @@ class mamaController extends Controller
             // fetching brands
         $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
         $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
-       $brandnames = implode(", ", $brand);
-       
+        $brandnames = implode(", ", $brand);
+        $get = implode(", ",array_filter($request->quan));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quan);
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub." :".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$sub." :".$another[$i];
+            }
+        }
 
         $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
       
-
-        Requirement::where('id',$request->reqId)->update([
+        $x = Requirement::where('id',$request->reqId)->update([
             'main_category' => $categoryNames,
             'brand' => $brandnames,
             'sub_category'  =>$subcategories,
-            'generated_by' => $request->initiator,
-            'quantity' => $request->equantity,
+            'updated_by' =>Auth::user()->id,
+            'quantity' => $qnty,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
-        return back();
+       if($x)
+        {
+            return back()->with('success','Enquiry updated Successfully !!!');
+        }
+        else
+        {
+            return back()->with('success','Error Occurred !!!');
+        }
     }
     public function saveMap(Request $request)
     {
+        $convert = str_replace('(', '', $request->path);
+        $path = str_replace(')','', $convert);
         if($request->page == "Zone"){
             if($check = ZoneMap::where('zone_id',$request->zone)->count() == 0){
                 $map = new ZoneMap;
                 $map->zone_id = $request->zone;
-                $map->lat = $request->path;
+                $map->lat = $path;
                 $map->color = $request->color;
                 $map->save();
             }else{
                 $check = ZoneMap::where('zone_id',$request->zone)->first();
-                $check->lat = $request->path;
+                $check->lat = $path;
                 $check->color = $request->color;
                 $check->save();
             }
@@ -1686,12 +1807,12 @@ class mamaController extends Controller
             if($check = WardMap::where('ward_id',$request->zone)->count() == 0){
                 $map = new WardMap;
                 $map->ward_id = $request->zone;
-                $map->lat = $request->path;
+                $map->lat = $path;
                 $map->color = $request->color;
                 $map->save();
             }else{
                 $check = WardMap::where('ward_id',$request->zone)->first();
-                $check->lat = $request->path;
+                $check->lat = $path;
                 $check->color = $request->color;
                 $check->save();
             }
@@ -1699,12 +1820,12 @@ class mamaController extends Controller
             if($check = SubWardMap::where('sub_ward_id',$request->zone)->count() == 0){
                 $map = new SubWardMap;
                 $map->sub_ward_id = $request->zone;
-                $map->lat = $request->path;
+                $map->lat = $path;
                 $map->color = $request->color;
                 $map->save();
             }else{
                 $check = SubWardMap::where('sub_ward_id',$request->zone)->first();
-                $check->lat = $request->path;
+                $check->lat = $path;
                 $check->color = $request->color;
                 $check->save();
             }
@@ -1744,6 +1865,47 @@ class mamaController extends Controller
     public function addDeliveryBoy(Request $request)
     {
         Order::where('id',$request->orderId)->update(['delivery_boy'=>$request->delivery]);
+
         return back();
     }
+     public function paymentmode(Request $request)
+    {
+
+        Order::where('id',$request->orderId)->update(['payment_mode'=>$request->payment]);
+        
+        return back();
+    }
+  public function clearcheck(Request $request)
+    {
+       Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
+        return back();
+    }
+
+
+    public function check(request $request){
+        
+        $empimage = time().'.'.request()->image->getClientOriginalExtension();
+        $request->image->move(public_path('chequeimages'),$empimage);
+
+     $check = new Check;
+     $check->project_id=$request->project_id;
+     $check->orderId = $request->orderId;
+     $check->checkno  = $request->checkno; 
+     $check->amount = $request->amount;
+     $check->bank = $request->bank;
+
+     $check->date = $request->date;
+     $check->image = $empimage;
+     $check->save();
+     $check = "Check";
+    Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
+     return back();
+}
+public function checkdetailes(request $request){
+    $details = Check::all();
+    $countrec = count($details);
+    $check = Order::all();
+
+     return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
+}
 }

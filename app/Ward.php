@@ -11,4 +11,7 @@ class Ward extends Model
     {
     	return $this->hasMany('App\SubWard');
     }
+     function tlward(){
+    	return $this->hasOne(Tlwards::class,'id','ward_id');
+    }
 }

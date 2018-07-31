@@ -9,11 +9,11 @@
                 <form method="GET" action="{{ URL::to('/') }}/followup_project">
                         <div class="col-md-12">
                                     <div class="col-md-2">
-                                        <label>From (Follow_up  Date)</label>
+                                        <label>From (Follow_Up  Date)</label>
                                         <input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
                                     </div>
                                     <div class="col-md-2">
-                                        <label>To (Follow_up Date)</label>
+                                        <label>To (Follow_Up Date)</label>
                                         <input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
                                     </div>
                                     <div class="col-md-2">
@@ -28,8 +28,8 @@
                                         <th>Sl No</th>
                                         <th>Follow Up Date</th>
                                         <th>Project Name</th>
-                                        <th>Owner contact</th>
-                                        <th>Procurement contact</th>
+                                        <th>Owner Contact</th>
+                                        <th>Procurement Contact</th>
                                         <th>Consultant Contact</th>
                                         <th>Site Engineer Contact</th>
                                         <th>Contractor Contact</th>

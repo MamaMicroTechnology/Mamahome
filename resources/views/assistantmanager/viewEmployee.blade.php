@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="panel panel-default" style="border-color: green;">
                 <div class="panel-heading" style="background-color: green;color:white;padding-bottom: 20px;">
                     {{ $user->employeeId }} : {{ $user->name }}
@@ -36,7 +36,7 @@
                         </tr>
                         <tr>
                             <td>Department</td>
-                            <td>: {{ $user->department->dept_name }}</td>
+                            <td>: {{ $user->department != null ? $user->department->dept_name : '' }}</td>
                             <td>Designation</td>
                             <td>
                                 : {{ $user->group->group_name }}

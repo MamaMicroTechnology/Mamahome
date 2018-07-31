@@ -1,5 +1,3 @@
-
-
 @extends('layouts.leheader')
 @section('content')
 
@@ -11,62 +9,126 @@
 
 <div class="container">
     <div class="row">
+   
       @if($subwards)
       <div class="col-md-3"> 
          You are in {{$subwards->sub_ward_name}}<br><br>
+        @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
+        
+          @if( $totalprojects !=  $update)
+           <span class="">  <a  class="btn btn-primary form-control" onclick="vali({{ $bal }})" >Completed</a></span>
+            @else
+          <span class="">  <a href="{{ URL::to('/')}}/salescompleted" class="btn btn-primary form-control">Completed</a></span>
+        @endif
+         @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
-         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br> 
+         
+        @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
+          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+        <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
+          @endif
+          <br><br>
          <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
           <tbody >
-                <tr>
+                <!-- <tr>
                   <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
+                </tr> -->
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed in Last 30Days</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $lastmonth}}</strong></td>
                 </tr>
                 <tr>  
                   <td style="border: 1px solid gray;"><label>Total Number of Projects Listed Today</label></td>
-                  <td style="border: 1px solid gray;">{{ $total }}</td>
+                  <td style="border: 1px solid gray;"><strong>{{ $total }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders Initiated by You</label></td>
+                  <td style="border: 1px solid gray;"><label>Total Number of Enquiries Initiated in Last 30Days</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersInitiated }}</strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Orders which has been Confirmed</label></td>
+                  <td style="border: 1px solid gray;"><label>Total Number of Enquiries Confirmed in Last 30Days</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $ordersConfirmed }}<strong></td>
                 </tr>
           </tbody>
         </table>
-         <!-- <!-- <label>
-           You have listed <strong>{{ $numbercount }}</strong> projects so far.<br>
-           You have listed {{ $total }} projects today.<br>
-           {{ $ordersInitiated }} orders has been initiated by you<br>
-           out of which {{ $ordersConfirmed }} has been confirmed
-         </label><br><br> -->
-            <!-- <center></center>
-            <div class="panel-panel-primary">
-                <div class="panel-heading text-center">
-                    <!--<b><u>CURRENT PRICE LIST</u></b>-->
-                <!-- </div>
-                <div class="panel-body">
+         @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
+        <!--  <table  class="table table-responsive table-striped table-hover" style="border: 2px  solid gray;">
+          <tbody>
+            <thead>
+              <th style="text-align: center;" colspan="2">Total Listings</th>
+          
+            </thead>
+         
+            @foreach($users as $user)
+              <tr>
+                  <td style="border: 1px solid gray;"><label>{{ $user->name }}</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $totalListing[$user->id] }}</strong></label></td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table> -->
+        @endif
 
-                            
-                </div>
-            </div>
-            
-         </label><br><br>  -->
+         
+        <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody >
+                <!-- <tr>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
+                </tr> -->
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>TOtal number of projects in {{$subwards->sub_ward_name}}</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $totalprojects}}</strong></td>
+                </tr>
+                <tr>  
+                  <td style="border: 1px solid gray;"><label>Genuine Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $genuineprojects }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Unverified Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $unverifiedprojects }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Fake Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Updated Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $update  }}<strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>remaining Projects</label></td>
+                  <td style="border: 1px solid gray;">{{ $bal }}<strong><strong></td>
+                </tr>
+          </tbody>
+        </table>
+        
+        @endif
        </div>
-        <div class="pull-right col-lg-8">
-          <img class="img-thumbnail" src="{{ URL::to('/') }}/public/subWardImages/{{ $subwards->sub_ward_image }}">
-        </div>
-       @else
-       No wards assigned to you yet
-       @endif
+        <div class="col-md-8"><br><br>
+     
+      <div id="map" style="width:900px;height:500px"></div>
+      </div>
+
     </div>
-    <div class="row hidden">
+    <!-- <div class="row hidden">
       <div class="col-md-4 col-md-offset-4">
         <table class="table table-hover" border=1>
         <center><label for="Points">Your Points For Today</label></center>
@@ -88,23 +150,70 @@
           </tbody>
         </table>
         </div>
-    </div>
+    </div> -->
+   
+     
 </div>
-
-<br><br>
-
-<div class="col-md-8 col-md-offset-2" style="border-style: ridge;">
-<div id="map" style="width:100%;height:400px"></div>
-</div>
-
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>
+@if(count($projects) == 0)
+<script type="text/javascript">
+    window.onload = function() {
+    var locations = new Array();
+    var created = new Array();
+    var updated = new Array();
+    var status = new Array();
+    var newpath = [];
+    @if($subwardMap != "None")
+    var latlng = "{{ $subwardMap->lat }}";
+    var col = "{{ $subwardMap->color }}";
+    @else
+    var latlng = "";
+    var col = "456369"
+    @endif
+    var places = latlng.split(",");
+    for(var i=0;i<places.length;i+=2){
+          newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
+    }
 
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: new google.maps.LatLng(12.9716, 77.5946),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+   
+    var marker, i;
+    var subward = new google.maps.Polygon({
+        paths:  newpat,
+        strokeColor: '#'+col,
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: '#'+col,
+        fillOpacity: 0.9
+      });
+  subward.setMap(map);
+  }
+  </script>
+@else
   <script type="text/javascript">
     window.onload = function() {
     var locations = new Array();
     var created = new Array();
     var updated = new Array();
     var status = new Array();
+    var newpath = [];
+    @if($subwardMap != "None")
+    var latlng = "{{ $subwardMap->lat }}";
+    var col = "{{ $subwardMap->color }}";
+    @else
+    var latlng = "";
+    var col = "456369"
+    @endif
+    var places = latlng.split(",");
+    for(var i=0;i<places.length;i+=2){
+          newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
+    }
     @foreach($projects as $project)
       locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}} {{$project->project_name}},{{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
       created.push("{{ $project->created_at}}");
@@ -113,7 +222,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
+      zoom: 15.5,
       center: new google.maps.LatLng(locations[0][1], locations[0][2]),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -149,13 +258,35 @@
         }
       })(marker, i));
     }
+    if(newpath.length > 1){
+    
+      var subward = new google.maps.Polygon({
+          paths: newpath,
+          strokeColor: '#'+col,
+          strokeOpacity: 1,
+          strokeWeight: 2,
+          fillColor: '#'+col,
+          fillOpacity: 0.4
+        });
+    subward.setMap(map);
+    }
   }
   </script>
-
+@endif
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 
 <script>
 
 </script>
 @endif
+<script>
+  function vali(arg){
+
+    alert("Please Update The Remaing Projects:" +arg);
+
+  }
+
+
+</script>
 @endsection
+

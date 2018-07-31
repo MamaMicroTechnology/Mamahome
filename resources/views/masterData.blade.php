@@ -11,8 +11,12 @@
                         {{ csrf_field() }}
                         <table class="table">
                             <tr>
-                                <td><input required type="text" class="form-control input-sm" name="code" placeholder="Code"></td>
-                                <td><input required type="text" class="form-control input-sm" name="name" placeholder="Country Name"></td>
+                                <td>
+                                    <select onchange="countryCode();" name="name" id="country" class="form-control input-sm">
+
+                                    </select>
+                                </td>
+                                <td><input id="code" readonly required type="text" class="form-control input-sm" name="code" placeholder="Code"></td>
                                 <td><input type="submit" class="btn btn-primary btn-sm" value="Add"></td>
                             </tr>
                         </table>
@@ -49,14 +53,18 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <select class="form-control input-sm" name="sId" required="">
+                                        <select oninput="displaySelectedStates()" class="form-control input-sm" name="sId" required="" id="sId">
                                             <option value="">--Country--</option>
                                             @foreach($countries as $country)
                                             <option value="{{ $country->id }}">{{ $country->country_name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td><input type="text" name="zone_name" required class="form-control input-sm" placeholder="Zone Name"></td>
+                                    <td>
+                                        <select name="zone_name" id="zoneName" class="form-control input-sm">
+                                            <option value="">--Select--</option>
+                                        </select>
+                                    </td>
                                     <td><input type="text" name="zone_no" required class="form-control input-sm" placeholder="Zone No."></td>
                                     <td><input type="file" name="image" required class="form-control input-sm" accept="image/*"></td>
                                     <td><button type="submit" class="btn btn-success input-sm">Add</button></td>
@@ -68,7 +76,7 @@
                                 <th>Country</th>
                                 <th>Zone Name</th>
                                 <th>Zone No</th>
-                                <th>Zone Image</th>
+                                <th>Zone Map</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>
@@ -77,7 +85,7 @@
                                         <td>{{ $zone->country->country_name }} </td>
                                         <td>{{ $zone->zone_name }}</td>
                                         <td>{{ $zone->zone_number }}</td>
-                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/public/zoneimages/{{ $zone->zone_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
+                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/viewMap?zoneId={{ $zone->id}}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
                                         <td>
                                             <a href="{{ URL::to('/') }}/wardmaping?zoneId={{ $zone->id }}" class="btn btn-success btn-sm">Edit</a>
                                             </td>
@@ -126,7 +134,7 @@
                         <table class="table table-responsive">
                             <thead>
                                 <th>Ward Name</th>
-                                <th><center>Ward Image</center></th>
+                                <th><center>Ward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>
@@ -134,7 +142,7 @@
                                     <tr>
                                         <td style="width:20%">{{ $ward->ward_name }}</td>
                                        
-                                        <td style="width:33%"><center><a href="{{ URL::to('/') }}/public/wardImages/{{ $ward->ward_image }}" class="btn btn-sm btn-primary" target="_blank">View Image</a></center></td>
+                                        <td style="width:33%"><center><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
                                         <td><a href="{{ URL::to('/') }}/wardmaping?wardId={{ $ward->id }}" class="btn btn-success btn-sm form-control">Edit</a></td>
                                     </tr>
                                     @endforeach
@@ -168,7 +176,7 @@
                         <table class="table table-responsive table-hover">
                             <thead>
                                 <th>Subward Name</th>
-                                <th><center>Ward Image</center></th>
+                                <th><center>Ward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>
@@ -186,12 +194,66 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<div id="coutries" class="hidden">
+    
+</div>
+<div id="countriesAndStates" class="hidden">
+
+</div>
+    <script type="text/javascript">
+    var xmlhttp, myObj, x, txt = "", displaycountries = "";
+    var countries = [];
+    var single = [];
     function editwardimage(arg)
     {
         var photo = document.getElementById("wardimage"+arg);
         alert(photo);
         return false;
     }
+    function displaySelectedStates(){
+        var countryChosen = document.getElementById("sId").selectedIndex;
+        var textForCountry = document.getElementById("sId").options[countryChosen].text;
+        var differentLocations = document.getElementById("disp" + textForCountry).innerHTML;
+        var states = differentLocations.split(",");
+        var str = "<option value=''>--Select--</option>";
+        for(var i = 0; i < states.length; i++){
+            str += "<option value='" + states[i] + "'>" + states[i] + "</option>";
+        }
+        document.getElementById("zoneName").innerHTML = str;
+    }
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            myObj = JSON.parse(this.responseText);
+            txt += "<option value=''>--Select--</option>";
+            for (x in myObj) {
+                txt += "<option value='" + myObj[x]["country"] + "'>" + myObj[x]["country"] + "</option>";
+                displaycountries += "<div id='" + myObj[x]["country"] + "'>" + myObj[x]["code"] + "</div>";
+            }
+            document.getElementById("country").innerHTML = txt;
+            document.getElementById("coutries").innerHTML = displaycountries;
+        }
+    };
+    xmlhttp.open("GET", "https://mamahome360.com/webapp/countries.json", true);
+    xmlhttp.send();
+    function countryCode(){
+        var countrySelected = document.getElementById('country').value;
+        var countryCode = document.getElementById(countrySelected).innerHTML;
+        document.getElementById('code').value = countryCode;
+    }
+
+    var displayStates = "";
+    xmlhttp2 = new XMLHttpRequest();
+    xmlhttp2.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            myObj = JSON.parse(this.responseText);
+            for (x in myObj) {
+                displayStates += "<div id='disp" + x +"'>" + myObj[x] + "</div>";
+            }
+            document.getElementById("countriesAndStates").innerHTML = displayStates;
+        }
+    };
+    xmlhttp2.open("GET", "https://mamahome360.com/webapp/countriesAndStates.json", true);
+    xmlhttp2.send();
 </script>
 @endsection

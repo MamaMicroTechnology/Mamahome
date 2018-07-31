@@ -15,10 +15,16 @@
                             <td>
                                 <select class="form-control" id="selectle">
                                     <option disabled selected value="">(-- SELECT LE --)</option>
+                                    @if(Auth::user()->group_id != 22)
                                     <option value="ALL">All Listing Engineers</option>
                                     @foreach($le as $list)
                                     <option value="{{$list->id}}">{{$list->name}}</option>
                                     @endforeach
+                                    @else
+                                    @foreach($tlUsers as $list)
+                                    <option value="{{$list->id}}">{{$list->name}}</option>
+                                    @endforeach
+                                    @endif
                                 </select>
                             </td>
                         </tr>
@@ -40,7 +46,7 @@
                         </tr>
                         <tr class="text-center">
                             <td>
-                                <a class="btn bn-md btn-success" style="width:100%" onclick="showrecordsle()">Get Date Range Details</a>
+                                <a class="btn bn-md btn-success" style="width:100%" onclick="displayGif()">Get Date Range Details</a>
                             </td>
                         </tr>
                         <!--<tr class="text-center">-->
@@ -54,11 +60,12 @@
         </div>
         <div class="panel panel-default" styke="border-color:green">
             <div class="panel-heading text-center" style="background-color:green">
-                <b style="color:white">Mini Report (Today)</b>
+                <b style="color:white">Mini Report of listing engineer  (Today)</b>
             </div>
             <div class="panel-body">
                 <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
                 <table class="table table-striped" border="1">
+                  @if(Auth::user()->group_id != 22)
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -66,6 +73,42 @@
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    @else
+                     @foreach($tlUsers as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                    @endif
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default" styke="border-color:green">
+            <div class="panel-heading text-center" style="background-color:green">
+                <b style="color:white">Mini Report of Account Executive(Today)</b>
+            </div>
+            <div class="panel-body">
+               
+                <table class="table table-striped" border="1">
+                @if(Auth::user()->group_id != 22)
+                    @foreach($accusers as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                    @else
+                    @foreach($tlUsers1 as $user)
+                    <tr>
+                        <td style="font-size: 10px;">{{ $user->name }}</td>
+                        <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
+                    </tr>
+                    @endforeach
+                    @endif
                 </table>
             </div>
         </div>
@@ -93,7 +136,11 @@
                     </thead>
                     <tbody id="mainPanel">
                         @foreach($projects as $project)
+                        @if($project->quality == "Fake")
+                        <tr style='background-color:#d2d5db'>
+                        @else
                         <tr>
+                        @endif
                             <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>
@@ -110,6 +157,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <center>
+                    <div id="wait" style="display:none;width:200px;height:200px;"><img src='https://www.tradefinex.org/assets/images/icon/ajax-loader.gif' width="200" height="200" /></div>
+                </center>
             </div>
         </div>
     </div>
@@ -144,6 +194,10 @@
             
             
         });
+        function displayGif(){
+            document.getElementById('wait').style.display = "block";
+            showrecordsle();
+        }
         function showrecordsle()
         {
             var e = document.getElementById("selectle");
@@ -188,17 +242,20 @@
                     type: 'GET',
                     url: "{{ URL::to('/') }}/getleinfo",
                     data: { id: le_id, from: from_date, to: to_date },
-                    async: false,
+                    async: true,
                     success: function(response)
                     {
                         document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b> To "+orig_to_date+"  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-                        
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
+                            if(response[0][i].quality == 'Fake'){
+                                var head = "<tr style='background-color:#d2d5db'><td>";
+                            }else{
+                                var head = "<tr><td>";
+                            }
                             document.getElementById('mainPanel').innerHTML += 
-                            "<tr><td>"
-                                +response[0][i].sub_ward_name+
+                            head + response[0][i].sub_ward_name+
                             "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -214,6 +271,7 @@
                             "</td><td>"     
                                 +response[0][i].name+
                             "</td></tr>";
+                            document.getElementById('wait').style.display = "none";
                         }
                         console.log(response);   
                     }    
@@ -226,12 +284,15 @@
             var e = document.getElementById("selectle");
             var le_id = e.options[e.selectedIndex].value;
             var from_date = document.getElementById('fromdate').value;
-            if(!le_id || !from_date){
-                alert('Please Select A Listing Engineer And From Date !!');
+            var to_date =  document.getElementById('todate').value;
+            if(!le_id || !from_date || !to_date){
+                alert('Please Select all 3 fields !!');
+                document.getElementById('wait').style.display = "none";
                 return false;
             }
             else
             {
+
                 var mydate = new Date(from_date);
                 var month = mydate .getMonth() + 1;
                 var day = mydate .getDate();
@@ -258,21 +319,25 @@
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
+                            if(response[0][i].quality == 'Fake'){
+                                var head = "<tr style='background-color:#d2d5db'><td>";
+                            }else{
+                                var head = "<tr><td>";
+                            }
                             document.getElementById('mainPanel').innerHTML += 
-                            "<tr><td>"
-                                +response[0][i].sub_ward_name+
+                            head+response[0][i].sub_ward_name+
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
-                                +(response[0][i].owner_contact_no == null ? response[0][i].owner_contact_no : '')+
+                                +(response[0][i].owner_contact_no != null ? response[0][i].owner_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].site_engineer_contact_no == null ? response[0][i].site_engineer_contact_no : '')+
+                                +(response[0][i].site_engineer_contact_no != null ? response[0][i].site_engineer_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].procurement_contact_no == null ? response[0][i].procurement_contact_no : '')+
+                                +(response[0][i].procurement_contact_no != null ? response[0][i].procurement_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].consultant_contact_no == null ? response[0][i].consultant_contact_no : '')+
+                                +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '')+
                             "</td><td>"
-                                +(response[0][i].contractor_contact_no == null ? response[0][i].contractor_contact_no : '')+
+                                +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
                             "</td><td>"
                                 +response[0][i].name+
                             "</td></tr>";

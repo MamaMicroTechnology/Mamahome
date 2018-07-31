@@ -36,7 +36,8 @@ use App\training;
 use App\Point;
 use App\SiteAddress;
 use App\OwnerDetails;
-
+use App\Payment;
+use App\Deposit;
 class logisticsController extends Controller
 {
     public function __construct()
@@ -85,17 +86,22 @@ class logisticsController extends Controller
         }
     }
     
-    public function orders()
+    public function orders(Request $request)
     {
         $view = Order::orderBy('project_id','DESC')
                 ->leftJoin('users','orders.delivery_boy','=','users.id')
                 ->leftJoin('delivery_details','delivery_details.order_id','orders.id')
+                ->leftJoin('payment','payment.order_id','orders.id')
+                ->leftJoin('deposit','deposit.orderId','orders.id')
                 ->select('orders.*','orders.id as orderid','users.name','users.group_id','delivery_details.vehicle_no',
-                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video')
+                'delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','payment.payment_status as paymentStatus','payment.signature','payment.signature1','payment.amount','payment.id as paymentId','payment.advance_amount','deposit.orderId as depo_order_id')
                 ->where('delivery_boy',Auth::user()->id)
                 ->paginate(25);
         $countview = Order::where('delivery_boy',Auth::user()->id)->count();
-        return view('logistics.orders',['view' => $view,'count' => $countview]);
+        $payment = Payment::all();
+        $deposit = Deposit::all();
+        $zone = Zone::all();
+        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment,'deposit'=>$deposit,'zone'=>$zone]);
     }
     
     public function showProjectDetails(Request $id)
@@ -145,38 +151,104 @@ class logisticsController extends Controller
     {
         return view('logistics.takesignature');
     }
-    public function saveSignature(Request $request)
-    {
-        $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
-        $request->signature->move(public_path('signatures'),$signatureName);
-        $signature = Order::where('id',$request->orderId)->first();
-        $signature->signature = $signatureName;
-<<<<<<< HEAD
-<<<<<<< HEAD
-        $signature->payment_status = "Payment Received";
-        $signature->save();
-=======
-=======
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
-        $signature->total = $request->amount;
-        $signature->payment_status = "Payment Received";
-        $signature->save();
+    // public function saveSignature(Request $request)
+    // {
+    //     $signatureName = time().'.'.request()->signature->getClientOriginalExtension();
+    //     $request->signature->move(public_path('signatures'),$signatureName);
+    //     $signature = Order::where('id',$request->orderId)->first();
+    //     $signature->signature = $signatureName;
+
+    //     $signature->payment_status = "Payment Received";
+    //     $signature->save();
+
+    //     $signature->total = $request->amount;
+    //     $signature->payment_status = "Payment Received";
+    //     $signature->save();
+    //     $points = new Point;
+    //     $points->user_id = Auth::user()->id;
+    //     $points->point = 400;
+    //     $points->type = "Add";
+    //     $points->reason = "Receiving payment";
+    //     $points->save();
+
+    //     return back()->with('Success','Payment Received');
+    // }
+    public function payment(Request $request){
+
+
+
+            $signatureName = Auth::user()->id."signature".time().'.'.request()->signature->getClientOriginalExtension();
+             $request->signature->move(public_path('signatures'),$signatureName);
+             if($request->signature1){
+
+            $signatureName1 = Auth::user()->id."cheque".time().'.'.request()->signature1->getClientOriginalExtension();
+            $request->signature1->move(public_path('signatures'),$signatureName1);
+             }else{
+                $signatureName1 = "";
+             }
+             // dd($request->advanceAmount);
+             if($request->payment_method){
+
+            $paymode = implode(", ", $request->payment_method);
+             }else{
+                  $paymode="null";
+             }
+            
+             $pays = Payment::where('order_id',$request->orderid)->first();
+
+               if($pays == NULL){
+               $pay = new Payment;
+
+                
+                $pay->payment_status = "Payment Received";
+                $pay->project_id = $request->project_id;
+                $pay->amount = $request->amount;
+                $pay->rtgs = $request->rtgs;
+
+                $pay->p_method =  $paymode;
+                $pay->log_name = $request->log_name;
+                $pay->order_id = $request->orderId;
+                $pay->signature=$signatureName;
+                $pay->signature1=$signatureName1;
+                $pay->c_name = $request->c_name;
+                $pay->save();
+             }
+               else{
+                   $pays->project_id = $request->project_id;
+                   $pays->p_method = $request-> $paymode;
+                   $pays->log_name = $request->log_name;
+                   $pays->order_id = $request->orderId;
+                   $pays->signature=$signatureName;
+                    $pays->signature1=$signatureName1;
+                   $pays->c_name = $request->c_name;
+                    $pays->payment_status = "Payment Received";
+                    $pays->amount = $request->amount;
+                    $pay->rtgs = $request->rtgs;
+
+                   $pays->save();
+               }
+             
         $points = new Point;
         $points->user_id = Auth::user()->id;
         $points->point = 400;
         $points->type = "Add";
         $points->reason = "Receiving payment";
         $points->save();
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
-        return back()->with('Success','Payment Received');
+       return back();
+
+
+
+
     }
     public function saveDeliveryDetails(Request $request)
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
+
+    $check = DeliveryDetails::where('order_id',$request->orderId);
+     
+     if($check != null){
+
         if(!$request->vid){
             $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
             $request->vno->move(public_path('delivery_details'),$vehicleNo);
@@ -195,7 +267,7 @@ class logisticsController extends Controller
             $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
             $deliveryDetails->save();
         }else{
-=======
+
         $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
         $request->vno->move(public_path('delivery_details'),$vehicleNo);
         
@@ -205,20 +277,44 @@ class logisticsController extends Controller
         $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
         $request->qm->move(public_path('delivery_details'),$quality);
         
-        $deliveryDetails = new DeliveryDetails;
-        $deliveryDetails->order_id = $request->orderId;
-        $deliveryDetails->vehicle_no = $vehicleNo;
-        $deliveryDetails->location_picture = $locationPicture;
-        $deliveryDetails->quality_of_material = $quality;
-        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
-        if($request->vid){
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
-            $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
-            $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails->delivery_video = $video;
+        // $deliveryDetails = new DeliveryDetails;
+        // $deliveryDetails->order_id = $request->orderId;
+        // $deliveryDetails->vehicle_no = $vehicleNo;
+        // $deliveryDetails->location_picture = $locationPicture;
+        // $deliveryDetails->quality_of_material = $quality;
+        // $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        // if($request->vid){
+
+        //     $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
+        //     $request->vid->move(public_path('delivery_details'),$video);
+        //     $deliveryDetails->delivery_video = $video;
+        // }
+        //  $deliveryDetails->save();
+     }
+ }
+
+     else
+
+     {
+         if(!$request->vid){
+            $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
+            $request->vno->move(public_path('delivery_details'),$vehicleNo);
+
+            $locationPicture = "loction".time().'.'.request()->lp->getClientOriginalExtension();
+            $request->lp->move(public_path('delivery_details'),$locationPicture);
+
+            $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
+            $request->qm->move(public_path('delivery_details'),$quality);
+            $check->order_id = $request->orderId;
+            $check->vehicle_no = $vehicleNo;
+            $check->location_picture = $locationPicture;
+            $check->quality_of_material = $quality;
+            $check->delivery_date = date('Y-m-d h:i:s A');
+            $check->save();
         }
-<<<<<<< HEAD
-=======
+        else
+        {
+
         $vehicleNo = "vehicle".time().'.'.request()->vno->getClientOriginalExtension();
         $request->vno->move(public_path('delivery_details'),$vehicleNo);
         
@@ -227,24 +323,25 @@ class logisticsController extends Controller
         
         $quality = "quality".time().'.'.request()->qm->getClientOriginalExtension();
         $request->qm->move(public_path('delivery_details'),$quality);
-        
-        $deliveryDetails = new DeliveryDetails;
-        $deliveryDetails->order_id = $request->orderId;
-        $deliveryDetails->vehicle_no = $vehicleNo;
-        $deliveryDetails->location_picture = $locationPicture;
-        $deliveryDetails->quality_of_material = $quality;
-        $deliveryDetails->delivery_date = date('Y-m-d h:i:s A');
+        $check->order_id = $request->orderId;
+        $check->vehicle_no = $vehicleNo;
+        $check->location_picture = $locationPicture;
+        $check->quality_of_material = $quality;
+        $check->delivery_date = date('Y-m-d h:i:s A');
         if($request->vid){
+
             $video = "video".time().'.'.request()->vid->getClientOriginalExtension();
             $request->vid->move(public_path('delivery_details'),$video);
-            $deliveryDetails->delivery_video = $video;
+            $check->delivery_video = $video;
         }
-        $deliveryDetails->save();
-        Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered"]);
-=======
-        $deliveryDetails->save();
+         
+     }
+ }
+        
+       
+
         Order::where('id',$request->orderId)->update(['delivery_status'=>"Delivered",'delivered_on'=>date('Y-m-d')]);
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
+
         $reasonText = date('H:i:s') > "20:00:00" ? "Delivering material at night" : "Delivering material";
         $point = date('H:i:s') > "20:00:00" ? 500 : 250;
         $points = new Point;
@@ -254,12 +351,14 @@ class logisticsController extends Controller
         $points->reason = $reasonText;
         $points->save();
         return back();
-<<<<<<< HEAD
->>>>>>> master
-=======
+
     }
-    public function getinvoice()
+
+    
+
+    public function getinvoice(Request $request)
     {
+        $invoices = MhInvoice::where('invoice_id',$request->id)->get();
         $number = 48035;
         $length = strlen($number);
         if($number < 20){
@@ -432,14 +531,88 @@ class logisticsController extends Controller
                 }
                 break;
         }
-        return view('logistics.getinvoice',['text'=>$text]);
+
+        return view('logistics.getinvoice',['text'=>$text,'invoices'=>$invoices]);
     }
     public function inputinvoice(Request $request)
     {
         $orders = Order::where('id',$request->id)->first();
+        $project = projectdetails::all();
         $address = SiteAddress::where('project_id',$orders->project_id)->first();
         $owner = OwnerDetails::where('project_id',$orders->project_id)->first();
-        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner]);
->>>>>>> e060e358804d4d9ef5425e8041bb61d0fbe4f9db
+        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner,]);
+
     }
+    public function lcinvoice(request $request){
+        $x = MhInvoice::leftJoin('orders','mh_invoice.requirement_id','orders.id')
+              ->where('orders.delivery_boy',Auth::user()->id)
+              ->select('mh_invoice.*')->get();
+
+               $invoice =count($x);
+        return view('lcinvoice',['invoice'=>$invoice,'x'=>$x]);
+   
+
+    }
+
+     public function feedback(Request $request)
+    {
+             
+       $check = Order::where('id',$request->orderId)->first();
+        if($check != NULL){
+
+            $check->happy = $request->happy;
+            $check->quality = $request->quan;
+            $check->issue = $request->issue;
+            $check->feedback = $request->note;
+            $check->save();
+            return back();
+
+            }
+    }
+     public function deposit(Request $request){
+
+
+
+            $signatureName = Auth::user()->id."deposit".time().'.'.request()->image->getClientOriginalExtension();
+             $request->image->move(public_path('lcpayment'),$signatureName);
+           
+             $pays = Deposit::where('orderId',$request->orderid)->first();
+
+               if($pays == NULL){
+               $pay = new Deposit;
+                $pay->orderId = $request->orderId;
+                $pay->user_id = $request->user_id;
+                $pay->bankname =  $request->bankname;
+                $pay->Amount = $request->Amount;
+                $pay->bdate = $request->bdate;
+                $pay->image=$signatureName;
+                $pay->zone_id = $request->zone_id;
+               
+                $pay->location = $request->location;
+                $pay->save();
+             }
+               else{
+                $pays->orderId = $request->orderId;
+                $pays->user_id = $request->user_id;
+                $pays->bankname =  $request->bankname;
+                $pays->Amount = $request->Amount;
+                $pays->bdate = $request->bdate;
+                $pay->zone_id = $request->zone_id;
+                
+                $pays->image=$signatureName;
+                $pays->location = $request->location;
+                $pays->save();
+               }
+               return back();
+           }
+ public function close(request $request){
+
+             //dd($request->orderid);            
+
+         Order::where('id',$request->orderid)->update(['payment_status'=>"Closed"]);
+            return back();
+
+
+
+           }
 }

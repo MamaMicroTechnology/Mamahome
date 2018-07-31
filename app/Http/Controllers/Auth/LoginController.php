@@ -26,6 +26,9 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/authlogin';
+         //return response()->json(['message'=>'login sucuss']);
+
+
 
     /**
      * Create a new controller instance.

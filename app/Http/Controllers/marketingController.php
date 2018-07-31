@@ -29,6 +29,7 @@ use App\attendance;
 use App\ContractorDetails;
 use App\salesassignment;
 use App\Report;
+use App\Order;
 use Auth;
 use DB;
 use App\EmployeeDetails;
@@ -44,6 +45,8 @@ use App\MhInvoice;
 use App\brand;
 use App\Message;
 use App\training;
+use App\Pricing;
+use App\Deposit;
 
 class marketingController extends Controller
 {
@@ -131,4 +134,159 @@ class marketingController extends Controller
     {
         return view('marketingdashboard');
     }
+    public function ordersformarketing()
+    {
+        $rec = Order::select('id as orderid','orders.*')->where('status','!=','Order Cancelled')
+        ->get();
+        $countrec = count($rec);   
+        $invoice = MhInvoice::pluck('requirement_id')->toArray();
+         
+
+        return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec,'invoice' => $invoice]);
+    }
+    public function saveinvoice(Request $request){
+        if($request->invoicePic != NULL){
+            $imageName1 = "invoice".time().'.'.request()->invoicePic->getClientOriginalExtension();
+            $request->invoicePic->move(public_path('invoiceImages'),$imageName1);
+        }else{
+            $imageName1 = null;
+        }
+        if($request->signature != NULL){
+            $imageName2 = "signature".time().'.'.request()->signature->getClientOriginalExtension();
+            $request->signature->move(public_path('invoiceImages'),$imageName2);
+        }else{
+            $imageName2 = null;
+        }
+        if($request->weighment != NULL){
+            $imageName3 = "weighment".time().'.'.request()->weighment->getClientOriginalExtension();
+            $request->weighment->move(public_path('invoiceImages'),$imageName3);
+        }else{
+            $imageName3 = null;
+        }
+
+        if($request->manufacturer_invoice != null){
+
+                $i= 0;
+            $invoiceimage = ""; 
+
+            foreach($request->manufacturer_invoice as $invimage){
+             $image = "manufacturer_invoice".$i.time().'.'.$invimage->getClientOriginalExtension();
+            $invimage->move(public_path('invoiceImages'),$image);
+           
+             if($i == 0){
+                                                 $invoiceimage .= $image;
+                                                
+                                           }
+                                           else{
+                                                $invoiceimage .= ",".$image;
+                                               
+                                           }
+                                   $i++;
+             }
+                           
+        }else{
+            $invoiceimage = null;
+        }
+
+        
+
+
+        if($request->quantity){
+
+          $qnty = implode(", ", $request->quantity);
+        }else{
+            $qnty = "null";
+        }
+
+        if( $request->price){
+
+            $price = implode(" , ", $request->price);
+        }else{
+           $price = "null"; 
+        }
+
+
+        $mhinvoice = new MhInvoice;
+        $mhinvoice->project_id = $request->project_id;
+        $mhinvoice->requirement_id = $request->invoice_no;
+        $mhinvoice->invoice_id = $request->invoice_id;
+        $mhinvoice->customer_name = $request->customer_name;
+        $mhinvoice->deliver_location = $request->address;
+        $mhinvoice->delivery_date = $request->delivery_date;
+        $mhinvoice->item = $request->product;
+        $mhinvoice->quantity = $qnty;
+        $mhinvoice->price = $price;
+        $mhinvoice->invoice_pic = $imageName1;
+        $mhinvoice->signature = $imageName2;
+        $mhinvoice->weighment_slip = $imageName3;
+        $mhinvoice->amount_to_manufacturer = $request->amount_to_manufacturer;
+        $mhinvoice->mama_invoice_amount = $request->mhinvoice;
+        $mhinvoice->transactional_profit = $request->mhinvoice - $request->amount_to_manufacturer;
+        $mhinvoice->manufacturer_number = $request->manufacturer_no;
+        $mhinvoice->date_of_invoice = $request->dateOfInvoice;
+        $mhinvoice->total_amount = $qnty * $price;
+        $mhinvoice->manufacturer_invoice = $invoiceimage;
+        $mhinvoice->save();
+        return back();
+    }
+    public function viewInvoices( request $request )
+    {
+         $cat = Category::all();
+        $invoice =count(MhInvoice::all());
+            
+
+
+         $invoic =MhInvoice::all(); 
+        
+        // $inc = MhInvoice::where('item',$request->cat)
+        //      ->orderBy('invoice_id','ASC')->get();
+
+             if($request->cat == "ALL"){
+                $inc = MhInvoice::get();
+         }else{
+             $inc = MhInvoice::where('item',$request->cat)
+             ->orderBy('invoice_id','ASC')->get();
+         }
+            
+         $total = count($inc);
+         
+   
+        return view('marketing.viewInvoices',['inc'=>$inc,'cat'=>$cat,'invoice'=>$invoice,'invoic'=>$invoic,'total'=>$total]);
+    }
+
+    public function pending(request $request){
+        $pending = Order::leftjoin('mh_invoice','mh_invoice.requirement_id','orders.id')->where('orders.id','!=','mh_invoice.requirement_id')->
+        where('orders.status','Order Confirmed')->select('orders.id as orderid','orders.*')->get();
+       
+           $countrec = count($pending);
+          $invoice = MhInvoice::pluck('requirement_id')->toArray();
+        
+        return view('pending',['rec'=>$pending,'countrec'=>$countrec,'invoice'=> $invoice]);
+    }
+
+
+ public function price(request $request){
+
+           $price = new Pricing;
+           $price->cat = $request->cat;
+           $price->brand = $request->brand;
+           $price->suncat = $request->subcat;
+           $price->quantity = $request->quan;
+           // $price->asstl = $request->asstl;
+           $price->stl = $request->stl;
+           $price->leandse = $request->leandse;
+          $price->save();
+      
+        return back();
+ }
+
+ public function cashdeposit(request $request)
+ {
+     $cash = Deposit::all();
+     $dep = User::all();
+
+$countrec = count($cash);
+
+     return view('/cashdeposit',['cash'=>$cash,'dep'=>$dep,'countrec'=>$countrec]);
+ }
 }

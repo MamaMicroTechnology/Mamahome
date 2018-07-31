@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="panel panel-default" style="border-color: green;">
                 <div class="panel-heading"  style="background-color: green;color:white;padding-bottom: 20px;">
                     {{ $user->employeeId }} : {{ $user->name }}
@@ -48,7 +48,7 @@
                     <br><br>
                     <table class="table table-responsive">
                         <tr>
-                            <td>Name</td>
+                          <!--   <td>Name</td> -->
                             <td>: {{ $user->name }}</td>
                             <td>User Id Of Mama</td>
                             <td>: {{ $user->email }}</td>

@@ -11,10 +11,18 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
 					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
-					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					<p class="pull-left" style="padding-left: 50px;" id="display" >
+				</p>
+					
 				Enquiry Data
+					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+					
+				
 			</div>
 			<div class="panel-body" style="overflow-x: auto">
+			
+					
 			@if(Auth::user()->group_id == 1)
 				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
 			@elseif(Auth::user()->group_id == 17)
@@ -53,7 +61,7 @@
 						</div>
 						<div class="col-md-2">
 							<label>Category:</label>
-							<select class="form-control" name="category">
+							<select id="categ" class="form-control" name="category">
 								<option value="">--Select--</option>
 								<option value="">All</option>
 								@foreach($category as $category)
@@ -94,6 +102,8 @@
 							<th style="text-align: center">Product</th>
 							<th style="text-align: center">Quantity</th>
 							<th style="text-align: center">Initiator</th>
+							<th style="text-align: center">Converted by</th>
+							<th style="text-align: center">Last Update</th>
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
 							<th style="text-align: center">Update Status</th>
@@ -101,9 +111,44 @@
 						</tr>
 					</thead>
 					<tbody>
+						<?php $pro=0; $con=0; $total=0; $sum=0; $sum1=0; $sum2=0; ?>
+						@foreach($enquiries as $enquiry)
+
+							@if($enquiry->status == "Enquiry On Process")
+							<?php	$pro++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+							
+								@for($i = 0; $i < count($quantity); $i++)
+								<?php $sum = $sum + $quantity[$i]; 
+								 ?>
+								@endfor
+								
+							@endif
+
+							@if($enquiry->status == "Enquiry Confirmed")
+							<?php	$con++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+
+								@for($i = 0; $i < count($quantity); $i++)
+									<?php $sum1 = $sum1 + $quantity[$i]; 
+									 ?>
+								@endfor
+
+							@endif
+
+							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")
+							<?php  $total++; 
+							 $quantity = explode(", ",$enquiry->quantity); ?>
+								@for($i = 0; $i < count($quantity); $i++)
+									<?php $sum2 = $sum2 + $quantity[$i]; 
+									 ?>
+								@endfor
+							@endif
+                        @endforeach
+                        
 						@foreach($enquiries as $enquiry)
 						@if($enquiry->status != "Not Processed")
-						<tr>
+					
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
@@ -123,6 +168,21 @@
 							</td>
 							<td style="text-align: center">{{$enquiry -> name}}</td>
 							<td style="text-align: center">
+							@foreach($converter as $convert)
+								@if($enquiry->converted_by == $convert->id)
+								{{ $convert->name}}
+								@endif
+							@endforeach
+							</td>
+							<td style="text-align: center">
+								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
+								@foreach($converter as $convert)
+								@if($enquiry->updated_by == $convert->id)
+								 {{ $convert->name}} 
+								@endif
+							@endforeach
+							</td>
+							<td style="text-align: center">
 								{{ $enquiry->status}}
 							</td>
 							<td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
@@ -133,6 +193,7 @@
 									<p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
 								</form>
 							</td>
+							
 							<td>
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
@@ -150,11 +211,13 @@
 							</td>
 							
 						</tr>
+
 						@endif
 						@endforeach   
+						
 					</tbody>
-					<tr>
-						<td style="text-align: center"></td>
+					<!--  <tr>
+						<td style="text-align    : center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
@@ -167,8 +230,14 @@
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
 					        <td style="text-align: center"></td>
-					</tr>
+					</tr> -->
+					
 				</table>
+				<!-- <table>
+					<tbody>
+						<tr>total</tr>
+					</tbody>
+				</table> -->
 			</div>
 			<div class="panel-footer">
 				
@@ -176,6 +245,7 @@
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 	function edit(arg){
 		document.getElementById('now'+arg).className = "hidden";
@@ -203,7 +273,9 @@ function myFunction() {
   // Declare variables
   var input, filter, table, tr, td, i;
   input = document.getElementById("myInput");
+
   filter = input.value.toUpperCase();
+
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
   // Loop through all table rows, and hide those who don't match the search query
@@ -214,7 +286,7 @@ function myFunction() {
 	  }
 	}else{
 		for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[9];
+	    td = tr[i].getElementsByTagName("td")[11];
 	    if (td) {
 	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 	        tr[i].style.display = "";
@@ -224,6 +296,43 @@ function myFunction() {
 	    }
 	  }
 	}
+	if(document.getElementById("myInput").value  == "Enquiry On Process"){
+		
+		if(document.getElementById("categ").value  != "All"){
+		
+				document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
+		 }
+	}
+	else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
+		if(document.getElementById("categ").value  != "All"){
+		document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
+		}
+	}
+	else {
+		if(document.getElementById("categ").value  != "All"){
+		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }} "
+		}
+	}
+
+
+	// if(document.getElementById("myInput").value  == "Enquiry On Process"){
+
+	// 	if(document.getElementById("categ").value  == "All"){
+			
+	// 	document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
+	// 	}
+	// }
+	// else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
+		
+	// 	if(document.getElementById("categ").value  == "All"){
+	// 	document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
+	// 	}
+	// }
+	// else {
+	// 	if(document.getElementById("categ").value  == "All"){
+	// 	document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}"
+	// }
+	// }
 }
 </script>
 @endsection

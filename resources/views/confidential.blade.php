@@ -5,14 +5,14 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-success">
     <div class="panel-heading">
-        Total No Of Projects In Zone 1 : {{$totalProjects}}
+       {{-- Total No Of Projects In Zone 1 : {{$totalProjects}}--}}
     </div>
     <div class="panel-body">
         <div class="col-md-6">
             <center>Ward</center>
-            <form method="GET" action="{{ URL::to('/') }}/confidential">
+            <form id="thisForm" method="GET" action="{{ URL::to('/') }}/confidential">
                 <label class="checkbox">
-                    <input {{ isset($_GET['quality']) ? in_array("Genuine",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Genuine" id="genuine">Genuine<br>
+                    <input {{ isset($_GET['quality']) ? in_array("Genuine",$_GET['quality'])? 'checked': '' : '' }}  type="checkbox" name="quality[]" value="Genuine" id="genuine">Genuine<br>
                 </label>
                 <label class="checkbox">
                     <input {{ isset($_GET['quality']) ? in_array("Fake",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Fake" id="fake">Fake<br>
@@ -20,14 +20,14 @@
                 <label class="checkbox">
                     <input {{ isset($_GET['quality']) ? in_array("Unverified",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Unverified" id="unverified">Unverified<br>
                 </label>
-                <select required class="form-control" name="ward">
+                <select id="select" required class="form-control" name="ward">
                     <option value="">--Select--</option>
                     <option value="All">All</option>
                 @foreach($wards as $ward)
                     <option value="{{ $ward->id}}" {{ $ward->id == $wardId? 'selected':'' }}>{{ $ward->ward_name }}</option>
                 @endforeach
                 </select><br>
-                <button class="btn btn-primary form-control" type="submit">Fetch</button>
+                <button class="btn btn-primary form-control" onclick="check()" type="button">Fetch</button>
             </form>
             <br>
             @if(session('Error'))
@@ -35,8 +35,8 @@
             @endif
             @if($planningCount != NULL)
             Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (based on stages)<br>
-            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount}}
-            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize}}</b>
+            Total No. Of Projects : {{ $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount  }}
+            Total Sizes : <b>{{ $planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize  }}</b>
             <table class="table table-hover" border="1">
                 <thead>
                     <th class="text-center">Stages</th>
@@ -109,6 +109,7 @@
                         <td class="text-center">{{ $completionCount }}</td>
                         <td>{{ $completionSize }}</td>
                     </tr>
+                    
                 </tbody>
             </table> 
             @endif
@@ -116,7 +117,7 @@
         @if($subwards != NULL && $_GET['ward'] != "All")
         <div class="col-md-6">
             <center>Sub Ward</center>
-            <form method="GET" action="{{ URL::to('/') }}/confidential">
+            <form  id="thisForm1" method="GET" action="{{ URL::to('/') }}/confidential">
                 <!-- ward quality -->
                 <label class="hidden">
                     <input {{ isset($_GET['quality']) ? in_array("Genuine",$_GET['quality'])? 'checked': '' : '' }} type="checkbox" name="quality[]" value="Genuine" id="genuine">Genuine<br>
@@ -129,22 +130,22 @@
                 </label>
                 <!-- subward quality -->
                 <label class="checkbox">
-                    <input {{ isset($_GET['subwardquality']) ? in_array("Genuine",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Genuine" id="genuine">Genuine<br>
+                    <input {{ isset($_GET['subwardquality']) ? in_array("Genuine",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Genuine" id="genuine1">Genuine<br>
                 </label>
                 <label class="checkbox">
-                    <input {{ isset($_GET['subwardquality']) ? in_array("Fake",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Fake" id="fake">Fake<br>
+                    <input {{ isset($_GET['subwardquality']) ? in_array("Fake",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Fake" id="fake1">Fake<br>
                 </label>
                 <label class="checkbox">
-                    <input {{ isset($_GET['subwardquality']) ? in_array("Unverified",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Unverified" id="unverified">Unverified<br>
+                    <input {{ isset($_GET['subwardquality']) ? in_array("Unverified",$_GET['subwardquality'])? 'checked': '' : '' }} type="checkbox" name="subwardquality[]" value="Unverified" id="unverified1">Unverified<br>
                 </label>
                 <input type="hidden" name="ward" value="{{ $wardId }}">
-                <select required class="form-control" name="subward">
+                <select id="select1" required class="form-control" name="subward">
                     <option value="">--Select--</option>
                     @foreach($subwards as $ward)
-                        <option value="{{ $ward->id}}" {{ $subwardId == $ward->id? 'selected':'' }}>{{ $ward->sub_ward_name }}</option>
+                        <option value="{{ $ward->id}}"  required {{ $subwardId == $ward->id? 'selected':'' }}>{{ $ward->sub_ward_name }}</option>
                     @endforeach
                 </select><br>
-                <button class="btn btn-primary form-control" type="submit">Fetch</button>
+                <button class="btn btn-primary form-control" onclick="checkthis()" type="button">Fetch</button>
             </form>
             <br>
             @if(session('Error'))
@@ -258,8 +259,7 @@
                     <tr>
                         <td>Completion</td>
                         <td class="text-center">{{ $Ccompletion }}</td>
-                        <td>
-                            
+                        <td> 
                             {{ $completion }}
                         </td>
                     </tr>
@@ -271,4 +271,55 @@
     </div>
 </div>
 </div>
+<script type="text/javascript">
+function check()
+{
+    if(genuine.checked == false && fake.checked == false && unverified.checked == false )
+    {
+            window.alert("Please Select altest One Quality");
+           
+    }
+    else if(genuine.checked == true || fake.checked == true || unverified.checked == true){
+    var select = document.getElementById('select'); 
+                 if (select.value ) {
+                       var form = document.getElementById("thisForm");
+                     form.submit();
+                    }
+        else{
+                 window.alert("Please select an item in the list");
+                return false;
+        }
+    }
+    else{
+        var form = document.getElementById("thisForm");
+        form.submit();
+    }    
+}
+function checkthis()
+{
+   
+    if(genuine1.checked == false && fake1.checked == false && unverified1.checked == false )
+    {
+           
+            window.alert("Please Select altest One Quality");     
+    }
+    else if(genuine1.checked == true || fake1.checked == true || unverified1.checked == true){
+    var select = document.getElementById('select1'); 
+                 if (select.value ) {
+                       var form = document.getElementById("thisForm1");
+                     form.submit();
+                    }
+        else{
+                 window.alert("Please select an item in the list");
+                return false;
+        }
+    }
+    else{
+        var form = document.getElementById("thisForm1");
+        form.submit();
+    }
+}
+
+</script>
+
 @endsection

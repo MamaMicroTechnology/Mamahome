@@ -1,4 +1,4 @@
-<!DO    CTYPE html>
+<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -12,10 +12,13 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
     <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+
     <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -386,7 +389,7 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
-                        <li><a href="{{ URL::to('/') }}/chat" style="font-size:1.1em"><b>Chat <span class="badge">&nbsp;{{ $chatcount }}&nbsp;</span></b></a></li>
+                        <!--  -->
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
                         @endif
@@ -465,12 +468,18 @@ div#calendar{
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/mapping">Mapping</a>
     <a href="{{ URL::to('/getprojectsize') }}">Listed Project & Sizes</a>
+    <a href="#" data-toggle="collapse" data-target="#planning">Sales Projection & Planning &#x21F2;</a>
+        <div id="planning" class="collapse">
+            <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Projection</a>
+            <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Category Wise Planning</a>
+        </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
+            <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
@@ -487,6 +496,7 @@ div#calendar{
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
+         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
         <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
@@ -504,40 +514,65 @@ div#calendar{
     <a href="{{ URL::to('/employeereports') }}">Attendance</a>
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
+   <a href="{{ URL::to('/letracking') }}">Tracking</a>
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <a href="{{ URL::to('/confidential') }}">Confidential</a>
+    <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
+    <a href="{{ URL::to('payment') }}">Delivery order Details</a>
+     <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
+  <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
+  <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
+  <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
+
 </div>
-@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
+@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    
-    <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
-    <a href="{{ URL::to('/') }}/tlenquirysheet">Enquiry Sheet</a>
-   <a href="{{ URL::to('/enquiryCancell') }}">Enquiry cancelled</a>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
-      <a href="{{ URL::to('/assign_project') }}">Assign Project</a><!-- 
-    <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> -->
-    <a href="{{ URL::to('/') }}/assignListSlots">Assign Listing Engineers and Reports</a>
-    <a href="{{ URL::to('/') }}/tlmaps">Maps</a>
-    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-    <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
-    <a href="{{ URL::to('/orders') }}">Orders</a>
-    <!-- <a href="{{ URL::to('/tltraining') }}">Training Video</a> -->
-    <a href="{{ URL::to('/') }}/kra">KRA</a>
-</div>
+      <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+   
+   
+     <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
+
+        <div id="sales" class="collapse">
+
+              <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
+              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+              <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
+              <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
+              <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
+              <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
+              <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone numbers</a>
+              <a href="{{ URL::to('/assign_enquiry') }}">&nbsp;&nbsp;&nbsp; -Assign Enquiry</a>
+        </div>
+     <a href="#" data-toggle="collapse" data-target="#operation">Operation &#x21F2;</a>
+        <div id="operation" class="collapse">
+              <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
+              <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a>
+              <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
+              <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
+              <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
+        </div>   
+     <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
+     <a href="{{ URL::to('/') }}/kra">KRA</a> 
+</div>  
+
+
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+
+    <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
+    <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/') }}/assignconverterSlots">Assign Listing Engineers</a>
+    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
-  </div>
+</div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
@@ -545,21 +580,40 @@ div#calendar{
      <a href="{{ URL::to('/marketmanufacturerdetails') }}">Manufacturer Details</a>
      <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
      <a href="{{ URL::to('/marketingpricing') }}">Pricing</a>
+    <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
+    <a href="{{ URL::to('/') }}/pending">Pending Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
+      <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
+       <a href="{{ URL::to('payment') }}">Delivery Order Details</a>
+       <a href="{{ URL::to('checkdetailes') }}">Cheq Details</a>
+
       <a href="{{ URL::to('/') }}/kra">KRA</a>
   </div>
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" > Projects</a>
+     @if(isset($stages))
+       @if($stages->project_ids == null)
+       <a href="#" data-toggle="modal" data-target="#myModal" >Assigned Task</a>
+       @else
+        <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+       @endif
+     @else
+     <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+
+     @endif
+    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+
+     <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
-     <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a> 
-     <!--  <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
-     <!-- <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
+     
+    <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
+      <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
+    <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
-    <a href="{{ URL::to('/') }}/followupproject" >Follow up projects</a>
-    <a href="{{ URL::to('/') }}/myreport" >MY Report</a>
+    <a href="{{ URL::to('/') }}/followupproject" >Follow Up projects</a>
+    <a href="{{ URL::to('/') }}/myreport" >My Report</a>
     <a href="{{ URL::to('/') }}/kra" >KRA</a>           
   </div>
    @elseif(Auth::user()->group_id == 14)
@@ -571,14 +625,105 @@ div#calendar{
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-      </div>
-@endif
-@endif
-
-
+        </div>
+        @endif
+        @endif
+        
+        
         @yield('content')
     </div>
 
+ <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"  style="background-color:#f4811f;padding:2px">
+          <h4 class="modal-title">Instructions</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+         @if(isset($stages))
+        <center> <b> Instructions </b> </center>
+          <p>{{ $stages->instruction }}</p>
+        @endif
+       <table class="table table-hover ">
+                <thead>
+                  <th>Time To Complete</th>
+                  <th>Assign Ward</th>
+                  <th>Assiged Stage</th>
+                 <th> Assign Date</th>
+               </thead>
+                <tbody>
+                 @if(isset($stages))
+                <tr>
+                    <td>
+                      {{ date('h:i:s A', strtotime($stages->time )) }}
+                    </td>
+                    
+                   
+                    <td>{{ $stages->ward }}</td>
+                   
+                   
+                      <td>{{ $stages->assigndate }} </td>
+                  
+                </tr>
+                      @endif
+                    </tbody>
+                    </table>
+        <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
+         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- The Modal -->
+  <div class="modal" id="myModal10">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
+          <h4 class="modal-title">Reason For Rejecting?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+        <form action="{{ URL::to('/') }}/reject" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        @if(isset($stages))
+         <input type="hidden" name="user_id" value="{{ $stages->user_id }}">
+         @endif
+         <label>Reason : </label>
+         <textarea type="text" name="remark" style="width:400px;" ></textarea>
+        </div>
+       <center> <button type="sunmit" value="submit" class="btn btn-primary">Submit</button></center> 
+        </form>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+
+    
     <!-- Scripts -->
     <script>
         function openNav() {
@@ -590,7 +735,7 @@ div#calendar{
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-    </script>
+        </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -614,7 +759,8 @@ div#calendar{
         span.onclick = function() { 
             modal.style.display = "none";
         }
-</script>
-<script src="{{ asset('js/app.js') }}"></script>
+        </script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
 </body>
 </html>

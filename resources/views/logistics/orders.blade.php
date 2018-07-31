@@ -1,3 +1,4 @@
+
 @extends('layouts.logisticslayout')
 @section('title','Logistics Orders')
 @section('content')
@@ -14,10 +15,15 @@
                     <th style="text-align: center;">Order Id</th>
 					<th style="text-align:center">Product</th>
 					<th style="text-align:center">Quantity</th>					
-					<th style="text-align:center">Dispatch Status</th>
+					<!-- <th style="text-align:center">Dispatch Status</th> -->
 					<th style="text-align:center">Payment Status</th>
 					<th style="text-align:center">Delivery Status</th>
                     <th style="text-align:center">Action</th>
+                    <th style="text-align:center">Deposit Bank</th>
+
+                    <th style="text-align:center">Remark</th>
+
+
 				</thead>
 				<tbody>
 					@foreach($view as $rec)
@@ -30,31 +36,55 @@
 						</td>
 						<td style="text-align:center">{{$rec->quantity}} {{$rec->measurement_unit}}</td>
 						<!-- <td style="text-align:center"></td> -->
-						<td style="text-align:center">
+						<!-- <td style="text-align:center">
 						@if($rec->dispatch_status=='Yes')
 						    Dispatched
 						@else
 						    <button onclick="updateDispatch('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Dispatch</button>
 						@endif    
-						</td>
+						</td> -->
 				        <td style="text-align: center;">
-                            @if($rec->payment_status != "Payment Received" && $rec->dispatch_status == 'Yes')
+				      
+				             
+                            @if($rec->paymentStatus != "Payment Received" )
+                              
 							<button data-toggle="modal" data-target="#PaymentModal{{$rec->orderid}}" class="btn btn-success btn-sm">Payment Details</button>
-                                <form method="POST" action="{{ URL::to('/') }}/saveSignature" enctype="multipart/form-data">
+
+                                <form method="POST" action="{{ URL::to('/') }}/payment" enctype="multipart/form-data">
                                     {{ csrf_field() }}
 									<div id="PaymentModal{{$rec->orderid}}" class="modal fade" role="dialog">
 										<div class="modal-dialog modal-sm">
 											<!-- Modal content-->
 											<div class="modal-content">
 											<div class="modal-header">
-												Payment
+												Payment<br>
+												
+												<input type="hidden" name="orderid" value="{{ $rec->orderid }}">
+												
 											</div>
 											<div class="modal-body">
-												<label for="amount">Amount Received:</label>
-												<input required type="text" name="amount" id="amount" placeholder="Amount Received" class="form-control input-sm"><br>
+											<label for="PaymentDoneBy">Customer Name</label>
+											<input type="text" name="c_name" class="form-control input-sm">
+											 @if($rec->payment_mode != "Cheq Clear")
+												<label for="paymentMethod">Payment Mode:</label><br>
+                                          <label><input  value="RTGS"  type="checkbox" name="payment_method[]" onclick="rtgs()"><span>&nbsp;</span>RTGS(Online)</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                          <label><input  value="Cash"  type="checkbox" name="payment_method[]" onclick="cash()"><span>&nbsp;</span>Cash</label>
+                                           @endif
+												<label for="amount">Cash Amount Received:</label>
+												<input  type="text" name="amount" id="cash" placeholder="Amount Received" class="form-control input-sm">
+												<label for="amount">RTGS Amount Received:</label>
+												<input  type="text" name="rtgs" id="rtgs" placeholder="Amount Received" class="form-control input-sm">
 												<label for="sign">Signature:</label>
 												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
+												<div id="show{{ $rec->project_id }}" class="show">
+													<label for="amount">Payment Picture</label>
+													<input id="adv"  type="file" name="signature1" id="sign" class="form-control input-sm" accept="image/*">
+												</div>
+												
 												<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+												<input type="hidden" name="project_id" value="{{ $rec->project_id }}">
+												<input type="hidden" name="log_name" value="{{ $rec->delivery_boy }}">
+												
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-success pull-left">Save</button>
@@ -64,15 +94,17 @@
 									</div>
                                 </form>
                             @else
-                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->payment_status }}</a>
+                                <a href="{{ URL::to('/') }}/public/signatures/{{ $rec->signature }}">{{ $rec->paymentStatus }}</a>
                             @endif
                         </td>
                         <td style="text-align:center">
                             @if($rec->delivery_status == "Not Delivered")
 								<!-- Trigger the modal with a button -->
+								 @if($rec->paymentStatus == "Payment Received" )
 							<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}">Deliver</button>
-
+                             @endif
 							<!-- Modal -->
+							
 							<form action="{{ URL::to('/') }}/saveDeliveryDetails" method="post" enctype="multipart/form-data">
 								{{ csrf_field() }}
 								<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
@@ -122,6 +154,7 @@
 								</div>
 								</div>
 							</form>
+							
                                 <!-- <button onclick="deliverOrder('{{ $rec->orderid }}')" class="btn btn-success btn-sm">Deliver</button> -->
                             @else
 							<?php
@@ -136,16 +169,198 @@
                             @endif
                         </td>
                         <td style="text-align:center">
-                            @if($rec->payment_status == "Payment Received")
-                                {{ $rec->payment_status }}
+                            @if($rec->paymentStatus == "Payment Received")
+                                {{ $rec->paymentStatus }}
+                             
                             @elseif($rec->delivery_status != "Delivered")
-    				            <a onclick="cancelOrder('{{$rec->orderid}}')" class="btn btn-sm btn-danger" style="width:99%" >
+    				           <!--  <a onclick="cancelOrder('{{$rec->orderid}}')" class="btn btn-sm btn-danger" style="width:99%" >
     				                <b>Cancel Order</b>
     				            </a>
+ -->
                             @else
                                 Order Delivered
                             @endif
 				        </td>
+				        <td>
+				        @if($rec->payment_status != "Closed" ) 
+				      @if($rec->paymentStatus == "Payment Received" ) 
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal6{{ $rec->orderid }}">Deposit</button>
+                    @endif
+                    @endif
+                    @if($rec->paymentStatus == "Payment Received" ) 
+                     @if($rec->payment_status == "Closed" ) 
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" >Closed</button>
+                    @endif
+                   @endif
+                   
+<div class="modal" id="myModal6{{ $rec->orderid }}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header" style="background-color:green">
+        <h4 class="modal-title"><CENTER style="color: white;">Cash Collection  </CENTER></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+               <form action="{{ URL::to('/') }}/deposit" method="post" enctype="multipart/form-data">
+                 {{ csrf_field() }}
+								<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+								<input type="hidden" name="user_id" value="{{ $rec->delivery_boy }}">
+
+
+                     <table class="table table-hover" border=1 >
+											
+											<tr>
+												<td>Bank Name</td>
+												<td>
+                                                <select class="form-control" style="width: 40%" name="zone_id">
+                                                	<option value="select">----Select----</option>
+                                                	@foreach($zone as $zones)
+                                                   <option value="{{ $zones->id }}">{{ $zones->zone_name }}</option>
+                                                	@endforeach
+                                                </select>
+                                                 <select class="form-control" style="width: 40%;margin-top: -35px;margin-left:45%;" name="bankname">
+                                                	<option value="select">----Select----</option>
+                                                	<option value="AxisBank">Axis Bank</option>
+                                                </select>
+                                               </td>
+											</tr>
+											<tr>
+												<td>Amount</td>
+												<td>
+                                                 <input required class="form-control" type="text" name="Amount" value="{{ $rec->amount }}">
+                                               </td>
+											</tr>
+											<tr>
+												<td>Date Of Deposit </td>
+												<td>
+                                                 <input required class="form-control" type="date" name="bdate" >
+                                               </td>
+											</tr>
+											<!-- <tr>
+												<td>Location Of Bank</td>
+												<td>
+                                                 <input required class="form-control" type="text" name="location">
+                                               </td>
+											</tr> -->
+											<tr>
+												<td>Cash Deposit Receipt Pic</td>
+												<td>
+                                                 <input required class="form-control" type="file" name="image">
+                                               </td>
+											</tr>
+										</table>
+			 <center><button type="submit" value="submit" class="btn btn-success btn-sm">Submit</button></center>
+
+       </form> 
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+                        </td>
+				        <td>
+				        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal5{{ $rec->orderid }}">Feedback</button>
+
+				        
+	<div class="modal" id="myModal5{{ $rec->orderid }}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+     <div class="modal-header" style="background-color:green">
+        <h4 class="modal-title"><CENTER style="color: white;">Coustomer Information  </CENTER></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <form action="{{ URL::to('/') }}/feedback" method="post" enctype="multipart/form-data">
+      {{ csrf_field() }}
+								<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+
+               <table class="table table-hover" border=1 >
+											
+											<tr>
+												<td>Customer Satisfied ?</td>
+												<td>
+                                    
+                                      <label><input required value="Yes" id="home1" type="radio" name="happy"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="home2" type="radio" name="happy"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="home3" type="radio" name="happy"><span>&nbsp;</span>None</label>
+                                   
+                                 </td>
+											</tr>
+											<tr>
+												<td>Customer Is Happy With Quality Of Material?</td>
+												<td>
+                                    
+                                      <label><input required value="Yes" id="home1" type="radio" name="quan"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="home2" type="radio" name="quan"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="home3" type="radio" name="quan"><span>&nbsp;</span>None</label>
+                                   
+                                 </td>
+											</tr>
+											<tr>
+												<td>Customer Issue  ?</td>
+												<td>
+                                    
+                                      <label><input required value="Yes" id="home1" type="radio" name="issue"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                  
+                                      <label><input required value="No" id="home2" type="radio" name="issue"><span>&nbsp;</span>No</label>
+                                       <span>&nbsp;&nbsp;&nbsp;  </span>
+                                
+                                      <label><input required value="None" id="home3" type="radio" name="issue"><span>&nbsp;</span>None</label>
+                                   
+                                 </td>
+											</tr>
+											
+											<tr>
+												<td>Note</td>
+												<td>
+                                    
+                                      <textarea required value="Yes" class="form-control"  type="text" name="note"></textarea><span>&nbsp;</span>
+                                     
+                                   
+                                 </td>
+											</tr>
+										</table>
+			<center><button type="submit" value="submit" class="btn btn-success btn-sm">Submit </button></center>
+
+       </form> 
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+</td>
 					</tr>
 					@endforeach
 				</tbody>	
@@ -235,6 +450,16 @@ $(document).ready(function(){
     	    });
 	    }
 	 }
+function changeValue(val, id){
+//use comparison operator   
+if(val=="Cheque" || val=="RTGS" || val=="Cash" )
+     document.getElementById('show'+id).className = "";
+ else{
+ 	 document.getElementById('show'+id).className="hidden";
+ }
+}
+
 
 </script>
+
 @endsection

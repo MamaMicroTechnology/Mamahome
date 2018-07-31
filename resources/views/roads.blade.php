@@ -15,12 +15,15 @@
 					<a href="{{ URL::to('/') }}/projectlist?road={{ $todays }}&today=today">Today's Listing ({{ $todays }} projects)</a>
 				</li>
 				@foreach($roads as $road)
-				@if($projectCount[$road] > 0)
-				<li class="list-group-item"><a href="{{ URL::to('/') }}/projectlist?road={{ $road }}">{{ $road }} ({{ $projectCount[$road] }} projects)</a></li>
-				@endif
+			
+				
+				<li class="list-group-item"><a href="{{ URL::to('/') }}/projectlist?road={{ $road->road_name }}">{{ $road->road_name }}({{ $projectcount[$roadname] }} projects)</a></li>
+				
+			
 				@endforeach
 			</ul>
 		</div>
+		{{ $roads->links()  }}
 	</div>
 </div>
 @endsection

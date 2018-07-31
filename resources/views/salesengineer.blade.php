@@ -4,7 +4,7 @@
     <div class="col-md-12" >
 
     <div class="panel panel-default" style="overflow: scroll;">
-            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp;{{(Count($projects)) }} </p></div>  
+            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp; {{ $projectcount }} </p></div>  
          <div class="panel-body" id="page">
        <table class="table table-hover table-striped">
                 <thead>
@@ -13,30 +13,34 @@
                   <th style="width:15%">Address</th>
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
-                  <th>Action</th>
+                 
+                 <th>Action</th>
                  <th> Customer History</th>
                 
                </thead>
                 <tbody>
              <?php $ii=0; ?>
             @foreach($projects as $project)
+
+            
                 <tr>
                     <td id="projname-{{$project->project_id}}">{{ $project->project_name }}</td>
-                                    <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
+                                    <td  style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                     <td id="projsite-{{$project->project_id}}">
-                                        {{ $project->siteaddress != null ? $project->siteaddress->address : '' }}
+                                     <a target="_blank" href="https://maps.google.co.in?q={{ $project->siteaddress != null ? $project->siteaddress->address : '' }}">{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}</a>
                                     </td>
                     <td id="projproc-{{$project->project_id}}">
                                         {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}
                                     </td>
                     <td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
-                    <!-- <td>{{ Count($projects)   }}</td> -->
-                  
+                    
+                   
+                   
                      <td><form method="post" action="{{ URL::to('/') }}/confirmedProject" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">
                                       <div class="btn-group">
-                                      <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button>
+                                      <!-- <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button> -->
                                       <a class="btn btn-sm btn-success " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
@@ -103,11 +107,11 @@
                    <td  id="x">
                     <div class="col-sm-6">
                       <label>Longitude:</label>
-                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress->latitude }}" id="longitude">
+                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="longitude">
                     </div>
                     <div class="col-sm-6">
                         <label>Latitude:</label>
-                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress->latitude }}" id="latitude">
+                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="latitude">
                     </div>
                    </td>
                </tr>  
@@ -124,7 +128,7 @@
                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
                    <td>Full Address</td>
                    <td>:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress->address }}"></td>
+                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}"></td>
                </tr>
                <?php
                   $type = explode(", ",$project->construction_type);
@@ -137,18 +141,97 @@
                     <label required class="checkbox-inline"><input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
                  </td>
                </tr>
-               <tr>
-                 <td>Interested in RMC</td>
-                 <td>:</td>
-                 <td style="padding: 20px;">
-                     <div class="radio">
-                      <label><input required value="Yes" id="rmc" {{ $project->interested_in_rmc == "Yes" ? 'checked' : '' }} type="radio" name="rmcinterest">Yes</label>
-                    </div>
-                    <div class="radio">
-                      <label><input required value="No" {{ $project->interested_in_rmc == "No" ? 'checked' : '' }} id="rmc2" type="radio" name="rmcinterest">No</label>
-                    </div>
-                 </td>
-               </tr>
+              <tr>
+                                 <td>Interested In RMC</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="rmc" {{ $project->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="rmc2" {{ $project->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="rmc2" {{ $project->interested_in_rmc == "none" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Bank loans?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $project->interested_in_loan == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="loaninterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $project->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $project->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In UPVC Doors and Windows?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="dandw1" {{ $project->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw2" {{ $project->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="dandw3" {{ $project->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                                <tr>
+                                 <td>Interested In Home Automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="loan1" {{ $project->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan2" {{ $project->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="loan3" {{ $project->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Home automation?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="home1" {{ $project->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="home2" {{ $project->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="home3" {{ $project->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Premium Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                     <div class="radio">
+                                      <label><input id="premium1" {{ $project->interested_in_premium == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="premium">Yes</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="premium2" {{ $project->interested_in_premium == "No" ? 'checked' : '' }} required value="No" type="radio" name="premium">No</label>
+                                    </div>
+                                    <div class="radio">
+                                      <label><input id="premium3" {{ $project->interested_in_premium == "None" ? 'checked' : '' }} required value="None" type="radio" name="premium">None</label>
+                                    </div>
+                                 </td>
+                               </tr>
+                               <tr>
         
                <tr>
                 <td>Type of Contract ? </td>
@@ -178,7 +261,7 @@
           <tr>
             <td><b> Follow up date</b></td>
             <td>:</td>
-            <td ><input style="width:50%;" required type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
 
 
           </tr>
@@ -315,10 +398,10 @@
                  <td style="padding:10px">:</td>
                  <td style="padding: 10px;">
                     <label required class="checkbox-inline">
-                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="checkbox" value="{{ $project->budgetType }}" id="a">Structural Budget
+                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="radio" value="{{ $project->budgetType }}" id="a">Structural Budget
                     </label>
                     <label required class="checkbox-inline">
-                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="checkbox" value="{{ $project->budgetType }}">Finishing Budget
+                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="radio" value="{{ $project->budgetType }}">Finishing Budget
                     </label>
                  </td>
                </tr>
@@ -537,21 +620,48 @@
                </tr>
            </table>
             <table class="table" style="width: 40%;">
-        <tr>
-            <td style="padding: 10px;"><b>Quality</b></td>
-            <td style="padding: 10px;">
+        
+           
+            <tr id="quepanelright-{{$project->project_id}}">
+                                    <td><label>Questions</label></td>
+                                    <td>
+                                        <select style="width: 100%" class="form-control" id="select-{{$project->project_id}}" name="qstn">-->
+                                    <option disabled selected>--- Select ---</option>
+                                    <option {{ $project->with_cont == 'NOT INTERESTED'? 'selected':'' }} value="NOT INTERESTED">NOT INTERESTED</option>
+                                    <option {{ $project->with_cont == 'BUSY'? 'selected':'' }} value="BUSY">BUSY</option>
+                                    <option {{ $project->with_cont == 'WRONG NO'? 'selected':'' }} value="WRONG NO">WRONG NO</option>
+                                    <option {{ $project->with_cont == 'PROJECT CLOSED'? 'selected':'' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
+                                    <option {{ $project->with_cont == 'CALL BACK LATER'? 'selected':'' }} value="CALL BACK LATER">CALL BACK LATER</option>
+                                    <option {{ $project->with_cont == 'THEY WILL CALL BACK WHEN REQUIRED'? 'selected':'' }} value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
+                                    <option {{ $project->with_cont == 'CALL NOT ANSWERED'? 'selected':'' }} value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
+                                    <option {{ $project->with_cont == 'FINISHING'? 'selected':'' }} value="FINISHING">FINISHING</option>
+                                    <option {{ $project->with_cont == 'SWITCHED OFF'? 'selected':'' }} value="SWITCHED OFF">SWITCHED OFF</option>
+                                    <option {{ $project->with_cont == 'SAMPLE REQUEST'? 'selected':'' }} value="SAMPLE REQUEST">SAMPLE REQUEST</option>
+                                    <option {{ $project->with_cont == 'MATERIAL QUOTATION'? 'selected':'' }} value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
+                                    <option {{ $project->with_cont == 'WILL FOLLOW UP AFTER DISCUSSION WITH OWNER'? 'selected':'' }} value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
+                                    <option {{ $project->with_cont == 'DUPLICATE NUMBER'? 'selected':'' }} value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
+                                    <option {{ $project->with_cont == 'NOT REACHABLE'? 'selected':'' }} value="NOT REACHABLE">NOT REACHABLE</option>
+                                    <option {{ $project->with_cont == 'THEY HAVE REGULAR SUPPLIERS'? 'selected':'' }} value="THEY HAVE REGULAR SUPPLIERS">THEY HAVE REGULAR SUPPLIERS</option>
+                                    <option {{ $project->with_cont == 'CREDIT FACILITY'? 'selected':'' }} value="CREDIT FACILITY">CREDIT FACILITY</option>
+                                  </select>
+                                    </td>
+            <tr >                        <td style="padding: 10px;"><b>Quality</b></td>
+            <td >
                 <select  id="quality" onchange="fake()" class="form-control" name="quality">
                     <option value="null" disabled selected>--- Select ---</option>
                     <option {{ $project->quality == "Genuine" ? 'selected':''}} value="Genuine">Genuine</option>
                     <option {{ $project->quality == "Fake" ? 'selected':''}} value="Fake">Fake</option>
+                        <option {{ $project->quality == "Unverified" ? 'selected':''}} value="Unverified">Unverified</option>
                 </select>
             </td>
-        </tr>
+            </tr>
+    </tr>
+        
         
         </table>
-            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks"></textarea><br>
-            <br>
-                            
+
+            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks" >{{$project->remarks }}</textarea><br>
+ 
         <button style="width:10%;" type="submit" id="subid" class=" form-control btn btn-primary">Submit Data</button>
 </div>
 
@@ -604,7 +714,9 @@
 
         <!-- Modal footer -->
         <div class="modal-footer" style="background-color: green;padding:5px;">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary"  data-toggle="tab" href="#menu1{{ $project->project_id }}">NEXT</button>
+          <button type="button" class="btn btn-secondary pull-left" data-toggle="tab" href="#home{{ $project->project_id }}" >Privious</button>
         </div>
         
       </div>
@@ -625,14 +737,20 @@
            <table class="">
                                        
                                         <tr>
-                                       <td style="padding: 10px;" > Project Created by</td>
+                                       <td style="padding: 10px;" > Project Created By</td>
                                        <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->created_at }}</td>
+                                       <td style="padding: 10px;">{{ date('d-m-Y', strtotime( $project->created_at)) }}</td>
+                                        <td>
+                                              {{ date('h:i:s A', strtotime($project->created_at)) }}
+                                            </td>
                                        </tr>
                                         <tr>
-                                       <td style="padding: 10px;" > Project Updated by</td>
+                                       <td style="padding: 10px;" > Project Updated By</td>
                                        <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->updated_at }}</td>
+                                       <td style="padding: 10px;">{{ date('d-m-Y', strtotime(  $project->updated_at)) }}</td>
+                                        <td>
+                                              {{ date('h:i:s A', strtotime($project->updated_at)) }}
+                                            </td>
                                        </tr>
                                         
                                         
@@ -642,7 +760,7 @@
                                        <tbody>
                                        <thead>
                                           <!-- <th>User_id</th> -->
-                                          <th>SlNo</th>
+                                          <th>Serial No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
                                          <th> &nbsp;&nbsp; Name </th>

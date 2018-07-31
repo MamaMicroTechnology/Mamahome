@@ -23,15 +23,17 @@
     19 => 'Illuminate\\Translation\\TranslationServiceProvider',
     20 => 'Illuminate\\Validation\\ValidationServiceProvider',
     21 => 'Illuminate\\View\\ViewServiceProvider',
-    22 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    23 => 'Barryvdh\\Cors\\ServiceProvider',
+    22 => 'Barryvdh\\Cors\\ServiceProvider',
+    23 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     24 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    25 => 'App\\Providers\\AppServiceProvider',
-    26 => 'App\\Providers\\AuthServiceProvider',
-    27 => 'App\\Providers\\EventServiceProvider',
-    28 => 'App\\Providers\\RouteServiceProvider',
-    29 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
-    30 => 'Barryvdh\\Cors\\ServiceProvider',
+    25 => 'Carbon\\Laravel\\ServiceProvider',
+    26 => 'Nexmo\\Laravel\\NexmoServiceProvider',
+    27 => 'App\\Providers\\AppServiceProvider',
+    28 => 'App\\Providers\\AuthServiceProvider',
+    29 => 'App\\Providers\\EventServiceProvider',
+    30 => 'App\\Providers\\RouteServiceProvider',
+    31 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    32 => 'Barryvdh\\Cors\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -45,14 +47,15 @@
     7 => 'Illuminate\\Pagination\\PaginationServiceProvider',
     8 => 'Illuminate\\Session\\SessionServiceProvider',
     9 => 'Illuminate\\View\\ViewServiceProvider',
-    10 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    11 => 'Barryvdh\\Cors\\ServiceProvider',
-    12 => 'App\\Providers\\AppServiceProvider',
-    13 => 'App\\Providers\\AuthServiceProvider',
-    14 => 'App\\Providers\\EventServiceProvider',
-    15 => 'App\\Providers\\RouteServiceProvider',
-    16 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
-    17 => 'Barryvdh\\Cors\\ServiceProvider',
+    10 => 'Barryvdh\\Cors\\ServiceProvider',
+    11 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
+    12 => 'Carbon\\Laravel\\ServiceProvider',
+    13 => 'App\\Providers\\AppServiceProvider',
+    14 => 'App\\Providers\\AuthServiceProvider',
+    15 => 'App\\Providers\\EventServiceProvider',
+    16 => 'App\\Providers\\RouteServiceProvider',
+    17 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    18 => 'Barryvdh\\Cors\\ServiceProvider',
   ),
   'deferred' => 
   array (
@@ -153,6 +156,7 @@
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
+    'Nexmo\\Client' => 'Nexmo\\Laravel\\NexmoServiceProvider',
   ),
   'when' => 
   array (
@@ -193,6 +197,9 @@
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
+    array (
+    ),
+    'Nexmo\\Laravel\\NexmoServiceProvider' => 
     array (
     ),
   ),

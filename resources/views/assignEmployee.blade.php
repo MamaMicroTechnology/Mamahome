@@ -37,7 +37,7 @@
                                  <th>Model Name</th>
                                 <th>Serial No.</th>
                                 <th>Description</th>
-                                <th>Assign_Date</th>
+                                <th>Assign Date</th>
                                 <th>Remark</th>
                                 <th>Action</th>
                             </thead>
@@ -316,6 +316,7 @@ function getname(){
                     success: function(response)
                     {
                         console.log(response);
+                        
                         var ans = "<option value=''>--Select--</option>";
                         for(var i=0;i<response.length;i++)
                         {
@@ -367,16 +368,16 @@ function getdesc(){
                     {
 
                          console.log(response);
-                         ;
+                         
                          for(var i=0;i<response.length;i++)
                         {
                            var text = response[i].description;
                          
                         }
                          document.getElementById('desc').value = text;
-                         document.getElementById('desc').disabled = text;  
+                        
                     }
                 });
             }
-</script>
+</script>       
 @endsection

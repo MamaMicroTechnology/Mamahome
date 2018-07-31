@@ -23,6 +23,7 @@ class OperationListingEngineer
             $department = Department::where('id',Auth::user()->department_id)->pluck('dept_name')->first();
             if($department != "Operation" && $group != "Listing Engineer"){
                 if($group != "Admin"){
+                    if($group != "Account Executive")
                     return redirect()->back();
                 }
             }

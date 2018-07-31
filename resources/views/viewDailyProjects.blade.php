@@ -4,11 +4,12 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-heading">
-
-                            
-               <b style="color:white">Project Details
+               <div class="col-md-4">Project Details</div>
+               <div class="pull-center col-md-4"><center>Project Id {{ $details->project_id }}</center></div>
+               <div class="pull-right col-md-4">
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
-               </b> 
+               </div>
+              <br>
             </div>
             <div class="panel-body">
                 <table class="table table-responsive table-striped table-hover">
@@ -57,8 +58,20 @@
                             <td>{{ $details->construction_type }}</td>
                         </tr>
                         <tr>
-                            <td><b>Interested in RMC</b></td>
+                            <td><b>Interested in RMC?</b></td>
                             <td>{{ $details->interested_in_rmc }}</td>
+                        </tr>
+                         <tr>
+                            <td><b>Interested in UPVC Doors and Windows?</b></td>
+                            <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                         <tr>
+                            <td><b>Interested in Home Automation?</b></td>
+                            <td>{{ $details->automation }}</td>
+                        </tr>
+                         <tr>
+                            <td><b>Interested in Premium Products?</b></td>
+                            <td>{{ $details->interested_in_premium }}</td>
                         </tr>
                         <tr>
                             <td><b>Status</b></td>
@@ -69,9 +82,17 @@
                             <td><b>Project Type</b></td>
                             <td>B{{ $details->basement }} + G + {{ $details->ground }} = {{ $details->basement + $details->ground + 1 }}</td>
                         </tr>
-                            <tr>
+                         <tr>
                             <td><b>Project Size</b></td>
                             <td>{{ $details->project_size }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Plot type</b></td>
+                            <td>L({{ $details->length }}) * B ({{ $details->breadth }})</td>
+                        </tr>
+                        <tr>
+                            <td><b>Plot Size</b></td>
+                            <td>{{ $details->plotsize }}</td>
                         </tr>
                         <!-- <tr>
                             <td><b>Road</b></td>
@@ -90,9 +111,16 @@
                         <tr>
                             <td><b>Project Image</b></td>
                             <td>
-                                <img height="300" width="300" class="img img-responsive" src="{{ URL::to('/') }}/public/projectImages/{{ $details->image }}">
-                               <td style="font-size:13px">
-                               
+                               <?php
+                                               $images = explode(",", $details->image);
+                                               ?>
+                                             <div class="row">
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350"  src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
                             </td>
                             </td>
                         </tr>
@@ -139,6 +167,7 @@
         </div>
     </div>
 </div>
+ 
 <div class="col-md-12">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:orange">
@@ -166,8 +195,7 @@
         </div>
     </div>
 </div>
-
- <div class="col-md-12">
+<div class="col-md-12">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading" style="background-color:green">
@@ -292,8 +320,5 @@
             </div>
         </div>
     </div>
-</div>
-        
-       
-
+</div>      
 @endsection
