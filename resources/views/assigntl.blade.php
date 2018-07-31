@@ -33,7 +33,7 @@
     <select  name="ward_id" id="dateassigned" class="hidden" >
                               <option value="select">----------Select Ward------</option>
                             @foreach($ward as $wards)
-                              <option value="{{$wards->id}}"> {{ $wards->ward_name }}</option>
+                              <option {{ $wards->id  ? 'selected' : '' }} value="{{$wards->id}}">      {{ $wards->ward_name }}</option>
                             @endforeach
                             </select> 
                             <select id="dateassigned1" name="framework[]" multiple class="form-control hidden" >
@@ -70,7 +70,7 @@
                             <select name="ward_id" id="date{{ $user->id }}" class="form-control"  >
                               <option value="select">----Select Ward----</option>
                             @foreach($ward as $wards)
-                              <option  value="{{$wards->id}}"> {{ $wards->ward_name }}</option>
+                              <option value="{{$wards->id}}"> {{ $wards->ward_name }}</option>
 
                              @endforeach
                             </select> 
@@ -80,7 +80,7 @@
                             <div class="form-group">
                              <select id="menu{{$user->id}}" name="framework[]" multiple class="form-control" style="width: 60%;" >
                              @foreach($user1 as $users2)
-                              <option value="{{$users2->id}}"> {{ $users2->name }}</option>
+                              <option  value="{{$users2->id}}"> {{ $users2->name }}</option>
                              @endforeach
                             </select> 
                              </div>
