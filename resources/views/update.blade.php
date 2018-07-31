@@ -43,7 +43,7 @@
                       @endif
                     </center>
                       
-                   <form method="POST" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
+                   <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
@@ -190,7 +190,7 @@
                                   </td>
                                </tr>
                              <tr>
-              <td>Follow Up?</td>
+              <td><b>Follow Up?</b></td>
               <td>:</td>
               <td>
                   <div class="radio">
@@ -203,7 +203,7 @@
 
           </tr>
           <tr>
-            <td> Follow up date</td>
+            <td> Follow Up Date</td>
             <td>:</td>
             <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
 
@@ -693,6 +693,30 @@
                                </tr>
                            </table>
                       </div><br>
+                      <tr id="quepanelright-{{$projectdetails->project_id}}">
+                                    <td><label>Questions</label></td><br>
+                                    <td>
+                                        <select style="width: 100%" class="form-control" id="select-{{$projectdetails->project_id}}" name="qstn">-->
+                                    <option disabled selected>--- Select ---</option>
+                                    <option {{ $projectdetails->with_cont == 'NOT INTERESTED'? 'selected':'' }} value="NOT INTERESTED">NOT INTERESTED</option>
+                                    <option {{ $projectdetails->with_cont == 'BUSY'? 'selected':'' }} value="BUSY">BUSY</option>
+                                    <option {{ $projectdetails->with_cont == 'WRONG NO'? 'selected':'' }} value="WRONG NO">WRONG NO</option>
+                                    <option {{ $projectdetails->with_cont == 'PROJECT CLOSED'? 'selected':'' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
+                                    <option {{ $projectdetails->with_cont == 'CALL BACK LATER'? 'selected':'' }} value="CALL BACK LATER">CALL BACK LATER</option>
+                                    <option {{ $projectdetails->with_cont == 'THEY WILL CALL BACK WHEN REQUIRED'? 'selected':'' }} value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
+                                    <option {{ $projectdetails->with_cont == 'CALL NOT ANSWERED'? 'selected':'' }} value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
+                                    <option {{ $projectdetails->with_cont == 'FINISHING'? 'selected':'' }} value="FINISHING">FINISHING</option>
+                                    <option {{ $projectdetails->with_cont == 'SWITCHED OFF'? 'selected':'' }} value="SWITCHED OFF">SWITCHED OFF</option>
+                                    <option {{ $projectdetails->with_cont == 'SAMPLE REQUEST'? 'selected':'' }} value="SAMPLE REQUEST">SAMPLE REQUEST</option>
+                                    <option {{ $projectdetails->with_cont == 'MATERIAL QUOTATION'? 'selected':'' }} value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
+                                    <option {{ $projectdetails->with_cont == 'WILL FOLLOW UP AFTER DISCUSSION WITH OWNER'? 'selected':'' }} value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
+                                    <option {{ $projectdetails->with_cont == 'DUPLICATE NUMBER'? 'selected':'' }} value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
+                                    <option {{ $projectdetails->with_cont == 'NOT REACHABLE'? 'selected':'' }} value="NOT REACHABLE">NOT REACHABLE</option>
+                                    <option {{ $projectdetails->with_cont == 'THEY HAVE REGULAR SUPPLIERS'? 'selected':'' }} value="THEY HAVE REGULAR SUPPLIERS">THEY HAVE REGULAR SUPPLIERS</option>
+                                    <option {{ $projectdetails->with_cont == 'CREDIT FACILITY'? 'selected':'' }} value="CREDIT FACILITY">CREDIT FACILITY</option>
+                                  </select>
+                                    </td>
+                                    </tr>
                       <table class="table">
                         <tr>
                             <td><b>Quality</b></td>
@@ -716,7 +740,7 @@
                           </td>
                         </tr>
                         </table>
-                            <button type="submit" id="sub" onclick="pageNext()" class="form-control btn btn-primary">Submit Data</button>
+                            <button type="button"  onclick="pageNext()" class="form-control btn btn-primary">Submit Data</button>
                    </form>
                 </div>
             </div>
@@ -814,18 +838,35 @@ function check(arg){
   {
     
     
-    var x = document.getElementById(arg);
+    var input = document.getElementById(arg);
+    if(isNaN(input)){
+      while(isNaN(document.getElementById(arg).value)){
+          var str = document.getElementById(arg).value;
+          str     = str.substring(0, str.length - 1);
+          document.getElementById(arg).value = str;
+      }
+    }
+
     if(arg == 'length' || arg == 'breadth'){
      
       var breadth = parseInt(document.getElementById("breadth").value);
       var length   = parseInt(document.getElementById("length").value);
+      if(isNaN(length)){
+
+                length = 0;
+               
+              }
+              if(isNaN(breadth)){
+
+               
+                breadth = 0;
+              }
       if(!isNaN(breadth) && !isNaN(length)){
         var sum          = basement+ground+1;
         var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
         sum1          = length*breadth;
         Size    += sum1;
         var total = sum * sum1;
-      
         if(document.getElementById("totalsize").innerHTML != null)
           document.getElementById("totalsize").innerHTML = Size;
         else
@@ -838,7 +879,7 @@ function check(arg){
 </script>
 <!--This line by Siddharth -->
 
-<script type="text/javascript">
+<script type="teinputt/javascript">
   $(document).ready(function(){
       count();
   });
@@ -958,16 +999,16 @@ function sum(){
           }else if(document.getElementById("budget").value == ""){
             window.alert("You have not entered Budget");
           }else if(document.getElementById('prName').value == ''){
-                    alert('Please Enter a Procurement Name');
+                              alert('Please Enter a Procurement Details');
                     document.getElementById('prName').focus();
           }else if(document.getElementById('prPhone').value== ''){
-                    alert('Please Enter Phone Number');
+                    alert('Please Enter Procurement Phone Number');
                     document.getElementById('prPhone').focus();
-          }
-          else{
-                         document.getElementById("sub").submit();
-           }
-        }
+          }else{
+
+                          document.getElementById("sub").submit();
+            }
+       }
     }
 </script>
 
@@ -1004,6 +1045,16 @@ function sum(){
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
+      if(isNaN(ground)){
+
+        ground = 0;
+       
+      }
+      if(isNaN(basement)){
+
+       
+        basement = 0;
+      }
       var opts = "<option value=''>--Floor--</option>";
       if(!isNaN(basement) && !isNaN(ground)){
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
@@ -1106,41 +1157,212 @@ function sum(){
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
     }
+   
+      // var ctype1 = document.getElementById('constructionType1');
+      // var ctype2 = document.getElementById('constructionType2');
+      // var ctype3 = document.getElementById('constructionType3');
+      // var ctype4 = document.getElementById('constructionType4');
+      // var countinput;
+      // if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
+      //   //   both construction type
+      //   countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+      // }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
+      //   //   all construction type and budget type
+      //   countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
+      // }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
+      //   //   both construction type and either budget type
+      //   countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
+      // }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
+      //   //   
+      //   countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+      // }else if(ctype1.checked == true || ctype2.checked == true){
+      //   countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+      // }else{
+      //   countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      // }
+      // if(countinput >= 5){
+      //   $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+      //   $('#constructionType1').attr('disabled',false);
+      //   $('#constructionType2').attr('disabled',false);
+      //   $('#constructionType3').attr('disabled',false);
+      //   $('#constructionType4').attr('disabled',false);
+      // }else if(countinput == 0){
+      //     return "none";
+      // }else{
+      //   $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+      // }
+
+ var numbers = [];
     function count(){
-      var ctype1 = document.getElementById('constructionType1');
-      var ctype2 = document.getElementById('constructionType2');
-      var ctype3 = document.getElementById('constructionType3');
-      var ctype4 = document.getElementById('constructionType4');
-      var countinput;
-      if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
-        //   both construction type
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
-      }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
-        //   all construction type and budget type
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
-      }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
-        //   both construction type and either budget type
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
-      }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
-        //   
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
-      }else if(ctype1.checked == true || ctype2.checked == true){
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
-      }else{
-        countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      var status = document.getElementsByName('status[]');
+      var selected = "";
+      var check = 0;
+      // first 3 stages + last stage
+      for(var i = 0; i < status.length; i++){
+        if(status[i].checked == true)
+          check += 1;
       }
-      if(countinput >= 5){
-        $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
-        $('#constructionType1').attr('disabled',false);
-        $('#constructionType2').attr('disabled',false);
-        $('#constructionType3').attr('disabled',false);
-        $('#constructionType4').attr('disabled',false);
-      }else if(countinput == 0){
-          return "none";
-      }else{
-        $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+      if(check == 0){
+        for(var i = 0; i < status.length; i++){
+          status[i].disabled = false;
+        }
       }
+      if(check == 1){
+        if(status[0].checked == true || status[1].checked == true || status[2].checked == true || status[status.length - 1].checked == true){
+          for(var i = 0; i < status.length; i++){
+            if(status[i].checked != true)
+              status[i].disabled = true;
+          }
+        }else if(status[3].checked == true){
+          // pillars
+          numbers = [3,4,5];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+
+            }
+          }
+        }else if(status[4].checked == true){
+          // walls
+          numbers = [3,4,5,6,7];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[5].checked == true){
+          // roofing
+          numbers = [4,5,6,7];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[6].checked == true){
+          // electrical
+          numbers = [6,7,9,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[7].checked == true){
+          // plumbing
+          numbers = [6,7,8,10,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[8].checked == true){
+          // plastering
+          numbers = [6,7,8];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[9].checked == true){
+          // flooring
+          numbers = [9,10,12,13];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[10].checked == true){
+          // carpentry
+          numbers = [10,11,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[11].checked == true){
+          // paintings
+          numbers = [6,10,11,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[12].checked == true){
+          // fixtures
+          numbers = [10,12];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else if(status[13].checked == true){
+          // plastering
+          numbers = [8,11,12,13];
+          for(var i = 0; i < status.length; i++){
+            var a = numbers.indexOf(i);
+            if(a == -1){
+              status[i].disabled = true;
+            }
+          }
+        }else{
+          for(var i = 0; i < status.length; i++){
+            status[i].disabled = false;
+          }
+        }
+      }
+      // var ctype1 = document.getElementById('constructionType1');
+      // var ctype2 = document.getElementById('constructionType2');
+      // var ctype3 = document.getElementById('constructionType3');
+      // var ctype4 = document.getElementById('constructionType4');
+      // var countinput;
+    //   if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == false && ctype4.checked == false){
+    //     //   both construction type
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+    //   }else if(ctype1.checked == true && ctype2.checked == true && ctype3.checked == true && ctype4.checked == true){
+    //     //   all construction type and budget type
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 4;
+    //   }else if(ctype1.checked == true && ctype2.checked == true && (ctype3.checked == true || ctype4.checked == true)){
+    //     //   both construction type and either budget type
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 3;
+    //   }else if((ctype1.checked == true || ctype2.checked == true) && (ctype3.checked == true || ctype4.checked == true)){
+    //     //   
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
+    //   }else if(ctype1.checked == true || ctype2.checked == true){
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+    //   }else{
+    //     countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    //   }
+    //   if(countinput >= 5){
+    //     $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+    //     $('#constructionType1').attr('disabled',false);
+    //     $('#constructionType2').attr('disabled',false);
+    //     $('#constructionType3').attr('disabled',false);
+    //     $('#constructionType4').attr('disabled',false);
+    //   }else if(countinput == 0){
+    //       return "none";
+    //   }else{
+    //     $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+    //   }
+      // if(document.getElementById('planning').checked == true || document.getElementById('closed').checked == true){
+      //   $('input[type="checkbox"]:not(:checked)').attr('disabled',true);
+      //   $('#constructionType1').attr('disabled',false);
+      //   $('#constructionType2').attr('disabled',false);
+      //   $('#constructionType3').attr('disabled',false);
+      //   $('#constructionType4').attr('disabled',false);
+      // }else{
+      //   $('input[type="checkbox"]:not(:checked)').attr('disabled',false);
+      // }
     }
+    
     function fileUpload(){
       var count = document.getElementById('oApprove').files.length;
       if(count > 5){
@@ -1148,8 +1370,7 @@ function sum(){
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
-</script>
-<script type="text/javascript">
- 
+
+</script> 
 @endsection
 

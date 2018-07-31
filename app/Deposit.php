@@ -8,7 +8,7 @@ class Deposit extends Model
 {
     protected $table = 'deposit';
     function order(){
-    	return $this->belongsToOne('App\Order');
+    	return $this->belongsTo('App\Order','orderId','id');
     }
 }
 

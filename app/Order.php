@@ -11,6 +11,10 @@ class Order extends Model
     	return $this->hasOne('App\Payment','order_id');
     }
     function deposit(){
-    	return $this->hasOne('App\Deposit','orderId');
+    	return $this->hasOne('App\Deposit','orderId','id');
     }
+    function check(){
+    	return $this->hasOne(Check::class,'id','orderId');
+    }
+    
 }

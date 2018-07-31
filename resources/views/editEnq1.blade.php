@@ -14,7 +14,7 @@
 Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 			</div>
 			<div class="panel-body">
-				<form method="POST" action="{{URL::to('/')}}/editinputdata">
+				<form method="POST" id="sub" action="{{URL::to('/')}}/editinputdata">
 					{{csrf_field()}}
 					<input type="hidden" value="{{ $enq->id }}" name="reqId">
 					@if(SESSION('success'))
@@ -261,7 +261,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 							</tr>
 							<tr>
 								<td><label>Total Quantity : </label></td>
-								<td><input type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
+								<td><input  type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
 								
 								</td>
 
@@ -277,7 +277,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 					</table>
 					<input type="hidden" id="measure" name="measure">
 					<div class="text-center">
-						<input type="submit" name="" id="" class="btn btn-md btn-success" style="width:40%" />
+						<button type="button" onclick="submithere()" name="" id="" class="btn btn-md btn-success" style="width:40%" >Submit</button>
 						<input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 					</div>
 				</form>
@@ -415,7 +415,14 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
     }
 
 }
-
+function submithere(){
+     if(document.getElementById("totalquantity").value == ""){
+            window.alert("You Have Not Entered Total Quantity");
+          }
+        else{
+            document.getElementById("sub").submit();
+        }
+}
 
 </script>
 @endsection

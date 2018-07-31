@@ -37,4 +37,7 @@ class User extends Authenticatable
     public function requirement(){
         return $this->hasOne('App\Requirement','id','generated_by');
     }
+     function tlward(){
+        return $this->hasOne(Tlwards::class,'user_id','id');
+    }
 }

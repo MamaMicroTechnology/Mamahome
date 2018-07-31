@@ -55,6 +55,7 @@ use App\Manufacturer;
 use App\ManufacturerProduce;
 use App\MamahomeAsset;
 use App\ProjectImage;
+use App\Tlwards;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1882,11 +1883,7 @@ class mamaController extends Controller
     }
   public function clearcheck(Request $request)
     {
-            
-          
-       
-       
-      Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
+       Order::where('id',$request->id)->update(['payment_mode'=>$request->satus]);
         return back();
     }
 
@@ -1894,7 +1891,7 @@ class mamaController extends Controller
     public function check(request $request){
         
         $empimage = time().'.'.request()->image->getClientOriginalExtension();
-        $request->image->move(public_path('empsignature'),$empimage);
+        $request->image->move(public_path('chequeimages'),$empimage);
 
      $check = new Check;
      $check->project_id=$request->project_id;
@@ -1910,11 +1907,14 @@ class mamaController extends Controller
     Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
      return back();
 }
-    public function checkdetailes(request $request){
-        $details = Check::all();
-        $countrec = count($details);
-        return view('checkdetailes',['details' => $details,'countrec'=>$countrec]);
-    }
+public function checkdetailes(request $request){
+    $details = Check::all();
+    $countrec = count($details);
+    $check = Order::all();
+
+     return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
+}
+   
     public function postSaveManufacturer(Request $request)
     {
         if($request->type == "blocks"){
@@ -1968,5 +1968,33 @@ class mamaController extends Controller
             }
         }
         return back()->with('Success','Manufacturer Saved Successfully');;
+    }
+    public function listeng(){
+
+       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+      $listengs= User::whereIn('users.id',$userIds)
+                        ->where('users.group_id',6)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+                       
+        return view('listeng',['listengs'=>$listengs]);
+    }
+     public function getmap(request $request)
+    {
+      $name = $request->name;
+      $id = user::where('name',$name)->pluck('id');
+      $ward = user::where('users.id',$id)
+        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+        ->where('department_id','!=','10')
+        ->select('sub_wards.sub_ward_name')->get();
+      return view('getmap',['name'=>$name]);
     }
 }

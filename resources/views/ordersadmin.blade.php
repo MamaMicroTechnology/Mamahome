@@ -45,8 +45,9 @@
                         <td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}
                         </a>
                         </td>
-                        <td>{{ $rec->orderid }}</td>
-                        <td>{{$rec -> name }}</td>
+                     
+                        <td>{{ $rec->orderid }}  </td>
+                        <td>{{$rec->name }}</td>
                         <td>
                             {{$rec -> main_category}}<br>
                             {{$rec -> sub_category}}<br>
@@ -106,9 +107,10 @@
                                 </div>
                                 </div>
                             @else
-                                {{ $rec->payment_status }}
+                                {{ $rec->ostatus }}
                             @endif
                         </td>
+
                         <td>
                        
                             @if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
@@ -165,7 +167,7 @@
             <tr>
                 <th>Cheque Date</th>
                 <td>:</td>
-                <td><input type="text" name="date" class="form-control" required></td>
+                <td><input type="date" name="date" class="form-control" required></td>
             </tr>
             <tr>
                 <th>Bank Name</th>

@@ -24,6 +24,7 @@
                             <th style="width:15%">Action </th>
                             <th></th>
                           </thead>
+                          @if(Auth::user()->group_id != 22)
                           @foreach($users as $user)  
                            <tr>
                             <td>{{$user->name}}</td>
@@ -32,6 +33,18 @@
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
                           </tr>         
                            @endforeach
+                           @else
+                            @foreach($tlUsers as $user)  
+                           <tr>
+                            <td>{{$user->name}}</td>
+                            <td>{{ $user->group_name }}</td>
+                            <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
+                          </tr>         
+                           @endforeach
+                           @endif
+
+
+
                           <input type="hidden" name="user_id" id="userId">
                    
                 </table>

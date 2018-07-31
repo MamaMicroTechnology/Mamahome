@@ -3,6 +3,7 @@
 @section('content')
 <div class="col-md-12">
     <div class="row">
+                @if(Auth::user()->group_id != 22)
         <div class="col-md-6">
             <div class="panel panel-default" style="border-color:green">
                 <div class="panel-heading" style="color:white;background-color:green">Zones
@@ -32,6 +33,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="col-md-6">
             
             <div class="panel panel-default" style="border-color: green">

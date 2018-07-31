@@ -26,6 +26,8 @@ Route::get('/logoutFromChat','TokenController@logout');
  Route::post('/saveinvoice','marketingController@saveinvoice');
  Route::post('/price','marketingController@price');
  Route::get('/allprice','HomeController@allprice');
+ Route::get('/assigntl','HomeController@assigntl');
+ Route::post('/tlward','HomeController@tlward');
 
 
  Route::get('/pending','marketingController@pending');
@@ -95,6 +97,8 @@ Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/ordersformarketing','marketingController@ordersformarketing');
+Route::get('/listeng','mamaController@listeng');
+  Route::get('/listeng/{name}','mamaController@getmap');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -113,6 +117,8 @@ Route::get('/storequery','HomeController@storequery');
 
 
 
+
+
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
 Route::get('/marketingvendordetails','amController@vendorDetails');
@@ -127,6 +133,8 @@ Route::get('/viewInvoices','marketingController@viewInvoices');
 
 // Orders
 Route::get('/orders','HomeController@amorders');
+// Route::get('/orders','HomeController@amorders1');
+
 Route::get('/updateampay','HomeController@updateampay');
 Route::get('/confirmOrder','HomeController@confirmOrder');
 Route::get('/cancelOrder','HomeController@cancelOrder');
@@ -232,6 +240,7 @@ Route::group(['middleware' => ['admin']],function(){
 
     Route::get('/adtraining','HomeController@adtraining');
     Route::get('/adenquirysheet','HomeController@enquirysheet');
+
     Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
     Route::get('/editEmployee','HomeController@editEmployee');
