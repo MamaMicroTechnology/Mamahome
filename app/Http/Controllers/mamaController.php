@@ -55,6 +55,7 @@ use App\Manufacturer;
 use App\ManufacturerProduce;
 use App\MamahomeAsset;
 use App\ProjectImage;
+use App\Tlwards;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1967,5 +1968,33 @@ public function checkdetailes(request $request){
             }
         }
         return back()->with('Success','Manufacturer Saved Successfully');;
+    }
+    public function listeng(){
+
+       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+      $listengs= User::whereIn('users.id',$userIds)
+                        ->where('users.group_id',6)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+                       
+        return view('listeng',['listengs'=>$listengs]);
+    }
+     public function getmap(request $request)
+    {
+      $name = $request->name;
+      $id = user::where('name',$name)->pluck('id');
+      $ward = user::where('users.id',$id)
+        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+        ->where('department_id','!=','10')
+        ->select('sub_wards.sub_ward_name')->get();
+      return view('getmap',['name'=>$name]);
     }
 }

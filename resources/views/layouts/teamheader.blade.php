@@ -403,7 +403,7 @@ div#calendar{
         </nav>
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-          @if(Auth::check() && Auth::user()->group_id == 22)
+          @if(Auth::check() && Auth::user()->group_id == 22 || Auth::check() && Auth::user()->group_id == 1)
             <!-- <a href="{{ URL::to('/home') }}">Home</a>
             <a href="{{ URL::to('/') }}/chat">Chat</a>
           
@@ -437,7 +437,12 @@ div#calendar{
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
-        </div>   
+        </div>  
+        <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+      <div id="agent" class="collapse">
+          <a href="{{ URL::to('/') }}/listeng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+          <a href="{{ URL::to('/acc') }}"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+      </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
 

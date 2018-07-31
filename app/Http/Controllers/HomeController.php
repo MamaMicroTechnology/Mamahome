@@ -1736,6 +1736,7 @@ class HomeController extends Controller
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
+                       
        $totalcount = User::whereIn('group_id',$group)
                             ->where('department_id','!=','10')
                             ->count();
@@ -6833,7 +6834,8 @@ public function display(request $request){
         }else{
             $users="null";
         }
-       if(count($check) == 0){
+
+       if(($check) == null){
             $tlward=new Tlwards;
             $tlward->user_id = $request->user_id;
              $tlward->group_id = $request->group_id;
