@@ -9,9 +9,12 @@
 		<div class="panel panel-default" style="border-color: #f4811f">
 			<div class="panel-heading" style="background-color: #f4811f;text-align:center">
 				<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+				<br><br>
+<p>(Add Only One Category With One Enquiry,<br>
+Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 			</div>
 			<div class="panel-body">
-				<form method="POST" action="{{URL::to('/')}}/editinputdata">
+				<form method="POST" id="sub" action="{{URL::to('/')}}/editinputdata">
 					{{csrf_field()}}
 					<input type="hidden" value="{{ $enq->id }}" name="reqId">
 					@if(SESSION('success'))
@@ -53,6 +56,7 @@
 								<td><label>Select category:</label></td>
 								<td><button id="mybutton" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Product</button></td>
 							</tr>
+							
 <?php
 	$sub = explode(", ",$enq->quantity);
 	$brands = explode(", ",$enq->brand);
@@ -91,7 +95,7 @@
 								<?php 
 									$qnt = explode(' :',$sub[$i]);
 								?>
-								<input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$sub[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
+								<input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$sub[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -246,6 +250,24 @@
 								<td>{{ $enq->quantity }}</td>
 							</tr>
 							<tr>
+								<td><label>Enquiry Quantity : </label></td>
+								<td><input type="text" value="{{ $enq->enquiry_quantity !=null ? $enq->enquiry_qantity : $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" />
+								Before Entering the Enquiry Quantity Make Sure You Have Selected The Proper Sub-Category And Brand From Above Selection.<br>
+								(Ex : 53 Grade:1500 )</td>
+							</tr>
+							<tr>
+							<td><label>Brand :</label></td>
+							<td>{{ $enq->brand }}(Note: Only One Brand For One Enquiry)</td>
+							</tr>
+							<tr>
+								<td><label>Total Quantity : </label></td>
+								<td><input  type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
+								
+								</td>
+
+							</tr>
+							
+							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>
 									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" />{{ $enq->notes }}</textarea>
@@ -255,7 +277,7 @@
 					</table>
 					<input type="hidden" id="measure" name="measure">
 					<div class="text-center">
-						<input type="submit" name="" id="" class="btn btn-md btn-success" style="width:40%" />
+						<button type="button" onclick="submithere()" name="" id="" class="btn btn-md btn-success" style="width:40%" >Submit</button>
 						<input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 					</div>
 				</form>
@@ -266,8 +288,11 @@
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 	function check(arg){
+	 var input = document.getElementById(arg).value;
+	    if(isNaN(input)){
+		       document.getElementById(arg).value = "";
+	    }
 	    document.getElementById('econtact').style.borderColor = '';
-	    var input = document.getElementById(arg).value;
 	    if(input){
 		    if(isNaN(input)){
 		      while(isNaN(document.getElementById(arg).value)){
@@ -383,5 +408,21 @@
 				myform.equantity.focus();
 		     }
 	}
+	function checkthis(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+               document.getElementById(arg).value = "";
+    }
+
+}
+function submithere(){
+     if(document.getElementById("totalquantity").value == ""){
+            window.alert("You Have Not Entered Total Quantity");
+          }
+        else{
+            document.getElementById("sub").submit();
+        }
+}
+
 </script>
 @endsection

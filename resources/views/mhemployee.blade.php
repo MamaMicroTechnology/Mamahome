@@ -41,8 +41,7 @@
             </div>
         </div>
         <div class="col-md-10" id="disp">
-                       
-                          <br><br><br><br>
+             <br><br><br><br>
                            <img src="http://mamahome360.com/public/android-icon-36x36.png">
                            MAMA HOME PVT LTD&nbsp;&nbsp;
                            Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
@@ -51,6 +50,10 @@
     border-radius: 50%;
     display: inline-block;"></span> {{ $totalcount }}
         </div>
+    </div>
+</div>
+
+                 
  
 <!--Modal-->
 <form method="post" action="{{ URL::to('/') }}/amaddEmployee">

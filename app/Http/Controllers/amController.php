@@ -59,6 +59,7 @@ class amController extends Controller
         $prices = CategoryPrice::all();
          $loggedInUsers = attendance::where('date',date('Y-m-d'))
                         ->join('users','empattendance.empId','users.employeeId')
+                        ->where('users.id','!=',31)
                         ->select('users.name','empattendance.*')
                         ->get();
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
@@ -352,7 +353,6 @@ class amController extends Controller
     public function editEmployee(Request $request){
         $user = User::where('employeeId', $request->UserId)->first();
         $employeeDetails = EmployeeDetails::where('employee_id',$request->UserId)->first();
-       
         $bankDetails = BankDetails::where('employeeId',$request->UserId)->first();
         $assets = Asset::all();
         $assetInfos = AssetInfo::where('employeeId',$request->UserId)->get();

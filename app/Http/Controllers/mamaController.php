@@ -51,7 +51,8 @@ use App\ZoneMap;
 use App\SubWardMap;
 use App\Asset;
 use App\Check;
-
+use App\Manufacturer;
+use App\ManufacturerProduce;
 use App\MamahomeAsset;
 use App\ProjectImage;
 
@@ -476,7 +477,7 @@ class mamaController extends Controller
         }
 
         $bType = count($request->budgetType);
-        if(count($request->budgetType != 0)){
+        if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
         $statusCount = count($request->status);
@@ -628,6 +629,8 @@ class mamaController extends Controller
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
         $no = $request->prPhone;
+        $pid = $projectdetails->id;
+       
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
@@ -676,7 +679,7 @@ class mamaController extends Controller
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
         $activity->save();
-        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no."'>Click Here</a><br>To View Approximate Material Calculation";
+        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('Success',$text);
     }
     public function updateProject($id, Request $request)
@@ -704,7 +707,7 @@ class mamaController extends Controller
             // road width
             $point = $request->rWidth != null && $project->road_width != $request->rWidth ? $point+4 : $point+0;
             // Construction type
-            if(count($request->construction_type) != 0){
+            if($request->construction_type != 0){
                 $construction_types = implode(", ",$request->constructionType);
             }else{
                 $construction_types = $project->construction_type;
@@ -780,7 +783,7 @@ class mamaController extends Controller
                 'municipality_approval' => $imageName1
             ]);
         }
-        if(count($request->oApprove) != 0){
+        if($request->oApprove != 0){
             $i = 0;
             $otherApprovals = "";
             foreach($request->oApprove as $oApprove){
@@ -874,7 +877,7 @@ class mamaController extends Controller
             'followup' => $request->follow,
             'budget' => $request->budget,
             'contract'=>$request->contract,
-            'with_cont'=>$request->qstn,
+            // 'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'automation'=> $request->automation,
              'plotsize' => $size,
@@ -1774,6 +1777,8 @@ class mamaController extends Controller
             'sub_category'  =>$subcategories,
             'updated_by' =>Auth::user()->id,
             'quantity' => $qnty,
+            'enquiry_quantity' =>$request->enquiryquantity,
+            'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
@@ -1908,4 +1913,59 @@ public function checkdetailes(request $request){
 
      return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
 }
+   
+    public function postSaveManufacturer(Request $request)
+    {
+        if($request->type == "blocks"){
+            $modes = implode(", ", $request->paymentMode);
+            $manufacturer = new Manufacturer;
+            $manufacturer->name = $request->name;
+            $manufacturer->address = $request->address;
+            $manufacturer->area = $request->area;
+            $manufacturer->capacity = $request->capacity;
+            $manufacturer->present_utilization = $request->utilization;
+            $manufacturer->cement_requirement = $request->cement_requirement;
+            $manufacturer->prefered_cement_brand = $request->brand;
+            $manufacturer->deliverability = $request->deliverability;
+            $manufacturer->sand_requirement = $request->sand_requirement;
+            $manufacturer->type = $request->manufacturing_type;
+            $manufacturer->payment_mode = $modes;
+            $manufacturer->save();
+
+            // saving product details
+            for($i = 0; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
+        }else{
+            $manufacturer = new Manufacturer;
+            $manufacturer->name = $request->name;
+            $manufacturer->address = $request->address;
+            $manufacturer->area = $request->area;
+            $manufacturer->capacity = $request->capacity;
+            $manufacturer->present_utilization = $request->utilization;
+            $manufacturer->cement_requirement = $request->cement_requirement;
+            $manufacturer->cement_used = $request->cement_used;
+            $manufacturer->prefered_cement_brand = $request->brand;
+            $manufacturer->deliverability = $request->deliverability;
+            $manufacturer->sand_requirement = $request->sand_requirement;
+            $manufacturer->moq = $request->moq;
+            $manufacturer->save();
+
+            // saving product details
+            for($i = 0; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                // $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
+        }
+        return back()->with('Success','Manufacturer Saved Successfully');;
+    }
 }

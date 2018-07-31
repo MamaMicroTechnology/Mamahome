@@ -108,6 +108,11 @@ Route::post('/{id}/converterassignWards','mamaController@assignWards');
 Route::get('/scenquirysheet','HomeController@enquirysheet');
 Route::get('/sctraining','HomeController@sctraining');
 Route::get('/enquirywise','HomeController@enqwise');
+Route::get('/storedetails','HomeController@storedetails');
+Route::get('/lebrands','HomeController@lebrands');
+Route::get('/storequery','HomeController@storequery');
+
+
 
 
 //marketing
@@ -255,7 +260,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/admincompleted','mamaController@completedAssignment');
     Route::get('/confidential','HomeController@confidential');
     Route::get('/letracking','HomeController@getLeTracking');
-    Route::get('/Unupdated','HomeController@Unupdated');
+   
     Route::post('/storedate','HomeController@storedate');
 
     Route::post('/uploadvideo','HomeController@uploadvideo');
@@ -535,6 +540,23 @@ Route::get('/planning','HomeController@getLockedProjection');
 Route::get('/stage','HomeController@getLockedStage');
 Route::get('/reset','HomeController@getReset');
 Route::get('/total','HomeController@getTotal');
+Route::get('/yearly','HomeController@getYearlyPlanning');
+Route::get('/fiveyears','HomeController@getFiveYears');
+Route::get('/daily','HomeController@getDaily');
+Route::post('/lockYearly','HomeController@lockYearly');
+Route::get('/countryProjection','HomeController@getCountryProjection');
+Route::get('/expenditure','HomeController@getExpenditure');
+Route::post('/saveExpenditure','HomeController@saveExpenditure');
+Route::get('/viewExpenditure','HomeController@viewExpenditure');
+Route::get('/five_years_expenditure','HomeController@getFiveYearsExpenditure');
+Route::get('/extensionPlanner','HomeController@getExtensionPlanner');
+Route::get('/editProjectionPlanner','HomeController@getEditProjectionPlanner');
+// Auditor Dashboard
+Route::get('/auditor','HomeController@getAuditorDashboard');
+Route::post('/save','HomeController@save');
 Route::post('/clearcheck','mamaController@clearcheck');
 Route::get('/cashdeposit','marketingController@cashdeposit');
 Route::post('/close','logisticsController@close');
+Route::get('/addManufacturer','HomeController@addManufacturer');
+Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
+Route::get('/viewManufacturer','HomeController@viewManufacturer');

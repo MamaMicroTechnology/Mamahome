@@ -44,18 +44,77 @@
                                       <a class="btn btn-sm btn-success " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
-                                   <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373" class="btn btn-sm " {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
+                                   <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373;color:white" class="btn btn-sm " {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
                                    <span class="badge">&nbsp;{{  $project->confirmed }}&nbsp;</span>
                                    </button>
                                   @endif
-                                          @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
-                                   <button style="padding: 5.5px;background-color: #aed581;" id="demo"  type="button" class="btn  btn-sm "  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
+                                   @if( $project->confirmed == "0" ||  $project->confirmed == "false" )
+                                   <button style="padding: 5.5px;background-color: #aed581;color:white" id="demo"  type="button" class="btn  btn-sm "  {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
                                     <span class="badge">&nbsp;{{  $project->confirmed }}&nbsp;</span>
                                    </button></div>
                                   @endif
-                              </form>
-                      </td>
+                                  <button  type="button" data-toggle="modal" data-target="#myquestions{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;">Questions</button>
+                                </form>
+<!-- Modal -->  
+<div id="myquestions{{ $project->project_id }}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+ <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:rgb(245, 127, 27);color: white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select The Questions</h4>
+        </div>
+        <div class="modal-body">
+          <form method="get" action="{{ URL::to('/') }}/storequery ">
+            {{ csrf_field() }}
+           <input type="hidden" value="{{ $project->project_id }}" name="id">
+          <table class="table table-responsive">
+            <tr>
 
+              <td><label>Questions :</label></td>
+              <td>
+                          <select required style="width: 100%" class="form-control" name="qstn">
+                                    <option disabled selected>--- Select ---</option>
+                                    <option value="NOT INTERESTED">NOT INTERESTED</option>
+                                    <option  value="BUSY">BUSY</option>
+                                    <option  value="WRONG NO">WRONG NO</option>
+                                    <option  value="PROJECT CLOSED">PROJECT CLOSED</option>
+                                    <option  value="CALL BACK LATER">CALL BACK LATER</option>
+                                    <option value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
+                                    <option value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
+                                    <option value="FINISHING">FINISHING</option>
+                                    <option  value="SWITCHED OFF">SWITCHED OFF</option>
+                                    <option  value="SAMPLE REQUEST">SAMPLE REQUEST</option>
+                                    <option  value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
+                                    <option  value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
+                                    <option  value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
+                                    <option  value="NOT REACHABLE">NOT REACHABLE</option>
+                                    <option  value="THEY HAVE REGULAR SUPPLIERS">THEY HAVE REGULAR SUPPLIERS</option>
+                                    <option  value="CREDIT FACILITY">CREDIT FACILITY</option>
+                                  </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><label>Call Remark : </label></td>
+                        <td><textarea required style="resize: none;" class="form-control" placeholder="Remarks" name="remarks" ></textarea></td>
+                      </tr>
+                    </table>
+       
+      <button type="submit" class=" form-control btn btn-primary">Submit</button>
+      </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal end -->
+                            
+                     
+
+                    </td>
                     <td>
                       <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
                                    History </button>
@@ -731,42 +790,45 @@
       <div class="modal-content">
         <div class="modal-header  " style="background-color:#868e96;padding:5px; " >
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"> Customer History <span class="pull-right"> Project_Id: {{ $project-> project_id }}</span></h4>
+          <h4 class="modal-title"> Customer History </h4>
         </div>
         <div class="modal-body">
-           <table class="">
-                                       
-                                        <tr>
-                                       <td style="padding: 10px;" > Project Created By</td>
-                                       <td>:</td>
-                                       <td style="padding: 10px;">{{ date('d-m-Y', strtotime( $project->created_at)) }}</td>
-                                        <td>
-                                              {{ date('h:i:s A', strtotime($project->created_at)) }}
-                                            </td>
+              <table class="table table-responsive">
+                                      <tr>
+                                        <td style="padding: 10px;" >Project Id</td>
+                                        <td>:</td>
+                                        <td style="padding: 10px;"> {{ $project-> project_id }}</td>
+                                      </tr>           
+                                      <tr>
+                                         <td style="padding: 10px;" > Project Created At</td>
+                                         <td>:</td>
+                                         <td style="padding: 10px;">{{ date('d-m-Y', strtotime( $project->created_at)) }}</td>
+                                          <td>
+                                                {{ date('h:i:s A', strtotime($project->created_at)) }}
+                                              </td>
                                        </tr>
                                         <tr>
-                                       <td style="padding: 10px;" > Project Updated By</td>
-                                       <td>:</td>
-                                       <td style="padding: 10px;">{{ date('d-m-Y', strtotime(  $project->updated_at)) }}</td>
-                                        <td>
-                                              {{ date('h:i:s A', strtotime($project->updated_at)) }}
-                                            </td>
+                                           <td> Project Updated At</td>
+                                           <td>:</td>
+                                           <td >{{ date('d-m-Y', strtotime(  $project->updated_at)) }}</td>
+                                            <td>
+                                                  {{ date('h:i:s A', strtotime($project->updated_at)) }}
+                                                </td>
                                        </tr>
-                                        
-                                        
-                                         <tr>
-                                       
-                                     <td>  <table class="table table-responsive table-hover">
-                                       <tbody>
+                </table>
+
+                              <table class="table table-responsive table-hover">
                                        <thead>
                                           <!-- <th>User_id</th> -->
                                           <th>Serial No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
-                                         <th> &nbsp;&nbsp; Name </th>
+                                          <th> Name </th>
+                                          <th>Question</th>
+                                          <th>Call Remark</th>
                                        </thead>
                                        <tbody>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <label>Call History</label>
+                                     <label>Call History</label>
                                          <?php $i=1 ?>
                                           @foreach($his as $call)
                                           @if($call->project_id == $project->project_id)
@@ -785,15 +847,18 @@
                                             <td>
                                              {{$call->username}}
                                             </td>
+                                            <td>
+                                              {{ $call->question }}
+                                            </td>
+                                            <td>
+                                              {{ $call->remarks }}
+                                            </td>
                                           </tr>
                                       @endif
                                        @endforeach
-                                      </tbody>
-                                       </table>
-                                       </td>
-                                       </tr>
+                                    </tbody>
+                        </table>
                                       
-                                     </table>
         </div>
         <div class="modal-footer" style="padding:1px;">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

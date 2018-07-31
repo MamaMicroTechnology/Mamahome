@@ -3,16 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <meta name="description" content="Signature Pad - HTML5 canvas based smooth signature drawing using variable width spline interpolation.">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/signature-pad.css">
+
+    <!--[if IE]>
+    <link rel="stylesheet" type="text/css" href="css/ie9.css">
+    <![endif]-->
+
+
     <style>
-    body{
-        font-family: "Times New Roman";
-    }
+        body{
+            font-family: "Times New Roman";
+        }
         .sidenav {
             height: 100%;
             width: 0;
@@ -57,202 +68,202 @@
           .sidenav a {font-size: 18px;}
         }
     /*******************************Calendar Top Navigation*********************************/
-div#calendar{
-    margin:0px auto;
-    padding:0px;
-    width: 602px;
-    font-family:Helvetica, "Times New Roman", Times, serif;
-  }
-   
-  div#calendar div.box{
-      position:relative;
-      top:0px;
-      left:0px;
-      width:100%;
-      height:40px;
-      background-color:   #787878 ;      
-  }
-   
-  div#calendar div.header{
-      line-height:40px;  
-      vertical-align:middle;
-      position:absolute;
-      left:11px;
-      top:0px;
-      width:582px;
-      height:40px;   
-      text-align:center;
-  }
-   
-  div#calendar div.header a.prev,div#calendar div.header a.next{ 
-      position:absolute;
-      top:0px;   
-      height: 17px;
-      display:block;
-      cursor:pointer;
-      text-decoration:none;
-      color:#FFF;
-  }
-   
-  div#calendar div.header span.title{
-      color:#FFF;
-      font-size:18px;
-  }
-   
-   
-  div#calendar div.header a.prev{
-      left:0px;
-  }
-   
-  div#calendar div.header a.next{
-      right:0px;
-  }
-   
-   
-   
-   
-  /*******************************Calendar Content Cells*********************************/
-  div#calendar div.box-content{
-      border:1px solid #787878 ;
-      border-top:none;
-  }
-  div#calendar ul.label{
-      float:left;
-      margin: 0px;
-      padding: 0px;
-      margin-top:5px;
-      margin-left: 5px;
-  }
-  div#calendar ul.label li{
-      margin:0px;
-      padding:0px;
-      margin-right:5px;  
-      float:left;
-      list-style-type:none;
-      width:80px;
-      height:40px;
-      line-height:40px;
-      vertical-align:middle;
-      text-align:center;
-      color:#000;
-      font-size: 15px;
-      background-color: transparent;
-  }
-  div#calendar ul.dates{
-      float:left;
-      margin: 0px;
-      padding: 0px;
-      margin-left: 5px;
-      margin-bottom: 5px;
-  }
-  /** overall width = width+padding-right**/
-  div#calendar ul.dates li{
-      margin:0px;
-      padding:0px;
-      margin-right:5px;
-      margin-top: 5px;
-      vertical-align:middle;
-      float:left;
-      list-style-type:none;
-      width:80px;
-      height:80px;
-      font-size:12px;
-      background-color: #DDD;
-      color:#000;
-      text-align:center; 
-  }
-   
-  :focus{
-      outline:none;
-  }
-   
-  div.clear{
-      clear:both;
-  }
-  
-  /*Image modal*/
-       /* Style the Image Used to Trigger the Modal */
-.myImg {
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+    div#calendar{
+        margin:0px auto;
+        padding:0px;
+        width: 602px;
+        font-family:Helvetica, "Times New Roman", Times, serif;
+    }
+    
+    div#calendar div.box{
+        position:relative;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:40px;
+        background-color:   #787878 ;      
+    }
+    
+    div#calendar div.header{
+        line-height:40px;  
+        vertical-align:middle;
+        position:absolute;
+        left:11px;
+        top:0px;
+        width:582px;
+        height:40px;   
+        text-align:center;
+    }
+    
+    div#calendar div.header a.prev,div#calendar div.header a.next{ 
+        position:absolute;
+        top:0px;   
+        height: 17px;
+        display:block;
+        cursor:pointer;
+        text-decoration:none;
+        color:#FFF;
+    }
+    
+    div#calendar div.header span.title{
+        color:#FFF;
+        font-size:18px;
+    }
+    
+    
+    div#calendar div.header a.prev{
+        left:0px;
+    }
+    
+    div#calendar div.header a.next{
+        right:0px;
+    }
+    
+    
+    
+    
+    /*******************************Calendar Content Cells*********************************/
+    div#calendar div.box-content{
+        border:1px solid #787878 ;
+        border-top:none;
+    }
+    div#calendar ul.label{
+        float:left;
+        margin: 0px;
+        padding: 0px;
+        margin-top:5px;
+        margin-left: 5px;
+    }
+    div#calendar ul.label li{
+        margin:0px;
+        padding:0px;
+        margin-right:5px;  
+        float:left;
+        list-style-type:none;
+        width:80px;
+        height:40px;
+        line-height:40px;
+        vertical-align:middle;
+        text-align:center;
+        color:#000;
+        font-size: 15px;
+        background-color: transparent;
+    }
+    div#calendar ul.dates{
+        float:left;
+        margin: 0px;
+        padding: 0px;
+        margin-left: 5px;
+        margin-bottom: 5px;
+    }
+    /** overall width = width+padding-right**/
+    div#calendar ul.dates li{
+        margin:0px;
+        padding:0px;
+        margin-right:5px;
+        margin-top: 5px;
+        vertical-align:middle;
+        float:left;
+        list-style-type:none;
+        width:80px;
+        height:80px;
+        font-size:12px;
+        background-color: #DDD;
+        color:#000;
+        text-align:center; 
+    }
+    
+    :focus{
+        outline:none;
+    }
+    
+    div.clear{
+        clear:both;
+    }
+    
+    /*Image modal*/
+        /* Style the Image Used to Trigger the Modal */
+    .myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-.myImg:hover {opacity: 0.7;}
+    .myImg:hover {opacity: 0.7;}
 
-/* The Modal (background) */
-.imgModal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
+    /* The Modal (background) */
+    .imgModal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
 
-/* Modal Content (Image) */
-.imgModal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
+    /* Modal Content (Image) */
+    .imgModal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
 
-/* Caption of Modal Image (Image Text) - Same Width as the Image */
-#caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: 150px;
-}
+    /* Caption of Modal Image (Image Text) - Same Width as the Image */
+    #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+    }
 
-/* Add Animation - Zoom in the Modal */
-.imgModal-content, #caption {
-    animation-name: zoom;
-    animation-duration: 0.6s;
-}
+    /* Add Animation - Zoom in the Modal */
+    .imgModal-content, #caption {
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
 
-@keyframes zoom {
-    from {transform:scale(0)}
-    to {transform:scale(1)}
-}
+    @keyframes zoom {
+        from {transform:scale(0)}
+        to {transform:scale(1)}
+    }
 
-/* The Close Button */
-.imgClose {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
+    /* The Close Button */
+    .imgClose {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
 
-.imgClose:hover,
-.imgClose:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
+    .imgClose:hover,
+    .imgClose:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-/* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px){
     .modal-content {
         width: 100%;
     }
 }
 </style>
 </head>
-<body>
+<body onselectstart="return false">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -326,7 +337,6 @@ div#calendar{
 @if(Auth::user()->group_id == 12)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    
     <a href="{{ URL::to('/') }}/lcoorders">Order Details</a>
     <a href="{{ URL::to('/') }}/deliveredorders">Delivered Orders</a>
     <a href="{{ URL::to('/lcinvoice') }}">Invoices</a>
@@ -340,6 +350,8 @@ div#calendar{
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/signature_pad.umd.js"></script>
+    <script src="{{ URL::to('/') }}/js/app2.js"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
