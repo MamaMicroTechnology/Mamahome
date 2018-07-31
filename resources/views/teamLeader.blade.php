@@ -5,13 +5,19 @@
 ?>
 @extends($ext)
 @section('content')
+@if(Auth::user()->group_id != 2)
 <br><br>
-<h2><center>WELCOME TO TEAM LEADER 
+<h2><center>WELCOME TO <b>TEAM LEADER </b>
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
+@else
+<br><br>
+<h2><center>WELCOME TO <b>SENIOR TEAM LEADER </b>
+<br>ZONE 1, BANGALORE'S DASHBOARD
+<BR><br>
+@endif
 @if(Auth::user()->group_id == 22)
 <h2>Assigned Ward : {{$x}}</h2>
-
 @endif
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
