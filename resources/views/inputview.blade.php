@@ -9,9 +9,12 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 <div class="panel panel-default" style="border-color: #f4811f">
 <div class="panel-heading" style="background-color: #f4811f;text-align:center">
 <b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+<br><br>
+<p>(Add Only One Category With One Enquiry,<br>
+Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 </div>
 <div class="panel-body">
-<form method="POST" name="myform" action="{{URL::to('/')}}/inputdata">
+<form method="POST" id="sub" name="myform" action="{{URL::to('/')}}/inputdata">
 {{csrf_field()}}
 @if(SESSION('success'))
 <div class="text-center alert alert-success">
@@ -99,7 +102,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             
                                
                                 <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('{{$subcategory->id}}')"  name="quan[]" class="form-control">
+                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"  name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -219,6 +222,11 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     </td>
 </tr>
 <tr>
+<tr>
+            <td><label>Total Quantity : </label></td>
+            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity" title="Three letter country code" class="form-control" /></td>
+
+</tr>
 <td><label>Remarks :</label></td>
 <td>
 <textarea style="resize: none;" rows="4" cols="40" name="eremarks"
@@ -229,8 +237,8 @@ id="eremarks" class="form-control" /></textarea>
 </table>
 <input type="hidden" id="measure" name="measure">
 <div class="text-center">
-<input type="submit" name="" id="" class="btn btn-md btn-success"
-style="width:40%" />
+<button type="button" name="" id="" class="btn btn-md btn-success"
+style="width:40%" onclick="submithere()"  >Submit</button>
 <input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 </div>
 </form>
@@ -241,10 +249,16 @@ style="width:40%" />
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 function check(arg){
-    document.getElementById('econtact').style.borderColor = '';
     var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+               document.getElementById(arg).value = "";
+    }
+    document.getElementById('econtact').style.borderColor = '';
+   
     if(input){
+       
         if(isNaN(input)){
+            
             while(isNaN(document.getElementById(arg).value)){
                 var str = document.getElementById(arg).value;
                 str = str.substring(0, str.length - 1);
@@ -289,7 +303,7 @@ function getProjects()
 }
 var count = 0;
 function getBrands(id,category_name){
-    alert();
+  
     var e = id;
     var category = document.getElementById("mCategory"+id);
     if(category.checked == true){
@@ -311,7 +325,7 @@ function getBrands(id,category_name){
                     count++;
                     for(var i=0;i<response[0].length;i++)
                     {
-                        ans += "<label class='checkbox-inline'>"+"<input name='bnd[]' id='brand"+response[0][i].id+"' type='checkbox' onchange=\"getSubCat('"+response[0][i].id+"','"+response[0][i].brand+"')\" value='"+response[0][i].id+"'>"+response[0][i].brand+"</label>"+"<br>";
+                        ans += "<label class='checkbox-inline'>"+"<input name='bnd[]' id='brand"+response[0][i].id+"' type='checkbox' onchange=\"getSubCat('"+response[0][i].id+"','"+response[0][i].brand+"')\" value='"+response[0][i].id+"' >"+response[0][i].brand+"</label>"+"<br>";
                     }
                     ans += "</div>";
                     document.getElementById('brands').innerHTML = ans;
@@ -343,7 +357,7 @@ function getSubCat(id,brandname)
                 var text = document.getElementById('sCategory').innerHTML;
                 var n = text.search(brandname);
                 if(n != -1){
-                    alert(2);
+                  
                     document.getElementById(brandname).style.display = "";
                 }else{
                     text += "<div id = '"+name+"' class='col-md-4'>"+"*"+name+"<br>";
@@ -426,11 +440,22 @@ for (i = 0; i < acc.length; i++) {
         }
     });
 }
+function checkthis(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+        
+               document.getElementById(arg).value = "";
+    }
 
-
-
-
-
+}
+function submithere(){
+     if(document.getElementById("totalquantity").value == ""){
+            window.alert("You Have Not Entered Total Quantity");
+          }
+        else{
+            document.getElementById("sub").submit();
+        }
+}
 </script>
 
 @endsection

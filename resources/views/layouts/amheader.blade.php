@@ -383,7 +383,11 @@ div#calendar{
                                 </a>
 
                                 <ul class="dropdown-menu">
+                                  @if(Auth::user()->department_id != 8 && Auth::user()->group_id != 19)
+
                                     <li><a href="{{ URL::to('/')}}/changePassword">Change Password</a></li>
+                                    
+                                    @endif
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

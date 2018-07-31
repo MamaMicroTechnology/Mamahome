@@ -1,4 +1,12 @@
-@extends('layouts.app')
+<?php
+    $group = Auth::user()->group->group_name;
+    if($group == "Auditor"){
+        $content = "auditor.layout.auditor";
+    }else{
+        $content = "layouts.app";
+    }
+?>
+@extends($content)
 @section('content')
 <div class="container">
     <center><h3>Select Category</h3></center>

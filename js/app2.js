@@ -107,7 +107,8 @@ saveJPGButton.addEventListener("click", function (event) {
     alert("Please provide a signature first.");
   } else {
     var dataURL = signaturePad.toDataURL("image/jpeg");
-    download(dataURL, "signature.jpg");
+    alert(dataURL);
+    // download(dataURL, "signature.jpg");
   }
 });
 

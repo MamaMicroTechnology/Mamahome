@@ -9,27 +9,26 @@
 
 <div class="container">
     <div class="row">
-   
+      
       @if($subwards)
       <div class="col-md-3"> 
          You are in {{$subwards->sub_ward_name}}<br><br>
         @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
+        <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br> -->
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         
-          @if( $totalprojects !=  $update)
-           <span class="">  <a  class="btn btn-primary form-control" onclick="vali({{ $bal }})" >Completed</a></span>
-            @else
-          <span class="">  <a href="{{ URL::to('/')}}/salescompleted" class="btn btn-primary form-control">Completed</a></span>
-        @endif
+         
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br>
+        <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br> -->
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
          <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br> 
          
@@ -37,10 +36,12 @@
           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br>
+         <!-- <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br> -->
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
-        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br>
+       <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br> -->
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
           @endif
           <br><br>
@@ -110,7 +111,7 @@
                   <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
                 </tr>
                 <tr>
-                  <td style="border: 1px solid gray;"><label>Updated Projects</label></td>
+                  <td style="border: 1px solid gray;"><label>Last 30 Days Updated Projects</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $update  }}<strong></td>
                 </tr>
                 <tr>
@@ -119,7 +120,12 @@
                 </tr>
           </tbody>
         </table>
-        
+        @else
+        <div style="text-align: center;">
+          <div class="col-md-6 col-md-offset-3">
+            <p style="font-size: 25px;padding-top: 70px;color:gray;">No Ward Is Assigned To You, Please Contact Your Team Leader. </p>
+          </div>
+        </div>
         @endif
        </div>
         <div class="col-md-8"><br><br>
@@ -151,8 +157,26 @@
         </table>
         </div>
     </div> -->
-   
+ <!-- Modal -->
      
+</div>
+<div id="question" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Please Choose</h4>
+      </div>
+      <div class="modal-body">
+        <p>What kind of manufacturer are you adding?</p><br>
+        <a class="btn btn-success" href="{{ URL::to('/')}}/addManufacturer?type=blocks">Blocks</a>
+        <a class="btn btn-warning pull-right" href="{{ URL::to('/')}}/addManufacturer?type=rmc">&nbsp;RMC&nbsp;&nbsp;</a><br><br>
+      </div>
+    </div>
+
+  </div>
 </div>
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>
 @if(count($projects) == 0)
@@ -176,7 +200,7 @@
     }
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
+      zoom: 20,
       center: new google.maps.LatLng(12.9716, 77.5946),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -185,12 +209,12 @@
    
     var marker, i;
     var subward = new google.maps.Polygon({
-        paths:  newpat,
+        paths:  newpath,
         strokeColor: '#'+col,
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: '#'+col,
-        fillOpacity: 0.9
+        fillOpacity: 0.5
       });
   subward.setMap(map);
   }
@@ -222,7 +246,7 @@
     @endforeach
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15.5,
+      zoom: 12,
       center: new google.maps.LatLng(locations[0][1], locations[0][2]),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });

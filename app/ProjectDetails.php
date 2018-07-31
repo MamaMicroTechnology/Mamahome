@@ -31,4 +31,8 @@ class ProjectDetails extends Model
     {
     	return $this->hasOne('App\ProcurementDetails','project_id','project_id');
     }
+    public function requirement()
+    {
+    	return $this->hasOne('App\Requirement','project_id','project_id');
+    }
 }

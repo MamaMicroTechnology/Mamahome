@@ -1,4 +1,12 @@
-@extends('layouts.app')
+<?php
+    $group = Auth::user()->group->group_name;
+    if($group == "Auditor"){
+        $content = "auditor.layout.auditor";
+    }else{
+        $content = "layouts.app";
+    }
+?>
+@extends($content)
 @section('content')
 <?php
     $totalCementBags = 0;
@@ -18,7 +26,71 @@
     $totalDoors = 0;
     $totalDoorsPrice = 0;
 ?>
-<div id="projection" class="col-md-6 col-md-offset-3">
+<div class="col-md-3 pull-right">
+    <table class="table table-hover" border=1>
+    <tr>
+        <th style="text-align:center" colspan=2>Business Cycle</th>
+    </tr>
+	<tr>
+        <td>Planning</td>
+        <td style="text-align:center" rowspan=3><br><br>1</td>
+    </tr>
+    <tr>
+        <td>Digging</td>
+    </tr>
+    <tr>
+        <td>Foundation</td>
+    </tr>
+    <tr>
+        <td>Pillar</td>
+        <td style="text-align:center" rowspan=2><br>3</td>
+    </tr>
+    <tr>
+        <td>Roofing</td>
+    </tr>
+    <tr>
+        <td>Walling</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Electrical</td>
+        <td rowspan=2 style="text-align:center"><br>1</td>
+    </tr>
+    <tr>
+        <td>Plumbing</td>
+    </tr>
+    <tr>
+        <td>Plastering</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Fooring</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Carpentry</td>
+        <td style="text-align:center">1</td>
+    </tr>
+    <tr>
+        <td>Painting</td>
+        <td rowspan=3 style="text-align:center"><br><br>1</td>
+    </tr>
+    <tr>
+        <td>Fixtures</td>
+    </tr>
+    <tr>
+        <td>Completion</td>
+    </tr>
+    <tr>
+        <th>Total</th>
+        <th style="text-align:center">10</th>
+    </tr>
+    </table>
+    <small style="background-color:#c9dba4; padding:10px; text-align:center; width:100%;">
+            <marquee><i>** Note: Material Calculation Is Based On Status Of The Project And Business Cycle **</i></marquee>
+        </small>
+</div>
+<div id="projection" class="col-md-6 col-md-offset-2">
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-center col-md-3 col-md-offset-5"><b>Projection</b></div>
@@ -57,41 +129,24 @@
         <div class="col-md-6">
             <select id="categories" required class="form-control" name="category">
                 <option value="">--Select--</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "cement" ? "selected" : "" : ""}} value="cement">Cement</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "steel" ? "selected" : "" : ""}} value="steel">Steel</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "sand" ? "selected" : "" : ""}} value="sand">Sand</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "aggregates" ? "selected" : "" : ""}} value="aggregates">Aggregates</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "blocks and bricks" ? "selected" : "" : ""}} value="blocks and bricks">Blocks & Bricks</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "electrical" ? "selected" : "" : ""}} value="electrical">Electrical</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "plumbing" ? "selected" : "" : ""}} value="plumbing">Plumbing</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "flooring" ? "selected" : "" : ""}} value="flooring">Flooring</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "bathroom and sanitary" ? "selected" : "" : ""}} value="bathroom and sanitary">Bathroom & Sanitary</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "wood and adhesive" ? "selected" : "" : ""}} value="wood and adhesive">Wood & Adhesive</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "paints" ? "selected" : "" : ""}} value="paints">Paints</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "wardrobes and kitchen" ? "selected" : "" : ""}} value="wardrobes and kitchen">Wardrobes & Kitchen</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "home appliences" ? "selected" : "" : ""}} value="home appliences">Home Appliences</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "furnitures" ? "selected" : "" : ""}} value="furnitures">Furnitures</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "handrails" ? "selected" : "" : ""}} value="handrails">Handrails</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "glasses and facades" ? "selected" : "" : ""}} value="glasses and facades">Glasses & Facades</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "rmc" ? "selected" : "" : ""}} value="rmc">RMC</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "ceilling" ? "selected" : "" : ""}} value="ceilling">False Ceilling</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "fire safety" ? "selected" : "" : ""}} value="fire safety">Fire & Safety</option>
-                <option {{ isset($_GET['category']) ? $_GET['category'] == "automation" ? "selected" : "" : ""}} value="automation">Home Automation</option>
+                @foreach($conversions as $conv)
+                    <option {{ isset($_GET['category']) ? $_GET['category'] == $conv->category ? "selected" : "" : ""}} value="{{ $conv->category }}">{{ ucwords($conv->category) }}</option>
+                @endforeach
             </select>
         </div>
         </div>
         <div class="form-group">
         <label style="text-align:left;" class="control-label col-sm-6" for="price">Price</label>
         <div class="col-md-6">
-        <input id="price" required value="{{ isset($_GET['bCycle']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
+        <input id="price" required value="{{ isset($_GET['price']) ? $_GET['price'] : '' }}" type="text" name="price" id="price" placeholder="Price" class="form-control">
         </div>
         </div>
-        <div class="form-group">
-        <label style="text-align:left;" class="control-label col-sm-6" for="bCycle">Business Cycle</label>
-        <div class="col-md-6">
-        <input required value="{{ isset($_GET['bCycle']) ? $_GET['bCycle'] : '' }}" type="text" name="bCycle" id="bCycle" placeholder="Business Cycle" class="form-control"><br>
-        </div>
-        </div>
+        <!-- <div class="form-group">
+            <label style="text-align:left;" class="control-label col-sm-6" for="bCycle">Business Cycle</label>
+            <div class="col-md-6">
+                <input required value="{{ isset($_GET['bCycle']) ? $_GET['bCycle'] : '' }}" type="text" name="bCycle" id="bCycle" placeholder="Business Cycle" class="form-control"><br>
+            </div>
+        </div> -->
         <button class="btn btn-success form-control">Proceed</button>
     </form>
     <br>
@@ -109,14 +164,43 @@
         <p id="tp"></p>
         <button onclick="transactionalProfit()" class="btn btn-primary form-control">Proceed</button>
         <br><br>
-        <button class="btn btn-primary form-control" onclick="save()">Lock Target</button>
+        <button class="btn btn-primary form-control" data-toggle="modal" data-target="#myModal">Lock Target</button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                <p>Do you want to lock the target with existing data or projected data?</p>
+                    <div class="radio">
+                        <label><input type="radio" onclick="document.getElementById('incrementalP').className='hidden';" name="optradio">Existing Data</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" onclick="document.getElementById('incrementalP').className='';" name="optradio">Projected Data</label>
+                    </div>
+                    <br>
+                    
+                    <div class="hidden" id="incrementalP">
+                        Enter Incremental Percentage<br>
+                        <input type="text" class="form-control" id="perc" name="incrementalPercentage">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button class="btn btn-danger pull-left" onclick="save()">Lock Target</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="col-md-6">
 @if($planningCount != NULL)
 <?php
     $price = $_GET['price'];
-    $bCycle = $_GET['bCycle'];
+    $bCycle = $conversion->business_cycle;
     $category = $_GET['category'];
     $planningSize = round($planningSize);
     $diggingSize = round($diggingSize);
@@ -130,8 +214,7 @@
     $carpentrySize = round($carpentrySize);
     $paintingSize = round($paintingSize);
     $fixturesSize = round($fixturesSize);
-    $completionSize = round($completionSize);
-        
+    $completionSize = round($completionSize);  
 ?>
             <table class="table table-hover" border=1>
                 <thead>
@@ -252,6 +335,36 @@
 </div>
 </div>
 </div>
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-3">
+        <center>
+            <h2>
+                Thumb Rules<br>  
+            </h2>
+        </center>
+            @foreach($conversions as $con)
+            {{ ucwords($con->category) }} : Minimum 
+            @if($con->per == "Nos")
+                number
+            @elseif($con->per == "Rs")
+                amount
+            @else
+                requirement
+            @endif
+
+            of {{ ucwords($con->category) }} is {{ $con->category == "Flooring" ? $con->price_per_unit : $con->minimum_requirement }}
+            @if($con->category != "Flooring")
+            {{ $con->per }}/Sqft {{ $con->full_form != null ? "(".$con->per." = ". $con->full_form.")" : "" }}<br><br>
+            @else
+            {{ $con->per }}/Sqft {{ $con->full_form != null ? "(". $con->full_form.")" : "" }}<br><br>
+            @endif
+            @endforeach
+        <small style="background-color:#c9dba4; padding:10px; text-align:center; width:100%;">
+            <i>** Note: The Above Calculations Varies From Design To Design **</i>
+        </small>
+        <br><br>
+    </div>
+</div>
 <form action="{{URL::to('/') }}/lockProjection" id="lockProj" method="POST">
     {{ csrf_field() }}
     <input type="hidden" name="monthlyTarget" id="mTarget">
@@ -261,6 +374,7 @@
     <input type="hidden" name="category" id="category">
     <input type="hidden" name="from" id="from_date">
     <input type="hidden" name="to" id="to_date">
+    <input type="hidden" name="incrementalPercentage" id="inc">
 </form>
 <script>
     var calBag;
@@ -291,11 +405,20 @@
         document.getElementById('mTarget').value = document.getElementById('percentage').value;
         document.getElementById('transactionalProfit').value = document.getElementById('per').value;
         document.getElementById('priceSave').value = document.getElementById('price').value;
-        document.getElementById('businessCycle').value = document.getElementById('bCycle').value;
+        document.getElementById('businessCycle').value = {{ isset($conversion) ? $conversion->business_cycle : '' }};
         document.getElementById('category').value = document.getElementById('categories').value;
         document.getElementById('from_date').value= document.getElementById('from').value;
         document.getElementById('to_date').value = document.getElementById('to').value;
-        form.submit();
+        if(document.getElementById('incrementalP').className != "hidden"){
+            if(document.getElementById('perc').value == ""){
+                alert("Please Enter Incremental Percentage");
+            }else{
+                document.getElementById('inc').value = document.getElementById('perc').value;
+                form.submit();
+            }
+        }else{
+            form.submit();
+        }
     }
 </script>
 @endsection

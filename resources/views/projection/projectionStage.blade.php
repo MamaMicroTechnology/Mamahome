@@ -1,20 +1,21 @@
-@extends('layouts.app')
+<?php
+    $group = Auth::user()->group->group_name;
+    if($group == "Auditor"){
+        $content = "auditor.layout.auditor";
+    }else{
+        $content = "layouts.app";
+    }
+?>
+@extends($content)
 @section('content')
     <?php $totalRequirement = 0; $totalPrice = 0; ?>
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-success">
             <div class="panel-heading">
-            @if(isset($_GET['category']))
-                {{ ucwords($_GET['category']) }}
-                <div class="pull-right">
-                @if($_GET['category'] != 'all')
-                {{ date('d-m-Y',strtotime($category->from_date)) }} to {{ date('d-m-Y',strtotime($category->to_date)) }}
-                @else
-                @endif
-                </div>
-            @else
-                Choose Categories and Wards
-            @endif
+            <center style="font-size: 17px;"><b>
+            Business Plan (Monthly)
+            </b></center>
+            
             </div>
             <div class="panel-body">
                 <form action="">
@@ -63,7 +64,7 @@
                     <tr>
                         <td>{{ $projection['stage'] }}</td>
                         <td>
-                            @if($projection['stage'] == "Electrical & Plubming")
+                            @if($projection['stage'] == "Electrical & Plumbing")
                                 <?php $stage = "electrical"; ?>
                             @else
                                 <?php $stage = $projection['stage']; ?>
@@ -100,7 +101,7 @@
                         <p>Are you sure you want to reset this planning?</p>
                         </div>
                         <div class="modal-footer">
-                        <a href="/reset?category={{ $_GET['category'] }}" class="btn btn-danger pull-left">Yes</a>
+                        <a href="{{ URL::to('/') }}/reset?category={{ $_GET['category'] }}" class="btn btn-danger pull-left">Yes</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
@@ -124,16 +125,22 @@
         <p style="text-align:center">Are you sure you want to reset the entire planning?</p>
         </div>
         <div class="modal-footer">
-        <a href="/reset?category=all" class="btn btn-danger pull-left">Yes</a>
+        <a href="{{ URL::to('/') }}/reset?category=all" class="btn btn-danger pull-left">Yes</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         </div>
     </div>
     </div>
 </div>
     @if(isset($_GET['ward']) && $_GET['category'] != 'all')
+    <?php 
+        if($category->incremental_percentage != null)
+            $incremental_percentage = 100 * $category->incremental_percentage;
+        else
+            $incremental_percentage = 1;
+    ?>
     <script>
         var text = "<label>Monthly Target:</label><br>"+
-        "<label>{{ $conversion->unit }} : {{ number_format($monthly/100*$category->target) }}</label><br>"+
+        "<label>{{ $conversion->unit }} : {{ number_format(($monthly/100*$category->target)/$incremental_percentage) }}</label><br>"+
         "<label>Amount : {{ number_format($amount = $monthlyPrice/100*$category->target) }}</label><br>"+
         "<label>Transactional Profit : {{ number_format($amount/100*$category->transactional_profit) }}</label></b>";
         document.getElementById("right").innerHTML = text;
