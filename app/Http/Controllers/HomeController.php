@@ -1791,10 +1791,10 @@ class HomeController extends Controller
         
         return view('assignadmin',['users'=>$users,'subwards'=>$subwards,'subwardsAssignment'=>$subwardsAssignment,'wards'=>$wards,'zones'=>$zones]);
     }
-     public function tlmaps()
+     public function tlmaps(request $request)
     {
          if(Auth::user()->group_id != 22){
-            return $this->tlmap1($request);
+            return $this->tlmaps1($request);
          }
 
         $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
@@ -1803,7 +1803,7 @@ class HomeController extends Controller
         $zones = Zone::all();
         return view('tlMaps',['wards'=>$wards,'zones'=>$zones]);
     }
-    public function tlmaps1()
+    public function tlmaps1(request $request)
     {
         $wards = Ward::orderby('ward_name','ASC')->get();
         $zones = Zone::all();
@@ -5499,7 +5499,7 @@ if(count($check) == 0){
 }
        
 
-      return redirect()->back()->with('Assig projects successfully');
+      return redirect()->back()->with('success',' Assigned Successfully');
 
 
             
@@ -5520,7 +5520,8 @@ public function projectstore1(request $request){
 
 
 }
- return redirect()->back()->with('Assig projects successfully');
+      return redirect()->back()->with('success',' Assigned Successfully');
+ 
 
 
             
@@ -5659,7 +5660,7 @@ function enquirystore(request $request){
             // $check->sub=$sub;
             $check->save(); 
         }
-        return redirect()->back()->with('Assig enquiry successfully');
+        return redirect()->back()->with('success','Assig enquiry successfully');
     }
     public function enqwise(Request $request){
         $assigndate =Assignenquiry::where('user_id',Auth::user()->id)
@@ -6754,12 +6755,19 @@ public function display(request $request){
 
           $users = User::where('group_id',22)
             ->paginate(10);
-            $def =[0,4,3,5,6];
-            $user1 = User::whereNotIn('department_id',$def)->get();
+            $def =[1,2];
+            $user1 = User::leftjoin('departments','departments.id','users.department_id')
+            ->whereIn('department_id',$def)
+            ->select('departments.*','departments.dept_name','users.name')->get();
+            
+             
           $ward = Ward::all();
-          $tlward = Tlwards::all();
-
-        return view('/assigntl',['users'=>$users,'ward'=>$ward,'user1'=>$user1]);
+          $w = Ward::pluck('id');
+         $u = User::pluck('id');
+          $tlward =Tlwards::leftjoin('wards','wards.id','tlwards.ward_id')->whereIn('tlwards.ward_id',$w)->whereIn('tlwards.user_id',$u)->select('wards.ward_name','tlwards.user_id')->get();
+        
+            
+        return view('/assigntl',['users'=>$users,'ward'=>$ward,'user1'=>$user1,'tlward'=>$tlward]);
     }
     public function tlward(request $request){
         $check = Tlwards::where('user_id',$request->user_id)->first();
@@ -6783,6 +6791,6 @@ public function display(request $request){
               $check->users = $users;
               $check->save();
         }
-        return back();
+        return redirect()->back()->with('success','Ward and Users Assigned Successfully');
     }
 }

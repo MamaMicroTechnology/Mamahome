@@ -14,4 +14,8 @@ class Tlwards extends Model
     function user(){
     	return $this->belongsTo(User::class,'user_id','id');
     }
+     public function department()
+    {
+        return $this->belongsTo('App\Department');
+    }
 }
