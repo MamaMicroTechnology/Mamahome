@@ -6876,10 +6876,7 @@ public function display(request $request){
             return back()->with('success','Thank You :)');
         }
     }
-     public function addManufacturer()
-    {
-        return view('addManufacturer');
-    }
+    
     
     public function addManufacturer()
     {
