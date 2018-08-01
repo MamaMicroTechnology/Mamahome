@@ -56,6 +56,7 @@ use App\ManufacturerProduce;
 use App\MamahomeAsset;
 use App\ProjectImage;
 use App\Tlwards;
+use App\FieldLogin;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1969,9 +1970,9 @@ public function checkdetailes(request $request){
         }
         return back()->with('Success','Manufacturer Saved Successfully');;
     }
-    public function listeng(){
-
-       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+    public function listeng(request $request){
+       $s = User::pluck('id');
+       $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
         $userIds = explode(",", $tl);
       $listengs= User::whereIn('users.id',$userIds)
                         ->where('users.group_id',6)
@@ -1989,12 +1990,53 @@ public function checkdetailes(request $request){
     {
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
-      $ward = user::where('users.id',$id)
+      $login = loginTime::where('user_id',$id)
+            ->where('logindate',date('Y-m-d'))->pluck('loginTime')->first();
+
+    $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+    $subwards = SubWard::where('id',$wardsAssigned)->first();
+    $projects = ProjectDetails::join('site_addresses','project_details.project_id','=','site_addresses.project_id')
+                    ->leftJoin('requirements','project_details.project_id','=','requirements.project_id')
+                    ->where('project_details.sub_ward_id',$wardsAssigned)
+                    ->select('requirements.status','site_addresses.address','site_addresses.latitude','site_addresses.longitude','project_details.project_name','project_details.project_id','project_details.created_at','project_details.updated_at')
+                    ->get();  
+      if($subwards != null){
+            $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+        }else{
+            $subwardMap = "None";
+        }   
+    if($subwardMap == Null){
+        $subwardMap = "None";
+    }          
+    $ward = user::where('users.id',$id)
         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
         ->where('department_id','!=','10')
         ->select('sub_wards.sub_ward_name')->get();
-      return view('getmap',['name'=>$name]);
+      return view('getmap',['name'=>$name,'ward'=>$ward,'login'=>$login,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
+    }
+    public function recordtime(Request $request)
+    {
+        
+        $id = user::where('id',Auth::user()->id)->pluck('id')->first();
+       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();     
+        if(count($check)== 0){
+            $field = new FieldLogin;
+            $field->user_id = $id;
+            $field->logindate = date('Y-m-d');
+            $field->logintime = date(' H:i A');
+            $field->remark = "";
+            $field->latitude = $request->latitude;
+            $field->longitude = $request->longitude;
+            $field->address = $request->address;
+            $field->save();
+            $text = "You Have Logged In Successfully!..";
+            return back()->with('Success',$text);
+        }
+        else{
+            $text = "You Have Already Logged In!..";
+            return back()->with('Error',$text);
+        }
     }
 }

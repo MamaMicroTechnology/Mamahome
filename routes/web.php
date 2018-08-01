@@ -98,7 +98,9 @@ Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/ordersformarketing','marketingController@ordersformarketing');
 Route::get('/listeng','mamaController@listeng');
-  Route::get('/listeng/{name}','mamaController@getmap');
+Route::get('/listeng/{name}','mamaController@getmap');
+Route::post('/recordtime','mamaController@recordtime');
+
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
