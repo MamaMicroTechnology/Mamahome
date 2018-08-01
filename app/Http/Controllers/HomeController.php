@@ -3523,8 +3523,20 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
             }
+            foreach($users as $user){
+                $totalupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();                                  
+            }
+            foreach($accusers as $user){
+                $totalaccupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
         $projcount = count($projects);  
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
     }
     public function getleinfo(Request $request)
     {
