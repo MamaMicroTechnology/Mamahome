@@ -5336,9 +5336,9 @@ if(Auth::user()->group_id != 22){
               ->leftjoin('groups','groups.id','users.group_id')
               
               ->select('users.*','departments.dept_name','groups.group_name','assignstage.prv_ward','assignstage.prv_subward','assignstage.prv_date','assignstage.prv_stage','assignstage.state' )->paginate(20);
-$tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+    $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
               $userIds = explode(",", $tl);
-$tlUsers = User::whereIn('users.id',$userIds)
+    $tlUsers = User::whereIn('users.id',$userIds)
               ->leftjoin('assignstage','assignstage.user_id','users.id')
               ->leftjoin('departments','departments.id','users.department_id'   )
               ->leftjoin('groups','groups.id','users.group_id')
@@ -6758,7 +6758,7 @@ public function display(request $request){
             $def =[1,2];
             $user1 = User::leftjoin('departments','departments.id','users.department_id')
             ->whereIn('department_id',$def)
-            ->select('departments.*','departments.dept_name','users.name')->get();
+            ->select('departments.*','departments.dept_name','users.name','users.id')->get();
             
              
           $ward = Ward::all();
@@ -6771,6 +6771,7 @@ public function display(request $request){
     }
     public function tlward(request $request){
         $check = Tlwards::where('user_id',$request->user_id)->first();
+  
         if($request->framework){
             
         $users = implode(",", $request->framework);

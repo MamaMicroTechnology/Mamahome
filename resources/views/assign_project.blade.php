@@ -34,8 +34,9 @@
                            <th style="width:15%">Status </th>
                             
                           </thead>
-                          @foreach($users as $user)  
                            <tr>
+                          @if(Auth::user()->group_id != 22)
+                          @foreach($users as $user)  
                             <td>{{$user->name}}</td>
                             <td>{{ $user->group_name }}</td>
                            
@@ -62,13 +63,9 @@
                              @endif
                              @endif
                             @endforeach
+                         
                           </tr> 
- 
-
-
-
-
-<!-- The Modal -->
+ <!-- The Modal -->
 <div class="modal" id="myModal{{$user->id}}">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -98,21 +95,69 @@
     </div>
   </div>
 </div>
+@endforeach
+@else
+ @foreach($tlUsers as $user)  
+                            <td>{{$user->name}}</td>
+                            <td>{{ $user->group_name }}</td>
+                           
+                            <input type="hidden"  name="user_id" value="{{ $user->id }}">
+                             <td>{{ $user->prv_ward }}</td>
+                             <td>{{ $user->prv_subward }}</td>
+                             <td>{{ $user->prv_date }}</td>
+                             <td>{{ $user->prv_stage }}</td>
+                             <td>
+                              @foreach($assignstage as $qq)
+                              @if($user->id == $qq->user_id)
+                                  {{ $qq->count }}
+                             @endif
+                             @endforeach
+                             </td>
+                             <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
+                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
+                              @foreach($assignstage as $qq)
+                              @if($user->id == $qq->user_id)
+                              @if($qq->remark != NULL)
+                             <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
+                             @else
+                             <td><button disabled class="btn btn-primary btn-sm ">Accept</button></td>
+                             @endif
+                             @endif
+                            @endforeach
+                         
+                          </tr> 
+ <!-- The Modal -->
+<div class="modal" id="myModal{{$user->id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
+      <!-- Modal Header -->
+      <div class="modal-header"  style="background-color:#f4811f;padding:2px">
+        <h4 class="modal-title">Task Reject Message</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
 
+      <!-- Modal body -->
+      <div class="modal-body">
+         @foreach($assignstage as $qq)
+         @if($user->id == $qq->user_id)
+          
+          <b style="font-size:20px;">Message:</b><br> <br>
+          <span style="font-size:15px;text-align:left; font-style: bold;" > {{ $qq->remark }} </span>
+         @endif
+         @endforeach
+      </div>
 
+      <!-- Modal footer -->
+      <div class="modal-footer" style="padding: 1px;">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
 
-
-
-
-
-
-
-
-
-
-                          <!-- The Modal -->  
-  @endforeach
+    </div>
+  </div>
+</div>
+@endforeach
+ @endif  
  </table>
     
     @foreach($users as $user)
