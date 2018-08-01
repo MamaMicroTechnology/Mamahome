@@ -727,13 +727,8 @@ break;
             break;
         }
 
-<<<<<<< HEAD
-        //dd("dsfhsdj");
-        if( count($cement[$i] || $plumbing[$i] ||  $doors[$i] || $flooring[$i] || $sand[$i] || $aggregates[$i] || $blocks[$i] || $electrical[$i] || $bathroom[$i] || $wood[$i] || $paints[$i] || $wardk[$i] || $rails[$i] || $glass[$i] ) > $i){
-=======
      
         if( ($cement[$i] || $plumbing[$i] ||  $doors[$i] || $flooring[$i] || $sand[$i] || $aggregates[$i] || $blocks[$i] || $electrical[$i] || $bathroom[$i] || $wood[$i] || $paints[$i] || $wardk[$i] || $rails[$i] || $glass[$i] ) > $i){
->>>>>>> 5e600600b73a901842eb110d7acb5b86d9cf1942
          
 
          $totalPlumbing += $plumbing[$i];

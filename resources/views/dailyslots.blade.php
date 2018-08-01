@@ -65,7 +65,6 @@
             <div class="panel-body">
                 <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
                 <table class="table table-striped" border="1">
-                  @if(Auth::user()->group_id != 22)
                     <thead>
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Ward Name</th>
@@ -73,6 +72,7 @@
                         <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
+                  @if(Auth::user()->group_id != 22)
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -88,6 +88,8 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
                     @endif
@@ -101,7 +103,6 @@
             <div class="panel-body">
               
                 <table class="table table-striped" border="1">
-                @if(Auth::user()->group_id != 22)
                     <thead>
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Ward Name</th>
@@ -109,6 +110,7 @@
                         <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
+                @if(Auth::user()->group_id != 22)
                     @foreach($accusers as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -124,6 +126,8 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
                     @endif

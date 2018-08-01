@@ -3479,12 +3479,14 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
 
-                $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
-                $userIds = explode(",", $tl);
-                $tlUsers = User::whereIn('id',$userIds)
-                ->where('group_id',6)->simplePaginate();
-                 $tlUsers1 = User::whereIn('id',$userIds)
-                   ->where('group_id',11)->simplePaginate();
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+
+        $userIds = explode(",", $tl);
+        $tlUsers = User::whereIn('id',$userIds)
+            ->where('group_id',6)->simplePaginate();
+
+         $tlUsers1 = User::whereIn('id',$userIds)
+           ->where('group_id',11)->simplePaginate();
 
 
         $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
@@ -3529,12 +3531,26 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('updated_by','=',$user->id)
                                                 ->count();                                  
             }
+            foreach($tlUsers as $user){
+                $totalupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();                                  
+            }
+
             foreach($accusers as $user){
                 $totalaccupdates[$user->id] = ProjectDetails::
                                                 where('updated_at','LIKE',$date.'%')
                                                 ->where('updated_by','=',$user->id)
                                                 ->count();
             }
+            foreach($tlUsers1 as $user){
+                $totalaccupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
+
         $projcount = count($projects);  
         return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
     }

@@ -190,7 +190,7 @@
                                   </td>
                                </tr>
                              <tr>
-              <td><b>Follow Up?</b></td>
+              <td>Follow Up?</td>
               <td>:</td>
               <td>
                   <div class="radio">
@@ -694,7 +694,7 @@
                            </table>
                       </div><br>
                       <tr id="quepanelright-{{$projectdetails->project_id}}">
-                                    <td><label>Questions</label></td><br>
+                                    <td>Questions</td><br>
                                     <td>
                                         <select style="width: 100%" class="form-control" id="select-{{$projectdetails->project_id}}" name="qstn">-->
                                     <option disabled selected>--- Select ---</option>
@@ -719,7 +719,7 @@
                                     </tr>
                       <table class="table">
                         <tr>
-                            <td><b>Quality</b></td>
+                            <td>Quality</td>
                             <td>:</td>
                             <td>
                                 <select id="quality" onchange="fake()" class="form-control" name="quality">
@@ -733,7 +733,7 @@
 
 
                         <tr>
-                            <td><b>Remarks</b></td>
+                            <td>Remarks</td>
                             <td>:</td>
                             <td>
                          <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea>
