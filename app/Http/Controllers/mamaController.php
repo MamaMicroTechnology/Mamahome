@@ -1971,8 +1971,9 @@ public function checkdetailes(request $request){
         return back()->with('Success','Manufacturer Saved Successfully');;
     }
     public function listeng(request $request){
-       $s = User::pluck('id');
-       $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
+       // $s = User::pluck('id');
+       // $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
+         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
         $userIds = explode(",", $tl);
       $listengs= User::whereIn('users.id',$userIds)
                         ->where('users.group_id',6)
@@ -2039,4 +2040,6 @@ public function checkdetailes(request $request){
             return back()->with('Error',$text);
         }
     }
+    
+
 }

@@ -6880,4 +6880,28 @@ public function display(request $request){
     {
         return view('addManufacturer');
     }
+    
+    public function addManufacturer()
+    {
+        return view('addManufacturer');
+    }
+    public function viewManufacturer()
+    {
+        $manufacturers = Manufacturer::all();
+        return view('viewManufacturer',['manufacturers'=>$manufacturers]);
+    }
+    public function lebrands(){
+
+        return view('lebrands');
+    }
+    public function storequery(Request $request){
+
+       
+        $id = History::where('project_id',$request->id)->pluck('id')->last();
+        History::where('id',$id)->update(['question'=>$request->qstn,
+                                            'remarks'=>$request->remarks
+            ]);
+        
+         return redirect()->back();
+    }
 }
