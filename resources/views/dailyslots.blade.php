@@ -63,7 +63,11 @@
                 <b style="color:white">Mini Report of listing engineer  (Today)</b>
             </div>
             <div class="panel-body">
+                 @if(Auth::user()->group_id != 22)
                 <label style="color:black">Total Count : <b>{{$lcount}}</b></label>
+                @else
+                 <label style="color:black">Total Count : <b>{{$tlcount}}</b></label>
+                 @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
@@ -115,7 +119,11 @@
                 <b style="color:white">Mini Report of Account Executive(Today)</b>
             </div>
             <div class="panel-body">
+                @if(Auth::user()->group_id != 22)
               <label style="color:black">Total Count : <b>{{$acount}}</b></label>
+              @else
+              <label style="color:black">Total Count : <b>{{$tlacount}}</b></label>
+              @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
