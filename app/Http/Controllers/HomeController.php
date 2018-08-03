@@ -2057,6 +2057,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     {
         $projectdetails = ProjectDetails::where('project_id',$request->projectId)->first();
         $projectimages = ProjectImage::where('project_id',$request->projectId)->get();
+        $projectupdate = ProjectImage::where('project_id',$request->projectId)->pluck('created_at')->last();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         $roomtypes = RoomType::where('project_id',$request->projectId)->get();
@@ -2071,6 +2072,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     'projectdetails'=>$projectdetails,
                     'projectimages'=>$projectimages,
                     'projectward'=>$projectward,
+                    'projectupdate'=>$projectupdate,
                     'roomtypes'=>$roomtypes
 
                 ]);
@@ -3480,16 +3482,35 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     ->get();
 
         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
-
         $userIds = explode(",", $tl);
+        // total project of list in stl
+        $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
+        ->pluck('id');
+        $tlcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
+        $tlupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
+
+        // total project of list in tl
+        $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
+        ->pluck('id');
+        $tlacount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->count();
+        $tlaupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tlaccuser)->count();
+
+
         $tlUsers = User::whereIn('id',$userIds)
             ->where('group_id',6)->simplePaginate();
 
          $tlUsers1 = User::whereIn('id',$userIds)
            ->where('group_id',11)->simplePaginate();
+        // total project of list in st
+        $list = DB::table('users')->where('group_id',6)->where('department_id','!=',10)->pluck('id');
+        $lcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->count();
+        $lupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$list)->count();
+            // total prolect of account in st
+        $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
+        $acount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
+        $aupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
 
-
-        $projects = ProjectDetails::where('created_at','like',$date[0].'%')->get();
+        $projects = ProjectDetails::where('created_at','like',$date.'%')->get();
         $groupid = [6,11];
         $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         $projects = DB::table('project_details')
@@ -3504,7 +3525,6 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
 
             ->get();
-            
             foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -3551,8 +3571,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->count();
             }
 
-        $projcount = count($projects);  
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates]);
+        $projcount = count($projects); 
+
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount]);
     }
     public function getleinfo(Request $request)
     {

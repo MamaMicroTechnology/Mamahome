@@ -63,7 +63,7 @@
                 <b style="color:white">Mini Report of listing engineer  (Today)</b>
             </div>
             <div class="panel-body">
-                <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
+                <label style="color:black">Total Count : <b>{{$lcount}}</b></label>
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
@@ -82,6 +82,13 @@
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{ $lcount}}</td>
+                        <td style="font-size: 10px;">{{ $lupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @else
                      @foreach($tlUsers as $user)
                     <tr>
@@ -92,6 +99,13 @@
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{$tlcount}}</td>
+                        <td style="font-size: 10px;">{{ $tlupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @endif
                 </table>
             </div>
@@ -101,7 +115,7 @@
                 <b style="color:white">Mini Report of Account Executive(Today)</b>
             </div>
             <div class="panel-body">
-              
+              <label style="color:black">Total Count : <b>{{$acount}}</b></label>
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
@@ -117,9 +131,16 @@
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{ $acount}}</td>
+                        <td style="font-size: 10px;">{{ $aupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @else
                     @foreach($tlUsers1 as $user)
                     <tr>
@@ -127,9 +148,16 @@
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{$tlacount}}</td>
+                        <td style="font-size: 10px;">{{ $tlaupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @endif
                 </table>
             </div>

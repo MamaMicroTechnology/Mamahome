@@ -430,9 +430,16 @@
                                    </td>
                                </tr>
                                <tr>
-                                 <td>Updated On</td>
+                                 <td>Image Updated On</td>
                                  <td>:</td>
-                                 <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
+                                 
+                                  @if($projectupdate == null)
+                                  <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
+                                  @else
+                                      <td>{{ date('d-m-Y h:i:s A', strtotime($projectupdate))}}</td>
+                                  @endif
+                                 
+                                 
                                </tr>
                                <tr>
                                     <td>Room Types</td>

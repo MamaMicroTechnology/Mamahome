@@ -9,13 +9,13 @@
                 <div class="panel-heading" style="background-color:#0e877f">List Engineer</div>
                 <div class="panel-body">
                     
-                     @foreach($listengs as $listeng)
+                     @foreach($accengs as $acceng)
                        <?php 
-                            $content = explode(" ",$listeng->name);
+                            $content = explode(" ",$acceng->name);
                           
                             $con = implode("",$content);
                         ?>
-                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $listeng->name }}</a>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $acceng->name }}</a>
                     @endforeach
                 </div>
             </div>
@@ -29,9 +29,9 @@
 
 <script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-@foreach($listengs as $listeng)
+@foreach($accengs as $acceng)
                        <?php 
-                            $content = explode(" ",$listeng->name);
+                            $content = explode(" ",$acceng->name);
                             $con = implode("",$content);
                         ?>
 <script type="text/javascript">            
@@ -40,8 +40,8 @@ $(document).ready(function () {
     $("#{{ $con }}").on('click',function(){
         // $(document.body).css({'cursor' : 'wait'});
         var url = 
-        $('#disp').attr('src',"{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"));
-        $("#disp2").load("{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"), function(responseTxt, statusTxt, xhr){
+        $('#disp').attr('src',"{{ URL::to('/') }}/acceng/"+encodeURIComponent("{{ $acceng->name }}"));
+        $("#disp2").load("{{ URL::to('/') }}/acceng/"+encodeURIComponent("{{ $acceng->name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });

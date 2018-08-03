@@ -98,8 +98,13 @@ Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/ordersformarketing','marketingController@ordersformarketing');
 Route::get('/listeng','mamaController@listeng');
+Route::get('/acceng','mamaController@acceng');
 Route::get('/listeng/{name}','mamaController@getmap');
+Route::get('/acceng/{name}','mamaController@getaccmap');
 Route::post('/recordtime','mamaController@recordtime');
+Route::Post('/lateremark','mamaController@recordtime');
+
+
 
 
 //sales converter
