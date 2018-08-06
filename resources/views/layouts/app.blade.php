@@ -429,8 +429,7 @@ div#calendar{
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
                           <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
-                        <li style="padding-top: 10px;">
-                         <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Login</button></li>
+                        
                         @endif
                     </ul>
                 
@@ -791,78 +790,7 @@ div#calendar{
         </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
-     <!-- get location -->
-<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" charset="utf-8">
-  function getLocation(){
-      // document.getElementById("getBtn").className = "hidden";
-      console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayCurrentLocation,
-        displayError,
-        { 
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-      //console.log("Exiting getLocation()");
-  }
-    
-    function displayCurrentLocation(position){
-      //console.log("Entering displayCurrentLocation");
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      document.getElementById("longitude").value = longitude;
-      document.getElementById("latitude").value  = latitude;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
-
-      getAddressFromLatLang(latitude,longitude);
-      //console.log("Exiting displayCurrentLocation");
-    }
-   
-  function  displayError(error){
-    console.log("Entering ConsultantLocator.displayError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLang(lat,lng){
-    //console.log("Entering getAddressFromLatLang()");
-   
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-    
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        // console.log(results);
-
-        document.getElementById("address").value = results[0].formatted_address;
-        document.getElementById("sub").form.submit();
-
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-    //console.log("Entering getAddressFromLatLang()");
-  }
-</script>
+  
 
 
 </body>
