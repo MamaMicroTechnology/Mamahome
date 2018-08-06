@@ -15,12 +15,12 @@
 <br>
 <form action="{{ URL::to('/') }}/allProjectsWithWards" method="get">
     <div class="col-md-2">
-     <label for="wards">Select Zones:</label>
-        <select required name="zone" class="form-control" id="wards">
+     <!-- <label for="wards">Select Zones:</label> -->
+        <!-- <select required name="zone" class="form-control" id="wards">
             @foreach($zone as $zoo)
             <option {{ isset($_GET['zones']) ? $_GET['zones'] == $zone->id ? 'selected' : '' : '' }} value="{{ $zoo->id }}">{{ $zoo->zone_name }}</option>
             @endforeach
-        </select>
+        </select> -->
         <label for="wards">Select Wards:</label>
         <select required name="wards" class="form-control" id="wards">
             <option>---select---</option>
@@ -163,39 +163,7 @@
     </script>
     @endif
 
-    <script>
-        function viewZoneMaps(){
-            // map = new GMaps({
-            //     el: '#map',
-            //     lat: 12.9716,
-            //     lng: 77.5946,
-            // });
-            @foreach($zoneMap as $zone)
-                latlng = "{{ $zone-> lat }}";
-                places = latlng.split(",");
-                path = [];
-                newpath = [];
-                latt = 0;
-                lngg = 0;
-                // for marking maps
-                for(var i=0;i<places.length;i+=2){
-                    newpath.push([parseFloat(places[i]), parseFloat(places[i+1])]);
-                    latt += parseFloat(places[i]);
-                    lngg += parseFloat(places[i+1]);
-                }
-                latt = latt/newpath.length;
-                lngg = lngg/newpath.length;
-                var line = parseInt('{{ $zone->color }}') + 12345;
-                var mypoly = new google.maps.Polygon({
-                    paths: newpath,
-                    strokeColor: '#'+line,
-                    strokeOpacity: 0.6,
-                    fillColor: '#{{ $zone->color }}',
-                    strokeWeight: 2
-                });
-            @endforeach
-        };
-    </script>
+   
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
 </body>
 </html>

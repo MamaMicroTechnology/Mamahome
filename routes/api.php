@@ -32,7 +32,7 @@ Route::get('login','TokenController@buyerLogin');
 Route::get('login/{username}/{password}','TokenController@getLogin');
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
-//Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']);
+//Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']); 
 Route::post('getregister', 'TokenController@getregister');
 //user register
 Route::post('/register','mamaController@postRegistration');
