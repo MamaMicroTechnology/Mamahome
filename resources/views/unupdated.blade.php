@@ -5,8 +5,8 @@
     <div class="panel panel-default" style="border-color:green;"> 
                 <div class="panel-heading text-center" style="background-color: green;color:white;">Projects To Be Updated
                 @if($totalproject != 0)
-                 <span>&nbsp;&nbsp;&nbsp;</span><b> From {{ date('d-m-Y', strtotime($previous)) }} To {{ date('d-m-Y', strtotime($today)) }}</b>
-               <b>Count : {{ $totalproject }}</b>
+                 <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
+               Count : <b>{{ $totalproject }}</b>
                 <p class="pull-right"> Projects Not Been Updated In 45 Days.</p>
                 @endif
 

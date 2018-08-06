@@ -10,7 +10,7 @@
 			<table class="table table-responsive" border="1">
 						{!! $table !!}
 			</table>
-			<table  class="{{ $projects[0]['detailed_mcal'] == null ? 'table table-responsive' : 'hidden' }}" >
+			<table  class="{{ $projects[0]['detailed_mcal'] != null ? 'hidden' : 'table table-responsive' }}" >
 			<tr>
 
 				@if(isset($_GET['id']))

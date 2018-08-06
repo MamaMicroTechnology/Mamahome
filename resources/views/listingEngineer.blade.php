@@ -56,7 +56,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" onkeyup="check('rWidth')"  required type="text" placeholder="Road Width In Feet" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
+                                   <td><input id="rWidth" required onkeyup="check('rWidth')"  required type="text" placeholder="Road Width In Feet" class="form-control input-sm" name="rWidth" value="{{ old('rWidth') }}" required></td>
                                   
                                </tr>
                                <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
@@ -151,7 +151,7 @@
                                 Contract ?</td>
                                 <td>:</td>
                                 <td>
-                                  <select class="form-control" name="contract" id="contract" class="requiredn">
+                                  <select required class="form-control" name="contract" id="contract" class="requiredn">
                                     <option   value="" disabled selected>--- Select ---</option>
                                     <option    value="Labour Contract">Labour Contract</option>
                                     <option  value="Material Contract">Material Contract</option>
@@ -167,14 +167,14 @@
                                <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, ETC)</td>
                                    <td>:</td>
-                                   <td><input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
+                                   <td><input  oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
                                </tr>
                                 <tr>
                                    <td>Project Status</td>
                                    <td>:</td>
                                    <td>
                                           <div class="col-md-3" >
-                                            <label class="checkbox-inline">
+                                            <label required class="checkbox-inline">
                                               <input style="width: 33px;" id="planning" type="checkbox" onchange="count()" name="status[]" value="Planning"><span>&nbsp;&nbsp;&nbsp;</span>Planning
                                             </label>
                                           
@@ -249,7 +249,7 @@
                                       <td>
                                       <div class="row">
                                       <div class="col-md-3">
-                                      <input value="{{ old('basement') }}" onkeyup="check('basement')"
+                                      <input value="{{ old('basement') }}" required  onkeyup="check('basement')"
                                       id="basement" name="basement" type="text" autocomplete="off"
                                       class="form-control input-sm" placeholder="Basement" id="email">
                                       </div>
@@ -257,7 +257,7 @@
                                       <b style="font-size: 20px; text-align: center">+</b>
                                       </div>
                                       <div class="col-md-3">
-                                      <input value="{{ old('ground') }}" onkeyup="check('ground');"
+                                      <input value="{{ old('ground') }}" required onkeyup="check('ground');"
                                       autocomplete="off" name="ground" id="ground" type="text"
                                       class="form-control" placeholder="Floor">
                                       </div>
@@ -273,13 +273,13 @@
                                    <td>
                                     <div class="row">
                                         <div class="col-md-3">
-                                          <input value="{{ old('length') }}" onkeyup="checkthis('length')" id="length" name="length" type="text" autocomplete="off" class="form-control input-sm" placeholder="Length" >
+                                          <input value="{{ old('length') }}" required onkeyup="checkthis('length')" id="length" name="length" type="text" autocomplete="off" class="form-control input-sm" placeholder="Length" >
                                         </div>
                                         <div class="col-md-2">
                                           <b style="font-size: 20px; text-align: center">*</b>
                                         </div>
                                       <div class="col-md-3">
-                                        <input value="{{ old('breadth') }}" onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="Breadth">
+                                        <input value="{{ old('breadth') }}" required onkeyup="checkthis('breadth');" autocomplete="off" name="breadth" id="breadth" type="text" class="form-control" placeholder="Breadth">
                                       </div>
                                       <div class="col-md-3">
                                         <p id="totalsize"></p>
@@ -511,7 +511,7 @@
 </div>
                         <table class="table table-responsive" >
                           <tr>
-                            <td><b>Remarks</b></td>
+                            <td>Remarks</td>
                             <td>:</td>
                             <td>
                           <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)"  name="remarks"></textarea>
@@ -737,12 +737,13 @@ function openCity(evt, cityName) {
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
-      alert(basement);
+   
       if(!isNaN(basement) && !isNaN(ground)){
+
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         floor       += sum;
-      
+        alert();
         if(document.getElementById("total").innerHTML != null)
           document.getElementById("total").innerHTML = floor;
         else
@@ -759,29 +760,48 @@ function openCity(evt, cityName) {
   function checkthis(arg)
   {
     
-    
-    var x = document.getElementById(arg);
-    if(arg == 'length' || arg == 'breadth'){
-     
-      var breadth = parseInt(document.getElementById("breadth").value);
-      var length   = parseInt(document.getElementById("length").value);
-      if(!isNaN(breadth) && !isNaN(length)){
-        
-        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum1   = length*breadth;
-        Size    += sum1;
-        var total = sum * sum1;
-        if(document.getElementById("totalsize").innerHTML != null)
-          document.getElementById("totalsize").innerHTML = Size;
-        else
-          document.getElementById("totalsize").innerHTML = '';
-         if(document.getElementById("pSize").value != null){
-           document.getElementById("pSize").value = total;
-           document.getElementById("pSizeTag").innerHTML = "This Is Recommended Size. You Can Change If Required!!";
-         }else
-          document.getElementById("pSize").value = '';
+     var input = document.getElementById(arg).value;
+
+    if(isNaN(input)){
+      while(isNaN(document.getElementById(arg).value)){
+          var str = document.getElementById(arg).value;
+          str     = str.substring(0, str.length - 1);
+          document.getElementById(arg).value = str;
       }
     }
+   
+          if(arg == 'length' || arg == 'breadth'){
+           
+            var breadth = parseInt(document.getElementById("breadth").value);
+            var length   = parseInt(document.getElementById("length").value);
+             if(isNaN(length)){
+
+                length = 0;
+               
+              }
+              if(isNaN(breadth)){
+
+               
+                breadth = 0;
+              }
+            if(!isNaN(breadth) && !isNaN(length)){
+              
+              var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+              sum1   = length*breadth;
+              Size    += sum1;
+              var total = sum * sum1;
+              if(document.getElementById("totalsize").innerHTML != null)
+                document.getElementById("totalsize").innerHTML = Size;
+              else
+                document.getElementById("totalsize").innerHTML = '';
+               if(document.getElementById("pSize").value != null){
+                 document.getElementById("pSize").value = total;
+                 document.getElementById("pSizeTag").innerHTML = "This Is Recommended Size. You Can Change If Required!!";
+               }else
+                document.getElementById("pSize").value = '';
+            }
+          }
+     
     return false;
   }
 </script>
@@ -878,41 +898,33 @@ function openCity(evt, cityName) {
             window.alert("You Have Not Entered Road Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
             window.alert("Please Choose The Construction Type");
-          }else if(rmc.checked == false && rmc2.checked == false && rmc3.checked == false){
-            window.alert("Please Tell Us Whether The Customer Is Interested In RMC Or Not");
-          }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
-            window.alert("Please Tell Us Whether The Customer Is Interested In Taking Loan Or Not");
-          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
-            window.alert("Please Tell Us Whether The Customer Is Interested In Purchasing UPVC Doors And Windows");
-          }else if(home1.checked == false && home2.checked == false && home3.checked == false ){
-            window.alert("Please Tell Us Whether The Customer Is Interested In Home Automation");
-          }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
-            window.alert("Please Tell Us Whether The Customer Is Interested In Premium Products");
           }else if(document.getElementById("contract").value == ""){
             window.alert("Please Select Contract Type");
+
           }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
-                alert(1);
           }else if(ctype1.checked == true || ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 1;
-                 alert(2);
           }else{
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length;
-                 alert(3);
+                 
           }
-
           if(countinput == 0){
-           
+
               window.alert("Select Atleast One Project Status");
           
-          } else if(document.getElementById("basement").value == ""){
+          }else if(document.getElementById("basement").value == ""){
             window.alert("You Have Not Entered Basement Value");
+            
           } else if(document.getElementById("ground").value == ""){
             window.alert("You Have Not Entered Floor Value");
+            
           }else if(document.getElementById("length").value == ""){
             window.alert("You Have Not Entered Length Value");
+           
           }else if(document.getElementById("breadth").value == ""){
             window.alert("You Have Not Entered Breadth Value");
+             
           }else if(document.getElementById("pSize").value == ""){
             window.alert("You Have Not Entered Project Size");
           }else if(constructionType3.checked == false && constructionType4.checked == false){
@@ -922,10 +934,10 @@ function openCity(evt, cityName) {
           }else if (document.getElementById("pImage").value == ""){
             window.alert("You Have Not Chosen a File To Upload");
           }else if(document.getElementById('prName').value == ''){
-                    alert('Please Enter a Procurement Name');
+                    alert('Please Enter a Procurement Details');
                     document.getElementById('prName').focus();
           }else if(document.getElementById('prPhone').value== ''){
-                    alert('Please Enter Phone Number');
+                    alert('Please Enter Procurement Phone Number');
                     document.getElementById('prPhone').focus();
           }else{
                           document.getElementById("sub").submit();
@@ -1013,7 +1025,7 @@ function openCity(evt, cityName) {
     //     }else{
     //         document.getElementById("next").className = "disabled";
     //     }
-    }
+       }
 </script>
 
 <script type="text/javascript">
@@ -1049,8 +1061,20 @@ function openCity(evt, cityName) {
     if(arg == 'ground' || arg == 'basement'){
       var basement = parseInt(document.getElementById("basement").value);
       var ground   = parseInt(document.getElementById("ground").value);
+    
+      if(isNaN(ground)){
+
+        ground = 0;
+       
+      }
+      if(isNaN(basement)){
+
+       
+        basement = 0;
+      }
       var opts = "<option value=''>--Floor--</option>";
-      if(!isNaN(basement) && !isNaN(ground)){
+      if(!isNaN(basement) && !isNaN(ground)){ 
+      
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         fsum          = ground+1;
@@ -1189,6 +1213,7 @@ function openCity(evt, cityName) {
             var a = numbers.indexOf(i);
             if(a == -1){
               status[i].disabled = true;
+
             }
           }
         }else if(status[4].checked == true){

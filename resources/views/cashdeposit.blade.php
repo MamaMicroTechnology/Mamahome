@@ -18,10 +18,10 @@
                         <th style="text-align:center">User Name</th>
     				    <th style="text-align:center">OrderId</th>
                         <th style="text-align:center">Amount</th>
+                        <th style="text-align: center">Image</th>
     					<th style="text-align:center">Bank Name</th>
                         <th style="text-align:center">Deposit Date</th>
-                        <th style="text-align:center">Bank Location</th>
-    					<th style="text-align:center">Stutus</th>
+                        <th style="text-align:center">Stutus</th>
                         
 
     					
@@ -39,20 +39,60 @@
                         <td style="text-align:center">{{ $use->name }}</td>
                         @endif
                         @endforeach
-                       
+
                             <td style="text-align:center">{{ $view->orderId }}</td>
 					        <td style="text-align:center">
 					           {{$view->Amount}}
                             </td>
+                            <td style="text-align:center">
+                                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{{$view->id }}">
+                                  Amount Image
+                                  </button>
+                            </td>   
+  
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal{{ $view->id }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+    <div class="modal-header" style="background-color:#337ab7;padding:1px;">
+          <h4 class="modal-title" style="color:white;">Amount Image</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         <img src="{{ URL::to('/')}}/public/lcpayment/{{ $view->image }}" style="width: 500px;height:500px">
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
 					        <td style="text-align:center">{{$view->bankname}}</td>
                             <td style="text-align:center">{{$view->bdate}}</td>
-                            <td style="text-align:center">{{$view->location}}</td>
+                            
                            <td> 
                            <form  method="post" action="{{URL::to('/')}}/close"  >
                             {{ csrf_field() }}
-                            <input type="hidden" name="orderid" value="{{ $view->orderId }}">
-                                  
-                               <button style="margin-top:5px;margin-left:20%;" class="btn btn-success btn-sm"  type="submit">Closed</button>
+                                <input type="hidden" name="orderid" value="{{ $view->orderId }}">
+
+                               <select class="form-control" name="satus" style="width:50%;" onchange="this.form.submit()">
+
+                                  <option value="">----Select----</option>
+                                 
+                                  <option {{ $view->order->payment_status == "Closed" ? 'selected' : '' }} value="Closed" >Closed</option>
+                                  <option {{ $view->order->payment_status == "processing" ? 'selected' : '' }} value=" processing"> Processing</option>
+
+                                </select>
 
                            </form>
                          </td>

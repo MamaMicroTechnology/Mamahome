@@ -4,12 +4,12 @@
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
 
-        <div class="panel-heading" style="background-color: green;color: white;">Fetch Numbers Here Than Assign to the Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOTAL : {{ $count }}
+        <div class="panel-heading" style="background-color: green;color: white;">Select Project Status Before Assigning The Phone Numbers  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <form method="GET" action="{{ URL::to('/') }}/assign_number">
                 <input type="hidden" name="delete" value="delete">
                 <input type="submit" value="Reset" class="pull-right btn-danger btn btn-sm">
               </form>
-       <center> <button class="btn btn-success " type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal">Fetch the Numbers</button></center>
+       <center> <button class="btn btn-success " type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal">Select Project Status</button></center>
         
         </div>
         <div class="panel-body">
@@ -32,12 +32,24 @@
              <table class="table table-responsive table-striped table-hover" class="table">       
                       <tr>
                         <td>
-                           <select name="user_id" onchange="this.form.submit()" class="form-control">
+                         <h4>TOTAL :<b>{{$count }} <br><br>
+                              </b> List Of Team Members</h4><br>
+                           <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
+
+
                            <option value="">--Select--</option>
+                           @if(Auth::user()->group_id != 22)
                           @foreach($users as $user)  
                             <option value="{{ $user->id }}">{{$user->name}}</option>
                            @endforeach
+                           @else
+                            @foreach($tlUsers as $user)  
+                            <option value="{{ $user->id }}">{{$user->name}}</option>
+                           @endforeach
+                           @endif
                             </select>
+                          <center>  <h4>Phone Numbers</h4></center>
+
                         </td>
                      </tr> 
 

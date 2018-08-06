@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -540,18 +540,18 @@ div#calendar{
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
 
 </div>
-@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)
+@elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <!--  <a href="{{ URL::to('/assignStages') }}">Assign Stages</a> -->
-     
-    <!-- <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a> --> 
+      <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+   
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
+
         <div id="sales" class="collapse">
-              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
+              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
               <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
@@ -568,16 +568,23 @@ div#calendar{
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
         </div>   
+     <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+      <div id="agent" class="collapse">
+          <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+          <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
+      </div> -->
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
 </div>  
+
+
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
-    <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
+    <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
@@ -614,7 +621,7 @@ div#calendar{
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
 
      @endif
-    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+    <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
@@ -688,7 +695,7 @@ div#calendar{
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
-         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal1">Reject</a></center>
+         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
         </div>
         
         <!-- Modal footer -->
@@ -700,7 +707,7 @@ div#calendar{
     </div>
   </div>
 <!-- The Modal -->
-  <div class="modal" id="myModal1">
+  <div class="modal" id="myModal10">
     <div class="modal-dialog">
       <div class="modal-content">
       

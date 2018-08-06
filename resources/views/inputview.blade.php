@@ -14,7 +14,7 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 </div>
 <div class="panel-body">
-<form method="POST" name="myform" action="{{URL::to('/')}}/inputdata">
+<form method="POST" id="sub" name="myform" action="{{URL::to('/')}}/inputdata">
 {{csrf_field()}}
 @if(SESSION('success'))
 <div class="text-center alert alert-success">
@@ -237,8 +237,8 @@ id="eremarks" class="form-control" /></textarea>
 </table>
 <input type="hidden" id="measure" name="measure">
 <div class="text-center">
-<input type="submit" name="" id="" class="btn btn-md btn-success"
-style="width:40%" />
+<button type="button" name="" id="" class="btn btn-md btn-success"
+style="width:40%" onclick="submithere()"  >Submit</button>
 <input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 </div>
 </form>
@@ -303,7 +303,7 @@ function getProjects()
 }
 var count = 0;
 function getBrands(id,category_name){
-    alert();
+  
     var e = id;
     var category = document.getElementById("mCategory"+id);
     if(category.checked == true){
@@ -325,7 +325,7 @@ function getBrands(id,category_name){
                     count++;
                     for(var i=0;i<response[0].length;i++)
                     {
-                        ans += "<label class='checkbox-inline'>"+"<input name='bnd[]' id='brand"+response[0][i].id+"' type='checkbox' onchange=\"getSubCat('"+response[0][i].id+"','"+response[0][i].brand+"')\" value='"+response[0][i].id+"'>"+response[0][i].brand+"</label>"+"<br>";
+                        ans += "<label class='checkbox-inline'>"+"<input name='bnd[]' id='brand"+response[0][i].id+"' type='checkbox' onchange=\"getSubCat('"+response[0][i].id+"','"+response[0][i].brand+"')\" value='"+response[0][i].id+"' >"+response[0][i].brand+"</label>"+"<br>";
                     }
                     ans += "</div>";
                     document.getElementById('brands').innerHTML = ans;
@@ -357,7 +357,7 @@ function getSubCat(id,brandname)
                 var text = document.getElementById('sCategory').innerHTML;
                 var n = text.search(brandname);
                 if(n != -1){
-                    alert(2);
+                  
                     document.getElementById(brandname).style.display = "";
                 }else{
                     text += "<div id = '"+name+"' class='col-md-4'>"+"*"+name+"<br>";
@@ -448,10 +448,14 @@ function checkthis(arg){
     }
 
 }
-
-
-
-
+function submithere(){
+     if(document.getElementById("totalquantity").value == ""){
+            window.alert("You Have Not Entered Total Quantity");
+          }
+        else{
+            document.getElementById("sub").submit();
+        }
+}
 </script>
 
 @endsection

@@ -65,6 +65,10 @@
                             <td><b>Interested in RMC ? : </b></td>
                             <td>{{ $details->interested_in_rmc }}</td>
                         </tr>
+                        <tr>
+                            <td><b>Interested In Bank Loans ? :</b></td>
+                            <td>{{ $details->interested_in_loan }}</td>
+                        </tr>
                          <tr>
                             <td><b>Interested in UPVC Doors and Windows ? : </b></td>
                             <td>{{ $details->interested_in_doorsandwindows }}</td>
