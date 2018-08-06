@@ -48,3 +48,5 @@ Route::get('/getproject','TokenController@getproject');
 Route::get('/getsingleproject','TokenController@getsingleProject');
 Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
+Route::get('/updateProject','TokenController@getUpdateProject');
+Route::post('/updateProject','TokenController@postUpdateProject');

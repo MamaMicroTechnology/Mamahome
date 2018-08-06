@@ -71,9 +71,9 @@
                                           <label><input  value="Cash"  type="checkbox" name="payment_method[]" onclick="cash()"><span>&nbsp;</span>Cash</label>
                                            @endif
 												<label for="amount">Cash Amount Received:</label>
-												<input  type="text" name="amount" id="cash" placeholder="Amount Received" class="form-control input-sm">
+												<input  type="text" name="amount" id="cash" placeholder="Amount Received" class="hidden">
 												<label for="amount">RTGS Amount Received:</label>
-												<input  type="text" name="rtgs" id="rtgs" placeholder="Amount Received" class="form-control input-sm">
+												<input  type="text" name="rtgs" id="rtgs" placeholder="Amount Received" class="hidden">
 												<label for="sign">Signature:</label>
 												<input required type="file" name="signature" id="sign" class="form-control input-sm" accept="image/*">
 												<div id="show{{ $rec->project_id }}" class="show">
@@ -372,6 +372,14 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+	function rtgs(){
+		document.getElementById('rtgs').className = "form-control input-sm";
+		document.getElementById('cash').className = "hidden";
+	}
+	function cash(){
+		document.getElementById('cash').className = "form-control input-sm";
+		document.getElementById('rtgs').className = "hidden";
+	}
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover({html:true});   
 });
@@ -450,15 +458,14 @@ $(document).ready(function(){
     	    });
 	    }
 	 }
-function changeValue(val, id){
-//use comparison operator   
-if(val=="Cheque" || val=="RTGS" || val=="Cash" )
-     document.getElementById('show'+id).className = "";
- else{
- 	 document.getElementById('show'+id).className="hidden";
- }
-}
-
+	function changeValue(val, id){
+	//use comparison operator   
+		if(val=="Cheque" || val=="RTGS" || val=="Cash" )
+			document.getElementById('show'+id).className = "";
+		else{
+			document.getElementById('show'+id).className="hidden";
+		}
+	}
 
 </script>
 

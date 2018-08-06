@@ -41,7 +41,7 @@
         @if(isset($_GET['wards']))
             Total Projects : {{ count($projects) }}<br>
             <br>
-            <button onclick="viewZoneMaps()" type="button" class="btn btn-success form-control">View All Wards Map</button>
+            <!-- <button onclick="viewZoneMaps()" type="button" class="btn btn-success form-control">View All Wards Map</button> -->
         @endif
     </div>
 </form>
@@ -165,11 +165,11 @@
 
     <script>
         function viewZoneMaps(){
-            map = new GMaps({
-                el: '#map',
-                lat: 12.9716,
-                lng: 77.5946,
-            });
+            // map = new GMaps({
+            //     el: '#map',
+            //     lat: 12.9716,
+            //     lng: 77.5946,
+            // });
             @foreach($zoneMap as $zone)
                 latlng = "{{ $zone-> lat }}";
                 places = latlng.split(",");
@@ -186,7 +186,7 @@
                 latt = latt/newpath.length;
                 lngg = lngg/newpath.length;
                 var line = parseInt('{{ $zone->color }}') + 12345;
-                map.drawPolygon({
+                var mypoly = new google.maps.Polygon({
                     paths: newpath,
                     strokeColor: '#'+line,
                     strokeOpacity: 0.6,
