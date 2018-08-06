@@ -658,14 +658,7 @@ div#calendar{
         </div>
         @endif
         @endif
-                <form method="POST"  action="{{ URL::to('/') }}/recordtime" >
-                            {{ csrf_field() }}
-                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
-                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
-                                    <input class="hidden" id="address" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
-                        <button id="sub" class="hidden"  onsubmit="show()" type="submit" >Submit</button>
-                </form>  
-        
+                
         @yield('content')
     </div>
 
@@ -870,81 +863,7 @@ div#calendar{
     //console.log("Entering getAddressFromLatLang()");
   }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
-@if(session('Success'))
-  <div class="modal fade" id="success" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: #5cb85c;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Success</h4>
-        </div>
-        <div class="modal-body">
-          <p style="text-align:center;">{!! session('Success') !!}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-      $("#success").modal('show');
-  });
-</script>
-@endif
-@if(session('Error'))
-  <div class="modal fade" id="error" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: #5cb85c;color:white;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Success</h4>
-        </div>
-        <div class="modal-body">
-          <p style="text-align:center;">{!! session('Error') !!}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-      $("#error").modal('show');
-  });
-</script>
-@endif
-@if(session('Late'))
-  <div class="modal fade" id="late" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: #f27d7d;color:white;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Late Login</h4>
-        </div>
-        <div class="modal-body">
-         <!--  <form action="{{ URL::to('/') }}/lateremark" method="POST" > -->
-          <p style="text-align:center;">{!! session('Late') !!}</p>
-             <!-- {{ csrf_field() }} -->
 
-          <!-- <center><button type="submit" class="btn btn-success" >Submit</button></center>
-         </form> -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-      $("#late").modal('show');
-  });
-</script>
-@endif
 
 </body>
 </html>
