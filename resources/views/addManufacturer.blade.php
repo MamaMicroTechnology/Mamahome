@@ -28,28 +28,28 @@
                                     <td>Total Area</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Total Area" type="text" name="area" id="area" class="form-control">
+                                        <input required placeholder="Total Area" type="number" name="area" id="area" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Production Capacity</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity" type="text" name="capacity" id="capacity" class="form-control">
+                                        <input required placeholder="Production Capacity" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Present Utilization</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization" type="text" name="utilization" id="utilization" class="form-control">
+                                        <input required placeholder="Present Utilization" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Quantity Of Cement Bags Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Quantity Of Cement Bags Required" type="text" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Quantity Of Cement Bags Required" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -70,7 +70,7 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" type="text" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input required placeholder="M-Sand Required" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -104,7 +104,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input required type="text" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input required type="number" name="price[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
@@ -265,28 +265,28 @@
                                     <td>Area of Plant</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Area of Plant" type="text" name="area" id="area" class="form-control">
+                                        <input required placeholder="Area of Plant" type="number" name="area" id="area" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Production Capacity</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity" type="text" name="capacity" id="capacity" class="form-control">
+                                        <input required placeholder="Production Capacity" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Present Utilization</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization" type="text" name="utilization" id="utilization" class="form-control">
+                                        <input required placeholder="Present Utilization" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Quantity Of Cement Bags Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Quantity Of Cement Bags Required" type="text" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Quantity Of Cement Bags Required" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -321,7 +321,7 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" type="text" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input required placeholder="M-Sand Required" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -356,7 +356,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input required type="text" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input required type="number" name="price[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
