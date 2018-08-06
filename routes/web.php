@@ -103,6 +103,10 @@ Route::get('/listeng/{name}','mamaController@getmap');
 Route::get('/acceng/{name}','mamaController@getaccmap');
 Route::post('/recordtime','mamaController@recordtime');
 Route::Post('/lateremark','mamaController@recordtime');
+Route::get('/latelogin','mamaController@latelogin');
+Route::post('/logouttime','mamaController@logouttime');
+Route::post('/approve','mamaController@approve');
+Route::post('/reject','mamaController@reject');
 
 
 

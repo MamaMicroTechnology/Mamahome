@@ -224,7 +224,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 <tr>
 <tr>
             <td><label>Total Quantity : </label></td>
-            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity" title="Three letter country code" class="form-control" /></td>
+            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
 
 </tr>
 <td><label>Remarks :</label></td>
