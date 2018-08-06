@@ -367,7 +367,14 @@ div#calendar{
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        
+                   <!--  <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
+                      
+                    </li>
+                      <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/ticket') }}">Tickets</a>
+                      
+                    </li>  -->  
                     </ul>
                 
                     <!-- Right Side Of Navbar -->

@@ -144,10 +144,9 @@ margin-left: 0;
                             <th>Assigned Ward </th>
                             <th>Assign Ward </th>
                             <th>Select Users</th>
+                            <th>Assigned Users</th>
                             <th>Action</th>
-
-                            
-                          </thead>
+                        </thead>
                         <tbody>
 
                            <tr>
@@ -181,14 +180,65 @@ margin-left: 0;
                             </select> 
                              </div>
                             </td>
-                            <td><button class="btn btn-success pull-left">Assign</button></td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{ $user->id }}">
+           Assened Users
+</button></td>
+                            <td>
+                              <button class="btn btn-success pull-left">Assign</button>
+                            </td>
                           </tr>         
                        </tbody>
                 </table>
             </div>
     </form>
      @endforeach
-  
+     @foreach($newUsers as $newUser)
+    <div class="modal" id="myModal{{ $newUser['tl_id'] }}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header" style="background-color:#f4811f">
+        <h4 class="modal-title">Assigned Users</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+          <table class="table table-responsive table-striped table-hover">
+                        <thead>
+                          <tr>
+                            <th style="color:#337ab7;size:20px;">Name</th>
+                            <th style="color:#337ab7;size:20px;">Designation</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                @foreach($newUser['employees'] as $employees)
+                           <tr>
+                           <th>{{ $employees['name'] }}</th>
+                            @foreach($user1 as $users2)
+                            @if($employees['id'] == $users2->id)
+                            <th>{{$users2->dept_name}}</th>
+                            @endif
+                            @endforeach
+                            
+                 </tr>
+                  @endforeach
+                 </tbody>
+                 </table>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+  @endforeach
  {{$users->links()}}
 
                   </div>

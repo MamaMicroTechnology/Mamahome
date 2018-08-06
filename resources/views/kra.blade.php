@@ -3,7 +3,9 @@
 
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: green;color:white;">KRA List</div>
+        <div class="panel-heading" style="background-color: green;color:white;">KRA List
+        <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
+        </div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
                 <thead>

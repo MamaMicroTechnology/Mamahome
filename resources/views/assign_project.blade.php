@@ -73,7 +73,7 @@
       <!-- Modal Header -->
       <div class="modal-header"  style="background-color:#f4811f;padding:2px">
         <h4 class="modal-title">Task Reject Message</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal>&times;</button>
       </div>
 
       <!-- Modal body -->

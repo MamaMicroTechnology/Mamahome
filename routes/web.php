@@ -11,10 +11,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('phpinfo', function () {
+    return phpinfo();
+});
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/simple','HomeController@simple');
+Route::get('/ticket','HomeController@tickets');
+Route::get('/ticketchat','HomeController@chat');
+
 
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');

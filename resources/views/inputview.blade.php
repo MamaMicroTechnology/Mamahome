@@ -164,7 +164,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 </tr>
 <tr>
     <td><label>Billing And Shipping Address : </label></td>
-    <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
+    <td><button required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
  Address
 </button>
 <!-- The Modal -->
@@ -182,7 +182,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
       <div class="modal-body">
        
         <label>Blling Adderss</label>
-            <textarea class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;">
+            <textarea required class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;">
         </textarea>
             
        <br>
@@ -194,7 +194,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
             
         </div>
         <label id="sp1">Shipping Adderss</label>
-            <textarea class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;">
+            <textarea  required class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;">
         </textarea>
            <script type="text/javascript">
                function myfunction(){

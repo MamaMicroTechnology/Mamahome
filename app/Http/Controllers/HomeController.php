@@ -79,6 +79,7 @@ use App\CapitalExpenditure;
 use App\OperationalExpenditure;
 use App\NumberOfZones;
 use App\Pricing;
+use GuzzleHttp\Client;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -327,6 +328,7 @@ class HomeController extends Controller
 
         $totalofenquiry = "";
         $totalenq = "";
+
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();  
         $depart = [1,6,7,8,11,15,16,17];
@@ -881,6 +883,7 @@ class HomeController extends Controller
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
             $converter = user::get();
+
             }
             else{
                 $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
@@ -1291,6 +1294,18 @@ class HomeController extends Controller
       
         $filtered = new Collection;
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
+
+            $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $wardss = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->pluck('id');
+
+           $pp = ProjectDetails::where('sub_ward_id',$wardss)->pluck('project_id');
+           
+            $r = Requirement::whereIn('project_id',$pp)->pluck('id');
+  
+         
+             $d = count($enquiries);
+
+              
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
             'converter' =>$converter,
@@ -1300,7 +1315,7 @@ class HomeController extends Controller
             'wards'=>$wards,
             'category'=>$category,
             'initiators'=>$initiators,
-            'projectOrdersReceived'=>$projectOrdersReceived
+            'projectOrdersReceived'=>$projectOrdersReceived,'d'=>$d
         ]);
     }
 
@@ -1326,6 +1341,12 @@ class HomeController extends Controller
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
+             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $wardss = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->pluck('id')->first;
+            $pp = ProjectDetails::where('sub_ward_id',$wardss)->pluck('project_id');
+
+
+
         return view('enquiryCancell',[
             'cancelcount' =>$cancelcount,
             'subwards2'=>$subwards2,
@@ -1527,7 +1548,7 @@ class HomeController extends Controller
                         ->get();
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
-                        ->select('users.name','users.employeeId','login_times.*')
+                        ->select('users.name','users.employeeId','login_times.*','users.group_id')
                         ->get();
         if($group == "Team Lead" && $dept == "Operation"){
             return redirect('teamLead');
@@ -4578,7 +4599,7 @@ $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
                             ->where('deleted',0)
                             ->get();
             }
-
+              
             $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
             $updater = User::whereIn('id',$projectdetails)->first();
            
@@ -6756,6 +6777,7 @@ public function display(request $request){
           $users = User::where('group_id',22)
             ->paginate(10);
             $def =[1,2];
+            $newUsers = [];
             $user1 = User::leftjoin('departments','departments.id','users.department_id')
             ->whereIn('department_id',$def)
             ->select('departments.*','departments.dept_name','users.name','users.id')->get();
@@ -6765,9 +6787,18 @@ public function display(request $request){
           $w = Ward::pluck('id');
          $u = User::pluck('id');
           $tlward =Tlwards::leftjoin('wards','wards.id','tlwards.ward_id')->whereIn('tlwards.ward_id',$w)->whereIn('tlwards.user_id',$u)->select('wards.ward_name','tlwards.user_id')->get();
-        
+            $tl = Tlwards::leftjoin('users','users.id','tlwards.user_id')
+                 ->pluck('tlwards.users');
+               $tt = explode(",", $tl) ;
+            foreach($users as $user){
+                $tlwards = Tlwards::where('user_id',$user->id)->first();
+                $userIds = explode(",",$tlwards->users);
+                $noOfUsers = User::whereIn('id',$userIds)->get()->toArray();
+                array_push($newUsers,['tl_id'=>$user->id,'employees'=>$noOfUsers]);
+            }
             
-        return view('/assigntl',['users'=>$users,'ward'=>$ward,'user1'=>$user1,'tlward'=>$tlward]);
+
+        return view('/assigntl',['newUsers' =>$newUsers,'users'=>$users,'ward'=>$ward,'user1'=>$user1,'tlward'=>$tlward]);
     }
     public function tlward(request $request){
         $check = Tlwards::where('user_id',$request->user_id)->first();
@@ -6793,5 +6824,35 @@ public function display(request $request){
               $check->save();
         }
         return redirect()->back()->with('success','Ward and Users Assigned Successfully');
+    }
+    public function simple(request $request){
+             
+
+         return view('/simple');
+    }
+   public function tickets(request $request)
+    {
+        
+   $client = new \GuzzleHttp\Client();
+    $request = $client->get('http://localhost:8000/api/ticket');
+   $response = $request->getBody();
+   $data = json_decode($response);
+   
+        
+        return view('/ticket',['data'=>$data]);
+    } 
+    public function chat(request $request)
+    {
+     
+    $client = new \GuzzleHttp\Client();
+    $request = $client->get('http://localhost:8000/api/ticket');
+   $response = $request->getBody();
+   $data = json_decode($response);
+   
+        
+        return view('/ticketchat',['data'=>$data]);
+    }
+    public function addManufacturer(){
+        return view('/addManufacturer');
     }
 }

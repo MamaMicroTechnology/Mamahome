@@ -78,7 +78,9 @@
 
 <div class="col-md-10 col-md-offset-1">
     <div class="panel panel-default" style="border-color:#f4811f">
-        <div class="panel-heading" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">KRA List</b> <button class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#addKRA">Add</button></div>
+        <div class="panel-heading" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">KRA List</b> <button class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#addKRA">Add</button>
+        <a href="javascript:history.back()" class="btn btn-sm btn-danger" style="margin-left:40%;">Back</a>
+        </div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
                 <thead>
