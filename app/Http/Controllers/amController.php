@@ -64,7 +64,7 @@ class amController extends Controller
                         ->get();
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
-                        ->select('users.name','users.employeeId','login_times.*')
+                        ->select('users.name','users.employeeId','login_times.*','users.group_id')
                         ->get();
         
         return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins]);

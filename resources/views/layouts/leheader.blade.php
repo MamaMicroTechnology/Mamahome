@@ -54,11 +54,11 @@
                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman;"><b>Enquiry Pipelined</b></a></li>
                         <li> <a href="{{ URL::to('/') }}/kra" style="font-size:1.1em;font-family:Times New Roman;"><b>KRA</b></a></li>
                        <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
-                      <li style="padding-top: 10px;"> 
-                        
-                        
-                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Field Login</button>
-
+                      <li style="padding-top: 10px;padding-left:10px;"> 
+                      <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Login</button>
+                    </li>
+                    <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" onclick="submithere()">Logout</button>
                     </li>
                     </ul>
 
@@ -105,7 +105,11 @@
                                     <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
                                     <input class="hidden" id="address" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
                         <button id="sub" class="hidden"  onsubmit="show()" type="submit" >Submit</button>
-                </form>                   
+                </form> 
+                <form method="POST"  action="{{ URL::to('/') }}/logouttime" >
+                  {{ csrf_field() }}
+                    <button id="log" class="hidden"  type="submit" >Submit</button>
+                </form>             
         
         @yield('content')
     </div>
@@ -201,6 +205,9 @@
     });
     //console.log("Entering getAddressFromLatLang()");
   }
+  function submithere(){
+    document.getElementById("log").form.submit();
+  }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 </body>
@@ -217,7 +224,7 @@
           <p style="text-align:center;">{!! session('Success') !!}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>
@@ -240,7 +247,7 @@
           <p style="text-align:center;">{!! session('Error') !!}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>
@@ -268,7 +275,7 @@
          </form> -->
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>

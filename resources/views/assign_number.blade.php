@@ -9,8 +9,9 @@
                 <input type="hidden" name="delete" value="delete">
                 <input type="submit" value="Reset" class="pull-right btn-danger btn btn-sm">
               </form>
+
        <center> <button class="btn btn-success " type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal">Select Project Status</button></center>
-        
+         <a  style="margin-top:-3%;" href="javascript:history.back()" class="btn btn-sm btn-danger pull-left">Back</a>
         </div>
         <div class="panel-body">
            @if (session('Success'))
@@ -34,10 +35,14 @@
                         <td>
                          <h4>TOTAL :<b>{{$count }} <br><br>
                               </b> List Of Team Members</h4><br>
+                              <?php
+                                  $s=  $count;
+                                ?> 
+
+                              
+                           @if($s != 0)
                            <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
-
-
-                           <option value="">--Select--</option>
+                          <option value="">--Select--</option>
                            @if(Auth::user()->group_id != 22)
                           @foreach($users as $user)  
                             <option value="{{ $user->id }}">{{$user->name}}</option>
@@ -48,6 +53,7 @@
                            @endforeach
                            @endif
                             </select>
+                         @endif
                           <center>  <h4>Phone Numbers</h4></center>
 
                         </td>
@@ -136,7 +142,7 @@
 
 
                                <div class="modal-footer">
-                                 <button type="submit" class="btn btn-success">Submit</button>
+                                 <button type="submit"  class="btn btn-success">Submit</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                               </div>
 

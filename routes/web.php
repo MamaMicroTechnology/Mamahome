@@ -11,10 +11,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('phpinfo', function () {
+    return phpinfo();
+});
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/simple','HomeController@simple');
+Route::get('/ticket','HomeController@tickets');
+Route::get('/ticketchat','HomeController@chat');
+
 
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
@@ -103,6 +109,10 @@ Route::get('/listeng/{name}','mamaController@getmap');
 Route::get('/acceng/{name}','mamaController@getaccmap');
 Route::post('/recordtime','mamaController@recordtime');
 Route::Post('/lateremark','mamaController@recordtime');
+Route::get('/latelogin','mamaController@latelogin');
+Route::post('/logouttime','mamaController@logouttime');
+Route::post('/approve','mamaController@approve');
+Route::post('/reject','mamaController@reject');
 
 
 

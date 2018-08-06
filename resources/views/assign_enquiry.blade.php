@@ -18,6 +18,9 @@
 
   {{ csrf_field() }}
              <table class="table table-responsive table-striped table-hover" class="table">
+               @if (session()->has('success'))
+                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
+                    @endif
                         <thead>
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Designation</th>
@@ -105,7 +108,7 @@
         @endforeach
         </div>
 </div>
-<p class="text-center"><button type="submit" class="btn btn-primary">Submit Data</button></p>                                        
+<p class="text-center"><button onclick="return confirm('Are you sure you Select The Category');" type="submit" class="btn btn-primary">Submit Data</button></p>                                        
 @foreach($category as $cat)
 <div class="hidden" id="brand{{ $cat->id }}">
   @foreach($brands as $brand)
