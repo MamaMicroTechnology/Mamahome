@@ -11,9 +11,7 @@
                   @else
                   Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
-                  @if(session('Error'))
-                    <div class="alert-danger pull-right">{{ session('Error')}} </div>
-                  @endif
+                  
                   <div id="currentTime" class="pull-right"></div>
                 </div>
                 @if($subwards)
@@ -1404,7 +1402,7 @@ function validateForm(arg)
           <p style="text-align:center;">{!! session('Success') !!}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>
