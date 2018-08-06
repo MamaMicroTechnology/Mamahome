@@ -6896,10 +6896,16 @@ public function display(request $request){
                  ->pluck('tlwards.users');
                $tt = explode(",", $tl) ;
             foreach($users as $user){
+
                 $tlwards = Tlwards::where('user_id',$user->id)->first();
+                if($tlwards == null){
+                    
+                }
+                else{
                 $userIds = explode(",",$tlwards->users);
                 $noOfUsers = User::whereIn('id',$userIds)->get()->toArray();
                 array_push($newUsers,['tl_id'=>$user->id,'employees'=>$noOfUsers]);
+            }
             }
             
 
