@@ -2021,6 +2021,7 @@ public function checkdetailes(request $request){
        
       if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+            
         }else{
             $subwardMap = "None";
         }   
@@ -2075,7 +2076,7 @@ public function checkdetailes(request $request){
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address;
-                        $start = "08:15 AM";
+                        $start = "07:30 AM";
                         $now = date('H:i A');
         if( $now > $start && count($check)== 0 && $remark == null){
             $text = " <form action='lateremark?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
@@ -2093,6 +2094,8 @@ public function checkdetailes(request $request){
                         $field->latitude = $request->latitude;
                         $field->longitude = $request->longitude;
                         $field->address = $request->address;
+                        $field->approve = "Pending";
+                        $field->reject = "Pending";
                         $field->save();
 
 
@@ -2105,5 +2108,43 @@ public function checkdetailes(request $request){
                     }
             }
     }
-    
+    public function latelogin(Request $request){
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->where('remark','!='," ")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('latelogin',['users'=>$users]);
+    }
+    public function logouttime(Request $request){
+
+        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
+        if(count($check)== 0){
+
+            $text = "Please Login Before Logout.";
+            return back()->with('Late',$text);
+        }
+        else{
+            FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
+            'logout' => date('H:i A')
+        ]);
+            $text = "You Have Logged out Successfully!..";
+            return back()->with('Success',$text);
+        }
+    }
+    public function approve(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
+            'approve' => "Tl Approved"
+        ]);
+        return back()->with('success',"Approved Successfully!");
+    }
+    public function rejecct(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
+            'approve' => "Tl Rejected"
+        ]);
+        return back()->with('success',"Approved Successfully!");
+    }
 }

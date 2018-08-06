@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-warning">
                 <div class="panel-heading text-center" style="background-color: #f68121; color:white;"><b style="font-size:1.4em">MAMA MICRO TECHNOLOGY (MMT) LOGIN</b></div>
-
+                
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
