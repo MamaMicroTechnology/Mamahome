@@ -16,12 +16,13 @@
                   @else
                   Update Project
                   @endif
+                   <a href="javascript:history.back()" class="btn btn-sm btn-danger btn-sm pull-right">Back</a>
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
-                  <small id="currentTime" class="pull-right">
+                <center>  <small id="currentTime">
                     Listed On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
-                  </small><br>
+                  </small></center>
                 </div>
                 <div class="panel-body">
                     <center>
@@ -91,9 +92,9 @@
                                    <td>Full Address</td>
                                    <td>:</td>
                                    @if($projectdetails->siteaddress ==null)
-                                   <td style="color:red;">This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+                                   <td style="color:red;" >This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input  disabled id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm disable" name="address" ></td>
                                    @else
-                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+                                   <td><input  disabled id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm disable" name="address"></td>
                                    @endif
                                </tr>
                                <tr>
@@ -205,11 +206,10 @@
           <tr>
             <td> Follow Up Date</td>
             <td>:</td>
-            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" data-provide="datepicker" class="form-control" /></td>
 
 
           </tr>
-
 
                                <tr>
                                  <td>Sub Ward</td>
@@ -1379,5 +1379,6 @@ function sum(){
     }
 
 </script> 
+
 @endsection
 

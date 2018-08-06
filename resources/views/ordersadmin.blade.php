@@ -35,7 +35,7 @@
                         <th>Dispatch Status</th>
                         <th>Delivery Status</th>
                         <!-- <th>Print Invoice</th> -->
-                        <th>&nbsp;&nbsp;&nbsp; Confirm Order &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th> Confirm Order </th>
                         <th>Action</th>
                     </tr>
                 </thead>

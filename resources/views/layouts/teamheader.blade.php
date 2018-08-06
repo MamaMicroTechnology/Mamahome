@@ -372,6 +372,14 @@ div#calendar{
                         <li style="padding-top: 10px;">
                         <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Login</button></li>
                         @endif
+                   <!--  <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
+                      
+                    </li>
+                      <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/ticket') }}">Tickets</a>
+                      
+                    </li>  -->  
                     </ul>
                 
                     <!-- Right Side Of Navbar -->

@@ -6,6 +6,7 @@
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading text-center" style="background-color:green">
                 <b style="color:white">pricess</b>
+                <a  href="javascript:history.back()" class="btn btn-sm btn-danger btn-sm pull-right">Back</a> 
             </div>
         <table  class="table table-responsive table-striped" border="1">
                 <thead>

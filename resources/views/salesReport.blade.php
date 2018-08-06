@@ -19,7 +19,7 @@
 	                        </tr>
                             <tr>
                                 <td>
-                                    <select name="se" class="form-control" id="selectle">
+                                    <select required name="se" class="form-control" id="selectle">
                                         <option disabled selected value="">(-- SELECT SE --)</option>
                                         <option value="ALL">All Sales Engineers</option>
                                         @if(Auth::user()->group_id != 22)
