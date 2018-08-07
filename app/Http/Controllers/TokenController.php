@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
