@@ -344,7 +344,7 @@ class TokenController extends Controller
             $projectdetails->budgetType = $request->budgetType;
             $projectdetails->budget = $request->budget;
             $projectdetails->image = $png_project;
-//             $projectdetails->user_id = $request->userid;
+            $projectdetails->user_id = $request->userid;
             
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
@@ -352,7 +352,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
-            $projectdetails->user_id = $request->user_id;
+//             $projectdetails->user_id = $request->user_id;
             
            
             $projectdetails->remarks = $request->remarks;
