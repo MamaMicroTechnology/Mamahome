@@ -1690,8 +1690,9 @@ class mamaController extends Controller
                 $year = date('Y');
                 $country_initial = strtoupper(substr($country->country_name,0,2));
                 $count = count(Order::all())+1;
+                 dd($count);
                 $number = sprintf("%03d", $count); 
-                dd($number);
+               
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
                 $order = new Order;
                 $order->id = $orderNo;
