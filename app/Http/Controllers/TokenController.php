@@ -21,6 +21,10 @@ use App\RoomType;
 use App\Category;
 use App\SubCategory;
 use App\brand;
+use App\WardAssignment;
+use App\SubWard;
+use App\SubWardMap;
+
 
 
 use App\Http\Resources\Message as MessageResource;
@@ -173,19 +177,23 @@ class TokenController extends Controller
             return new MessageResource($articles);
         }
     }
-    public function getLogin(Request $request)
+     public function getLogin(Request $request)
     {
          date_default_timezone_set("Asia/Kolkata");
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
+
+        $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $subwards = SubWard::where('id',$wardsAssigned)->first();
+        $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
          if(count($check)==0){
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
                     }
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'wardAssigned'=>$subwards->sub_ward_name,'latlon'=>$subwardMap->lat]);
         
     }
         else{
