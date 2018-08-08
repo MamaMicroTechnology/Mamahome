@@ -448,8 +448,9 @@ class amController extends Controller
         return view('assistantmanager.dailyslots', ['date' => $date,'users'=>$users, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le,'pageName'=>'dailyslots', 'totalListing'=>$totalListing]);
     }
     public function amprojectadmin(Request $id){
+        $projectupdate = ProjectImage::where('project_id',$id->projectId)->pluck('created_at')->last();
         $details = projectDetails::where('project_id',$id->projectId)->first();
-        return view('assistantmanager.viewDailyProjects',['details'=>$details,'pageName'=>'dailyslots']);
+        return view('assistantmanager.viewDailyProjects',['details'=>$details,'pageName'=>'dailyslots','projectupdate'=>$projectupdate]);
     }
     public function getViewReports(Request $request)
     {
