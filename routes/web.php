@@ -98,18 +98,34 @@ Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/ordersformarketing','marketingController@ordersformarketing');
 Route::get('/listeng','mamaController@listeng');
+Route::get('/teamlisteng','mamaController@teamlisteng');
 Route::get('/acceng','mamaController@acceng');
+Route::get('/teamacceng','mamaController@teamacceng');
 Route::get('/listeng/{name}','mamaController@getmap');
 Route::get('/acceng/{name}','mamaController@getaccmap');
 Route::post('/recordtime','mamaController@recordtime');
 Route::Post('/lateremark','mamaController@recordtime');
 Route::get('/latelogin','mamaController@latelogin');
+Route::get('/teamlatelogin','mamaController@teamlatelogin');
+Route::get('/adminlatelogin','mamaController@adminlatelogin');
 Route::post('/logouttime','mamaController@logouttime');
 Route::post('/approve','mamaController@approve');
 Route::post('/reject','mamaController@reject');
-
-
-
+Route::post('/adminapprove','mamaController@adminapprove');
+Route::post('/adminreject','mamaController@adminreject');
+Route::post('/logintime','mamaController@logintime');
+Route::Post('/emplate','mamaController@logintime');
+Route::post('/emplogouttime','mamaController@emplogouttime');
+Route::post('/teamlogin','mamaController@teamlogin');
+Route::post('/teamlate','mamaController@teamlogin');
+Route::post('/teamlogout','mamaController@teamlogout');
+Route::get('/seniorteam','mamaController@seniorteam');
+Route::get('/teamleader','mamaController@teamleader');
+Route::get('/saleseng','mamaController@saleseng');
+Route::get('/accexe','mamaController@accexe');
+Route::get('/market','mamaController@market');
+Route::get('/marketexe','mamaController@marketexe');
+Route::get('/hr','mamaController@hr');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');

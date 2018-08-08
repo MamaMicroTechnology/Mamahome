@@ -9,10 +9,14 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
+            
                      <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
                     
                 </div>
                 <div class="panel-body">  
+                     @if (session()->has('success'))
+                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
+                    @endif
                  
              <div class="panel-body">
              <table class="table table-responsive table-striped table-hover" class="table">
@@ -30,8 +34,9 @@
                            <th style="width:15%">Status </th>
                             
                           </thead>
-                          @foreach($users as $user)  
                            <tr>
+                          @if(Auth::user()->group_id != 22)
+                          @foreach($users as $user)  
                             <td>{{$user->name}}</td>
                             <td>{{ $user->group_name }}</td>
                            
@@ -54,17 +59,13 @@
                               @if($qq->remark != NULL)
                              <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
                              @else
-                             <td><button class="btn btn-primary btn-sm">Accept</button></td>
+                             <td><button disabled class="btn btn-primary btn-sm ">Accept</button></td>
                              @endif
                              @endif
                             @endforeach
+                         
                           </tr> 
- 
-
-
-
-
-<!-- The Modal -->
+ <!-- The Modal -->
 <div class="modal" id="myModal{{$user->id}}">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -94,21 +95,50 @@
     </div>
   </div>
 </div>
+@endforeach
+@else
+ @foreach($tlUsers as $user)  
+                            <td>{{$user->name}}</td>
+                            <td>{{ $user->group_name }}</td>
+                           
+                            <input type="hidden"  name="user_id" value="{{ $user->id }}">
+                             <td>{{ $user->prv_ward }}</td>
+                             <td>{{ $user->prv_subward }}</td>
+                             <td>{{ $user->prv_date }}</td>
+                             <td>{{ $user->prv_stage }}</td>
+                             <td>
+                              @foreach($assignstage as $qq)
+                              @if($user->id == $qq->user_id)
+                                  {{ $qq->count }}
+                             @endif
+                             @endforeach
+                             </td>
+                             <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
+                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
+                              @foreach($assignstage as $qq)
+                              @if($user->id == $qq->user_id)
+                              @if($qq->remark != NULL)
+                             <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
+                             @else
+                             <td><button disabled class="btn btn-primary btn-sm ">Accept</button></td>
+                             @endif
+                             @endif
+                            @endforeach
+                         
+                          </tr> 
+ <!-- The Modal -->
+<div class="modal" id="myModal{{$user->id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
 
 
 
-
-
-
-
-
-
-
-
-
-                          <!-- The Modal -->  
-  @endforeach
+    </div>
+  </div>
+</div>
+@endforeach
+ @endif  
  </table>
     
     @foreach($users as $user)
@@ -205,13 +235,13 @@
                  <div class="container">
                      <div class="row">
                        <div class="col-sm-12"> 
-                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;">Assign Stage</h4>&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;     <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="color:orange;font-size:15px">&nbsp;&nbsp; ALL</span>
+                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;">Assign Stage</h4><br>&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;      <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="font-size:15px">&nbsp;&nbsp; ALL</span><br><br>
                           <table>
                              <tr id="sp">
                              <div class="checkbox">
-                            <lable><td style=" padding:20px 40px 20px 40px;" ><input type="checkbox" name="stage[]" value="Planning">&nbsp;&nbsp;Planning</td>
-                                 <td  style=" padding:20px 40px 20px 40px;"><input type="checkbox" name="stage[]" value="Digging">&nbsp;&nbsp;Digging</td>
+                            <lable><td style=" padding:0px 40px 0px 40px;" ><input type="checkbox" name="stage[]" value="Planning">&nbsp;&nbsp;Planning</td>
+                                 <td  style=" padding:0px 40px 0px 40px;"><input type="checkbox" name="stage[]" value="Digging">&nbsp;&nbsp;Digging</td>
                                  <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Foundation">&nbsp;&nbsp;Foundation</td>
                                  <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Pillars">&nbsp;&nbsp;Pillars</td>
                                  <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Walls">&nbsp;&nbsp;Walls</td></lable>
@@ -237,7 +267,7 @@
                              </tr>    
                             </table>
                           </div>
-                    </div>
+                    </div><br>
 
             <div class="row">
               <div class="col-sm-6">  
@@ -258,29 +288,29 @@
 
             <div class="row">
             <div class="col-md-2">
-            <h5 style="color:#2962ff;">Basement From</h5>
+            <h5 style="color:black;">Basement From</h5>
                  <input  name="basement"  pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
             </div>
                   <div class="col-md-2">
-                   <h5 style="color:#2962ff;">Basement To</h5>
+                   <h5 style="color:black;">Basement To</h5>
                  <input  name="base" pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
                  </div>
                 <div class="col-md-2">
-                <h5 style="color:#2962ff;">Floor From</h5>
+                <h5 style="color:black;">Floor From</h5>
                 <input name="Floor"  type="text" pattern="[0-9]+" title="Enter the number only" class="form-control" placeholder="Floor">
                </div>
                <div class="col-md-2">
-                <h5 style="color:#2962ff;">Floor To</h5>
+                <h5 style="color:black;">Floor To</h5>
                 <input name="Floor2"  type="text" pattern="[0-9]+" title="Enter the number only" class="form-control" placeholder="Floor">
                </div>
               </div>
               <div class="row">
                <div class="col-md-2">
-               <h5 style="color:#2962ff;">Total From</h5>
+               <h5 style="color:black;">Total From</h5>
                <input  name="project_type" pattern="[0-9]+" title="Enter the number only"   type="text" class="form-control" placeholder="total">
               </div>
                <div class="col-md-2">
-               <h5 style="color:#2962ff;">Total To</h5>
+               <h5 style="color:black;">Total To</h5>
                <input  name="total" pattern="[0-9]+" title="Enter the number only"   type="text" class="form-control" placeholder="total">
               </div>
               </div>
@@ -288,22 +318,22 @@
               <div class="col-sm-4">
               <h4 style="background-color:#9e9e9e; width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Size</h4>
               <div class="col-sm-6">
-              <h5  style="color:#2962ff;">From</h5>
+              <h5  style="color:black;">From</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="project_size" placeholder="Project Size in sq ft">
               </div>
               <div class="col-sm-6">
-              <h5 style="color:#2962ff;">To</h5>
+              <h5 style="color:black;">To</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="projectsize" placeholder="Project Size in sq ft">
               </div>
               </div>
               <div class="col-sm-4">
               <h4 style="background-color:#9e9e9e;width: 50%;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget </h4>
               <div class="col-sm-6">
-              <h5 style="color:#2962ff;">From</h5>
+              <h5 style="color:black;">From</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budget" placeholder="Budget Min 10lac">
               </div>
               <div class="col-sm-6">
-              <h5 style="color:#2962ff;">To</h5>
+              <h5 style="color:black;">To</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budgetto" placeholder="Budget Min 10lac">
               </div>
               </div>
@@ -324,8 +354,8 @@
                     </div> 
                   <div class="col-sm-2">
                     <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">RMC </h4>      
-                    <label><input id="rmc" type="checkbox" name="rmc[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
-                    <label><input id="rmc2" type="checkbox" name="rmc[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label>
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="rmc[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="rmc[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label>
                   </div>
                   <div class="col-sm-2">
                     <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget Type </h4>

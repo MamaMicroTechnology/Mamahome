@@ -152,8 +152,20 @@
                             </td>
                             </td>
                         </tr>
+                        
+                        <tr>
+                                 <td><b>Image Updated On : </b></td>
+                                
+                                  @if($projectupdate == null)
+                                  <td>{{ date('d-m-Y h:i:s A', strtotime($details->created_at))}}</td>
+                                  @else
+                                      <td>{{ date('d-m-Y h:i:s A', strtotime($projectupdate))}}</td>
+                                  @endif
+                                 
+                                 
+                               </tr>
 
-
+                        <tr>
 
                         <tr>
                             <td style="width:40%"><b>Followup Started : </b></td>

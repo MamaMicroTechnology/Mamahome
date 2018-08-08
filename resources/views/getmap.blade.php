@@ -5,6 +5,7 @@
   @foreach($login as $login)
   <b>Field Login Time : </b>{{ $login->logintime }}<br><br>
   <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
+  <b>Logout :</b>{{ $login->logout }}<br><br>
   @endforeach
    @foreach($ward as $ward)
                 <b>Assigned Ward : </b>{{ $ward->sub_ward_name }}
