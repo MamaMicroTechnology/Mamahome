@@ -24,6 +24,7 @@ use App\brand;
 use App\WardAssignment;
 use App\SubWard;
 use App\SubWardMap;
+use App\TrackLocation;
 
 
 
@@ -569,4 +570,42 @@ public function getproject(request $request){
             return response()->json(['message'=>'Something went wrong']);
         }
     }
+    public function addLocation(Request $request){
+
+       
+        $data = new TrackLocation;
+        $data->user_id = $request->user_id;
+        $data->lat_long = $request->lat_long;
+        $data->date = $request->date;
+        $data->kms = $request->kms;
+        
+        if($data->save()){
+            $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
+            $userResponse = json_encode($responseData);
+            print $userResponse;
+        }else{
+            $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Unable to add location.");
+            $userResponse = json_encode($responseData);
+            print $userResponse;
+        }
+    }
+    public function updateLocation(Request $request){
+              $data = TrackLocation::where('user_id',$request->user_id)
+                          ->where('date',$request->date)
+                          ->first();
+              $data->user_id = $request->user_id;
+            $data->lat_long = $request->lat_long;
+            $data->date = $request->date;
+            $data->kms = $request->kms;
+            if($data->save()){
+               $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
+               $userResponse = json_encode($responseData);
+               print $userResponse;
+            }else{
+                $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Location could not be updated");
+               $userResponse = json_encode($responseData);
+               print $userResponse;
+            }
+
+       }
 }
