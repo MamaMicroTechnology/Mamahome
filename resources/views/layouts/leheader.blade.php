@@ -236,7 +236,7 @@
 </script>
 @endif
 @if(session('Error'))
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="error" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #5cb85c;color:white;">
@@ -254,12 +254,12 @@
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
-      $("#myModal").modal('show');
+      $("#error").modal('show');
   });
 </script>
 @endif
 @if(session('Late'))
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="late" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #f27d7d;color:white;">
@@ -282,7 +282,7 @@
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
-      $("#myModal").modal('show');
+      $("#late").modal('show');
   });
 </script>
 @endif
