@@ -589,7 +589,9 @@ public function getproject(request $request){
             print $userResponse;
         }
     }
-    public function updateLocation(Request $request){
+
+        //update location
+      public function updateLocation(Request $request){
               $data = TrackLocation::where('user_id',$request->user_id)
                           ->where('date',$request->date)
                           ->first();
