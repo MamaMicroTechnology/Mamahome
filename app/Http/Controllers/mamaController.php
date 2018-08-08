@@ -2130,8 +2130,8 @@ public function checkdetailes(request $request){
                         return back()->with('Success',$text);
                     }
                     else{
-                        // $text = "You Have Already Logged In!..";
-                        // return back()->with('Error',$text);
+                        $text = "You Have Already Logged In!..";
+                        return back()->with('Error',$text);
                     }
             }
     }
@@ -2359,7 +2359,18 @@ public function checkdetailes(request $request){
         return view('seniorteam',['users'=>$users,'name'=>$name]);
 
     }
-    
+    public function allteamleader(){
+
+       $group = [22];
+       $name = Group::where('id',22)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
     public function saleseng(){
 
        $group = [7,17];
@@ -2372,6 +2383,19 @@ public function checkdetailes(request $request){
         return view('seniorteam',['users'=>$users,'name'=>$name]);
 
     }
+    public function allsaleseng(){
+
+       $group = [7,17];
+       $name = Group::where('id',7)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+
     public function accexe(){
 
        $group = [11];
