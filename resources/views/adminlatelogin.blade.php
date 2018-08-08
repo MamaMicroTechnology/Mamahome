@@ -30,16 +30,6 @@
                                     <td>{{ date('d-m-Y',strTotime($user->logindate)) }}</td>
                                     <td>{{ $user->name}}</td>
                                     <td>{{ $user->logintime}}</td>
-
-                                    <td style="text-align: center" onclick="edit('{{ $enquiry->id }}')" id="{{ $enquiry->id }}">
-                                <form method="POST" action="{{ URL::to('/') }}/editEnquiry">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="{{$enquiry->id}}" name="id">
-                                    <input onblur="this.className='hidden'; document.getElementById('now{{ $enquiry->id }}').className='';" name="note" id="next{{ $enquiry->id }}" type="text" size="35" class="hidden" value="{{ $enquiry->notes }}"> 
-                                    <p id="now{{ $enquiry->id }}">{{$enquiry->notes}}</p>
-                                </form>
-                            </td>
-                                    
                                     <td>{{$user->logout != null ? date('h:i' ,strTotime($user->logout)) : " "}}</td>
                                     <td>{{ $user->remark}}</td>
                                     <td>{{ $user->tlapproval}}</td>
