@@ -344,7 +344,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
-            $projectdetails->user_id = $request->user_id;
+            // $projectdetails->user_id = $request->user_id;
             
            
             $projectdetails->remarks = $request->remarks;
@@ -371,7 +371,8 @@ class TokenController extends Controller
 
             $siteaddress = New SiteAddress;
             $siteaddress->project_id = $projectdetails->id;
-            
+            $siteaddress->latitude = $request->latitude;
+            $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){

@@ -1,6 +1,7 @@
-@extends('layouts.leheader')
+@extends('layouts.app')
 @section('content')
     @if(isset($_GET['type']))
+    <center><button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
         @if($_GET['type'] == "blocks")
             <form onsubmit="return validateForm();" action="{{ URL::to('/') }}/saveManufacturer" method="post">
                 {{ csrf_field() }}
@@ -32,38 +33,45 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Production Capacity</td>
+                                    <td>Production Capacity (Per Day)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity" type="number" name="capacity" id="capacity" class="form-control">
+                                        <input required placeholder="Production Capacity (Per Day)" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Present Utilization</td>
+                                    <td>Present Utilization (In %)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization" type="number" name="utilization" id="utilization" class="form-control">
+                                        <input required placeholder="Present Utilization (In %)" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Quantity Of Cement Bags Required</td>
+                                    <td>Quantity Of Cement Bags Required <br>(Per Week)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Quantity Of Cement Bags Required" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Cement Bags Required Per Week" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Prefered Brands</td>
+                                    <td>Prefered Cement Brands</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Prefered Brands" type="text" name="brand" id="brand" class="form-control">
+                                        <input required placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Deliverability</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Deliverability" type="text" name="deliverability" id="deliverability" class="form-control">
+                                        <select required name="deliverability" id="deliverability" class="form-control">
+                                            <option value="">--Select--</option>
+                                            <option value="0-15km">0-5km</option>
+                                            <option value="16-20km">5-10km</option>
+                                            <option value="21-25km">10-15km</option>
+                                            <option value="15km-20km">15km-20km</option>
+                                        </select>
+                                        <!-- <input required placeholder="Deliverability" type="text" name="deliverability" id="deliverability" class="form-control"> -->
                                     </td>
                                 </tr>
                                 <tr>
@@ -168,7 +176,7 @@
                                         "<option value='6 inch'>6 inch</option>" +
                                         "<option value='8 inch'>8 inch</option>" +
                                     "</select>";
-                cell3.innerHTML = "<input required type='text' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell3.innerHTML = "<input required type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");
@@ -392,7 +400,7 @@
                                 "<option value='M25'>M25</option>" +
                                 "<option value='M30'>M30</option>" +
                                 "<option value='M35'>M35</option> </select>";
-                cell2.innerHTML = "<input required type='text' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell2.innerHTML = "<input required type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");
@@ -403,4 +411,59 @@
         </script>
         @endif
     @endif
+
+<script type="text/javascript" charset="utf-8">
+  function getLocation(){
+      document.getElementById("getBtn").className = "hidden";
+      console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocation,
+        displayError,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+  }
+    
+    function displayCurrentLocation(position){
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      getAddressFromLatLang(latitude,longitude);
+    }
+   
+  function  displayError(error){
+    console.log("Entering ConsultantLocator.displayError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLang(lat,lng){
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        document.getElementById("address").value = results[0].formatted_address;
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @endsection

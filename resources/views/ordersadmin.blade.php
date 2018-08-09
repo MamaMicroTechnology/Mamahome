@@ -117,7 +117,7 @@
                                 {{ $rec->payment_mode }} 
                             @elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
 
-                            <form method="POST" action="{{ URL::to('/') }}/paymentmode">
+                            <form method="POST" id="payment" action="{{ URL::to('/') }}/paymentmode">
                             {{ csrf_field() }}
                             <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
                                 <select name="payment" id="pay" class="form-control">
@@ -130,9 +130,9 @@
                              
                         @elseif($rec->payment_mode == "Cheq Clear")
                             <button class="btn btn-success btn-sm disabled">Cheque Cleared</button>
-                            @else
+                        @else
                             <button class="btn btn-success btn-sm disabled">Cheq Processing</button>
-                            @endif
+                        @endif
 
                             
                              
@@ -276,6 +276,18 @@
         </div>
     </div>
 </div>
+<!-- Form -->
+<form method="POST" id="payment" action="{{ URL::to('/') }}/paymentmode">
+{{ csrf_field() }}
+<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+    <select name="payment" id="pay" class="form-control">
+            <option value="">--Select--</option>
+            <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
+            <option value="CASH" id="cash" onclick="cash()">Cash</option>
+            <option value="check" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}" >Cheque</option>
+    </select>
+</form>
+
 <script type="text/javascript">
     
     function pay(arg)
@@ -342,25 +354,25 @@
         if(ans)
         {
             $.ajax({
-               type:'GET',
-               url: "{{URL::to('/')}}/cancelOrder",
-               data: {id : arg},
-               async: false,
-               success: function(response)
-               {
+                type:'GET',
+                url: "{{URL::to('/')}}/cancelOrder",
+                data: {id : arg},
+                async: false,
+                success: function(response)
+                {
                    console.log(response);
                    $("#myordertable").load(location.href + " #myordertable>*", "");
-               }
+                }
             });
         }
-     }
-function rtgs(){
-    
-    document.getElementById('rtgs').form.submit();
-}
-function cash(){
-    
-    document.getElementById('cash').form.submit();
-}
+    }
+    function rtgs(){
+        
+        document.getElementById('payment').form.submit();
+    }
+    function cash(){
+        
+        document.getElementById('cash').form.submit();
+    }
 </script>
 @endsection
