@@ -242,12 +242,6 @@ class TokenController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
         if($user->save()){
-            
-//             View::share('password',$request->password);
-//             View::share('email',$request->email);
-//             View::share('name',$request->name);
-//             Mail::to($request->email)->send(new registration($user));
-
             return response()->json(['success'=>'1','message'=>'Registered']);
         }else{
             return response()->json(['success'=>'0','message'=>'Something went wrong']);
