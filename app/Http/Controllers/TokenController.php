@@ -230,7 +230,7 @@ class TokenController extends Controller
             'email' => 'required|unique:users',
         ]);
         if ($validator->fails()) {
-            return response()->json(['message'=>'This email/phone number has already been used.']);
+            return response()->json(['success'=>'1','message'=>'This email/phone number has already been used.']);
         }
         $user = new User;
         $user->employeeId = $request->email;
@@ -248,9 +248,9 @@ class TokenController extends Controller
 //             View::share('name',$request->name);
 //             Mail::to($request->email)->send(new registration($user));
 
-            return response()->json(['message'=>'Registered']);
+            return response()->json(['success'=>'1','message'=>'Registered']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
     public function addProject(Request $request)
