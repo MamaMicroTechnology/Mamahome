@@ -171,6 +171,7 @@
             </div>
         </div>
     </div>
+     @if(Auth::user()->group_id != 22)
     <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
@@ -221,6 +222,58 @@
             </div>
         </div>
     </div>
+    @else
+    <div class="col-md-9" >
+        <div class="panel panel-primary" style="overflow-x:scroll">
+            <div class="panel-heading" id="panelhead">
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$teamprojcount}}</b></label>
+                <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+            </div>
+            <div class="panel-body">
+                <table class='table table-responsive table-striped' style="color:black" border="1">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Ward No.</th>
+                            <th style="text-align:center">Project-ID</th>
+                            <th style="text-align:center">Owner Contact Number</th>
+                            <th style="text-align:center">Site Engineer Contact Number</th>
+                            <th style="text-align:center">Procurement Contact Number</th>
+                            <th style="text-align:center">Consultant Contact Number</th>
+                            <th style="text-align:center">Contractor Contact Number</th>
+                            <th style="text-align:center">Listing Engineer</th>
+                            <!--<th style="text-align:center">Verification</th>-->
+                        </tr>
+                    </thead>
+                    <tbody id="mainPanel">
+                        @foreach($teamprojects as $teamproject)
+                        @if($teamproject->quality == "Fake")
+                        <tr style='background-color:#d2d5db'>
+                        @else
+                        <tr>
+                        @endif
+                            <td style="text-align:center" >{{ $teamproject->sub_ward_name }}</td>
+                            <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$teamproject->project_id}}&&lename={{ $teamproject->name }}" target="_blank">{{ $teamproject->project_id }}</a></td>
+                            <td style="text-align:center">{{$teamproject->owner_contact_no}}</td>
+                            <td style="text-align:center">{{$teamproject->site_engineer_contact_no}}</td>
+                            <td style="text-align:center">{{$teamproject->procurement_contact_no}}</td>
+                            <td style="text-align:center">{{$teamproject->consultant_contact_no}}</td>
+                            <td style="text-align:center">{{$teamproject->contractor_contact_no}}</td>
+                            <td style="text-align:center" id="listname-{{$teamproject->project_id}}">
+                                {{$teamproject->name}}
+                                <input type="hidden" id="hiddeninp-{{$teamproject->project_id}}" value="{{$teamproject->listing_engineer_id}}" />
+                            </td>
+                            <!--<td style="text-align:center"><a onclick="" class="btn btn-sm btn-danger">Verify</a></td>-->
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <center>
+                    <div id="wait" style="display:none;width:200px;height:200px;"><img src='https://www.tradefinex.org/assets/images/icon/ajax-loader.gif' width="200" height="200" /></div>
+                </center>
+            </div>
+        </div>
+    </div>
+    @endif
     <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
     <script type='text/javascript'>
         $( document ).ready(function() {

@@ -58,7 +58,7 @@
                       <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Login</button>
                     </li>
                     <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="submithere()">Logout</button>
+                        <button class="btn btn-danger btn-sm" onclick="submitleheader()">Logout</button>
                     </li>
                     </ul>
 
@@ -205,7 +205,7 @@
     });
     //console.log("Entering getAddressFromLatLang()");
   }
-  function submithere(){
+  function submitleheader(){
     document.getElementById("log").form.submit();
   }
 </script>
