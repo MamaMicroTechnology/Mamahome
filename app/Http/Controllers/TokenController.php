@@ -550,7 +550,7 @@ public function getproject(request $request){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
 
