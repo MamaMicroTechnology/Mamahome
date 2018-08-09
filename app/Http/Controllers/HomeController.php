@@ -1861,6 +1861,7 @@ class HomeController extends Controller
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
         }
+        
         foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -1987,7 +1988,7 @@ class HomeController extends Controller
                                                 'totalListing'=> $totalListing,
                                                 'users'=>$users,
                                                 'accusers'=>$accusers,
-                                                'totalaccount'=>$totalaccount,
+                                                // 'totalaccount'=>$totalaccount,
                                                 'update' =>  $update,
                                                 'bal'=>$bal
                                                 // 'total'=>$total
