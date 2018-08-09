@@ -370,7 +370,10 @@ div#calendar{
                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
                         <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         <li style="padding-top: 10px;">
-                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Login</button></li>
+                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="teamlogin()">Login</button></li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" onclick="teamlogout()">Logout</button>
+                       </li>
                         @endif
                    <!--  <li>
                     <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
@@ -454,6 +457,7 @@ div#calendar{
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/listeng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/') }}/acceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/teamsales"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
       </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
@@ -463,14 +467,14 @@ div#calendar{
         
         @endif
         </div>
-
-        <form method="POST"  action="{{ URL::to('/') }}/recordtime" >
-                            {{ csrf_field() }}
-                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
-                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
-                                    <input class="hidden" id="address" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
-                        <button id="sub" class="hidden"  onsubmit="show()" type="submit" >Submit</button>
-                </form> 
+                <form method="POST"  action="{{ URL::to('/') }}/teamlogin" >
+                  {{ csrf_field() }}
+                    <button id="team" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
+                 <form method="POST"  action="{{ URL::to('/') }}/teamlogout" >
+                  {{ csrf_field() }}
+                    <button id="lteam" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
         @yield('content')
     </div>
 
@@ -537,81 +541,16 @@ div#calendar{
             document.getElementById("main").style.marginLeft= "0";
         }
     </script>
-    <!-- get location -->
-<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" charset="utf-8">
-  function getLocation(){
-      // document.getElementById("getBtn").className = "hidden";
-      console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayCurrentLocation,
-        displayError,
-        { 
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-      //console.log("Exiting getLocation()");
+<script>
+  function teamlogin(){
+    document.getElementById("team").form.submit();
   }
-    
-    function displayCurrentLocation(position){
-      //console.log("Entering displayCurrentLocation");
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      document.getElementById("longitude").value = longitude;
-      document.getElementById("latitude").value  = latitude;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
-
-      getAddressFromLatLang(latitude,longitude);
-      //console.log("Exiting displayCurrentLocation");
-    }
-   
-  function  displayError(error){
-    console.log("Entering ConsultantLocator.displayError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLang(lat,lng){
-    //console.log("Entering getAddressFromLatLang()");
-   
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-    
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        // console.log(results);
-
-        document.getElementById("address").value = results[0].formatted_address;
-        document.getElementById("sub").form.submit();
-
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-    //console.log("Entering getAddressFromLatLang()");
+  function teamlogout(){
+    document.getElementById("lteam").form.submit();
   }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
-@if(session('Success'))
-  <div class="modal fade" id="success" role="dialog">
+@if(session('TeamSuccess'))
+  <div class="modal fade" id="teamSuccess" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #5cb85c;">
@@ -619,45 +558,22 @@ div#calendar{
           <h4 class="modal-title">Success</h4>
         </div>
         <div class="modal-body">
-          <p style="text-align:center;">{!! session('Success') !!}</p>
+          <p style="text-align:center;">{!! session('TeamSuccess') !!}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
-      $("#success").modal('show');
+      $("#teamSuccess").modal('show');
   });
 </script>
 @endif
-@if(session('Error'))
-  <div class="modal fade" id="error" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: #5cb85c;color:white;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Success</h4>
-        </div>
-        <div class="modal-body">
-          <p style="text-align:center;">{!! session('Error') !!}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-      $("#error").modal('show');
-  });
-</script>
-@endif
-@if(session('Late'))
-  <div class="modal fade" id="late" role="dialog">
+@if(session('TeamLate'))
+  <div class="modal fade" id="teamlate" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #f27d7d;color:white;">
@@ -665,24 +581,24 @@ div#calendar{
           <h4 class="modal-title">Late Login</h4>
         </div>
         <div class="modal-body">
-         <!--  <form action="{{ URL::to('/') }}/lateremark" method="POST" > -->
-          <p style="text-align:center;">{!! session('Late') !!}</p>
-             <!-- {{ csrf_field() }} -->
-
-          <!-- <center><button type="submit" class="btn btn-success" >Submit</button></center>
-         </form> -->
+          <form action="{{ URL::to('/') }}/teamlate" method="POST" >
+          <p style="text-align:center;">{!! session('TeamLate') !!}</p>
+             {{ csrf_field() }}
+          <center><button type="submit" class="btn btn-success" >Submit</button></center>
+         </form>
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
-      $("#late").modal('show');
+      $("#teamlate").modal('show');
   });
 </script>
 @endif
+
 </body>
 </html>

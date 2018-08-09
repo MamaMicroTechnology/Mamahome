@@ -11,7 +11,13 @@
                   @else
                   Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
+<<<<<<< HEAD
                   
+=======
+                 <!--  @if(session('Error'))
+                    <div class="alert-danger pull-right">{{ session('Error')}} </div>
+                  @endif -->
+>>>>>>> chaithra
                   <div id="currentTime" class="pull-right"></div>
                 </div>
                 @if($subwards)
@@ -1382,7 +1388,7 @@ function validateForm(arg)
 
   <!-- Modal -->
 @if(session('Success'))
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="Material" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #c9ced6;">
@@ -1400,7 +1406,7 @@ function validateForm(arg)
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
-      $("#myModal").modal('show');
+      $("#Material").modal('show');
   });
 </script>
 @endif

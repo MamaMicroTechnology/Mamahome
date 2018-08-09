@@ -220,29 +220,7 @@ class HomeController extends Controller
             
         $var2 = count($category);
         $storesubcat =$request->subcat[0];
-        $x = DB::table('requirements')
-            ->insert(['project_id'    =>$request->selectprojects,
-                'main_category' => $categoryNames,
-                'brand' => $brandnames,
-                'sub_category'  =>$subcategories,
-                'follow_up' =>'',
-                'follow_up_by' =>'',
-                'material_spec' =>'',
-                'referral_image1'   =>'',
-                'referral_image2'   =>'',
-                'requirement_date'  =>$request->edate,
-                'measurement_unit'  =>$request->measure != null?$request->measure:'',
-                'unit_price'   => '',
-                    'quantity'     =>$qnty,
-                
-                'total'   =>0,
-                'notes'  =>$request->eremarks,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'status' => "Enquiry On Process",
-                'dispatch_status' => "Not yet dispatched",
-                'generated_by' => $request->initiator
-            ]);
+       
         $x = DB::table('requirements')->insert(['project_id'    =>$request->selectprojects,
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
@@ -2784,25 +2762,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $res[1] = $subcat;
         return response()->json($res);   
     }
-    public function showProjectDetails(Request $request)
-    {
-        $id = $request->id;
-
-        $rec = ProjectDetails::where('project_id',$id)->first();
-        $username = User::where('id',$rec->listing_engineer_id)->first();
-        $callAttendedBy = User::where('id',$rec->call_attended_by)->first();
-        $followupby = User::where('id',$rec->follow_up_by)->first();
-        $roomtypes = RoomType::where('project_id',$id)->get();
-        $subward = SubWard::where('id',$rec->sub_ward_id)->pluck('sub_ward_name')->first();
-        return view('adminprojectdetails',[
-                'rec' => $rec,
-                'username'=>$username,
-                'callAttendedBy'=>$callAttendedBy,
-                'roomtypes'=>$roomtypes,
-                'followupby'=>$followupby,
-                'subward'=>$subward
-            ]);
-    }
+    
     public function confirmOrder(Request $request)
     {
         $id = $request->id;
@@ -3205,6 +3165,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
     public function projectsUpdate(Request $request)
     {   
+        
+         if(Auth::user()->id == 191){
+            return $this->auto($request);
+        }
         $assigndate =AssignStage::where('user_id',Auth::user()->id)
                      ->orderby('assigndate','DESC')->pluck('assigndate')->first();
         
@@ -4162,6 +4126,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     public function projectadmin(Request $id){
 
         $details = projectDetails::where('project_id',$id->projectId)->first();
+         $projectupdate = ProjectImage::where('project_id',$id->projectId)->pluck('created_at')->last();
        $check =projectDetails::where('project_id',Auth::user()->name)
                     ->orderby('created_at','DESC')->pluck('project_id')->first();
         $roomtypes = RoomType::where('project_id',$id->projectId)->get();
@@ -4177,7 +4142,31 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                 'callAttendedBy'=>$callAttendedBy,
                 'listedby'=>$listedby,
                 'subward'=>$subward,
+                'projectupdate'=>$projectupdate,
                 'check'=>$check
+            ]);
+    }
+    public function showProjectDetails(Request $request)
+    {
+        $id = $request->id;
+
+        $rec = ProjectDetails::where('project_id',$id)->first();
+         $projectupdate = ProjectImage::where('project_id',$id)->pluck('created_at')->last();
+        $username = User::where('id',$rec->listing_engineer_id)->first();
+        $callAttendedBy = User::where('id',$rec->call_attended_by)->first();
+        $followupby = User::where('id',$rec->follow_up_by)->first();
+        $roomtypes = RoomType::where('project_id',$id)->get();
+        $listedby = User::where('id',$rec->listing_engineer_id)->first();
+        $subward = SubWard::where('id',$rec->sub_ward_id)->pluck('sub_ward_name')->first();
+        return view('adminprojectdetails',[
+                'rec' => $rec,
+                'username'=>$username,
+                'callAttendedBy'=>$callAttendedBy,
+                'roomtypes'=>$roomtypes,
+                'followupby'=>$followupby,
+                'listedby'=>$listedby,
+                'projectupdate'=>$projectupdate,
+                'subward'=>$subward
             ]);
     }
      public function projectadmin1(Request $id){
@@ -6874,6 +6863,19 @@ public function display(request $request){
         $projections = NumberOfZones::all()->toArray();
         return view('projection.extension',['dates'=>$dates,'projections'=>$projections]);
     }
+    // public function assigntl(request $request){
+
+    //       $users = User::where('group_id',22)
+    //         ->paginate(10);
+    //         $def =[1,2];
+    //         $user1 = User::whereIn('department_id',$def)
+    //         ->where('users.group_id','!=',2)
+    //         ->get();
+    //       $ward = Ward::all();
+    //       $tlward = Tlwards::all();
+
+    //     return view('/assigntl',['users'=>$users,'ward'=>$ward,'user1'=>$user1]);
+    // }
     public function assigntl(request $request){
 
           $users = User::where('group_id',22)
@@ -7003,4 +7005,14 @@ public function display(request $request){
         
          return redirect()->back();
     }
+    public function auto(request $requests){
+     $projects = ProjectDetails::where('automation',"Yes")->paginate(10); 
+     $projectcount= count($projects); 
+      $roomtypes = RoomType::all();
+    $his = History::all();
+    $orders = Order::all();
+    $requirements=Requirement::all();
+     return view('salesengineer',['projects'=>$projects,'projectcount'=>$projectcount,'roomtypes'=>$roomtypes,'his'=>$his,'orders'=>$orders,'requirements'=>$requirements ]);
+
+  } 
 }

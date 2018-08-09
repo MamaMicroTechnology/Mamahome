@@ -59,26 +59,13 @@
                               @if($qq->remark != NULL)
                              <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
                              @else
-<<<<<<< HEAD
-                             <td><button class="btn btn-primary btn-sm">Accept</button></td>
-=======
                              <td><button disabled class="btn btn-primary btn-sm ">Accept</button></td>
->>>>>>> MuraliHamsa
                              @endif
                              @endif
                             @endforeach
                          
                           </tr> 
-<<<<<<< HEAD
- 
-
-
-
-
-<!-- The Modal -->
-=======
  <!-- The Modal -->
->>>>>>> MuraliHamsa
 <div class="modal" id="myModal{{$user->id}}">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -86,7 +73,7 @@
       <!-- Modal Header -->
       <div class="modal-header"  style="background-color:#f4811f;padding:2px">
         <h4 class="modal-title">Task Reject Message</h4>
-        <button type="button" class="close" data-dismiss="modal>&times;</button>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
@@ -108,12 +95,6 @@
     </div>
   </div>
 </div>
-<<<<<<< HEAD
-
-
-
-
-=======
 @endforeach
 @else
  @foreach($tlUsers as $user)  
@@ -149,26 +130,15 @@
 <div class="modal" id="myModal{{$user->id}}">
   <div class="modal-dialog">
     <div class="modal-content">
->>>>>>> MuraliHamsa
 
 
 
 
-<<<<<<< HEAD
-
-
-
-
-
-                          <!-- The Modal -->  
-  @endforeach
-=======
     </div>
   </div>
 </div>
 @endforeach
  @endif  
->>>>>>> MuraliHamsa
  </table>
     
     @foreach($users as $user)

@@ -21,6 +21,11 @@ use App\RoomType;
 use App\Category;
 use App\SubCategory;
 use App\brand;
+use App\WardAssignment;
+use App\SubWard;
+use App\SubWardMap;
+use App\TrackLocation;
+
 
 
 use App\Http\Resources\Message as MessageResource;
@@ -173,19 +178,23 @@ class TokenController extends Controller
             return new MessageResource($articles);
         }
     }
-    public function getLogin(Request $request)
+     public function getLogin(Request $request)
     {
          date_default_timezone_set("Asia/Kolkata");
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
+
+        $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $subwards = SubWard::where('id',$wardsAssigned)->first();
+        $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
          if(count($check)==0){
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
                     }
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'wardAssigned'=>$subwards->sub_ward_name,'latlon'=>$subwardMap->lat]);
         
     }
         else{
@@ -221,7 +230,7 @@ class TokenController extends Controller
             'email' => 'required|unique:users',
         ]);
         if ($validator->fails()) {
-            return response()->json(['message'=>'This email/phone number has already been used.']);
+            return response()->json(['success'=>'0','message'=>'This email/phone number has already been used.']);
         }
         $user = new User;
         $user->employeeId = $request->email;
@@ -233,15 +242,9 @@ class TokenController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
         if($user->save()){
-            
-            View::share('password',$request->password);
-            View::share('email',$request->email);
-            View::share('name',$request->name);
-            Mail::to($request->email)->send(new registration($user));
-
-            return response()->json(['message'=>'Registered']);
+            return response()->json(['success'=>'1','message'=>'Registered']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
     public function addProject(Request $request)
@@ -344,7 +347,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
-            // $projectdetails->user_id = $request->user_id;
+//             $projectdetails->user_id = $request->user_id;
             
            
             $projectdetails->remarks = $request->remarks;
@@ -371,7 +374,7 @@ class TokenController extends Controller
 
             $siteaddress = New SiteAddress;
             $siteaddress->project_id = $projectdetails->id;
-            $siteaddress->latitude = $request->latitude;
+             $siteaddress->latitude = $request->latitude;
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
@@ -553,7 +556,8 @@ public function getproject(request $request){
 
             $siteaddress = SiteAddress::where('project_id',$request->project_id);
             $siteaddress->project_id = $projectdetails->id;
-            
+             $siteaddress->latitude = $request->latitude;
+             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
@@ -562,4 +566,44 @@ public function getproject(request $request){
             return response()->json(['message'=>'Something went wrong']);
         }
     }
+    public function addLocation(Request $request){
+
+       
+        $data = new TrackLocation;
+        $data->user_id = $request->user_id;
+        $data->lat_long = $request->lat_long;
+        $data->date = $request->date;
+        $data->kms = $request->kms;
+        
+        if($data->save()){
+            $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
+            $userResponse = json_encode($responseData);
+            print $userResponse;
+        }else{
+            $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Unable to add location.");
+            $userResponse = json_encode($responseData);
+            print $userResponse;
+        }
+    }
+
+        //update location
+      public function updateLocation(Request $request){
+              $data = TrackLocation::where('user_id',$request->user_id)
+                          ->where('date',$request->date)
+                          ->first();
+              $data->user_id = $request->user_id;
+            $data->lat_long = $request->lat_long;
+            $data->date = $request->date;
+            $data->kms = $request->kms;
+            if($data->save()){
+               $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
+               $userResponse = json_encode($responseData);
+               print $userResponse;
+            }else{
+                $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Location could not be updated");
+               $userResponse = json_encode($responseData);
+               print $userResponse;
+            }
+
+       }
 }

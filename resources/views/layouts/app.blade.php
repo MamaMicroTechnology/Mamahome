@@ -410,26 +410,33 @@ div#calendar{
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
                         @endif
-                        @if(Auth::user()->group_id == 14)
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+            <?php $d =0 ?>
+                         @if(Auth::user()->group_id == 14)
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;&nbsp;</span></b></a></li>
                         @endif
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
-                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                        
                         @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 2)
-                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 17)
-                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
-                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
-                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                         
+                        <li style="padding-top: 10px;">
+                          <button  class="btn btn-success btn-sm" onclick="submithere()">Login</button>
+                        </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Logout</button>
+                       </li>
                         @endif
                     </ul>
                 
@@ -516,6 +523,17 @@ div#calendar{
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
+        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+        <div id="agent" class="collapse">
+            <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
+            <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+            <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+            <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
+            <a href="{{ URL::to('/') }}/hr"> &nbsp;&nbsp;&nbsp; -Human Resourse</a>
+        </div>
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
@@ -523,6 +541,8 @@ div#calendar{
         <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
         <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
+        <a href="{{ URL::to('/') }}/adminlatelogin">&nbsp;&nbsp;&nbsp; - Late Logins</a>
+        
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
     <div id="ap" class="collapse">
@@ -547,6 +567,7 @@ div#calendar{
   <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
+  
 
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
@@ -582,8 +603,16 @@ div#calendar{
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
       </div> -->
+      <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+      <div id="agent" class="collapse">
+          <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+          <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+      </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
+     <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
 </div>  
 
 
@@ -654,10 +683,28 @@ div#calendar{
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
+            <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+        <div id="agent" class="collapse">
+            <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
+            <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+            <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+            <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
+
+        </div> 
         </div>
         @endif
         @endif
-                
+                <form method="POST"  action="{{ URL::to('/') }}/logintime" >
+                  {{ csrf_field() }}
+                    <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
+                 <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
+                  {{ csrf_field() }}
+                    <button id="logout" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
         @yield('content')
     </div>
 
@@ -748,10 +795,6 @@ div#calendar{
   </div>
   
 </div>
-
-
-
-    
     <!-- Scripts -->
     <script>
         function openNav() {
@@ -790,8 +833,62 @@ div#calendar{
         </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
-  
+<script>
+  function submithere(){
+    document.getElementById("login").form.submit();
+  }
+  function submitlogout(){
+    document.getElementById("logout").form.submit();
+  }
+</script>
+@if(session('empSuccess'))
+  <div class="modal fade" id="empSuccess" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #5cb85c;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Success</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('empSuccess') !!}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#empSuccess").modal('show');
+  });
+</script>
+@endif
+@if(session('Latelogin'))
+  <div class="modal fade" id="emplate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Late Login</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('/') }}/emplate" method="POST" >
+          <p style="text-align:center;">{!! session('Latelogin') !!}</p>
+             {{ csrf_field() }}
+          <center><button type="submit" class="btn btn-success" >Submit</button></center>
+         </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#emplate").modal('show');
+  });
+</script>
+@endif
 
-
-</body>
-</html>
