@@ -7007,7 +7007,7 @@ public function display(request $request){
          return redirect()->back();
     }
     public function auto(request $requests){
-     $projects = ProjectDetails::where('automation',"Yes")->paginate(10); 
+     $projects = ProjectDetails::where('automation',"Yes")->where('quality','!=','Fake')->paginate(10); 
      $projectcount= count($projects); 
       $roomtypes = RoomType::all();
     $his = History::all();
