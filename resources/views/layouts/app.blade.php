@@ -541,6 +541,7 @@ div#calendar{
         <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
         <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
+        <a href="{{ URL::to('/') }}/adminlatelogin">&nbsp;&nbsp;&nbsp; - Late Logins</a>
         
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
@@ -566,7 +567,7 @@ div#calendar{
   <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
-  <a href="{{ URL::to('/') }}/adminlatelogin">Late Logins</a>
+  
 
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
