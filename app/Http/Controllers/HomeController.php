@@ -1319,9 +1319,6 @@ class HomeController extends Controller
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
-             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $wardss = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->pluck('id')->first;
-            $pp = ProjectDetails::where('sub_ward_id',$wardss)->pluck('project_id');
 
 
 
