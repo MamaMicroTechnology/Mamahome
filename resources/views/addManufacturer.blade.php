@@ -47,10 +47,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Quantity Of Cement Bags Required <br>(Per Week)</td>
+                                    <td>Quantity Of Cement Bags Required <br>(Per Week in Tons)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Cement Bags Required Per Week" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Cement Bags Required Per Week (in Tons)" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -291,10 +291,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Quantity Of Cement Bags Required</td>
+                                    <td>Quantity Of Cement Bags Required (Tons)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Quantity Of Cement Bags Required" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Quantity Of Cement Bags Required (Tons)" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
