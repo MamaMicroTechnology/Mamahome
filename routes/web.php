@@ -128,6 +128,8 @@ Route::get('/marketexe','mamaController@marketexe');
 Route::get('/hr','mamaController@hr');
 Route::get('/allteamleader','mamaController@allteamleader');
 Route::get('/allsaleseng','mamaController@allsaleseng');
+Route::get('/teamsales','mamaController@teamsales');
+
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');

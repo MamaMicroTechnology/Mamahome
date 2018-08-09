@@ -1987,7 +1987,7 @@ public function checkdetailes(request $request){
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
-                       
+        
         return view('listeng',['listengs'=>$listengs]);
     }
     public function teamlisteng(request $request){
@@ -2105,7 +2105,7 @@ public function checkdetailes(request $request){
        $address = $request->address;
                         $start = "07:30 AM";
                         $now = date('H:i A');
-        if( $now > $start && count($check)== 0 && $remark == null){
+      if( $now > $start && count($check)== 0 && $remark == null){
             $text = " <form action='lateremark?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Late',$text); 
             }
@@ -2440,6 +2440,22 @@ public function checkdetailes(request $request){
         $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
         ->leftjoin('users','field_login.user_id','users.id')
         ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+    }
+     public function teamsales(request $request){
+       
+         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+       $groupid = [7,17];
+       $group = [7];
+       $name = Group::where('id',7)->pluck('group_name')->first();
+      $sales= User::whereIn('users.id',$userIds)
+                        ->whereIn('users.group_id',$groupid)
+                        ->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$sales)
+        ->leftjoin('users','field_login.user_id','users.id')->where('logindate',date('Y-m-d'))
+        ->select('field_login.*','users.name')->get();
+            
         return view('seniorteam',['users'=>$users,'name'=>$name]);
     }
 }
