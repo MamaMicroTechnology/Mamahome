@@ -3512,7 +3512,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->get();
         $ward = Tlwards::where('user_id',Auth::user()->id)
                 ->join('sub_wards', 'tlwards.ward_id', '=', 'sub_wards.ward_id')->get();
-        $teamprojects = ProjectDetails::where('created_at','like',$date.'%')->get(); 
+    
         $teamprojects = DB::table('project_details')->whereIn('sub_ward_id',$ward)
             ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
             ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
