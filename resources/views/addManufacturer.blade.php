@@ -29,28 +29,28 @@
                                     <td>Total Area</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Total Area" type="number" name="area" id="area" class="form-control">
+                                        <input required placeholder="Total Area" min="0" type="number" name="area" id="area" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Production Capacity (Per Day)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity (Per Day)" type="number" name="capacity" id="capacity" class="form-control">
+                                        <input required placeholder="Production Capacity (Per Day)" min="0" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Present Utilization (In %)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization (In %)" type="number" name="utilization" id="utilization" class="form-control">
+                                        <input required placeholder="Present Utilization (In %)" min="0" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Quantity Of Cement Bags Required <br>(Per Week in Tons)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Cement Bags Required Per Week (in Tons)" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Cement Bags Required Per Week (in Tons)" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -78,7 +78,7 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -112,7 +112,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input required type="number" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input required min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
@@ -176,7 +176,7 @@
                                         "<option value='6 inch'>6 inch</option>" +
                                         "<option value='8 inch'>8 inch</option>" +
                                     "</select>";
-                cell3.innerHTML = "<input required type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell3.innerHTML = "<input required min='0' type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");
@@ -273,28 +273,28 @@
                                     <td>Area of Plant</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Area of Plant" type="number" name="area" id="area" class="form-control">
+                                        <input required placeholder="Area of Plant" min="0" type="number" name="area" id="area" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Production Capacity</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity" type="number" name="capacity" id="capacity" class="form-control">
+                                        <input required placeholder="Production Capacity" min="0" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Present Utilization</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization" type="number" name="utilization" id="utilization" class="form-control">
+                                        <input required placeholder="Present Utilization" min="0" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Quantity Of Cement Bags Required (Tons)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Quantity Of Cement Bags Required (Tons)" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        <input required placeholder="Quantity Of Cement Bags Required (Tons)" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -329,7 +329,7 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -364,7 +364,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input required type="number" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input required min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
@@ -400,7 +400,7 @@
                                 "<option value='M25'>M25</option>" +
                                 "<option value='M30'>M30</option>" +
                                 "<option value='M35'>M35</option> </select>";
-                cell2.innerHTML = "<input required type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell2.innerHTML = "<input required type='number' min='0' name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");

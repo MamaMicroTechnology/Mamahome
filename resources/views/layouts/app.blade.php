@@ -557,7 +557,7 @@ div#calendar{
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
    <a href="{{ URL::to('/letracking') }}">Tracking</a>
-    <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
+    <a href="{{ URL::to('/viewManufacturer') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <a href="{{ URL::to('/confidential') }}">Confidential</a>
