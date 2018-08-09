@@ -424,7 +424,7 @@ div#calendar{
                         @endif
                         
                         <li style="padding-top: 10px;">
-                          <button  class="btn btn-success btn-sm" onclick="submithere()">Login</button>
+                          <button  class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-danger btn-sm" onclick="submitlogout()">Logout</button>
@@ -825,7 +825,7 @@ div#calendar{
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
 <script>
-  function submithere(){
+  function submitapp(){
     document.getElementById("login").form.submit();
   }
   function submitlogout(){

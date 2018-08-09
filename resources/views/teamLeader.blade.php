@@ -45,6 +45,7 @@
         </div>
     </div>
 </center>
+@if(Auth::user()->group_id != 22)
 <div class="col-md-4 col-md-offset-4">
     <div class="panel panel-default">
         <div class="panel-heading">MINI ATTENDANCE ({{ date('d-m-Y') }})</div>
@@ -76,4 +77,5 @@
         </div>
     </div>
 </div>
+@endif
 @endsection

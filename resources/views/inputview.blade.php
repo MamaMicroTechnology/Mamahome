@@ -238,7 +238,7 @@ id="eremarks" class="form-control" /></textarea>
 <input type="hidden" id="measure" name="measure">
 <div class="text-center">
 <button type="button" name="" id="" class="btn btn-md btn-success"
-style="width:40%" onclick="submithere()"  >Submit</button>
+style="width:40%" onclick="submitinput()"  >Submit</button>
 <input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 </div>
 </form>
@@ -448,7 +448,8 @@ function checkthis(arg){
     }
 
 }
-function submithere(){
+function submitinput(){
+    
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
           }
