@@ -1,14 +1,17 @@
 @extends('layouts.app')
 @section('content')
     @if(isset($_GET['type']))
-    <center><button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
+    <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
         @if($_GET['type'] == "blocks")
             <form onsubmit="return validateForm();" action="{{ URL::to('/') }}/saveManufacturer" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" name="type" value="{{ $_GET['type'] }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Blocks Manufacturer Details</div>
+                        <div class="panel-heading">
+                            Blocks Manufacturer Details
+                            <button type="button" id="getBtn"  class="btn btn-success btn-sm pull-right" onclick="getLocation()">Get Location</button>
+                        </div>
                         <div class="panel-body">
                             <table class="table table-hover">
                                 <tr>
@@ -252,7 +255,10 @@
                 <input type="hidden" name="type" value="{{ $_GET['type'] }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">RMC Manufacturer Details</div>
+                        <div class="panel-heading">
+                            RMC Manufacturer Details
+                            <button type="button" id="getBtn"  class="btn btn-success btn-sm pull-right" onclick="getLocation()">Get Location</button>    
+                        </div>
                         <div class="panel-body">
                             <table class="table table-hover">
                                 <tr>
@@ -277,17 +283,17 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Production Capacity</td>
+                                    <td>Production Capacity (Per Day)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity" min="0" type="number" name="capacity" id="capacity" class="form-control">
+                                        <input required placeholder="Production Capacity (Per Day)" min="0" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Present Utilization</td>
+                                    <td>Present Utilization (In %)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization" min="0" type="number" name="utilization" id="utilization" class="form-control">
+                                        <input required placeholder="Present Utilization (In %)" min="0" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -305,10 +311,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Prefered Brands</td>
+                                    <td>Prefered Cement Brands</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Prefered Brands" type="text" name="brand" id="brand" class="form-control">
+                                        <input required placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -326,17 +332,17 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>M-Sand Required</td>
+                                    <td>Aggregates Required (Per Week In Tons)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input required placeholder="Aggregates Required (Per Week In Tons)" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>MOQ For Free Pumping</td>
                                     <td>:</td>
                                     <td>
-                                        <input type="text" name="moq" id="moq" placeholder="MOQ For Free Pumping" class="form-control">
+                                        <input required type="number" min="1" name="moq" id="moq" placeholder="MOQ For Free Pumping" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
