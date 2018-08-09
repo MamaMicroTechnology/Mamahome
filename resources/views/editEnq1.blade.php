@@ -277,7 +277,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 					</table>
 					<input type="hidden" id="measure" name="measure">
 					<div class="text-center">
-						<button type="button" onclick="submithere()" name="" id="" class="btn btn-md btn-success" style="width:40%" >Submit</button>
+						<button type="button" onclick="submiteditenq()" name="" id="" class="btn btn-md btn-success" style="width:40%" >Submit</button>
 						<input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 					</div>
 				</form>
@@ -415,7 +415,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
     }
 
 }
-function submithere(){
+function submiteditenq(){
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
           }
