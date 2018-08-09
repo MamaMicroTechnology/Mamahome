@@ -3165,6 +3165,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
     public function projectsUpdate(Request $request)
     {   
+        
+         if(Auth::user()->id == 191){
+            return $this->auto($request);
+        }
         $assigndate =AssignStage::where('user_id',Auth::user()->id)
                      ->orderby('assigndate','DESC')->pluck('assigndate')->first();
         
@@ -7001,4 +7005,14 @@ public function display(request $request){
         
          return redirect()->back();
     }
+    public function auto(request $requests){
+     $projects = ProjectDetails::where('automation',"Yes")->paginate(10); 
+     $projectcount= count($projects); 
+      $roomtypes = RoomType::all();
+    $his = History::all();
+    $orders = Order::all();
+    $requirements=Requirement::all();
+     return view('salesengineer',['projects'=>$projects,'projectcount'=>$projectcount,'roomtypes'=>$roomtypes,'his'=>$his,'orders'=>$orders,'requirements'=>$requirements ]);
+
+  } 
 }
