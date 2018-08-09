@@ -10,6 +10,7 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
     <style>
     body{
         font-family: "Times New Roman";
@@ -480,6 +481,7 @@ div#calendar{
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
