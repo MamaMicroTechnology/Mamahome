@@ -1299,7 +1299,7 @@ class HomeController extends Controller
 
  public function enquiryCancell(Request $request)
     {
-        if(Auth::user()->group_id == 22)
+        if(Auth::user()->group_id != 22)
        {
         return $this->enquiryCancell1($request);
        } 
