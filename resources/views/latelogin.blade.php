@@ -18,6 +18,7 @@
                            <thead>
                                <th>Name</th>
                                <th>Login Time</th>
+                               <th>Logout Time</th>
                                <th>Late Login Remark</th>
                                <th>Action</th>
                            </thead>
@@ -25,6 +26,7 @@
                             @foreach($users as $user)
                                    <tr>
                                     <td>{{ $user->name}}</td>
+                                    <td>{{ $user->logout}}</td>
                                     <td>{{ $user->logintime}}</td>
                                     <td>{{ $user->remark}}</td>
                                     

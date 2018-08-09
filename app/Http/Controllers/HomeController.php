@@ -3459,6 +3459,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
+
          $accusers = User::where('department_id','2')->where('group_id','11')
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
@@ -3509,6 +3510,21 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
 
             ->get();
+        $ward = Tlwards::where('user_id',Auth::user()->id)
+                ->join('sub_wards', 'tlwards.ward_id', '=', 'sub_wards.ward_id')->get();
+                
+        $teamprojects = DB::table('project_details')->whereIn('sub_ward_id',$ward)
+            ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
+            ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
+            ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
+            ->join('users','users.id','=','project_details.listing_engineer_id')
+            ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
+            ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
+            ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
+            ->where('project_details.created_at','like',$date.'%')
+            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
+            ->get();
+
             foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -3556,8 +3572,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             }
 
         $projcount = count($projects); 
-
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount]);
+        $teamprojcount = count($teamprojects);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount,'teamprojects'=>$teamprojects,'teamprojcount'=>$teamprojcount]);
     }
     public function getleinfo(Request $request)
     {
