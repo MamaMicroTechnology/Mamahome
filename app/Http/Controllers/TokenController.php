@@ -229,6 +229,7 @@ class TokenController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|unique:users',
         ]);
+        return response()->json(['success'=>'0','message'=>$request->all()]);
         if ($validator->fails()) {
             return response()->json(['success'=>'0','message'=>'This email/phone number has already been used.']);
         }
