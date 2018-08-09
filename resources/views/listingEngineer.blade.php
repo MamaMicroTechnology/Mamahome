@@ -11,13 +11,9 @@
                   @else
                   Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
-<<<<<<< HEAD
-                  
-=======
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
                   @endif -->
->>>>>>> chaithra
                   <div id="currentTime" class="pull-right"></div>
                 </div>
                 @if($subwards)
