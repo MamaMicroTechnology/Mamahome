@@ -80,6 +80,7 @@ use App\OperationalExpenditure;
 use App\NumberOfZones;
 use App\Pricing;
 use GuzzleHttp\Client;
+use App\Manufacturer;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
