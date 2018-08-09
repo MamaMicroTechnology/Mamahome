@@ -449,7 +449,7 @@ public function getproject(request $request){
         
         return response()->json(['project'=>$project,'contractor'=>$contractor,'procurement'=>$procurement,'consultant',$consultant,'siteEngineer'=>$siteEngineer,'owner'=>$owner]);
     }
-    public function postUpdateProject(Request $requet)
+    public function postUpdateProject(Request $request)
     {
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
