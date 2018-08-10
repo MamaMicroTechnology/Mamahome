@@ -489,7 +489,7 @@ public function getproject(request $request){
                 'project_size' => $request->project_size,
                 'budgetType' => $request->budgetType,
                 'budget' => $request->budget,
-                'user_id' => $request->userid,
+//                 'user_id' => $request->userid,
                 'basement' => $basement,
                 'ground' => $ground,
                 'project_type' => $floor,
