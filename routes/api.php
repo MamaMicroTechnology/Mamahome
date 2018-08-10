@@ -50,6 +50,8 @@ Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
 Route::get('/updateProject','TokenController@getUpdateProject');
 Route::post('/updateProject','TokenController@postUpdateProject');
+Route::post('/updateEnquiry','TokenController@updateEnquiry');
 
 Route::post('/addLocation','TokenController@addLocation');
 Route::post('/updateLocation','TokenController@updateLocation');
+
