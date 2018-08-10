@@ -3026,9 +3026,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     public function smstonumber(Request $request)
     {
        
-                        if(Auth::user()->group_id != 22){
-                        return $this->smstonumber1($request);
-                        }
+        if(Auth::user()->group_id != 22){
+        return $this->smstonumber1($request);
+        }
 
 
 
@@ -3038,15 +3038,16 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $stages = $request->stage;
         }
 
-  $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+     $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+     $subwards = Subward::where('ward_id',$tlward)->pluck('id');
+     
 
          $projectids = new Collection();
          $orders = Order::where('status','Order Confirmed')->pluck('project_id');
-         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-         if($stages != null){
-             $projectids = ProjectDetails::leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-             ->where('wards.id',$tlward)
+        
+
+       if($stages != null){
+            $projectids = ProjectDetails::whereIn('sub_ward_id',$subwards)
              ->whereIn('project_status',$stages)
              ->where('quality','!=','Fake')
              ->whereNotIn('project_id',$orders)
@@ -3054,6 +3055,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
          }else{
             $projectids = null;
          }     
+    
+
     if($projectids != null){
 
            //fetch phonee numbers//
@@ -3073,6 +3076,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
+            
             
            for($ss=1;$ss<count($unique);$ss++){
              DB::insert('insert into numbers (number) values(?)',[$unique[$ss] ]);
@@ -3469,7 +3473,6 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
         $acount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
         $aupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
-
         $projects = ProjectDetails::where('created_at','like',$date.'%')->get();
         $groupid = [6,11];
         $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
@@ -3492,7 +3495,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }
                 // ->join('sub_wards', 'tlwards.ward_id', '=', 'sub_wards.ward_id')->get();
         
-        $teamprojects = DB::table('project_details')
+    $teamward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+     $subwards = Subward::where('ward_id',$teamward)->pluck('id');
+      if(Auth::user()->group_id == 22){
+        $teamprojects = DB::table('project_details')->whereIn('sub_ward_id',$subwards)
             ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
             ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
             ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
@@ -3503,6 +3509,11 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             ->where('project_details.created_at','like',$date.'%')
             ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
             ->get();
+            
+        }
+        else{
+             $teamprojects = 0;
+        }
 
             foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
@@ -3551,7 +3562,12 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             }
 
         $projcount = count($projects); 
-        $teamprojcount = count($teamprojects);
+        if(Auth::user()->group_id == 22){
+            $teamprojcount = count($teamprojects);
+        }
+        else{
+            $teamprojcount = 0;
+        }
         return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount,'teamprojects'=>$teamprojects,'teamprojcount'=>$teamprojcount]);
     }
     public function getleinfo(Request $request)
