@@ -400,6 +400,25 @@ public function enquiry(request $request){
             return response()->json(['message'=>'Something went wrong']);
         }
  } 
+    public function updateEnquiry(request $request){
+        
+        $enquiry = Requirement::where('id',$request->id)->update([
+            'main_category' => $categoryNames,
+            'brand' => $brandnames,
+            'sub_category'  =>$subcategories,
+            'updated_by' =>Auth::user()->id,
+            'quantity' => $qnty,
+            'enquiry_quantity' =>$request->enquiryquantity,
+            'total_quantity' =>$request->totalquantity,
+             'notes' => $request->eremarks,
+            'requirement_date' => $request->edate
+        ]);
+          if($enquiry->save() ){
+            return response()->json(['message'=>'Enquiry Updated sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
 public function getproject(request $request){
   $project = ProjectDetails::where('project_details.user_id',$request->user_id)
                     ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
