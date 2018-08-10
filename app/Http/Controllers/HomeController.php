@@ -3050,31 +3050,32 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                         if(Auth::user()->group_id != 22){
                         return $this->smstonumber1($request);
                         }
-
-
-
+    
         if(!$request->stage ){
             $stages =null;
         }else{
             $stages = $request->stage;
         }
 
-  $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+     $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+     $subwards = Subward::where('ward_id',$tlward)->pluck('id');
+     
 
          $projectids = new Collection();
          $orders = Order::where('status','Order Confirmed')->pluck('project_id');
-         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-         if($stages != null){
-             $projectids = ProjectDetails::leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-             ->where('wards.id',$tlward)
+        
+
+       if($stages != null){
+            $projectids = ProjectDetails::whereIn('sub_ward_id',$subwards)
              ->whereIn('project_status',$stages)
              ->where('quality','!=','Fake')
              ->whereNotIn('project_id',$orders)
              ->pluck('project_id'); 
          }else{
             $projectids = null;
-         }     
+         } 
+
+
     if($projectids != null){
 
            //fetch phonee numbers//
