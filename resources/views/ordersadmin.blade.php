@@ -279,7 +279,7 @@
 <!-- Form -->
 <form method="POST" id="payment" action="{{ URL::to('/') }}/paymentmode">
 {{ csrf_field() }}
-<input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+
     <select name="payment" id="pay" class="form-control">
             <option value="">--Select--</option>
             <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
