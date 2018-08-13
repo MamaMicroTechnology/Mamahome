@@ -394,6 +394,7 @@ public function enquiry(request $request){
         $enquiry->notes = $request->notes;
         $enquiry->A_contact = $request->A_contact;
         $enquiry->quantity = $request->quantity;
+     $enquiry->user_id = $request->userid;
        
         $enquiry->save();
           if($enquiry->save() ){
@@ -414,7 +415,8 @@ public function enquiry(request $request){
             'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate,
-             'quantity' = $request->quantity
+             'quantity' = $request->quantity,
+              'user_id' = $request->userid
         ]);
           if($enquiry->save() ){
             return response()->json(['message'=>'Enquiry Updated sucuss']);
