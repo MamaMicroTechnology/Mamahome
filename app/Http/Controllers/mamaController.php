@@ -1695,6 +1695,7 @@ class mamaController extends Controller
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
                 $order = new Order;
                 $order->id = $orderNo;
+                $order->req_id = $request->id;
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
