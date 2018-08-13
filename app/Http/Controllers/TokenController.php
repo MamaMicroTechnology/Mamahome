@@ -285,7 +285,7 @@ class TokenController extends Controller
                 $decoded = base64_decode($data['municipality_approval']);   
                 $success = file_put_contents($path, $decoded);
                
-;
+
             }
             else{
                  $png_url  = "N/A";
