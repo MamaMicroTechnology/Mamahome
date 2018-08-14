@@ -28,7 +28,7 @@ Route::post('itMessage','TokenController@itMessage');
 // tl
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
-Route::get('login','TokenController@buyerLogin');
+Route::get('buyerlogin','TokenController@buyerLogin');
 Route::get('login/{username}/{password}','TokenController@getLogin');
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
