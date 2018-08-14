@@ -87,7 +87,7 @@
                             <td>: {{ $details->office_phone }}</td>
                         </tr>
                         <tr>
-                            <td>Phone No.</td>
+                            <td>Personal Phone No.</td>
                             <td>: {{ $user->contactNo }}</td>
                             <td>Alternative Phone No.</td>
                             <td>: {{ $details->alt_phone }}</td>

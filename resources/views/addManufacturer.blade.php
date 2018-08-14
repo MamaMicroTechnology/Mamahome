@@ -461,4 +461,9 @@
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
+@if(session('Success'))
+<script>
+    swal("{{ session('Success') }}");
+</script>
+@endif
 @endsection

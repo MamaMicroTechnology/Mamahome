@@ -17,10 +17,11 @@
                                 </th>
                             </tr>
                             <tr>
+                            
                                 <td colspan="2">
                                     Regd. Off :<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#43, Residency Road, Shanthala Nagar,<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ashok Nagar, Bengaluru, Karnataka 560025<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#363,19th Main Road, 1st Block<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rajajinagar, Bengaluru, Karnataka 560010<br>
                                 </td>
                                 <td colspan="2"><br>
                                     Ph: 9110636146<br>
@@ -113,10 +114,10 @@
                                     ?>
                                 </td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td colspan=2>Transactional Profit</td>
                                 <td colspan=2>{{ $invoice->transactional_profit }}</td>
-                            </tr>
+                            </tr> -->
                         </table>
                     @endforeach
                     </div>

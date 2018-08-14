@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <style>
@@ -434,10 +435,10 @@ div#calendar{
                         @endif
                         
                         <li style="padding-top: 10px;">
-                          <button  class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
+                          <button  class="btn btn-success btn-sm" onclick="submitapp()">Field Login</button>
                         </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Logout</button>
+                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Field Logout</button>
                        </li>
                         @endif
                     </ul>
@@ -555,11 +556,12 @@ div#calendar{
         <a href="{{ URL::to('/marketing') }}">&nbsp;&nbsp;&nbsp; - Marketing</a>
         <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Asst. Manager of sales</a>
     </div>
-    <a href="{{ URL::to('/employeereports') }}">Attendance</a>
+    <!-- <a href="{{ URL::to('/employeereports') }}">Attendance</a> -->
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
    <a href="{{ URL::to('/letracking') }}">Tracking</a>
     <a href="{{ URL::to('/viewManufacturer') }}">Manufacturer Details</a>
+    <a href="{{ URL::to('/manufacturerdetails') }}">Direct Aligned Partners</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <!-- <a href="{{ URL::to('/confidential') }}">Confidential</a> -->
