@@ -560,11 +560,11 @@ div#calendar{
     <a href="{{ URL::to('/viewManufacturer') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
-    <a href="{{ URL::to('/confidential') }}">Confidential</a>
+    <!-- <a href="{{ URL::to('/confidential') }}">Confidential</a> -->
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
      <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
-  <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
+  <a href="{{ URL::to('/setprice') }}">Price Setting Based On Designation</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
   
