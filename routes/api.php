@@ -55,3 +55,6 @@ Route::post('/updateEnquiry','TokenController@updateEnquiry');
 Route::post('/addLocation','TokenController@addLocation');
 Route::post('/updateLocation','TokenController@updateLocation');
 
+Route::get('pending','TokenController@pending');
+Route::get('/confirmgorders','TokenController@confirm');
+
