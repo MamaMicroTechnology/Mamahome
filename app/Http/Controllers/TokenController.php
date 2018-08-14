@@ -25,7 +25,7 @@ use App\WardAssignment;
 use App\SubWard;
 use App\SubWardMap;
 use App\TrackLocation;
-
+use App\Order;
 
 
 use App\Http\Resources\Message as MessageResource;
@@ -637,5 +637,13 @@ public function getproject(request $request){
                print $userResponse;
             }
 
+       }
+    public function pending(Request $request){
+        $pending = Order::where('status','Enquiry Confirmed')->get();
+         return response()->json(['pending'=>$pending]);
+       }
+        public function confirm(request $request){
+        $confirm = Order::where('status','Order Confirmed')->get();
+         return response()->json(['confirm'=>$confirm]);
        }
 }
