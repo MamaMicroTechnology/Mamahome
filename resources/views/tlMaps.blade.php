@@ -48,11 +48,11 @@
                             @foreach($wards as $ward)
                             <tr>
                                 <td style="text-align: center;">{{ $ward->ward_name }}</td>
-                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}"> click here to Image</a></td>
+                                <td style="text-align: center;"><a href="{{ URL::to('/')}}/public/wardImages/{{ $ward->ward_image }}"> Click Here To View Image</a></td>
                             </tr>
                              <td>
                                 
-                                <td style="text-align: center;"><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank"> click here to View Map</a></td>
+                                <td style="text-align: center;"><a href="{{ URL::to('/') }}/viewMap?wardId={{ $ward->id }}" class="btn btn-sm btn-primary" target="_blank"> Click Here To View Map</a></td>
                             </td>
                             @endforeach
                         </tbody>
