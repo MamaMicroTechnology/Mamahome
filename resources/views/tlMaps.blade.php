@@ -24,7 +24,7 @@
                                         <tr>
                                            <td style="text-align: left;padding-left:70px">{{ $zone->zone_name }}</td>
                                             <td >{{ $zone->zone_number }}</td>
-                                            <td ><a href="{{ URL::to('/')}}/viewMap?zoneId={{ $zone->id}}"  target="_blank">View image</a></td>
+                                            <td ><a href="{{ URL::to('/')}}/viewMap?zoneId={{ $zone->id}}"  target="_blank">View Map</a></td>
                                         </tr>
                                     @endforeach
                             </tbody>
