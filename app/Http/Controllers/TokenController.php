@@ -285,7 +285,7 @@ class TokenController extends Controller
                 $decoded = base64_decode($data['municipality_approval']);   
                 $success = file_put_contents($path, $decoded);
                
-;
+
             }
             else{
                  $png_url  = "N/A";
@@ -393,9 +393,33 @@ public function enquiry(request $request){
         $enquiry->requirement_date = $request->requirement_date;
         $enquiry->notes = $request->notes;
         $enquiry->A_contact = $request->A_contact;
+        $enquiry->quantity = $request->quantity;
+        $enquiry->user_id = $request->userid;
+       
         $enquiry->save();
           if($enquiry->save() ){
             return response()->json(['message'=>'Enquiry Added sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
+    public function updateEnquiry(request $request){
+        
+        $enquiry = Requirement::where('id',$request->id)->update([
+            'main_category' => $categoryNames,
+            'brand' => $brandnames,
+            'sub_category'  =>$subcategories,
+            'updated_by' =>Auth::user()->id,
+            
+            'enquiry_quantity' =>$request->enquiryquantity,
+            'total_quantity' =>$request->totalquantity,
+             'notes' => $request->eremarks,
+            'requirement_date' => $request->edate,
+            'quantity' => $request->quantity,
+              'user_id' => $request->userid
+        ]);
+          if($enquiry->save() ){
+            return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }
@@ -482,21 +506,21 @@ public function getproject(request $request){
                 'road_width'=>$request->road_width,
                 'construction_type'=>$request->construction_type,
                 'interested_in_rmc'=>$request->interested_in_rmc,
-                'interested_in_loan'=>$request->interested_in_load,
+                'interested_in_loan'=>$request->interested_in_loan,
                 'interested_in_doorsandwindows'=>$request->interested_in_doorsandwindows,
                 'road_name'=>$request->road_name,
                 'project_status' => $statuses,
                 'project_size' => $request->project_size,
                 'budgetType' => $request->budgetType,
                 'budget' => $request->budget,
-                'user_id' => $request->userid,
+//                 'user_id' => $request->userid,
                 'basement' => $basement,
                 'ground' => $ground,
                 'project_type' => $floor,
                 'length' => $length,
                 'breadth' => $breadth,
                 'plotsize' => $size,
-                'user_id' => $request->user_id,
+                'user_id' => $request->userid,
                 'remarks' => $request->remarks,
                 'contract' => $request->contract
             ]);

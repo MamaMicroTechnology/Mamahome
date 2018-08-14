@@ -28,7 +28,7 @@ Route::post('itMessage','TokenController@itMessage');
 // tl
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
-Route::get('login','TokenController@buyerLogin');
+Route::get('buyerlogin','TokenController@buyerLogin');
 Route::get('login/{username}/{password}','TokenController@getLogin');
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
@@ -50,6 +50,8 @@ Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
 Route::get('/updateProject','TokenController@getUpdateProject');
 Route::post('/updateProject','TokenController@postUpdateProject');
+Route::post('/updateEnquiry','TokenController@updateEnquiry');
 
 Route::post('/addLocation','TokenController@addLocation');
 Route::post('/updateLocation','TokenController@updateLocation');
+
