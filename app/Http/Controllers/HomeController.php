@@ -6450,8 +6450,10 @@ public function display(request $request){
                 $projection->incremental_percentage = $request->incrementalPercentage;
             }
             $projection->save();
+        }else{
+            return back()->with('Error','Projection Has Already Been Set For This Category');    
         }
-        return back();
+        return back()->with('Success','Projection Has Been Set Successfully');;
    }
    public function getLockedProjection()
    {
@@ -6716,7 +6718,7 @@ public function display(request $request){
         $planning->totalTarget = $request->totalTarget;
         $planning->totalTP = $request->totalTP;
         $planning->save();
-        return back();
+        return back()->with('Success','Yearly Planning Locked');
     }
     public function getCountryProjection()
     {

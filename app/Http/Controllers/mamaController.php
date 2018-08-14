@@ -1921,7 +1921,7 @@ public function checkdetailes(request $request){
     public function postSaveManufacturer(Request $request)
     {
         if($request->type == "blocks"){
-            $modes = implode(", ", $request->paymentMode);
+            // $modes = implode(", ", $request->paymentMode);
             $manufacturer = new Manufacturer;
             $manufacturer->name = $request->name;
             $manufacturer->address = $request->address;
@@ -1933,7 +1933,7 @@ public function checkdetailes(request $request){
             $manufacturer->deliverability = $request->deliverability;
             $manufacturer->sand_requirement = $request->sand_requirement;
             $manufacturer->type = $request->manufacturing_type;
-            $manufacturer->payment_mode = $modes;
+            // $manufacturer->payment_mode = $modes;
             $manufacturer->save();
 
             // saving product details
@@ -2045,8 +2045,7 @@ public function checkdetailes(request $request){
     $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
     $subwards = SubWard::where('id',$wardsAssigned)->first();
         $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
-       
-      if($subwards != null){
+        if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
             
         }else{

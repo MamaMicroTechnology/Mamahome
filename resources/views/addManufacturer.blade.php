@@ -39,49 +39,47 @@
                                     <td>Production Capacity (Per Day)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Production Capacity (Per Day)" min="0" type="number" name="capacity" id="capacity" class="form-control">
+                                        <input placeholder="Production Capacity (Per Day)" min="0" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Present Utilization (In %)</td>
+                                    <td>Quantity Of Cement Required <br>(Per Week)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Present Utilization (In %)" min="0" type="number" name="utilization" id="utilization" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Quantity Of Cement Bags Required <br>(Per Week in Tons)</td>
-                                    <td>:</td>
-                                    <td>
-                                        <input required placeholder="Cement Bags Required Per Week (in Tons)" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Prefered Cement Brands</td>
-                                    <td>:</td>
-                                    <td>
-                                        <input required placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Deliverability</td>
-                                    <td>:</td>
-                                    <td>
-                                        <select required name="deliverability" id="deliverability" class="form-control">
-                                            <option value="">--Select--</option>
-                                            <option value="0-15km">0-5km</option>
-                                            <option value="16-20km">5-10km</option>
-                                            <option value="21-25km">10-15km</option>
-                                            <option value="15km-20km">15km-20km</option>
-                                        </select>
-                                        <!-- <input required placeholder="Deliverability" type="text" name="deliverability" id="deliverability" class="form-control"> -->
+                                        <div class="col-md-6 radio">
+                                            <label for="tons"><input type="radio" name="tons" id="tons">Tons</label>&nbsp;&nbsp;
+                                            <label for="bags"><input type="radio" name="bags" id="bags">Bags</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input placeholder="Cement Required" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <div class="col-md-6 radio">
+                                            <label for="tons"><input type="radio" name="tons" id="tons">Tons</label>&nbsp;&nbsp;
+                                            <label for="bags"><input checked="true" type="radio" name="bags" id="bags">Bags</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Aggregates Required</td>
+                                    <td>:</td>
+                                    <td>
+                                        <input required placeholder="Aggregates Required" min="0" type="number" name="aggregate_requirement" id="aggregate_requirement" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Prefered Cement Brands</td>
+                                    <td>:</td>
+                                    <td>
+                                        <input placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -111,6 +109,7 @@
                                                         <option value="4 inch">4 inch</option>
                                                         <option value="6 inch">6 inch</option>
                                                         <option value="8 inch">8 inch</option>
+                                                        <option value="12 inch">12 inch</option>
                                                         <!-- <option value="">All</option> -->
                                                     </select>
                                                 </td>
@@ -133,23 +132,12 @@
                                     <td>Blocks Manufacturing Type</td>
                                     <td>:</td>
                                     <td>
-                                        <img id="manualImage" onclick="manufacturingType('manual');" src="{{ URL::to('/') }}/manual_unchecked.png" style="height:30px;width:100px;" alt="machine">
-                                        <img id="machineImage" onclick="manufacturingType('machine');" src="{{ URL::to('/') }}/machine_unchecked.png" style="height:30px;width:100px;" alt="machine">
-                                        <input type="radio" name="manufacturing_type" value="Manual" id="manual" class="hidden">
-                                        <input type="radio" name="manufacturing_type" value="Machine" id="machine" class="hidden">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Mode of Payment</td>
-                                    <td>:</td>
-                                    <td>
-                                        <img id="rtgs" onclick="modeOfPayment('rtgs');" src="{{ URL::to('/') }}/rtgs_unchecked.png" style="height:30px;width:100px;" alt="machine">
-                                        <img id="check" onclick="modeOfPayment('check');" src="{{ URL::to('/') }}/check_unchecked.png" style="height:30px;width:100px;" alt="machine">
-                                        <img id="cash" onclick="modeOfPayment('cash');" src="{{ URL::to('/') }}/cash_unchecked.png" style="height:30px;width:100px;" alt="machine">
-                                        <br>
-                                        <input class="hidden" type="checkbox" name="paymentMode[]" value="RTGS" id="rtgs2">
-                                        <input class="hidden" type="checkbox" name="paymentMode[]" value="CHEQUE" id="check2">
-                                        <input class="hidden" type="checkbox" name="paymentMode[]" value="CASH" id="cash2">
+                                        <div class="radio">
+                                            <label><input required type="radio" name="manufacturing_type" value="Manual" id="manual">Manual</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input required type="radio" name="manufacturing_type" value="Machine" id="machine">Machine</label>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -275,27 +263,27 @@
                                         <input required placeholder="Address" type="text" name="address" id="address" class="form-control">
                                     </td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Area of Plant</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Area of Plant" min="0" type="number" name="area" id="area" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
-                                    <td>Production Capacity (Per Day)</td>
+                                    <td>Production Capacity (In Cubic Meter Per Day)</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Production Capacity (Per Day)" min="0" type="number" name="capacity" id="capacity" class="form-control">
                                     </td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Present Utilization (In %)</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Present Utilization (In %)" min="0" type="number" name="utilization" id="utilization" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>Quantity Of Cement Bags Required (Tons)</td>
                                     <td>:</td>
@@ -303,13 +291,13 @@
                                         <input required placeholder="Quantity Of Cement Bags Required (Tons)" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
                                     </td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Type Of Cement Used</td>
                                     <td>:</td>
                                     <td>
                                         <input type="text" name="cement_used" id="cement_used" placeholder="Cement Used" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>Prefered Cement Brands</td>
                                     <td>:</td>
@@ -317,7 +305,7 @@
                                         <input required placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Deliverability</td>
                                     <td>:</td>
                                     <td>
@@ -328,9 +316,9 @@
                                             <option value="21-25km">21-25km</option>
                                             <option value="26km & above">26km & above</option>
                                         </select>
-                                        <!-- <input required placeholder="Deliverability" type="text" name="deliverability" id="deliverability" class="form-control"> -->
+                                        <input required placeholder="Deliverability" type="text" name="deliverability" id="deliverability" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>Aggregates Required (Per Week In Tons)</td>
                                     <td>:</td>
@@ -339,10 +327,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>MOQ For Free Pumping</td>
+                                    <td>MOQ For Free Pumping (CUM)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required type="number" min="1" name="moq" id="moq" placeholder="MOQ For Free Pumping" class="form-control">
+                                        <input required type="number" min="1" name="moq" id="moq" placeholder="MOQ For Free Pumping (CUM)" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -353,8 +341,8 @@
                                         <table class="table table-hover" id="types">
                                             <tr>
                                                 <th style="text-align:center">Grade Type</th>
-                                                <th style="text-align:center">Grade Size</th>
-                                                <!-- <th style="text-align:center">Price</th> -->
+                                                <!-- <th style="text-align:center">Grade Size</th> -->
+                                                <th style="text-align:center">Price</th>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -373,6 +361,7 @@
                                                     <input required min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
+                                            
                                         </table>
                                             <div class="btn-group">
                                                 <button type="button" onclick="myFunction()" class="btn btn-warning btn-sm">
