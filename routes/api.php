@@ -57,4 +57,4 @@ Route::post('/updateLocation','TokenController@updateLocation');
 
 Route::get('pending','TokenController@pending');
 Route::get('/confirmgorders','TokenController@confirm');
-
+Route::post('/recordtime','TokenController@recordtime');
