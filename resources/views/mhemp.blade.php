@@ -70,7 +70,7 @@ input:checked + .slider:before {
 }
 </style>
 <div class="panel panel-default" style="border-color:green">
-<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees on {{ $dept }}
+<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees on {{ $dept }} Team
  <a class="pull-right btn btn-xs btn-danger" href="{{url()->previous()}}">Back</a>
 
 </div>
