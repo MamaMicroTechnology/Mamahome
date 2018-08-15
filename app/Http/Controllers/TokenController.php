@@ -646,4 +646,22 @@ public function getproject(request $request){
         $confirm = Order::where('status','Order Confirmed')->where('user_id',$request->userid)->get();
          return response()->json(['confirm'=>$confirm]);
        }
+    public function recordtime(Request $request)
+    {
+                        $field = new FieldLogin;
+                        $field->user_id = $request->user_id;
+                        $field->logindate = date('Y-m-d');
+                        $field->logintime = date(' H:i A');
+                        $field->remark = $request->remark;
+                        $field->latitude = $request->latitude;
+                        $field->longitude = $request->longitude;
+                        $field->address = $request->address;
+                        $field->save();
+
+ if($field->save()){
+           return response()->json(['message'=>'Registered']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+    }
 }
