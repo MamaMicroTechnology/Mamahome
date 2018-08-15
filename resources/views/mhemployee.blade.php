@@ -48,7 +48,7 @@
     width: 9px;
     background-color:green;
     border-radius: 50%;
-    display: inline-block;"></span> {{ $totalcount }}
+    display: inline-block;"></span> 50
                 
                       <br>
     <br>
@@ -61,30 +61,28 @@
       </thead>
       <tbody>
         <tr> 
-                        <td style="border: 1px solid gray;">Sales</td>
-                        <td style="border: 1px solid gray;">10</td>
-                        <td style="border: 1px solid gray;">22</td>
+                         <td style="border: 1px solid gray;">Operation</td>
+                        <td style="border: 1px solid gray;">27</td>
+                        <td style="border: 1px solid gray;">21</td>
+                       
         </tr>
      
                         <tr> 
-                        <td style="border: 1px solid gray;">Operation</td>
-                        <td style="border: 1px solid gray;">27</td>
-                        <td style="border: 1px solid gray;">21</td>
+                                 <td style="border: 1px solid gray;">Sales</td>
+                                  <td style="border: 1px solid gray;">10</td>
+                                  <td style="border: 1px solid gray;">22</td>
                         </tr>
                         <tr> 
-                            <td style="border: 1px solid gray;">IT</td>
-                            <td style="border: 1px solid gray;">9</td>
-                            <td style="border: 1px solid gray;">24</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid gray;">HR</td>
-                            <td style="border: 1px solid gray;">1</td>
-                            <td style="border: 1px solid gray;">23</td>
-                        </tr>
-                        <tr>
                             <td style="border: 1px solid gray;">Marketing</td>
                             <td style="border: 1px solid gray;">1</td>
                             <td style="border: 1px solid gray;">22</td>
+                           
+                        </tr>
+                        <tr>
+                           <td style="border: 1px solid gray;">IT</td>
+                            <td style="border: 1px solid gray;">9</td>
+                            <td style="border: 1px solid gray;">24</td>
+                           
                         </tr>
                         <tr>
                             <td style="border: 1px solid gray;">Finance</td>
@@ -96,11 +94,17 @@
                             <td style="border: 1px solid gray;">1</td>
                             <td style="border: 1px solid gray;">27</td>
                         </tr>
+                        <tr>
+                             <td style="border: 1px solid gray;">Human Resource</td>
+                            <td style="border: 1px solid gray;">1</td>
+                            <td style="border: 1px solid gray;">23</td>
+                        <tr>
                          <tr>
                             <td style="border: 1px solid gray;"></td>
                             <td style="border: 1px solid gray;">50</td>
                             <td style="border: 1px solid gray;">23(Avg)</td>
                         </tr>
+                        
                         
                       </tbody>
                      </table>
