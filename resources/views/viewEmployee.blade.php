@@ -58,7 +58,7 @@
                             <td>: {{ $user->department->dept_name }}</td>
                             <td>Designation</td>
                             <td>
-                                @if($user->group->group_name == "Team Leader" )
+                                @if($user->group->group_name == "Team Lead" )
                                 : Senior {{ $user->group->group_name }}
                                 @else
                                 : {{ $user->group->group_name }}
