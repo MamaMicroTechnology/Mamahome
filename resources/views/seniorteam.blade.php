@@ -4,7 +4,13 @@
 <div class="container">
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-primary">
-            <div class="panel-heading text-center" ><b>{{ $name}}</b></div>
+            <div class="panel-heading text-center" >
+            <b>
+              @if(  $name == "Team Lead")
+            Senior {{ $name}}</b></div>
+            @else
+            {{ $name}}</b></div>
+            @endif
             @if(SESSION('success'))
                 <div class="text-center alert alert-success">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
