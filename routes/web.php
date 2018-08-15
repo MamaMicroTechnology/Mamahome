@@ -135,6 +135,7 @@ Route::get('/hr','mamaController@hr');
 Route::get('/allteamleader','mamaController@allteamleader');
 Route::get('/allsaleseng','mamaController@allsaleseng');
 Route::get('/teamsales','mamaController@teamsales');
+Route::get('/viewEmployee','HomeController@viewEmployee');
 
 
 //sales converter
@@ -258,7 +259,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
     Route::get('/anr','HomeController@getAnR');
-    Route::get('/viewEmployee','HomeController@viewEmployee');
+   
     Route::get('/amdept','HomeController@amDept');
     Route::get('/quality','HomeController@quality');
     Route::get('/getquality','HomeController@getquality');
