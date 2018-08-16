@@ -101,11 +101,9 @@
                         <tr>
                          <tr>
                             <td style="border: 1px solid gray;"></td>
-                            <td style="border: 1px solid gray;">50</td>
-                            <td style="border: 1px solid gray;">23(Avg)</td>
+                            <td style="border: 1px solid gray;"><b>50</b></td>
+                            <td style="border: 1px solid gray;"><b>23(Avg)</b></td>
                         </tr>
-                        
-                        
                       </tbody>
                      </table>
                     </div>
