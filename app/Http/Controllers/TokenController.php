@@ -406,36 +406,12 @@ public function enquiry(request $request){
  } 
     public function updateEnquiry(request $request){
         
-         // for fetching sub categories
-        $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
-        $subcategories = implode(", ", $sub_cat_name);
          
-            // fetching brands
-        $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
-        $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
-        $brandnames = implode(", ", $brand);
-        $get = implode(", ",array_filter($request->quan));
-        $another = explode(", ",$get);
-        $quantity = array_filter($request->quan);
-        for($i = 0;$i < count($request->subcat); $i++){
-            if($i == 0){
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty = $sub." :".$another[$i];
-            }else{
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty .= ", ".$sub." :".$another[$i];
-            }
-        }
-
-        $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
-        $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
-        $categoryNames = implode(", ", $category);
         $enquiry = Requirement::where('id',$request->id)->update([
-            'main_category' => $categoryNames,
-            'brand' => $brandnames,
-            'sub_category'  =>$subcategories,
+            'main_category' =>  $request->main_category,
+            'brand' => $request->brand,
+            'sub_category'  => $request->sub_category,
             'updated_by' =>Auth::user()->id,
-            
             'enquiry_quantity' =>$request->enquiryquantity,
             'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
