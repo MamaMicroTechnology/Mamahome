@@ -408,6 +408,7 @@ public function enquiry(request $request){
         
        
         $enquiry = Requirement::where('id',$request->id)->count();
+        dd(  $enquiry );
             if($enquiry != 0){
                 
                          $enquiry->project_id = $request->project_id;
