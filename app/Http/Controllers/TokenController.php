@@ -419,7 +419,8 @@ public function enquiry(request $request){
             'quantity' => $request->quantity,
               'user_id' => $request->userid
          ]);
-          if($enquiry){
+         $enquiry->save();
+          if($enquiry->save()){
             return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
