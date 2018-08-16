@@ -406,7 +406,7 @@ public function enquiry(request $request){
  } 
     public function updateEnquiry(request $request){
         
-         
+         dd($request->id);
         $enquiry = Requirement::where('id',$request->id)->update([
             'main_category' =>  $request->main_category,
             'brand' => $request->brand,
