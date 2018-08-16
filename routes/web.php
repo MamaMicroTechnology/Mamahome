@@ -441,7 +441,7 @@ Route::group(['middleware' => ['Buyer']],function(){
     Route::post('/updateProfile','BuyerController@updateProfile');
 });
 
-Route::group(['middleware'=>['asst']],function(){
+
     // main links
     Route::get('/amdashboard','amController@getAMDashboard');
     Route::get('/pricing','amController@getPricing');
@@ -538,7 +538,6 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/inactiveEmployee','amController@inactiveEmployee');
     
     // not working
-});
 Route::group(['middleware'=>['AccountExecutive']],function(){
     // Route::get('/accountExecutive','aeController@getAccountExecutive');
     Route::get('/accountExecutive','HomeController@leDashboard');
