@@ -407,19 +407,20 @@ public function enquiry(request $request){
     public function updateEnquiry(request $request){
         
        
-        $enquiry = Requirement::where('id',$request->id)->update([
-            'main_category' =>  $request->main_category,
-            'brand' => $request->brand,
-            'sub_category'  => $request->sub_category,
-            'updated_by' =>Auth::user()->id,
-            'enquiry_quantity' =>$request->enquiryquantity,
-            'total_quantity' =>$request->totalquantity,
-             'notes' => $request->eremarks,
-            'requirement_date' => $request->edate,
-            'quantity' => $request->quantity,
-              'user_id' => $request->userid
-         ]);
-         $enquiry->save();
+        $enquiry = Requirement::where('id',$request->id)->count();
+            if($enquiry != 0){
+                
+                         $enquiry->project_id = $request->project_id;
+                        $enquiry->main_category = $request->main_category;
+                        $enquiry->brand = $request->brand;
+                        $enquiry->sub_category = $request->sub_category;
+                        $enquiry->requirement_date = $request->requirement_date;
+                        $enquiry->notes = $request->notes;
+                        $enquiry->A_contact = $request->A_contact;
+                        $enquiry->quantity = $request->quantity;
+                        $enquiry->user_id = $request->userid;
+                        $enquiry->save();
+            }
           if($enquiry->save()){
             return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
