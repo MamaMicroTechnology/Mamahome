@@ -406,7 +406,7 @@ public function enquiry(request $request){
  } 
     public function updateEnquiry(request $request){
         
-        dd($request->main_category,$request->brand, $request->sub_category,$request->totalquantity);
+       
         $enquiry = Requirement::where('id',$request->id)->update([
             'main_category' =>  $request->main_category,
             'brand' => $request->brand,
@@ -418,8 +418,9 @@ public function enquiry(request $request){
             'requirement_date' => $request->edate,
             'quantity' => $request->quantity,
               'user_id' => $request->userid
+             
         ]);
-          if($enquiry->save() ){
+          if($enquiry){
             return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
