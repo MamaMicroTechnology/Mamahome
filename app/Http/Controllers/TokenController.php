@@ -385,6 +385,30 @@ class TokenController extends Controller
         }
     }
 public function enquiry(request $request){
+     // for fetching sub categories
+        $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
+        $subcategories = implode(", ", $sub_cat_name);
+         
+            // fetching brands
+        $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
+        $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
+        $brandnames = implode(", ", $brand);
+        $get = implode(", ",array_filter($request->quan));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quan);
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub." :".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$sub." :".$another[$i];
+            }
+        }
+
+        $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
+        $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
+        $categoryNames = implode(", ", $category);
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
         $enquiry->main_category = $request->main_category;
