@@ -666,7 +666,7 @@ public function getproject(request $request){
             return response()->json(['message'=>'Something went wrong']);
         }
     }
-    public function logout(request $request){
+    public function fieldlogout(request $request){
        $x =  FieldLogin::where('user_id',$request->user_id)->where('logindate',date('Y-m-d'))->first();
             $x->logout = $request->logouttime;
             $x->save();
