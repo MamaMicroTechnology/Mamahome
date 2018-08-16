@@ -407,22 +407,20 @@ public function enquiry(request $request){
     public function updateEnquiry(request $request){
         
        
-        $enquiry = Requirement::where('id',$request->id)->count();
-        dd(  $enquiry );
-            if($enquiry != 0){
+        $enquiry = Requirement::where('id',$request->id)->update([
                 
-                         $enquiry->project_id = $request->project_id;
-                        $enquiry->main_category = $request->main_category;
-                        $enquiry->brand = $request->brand;
-                        $enquiry->sub_category = $request->sub_category;
-                        $enquiry->requirement_date = $request->requirement_date;
-                        $enquiry->notes = $request->notes;
-                        $enquiry->A_contact = $request->A_contact;
-                        $enquiry->quantity = $request->quantity;
-                        $enquiry->user_id = $request->userid;
-                        $enquiry->save();
-            }
-          if($enquiry->save()){
+                        $enquiry->project_id = $request->project_id,
+                        $enquiry->main_category = $request->main_category,
+                        $enquiry->brand = $request->brand,
+                        $enquiry->sub_category = $request->sub_category,
+                        $enquiry->requirement_date = $request->requirement_date,
+                        $enquiry->notes = $request->notes,
+                        $enquiry->A_contact = $request->A_contact,
+                        $enquiry->quantity = $request->quantity,
+                        $enquiry->user_id = $request->userid
+                       
+          ]);
+          if($enquiry){
             return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
