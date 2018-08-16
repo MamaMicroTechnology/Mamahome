@@ -109,7 +109,31 @@
                       </tbody>
                      </table>
                     </div>
-    
+                     <div>
+    <table  class="table table-hover table-responsive" style="border: 2px solid gray;">
+      <thead>
+        <th style="border: 1px solid gray;">Qualification</th>
+        <th style="border: 1px solid gray;">Count</th>
+      </thead>
+      <tbody>
+        <tr> 
+                        <td style="border: 1px solid gray;">MBA & MCA</td>
+                        <td style="border: 1px solid gray;">6</td>
+                       
+        </tr>
+         <tr> 
+                        <td style="border: 1px solid gray;">Engineering</td>
+                        <td style="border: 1px solid gray;">37</td>
+                       
+        </tr>
+        <tr> 
+                        <td style="border: 1px solid gray;">Degree</td>
+                        <td style="border: 1px solid gray;">7</td>
+                       
+        </tr>
+      </tbody>
+    </table>
+  </div>
     
         </div>
     </div>
