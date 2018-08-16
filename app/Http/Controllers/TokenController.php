@@ -385,7 +385,28 @@ class TokenController extends Controller
         }
     }
 public function enquiry(request $request){
-     // for fetching sub categories
+    
+        $enquiry = new Requirement;
+        $enquiry->project_id = $request->project_id;
+        $enquiry->main_category = $request->main_category;
+        $enquiry->brand = $request->brand;
+        $enquiry->sub_category = $request->sub_category;
+        $enquiry->requirement_date = $request->requirement_date;
+        $enquiry->notes = $request->notes;
+        $enquiry->A_contact = $request->A_contact;
+        $enquiry->quantity = $request->quantity;
+        $enquiry->user_id = $request->userid;
+       
+        $enquiry->save();
+          if($enquiry->save() ){
+            return response()->json(['message'=>'Enquiry Added sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
+    public function updateEnquiry(request $request){
+        
+         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
          
@@ -409,26 +430,6 @@ public function enquiry(request $request){
         $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
         $categoryNames = implode(", ", $category);
-        $enquiry = new Requirement;
-        $enquiry->project_id = $request->project_id;
-        $enquiry->main_category = $request->main_category;
-        $enquiry->brand = $request->brand;
-        $enquiry->sub_category = $request->sub_category;
-        $enquiry->requirement_date = $request->requirement_date;
-        $enquiry->notes = $request->notes;
-        $enquiry->A_contact = $request->A_contact;
-        $enquiry->quantity = $request->quantity;
-        $enquiry->user_id = $request->userid;
-       
-        $enquiry->save();
-          if($enquiry->save() ){
-            return response()->json(['message'=>'Enquiry Added sucuss']);
-        }else{
-            return response()->json(['message'=>'Something went wrong']);
-        }
- } 
-    public function updateEnquiry(request $request){
-        
         $enquiry = Requirement::where('id',$request->id)->update([
             'main_category' => $categoryNames,
             'brand' => $brandnames,
