@@ -6,6 +6,7 @@
 				@if($projects != "None")
 					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)
 				@endif
+				 <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
 				@if(Auth::user()->group_id == 1)

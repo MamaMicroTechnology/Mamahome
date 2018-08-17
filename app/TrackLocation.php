@@ -9,4 +9,3 @@ class TrackLocation extends Model
    protected $table = 'tracking_location';
    
 }
-?>

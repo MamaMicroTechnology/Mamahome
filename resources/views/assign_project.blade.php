@@ -73,7 +73,7 @@
       <!-- Modal Header -->
       <div class="modal-header"  style="background-color:#f4811f;padding:2px">
         <h4 class="modal-title">Task Reject Message</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
       </div>
 
       <!-- Modal body -->
@@ -149,7 +149,7 @@
         <!-- Modal Header -->
         <div class="modal-header" style="background-color:#f4811f;padding:2px" >
           <h4 class="modal-title">Set Time And Instructions</h4>
-          <button type="button" class="close" data-dismiss="modal" style="width:50%">&times;</button>
+          
         </div>
         
         <!-- Modal body -->
@@ -366,9 +366,37 @@
                     <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Contract</h4>
                     <label required class="checkbox-inline"><input id="constructionType3" name="contract_type[]" type="checkbox" value="Labour Contract">&nbsp;&nbsp;Labour Contract</label><br>
                     <label required class="checkbox-inline"><input id="constructionType4" name="contract_type[]" type="checkbox" value="Material Contract">&nbsp;&nbsp;Material Contract </label>     
-                  </div>    
+                  </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-sm-2">
+                      <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Home Automation </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="auto[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="auto[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="auto[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                    </div> 
+                  <div class="col-sm-2">
+                    <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Bank Loans </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="bank[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="bank[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="bank[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                  </div>
+                  <div class="col-sm-2">
+                   <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Premium Customer </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="pre[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="pre[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                     <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="pre[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                  </div> 
+                  <div class="col-sm-3">
+                   <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Interested_In_DoorsandWindows </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="door[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                     <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                  </div> 
                 </div>
                 </div><br><br>
+                 
                 <center>
                   <button type="submit" id="submit" class="btn btn-success">Submit Data</button>
                 </center>

@@ -14,15 +14,15 @@
                   @if($subwards)
                  
                   @else
-                  Update Project
+                  Update Project&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   @endif
                    <a href="javascript:history.back()" class="btn btn-sm btn-danger btn-sm pull-right">Back</a>
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
-                <center>  <small id="currentTime">
+                 <small id="currentTime">
                     Listed On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
-                  </small></center>
+                  </small>
                 </div>
                 <div class="panel-body">
                     <center>
@@ -86,7 +86,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
+                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" pattern="^[0-9]*$"></td>
                                </tr>
                                  <tr>
                                    <td>Full Address</td>

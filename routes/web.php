@@ -601,5 +601,4 @@ Route::post('/close','logisticsController@close');
 Route::get('/addManufacturer','HomeController@addManufacturer');
 Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
 Route::get('/viewManufacturer','HomeController@viewManufacturer');
-
 Route::get('/auto',"HomeController@auto");

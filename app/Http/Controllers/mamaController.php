@@ -1071,7 +1071,7 @@ class mamaController extends Controller
             'total_kilometers' => $request->totalKm,
             'eveningRemarks' => $request->eRemark
         ]);
-        return back();
+        return back()->with('message',"successfully Save");
     }
     public function addRequirement(Request $request)
     {
@@ -2098,7 +2098,7 @@ public function checkdetailes(request $request){
         else{
             $remark = null;
         }
-        $id = user::where('id',Auth::user()->id)->pluck('id')->first();
+       $id = user::where('id',Auth::user()->id)->pluck('id')->first();
        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
        $lat = $request->latitude;
        $lon = $request->longitude;

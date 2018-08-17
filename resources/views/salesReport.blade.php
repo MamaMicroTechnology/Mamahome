@@ -30,7 +30,7 @@
                                             @foreach($tlUsers as $user)
                                                 <option>{{ $user->name }}</option>
     	                                    @endforeach
-                                        @endif 
+                                        @endif
 	                                </select>
 	                            </td>
 	                        </tr>
@@ -68,14 +68,16 @@
                 <table class="table table-striped" border="1">
                 	<tr>
                 		<th>Name</th>
+                    @if(Auth::user()->group_id != 22)
                 		<th>Ward</th>
+                    @endif
                 		<th>Calls</th>
                 		<th>Fake</th>
                 		<th>Genuine</th>
                 		<th>Initiated</th>
                 	</tr>
                        @if(Auth::user()->group_id != 22)
-                    @foreach($tlUsers as $user)
+                    @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
@@ -86,10 +88,9 @@
                     </tr>
                     @endforeach
                     @else
-                     @foreach($tluser as $user)
+                     @foreach( $tlUsers as $user)
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
-                        <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['fake'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['genuine'] }}</td>
@@ -110,7 +111,7 @@
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	No Of Calls: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
-            	Sales Engineer : 
+            	Sales Engineer :
             		@if(isset($_GET['se']) && $_GET['se'] != "ALL")
             			{{ $projectIds != null ? $projectIds[0]['updater'] : '' }}
             		@endif
@@ -131,7 +132,7 @@
                 </thead>
                 <tbody id="mainPanel">
                 	@for($i = 0; $i<count($projectIds);$i++)
-                 
+
                     <tr>
                         <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
                         <td style="text-align:center">
@@ -151,7 +152,7 @@
                         	@endif
                         </td>
                     </tr>
-                
+
                     @endfor
                 </tbody>
             </table>
