@@ -34,8 +34,8 @@
 
                                     <td>{{ $user->logindate != null ? date('d-m-Y',strTotime($user->logindate)) : " "}}</td>
                                     <td>{{ $user->name}}</td>
-                                    <td>{{ $user->logintime}}</td>
-                                    <td>{{ $user->logout != null ? date('h:i' ,strTotime($user->logout)) : " " }}</td>
+                                    <td>{{ $user->logintime }}</td>
+                                    <td>{{ $user->logout }}</td> 
                                     <td>{{ $user->remark}}</td>
                                 </tr>
                             @endforeach
