@@ -10,6 +10,7 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
     <style>
     body{
         font-family: "Times New Roman";
@@ -359,14 +360,22 @@ div#calendar{
 
                     <!-- Branding Image -->
                     <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <img style="height: 25px; width: 170px;" src="{{ URL::to('/') }}/logo.png">
-                    </a>
+                    
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+                        @if(Auth::check())
+                        <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        <li style="padding-top: 10px;">
+                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="teamlogin()">Login</button></li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" onclick="teamlogout()">Logout</button>
+                       </li>
+                        @endif
                    <!--  <li>
                     <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
                       
@@ -449,19 +458,30 @@ div#calendar{
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/listeng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/') }}/acceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/teamsales"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
       </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
+     <a href="{{ URL::to('/') }}/latelogin">Late Logins</a>
 
           
         
         @endif
         </div>
+                <form method="POST"  action="{{ URL::to('/') }}/teamlogin" >
+                  {{ csrf_field() }}
+                    <button id="team" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
+                 <form method="POST"  action="{{ URL::to('/') }}/teamlogout" >
+                  {{ csrf_field() }}
+                    <button id="lteam" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
         @yield('content')
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -523,5 +543,64 @@ div#calendar{
             document.getElementById("main").style.marginLeft= "0";
         }
     </script>
+<script>
+  function teamlogin(){
+    document.getElementById("team").form.submit();
+  }
+  function teamlogout(){
+    document.getElementById("lteam").form.submit();
+  }
+</script>
+@if(session('TeamSuccess'))
+  <div class="modal fade" id="teamSuccess" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #5cb85c;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Success</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('TeamSuccess') !!}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#teamSuccess").modal('show');
+  });
+</script>
+@endif
+@if(session('TeamLate'))
+  <div class="modal fade" id="teamlate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Late Login</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('/') }}/teamlate" method="POST" >
+          <p style="text-align:center;">{!! session('TeamLate') !!}</p>
+             {{ csrf_field() }}
+          <center><button type="submit" class="btn btn-success" >Submit</button></center>
+         </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#teamlate").modal('show');
+  });
+</script>
+@endif
+
 </body>
 </html>

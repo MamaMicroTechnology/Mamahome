@@ -5,6 +5,7 @@
   @foreach($login as $login)
   <b>Field Login Time : </b>{{ $login->logintime }}<br><br>
   <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
+  <b>Logout :</b>{{ $login->logout }}<br><br>
   @endforeach
    @foreach($ward as $ward)
                 <b>Assigned Ward : </b>{{ $ward->sub_ward_name }}
@@ -34,10 +35,11 @@
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
     }
-
+    var lat = newpath[0].lat;
+    var lon = newpath[1].lng;
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
-      center: new google.maps.LatLng(12.9716, 77.5946),
+      zoom: 12,
+      center: new google.maps.LatLng(lat, lon),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
@@ -78,6 +80,13 @@
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15.5,
       center: new google.maps.LatLng("{{ $projects->latitude }}", "{{ $projects->longitude }}"),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    var lat = newpath[0].lat;
+    var lon = newpath[1].lng;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: new google.maps.LatLng(lat, lon),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 

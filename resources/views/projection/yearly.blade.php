@@ -82,4 +82,10 @@
         <br>
     </div>
 </div>
+
+@if(session('Success'))
+<script>
+    swal("{{ session('Success') }}");
+</script>
+@endif
 @endsection

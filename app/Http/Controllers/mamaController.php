@@ -58,6 +58,7 @@ use App\MamahomeAsset;
 use App\ProjectImage;
 use App\Tlwards;
 use App\FieldLogin;
+use Carbon\Carbon;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1688,7 +1689,7 @@ class mamaController extends Controller
                 $zone = Zone::where('id',$ward->zone_id)->first();
                 $country = Country::where('id',$ward->country_id)->first();
                 $year = date('Y');
-                $country_initial = strtoupper(substr($country->country_name,0,2));
+                $country_initial = "O";
                 $count = count(Order::all())+1;
                 $number = sprintf("%03d", $count);
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
@@ -1921,7 +1922,7 @@ public function checkdetailes(request $request){
     public function postSaveManufacturer(Request $request)
     {
         if($request->type == "blocks"){
-            $modes = implode(", ", $request->paymentMode);
+            // $modes = implode(", ", $request->paymentMode);
             $manufacturer = new Manufacturer;
             $manufacturer->name = $request->name;
             $manufacturer->address = $request->address;
@@ -1933,7 +1934,7 @@ public function checkdetailes(request $request){
             $manufacturer->deliverability = $request->deliverability;
             $manufacturer->sand_requirement = $request->sand_requirement;
             $manufacturer->type = $request->manufacturing_type;
-            $manufacturer->payment_mode = $modes;
+            // $manufacturer->payment_mode = $modes;
             $manufacturer->save();
 
             // saving product details
@@ -1987,9 +1988,24 @@ public function checkdetailes(request $request){
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
+        
+        return view('listeng',['listengs'=>$listengs]);
+    }
+    public function teamlisteng(request $request){
+       
+      $listengs= User::where('users.group_id',6)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+                       
                        
         return view('listeng',['listengs'=>$listengs]);
     }
+    
     public function acceng(request $request){
        // $s = User::pluck('id');
        // $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
@@ -2008,6 +2024,17 @@ public function checkdetailes(request $request){
                        
         return view('acceng',['accengs'=>$accengs]);
     }
+    public function teamacceng(request $request){
+      $accengs= User::where('users.group_id',11)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+        return view('acceng',['accengs'=>$accengs]);
+    }
      public function getmap(request $request)
     {
       $name = $request->name;
@@ -2019,9 +2046,9 @@ public function checkdetailes(request $request){
     $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
     $subwards = SubWard::where('id',$wardsAssigned)->first();
         $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
-       
-      if($subwards != null){
+        if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+            
         }else{
             $subwardMap = "None";
         }   
@@ -2076,9 +2103,9 @@ public function checkdetailes(request $request){
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address;
-                        $start = "08:15 AM";
+                        $start = "07:30 AM";
                         $now = date('H:i A');
-        if( $now > $start && count($check)== 0 && $remark == null){
+      if( $now > $start && count($check)== 0 && $remark == null){
             $text = " <form action='lateremark?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Late',$text); 
             }
@@ -2094,6 +2121,8 @@ public function checkdetailes(request $request){
                         $field->latitude = $request->latitude;
                         $field->longitude = $request->longitude;
                         $field->address = $request->address;
+                        $field->tlapproval = "Pending";
+                        $field->adminapproval = "Pending";
                         $field->save();
 
 
@@ -2106,5 +2135,327 @@ public function checkdetailes(request $request){
                     }
             }
     }
-    
+    public function latelogin(Request $request){
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->where('remark','!='," ")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+
+        return view('latelogin',['users'=>$users]);
+    }
+    public function teamlatelogin(Request $request){
+        // $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        // $userIds = explode(",", $tl);
+        $dept = [1,2];
+        $userIds = User::whereIn('department_id',$dept)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->where('remark','!='," ")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('latelogin',['users'=>$users]);
+    }
+     public function adminlatelogin(Request $request){
+        // $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        // $userIds = explode(",", $tl);
+        $dept = [1,2,3,5,6];
+        $previous = date('Y-m-d',strtotime('- days'));
+        $thiMonth = date('Y-m');
+        $userIds = User::whereIn('department_id',$dept)->pluck('id');
+        $users = FieldLogin::whereIn('field_login.user_id',$userIds)
+        ->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->where('remark','!='," ")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+
+        $dates = FieldLogin::where('field_login.created_at','LIKE',$thiMonth."%")
+        ->where('remark','!='," ")
+        ->distinct()
+        ->pluck('logindate')->toarray();
+        return view('adminlatelogin',['users'=>$users,'dates'=>$dates]);
+    }
+    public function logouttime(Request $request){
+
+        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
+        if(count($check)== 0){
+
+            $text = "Please Login Before Logout.";
+            return back()->with('Late',$text);
+        }
+        else{
+            FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
+            'logout' => date('H:i A')
+        ]);
+            $text = "You Have Logged out Successfully!..";
+            return back()->with('Success',$text);
+        }
+    }
+    public function emplogouttime(Request $request){
+
+        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
+        if(count($check)== 0){
+
+            $text = "Please Login Before Logout.";
+            return back()->with('Latelogin',$text);
+        }
+        else{
+            FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
+            'logout' => date('H:i A')
+        ]);
+            $text = "You Have Logged out Successfully!..";
+            return back()->with('empSuccess',$text);
+        }
+    }
+    public function teamlogout(Request $request){
+
+        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
+        if(count($check)== 0){
+
+            $text = "Please Login Before Logout.";
+            return back()->with('TeamLate',$text);
+        }
+        else{
+            FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
+            'logout' => date('H:i A')
+        ]);
+            $text = "You Have Logged out Successfully!..";
+            return back()->with('TeamSuccess',$text);
+        }
+    }
+    public function approve(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
+            'tlapproval' => "Team Leader Approved"
+        ]);
+        return back()->with('success',"Approved Successfully!");
+    }
+    public function reject(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
+            'tlapproval' => "Team Leader Rejected"
+        ]);
+        return back()->with('success',"You Rejected.");
+    }
+    public function adminapprove(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            'adminapproval' => "Admin Approved"
+        ]);
+        return back()->with('success',"Approved Successfully!");
+    }
+    public function adminreject(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            'adminapproval' => "Admin Rejected"
+        ]);
+        return back()->with('success',"You Rejected.");
+    }
+    public function logintime(Request $request)
+    {
+
+        if($request->remark != null){
+                $remark = $request->remark;
+        }
+        else{
+            $remark = null;
+        }
+        $id = user::where('id',Auth::user()->id)->pluck('id')->first();
+       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
+                        $start = "08:00 AM";
+                        $now = date('H:i A');
+        if( $now > $start && count($check)== 0 && $remark == null){
+
+            $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
+            return back()->with('Latelogin',$text); 
+            }
+        else
+        {
+                    if(count($check)== 0){
+                        $field = new FieldLogin;
+                        $field->user_id = $id;
+                        $field->logindate = date('Y-m-d');
+                        $field->logintime = date(' H:i A');
+                        $field->remark = $remark;
+                        $field->latitude = " ";
+                        $field->longitude = " ";
+                        $field->address = " ";
+                        $field->tlapproval = "Pending";
+                        $field->adminapproval = "Pending";
+                        $field->save();
+
+
+                        $text = "You Have Logged In Successfully!..";
+                        return back()->with('empSuccess',$text);
+                    }
+                    else{
+                        return back();
+                    }
+            }
+    }
+    public function teamlogin(Request $request)
+    {
+
+        if($request->remark != null){
+                $remark = $request->remark;
+        }
+        else{
+            $remark = null;
+        }
+        $id = user::where('id',Auth::user()->id)->pluck('id')->first();
+       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
+                        $start = "08:05 AM";
+                        $now = date('H:i A');
+        if( $now > $start && count($check)== 0 && $remark == null){
+
+            $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
+            return back()->with('TeamLate',$text); 
+            }
+        else
+        {
+                    if(count($check)== 0){
+                        $field = new FieldLogin;
+                        $field->user_id = $id;
+                        $field->logindate = date('Y-m-d');
+                        $field->logintime = date(' H:i A');
+                        $field->remark = $remark;
+                        $field->latitude = " ";
+                        $field->longitude = " ";
+                        $field->address = " ";
+                        $field->tlapproval = "Pending";
+                        $field->adminapproval = "Pending";
+                        $field->save();
+
+
+                        $text = "You Have Logged In Successfully!..";
+                        return back()->with('TeamSuccess',$text);
+                    }
+                    else{
+                        return back();
+                    }
+            }
+    }
+    public function seniorteam(){
+
+       $group = [2];
+       $name = Group::where('id',2)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function teamleader(){
+
+       $group = [22];
+       $name = Group::where('id',22)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function allteamleader(){
+
+       $group = [22];
+       $name = Group::where('id',22)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function saleseng(){
+
+       $group = [7,17];
+       $name = Group::where('id',7)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function allsaleseng(){
+
+       $group = [7,17];
+       $name = Group::where('id',7)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+
+    public function accexe(){
+
+       $group = [11];
+       $name = Group::where('id',11)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function market(){
+
+       $group = [16];
+       $name = Group::where('id',16)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function marketexe(){
+
+       $group = [8];
+       $name = Group::where('id',8)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+    }
+    public function hr(){
+
+       $group = [14];
+       $name = Group::where('id',14)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+    }
+     public function teamsales(request $request){
+       
+         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+       $groupid = [7,17];
+       $group = [7];
+       $name = Group::where('id',7)->pluck('group_name')->first();
+      $sales= User::whereIn('users.id',$userIds)
+                        ->whereIn('users.group_id',$groupid)
+                        ->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$sales)
+        ->leftjoin('users','field_login.user_id','users.id')->where('logindate',date('Y-m-d'))
+        ->select('field_login.*','users.name')->get();
+            
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+    }
 }

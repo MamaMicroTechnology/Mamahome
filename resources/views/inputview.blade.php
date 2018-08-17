@@ -224,7 +224,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 <tr>
 <tr>
             <td><label>Total Quantity : </label></td>
-            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity" title="Three letter country code" class="form-control" /></td>
+            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
 
 </tr>
 <td><label>Remarks :</label></td>
@@ -238,7 +238,7 @@ id="eremarks" class="form-control" /></textarea>
 <input type="hidden" id="measure" name="measure">
 <div class="text-center">
 <button type="button" name="" id="" class="btn btn-md btn-success"
-style="width:40%" onclick="submithere()"  >Submit</button>
+style="width:40%" onclick="submitinputview()"  >Submit</button>
 <input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 </div>
 </form>
@@ -448,7 +448,7 @@ function checkthis(arg){
     }
 
 }
-function submithere(){
+function submitinputview(){
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
           }

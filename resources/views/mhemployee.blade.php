@@ -34,9 +34,9 @@
                             $content = explode(" ",$department->dept_name);
                             $con = implode("",$content);
                         ?>
-                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }})</a>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} </a>
                     @endforeach
-                    <a id="FormerEmployees" class="list-group-item" href="#">Former Employees ({{ $depts["FormerEmployees"] }})</a>
+                    <a id="FormerEmployees" class="list-group-item" href="#">Former Employees </a>
                 </div>
             </div>
         </div>
@@ -48,7 +48,91 @@
     width: 9px;
     background-color:green;
     border-radius: 50%;
-    display: inline-block;"></span> {{ $totalcount }}
+    display: inline-block;"></span> 50
+                
+                      <br>
+    <br>
+    <div>
+    <table  class="table table-hover table-responsive" style="border: 2px solid gray;">
+      <thead>
+        <th style="border: 1px solid gray;">Department</th>
+        <th style="border: 1px solid gray;">Number of Employees</th>
+        <th style="border: 1px solid gray;">Average Age</th>
+      </thead>
+      <tbody>
+        <tr> 
+                         <td style="border: 1px solid gray;">Operation</td>
+                        <td style="border: 1px solid gray;">27</td>
+                        <td style="border: 1px solid gray;">21</td>
+                       
+        </tr>
+     
+                        <tr> 
+                                 <td style="border: 1px solid gray;">Sales</td>
+                                  <td style="border: 1px solid gray;">10</td>
+                                  <td style="border: 1px solid gray;">22</td>
+                        </tr>
+                        <tr> 
+                            <td style="border: 1px solid gray;">Marketing</td>
+                            <td style="border: 1px solid gray;">1</td>
+                            <td style="border: 1px solid gray;">22</td>
+                           
+                        </tr>
+                        <tr>
+                           <td style="border: 1px solid gray;">IT</td>
+                            <td style="border: 1px solid gray;">9</td>
+                            <td style="border: 1px solid gray;">24</td>
+                           
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid gray;">Finance</td>
+                            <td style="border: 1px solid gray;">1</td>
+                            <td style="border: 1px solid gray;">23</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid gray;">Research and Development</td>
+                            <td style="border: 1px solid gray;">1</td>
+                            <td style="border: 1px solid gray;">27</td>
+                        </tr>
+                        <tr>
+                             <td style="border: 1px solid gray;">Human Resource</td>
+                            <td style="border: 1px solid gray;">1</td>
+                            <td style="border: 1px solid gray;">23</td>
+                        <tr>
+                         <tr>
+                            <td style="border: 1px solid gray;"></td>
+                            <td style="border: 1px solid gray;"><b>50</b></td>
+                            <td style="border: 1px solid gray;"><b>23(Avg)</b></td>
+                        </tr>
+                      </tbody>
+                     </table>
+                    </div>
+                     <div>
+    <table  class="table table-hover table-responsive" style="border: 2px solid gray;">
+      <thead>
+        <th style="border: 1px solid gray;">Qualification</th>
+        <th style="border: 1px solid gray;">Count</th>
+      </thead>
+      <tbody>
+        <tr> 
+                        <td style="border: 1px solid gray;">MBA & MCA</td>
+                        <td style="border: 1px solid gray;">6</td>
+                       
+        </tr>
+         <tr> 
+                        <td style="border: 1px solid gray;">Engineering</td>
+                        <td style="border: 1px solid gray;">37</td>
+                       
+        </tr>
+        <tr> 
+                        <td style="border: 1px solid gray;">Degree</td>
+                        <td style="border: 1px solid gray;">7</td>
+                       
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    
         </div>
     </div>
 </div>

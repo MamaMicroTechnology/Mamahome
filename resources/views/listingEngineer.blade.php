@@ -11,9 +11,9 @@
                   @else
                   Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
-                  @if(session('Error'))
+                 <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
-                  @endif
+                  @endif -->
                   <div id="currentTime" class="pull-right"></div>
                 </div>
                 @if($subwards)
@@ -825,18 +825,14 @@ function openCity(evt, cityName) {
     }else{
       alert("Oops.. No Geo-Location Support !");
     } 
-      //console.log("Exiting getLocation()");
   }
     
     function displayCurrentLocation(position){
-      //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
       getAddressFromLatLang(latitude,longitude);
-      //console.log("Exiting displayCurrentLocation");
     }
    
   function  displayError(error){
@@ -855,22 +851,17 @@ function openCity(evt, cityName) {
     console.log("Exiting ConsultantLocator.displayError()");
   }
   function getAddressFromLatLang(lat,lng){
-    //console.log("Entering getAddressFromLatLang()");
     var geocoder = new google.maps.Geocoder();
     var latLng = new google.maps.LatLng(lat, lng);
     geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[0]) {
-        // console.log(results);
         document.getElementById("address").value = results[0].formatted_address;
       }
     }else{
         alert("Geocode was not successful for the following reason: " + status);
      }
     });
-    //console.log("Entering getAddressFromLatLang()");
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
@@ -1393,7 +1384,7 @@ function validateForm(arg)
 
   <!-- Modal -->
 @if(session('Success'))
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="Material" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #c9ced6;">
@@ -1404,14 +1395,14 @@ function validateForm(arg)
           <p style="text-align:center;">{!! session('Success') !!}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
         </div>
       </div>
     </div>
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
-      $("#myModal").modal('show');
+      $("#Material").modal('show');
   });
 </script>
 @endif

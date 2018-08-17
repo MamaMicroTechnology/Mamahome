@@ -40,7 +40,7 @@
                                 ?> 
 
                               
-                                                      <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
+                <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
                           <option value="">--Select--</option>
                           
                           @foreach($users as $user)  

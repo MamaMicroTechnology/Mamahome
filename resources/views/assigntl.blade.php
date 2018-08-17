@@ -181,7 +181,7 @@ margin-left: 0;
                              </div>
                             </td>
                             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{ $user->id }}">
-           Assened Users
+           Assigned Users
 </button></td>
                             <td>
                               <button class="btn btn-success pull-left" onclick="return confirm('Are you sure You Select Ward and Subward ?');">Assign</button>

@@ -21,6 +21,9 @@ use App\RoomType;
 use App\Category;
 use App\SubCategory;
 use App\brand;
+use App\WardAssignment;
+use App\SubWard;
+use App\SubWardMap;
 use App\TrackLocation;
 use App\Order;
 use App\FieldLogin;
@@ -175,19 +178,23 @@ class TokenController extends Controller
             return new MessageResource($articles);
         }
     }
-    public function getLogin(Request $request)
+     public function getLogin(Request $request)
     {
          date_default_timezone_set("Asia/Kolkata");
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
+
+        $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $subwards = SubWard::where('id',$wardsAssigned)->first();
+        $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
          if(count($check)==0){
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
                     }
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name]);
+            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'wardAssigned'=>$subwards->sub_ward_name,'latlon'=>$subwardMap->lat]);
         
     }
         else{
@@ -223,7 +230,7 @@ class TokenController extends Controller
             'email' => 'required|unique:users',
         ]);
         if ($validator->fails()) {
-            return response()->json(['message'=>'This email/phone number has already been used.']);
+            return response()->json(['success'=>'0','message'=>'This email/phone number has already been used.']);
         }
         $user = new User;
         $user->employeeId = $request->email;
@@ -235,15 +242,9 @@ class TokenController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
         if($user->save()){
-            
-            View::share('password',$request->password);
-            View::share('email',$request->email);
-            View::share('name',$request->name);
-            Mail::to($request->email)->send(new registration($user));
-
-            return response()->json(['message'=>'Registered']);
+            return response()->json(['success'=>'1','message'=>'Registered']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
     public function addProject(Request $request)
@@ -284,7 +285,7 @@ class TokenController extends Controller
                 $decoded = base64_decode($data['municipality_approval']);   
                 $success = file_put_contents($path, $decoded);
                
-;
+
             }
             else{
                  $png_url  = "N/A";
@@ -346,7 +347,7 @@ class TokenController extends Controller
             $projectdetails->length = $length;
             $projectdetails->breadth = $breadth;
             $projectdetails->plotsize = $size;
-            $projectdetails->user_id = $request->user_id;
+//             $projectdetails->user_id = $request->user_id;
             
            
             $projectdetails->remarks = $request->remarks;
@@ -373,7 +374,8 @@ class TokenController extends Controller
 
             $siteaddress = New SiteAddress;
             $siteaddress->project_id = $projectdetails->id;
-            
+             $siteaddress->latitude = $request->latitude;
+            $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
@@ -383,6 +385,7 @@ class TokenController extends Controller
         }
     }
 public function enquiry(request $request){
+    
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
         $enquiry->main_category = $request->main_category;
@@ -391,9 +394,34 @@ public function enquiry(request $request){
         $enquiry->requirement_date = $request->requirement_date;
         $enquiry->notes = $request->notes;
         $enquiry->A_contact = $request->A_contact;
+        $enquiry->quantity = $request->quantity;
+        $enquiry->user_id = $request->userid;
+       
         $enquiry->save();
           if($enquiry->save() ){
             return response()->json(['message'=>'Enquiry Added sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+ } 
+    public function updateEnquiry(request $request){
+        
+       
+        $enquiry = Requirement::where('id',$request->id)->first();
+                $enquiry->project_id = $request->project_id;
+                $enquiry->main_category = $request->main_category;
+                $enquiry->brand = $request->brand;
+                $enquiry->sub_category = $request->sub_category;
+                $enquiry->requirement_date = $request->requirement_date;
+                $enquiry->notes = $request->notes;
+                $enquiry->A_contact = $request->A_contact;
+                $enquiry->quantity = $request->quantity;
+                $enquiry->user_id = $request->userid;
+        $enquiry->save();
+                       
+         
+          if($enquiry->save()){
+            return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }
@@ -447,7 +475,7 @@ public function getproject(request $request){
         
         return response()->json(['project'=>$project,'contractor'=>$contractor,'procurement'=>$procurement,'consultant',$consultant,'siteEngineer'=>$siteEngineer,'owner'=>$owner]);
     }
-    public function postUpdateProject(request $request)
+    public function postUpdateProject(Request $request)
     {
 
        
@@ -464,20 +492,49 @@ public function getproject(request $request){
         
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
-            if($statusCount > 1){
-                for($i = 1; $i < $statusCount; $i++){
-                    $statuses .= ", ".$request->project_status[$i];
-                }
-            }else{
-                $statuses=null;
+        if($statusCount > 1){
+            for($i = 1; $i < $statusCount; $i++){
+                $statuses .= ", ".$request->project_status[$i];
             }
+        }else{
+            $statuses=null;
+        }
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
             $length = $request->length;
             $breadth = $request->breadth;
             $size = $length * $breadth;
-            
+            $projectdetails = ProjectDetails::where('project_id',$request->project_id)->update([
+                'project_name' => $request->project_name,
+                'road_width'=>$request->road_width,
+                'construction_type'=>$request->construction_type,
+                'interested_in_rmc'=>$request->interested_in_rmc,
+                'interested_in_loan'=>$request->interested_in_loan,
+                'interested_in_doorsandwindows'=>$request->interested_in_doorsandwindows,
+                'road_name'=>$request->road_name,
+                'project_status' => $statuses,
+                'project_size' => $request->project_size,
+                'budgetType' => $request->budgetType,
+                'budget' => $request->budget,
+//                 'user_id' => $request->userid,
+                'basement' => $basement,
+                'ground' => $ground,
+                'project_type' => $floor,
+                'length' => $length,
+                'breadth' => $breadth,
+                'plotsize' => $size,
+                'user_id' => $request->userid,
+                'remarks' => $request->remarks,
+                'contract' => $request->contract
+            ]);
+            // $projectdetails->project_name = $request->project_name;
+            // $projectdetails->road_width = $request->road_width;
+            // $projectdetails->construction_type =$request->construction_type;
+            // $projectdetails->interested_in_rmc = $request->interested_in_rmc;
+            // $projectdetails->interested_in_loan = $request->interested_in_loan;
+            // $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
+            // $projectdetails->road_name = $request->road_name;
             $projectdetails = ProjectDetails::where('project_id',$request->project_id)->first();
             $projectdetails->project_name = $request->project_name;
             $projectdetails->road_width = $request->road_width;
@@ -495,6 +552,7 @@ public function getproject(request $request){
                 $decoded = base64_decode($data['municipality_approval']);   
                 $success = file_put_contents($path, $decoded);
                 $projectdetails->municipality_approval = $png_url;
+                $projectdetails->save();
             }
             if($request->other_approvals){
                 $data = $request->all();
@@ -505,11 +563,8 @@ public function getproject(request $request){
                 $decoded = base64_decode($data['other_approvals']);   
                 $success = file_put_contents($path, $decoded);
                 $projectdetails->other_approvals = $png_other;
+                $projectdetails->save();
             }
-            $projectdetails->project_status = $statuses;
-            $projectdetails->project_size = $request->project_size;
-            $projectdetails->budgetType = $request->budgetType;
-            $projectdetails->budget = $request->budget;
             if($request->image){
                 $data = $request->all();
                 $png_project =$request->userid."project_image-".time().".jpg";
@@ -519,16 +574,8 @@ public function getproject(request $request){
                 $decoded = base64_decode($data['image']);   
                 $success = file_put_contents($path, $decoded);
                 $projectdetails->image = $png_project;
+                $projectdetails->save();
             }
-            $projectdetails->user_id = $request->userid;
-            
-            $projectdetails->basement = $basement;
-            $projectdetails->ground = $ground;
-            $projectdetails->project_type = $floor;
-            $projectdetails->length = $length;
-            $projectdetails->breadth = $breadth;
-            $projectdetails->plotsize = $size;
-            $projectdetails->user_id = $request->user_id;
             
            
             $projectdetails->remarks = $request->remarks;
@@ -627,10 +674,20 @@ public function getproject(request $request){
                         $field->address = $request->address;
                         $field->save();
 
- if($field->save()){
-           return response()->json(['message'=>'Registered']);
+      if($field->save()){
+           return response()->json(['message'=>'Login  sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
+        }
+    }
+    public function fieldlogout(request $request){
+       $x =  FieldLogin::where('user_id',$request->user_id)->where('logindate',date('Y-m-d'))->first();
+            $x->logout = $request->logouttime;
+            $x->save();
+        if($x->save()){
+                return response()->json(['message'=>'logout successfull']);
+        }else{
+                return response()->json(['message'=>'Something went wrong']);
         }
     }
 }
