@@ -9,6 +9,7 @@ use App\Mail\registration;
 use Illuminate\Http\Request;
 use App\Department;
 use App\User;
+use Session;
 use App\Group;
 use App\Ward;
 use App\SubWard;
@@ -55,6 +56,8 @@ use App\Manufacturer;
 use App\ManufacturerProduce;
 use App\MamahomeAsset;
 use App\ProjectImage;
+use App\Tlwards;
+use App\FieldLogin;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -801,7 +804,7 @@ class mamaController extends Controller
             ]);
         }
         if($request->pImage){
-                        if(count($request->pImage != 0)){
+                        if($request->pImage != null){
                                    $i = 0;
                                     $projectimage = ""; 
 
@@ -1067,7 +1070,7 @@ class mamaController extends Controller
             'total_kilometers' => $request->totalKm,
             'eveningRemarks' => $request->eRemark
         ]);
-        return back();
+        return back()->with('message',"successfully Save");
     }
     public function addRequirement(Request $request)
     {
@@ -1691,6 +1694,7 @@ class mamaController extends Controller
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
                 $order = new Order;
                 $order->id = $orderNo;
+                $order->req_id = $request->id;
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
@@ -1968,4 +1972,139 @@ public function checkdetailes(request $request){
         }
         return back()->with('Success','Manufacturer Saved Successfully');;
     }
+    public function listeng(request $request){
+       // $s = User::pluck('id');
+       // $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
+         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+       
+      $listengs= User::whereIn('users.id',$userIds)
+                        ->where('users.group_id',6)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+                       
+        return view('listeng',['listengs'=>$listengs]);
+    }
+    public function acceng(request $request){
+       // $s = User::pluck('id');
+       // $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
+         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+       
+      $accengs= User::whereIn('users.id',$userIds)
+                        ->where('users.group_id',11)
+                        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+                        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+                        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+                        ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id') 
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
+                        ->get();
+                       
+        return view('acceng',['accengs'=>$accengs]);
+    }
+     public function getmap(request $request)
+    {
+      $name = $request->name;
+      $id = user::where('name',$name)->pluck('id');
+      // $login = loginTime::where('user_id',$id)
+      //   ->where('logindate',date('Y-m-d'))->pluck('loginTime')->first();
+      $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
+    
+    $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+    $subwards = SubWard::where('id',$wardsAssigned)->first();
+        $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+       
+      if($subwards != null){
+            $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+        }else{
+            $subwardMap = "None";
+        }   
+    if($subwardMap == Null){
+        $subwardMap = "None";
+    }          
+    $ward = user::where('users.id',$id)
+        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+        ->where('department_id','!=','10')
+        ->select('sub_wards.sub_ward_name')->get();
+      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login]);
+    }
+    public function getaccmap(request $request)
+    {
+      $name = $request->name;
+      $id = user::where('name',$name)->pluck('id');
+      $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
+
+    $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+    $subwards = SubWard::where('id',$wardsAssigned)->first();
+        $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+       
+      if($subwards != null){
+            $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+        }else{
+            $subwardMap = "None";
+        }   
+    if($subwardMap == Null){
+        $subwardMap = "None";
+    }          
+    $ward = user::where('users.id',$id)
+        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+        ->where('department_id','!=','10')
+        ->select('sub_wards.sub_ward_name')->get();
+      return view('getaccmap',['name'=>$name,'ward'=>$ward,'login'=>$login,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
+    }
+    public function recordtime(Request $request)
+    {
+
+        if($request->remark != null){
+                $remark = $request->remark;
+        }
+        else{
+            $remark = null;
+        }
+       $id = user::where('id',Auth::user()->id)->pluck('id')->first();
+       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
+       $lat = $request->latitude;
+       $lon = $request->longitude;
+       $address = $request->address;
+                        $start = "08:15 AM";
+                        $now = date('H:i A');
+        if( $now > $start && count($check)== 0 && $remark == null){
+            $text = " <form action='lateremark?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+            return back()->with('Late',$text); 
+            }
+        else
+        {
+                    
+                    if(count($check)== 0){
+                        $field = new FieldLogin;
+                        $field->user_id = $id;
+                        $field->logindate = date('Y-m-d');
+                        $field->logintime = date(' H:i A');
+                        $field->remark = $remark;
+                        $field->latitude = $request->latitude;
+                        $field->longitude = $request->longitude;
+                        $field->address = $request->address;
+                        $field->save();
+
+
+                        $text = "You Have Logged In Successfully!..";
+                        return back()->with('Success',$text);
+                    }
+                    else{
+                        $text = "You Have Already Logged In!..";
+                        return back()->with('Error',$text);
+                    }
+            }
+    }
+    
 }

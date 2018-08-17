@@ -14,15 +14,15 @@
                   @if($subwards)
                  
                   @else
-                  Update Project
+                  Update Project&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   @endif
                    <a href="javascript:history.back()" class="btn btn-sm btn-danger btn-sm pull-right">Back</a>
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
-                <center>  <small id="currentTime">
+                 <small id="currentTime">
                     Listed On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
-                  </small></center>
+                  </small>
                 </div>
                 <div class="panel-body">
                     <center>
@@ -86,7 +86,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
+                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" pattern="^[0-9]*$"></td>
                                </tr>
                                  <tr>
                                    <td>Full Address</td>
@@ -191,7 +191,7 @@
                                   </td>
                                </tr>
                              <tr>
-              <td><b>Follow Up?</b></td>
+              <td>Follow Up?</td>
               <td>:</td>
               <td>
                   <div class="radio">
@@ -430,9 +430,16 @@
                                    </td>
                                </tr>
                                <tr>
-                                 <td>Updated On</td>
+                                 <td>Image Updated On</td>
                                  <td>:</td>
-                                 <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
+                                 
+                                  @if($projectupdate == null)
+                                  <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
+                                  @else
+                                      <td>{{ date('d-m-Y h:i:s A', strtotime($projectupdate))}}</td>
+                                  @endif
+                                 
+                                 
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -694,7 +701,7 @@
                            </table>
                       </div><br>
                       <tr id="quepanelright-{{$projectdetails->project_id}}">
-                                    <td><label>Questions</label></td><br>
+                                    <td>Questions</td><br>
                                     <td>
                                         <select style="width: 100%" class="form-control" id="select-{{$projectdetails->project_id}}" name="qstn">-->
                                     <option disabled selected>--- Select ---</option>
@@ -719,7 +726,7 @@
                                     </tr>
                       <table class="table">
                         <tr>
-                            <td><b>Quality</b></td>
+                            <td>Quality</td>
                             <td>:</td>
                             <td>
                                 <select id="quality" onchange="fake()" class="form-control" name="quality">
@@ -733,7 +740,7 @@
 
 
                         <tr>
-                            <td><b>Remarks</b></td>
+                            <td>Remarks</td>
                             <td>:</td>
                             <td>
                          <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)" name="remarks">{{ $projectdetails->remarks }}</textarea>

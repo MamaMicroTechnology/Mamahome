@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -429,6 +429,7 @@ div#calendar{
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
                           <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         @endif
+                       
                         @endif
                     </ul>
                 
@@ -539,11 +540,11 @@ div#calendar{
     <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
-    <a href="{{ URL::to('/confidential') }}">Confidential</a>
+    <!-- <a href="{{ URL::to('/confidential') }}">Confidential</a> -->
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
      <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
-  <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
+  <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
 
@@ -576,7 +577,7 @@ div#calendar{
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
         </div>   
-    <!--  <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+     <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
@@ -592,7 +593,7 @@ div#calendar{
     <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
-    <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
+    <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
@@ -629,7 +630,7 @@ div#calendar{
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
 
      @endif
-    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+    <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>

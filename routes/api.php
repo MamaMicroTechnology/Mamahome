@@ -32,7 +32,7 @@ Route::get('login','TokenController@buyerLogin');
 Route::get('login/{username}/{password}','TokenController@getLogin');
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
-//Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']);
+//Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']); 
 Route::post('getregister', 'TokenController@getregister');
 //user register
 Route::post('/register','mamaController@postRegistration');
@@ -48,3 +48,11 @@ Route::get('/getproject','TokenController@getproject');
 Route::get('/getsingleproject','TokenController@getsingleProject');
 Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
+Route::get('/updateProject','TokenController@getUpdateProject');
+Route::post('/updateProject','TokenController@postUpdateProject');
+Route::post('/addLocation','TokenController@addLocation');
+Route::post('/updateLocation','TokenController@updateLocation');
+Route::get('pending','TokenController@pending');
+Route::get('/confirmgorders','TokenController@confirm');
+
+Route::post('/recordtime','TokenController@recordtime');

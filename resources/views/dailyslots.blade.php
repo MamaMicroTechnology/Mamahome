@@ -15,8 +15,9 @@
                             <td>
                                 <select class="form-control" id="selectle">
                                     <option disabled selected value="">(-- SELECT LE --)</option>
-                                    @if(Auth::user()->group_id != 22)
+
                                     <option value="ALL">All Listing Engineers</option>
+                                    @if(Auth::user()->group_id != 22)
                                     @foreach($le as $list)
                                     <option value="{{$list->id}}">{{$list->name}}</option>
                                     @endforeach
@@ -63,9 +64,12 @@
                 <b style="color:white">Mini Report of listing engineer  (Today)</b>
             </div>
             <div class="panel-body">
-                <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
+                 @if(Auth::user()->group_id != 22)
+                <label style="color:black">Total Count : <b>{{$lcount}}</b></label>
+                @else
+                 <label style="color:black">Total Count : <b>{{$tlcount}}</b></label>
+                 @endif
                 <table class="table table-striped" border="1">
-                  @if(Auth::user()->group_id != 22)
                     <thead>
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Ward Name</th>
@@ -73,6 +77,7 @@
                         <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
+                  @if(Auth::user()->group_id != 22)
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
@@ -82,14 +87,30 @@
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{ $lcount}}</td>
+                        <td style="font-size: 10px;">{{ $lupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @else
                      @foreach($tlUsers as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{$tlcount}}</td>
+                        <td style="font-size: 10px;">{{ $tlupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @endif
                 </table>
             </div>
@@ -99,9 +120,12 @@
                 <b style="color:white">Mini Report of Account Executive(Today)</b>
             </div>
             <div class="panel-body">
-              
-                <table class="table table-striped" border="1">
                 @if(Auth::user()->group_id != 22)
+              <label style="color:black">Total Count : <b>{{$acount}}</b></label>
+              @else
+              <label style="color:black">Total Count : <b>{{$tlacount}}</b></label>
+              @endif
+                <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Ward Name</th>
@@ -109,23 +133,40 @@
                         <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
+                @if(Auth::user()->group_id != 22)
                     @foreach($accusers as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{ $acount}}</td>
+                        <td style="font-size: 10px;">{{ $aupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @else
                     @foreach($tlUsers1 as $user)
                     <tr>
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{$tlacount}}</td>
+                        <td style="font-size: 10px;">{{ $tlaupcount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @endif
                 </table>
             </div>
@@ -209,8 +250,8 @@
                     }
                 }
             }
-           
-           
+
+
         });
         function displayGif(){
             document.getElementById('wait').style.display = "block";
@@ -286,13 +327,13 @@
                                 +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '') +
                             "</td><td>"
                                 +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
-                            "</td><td>"    
+                            "</td><td>"
                                 +response[0][i].name+
                             "</td></tr>";
                             document.getElementById('wait').style.display = "none";
                         }
-                        console.log(response);  
-                    }   
+                        console.log(response);
+                    }
                 });
             }
             return false;
@@ -322,7 +363,7 @@
                     month = "0" + month;
                 }
                 orig_from_date = day + "-" + month + "-" + year;
-       
+
                 document.getElementById('mainPanel').innerHTML = '';
                 document.getElementById('panelhead').innerHTML = '';
                 $.ajax({
@@ -333,7 +374,7 @@
                     success: function(response)
                     {
                         document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b>  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-                       
+
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
@@ -360,8 +401,8 @@
                                 +response[0][i].name+
                             "</td></tr>";
                         }
-                        console.log(response);  
-                    }   
+                        console.log(response);
+                    }
                 });
             }
             return false;
@@ -369,4 +410,3 @@
     </script>
 
 @endsection
-

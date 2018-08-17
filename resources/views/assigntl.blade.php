@@ -120,7 +120,7 @@ margin-left: 0;
     <input type="hidden" id="username" name="user_id">
     <input type="hidden" id="username1" name="group_id">
 
-    <select  name="ward_id" id="dateassigned" class="hidden" >
+    <select  name="ward_id" id="dateassigned" class="hidden" required >
                               <option value="select">----------Select Ward------</option>
                             @foreach($ward as $wards)
                               <option {{ $wards->id  ? 'selected' : '' }} value="{{$wards->id}}">      {{ $wards->ward_name }}</option>
@@ -161,7 +161,7 @@ margin-left: 0;
                           @endif
                           @endforeach
                             <td style="width: 40%;">
-                            <select name="ward_id" id="date{{ $user->id }}" class="form-control"  required>
+                            <select name="ward_id" id="date{{ $user->id }}" class="form-control">
                               <option value="select">----Select Ward----</option>
                             @foreach($ward as $wards)
                               <option value="{{$wards->id}}"> {{ $wards->ward_name }}</option>
@@ -184,7 +184,7 @@ margin-left: 0;
            Assened Users
 </button></td>
                             <td>
-                              <button class="btn btn-success pull-left">Assign</button>
+                              <button class="btn btn-success pull-left" onclick="return confirm('Are you sure You Select Ward and Subward ?');">Assign</button>
                             </td>
                           </tr>         
                        </tbody>
@@ -232,7 +232,7 @@ margin-left: 0;
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
       </div>
 
     </div>
@@ -312,7 +312,7 @@ var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
     }
   }
 }
-</script>   
+</script>  
 
 </body>
 </html>

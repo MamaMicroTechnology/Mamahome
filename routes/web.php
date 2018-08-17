@@ -103,6 +103,15 @@ Route::get('/dailywiseProjects','HomeController@dailywiseProjects');
 Route::get('/date_wise_project','HomeController@datewise');
 Route::get('/status_wise_projects','HomeController@index1');
 Route::get('/ordersformarketing','marketingController@ordersformarketing');
+Route::get('/listeng','mamaController@listeng');
+Route::get('/acceng','mamaController@acceng');
+Route::get('/listeng/{name}','mamaController@getmap');
+Route::get('/acceng/{name}','mamaController@getaccmap');
+Route::post('/recordtime','mamaController@recordtime');
+Route::Post('/lateremark','mamaController@recordtime');
+
+
+
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -117,6 +126,8 @@ Route::get('/enquirywise','HomeController@enqwise');
 Route::get('/storedetails','HomeController@storedetails');
 Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
+
+
 
 
 
@@ -566,3 +577,4 @@ Route::post('/close','logisticsController@close');
 Route::get('/addManufacturer','HomeController@addManufacturer');
 Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
 Route::get('/viewManufacturer','HomeController@viewManufacturer');
+Route::get('/auto',"HomeController@auto");

@@ -511,7 +511,7 @@
 </div>
                         <table class="table table-responsive" >
                           <tr>
-                            <td><b>Remarks</b></td>
+                            <td>Remarks</td>
                             <td>:</td>
                             <td>
                           <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)"  name="remarks"></textarea>

@@ -15,7 +15,7 @@
          You are in {{$subwards->sub_ward_name}}<br><br>
         @if(Auth::user()->group_id == 6 && Auth::user()->department_id == 1)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
+         <a class="btn btn-primary form-control" href="#" data-toggle="modal" data-target="#question">Add New Manufacturer</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
@@ -297,7 +297,7 @@
   }
   </script>
 @endif
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=map"></script>
 
 <script>
 
