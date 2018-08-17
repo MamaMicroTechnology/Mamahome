@@ -4415,7 +4415,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         foreach($pipelines as $enquiry){
             
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
-            dd( $pId);
+           
             $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
         }
         return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2,'category'=>$category]);
