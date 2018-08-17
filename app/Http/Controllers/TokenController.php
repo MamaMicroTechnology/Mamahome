@@ -601,7 +601,7 @@ public function getproject(request $request){
                 $roomtype->save();
             }
 
-            $siteaddress = SiteAddress::where('project_id',$request->project_id);
+            $siteaddress = SiteAddress::where('project_id',$request->project_id)->first();
             $siteaddress->project_id = $projectdetails->peoject_id;
             $siteaddress->latitude = $request->latitude;
             $siteaddress->longitude = $request->longitude;
