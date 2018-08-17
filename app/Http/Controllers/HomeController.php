@@ -4417,7 +4417,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             if(count($pId) != 0){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
             }else{
-                $subwards2[$enquiry->project_id] = New Collection;
+                $subwards2[$enquiry->project_id] = "";
             }
         }
         return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2,'category'=>$category]);
