@@ -521,7 +521,7 @@ public function getproject(request $request){
                 'length' => $length,
                 'breadth' => $breadth,
                 'plotsize' => $size,
-                'user_id' => $request->user_id,
+                
                 'remarks' => $request->remarks,
                 'contract' => $request->contract
             ]);
