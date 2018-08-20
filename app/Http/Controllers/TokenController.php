@@ -379,9 +379,9 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'Add project sucuss']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
 public function enquiry(request $request){
@@ -594,9 +594,9 @@ public function getproject(request $request){
                 $siteaddress->save();
             }
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'project Updated sucussfully']);
+            return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     } 
     public function addLocation(Request $request){
