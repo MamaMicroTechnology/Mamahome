@@ -2383,6 +2383,18 @@ public function checkdetailes(request $request){
         return view('seniorteam',['users'=>$users,'name'=>$name]);
 
     }
+    public function listatt(){
+
+       $group = [6,11];
+       $name = Group::where('id',6)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
     public function allsaleseng(){
 
        $group = [7,17];
