@@ -128,6 +128,7 @@ Route::post('/teamlogout','mamaController@teamlogout');
 Route::get('/seniorteam','mamaController@seniorteam');
 Route::get('/teamleader','mamaController@teamleader');
 Route::get('/saleseng','mamaController@saleseng');
+Route::get('/listatt','mamaController@listatt');
 Route::get('/accexe','mamaController@accexe');
 Route::get('/market','mamaController@market');
 Route::get('/marketexe','mamaController@marketexe');
