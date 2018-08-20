@@ -594,7 +594,7 @@ public function getproject(request $request){
                 $siteaddress->save();
             }
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['message'=>'project Updated sucussfully']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }
