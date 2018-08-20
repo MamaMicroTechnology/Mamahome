@@ -640,11 +640,11 @@ public function getproject(request $request){
 
        }
        public function pending(Request $request){
-        $pending = Order::where('status','Enquiry Confirmed')->get();
+        $pending = Order::where('status','Enquiry Confirmed')->where('user_id',$request->userid)->get();
          return response()->json(['pending'=>$pending]);
        }
         public function confirm(request $request){
-        $confirm = Order::where('status','Order Confirmed')->get();
+        $confirm = Order::where('status','Order Confirmed')->where('user_id',$request->userid)->get();
          return response()->json(['confirm'=>$confirm]);
        }
 
