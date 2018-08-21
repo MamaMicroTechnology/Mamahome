@@ -129,7 +129,7 @@
                         <tr>
                          <tr>
                             <td style="border: 1px solid gray;"></td>
-                            <td style="border: 1px solid gray;"><b>50</b></td>
+                            <td style="border: 1px solid gray;"><b>{{ $totalcount }}</b></td>
                             <td style="border: 1px solid gray;"><b>23(Avg)</b></td>
                         </tr>
                       </tbody>
