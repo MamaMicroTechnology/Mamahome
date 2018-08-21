@@ -77,8 +77,10 @@
                 		<th>Initiated</th>
                 	</tr>
                        @if(Auth::user()->group_id != 22)
+
                     @foreach($users as $user)
                     <tr>
+
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
@@ -132,8 +134,8 @@
                 </thead>
                 <tbody id="mainPanel">
                 	@for($i = 0; $i<count($projectIds);$i++)
-
-                    <tr>
+                     
+                       <tr>
                         <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
                         <td style="text-align:center">
                         	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$projectIds[$i]['projectId']}}&&lename={{ $projectIds[$i]['updater'] }}">{{ $projectIds[$i]['projectId'] }}</a>
@@ -152,7 +154,7 @@
                         	@endif
                         </td>
                     </tr>
-
+                 
                     @endfor
                 </tbody>
             </table>
