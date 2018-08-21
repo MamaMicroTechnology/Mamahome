@@ -379,9 +379,9 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'Add project sucuss']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
 public function enquiry(request $request){
@@ -477,8 +477,6 @@ public function getproject(request $request){
     }
     public function postUpdateProject(Request $request)
     {
-
-       
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
@@ -488,7 +486,6 @@ public function getproject(request $request){
         }else{
              $type=null;
         }
-
         
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
@@ -510,21 +507,21 @@ public function getproject(request $request){
                 'road_width'=>$request->road_width,
                 'construction_type'=>$request->construction_type,
                 'interested_in_rmc'=>$request->interested_in_rmc,
-                'interested_in_loan'=>$request->interested_in_loan,
+                'interested_in_loan'=>$request->interested_in_load,
                 'interested_in_doorsandwindows'=>$request->interested_in_doorsandwindows,
                 'road_name'=>$request->road_name,
                 'project_status' => $statuses,
                 'project_size' => $request->project_size,
                 'budgetType' => $request->budgetType,
                 'budget' => $request->budget,
-//                 'user_id' => $request->userid,
+                'user_id' => $request->userid,
                 'basement' => $basement,
                 'ground' => $ground,
                 'project_type' => $floor,
                 'length' => $length,
                 'breadth' => $breadth,
                 'plotsize' => $size,
-                'user_id' => $request->userid,
+                
                 'remarks' => $request->remarks,
                 'contract' => $request->contract
             ]);
@@ -536,13 +533,7 @@ public function getproject(request $request){
             // $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
             // $projectdetails->road_name = $request->road_name;
             $projectdetails = ProjectDetails::where('project_id',$request->project_id)->first();
-            $projectdetails->project_name = $request->project_name;
-            $projectdetails->road_width = $request->road_width;
-            $projectdetails->construction_type =$request->construction_type;
-            $projectdetails->interested_in_rmc = $request->interested_in_rmc;
-            $projectdetails->interested_in_loan = $request->interested_in_loan;
-            $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
-            $projectdetails->road_name = $request->road_name;
+            
             if($request->municipality_approval != NULL){
                 $data = $request->all();
                 $png_url = $request->userid."municipality_approval-".time().".jpg";
@@ -577,12 +568,6 @@ public function getproject(request $request){
                 $projectdetails->save();
             }
             
-           
-            $projectdetails->remarks = $request->remarks;
-            $projectdetails->contract = $request->contract;
-           
-            $projectdetails->save();
-            
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
@@ -597,21 +582,23 @@ public function getproject(request $request){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->peoject_id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
-
-            $siteaddress = SiteAddress::where('project_id',$request->project_id);
-            $siteaddress->project_id = $projectdetails->peoject_id;
-            $siteaddress->latitude = $request->latitude;
-            $siteaddress->longitude = $request->longitude;
-            $siteaddress->save();
+            if($request->latitude){
+                $siteaddress = SiteAddress::where('project_id',$request->project_id);
+                $siteaddress->project_id = $projectdetails->project_id;
+                $siteaddress->latitude = $request->latitude;
+                $siteaddress->longitude = $request->longitude;
+                $siteaddress->address = $request->address;
+                $siteaddress->save();
+            }
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
-    }
+    } 
     public function addLocation(Request $request){
 
        
@@ -653,12 +640,12 @@ public function getproject(request $request){
 
        }
        public function pending(Request $request){
-        $pending = Order::where('status','Enquiry Confirmed')->get();
-         return response()->json(['pending'=>$pending]);
+        $pending = Order::where('status','Enquiry Confirmed')->where('user_id',$request->userid)->get();
+         return response()->json(['order'=>$pending]);
        }
         public function confirm(request $request){
-        $confirm = Order::where('status','Order Confirmed')->get();
-         return response()->json(['confirm'=>$confirm]);
+        $confirm = Order::where('status','Order Confirmed')->where('user_id',$request->userid)->get();
+         return response()->json(['order'=>$confirm]);
        }
 
 

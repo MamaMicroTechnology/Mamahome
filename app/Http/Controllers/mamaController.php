@@ -1897,44 +1897,41 @@ class mamaController extends Controller
         $empimage = time().'.'.request()->image->getClientOriginalExtension();
         $request->image->move(public_path('chequeimages'),$empimage);
 
-     $check = new Check;
-     $check->project_id=$request->project_id;
-     $check->orderId = $request->orderId;
-     $check->checkno  = $request->checkno; 
-     $check->amount = $request->amount;
-     $check->bank = $request->bank;
+        $check = new Check;
+        $check->project_id=$request->project_id;
+        $check->orderId = $request->orderId;
+        $check->checkno  = $request->checkno; 
+        $check->amount = $request->amount;
+        $check->bank = $request->bank;
 
-     $check->date = $request->date;
-     $check->image = $empimage;
-     $check->save();
-     $check = "Check";
-    Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
-     return back();
-}
-public function checkdetailes(request $request){
-    $details = Check::all();
-    $countrec = count($details);
-    $check = Order::all();
+        $check->date = $request->date;
+        $check->image = $empimage;
+        $check->save();
+        $check = "Check";
+        Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
+        return back();
+    }
+    public function checkdetailes(request $request){
+        $details = Check::all();
+        $countrec = count($details);
+        $check = Order::all();
 
-     return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
-}
+        return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
+    }
    
     public function postSaveManufacturer(Request $request)
     {
         if($request->type == "blocks"){
-            // $modes = implode(", ", $request->paymentMode);
             $manufacturer = new Manufacturer;
             $manufacturer->name = $request->name;
             $manufacturer->address = $request->address;
-            $manufacturer->area = $request->area;
             $manufacturer->capacity = $request->capacity;
-            $manufacturer->present_utilization = $request->utilization;
             $manufacturer->cement_requirement = $request->cement_requirement;
             $manufacturer->prefered_cement_brand = $request->brand;
-            $manufacturer->deliverability = $request->deliverability;
             $manufacturer->sand_requirement = $request->sand_requirement;
+            $manufacturer->aggregates_required = $request->aggregate_requirement;
+            $manufacturer->manufacturer_type = "Blocks";
             $manufacturer->type = $request->manufacturing_type;
-            // $manufacturer->payment_mode = $modes;
             $manufacturer->save();
 
             // saving product details
@@ -1950,14 +1947,13 @@ public function checkdetailes(request $request){
             $manufacturer = new Manufacturer;
             $manufacturer->name = $request->name;
             $manufacturer->address = $request->address;
-            $manufacturer->area = $request->area;
             $manufacturer->capacity = $request->capacity;
-            $manufacturer->present_utilization = $request->utilization;
             $manufacturer->cement_requirement = $request->cement_requirement;
             $manufacturer->cement_used = $request->cement_used;
             $manufacturer->prefered_cement_brand = $request->brand;
-            $manufacturer->deliverability = $request->deliverability;
+            $manufacturer->manufacturer_type = "RMC";
             $manufacturer->sand_requirement = $request->sand_requirement;
+            $manufacturer->aggregates_required = $request->aggregate_requirement;
             $manufacturer->moq = $request->moq;
             $manufacturer->save();
 
@@ -1971,7 +1967,7 @@ public function checkdetailes(request $request){
                 $products->save();
             }
         }
-        return back()->with('Success','Manufacturer Saved Successfully');;
+        return back()->with('Success','Manufacturer Saved Successfully');
     }
     public function listeng(request $request){
        // $s = User::pluck('id');
@@ -2375,6 +2371,18 @@ public function checkdetailes(request $request){
 
        $group = [7,17];
        $name = Group::where('id',7)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function listatt(){
+
+       $group = [6,11];
+       $name = Group::where('id',6)->pluck('group_name')->first();
        $thiMonth = date('Y-m');
         $userIds = User::whereIn('group_id',$group)->pluck('id');
         $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")

@@ -6252,6 +6252,11 @@ function enquirystore(request $request){
                     ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
                     ->get();
         }
+        if($request->allSubwards){
+            $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
+                    ->get();
+        }
         return view('maping.viewmap',['zones'=>$zones]);
     }
     public function allProjectsWithWards(Request $request)
@@ -6312,7 +6317,7 @@ function enquirystore(request $request){
     }
 
     public function sms(request $request){
-        $users = User::all();
+        $users = User::all();;
         $ss = numbercount::all();
         $num =MamaSms::all();
         return view('/sms',['users'=>$users,'ss'=>$ss,'num'=>$num]);
@@ -7503,12 +7508,13 @@ public function display(request $request){
             return back()->with('success','Thank You :)');
         }
     }
-
-
-
-    public function viewManufacturer()
+    public function addManufacturer()
     {
-        $manufacturers = Manufacturer::all();
+        return view('addManufacturer');
+    }
+    public function viewManufacturer(Request $request)
+    {
+        $manufacturers = Manufacturer::where('manufacturer_type',$request->type)->get();
         return view('viewManufacturer',['manufacturers'=>$manufacturers]);
     }
     public function lebrands(){
