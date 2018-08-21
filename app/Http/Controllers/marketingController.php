@@ -145,6 +145,8 @@ class marketingController extends Controller
         return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec,'invoice' => $invoice]);
     }
     public function saveinvoice(Request $request){
+
+
         if($request->invoicePic != NULL){
             $imageName1 = "invoice".time().'.'.request()->invoicePic->getClientOriginalExtension();
             $request->invoicePic->move(public_path('invoiceImages'),$imageName1);
@@ -203,8 +205,10 @@ class marketingController extends Controller
             $price = implode(" , ", $request->price);
         }else{
            $price = "null"; 
-        }
-      $requirement = Requirement::where('id',$request->id)->first();
+        }        
+           
+
+                $requirement = Requirement::where('id',$request->id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
@@ -215,11 +219,11 @@ class marketingController extends Controller
                 $count = count(MhInvoice::all())+1;
                 $number = sprintf("%03d", $count);
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
-
+      
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;
-        $mhinvoice->invoice_id =  $orderNo;
+        $mhinvoice->invoice_id = $orderNo;
         $mhinvoice->customer_name = $request->customer_name;
         $mhinvoice->deliver_location = $request->address;
         $mhinvoice->delivery_date = $request->delivery_date;

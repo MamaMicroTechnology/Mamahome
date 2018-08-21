@@ -548,7 +548,7 @@ class logisticsController extends Controller
         $project = projectdetails::all();
         $address = SiteAddress::where('project_id',$orders->project_id)->first();
         $owner = OwnerDetails::where('project_id',$orders->project_id)->first();
-        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner,]);
+        return view('logistics.inputinvoice',['orders'=>$orders,'address'=>$address,'owner'=>$owner]);
 
     }
     public function lcinvoice(request $request){

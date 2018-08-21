@@ -26,7 +26,7 @@ use App\SubWard;
 use App\SubWardMap;
 use App\TrackLocation;
 use App\Order;
-
+use App\FieldLogin;
 
 use App\Http\Resources\Message as MessageResource;
 
@@ -379,12 +379,13 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'Add project sucuss']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
 public function enquiry(request $request){
+    
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
         $enquiry->main_category = $request->main_category;
@@ -405,20 +406,21 @@ public function enquiry(request $request){
  } 
     public function updateEnquiry(request $request){
         
-        $enquiry = Requirement::where('id',$request->id)->update([
-            'main_category' => $categoryNames,
-            'brand' => $brandnames,
-            'sub_category'  =>$subcategories,
-            'updated_by' =>Auth::user()->id,
-            
-            'enquiry_quantity' =>$request->enquiryquantity,
-            'total_quantity' =>$request->totalquantity,
-             'notes' => $request->eremarks,
-            'requirement_date' => $request->edate,
-            'quantity' => $request->quantity,
-              'user_id' => $request->userid
-        ]);
-          if($enquiry->save() ){
+       
+        $enquiry = Requirement::where('id',$request->id)->first();
+                $enquiry->project_id = $request->project_id;
+                $enquiry->main_category = $request->main_category;
+                $enquiry->brand = $request->brand;
+                $enquiry->sub_category = $request->sub_category;
+                $enquiry->requirement_date = $request->requirement_date;
+                $enquiry->notes = $request->notes;
+                $enquiry->A_contact = $request->A_contact;
+                $enquiry->quantity = $request->quantity;
+                $enquiry->user_id = $request->userid;
+        $enquiry->save();
+                       
+         
+          if($enquiry->save()){
             return response()->json(['message'=>'Enquiry Updated sucuss']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
@@ -484,7 +486,6 @@ public function getproject(request $request){
         }else{
              $type=null;
         }
-
         
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
@@ -506,21 +507,21 @@ public function getproject(request $request){
                 'road_width'=>$request->road_width,
                 'construction_type'=>$request->construction_type,
                 'interested_in_rmc'=>$request->interested_in_rmc,
-                'interested_in_loan'=>$request->interested_in_loan,
+                'interested_in_loan'=>$request->interested_in_load,
                 'interested_in_doorsandwindows'=>$request->interested_in_doorsandwindows,
                 'road_name'=>$request->road_name,
                 'project_status' => $statuses,
                 'project_size' => $request->project_size,
                 'budgetType' => $request->budgetType,
                 'budget' => $request->budget,
-//                 'user_id' => $request->userid,
+                'user_id' => $request->userid,
                 'basement' => $basement,
                 'ground' => $ground,
                 'project_type' => $floor,
                 'length' => $length,
                 'breadth' => $breadth,
                 'plotsize' => $size,
-                'user_id' => $request->userid,
+                
                 'remarks' => $request->remarks,
                 'contract' => $request->contract
             ]);
@@ -593,11 +594,11 @@ public function getproject(request $request){
                 $siteaddress->save();
             }
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
-    }
+    } 
     public function addLocation(Request $request){
 
        
@@ -638,12 +639,42 @@ public function getproject(request $request){
             }
 
        }
-    public function pending(Request $request){
+       public function pending(Request $request){
         $pending = Order::where('status','Enquiry Confirmed')->where('user_id',$request->userid)->get();
-         return response()->json(['pending'=>$pending]);
+         return response()->json(['order'=>$pending]);
        }
         public function confirm(request $request){
         $confirm = Order::where('status','Order Confirmed')->where('user_id',$request->userid)->get();
-         return response()->json(['confirm'=>$confirm]);
+         return response()->json(['order'=>$confirm]);
        }
+
+
+     public function recordtime(Request $request)
+    {
+                        $field = new FieldLogin;
+                        $field->user_id = $request->user_id;
+                        $field->logindate = date('Y-m-d');
+                        $field->logintime = date(' H:i A');
+                        $field->remark = $request->remark;
+                        $field->latitude = $request->latitude;
+                        $field->longitude = $request->longitude;
+                        $field->address = $request->address;
+                        $field->save();
+
+      if($field->save()){
+           return response()->json(['message'=>'Login  sucuss']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
+    }
+    public function fieldlogout(request $request){
+       $x =  FieldLogin::where('user_id',$request->user_id)->where('logindate',date('Y-m-d'))->first();
+            $x->logout = $request->logouttime;
+            $x->save();
+        if($x->save()){
+                return response()->json(['message'=>'logout successfull']);
+        }else{
+                return response()->json(['message'=>'Something went wrong']);
+        }
+    }
 }

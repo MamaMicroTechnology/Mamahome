@@ -40,14 +40,13 @@
                                 ?> 
 
                               
-                        
-                           <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
+                <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
                           <option value="">--Select--</option>
-                           @if(Auth::user()->group_id != 22)
+                          
                           @foreach($users as $user)  
                             <option value="{{ $user->id }}">{{$user->name}}</option>
                            @endforeach
-                           @else
+                           @if(Auth::user()->group_id == 22)
                             @foreach($tlUsers as $user)  
                             <option value="{{ $user->id }}">{{$user->name}}</option>
                            @endforeach

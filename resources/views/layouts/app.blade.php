@@ -560,7 +560,7 @@ div#calendar{
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
    <a href="{{ URL::to('/letracking') }}">Tracking</a>
-    <a href="#" data-toggle="collapse" data-target="#manufacturer_details">Manufacturer Details &#x21F2;</a>
+    <!-- <a href="#" data-toggle="collapse" data-target="#manufacturer_details">Manufacturer Details &#x21F2;</a> -->
     <div id="manufacturer_details" class="collapse">
        <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
@@ -573,7 +573,7 @@ div#calendar{
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
      <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
-  <a href="{{ URL::to('/setprice') }}">Price Setting Based On Designation</a>
+  <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
   
@@ -699,6 +699,7 @@ div#calendar{
             <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
             <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
             <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+            <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
 

@@ -1071,7 +1071,7 @@ class mamaController extends Controller
             'total_kilometers' => $request->totalKm,
             'eveningRemarks' => $request->eRemark
         ]);
-        return back();
+        return back()->with('message',"successfully Save");
     }
     public function addRequirement(Request $request)
     {
@@ -2094,7 +2094,7 @@ class mamaController extends Controller
         else{
             $remark = null;
         }
-        $id = user::where('id',Auth::user()->id)->pluck('id')->first();
+       $id = user::where('id',Auth::user()->id)->pluck('id')->first();
        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
        $lat = $request->latitude;
        $lon = $request->longitude;
@@ -2371,6 +2371,18 @@ class mamaController extends Controller
 
        $group = [7,17];
        $name = Group::where('id',7)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function listatt(){
+
+       $group = [6,11];
+       $name = Group::where('id',6)->pluck('group_name')->first();
        $thiMonth = date('Y-m');
         $userIds = User::whereIn('group_id',$group)->pluck('id');
         $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")

@@ -128,6 +128,7 @@ Route::post('/teamlogout','mamaController@teamlogout');
 Route::get('/seniorteam','mamaController@seniorteam');
 Route::get('/teamleader','mamaController@teamleader');
 Route::get('/saleseng','mamaController@saleseng');
+Route::get('/listatt','mamaController@listatt');
 Route::get('/accexe','mamaController@accexe');
 Route::get('/market','mamaController@market');
 Route::get('/marketexe','mamaController@marketexe');
@@ -135,6 +136,7 @@ Route::get('/hr','mamaController@hr');
 Route::get('/allteamleader','mamaController@allteamleader');
 Route::get('/allsaleseng','mamaController@allsaleseng');
 Route::get('/teamsales','mamaController@teamsales');
+Route::get('/viewEmployee','HomeController@viewEmployee');
 
 
 //sales converter
@@ -258,7 +260,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
     Route::get('/anr','HomeController@getAnR');
-    Route::get('/viewEmployee','HomeController@viewEmployee');
+   
     Route::get('/amdept','HomeController@amDept');
     Route::get('/quality','HomeController@quality');
     Route::get('/getquality','HomeController@getquality');
@@ -440,7 +442,7 @@ Route::group(['middleware' => ['Buyer']],function(){
     Route::post('/updateProfile','BuyerController@updateProfile');
 });
 
-Route::group(['middleware'=>['asst']],function(){
+
     // main links
     Route::get('/amdashboard','amController@getAMDashboard');
     Route::get('/pricing','amController@getPricing');
@@ -537,7 +539,6 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/inactiveEmployee','amController@inactiveEmployee');
     
     // not working
-});
 Route::group(['middleware'=>['AccountExecutive']],function(){
     // Route::get('/accountExecutive','aeController@getAccountExecutive');
     Route::get('/accountExecutive','HomeController@leDashboard');
@@ -601,5 +602,4 @@ Route::post('/close','logisticsController@close');
 Route::get('/addManufacturer','HomeController@addManufacturer');
 Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
 Route::get('/viewManufacturer','HomeController@viewManufacturer');
-
 Route::get('/auto',"HomeController@auto");

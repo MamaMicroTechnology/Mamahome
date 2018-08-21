@@ -371,9 +371,9 @@ div#calendar{
                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
                         <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
                         <li style="padding-top: 10px;">
-                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="teamlogin()">Login</button></li>
+                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="teamlogin()">Field Login</button></li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="teamlogout()">Logout</button>
+                        <button class="btn btn-danger btn-sm" onclick="teamlogout()">Field Logout</button>
                        </li>
                         @endif
                    <!--  <li>
