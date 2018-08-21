@@ -47,8 +47,8 @@
                                     <td>:</td>
                                     <td>
                                         <div class="col-md-6 radio">
-                                            <label for="tons"><input type="radio" name="tons" id="tons">Tons</label>&nbsp;&nbsp;
-                                            <label for="bags"><input type="radio" name="bags" id="bags">Bags</label>
+                                            <label for="tons"><input type="radio" checked="true" name="cement_required" id="tons">Tons</label>&nbsp;&nbsp;
+                                            <label for="bags"><input type="radio" name="cement_required" id="bags">Bags</label>
                                         </div>
                                         <div class="col-md-6">
                                             <input placeholder="Cement Required" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
@@ -60,8 +60,8 @@
                                     <td>:</td>
                                     <td>
                                         <div class="col-md-6 radio">
-                                            <label for="tons"><input type="radio" name="tons" id="tons">Tons</label>&nbsp;&nbsp;
-                                            <label for="bags"><input checked="true" type="radio" name="bags" id="bags">Bags</label>
+                                            <label for="tons"><input type="radio" name="m_sand_required" id="tons">Tons</label>&nbsp;&nbsp;
+                                            <label for="bags"><input type="radio" checked="true" name="m_sand_required" id="bags">Bags</label>
                                         </div>
                                         <div class="col-md-6">
                                             <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
@@ -320,10 +320,23 @@
                                     </td>
                                 </tr> -->
                                 <tr>
+                                    <td>M-Sand Required</td>
+                                    <td>:</td>
+                                    <td>
+                                        <div class="col-md-6 radio">
+                                            <label for="tons"><input type="radio" name="m_sand_required" id="tons">Tons</label>&nbsp;&nbsp;
+                                            <label for="bags"><input type="radio" checked="true" name="m_sand_required" id="bags">Bags</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Aggregates Required (Per Week In Tons)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Aggregates Required (Per Week In Tons)" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input required placeholder="Aggregates Required (Per Week In Tons)" min="0" type="number" name="aggregate_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
