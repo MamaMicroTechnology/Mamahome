@@ -34,9 +34,9 @@
                             $content = explode(" ",$department->dept_name);
                             $con = implode("",$content);
                         ?>
-                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} </a>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }}) </a>
                     @endforeach
-                    <a id="FormerEmployees" class="list-group-item" href="#">Former Employees </a>
+                    <a id="FormerEmployees" class="list-group-item" href="#">Former Employees ({{ $depts["FormerEmployees"] }}) </a>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
     width: 9px;
     background-color:green;
     border-radius: 50%;
-    display: inline-block;"></span> 50
+    display: inline-block;"></span> {{ $totalcount }}
                 
                       <br>
     <br>
@@ -101,7 +101,7 @@
                         <tr>
                          <tr>
                             <td style="border: 1px solid gray;"></td>
-                            <td style="border: 1px solid gray;"><b>50</b></td>
+                            <td style="border: 1px solid gray;"><b>{{ $totalcount }}</b></td>
                             <td style="border: 1px solid gray;"><b>23(Avg)</b></td>
                         </tr>
                       </tbody>
