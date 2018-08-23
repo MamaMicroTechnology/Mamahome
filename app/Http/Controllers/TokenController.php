@@ -30,6 +30,7 @@ use App\FieldLogin;
 
 use App\Http\Resources\Message as MessageResource;
 
+date_default_timezone_set("Asia/Kolkata");
 class TokenController extends Controller
 {
     /**
