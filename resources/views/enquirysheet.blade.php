@@ -90,7 +90,7 @@
 						</select>
 					</div>
                   </div>
-                  @if($totalenq == 0)
+                  @if(count($totalenq) == 0)
                    <h2 style="color: green;">Enquiry's are Not Found</h2>
                   @endif
 				<table id="myTable" class="table table-responsive table-striped table-hover">
@@ -201,16 +201,14 @@
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
 									<input type="hidden" value="{{$enquiry->id}}" name="id">
-									@if($enquiry->status != "Enquiry Confirmed")
+									
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>
 										<option>Enquiry On Process</option>
 										<option>Enquiry Confirmed</option>
 										<option>Enquiry Cancelled</option>
 									</select>
-									@else
-									{{ $enquiry->status }}
-									@endif
+									
 								</form>
 							</td>
 							<td>
