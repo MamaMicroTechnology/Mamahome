@@ -658,7 +658,7 @@ public function getproject(request $request){
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $request->remark;
-                        $field->latitude = $request->;
+                        $field->latitude = $request->latitude;
                         $field->longitude = $request->longitude;
                         $field->address = $request->address;
                         $field->save();
