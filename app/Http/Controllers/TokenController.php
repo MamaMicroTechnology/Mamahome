@@ -629,6 +629,7 @@ public function getproject(request $request){
             $data->lat_long = $request->lat_long;
             $data->date = $request->date;
             $data->kms = $request->kms;
+                      $data->save();
             if($data->save()){
                $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
                $userResponse = json_encode($responseData);
@@ -657,7 +658,7 @@ public function getproject(request $request){
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $request->remark;
-                        $field->latitude = $request->latitude;
+                        $field->latitude = $request->;
                         $field->longitude = $request->longitude;
                         $field->address = $request->address;
                         $field->save();
