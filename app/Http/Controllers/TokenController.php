@@ -30,7 +30,7 @@ use App\FieldLogin;
 
 use App\Http\Resources\Message as MessageResource;
 
-date_default_timezone_set("Asia/Kolkata");
+// date_default_timezone_set("Asia/Kolkata");
 class TokenController extends Controller
 {
     /**
@@ -622,10 +622,10 @@ public function getproject(request $request){
 
         //update location
       public function updateLocation(Request $request){
-              $data = TrackLocation::where('user_id',$request->user_id)
-                          ->where('date',$request->date)
-                          ->first();
-              $data->user_id = $request->user_id;
+            $data = TrackLocation::where('user_id',$request->user_id)
+                        ->where('date',$request->date)
+                        ->first();
+            $data->user_id = $request->user_id;
             $data->lat_long = $request->lat_long;
             $data->date = $request->date;
             $data->kms = $request->kms;

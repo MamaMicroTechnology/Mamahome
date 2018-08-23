@@ -89,13 +89,7 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <div class="col-md-6 radio">
-                                            <label for="tons"><input type="radio" name="m_sand_required" id="tons">Tons</label>&nbsp;&nbsp;
-                                            <label for="bags"><input type="radio" checked="true" name="m_sand_required" id="bags">Bags</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
-                                        </div>
+                                        <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -125,7 +119,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <select title='Please Select Appropriate Type' required name="blockType[]" id="" class="form-control">
+                                                    <select title='Please Select Appropriate Type' name="blockType[]" id="" class="form-control">
                                                         <option value="">--Select--</option>
                                                         <option value="Concrete">Concrete</option>
                                                         <option value="Cellular">Cellular</option>
@@ -134,7 +128,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select title='Please Select Appropriate Size' required name="blockSize[]" id="" class="form-control">
+                                                    <select title='Please Select Appropriate Size' name="blockSize[]" id="" class="form-control">
                                                         <option value="">--Select--</option>
                                                         <option value="4 inch">4 inch</option>
                                                         <option value="6 inch">6 inch</option>
@@ -144,7 +138,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input required min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
@@ -171,7 +165,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <select title='Please Select Appropriate Type' required name="blockType[]" id="" class="form-control">
+                                                    <select title='Please Select Appropriate Type' name="grade[]" id="" class="form-control">
                                                         <option value="">--Select--</option>
                                                         <option value="M10">M10</option>
                                                         <option value="M15">M15</option>
@@ -183,7 +177,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input required min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input min="0" type="number" name="gradeprice[]" id="" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                             
@@ -232,19 +226,19 @@
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
-                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='blockType[]' id='' class='form-control'>" +
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' name='blockType[]' id='' class='form-control'>" +
                                 "<option value=''>--Select--</option>" +
                                 "<option value='Concrete'>Concrete</option>" +
                                 "<option value='Cellular'>Cellular</option>" +
                                 "<option value='Light Weight'>Light Weight</option>" +
                             "</select>"
-                cell2.innerHTML = "<select title='Please Select Appropriate Size' required name='blockSize[]' id='' class='form-control'>" +
+                cell2.innerHTML = "<select title='Please Select Appropriate Size' name='blockSize[]' id='' class='form-control'>" +
                                         "<option value=''>--Select--</option>" +
                                         "<option value='4 inch'>4 inch</option>" +
                                         "<option value='6 inch'>6 inch</option>" +
                                         "<option value='8 inch'>8 inch</option>" +
                                     "</select>";
-                cell3.innerHTML = "<input required min='0' type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell3.innerHTML = "<input min='0' type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");
@@ -258,7 +252,7 @@
                 var row = table.insertRow(-1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
-                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='blockType[]' id='' class='form-control'>" +
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' name='grade[]' id='' class='form-control'>" +
                                 "<option value=''>--Select--</option>" +
                                 "<option value='M10'>M10</option>" +
                                 "<option value='M15'>M15</option>" +
@@ -266,7 +260,7 @@
                                 "<option value='M25'>M25</option>" +
                                 "<option value='M30'>M30</option>" +
                                 "<option value='M35'>M35</option> </select>";
-                cell2.innerHTML = "<input required type='number' min='0' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell2.innerHTML = "<input type='number' min='0' name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete1() {
                 var table = document.getElementById("types1");
