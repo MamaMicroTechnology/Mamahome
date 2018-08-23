@@ -10,6 +10,7 @@ use App\Mail\orderconfirmation;
 use App\Mail\invoice;
 use App\Department;
 use App\User;
+use App\Builder;
 use App\Group;
 use App\Ward;
 use App\Tlwards;
@@ -3091,12 +3092,14 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $consultant =ConsultantDetails::whereIn('project_id',$projectids)->where('consultant_contact_no','!=',null)->pluck('consultant_contact_no')->toarray();
 
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
+            $builder =Builder::whereIn('project_id',$projectids)->where('builder_contact_no','!=',null)->pluck('builder_contact_no')->toarray();
 
 
-           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
+
            for($ss=1;$ss<count($unique);$ss++){
              DB::insert('insert into numbers (number) values(?)',[$unique[$ss] ]);
 
@@ -3145,9 +3148,13 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $consultant =ConsultantDetails::whereIn('project_id',$projectids)->where('consultant_contact_no','!=',null)->pluck('consultant_contact_no')->toarray();
 
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
+             $builder =Builder::whereIn('project_id',$projectids)->where('builder_contact_no','!=',null)->pluck('builder_contact_no')->toarray();
+            
 
 
-           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner);
+           
+
+           $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));

@@ -390,7 +390,17 @@
     padding: 12px 16px;
     transition: 0.3s;
     font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button>
+     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
+
+<button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
 </div>
 
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
@@ -506,6 +516,28 @@
                                    <td>Procurement Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
                                    <td><input value="{{ old('pContact') }}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                               </tr>
+                           </table>
+</div>
+<div id="Builder" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Builder Details</label></center><br>
+                           <table class="table"  border="1">
+                               <tr>
+                                   <td>Builder Name</td>
+                                   <td>:</td>
+                                   <td><input id="prName" required type="text" placeholder="Builder Name" class="form-control input-sm" name="bName" value="{{ old('prName') }}"></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Email</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('pEmail') }}" placeholder="Builder Email" type="email" class="form-control input-sm" name="bEmail" id="pEmail" onblur="checkmail('pEmail')" ></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Contact No.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('pContact') }}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Builder Contact No." type="text" class="form-control input-sm" name="bPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
                                </tr>
                            </table>
 </div>

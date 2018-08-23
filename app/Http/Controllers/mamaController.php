@@ -11,6 +11,8 @@ use App\Department;
 use App\User;
 use Session;
 use App\Group;
+use App\Builder;
+
 use App\Ward;
 use App\SubWard;
 use App\Country;
@@ -577,6 +579,7 @@ class mamaController extends Controller
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
+
            
             $projectdetails->save();
             
@@ -632,6 +635,15 @@ class mamaController extends Controller
         $procurementDetails->procurement_email = $request->pEmail;
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
+ 
+        $procurementDetails = New Builder;
+        $procurementDetails->project_id = $projectdetails->id;
+        $procurementDetails->builder_name = $request->bName;
+        $procurementDetails->builder_email = $request->bEmail;
+        $procurementDetails->builder_contact_no = $request->bPhone;
+        $procurementDetails->save();
+    
+
         $no = $request->prPhone;
         $pid = $projectdetails->id;
        
@@ -915,6 +927,14 @@ class mamaController extends Controller
             'procurement_email' => $request->pEmail,
             'procurement_contact_no' => $request->pContact
         ]);
+
+        Builder::where('project_id',$id)->update([
+            'builder_name' => $request->bName,
+            'builder_email' => $request->bEmail,
+            'builder_contact_no' => $request->bPhone
+        ]);
+
+
         date_default_timezone_set("Asia/Kolkata");
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
             'lastUpdateTime' => date('H:i A')
