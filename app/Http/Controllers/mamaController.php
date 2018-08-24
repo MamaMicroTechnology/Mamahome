@@ -1973,11 +1973,11 @@ class mamaController extends Controller
             }
         }elseif($request->type == "RMC"){
             // saving product details
-            for($i = 0; $i < count($request->blockType); $i++){
+            for($i = 0; $i < count($request->grade); $i++){
                 $products = new ManufacturerProduce;
                 $products->manufacturer_id = $manufacturer->id;
-                $products->block_type = $request->blockType[$i];
-                $products->price = $request->price[$i];
+                $products->block_type = $request->grade[$i];
+                $products->price = $request->gradeprice[$i];
                 $products->save();
             }
         }
