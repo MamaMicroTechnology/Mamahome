@@ -316,7 +316,7 @@
                         swal("Error",'Please Select Grade Type','error');
                         return false;
                     }
-                    if(document.getElementById('gt').value == ''){
+                    if(document.getElementById('gp').value == ''){
                         swal("Error",'Please Enter Grade Price','error');
                         return false;
                     }

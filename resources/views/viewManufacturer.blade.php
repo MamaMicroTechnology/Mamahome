@@ -3,6 +3,7 @@
     <div class="col-md-10 col-md-offset-1">
         <table class="table" border=1>
         <tr>
+            <th>SubWardId</th>
             <th>Name</th>
             <th>Address</th>
             <th>Area</th>
@@ -29,7 +30,7 @@
                 <td>{{ $manufacturer->type }}</td>
                 
                 <td>
-                    <table class="table table-striped">
+                    <table class="table table-striped" border=1>
                     <tr>
                         <th>Type</th>
                         <th>Size</th>
