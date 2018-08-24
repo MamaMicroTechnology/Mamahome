@@ -33,13 +33,13 @@
                     <table class="table table-striped" border=1>
                     <tr>
                         <th>Type</th>
-                        <th>Size</th>
+                        <th class="{{ isset($_GET['type']) ? $_GET['type'] == 'RMC' ? 'hidden' : '' : '' }}">Size</th>
                         <th>Price</th>
                     </tr>
                     @foreach($manufacturer->manufacturerProduct as $products)
                         <tr>
                             <td>{{ $products->block_type }}</td>
-                            <td>{{ $products->block_size }}</td>
+                            <td class="{{ isset($_GET['type']) ? $_GET['type'] == 'RMC' ? 'hidden' : '' : '' }}">{{ $products->block_size }}</td>
                             <td>₹{{ $products->price }}/-</td>
                         </tr>
                     @endforeach
