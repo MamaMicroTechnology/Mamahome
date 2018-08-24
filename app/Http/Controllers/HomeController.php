@@ -7548,4 +7548,15 @@ public function display(request $request){
      return view('salesengineer',['projects'=>$projects,'projectcount'=>$projectcount,'roomtypes'=>$roomtypes,'his'=>$his,'orders'=>$orders,'requirements'=>$requirements ]);
 
   }
+  public function getUpdateManufacturer()
+  {
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $manufacturers = Manufacturer::where('sub_ward_id',$wardsAssigned)->get();
+        return view('updateManufacturer',['manufacturers'=>$manufacturers]);
+  }
+  public function updateManufacturerDetails(Request $request)
+  {
+      $manufacturer = Manufacturer::findOrFail($request->id);
+      return view('addManufacturer',['manufacturer'=>$manufacturer]);
+  }
 }
