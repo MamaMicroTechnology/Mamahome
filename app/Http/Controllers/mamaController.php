@@ -1941,19 +1941,27 @@ class mamaController extends Controller
    
     public function postSaveManufacturer(Request $request)
     {
-        if($request->type == "blocks"){
-            $manufacturer = new Manufacturer;
-            $manufacturer->name = $request->name;
-            $manufacturer->address = $request->address;
-            $manufacturer->capacity = $request->capacity;
-            $manufacturer->cement_requirement = $request->cement_requirement;
-            $manufacturer->prefered_cement_brand = $request->brand;
-            $manufacturer->sand_requirement = $request->sand_requirement;
-            $manufacturer->aggregates_required = $request->aggregate_requirement;
-            $manufacturer->manufacturer_type = "Blocks";
-            $manufacturer->type = $request->manufacturing_type;
-            $manufacturer->save();
-
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $manufacturer = new Manufacturer;
+        $manufacturer->name = $request->name;
+        $manufacturer->sub_ward_id = $wardsAssigned;
+        $manufacturer->plant_name = $request->plant_name;
+        $manufacturer->latitude = $request->latitude;
+        $manufacturer->longitude = $request->longitude;
+        $manufacturer->address = $request->address;
+        $manufacturer->contact_no = $request->phNo;
+        $manufacturer->capacity = $request->capacity;
+        $manufacturer->cement_requirement = $request->cement_requirement;
+        $manufacturer->cement_requirement_measurement = $request->cement_required;
+        $manufacturer->prefered_cement_brand = $request->brand;
+        $manufacturer->sand_requirement = $request->sand_requirement;
+        $manufacturer->aggregates_required = $request->aggregate_requirement;
+        $manufacturer->manufacturer_type = $request->type;
+        $manufacturer->type = $request->manufacturing_type;
+        $manufacturer->moq = $request->moq;
+        $manufacturer->save();
+        
+        if($request->type == "Blocks"){
             // saving product details
             for($i = 0; $i < count($request->blockType); $i++){
                 $products = new ManufacturerProduce;
@@ -1963,26 +1971,12 @@ class mamaController extends Controller
                 $products->price = $request->price[$i];
                 $products->save();
             }
-        }else{
-            $manufacturer = new Manufacturer;
-            $manufacturer->name = $request->name;
-            $manufacturer->address = $request->address;
-            $manufacturer->capacity = $request->capacity;
-            $manufacturer->cement_requirement = $request->cement_requirement;
-            $manufacturer->cement_used = $request->cement_used;
-            $manufacturer->prefered_cement_brand = $request->brand;
-            $manufacturer->manufacturer_type = "RMC";
-            $manufacturer->sand_requirement = $request->sand_requirement;
-            $manufacturer->aggregates_required = $request->aggregate_requirement;
-            $manufacturer->moq = $request->moq;
-            $manufacturer->save();
-
+        }elseif($request->type == "RMC"){
             // saving product details
             for($i = 0; $i < count($request->blockType); $i++){
                 $products = new ManufacturerProduce;
                 $products->manufacturer_id = $manufacturer->id;
                 $products->block_type = $request->blockType[$i];
-                // $products->block_size = $request->blockSize[$i];
                 $products->price = $request->price[$i];
                 $products->save();
             }

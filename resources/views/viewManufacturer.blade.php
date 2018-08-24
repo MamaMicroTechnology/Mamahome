@@ -18,14 +18,13 @@
         </tr>
         @foreach($manufacturers as $manufacturer)
             <tr>
+                <td>{{ $manufacturer->sub_ward_id }}</td>
                 <td>{{ $manufacturer->name }}</td>
                 <td>{{ $manufacturer->address }}</td>
                 <td>{{ $manufacturer->area }}</td>
                 <td>{{ $manufacturer->capacity }}</td>
-                <!-- <td>{{ $manufacturer->present_utilization }}</td> -->
-                <td>{{ $manufacturer->cement_requirement }}</td>
+                <td>{{ $manufacturer->cement_requirement }} {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->prefered_cement_brand }}</td>
-                <!-- <td>{{ $manufacturer->deliverability }}</td> -->
                 <td>{{ $manufacturer->sand_requirement }}</td>
                 <td>{{ $manufacturer->type }}</td>
                 

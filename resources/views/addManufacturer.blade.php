@@ -2,8 +2,7 @@
 @section('content')
 
     <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
-     
-            <form action="{{ URL::to('/') }}/saveManufacturer" method="post">
+            <form action="{{ URL::to('/') }}/saveManufacturer" onsubmit="return validate()" method="post">
                 {{ csrf_field() }}
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
@@ -21,15 +20,22 @@
                                             <option value="">--Select--</option>
                                             <option value="RMC">RMC</option>
                                             <option value="Blocks">Blocks</option>
-                                            <option value="Crusher">Crusher</option>
+                                            <!-- <option value="Crusher">Crusher</option> -->
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Manufacturer name</td>
+                                    <td>Manufacturer Name</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Manufacturer Name" type="text" name="name" id="name" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Plant Name</td>
+                                    <td>:</td>
+                                    <td>
+                                        <input required placeholder="Plant Name" type="text" name="plant_name" id="name" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -77,8 +83,8 @@
                                     <td>:</td>
                                     <td>
                                         <div class="col-md-6 radio">
-                                            <label for="tons"><input type="radio" checked="true" name="cement_required" id="tons">Tons</label>&nbsp;&nbsp;
-                                            <label for="bags"><input type="radio" name="cement_required" id="bags">Bags</label>
+                                            <label for="tons"><input type="radio" value="Tons" checked="true" name="cement_required" id="tons">Tons</label>&nbsp;&nbsp;
+                                            <label for="bags"><input type="radio" value="Bags" name="cement_required" id="bags">Bags</label>
                                         </div>
                                         <div class="col-md-6">
                                             <input placeholder="Cement Required" min="0" type="number" name="cement_requirement" id="cement_requirement" class="form-control">
@@ -119,7 +125,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <select title='Please Select Appropriate Type' name="blockType[]" id="" class="form-control">
+                                                    <select title='Please Select Appropriate Type' name="blockType[]" id="bt" class="form-control">
                                                         <option value="">--Select--</option>
                                                         <option value="Concrete">Concrete</option>
                                                         <option value="Cellular">Cellular</option>
@@ -128,7 +134,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select title='Please Select Appropriate Size' name="blockSize[]" id="" class="form-control">
+                                                    <select title='Please Select Appropriate Size' name="blockSize[]" id="bs" class="form-control">
                                                         <option value="">--Select--</option>
                                                         <option value="4 inch">4 inch</option>
                                                         <option value="6 inch">6 inch</option>
@@ -138,7 +144,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input min="0" type="number" name="price[]" id="" placeholder="Price" class="form-control">
+                                                    <input min="0" type="number" name="price[]" id="bp" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
@@ -165,7 +171,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <select title='Please Select Appropriate Type' name="grade[]" id="" class="form-control">
+                                                    <select title='Please Select Appropriate Type' name="grade[]" id="gt" class="form-control">
                                                         <option value="">--Select--</option>
                                                         <option value="M10">M10</option>
                                                         <option value="M15">M15</option>
@@ -177,7 +183,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input min="0" type="number" name="gradeprice[]" id="" placeholder="Price" class="form-control">
+                                                    <input min="0" type="number" name="gradeprice[]" id="gp" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                             
@@ -197,10 +203,10 @@
                                     <td>:</td>
                                     <td>
                                         <div class="radio">
-                                            <label><input required type="radio" name="manufacturing_type" value="Manual" id="manual">Manual</label>
+                                            <label><input type="radio" name="manufacturing_type" value="Manual" id="manual">Manual</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input required type="radio" name="manufacturing_type" value="Machine" id="machine">Machine</label>
+                                            <label><input type="radio" name="manufacturing_type" value="Machine" id="machine">Machine</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -208,7 +214,7 @@
                                     <td>MOQ For Free Pumping (CUM)</td>
                                     <td>:</td>
                                     <td>
-                                        <input required type="number" min="1" name="moq" id="moq" placeholder="MOQ For Free Pumping (CUM)" class="form-control">
+                                        <input type="number" min="1" name="moq" id="moq2" placeholder="MOQ For Free Pumping (CUM)" class="form-control">
                                     </td>
                                 </tr>
                             </table>
@@ -226,19 +232,19 @@
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
-                cell1.innerHTML = "<select title='Please Select Appropriate Type' name='blockType[]' id='' class='form-control'>" +
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='blockType[]' id='' class='form-control'>" +
                                 "<option value=''>--Select--</option>" +
                                 "<option value='Concrete'>Concrete</option>" +
                                 "<option value='Cellular'>Cellular</option>" +
                                 "<option value='Light Weight'>Light Weight</option>" +
                             "</select>"
-                cell2.innerHTML = "<select title='Please Select Appropriate Size' name='blockSize[]' id='' class='form-control'>" +
+                cell2.innerHTML = "<select title='Please Select Appropriate Size' required name='blockSize[]' id='' class='form-control'>" +
                                         "<option value=''>--Select--</option>" +
                                         "<option value='4 inch'>4 inch</option>" +
                                         "<option value='6 inch'>6 inch</option>" +
                                         "<option value='8 inch'>8 inch</option>" +
                                     "</select>";
-                cell3.innerHTML = "<input min='0' type='number' name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell3.innerHTML = "<input min='0' type='number' required name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");
@@ -252,7 +258,7 @@
                 var row = table.insertRow(-1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
-                cell1.innerHTML = "<select title='Please Select Appropriate Type' name='grade[]' id='' class='form-control'>" +
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='grade[]' id='' class='form-control'>" +
                                 "<option value=''>--Select--</option>" +
                                 "<option value='M10'>M10</option>" +
                                 "<option value='M15'>M15</option>" +
@@ -260,7 +266,7 @@
                                 "<option value='M25'>M25</option>" +
                                 "<option value='M30'>M30</option>" +
                                 "<option value='M35'>M35</option> </select>";
-                cell2.innerHTML = "<input type='number' min='0' name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
+                cell2.innerHTML = "<input type='number' min='0' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete1() {
                 var table = document.getElementById("types1");
@@ -303,6 +309,42 @@
                 return false;
             }
           }
+            function validate(){
+                var type = document.getElementById('type').value;
+                if(type=="RMC"){
+                    if(document.getElementById('gt').value == ''){
+                        swal("Error",'Please Select Grade Type','error');
+                        return false;
+                    }
+                    if(document.getElementById('gt').value == ''){
+                        swal("Error",'Please Enter Grade Price','error');
+                        return false;
+                    }
+                    if(document.getElementById('moq2').value == ''){
+                        swal("Error",'Please Enter MOQ','error');
+                        return false;
+                    }
+                }
+                if(type=="Blocks"){
+                    if(document.getElementById('bt').value==''){
+                        swal("Error",'Please Select Block Type','error');
+                        return false;
+                    }
+                    if(document.getElementById('bs').value==''){
+                        swal("Error",'Please Enter Block Size','error');
+                        return false;
+                    }
+                    if(document.getElementById('bp').value==''){
+                        swal("Error",'Please Enter Block Price','error');
+                        return false;
+                    }
+                    if(document.getElementById('manual').checked == false && document.getElementById('machine').checked == false){
+                        swal("Error",'Please Select Manufacturing Mode','error');
+                        return false;
+                    }
+                }
+                return true;
+            }
         </script>
 <script type="text/javascript" charset="utf-8">
     function getLocation(){
@@ -361,7 +403,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('Success'))
 <script>
-    swal("{{ session('Success') }}");
+    swal("success","{{ session('Success') }}","success");
 </script>
 @endif
 @endsection
