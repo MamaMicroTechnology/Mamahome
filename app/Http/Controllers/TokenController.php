@@ -678,4 +678,9 @@ public function getproject(request $request){
                 return response()->json(['message'=>'Something went wrong']);
         }
     }
+    public function gettime(){
+            $logintime = date(' H:i A');
+            return response()->json(['message'=>'current time']);
+    }
+        
 }
