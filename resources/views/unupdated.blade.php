@@ -7,7 +7,7 @@
                 @if($totalproject != 0)
                  <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
                Count : <b>{{ $totalproject }}</b>
-                <p class="pull-right"> Projects Not Been Updated In 45 Days.</p>
+                <p class="pull-right"> Projects Not Been Updated In 30 Days.</p>
                 @endif
 
                     @if(session('ErrorFile'))

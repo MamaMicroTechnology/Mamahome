@@ -51,10 +51,10 @@
                                     <td>:</td>
                                     <td>
                                         <div class="col-md-6">
-                                            <input value="{{ $manufacturer->latitude }}" required placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control">
+                                            <input readonly value="{{ $manufacturer->latitude }}" required placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control">
                                         </div>
                                         <div class="col-md-6">
-                                            <input value="{{ $manufacturer->longitude }}" required placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control">
+                                            <input readonly value="{{ $manufacturer->longitude }}" required placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control">
                                         </div>
                                     </td>
                                 </tr>

@@ -40,7 +40,7 @@
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
-								<label>Wards</label>
+								<label>Sub Wards</label>
 								<select class="form-control" name="ward">
 									<option value="">--Select--</option>
 									<option value="">All</option>
@@ -97,7 +97,7 @@
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">Ward Name</th>
+							<th style="text-align: center">Sub Ward Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
