@@ -40,4 +40,7 @@ class User extends Authenticatable
      function tlward(){
         return $this->hasOne(Tlwards::class,'user_id','id');
     }
+    function activity(){
+        return $this->hasMany(ActivityLog::class,'employee_id','employeeId');
+    }
 }
