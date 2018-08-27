@@ -29,8 +29,7 @@ use App\Order;
 use App\FieldLogin;
 
 use App\Http\Resources\Message as MessageResource;
-
-// date_default_timezone_set("Asia/Kolkata");
+date_default_timezone_set("Asia/Kolkata");
 class TokenController extends Controller
 {
     /**
@@ -679,4 +678,9 @@ public function getproject(request $request){
                 return response()->json(['message'=>'Something went wrong']);
         }
     }
+    public function gettime(){
+            $logintime = date('H:i:s');
+            return response()->json(['message'=>$logintime]);
+    }
+        
 }

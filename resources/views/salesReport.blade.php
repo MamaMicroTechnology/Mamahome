@@ -28,7 +28,7 @@
                                             @endforeach
                                         @else
                                             @foreach($tlUsers as $user)
-                                                <option>{{ $user->name }}</option>
+                                                <option {{ isset($_GET['se']) ? $_GET['se'] == $user->employeeId ? 'selected' : '' : ''}}  value="{{$user->employeeId}}">{{ $user->name }}</option>
     	                                    @endforeach
                                         @endif
 	                                </select>
@@ -114,9 +114,7 @@
             	No Of Calls: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	Sales Engineer :
-            		@if(isset($_GET['se']) && $_GET['se'] != "ALL")
-            			{{ $projectIds != null ? $projectIds[0]['updater'] : '' }}
-            		@endif
+            		
             </label>
             <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
         </div>
@@ -126,36 +124,34 @@
                     <tr>
                         <th style="text-align:center">Ward No.</th>
                         <th style="text-align:center">Project-ID</th>
-                        <th style="text-align:center" class="{{ isset($_GET['se']) ? 'hidden' : '' }}">Updater</th>
+                        <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center">Followup</th>
-                        <th style="text-align:center">Enquiry Initiated</th>
+                        <th style="text-align:center">Enquiry Initiated By</th>
                     </tr>
                 </thead>
                 <tbody id="mainPanel">
-                	@for($i = 0; $i<count($projectIds);$i++)
-                     
-                       <tr>
-                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
+                	@foreach($str as $project)
+                     <tr>
+                        @if($project->subward != null && $project->project_id !=null && $project->updater != null  && $project->enquiry !=null)
+                        <td style="text-align:center">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}</td>
                         <td style="text-align:center">
-                        	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$projectIds[$i]['projectId']}}&&lename={{ $projectIds[$i]['updater'] }}">{{ $projectIds[$i]['projectId'] }}</a>
+                        	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->updater }}">{{$project->project_id }}</a>
                         </td>
-                        <td style="text-align:center" class="{{ isset($_GET['se']) ? 'hidden' : '' }}">{{ $projectIds[$i]['updater'] }}</td>
-                        <td style="text-align:center">{{ $projectIds[$i]['quality'] }}</td>
-                        <td style="text-align:center">{{ $projectIds[$i]['followup'] }}</td>
-                        <td style="text-align:center">
-                        	@if($projectIds[$i]['enquiryInitiated'] != 0)
-                        	Yes<br>
-                        		@foreach($projectIds[$i]['enquiryInitiatedBy'] as $enquiries)
-                        			<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiries->id }}">Initiated by {{ $enquiries->name }}</a><br>
-                        		@endforeach
-                        	@else
-                        	No
-                        	@endif
-                        </td>
+                        <td style="text-align:center">{{ $project->user != null ? $project->user->name :'' }}</td>
+                        <td style="text-align:center">{{$project->quality }}</td>
+                        <td style="text-align:center">{{ $project->followup }}</td>
+                         @foreach($users as $user)
+                        @if($project->enquiry == $user->id)
+                        <td style="text-align:center" >{{ $user->name != null ? $user->name != "null" ? $user->name :'' : '' }}</td>
+                        @endif
+                    
+                        @endforeach
+
+                       <!--  -->
                     </tr>
-                 
-                    @endfor
+                     @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>

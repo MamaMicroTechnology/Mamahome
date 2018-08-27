@@ -247,6 +247,38 @@ class HomeController extends Controller
                                                 'billadress'=>$request->billadress,
                                                 'ship' =>$shipadress
                                         ]);
+
+
+
+
+
+
+         $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->selectprojects." at ".date('H:i A');
+        $uproject = ProjectDetails::where('project_id',$request->selectprojects)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$request->selectprojects)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$request->selectprojects)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$request->selectprojects)->pluck('generated_by')->first();
+         $project = ProjectDetails::where('project_id',$request->selectprojects)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $activity->updater = $uproject;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+
+        $activity->project_id = $request->selectprojects;
+        // $activity->req_id = $requirement->id;
+        $activity->typeofactivity = "Add Enquiry";
+        $activity->save();
         // $y = DB::table('quantity')->insert(['req_id' =>$request->requirements->id,
         //                                     'project_id'=>$request->selectprojects
 
@@ -4823,15 +4855,11 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                             array_push($tl1,['tl_id'=>$tlward->user_id,'wards'=>$tlward2]);
                         }
                     }
-                    
-                    
-
-
+                 
            $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->where('deleted',0)
@@ -4878,94 +4906,62 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                      if(Auth::user()->group_id == 22){
                        return $this->salesreports1($request);
                      }
-           if($request->se == "ALL" && $request->fromdate && !$request->todate){
-               $date = $request->fromdate;
-               $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
-           }elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
-               $date = $request->fromdate;
-               $str = ActivityLog::where('time','LIKE',$request->fromdate.'%')
-                       ->where('employee_id',$request->se)
-                       ->where('activity','LIKE','%Updated a project%')->get();
-           }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
-               $date = $request->fromdate;
-               $from= $request->fromdate;
-               $to= $request->todate;
-               if($from == $to){
-                    $str = ActivityLog::where('time','like',$from.'%')
-                   ->where('time','LIKE',$to."%")
-                   ->where('activity','LIKE','%Updated a project%')->get();
-               }
-               else{
-               $str = ActivityLog::where('time','>',$request->fromdate)
-                       ->where('time','<',$request->todate)
-                       ->where('activity','LIKE','%Updated a project%')->get();
-               }
-           }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
+           
 
-               $date = $request->fromdate;
-               $from= $request->fromdate;
-               $to= $request->todate;
-               if($from == $to){
 
-               $str = ActivityLog::where('time','like',$from.'%')
-                   ->where('time','LIKE',$to."%")
-                   ->where('employee_id',$request->se)
-                   ->where('activity','LIKE','%Updated a project%')->get();
-               }
-               else{
-               $str = ActivityLog::where('time','>',$request->fromdate)
-                       ->where('time','<',$request->todate)
-                       ->where('employee_id',$request->se)
-                       ->where('activity','LIKE','%Updated a project%')->get();
-               }
-           }else{
-               $date = date('Y-m-d');
-               $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
-           }
-           $today = date('Y-m-d');
-           $exploded = array();
-           $projectIds = array();
-           foreach($str as $strings){
-               array_push($exploded,explode(" ",$strings->activity));
-           }
+                     if($request->se == "ALL" && $request->fromdate && !$request->todate){
+                  $date = $request->fromdate;
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->get();
+              }
+              elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
+                  $date = $request->fromdate;
+                  $str = ActivityLog::where('time','LIKE',$request->fromdate.'%')
+                          ->where('employee_id',$request->se)
+                          ->get();
+                          
+              }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
+                  $date = $request->fromdate;
+                  $from= $request->fromdate;
+                  $to= $request->todate;
+                  
+                  if($from == $to){
+                       $str = ActivityLog::where('time','like',$from.'%')
+                             ->where('time','LIKE',$to."%")
+                             ->get();
+                       
+                  }
+                  else{
+                  $str = ActivityLog::where('time','>',$request->fromdate)
+                          ->where('time','<',$request->todate)
+                             ->get();
+                        
+                  }
+              }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
 
-           for($i = 0;$i<count($exploded);$i++){
-               $key = array_search("id:", $exploded[$i]);
-               $name = array_search("has", $exploded[$i]);
-               $quality = array_search("Quality:", $exploded[$i]);
-               $projectIds[$i]['projectId'] = $exploded[$i][$key+1];
-               if($name == 3){
-                   $projectIds[$i]['updater'] = $exploded[$i][$name-3]." ".$exploded[$i][$name-2]." ".$exploded[$i][$name-1];
-               }elseif($name == 2){
-                   $projectIds[$i]['updater'] = $exploded[$i][$name-2]." ".$exploded[$i][$name-1];
-               }else{
-                   $projectIds[$i]['updater'] = $exploded[$i][$name-1];
-               }
+                  $date = $request->fromdate;
+                  $from= $request->fromdate;
+                  $to= $request->todate;
+                  if($from == $to){
 
-               $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->first();
-
-               if($project != null){
-                   $projectIds[$i]['quality'] = $project->quality;
-                   $projectIds[$i]['followup'] = $project->followup;
-                   $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
-                   $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
-                   $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
-                   $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
-                   $projectIds[$i]['enquiryInitiatedBy'] = Requirement::where('requirements.project_id',$projectIds[$i]['projectId'])
-                                                               ->leftjoin('users','requirements.generated_by','users.id')
-                                                               ->select('users.name','requirements.id')
-                                                               ->get();
-               }else{
-                   $projectIds[$i]['quality'] = "";
-                   $projectIds[$i]['followup'] = "";
-                   $projectIds[$i]['followupby'] = "";
-                   $projectIds[$i]['caller'] = "";
-                   $projectIds[$i]['sub_ward_name'] = "";
-                   $projectIds[$i]['enquiryInitiated'] = "";
-                   $projectIds[$i]['enquiryInitiatedBy'] = "";
+                  $str = ActivityLog::where('time','like',$from.'%')
+                      ->where('time','LIKE',$to."%")
+                      ->where('employee_id',$request->se)
+                        ->get();
+                            
+                  }
+                  else{
+                  $str = ActivityLog::where('time','>',$request->fromdate)
+                          ->where('time','<',$request->todate)
+                          ->where('employee_id',$request->se)
+                           ->get();
+                  }
+              }else{
+                  $date = date('Y-m-d');
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->get();
               }
 
-           }
+           $today = date('Y-m-d');
+            
            $noOfCalls = array();
            $users = User::where('department_id',2)
                        ->leftjoin('salesassignments','salesassignments.user_id','users.id')
@@ -4981,7 +4977,6 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                        ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                        ->select('users.*','sub_wards.sub_ward_name')
                        ->get();
-
 
          foreach($tluser as $user){
                $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
@@ -5017,7 +5012,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                        ->where('generated_by',$user->id)
                                                        ->count();
            }
-           $projectsCount = count($projectIds);
+           $projectsCount = count($str);
 
             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
             $userIds = explode(",", $tl);
@@ -5028,35 +5023,45 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                    'date'=>$date,
                    'projectsCount'=>$projectsCount,
                    'noOfCalls'=>$noOfCalls,
-                   'projectIds'=>$projectIds,
                    'tl' =>$tl,
+                   'str'=>$str,
                    'tlUsers'=>$tlUsers,
                    'tluser'=>$tluser
                ]);
        }
        public function salesreports1(Request $request)
           {
+                  $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+                  $ward = Ward::where('id',$tl)->pluck('id')->first();
+                  $tlward  = Subward::where('ward_id',$ward)->pluck('id');
+
               if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
-                  $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
-              }elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->get();
+              }
+              elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
                   $str = ActivityLog::where('time','LIKE',$request->fromdate.'%')
                           ->where('employee_id',$request->se)
-                          ->where('activity','LIKE','%Updated a project%')->get();
+                          ->whereIn('sub_ward_id',$tlward)->get();
+                          
               }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
                   $date = $request->fromdate;
                   $from= $request->fromdate;
                   $to= $request->todate;
+                  
                   if($from == $to){
                        $str = ActivityLog::where('time','like',$from.'%')
-                      ->where('time','LIKE',$to."%")
-                      ->where('activity','LIKE','%Updated a project%')->get();
+                             ->where('time','LIKE',$to."%")
+                             ->whereIn('sub_ward_id',$tlward)->get();
+                            
+                       
                   }
-                  else{
+                  else{ 
                   $str = ActivityLog::where('time','>',$request->fromdate)
                           ->where('time','<',$request->todate)
-                          ->where('activity','LIKE','%Updated a project%')->get();
+                             ->whereIn('sub_ward_id',$tlward)->get();
+                        
                   }
               }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
 
@@ -5068,70 +5073,22 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   $str = ActivityLog::where('time','like',$from.'%')
                       ->where('time','LIKE',$to."%")
                       ->where('employee_id',$request->se)
-                      ->where('activity','LIKE','%Updated a project%')->get();
+                        ->whereIn('sub_ward_id',$tlward)->get();
+                            
                   }
                   else{
                   $str = ActivityLog::where('time','>',$request->fromdate)
                           ->where('time','<',$request->todate)
                           ->where('employee_id',$request->se)
-                          ->where('activity','LIKE','%Updated a project%')->get();
+                           ->whereIn('sub_ward_id',$tlward)->get();
                   }
               }else{
                   $date = date('Y-m-d');
-                  $str = ActivityLog::where('time','LIKE',$date.'%')->where('activity','LIKE','%Updated a project%')->get();
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->get();
               }
+          
               $today = date('Y-m-d');
-              $exploded = array();
-              $projectIds = array();
-              foreach($str as $strings){
-                  array_push($exploded,explode(" ",$strings->activity));
-              }
-
-              for($i = 0;$i<count($exploded);$i++){
-                  $key = array_search("id:", $exploded[$i]);
-                  $name = array_search("has", $exploded[$i]);
-                  $quality = array_search("Quality:", $exploded[$i]);
-                  $projectIds[$i]['projectId'] = $exploded[$i][$key+1];
-                  if($name == 3){
-                      $projectIds[$i]['updater'] = $exploded[$i][$name-3]." ".$exploded[$i][$name-2]." ".$exploded[$i][$name-1];
-                  }elseif($name == 2){
-                      $projectIds[$i]['updater'] = $exploded[$i][$name-2]." ".$exploded[$i][$name-1];
-                  }else{
-                      $projectIds[$i]['updater'] = $exploded[$i][$name-1];
-                  }
-                  $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-                  $ward = Ward::where('id',$tl)->pluck('id')->first();
-                  $sub  = Subward::where('ward_id',$ward)->pluck('id');
-
-                  $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->whereIn('sub_ward_id',$sub)->first();
-                  if($project != null){
-                    $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
-                    $userIds = explode(",", $tl);
-
-
-
-    $projectIds[$i]['quality'] = $project->quality;
-    $projectIds[$i]['followup'] = $project->followup;
-    $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
-    $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
-    $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
-    $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
-    $projectIds[$i]['enquiryInitiatedBy'] = 
-    Requirement::where('requirements.project_id',$project->project_id)
-                 ->leftjoin('users','requirements.generated_by','users.id')
-                  ->select('users.name','requirements.id')
-                  ->get();
-                       }else{
-                      $projectIds[$i]['quality'] = "";
-                      $projectIds[$i]['followup'] = "";
-                      $projectIds[$i]['followupby'] = "";
-                      $projectIds[$i]['caller'] = "";
-                      $projectIds[$i]['sub_ward_name'] = "";
-                      $projectIds[$i]['enquiryInitiated'] = "";
-                      $projectIds[$i]['enquiryInitiatedBy'] = "";
-                 }
-
-              }
+            
               $noOfCalls = array();
               $users = User::where('department_id',2)
                           ->leftjoin('salesassignments','salesassignments.user_id','users.id')
@@ -5142,7 +5099,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                    $userIds = explode(",", $tl);
 
                    $tluser =User::whereIn('users.id',$userIds)
-                          ->where('users.group_id',7)
+                          ->where('users.group_id',6)
                           ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                           ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                           ->select('users.*','sub_wards.sub_ward_name')
@@ -5183,13 +5140,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                           ->where('generated_by',$user->id)
                                                           ->count();
               }
-              // for($i = 0; $i < count($projectIds); $i++){
-              //   if($projectIds[$i]["sub_ward_name"] == ""){
-              //       array_pop($projectIds[$i]);
-              //       // dd($projectIds);
-              //   }
-              // }
-              $projectsCount = count($projectIds);
+              
+              $projectsCount = count($str);
 
                $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                $userIds = explode(",", $tl);
@@ -5200,7 +5152,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                       'date'=>$date,
                       'projectsCount'=>$projectsCount,
                       'noOfCalls'=>$noOfCalls,
-                      'projectIds'=>$projectIds,
+                      'str'=>$str,
                       'tl' =>$tl,
                       'tlUsers'=>$tlUsers,
                       'tluser'=>$tluser
@@ -6151,8 +6103,6 @@ function enquirystore(request $request){
     public function enqwise(Request $request){
         $assigndate =Assignenquiry::where('user_id',Auth::user()->id)
                        ->orderby('dateenq','DESC')->pluck('dateenq')->first();
-
-
          $tlWard = Assignenquiry::where('user_id',Auth::user()->id)->pluck('ward')->first();
          $ward = Ward::where('ward_name',$tlWard)->pluck('id')->first();
          $assignedSubWards = SubWard::where('ward_id',$ward)->pluck('id');
@@ -6177,7 +6127,6 @@ function enquirystore(request $request){
         $project = ProjectDetails::leftjoin('requirements','requirements.project_id','project_details.project_id')
                     ->whereIn('project_details.sub_ward_id',$subwardid)
                     ->pluck('project_details.project_id');
-
 
         if(count($project) > 0){
             $projectids = $projectids->merge($project);
