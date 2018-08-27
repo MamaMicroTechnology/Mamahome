@@ -3937,7 +3937,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     public function getProjectSize(Request $request)
     {
          $wards = Ward::all();
-        $projects = ProjectDetails::where('deleted',0)->get();
+        
         $qualityCheck = ['Genuine','Fake','Unverified'];
 
         // getting total no of projects
@@ -4524,8 +4524,8 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $confirmed = Requirement::where('status',"Order Confirmed")->count();
         $placed = Requirement::where('status',"Order Placed")->count();
         $cancelled = Requirement::where('status',"Order cancelled")->count();
-        $genuine = ProjectDetails::where('quality',"GENUINE")->where('deleted',0)->count();
-        $fake = ProjectDetails::where('quality',"FAKE")->where('deleted',0)->count();
+        $genuine = ProjectDetails::where('quality',"GENUINE")->count();
+        $fake = ProjectDetails::where('quality',"FAKE")->count();
         $notConfirmed = ProjectDetails::where('quality',null)->count();
         return view('salesstats',[
             'initiate'=>$initiate,
@@ -4786,7 +4786,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
             return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }
@@ -4796,7 +4796,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
         }elseif(!$request->subward && $request->ward){
             if($request->ward == "All"){
@@ -4804,7 +4804,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
             }
             else{
@@ -4814,7 +4814,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
             }
         }
@@ -4856,33 +4856,33 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                         }
                     }
                  
-           $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
+           $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
                             
             }elseif(Auth::user()->group_id == 22){
-                 $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
+                 $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->where('wards.id',$tl)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
             }else
             {
-                $projects = ProjectDetails::whereIn('project_details.project_id',$ids)->where('deleted',0)
+                $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            ->where('deleted',0)
+                            
                             ->get();
             }
 
@@ -4934,6 +4934,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   $str = ActivityLog::where('time','>',$request->fromdate)
                           ->where('time','<',$request->todate)
                              ->get();
+                            
                         
                   }
               }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
@@ -5364,7 +5365,7 @@ public function assigndate(request $request )
     public function confidential(Request $request){
 
         $wards = Ward::orderby('ward_name','ASC')->get();
-        $projects = ProjectDetails::where('deleted',0)->get();
+        
         $qualityCheck = $request->quality;
         // getting total no of projects
         $wardsselect = Ward::pluck('id');
@@ -6330,7 +6331,6 @@ public function display(request $request){
             View::share('conversion',null);
         }
         $wards = Ward::all();
-       $projects = ProjectDetails::where('deleted',0)->get();
        $qualityCheck = ['Genuine','Fake','Unverified'];
        // getting total no of projects
        $wardsselect = Ward::pluck('id');
