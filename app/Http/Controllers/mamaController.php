@@ -581,31 +581,13 @@ class mamaController extends Controller
           $projectdetails->automation=$request->automation;
           $projectdetails->save();
         
-        $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
-        $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
-        $project = ProjectDetails::where('project_id',$projectdetails->id)->pluck('sub_ward_id')->first();
-        $uproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('updated_by')->first();
-        $qproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('quality')->first();
-        $fproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('followup')->first();
-        $eproject = Requirement::where('project_id',$projectdetails->id)->pluck('generated_by')->first();
-        $activity->updater = $uproject;
-        $activity->quality = $qproject;
-        $activity->followup = $fproject;
-        if(count($eproject) != 0){
+   
         
-       $activity->enquiry = $eproject;
-       }
-        else{
-       $activity->enquiry ="null";
+            
 
-        }
-       $activity->project_id = $projectdetails->id;
-        $activity->sub_ward_id = $project;
-        $activity->typeofactivity = "Add Project" ;
-        $activity->save();
-        
+
+
+
             $room_types = $request->roomType[0]." (".$request->number[0].")";
             $count = count($request->roomType);
             for($i = 0;$i<$count;$i++){
@@ -665,6 +647,31 @@ class mamaController extends Controller
         $procurementDetails->builder_email = $request->bEmail;
         $procurementDetails->builder_contact_no = $request->bPhone;
         $procurementDetails->save();
+
+         $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
+        $project = ProjectDetails::where('project_id',$projectdetails->id)->pluck('sub_ward_id')->first();
+        $uproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$projectdetails->id)->pluck('generated_by')->first();
+        $activity->updater = $uproject;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+       $activity->project_id = $projectdetails->id;
+        $activity->sub_ward_id = $project;
+        $activity->typeofactivity = "Add Project" ;
+        $activity->save();
     
 
         $no = $request->prPhone;
