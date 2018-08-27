@@ -22,7 +22,7 @@
                 <td>{{ $manufacturer->sub_ward_id }}</td>
                 <td>{{ $manufacturer->name }}</td>
                 <td>{{ $manufacturer->address }}</td>
-                <td>{{ $manufacturer->area }}</td>
+                <td>{{ $manufacturer->total_area }}</td>
                 <td>{{ $manufacturer->capacity }}</td>
                 <td>{{ $manufacturer->cement_requirement }} {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->prefered_cement_brand }}</td>
