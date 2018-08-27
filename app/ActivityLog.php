@@ -14,6 +14,6 @@ class ActivityLog extends Model
     } 
      public function user()
     {
-    	return $this->belongsTo('App\User','employee_id','employeeId');
+    	return $this->belongsTo('App\User','updater','id');
     } 
 }
