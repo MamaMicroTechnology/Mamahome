@@ -338,6 +338,32 @@
         </div>
     </div>
 </div>
+
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Builder Details</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Builder Name</th>
+                        <th>Builder Contact</th>
+                        <th>Builder Email</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $details->builders != null ? $details->builders->builder_name : '' }}</td>
+                            <td>{{ $details->builders != null ? $details->builders->builder_contact_no : '' }}</td>
+                            <td>{{ $details->builders != null ? $details->builders->builder_email : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>
  
 
       
