@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProjectDetails extends Model
 {
+        use SoftDeletes;
     protected $table = 'project_details';
+
     public function siteaddress()
     {
     	return $this->hasOne("App\SiteAddress",'project_id','project_id');

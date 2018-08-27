@@ -1876,7 +1876,7 @@ class mamaController extends Controller
     }
     public function deleteProject(Request $request)
     {
-        ProjectDetails::where('project_id',$request->projectId)->update(['deleted'=>1]);
+        ProjectDetails::where('project_id',$request->projectId)->delete();
         return back();
     }
     public function editinputdata(Request $request)
