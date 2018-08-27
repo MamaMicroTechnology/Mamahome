@@ -593,6 +593,8 @@ Route::get('/viewExpenditure','HomeController@viewExpenditure');
 Route::get('/five_years_expenditure','HomeController@getFiveYearsExpenditure');
 Route::get('/extensionPlanner','HomeController@getExtensionPlanner');
 Route::get('/editProjectionPlanner','HomeController@getEditProjectionPlanner');
+Route::get('/updateManufacturer','HomeController@getUpdateManufacturer');
+Route::get('/updateManufacturerDetails','HomeController@updateManufacturerDetails');
 // Auditor Dashboard
 Route::get('/auditor','HomeController@getAuditorDashboard');
 Route::post('/save','HomeController@save');
@@ -603,3 +605,4 @@ Route::get('/addManufacturer','HomeController@addManufacturer');
 Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
 Route::get('/viewManufacturer','HomeController@viewManufacturer');
 Route::get('/auto',"HomeController@auto");
+Route::post('/saveUpdatedManufacturer','mamaController@saveUpdatedManufacturer');

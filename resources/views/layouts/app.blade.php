@@ -504,8 +504,8 @@ div#calendar{
             <a href="{{ URL::to('/expenditure') }}">&nbsp;&nbsp;&nbsp; - Expenditure</a>
             <a href="{{ URL::to('/five_years_expenditure') }}">&nbsp;&nbsp;&nbsp; - Five Years Expenditure</a>
         </div>
-    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
@@ -560,7 +560,7 @@ div#calendar{
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
    <a href="{{ URL::to('/letracking') }}">Tracking</a>
-    <!-- <a href="#" data-toggle="collapse" data-target="#manufacturer_details">Manufacturer Details &#x21F2;</a> -->
+    <a href="#" data-toggle="collapse" data-target="#manufacturer_details">Manufacturer Details &#x21F2;</a>
     <div id="manufacturer_details" class="collapse">
        <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
