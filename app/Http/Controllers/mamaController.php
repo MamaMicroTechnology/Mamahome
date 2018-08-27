@@ -1943,6 +1943,7 @@ class mamaController extends Controller
     {
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
         $manufacturer = new Manufacturer;
+        $manufacturer->listing_engineer_id = Auth::user()->id;
         $manufacturer->name = $request->name;
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
@@ -2486,6 +2487,7 @@ class mamaController extends Controller
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
+
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
