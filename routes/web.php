@@ -605,3 +605,4 @@ Route::get('/addManufacturer','HomeController@addManufacturer');
 Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
 Route::get('/viewManufacturer','HomeController@viewManufacturer');
 Route::get('/auto',"HomeController@auto");
+Route::post('/saveUpdatedManufacturer','mamaController@saveUpdatedManufacturer');

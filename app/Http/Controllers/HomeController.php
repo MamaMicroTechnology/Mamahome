@@ -7557,6 +7557,6 @@ public function display(request $request){
   public function updateManufacturerDetails(Request $request)
   {
       $manufacturer = Manufacturer::findOrFail($request->id);
-      return view('addManufacturer',['manufacturer'=>$manufacturer]);
+      return view('updateManufacturers',['manufacturer'=>$manufacturer]);
   }
 }
