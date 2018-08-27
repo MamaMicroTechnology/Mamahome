@@ -579,10 +579,33 @@ class mamaController extends Controller
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
+          $projectdetails->save();
+        
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
+        $project = ProjectDetails::where('project_id',$projectdetails->id)->pluck('sub_ward_id')->first();
+        $uproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$projectdetails->id)->pluck('generated_by')->first();
+        $activity->updater = $uproject;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
 
-           
-            $projectdetails->save();
-            
+        }
+       $activity->project_id = $projectdetails->id;
+        $activity->sub_ward_id = $project;
+        $activity->typeofactivity = "Add Project" ;
+        $activity->save();
+        
             $room_types = $request->roomType[0]." (".$request->number[0].")";
             $count = count($request->roomType);
             for($i = 0;$i<$count;$i++){
@@ -690,11 +713,7 @@ class mamaController extends Controller
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-        $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
-        $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
-        $activity->save();
+       
         $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('Success',$text);
     }
@@ -992,10 +1011,31 @@ class mamaController extends Controller
                 $roomtype->save();
             }
         }
+        $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+        
         $activity = new ActivityLog;
+        $uproject = ProjectDetails::where('project_id',$id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A');
+        $activity->project_id = $id;
+        $activity->sub_ward_id = $project;
+        $activity->typeofactivity = "Updated Project" ;
         $activity->save();
         return back()->with('Success','Updated Successfully');
     }
@@ -1124,11 +1164,34 @@ class mamaController extends Controller
         }
         $requirement->generated_by = Auth::user()->id;
         $requirement->save();
+        
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->pId." at ".date('H:i A');
+        $uproject = ProjectDetails::where('project_id',$request->pId)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$request->pId)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$request->pId)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$request->pId)->pluck('generated_by')->first();
+        $project = ProjectDetails::where('project_id',$request->pId)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $activity->updater = $uproject;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+
+        $activity->project_id = $request->pId;
+        $activity->req_id = $requirement->id;
+        $activity->typeofactivity = "Add Enquiry";
         $activity->save();
+
         return back();
     }
     public function placeOrder($id, Request $request)
@@ -1406,6 +1469,26 @@ class mamaController extends Controller
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
+        $activity->project_id = $id;
+         $uproject = ProjectDetails::where('project_id',$id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+        $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $activity->typeofactivity = "Project Updated";
         $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A')." with data - Status: ".$statuses.", Remarks: ".$request->materials.", Question: ".$request->qstn.", Followup: ".$request->follow.", Quality: ".$request->quality.", With contractor: ".$request->contract.", Note: ".$request->note;
         $activity->save();
         return back();
@@ -1687,6 +1770,25 @@ class mamaController extends Controller
         $points->save();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
+        $activity->project_id = $request->id;
+         $uproject = ProjectDetails::where('project_id',$request->id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$request->id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$request->id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+       if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+        $project=ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has marked project ".$request->id." as ".$request->quality;
         $activity->save();
@@ -1738,10 +1840,30 @@ class mamaController extends Controller
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
+        $activity->req_id = $request->id;
+        $activity->project_id = $requirement->project_id;
+        $project = ProjectDetails::where('project_id',$requirement->project_id)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+         $uproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$requirement->project_id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+       if(count($eproject) != 0){
+        $activity->enquiry = $eproject;
+       }
+        else{
+           $activity->enquiry ="null";
+          }
+         $activity->typeofactivity = "Enquiry Updated";
         $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note.$request->status;
         $activity->save();
         return back();
-    }
+        }
+    
     public function editManualEnquiry(Request $request)
     {
         RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
@@ -1807,6 +1929,32 @@ class mamaController extends Controller
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
+$pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->req_id = $request->reqId;
+        $activity->project_id = $pro;
+        $project = ProjectDetails::where('project_id',$pro)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $uproject = ProjectDetails::where('project_id',$pro)->pluck('updated_by')->first();
+        
+        $qproject = ProjectDetails::where('project_id',$pro)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$pro)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$pro)->pluck('generated_by')->first();
+        $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+       if(count($eproject) != 0){
+        $activity->enquiry = $eproject;
+       }
+        else{
+           $activity->enquiry ="null";
+          }
+         $activity->typeofactivity = "Enquiry Updated";
+        $activity->activity = Auth::user()->name." has updated requirement id: ".$pro." as ".$request->note.$request->status;
+        $activity->save();
+
        if($x)
         {
             return back()->with('success','Enquiry updated Successfully !!!');

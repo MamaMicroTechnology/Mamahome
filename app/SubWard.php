@@ -14,4 +14,8 @@ class SubWard extends Model
     public function wardassignment(){
     	return $this->hasMany('App\WardAssignment');
     }
+   public function activity()
+    {
+    	return $this->hasMany(Activity::class,'sub_ward_id','id');
+    } 
 }
