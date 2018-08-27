@@ -1583,6 +1583,7 @@ class HomeController extends Controller
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
         }
+        $count['closed'] = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
         return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
     }
@@ -7000,7 +7001,7 @@ public function display(request $request){
     }
    $wards = Ward::orderby('ward_name','ASC')->get();
         $wardid = $request->subward;
-        $previous = date('Y-m-d',strtotime('-45 days'));
+        $previous = date('Y-m-d',strtotime('-30 days'));
         $today = date('Y-m-d');
         $total = "";
         $site = SiteAddress::all();

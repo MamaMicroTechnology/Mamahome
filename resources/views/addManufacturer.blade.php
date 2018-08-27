@@ -50,10 +50,10 @@
                                     <td>:</td>
                                     <td>
                                         <div class="col-md-6">
-                                            <input required placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control">
+                                            <input readonly required placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control">
                                         </div>
                                         <div class="col-md-6">
-                                            <input required placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control">
+                                            <input readonly required placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control">
                                         </div>
                                     </td>
                                 </tr>

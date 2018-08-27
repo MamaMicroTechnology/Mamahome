@@ -25,7 +25,7 @@
                 <p class="alert alert-error">{{ session('Error') }}</p>
             @endif
             @if($planningCount != NULL)
-            Total Project Sizes {{ $_GET['ward'] != "All" ? 'Under '.$wardname->ward_name : ''}} (Based On Stages)<br>
+            Total Project Sizes {!! $_GET['ward'] != "All" ? 'Under <b>'.$wardname->ward_name.'</b>' : ''!!} (Based On Stages)<br>
             Total No. Of Projects : <b>{{ number_format($planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount) }}</b>
             Total Sizes : <b>{{ number_format($planningSize + $diggingSize + $foundationSize + $pillarsSize + $completionSize + $fixturesSize + $paintingSize + $carpentrySize + $flooringSize + $plasteringSize + $enpSize + $roofingSize + $wallsSize + $closedSize) }}</b>
             <table class="table table-hover" border="1">
@@ -124,7 +124,7 @@
                 <p class="alert alert-error">{{ session('Error') }}</p>
             @endif
             @if(isset($_GET['subward']))
-            Total Project Sizes Under {{ $subwardName}} (Based On Stages)<br>
+            Total Project Sizes Under <b>{{ $subwardName}}</b> (Based On Stages)<br>
             Total No. of Projects : @if($total) <b>{{ number_format($total) }}</b> @endif
             Total Sizes : <b>@if($totalsubward) {{ number_format($totalsubward) }} @endif</b>
             <table class="table table-hover" border="1">
