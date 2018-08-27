@@ -4960,7 +4960,6 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   $date = date('Y-m-d');
                   $str = ActivityLog::where('time','LIKE',$date.'%')->get();
               }
-
            $today = date('Y-m-d');
             
            $noOfCalls = array();
