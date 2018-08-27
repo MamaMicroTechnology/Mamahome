@@ -311,7 +311,7 @@ class HomeController extends Controller
 
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
-        $depart = [1,6,7,8,11,15,16,17];
+        $depart = [1,6,7,8,11,15,16,17,22];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
 
@@ -756,13 +756,7 @@ class HomeController extends Controller
     {
      if(Auth::user()->group_id != 22 ){
        return  $this->enquirysheet1($request);
-     }
-    
-      
-
-
-       
-            
+     }   
         $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
        
                      // dd( $enquiries);
@@ -771,7 +765,7 @@ class HomeController extends Controller
         $wards = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->get();
 
         $category = Category::all();
-        $depart = [1,6,7,8,11,15,16,17];
+        $depart = [1,6,7,8,11,15,16,17,22];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
 
@@ -7557,6 +7551,6 @@ public function display(request $request){
   public function updateManufacturerDetails(Request $request)
   {
       $manufacturer = Manufacturer::findOrFail($request->id);
-      return view('addManufacturer',['manufacturer'=>$manufacturer]);
+      return view('updateManufacturers',['manufacturer'=>$manufacturer]);
   }
 }
