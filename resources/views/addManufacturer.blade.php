@@ -343,6 +343,10 @@
                         return false;
                     }
                 }
+                if(document.getElementById('latitude').value == ''){
+                    swal("Error",'Please Fetch The Location Using Fetch Location Button');
+                    return false;
+                }
                 return true;
             }
         </script>

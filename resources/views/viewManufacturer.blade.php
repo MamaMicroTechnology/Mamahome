@@ -13,7 +13,9 @@
             <th>Prefered Cement Brand</th>
             <!-- <th>Deliverability</th> -->
             <th>Sand Requirement</th>
+            @if(isset($_GET['type']) && $_GET['type'] == "Blocks")
             <th>Manufacturing Type</th>
+            @endif
             <!-- <th>Payment Mode</th> -->
             <th>Products</th>
         </tr>
@@ -27,8 +29,9 @@
                 <td>{{ $manufacturer->cement_requirement }} {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->prefered_cement_brand }}</td>
                 <td>{{ $manufacturer->sand_requirement }}</td>
+                @if(isset($_GET['type']) && $_GET['type'] == "Blocks")
                 <td>{{ $manufacturer->type }}</td>
-                
+                @endif
                 <td>
                     <table class="table table-striped" border=1>
                     <tr>
