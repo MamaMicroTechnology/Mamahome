@@ -679,7 +679,7 @@ public function getproject(request $request){
         }
     }
     public function gettime(){
-            $logintime = date('Y-m-d H:i:s')
+            $logintime = date('Y-m-d H:i:s');
             return response()->json(['message'=>$logintime]);
     }
         
