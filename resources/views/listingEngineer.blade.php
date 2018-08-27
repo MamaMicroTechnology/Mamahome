@@ -527,7 +527,7 @@
                                <tr>
                                    <td>Builder Name</td>
                                    <td>:</td>
-                                   <td><input id="prName" required type="text" placeholder="Builder Name" class="form-control input-sm" name="bName" value="{{ old('prName') }}"></td>
+                                   <td><input id="prName"  type="text" placeholder="Builder Name" class="form-control input-sm" name="bName" value="{{ old('prName') }}"></td>
                                </tr>
                                <tr>
                                    <td>Builder Email</td>
@@ -537,7 +537,7 @@
                                <tr>
                                    <td>Builder Contact No.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ old('pContact') }}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Builder Contact No." type="text" class="form-control input-sm" name="bPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                                   <td><input value="{{ old('pContact') }}"  minlength=10 onblur="checklength('prPhone');" placeholder="Builder Contact No." type="text" class="form-control input-sm" name="bPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
                                </tr>
                            </table>
 </div>

@@ -581,7 +581,7 @@ class mamaController extends Controller
           $projectdetails->automation=$request->automation;
           $projectdetails->save();
         
-        $activity = new ActivityLog;
+       $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
@@ -590,7 +590,7 @@ class mamaController extends Controller
         $qproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('quality')->first();
         $fproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('followup')->first();
         $eproject = Requirement::where('project_id',$projectdetails->id)->pluck('generated_by')->first();
-        $activity->updater = $uproject;
+        $activity->updater = Auth::user()->id;
         $activity->quality = $qproject;
         $activity->followup = $fproject;
         if(count($eproject) != 0){
@@ -605,8 +605,22 @@ class mamaController extends Controller
         $activity->sub_ward_id = $project;
         $activity->typeofactivity = "Add Project" ;
         $activity->save();
-        
-            $room_types = $request->roomType[0]." (".$request->number[0].")";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $room_types = $request->roomType[0]." (".$request->number[0].")";
             $count = count($request->roomType);
             for($i = 0;$i<$count;$i++){
                 $roomtype = new RoomType;
@@ -665,9 +679,7 @@ class mamaController extends Controller
         $procurementDetails->builder_email = $request->bEmail;
         $procurementDetails->builder_contact_no = $request->bPhone;
         $procurementDetails->save();
-    
-
-        $no = $request->prPhone;
+       $no = $request->prPhone;
         $pid = $projectdetails->id;
        
         $newtime = date('H:i A');
@@ -714,6 +726,12 @@ class mamaController extends Controller
                 ]);
         }
        
+        
+
+
+
+
+
         $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('Success',$text);
     }
