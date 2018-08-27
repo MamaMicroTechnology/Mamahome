@@ -133,6 +133,7 @@
                 <tbody id="mainPanel">
                 	@foreach($str as $project)
                      <tr>
+                        @if($project->subward != null && $project->project_id !=null && $project->updater != null  && $project->enquiry !=null)
                         <td style="text-align:center">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}</td>
                         <td style="text-align:center">
                         	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->updater }}">{{$project->project_id }}</a>
@@ -144,11 +145,12 @@
                         @if($project->enquiry == $user->id)
                         <td style="text-align:center" >{{ $user->name != null ? $user->name != "null" ? $user->name :'' : '' }}</td>
                         @endif
+                    
                         @endforeach
 
                        <!--  -->
                     </tr>
-                 
+                     @endif
                     @endforeach
                 </tbody>
             </table>

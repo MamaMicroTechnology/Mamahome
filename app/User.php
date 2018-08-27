@@ -41,6 +41,6 @@ class User extends Authenticatable
         return $this->hasOne(Tlwards::class,'user_id','id');
     }
     function activity(){
-        return $this->hasMany(ActivityLog::class,'employee_id','employeeId');
+        return $this->hasMany(ActivityLog::class,'updater','id');
     }
 }
