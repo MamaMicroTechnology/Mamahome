@@ -507,7 +507,7 @@ public function getproject(request $request){
                 'road_width'=>$request->road_width,
                 'construction_type'=>$request->construction_type,
                 'interested_in_rmc'=>$request->interested_in_rmc,
-                'interested_in_loan'=>$request->interested_in_load,
+                'interested_in_loan'=>$request->interested_in_loan,
                 'interested_in_doorsandwindows'=>$request->interested_in_doorsandwindows,
                 'road_name'=>$request->road_name,
                 'project_status' => $statuses,
