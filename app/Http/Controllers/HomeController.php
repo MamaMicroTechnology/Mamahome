@@ -1615,9 +1615,9 @@ class HomeController extends Controller
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
         }
-        $count['closed'] = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
+        $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
-        return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
+        return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed,'closed'=>$closed]);
     }
 
     public function getquality(Request $request)
