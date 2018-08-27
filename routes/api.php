@@ -59,3 +59,6 @@ Route::get('pending','TokenController@pending');
 Route::get('/confirmorders','TokenController@confirm');
 Route::post('/recordtime','TokenController@recordtime');
 Route::post('/flogout','TokenController@fieldlogout');
+Route::get('/gettime','TokenController@gettime');
+
+
