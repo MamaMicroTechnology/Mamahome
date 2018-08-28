@@ -274,7 +274,7 @@
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Listed date</h4>
               <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
               </div>
-              <div class="col-sm-4">
+         <div class="col-sm-6">
                <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Quality</h4>
               <select style="width:40%;" class="form-control" name="quality">
                 <option value="">--Select--</option>
@@ -283,10 +283,17 @@
                 <option value="Fake">Fake</option>
               </select>  
               </div>
-            </div> <br>                                                      
-            <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
+            </div> <br> 
 
-            <div class="row">
+          <div class="row">
+              <div class="col-sm-5">  
+              <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;"> Assign UnUpdated Projects</h4>
+              <h5 style="color:green;">It is Fectch Last 30days Projects From Your Selected Date</h5>
+              <input style="width:40%;" type="date" name="undate" class="form-control input-sm" id="datepicker">
+              </div>
+            </div> <br>  
+          <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
+          <div class="row">
             <div class="col-md-2">
             <h5 style="color:black;">Basement From</h5>
                  <input  name="basement"  pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
