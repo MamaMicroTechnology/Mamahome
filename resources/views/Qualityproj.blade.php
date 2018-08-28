@@ -92,9 +92,7 @@ function drawChart() {
   var data = google.visualization.arrayToDataTable([
   ['Quality', 'In percentage'],
   ['Unverified :{{ $notConfirmed }} ', {{ $notConfirmed }}],
-  ['Fake : {{ $fake }}', {{ $fake }}],
-  ['Genuine : {{ $genuine }}', {{ $genuine }}],
-  ['Closed : {{ $closed }}', {{ $closed }}]
+  ['Genuine : {{ $genuine }}', {{ $genuine }}]
 ]);
 
   // Optional; add a title and set the width and height of the chart
