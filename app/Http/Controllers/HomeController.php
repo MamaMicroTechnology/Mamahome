@@ -7070,7 +7070,7 @@ public function display(request $request){
 
         $wards = Ward::orderby('ward_name','ASC')->where('id',$tlward)->get();
         $wardid = $request->subward;
-        $previous = date('Y-m-d',strtotime('-45 days'));
+        $previous = date('Y-m-d',strtotime('-30 days'));
         $today = date('Y-m-d');
         $total = "";
         $site = SiteAddress::all();
@@ -7102,9 +7102,8 @@ public function display(request $request){
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->count();
-
         }
-        else if(!$request->subward && $request->ward){
+        else if(!$request->subward && $request->ward && !$request->status){
             $from="";
             $to="";
             if($request->ward == "All"){
