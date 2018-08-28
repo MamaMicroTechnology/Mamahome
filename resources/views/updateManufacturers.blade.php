@@ -9,7 +9,7 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             Manufacturer Details
-                            <button type="button" id="getBtn"  class="btn btn-success btn-sm pull-right" onclick="getLocation()">Get Location</button>
+                            <!-- <button type="button" id="getBtn"  class="btn btn-success btn-sm pull-right" onclick="getLocation()">Get Location</button> -->
                         </div>
                         <div class="panel-body">
                             <table class="table table-hover">
