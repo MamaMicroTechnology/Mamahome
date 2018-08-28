@@ -11,7 +11,6 @@
             {{ $note }} - {{ $count[$note] }}<br>
             @endif
             @endforeach
-            CLOSED - {{ $count['closed'] }}
         </div>
     </div>
     <div class="panel panel-primary">
@@ -94,7 +93,8 @@ function drawChart() {
   ['Quality', 'In percentage'],
   ['Unverified :{{ $notConfirmed }} ', {{ $notConfirmed }}],
   ['Fake : {{ $fake }}', {{ $fake }}],
-  ['Genuine : {{ $genuine }}', {{ $genuine }}]
+  ['Genuine : {{ $genuine }}', {{ $genuine }}],
+  ['Closed : {{ $closed }}', {{ $closed }}]
 ]);
 
   // Optional; add a title and set the width and height of the chart
@@ -212,8 +212,6 @@ function drawChart() {
     ['{{ $note }} : {{ $count[$note] }}', {{ $count[$note] }}],
     @endif
     @endforeach
-    ['CLOSED : {{ $count["closed"] }}',{{ $count['closed'] }}]
-
 ]);
 
   // Optional; add a title and set the width and height of the chart

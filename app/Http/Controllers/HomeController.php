@@ -1615,9 +1615,9 @@ class HomeController extends Controller
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
         }
-        $count['closed'] = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
+        $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
-        return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed]);
+        return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed,'closed'=>$closed]);
     }
 
     public function getquality(Request $request)
@@ -3976,7 +3976,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $closedCount        = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Closed%')->count();
         $closedSize         = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Closed%')->sum('project_size');
 
-        $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount;
+        $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount;
 
         if($request->ward && !$request->subward){
             if($request->ward == "All"){

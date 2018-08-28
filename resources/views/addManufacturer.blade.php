@@ -144,7 +144,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input min="0" type="number" name="price[]" id="bp" placeholder="Price" class="form-control">
+                                                    <input min="1" type="number" name="price[]" id="bp" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
@@ -183,7 +183,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input min="0" type="number" name="gradeprice[]" id="gp" placeholder="Price" class="form-control">
+                                                    <input min="1" type="number" name="gradeprice[]" id="gp" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
                                             
@@ -244,7 +244,7 @@
                                         "<option value='6 inch'>6 inch</option>" +
                                         "<option value='8 inch'>8 inch</option>" +
                                     "</select>";
-                cell3.innerHTML = "<input min='0' type='number' required name='price[]' id='' placeholder='Price' class='form-control'>";
+                cell3.innerHTML = "<input min='1' type='number' required name='price[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete() {
                 var table = document.getElementById("types");
@@ -266,7 +266,7 @@
                                 "<option value='M25'>M25</option>" +
                                 "<option value='M30'>M30</option>" +
                                 "<option value='M35'>M35</option> </select>";
-                cell2.innerHTML = "<input type='number' min='0' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
+                cell2.innerHTML = "<input type='number' min='1' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
             function myDelete1() {
                 var table = document.getElementById("types1");
