@@ -60,6 +60,32 @@ function myDelete1() {
         document.getElementById("reports").deleteRow(-1);
     }
 }
+ // desktop notification
+ document.addEventListener('DOMContentLoaded', function () {
+    if (!Notification) {
+      alert('Desktop notifications not available in your browser. Try Chromium.'); 
+      return;
+    }
+    if (Notification.permission !== "granted")
+      Notification.requestPermission();
+  });
+  setInterval(function(){ notifyMe(); }, 1000);
+  function notifyMe() {
+    var currentTime = new Date();
+    var myTime = currentTime.getHours()+ " : " + currentTime.getMinutes() + " : " + currentTime.getSeconds();
+    var endTime = "16 : 30 : 0";
+    var n = endTime == myTime;
+    if(endTime == myTime){
+      if (Notification.permission !== "granted")
+        Notification.requestPermission();
+      else {
+        var notification = new Notification('Hello There!', {
+          icon: 'https://assets-cdn.github.com/images/modules/open_graph/github-mark.png',
+          body: "It is time for you to push your codes.",
+        });
+      }
+    }
+  }
 </script>
 @if(session('Success'))
 <script>
