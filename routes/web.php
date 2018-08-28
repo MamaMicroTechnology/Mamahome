@@ -606,3 +606,5 @@ Route::post('/saveManufacturer','mamaController@postSaveManufacturer');
 Route::get('/viewManufacturer','HomeController@viewManufacturer');
 Route::get('/auto',"HomeController@auto");
 Route::post('/saveUpdatedManufacturer','mamaController@saveUpdatedManufacturer');
+Route::get('/itdashboard','ItController@getItDashboard');
+Route::post('/reportsForIt','ItController@postItReport');

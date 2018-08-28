@@ -1589,8 +1589,10 @@ class HomeController extends Controller
         }else if(Auth::user()->department_id == 10){
             Auth()->logout();
             return view('errors.403error');
-        }else if($group = "Auditor"){
+        }else if($group == "Auditor"){
             return redirect('auditor');
+        }else if($dept == 'IT'){
+            return redirect('itdashboard');
         }else{
             return redirect('chat');
         }
