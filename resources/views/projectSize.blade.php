@@ -139,7 +139,7 @@
                         <td class="text-center">{{ $Cplanning }}</td>
                         <td>
                              
-                              {{ $planning }} 
+                              {{ number_format($planning) }} 
                         </td>
                     </tr>
                     <tr>
@@ -147,14 +147,14 @@
                         <td class="text-center">{{ $Cdigging }}</td>
                         <td>
                             
-                            {{ $digging }}
+                            {{ number_format($digging) }}
                         </td>
                     </tr>
                     <tr>
                         <td>Foundation</td>
                         <td class="text-center">{{ $Cfoundation }}</td>
                         <td>
-                            {{ $foundation }}
+                            {{ number_format($foundation) }}
                         </td>
                     </tr>
                     <tr>
@@ -162,7 +162,7 @@
                         <td class="text-center">{{ $Cpillars }}</td>
                         <td>
                             
-                            {{ $pillars }}
+                            {{ number_format($pillars) }}
                         </td>
                     </tr>
                     <tr>
@@ -170,21 +170,21 @@
                         <td class="text-center">{{ $Cwalls }}</td>
                         <td>
                             
-                            {{ $walls }}
+                            {{ number_format($walls) }}
                         </td>
                     </tr>
                     <tr>
                         <td>Roofing</td>
                         <td class="text-center">{{ $Croofing }}</td>
                         <td>
-                            {{ $roofing }}
+                            {{ number_format($roofing) }}
                         </td>
                     </tr>
                     <tr>
                         <td>Electrical &amp; Plumbing</td>
                         <td class="text-center">{{ $Cenp }}</td>
                         <td>
-                            {{ $enp }}
+                            {{ number_format($enp) }}
                         </td>
                     </tr>
                     <tr>
@@ -192,7 +192,7 @@
                         <td class="text-center">{{ $Cplastering }}</td>
                         <td>
                             
-                            {{ $plastering }}
+                            {{ number_format($plastering) }}
                         </td>
                     </tr>
                     <tr>
@@ -200,7 +200,7 @@
                         <td class="text-center">{{ $Cflooring }}</td>
                         <td>
                             
-                            {{ $flooring }}
+                            {{ number_format($flooring) }}
                         </td>
                     </tr>
                     <tr>
@@ -208,7 +208,7 @@
                         <td class="text-center">{{ $Ccarpentry }}</td>
                         <td>
                             
-                            {{ $carpentry }}
+                            {{ number_format($carpentry) }}
                         </td>
                     </tr>
                     <tr>
@@ -216,7 +216,7 @@
                         <td class="text-center">{{ $Cpainting }}</td>
                         <td>
                             
-                            {{ $painting }}
+                            {{ number_format($painting) }}
                         </td>
                     </tr>
                     <tr>
@@ -224,7 +224,7 @@
                         <td class="text-center">{{ $Cfixtures }}</td>
                         <td>
                             
-                            {{ $fixtures }}
+                            {{ number_format($fixtures) }}
                         </td>
                     </tr>
                     <tr>
@@ -232,7 +232,7 @@
                         <td class="text-center">{{ $Ccompletion }}</td>
                         <td>
                             
-                            {{ $completion }}
+                            {{ number_format($completion) }}
                         </td>
                     </tr>
                 </tbody>
