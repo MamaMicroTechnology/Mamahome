@@ -593,10 +593,9 @@ class mamaController extends Controller
         $activity->updater = Auth::user()->id;
         $activity->quality = $qproject;
         $activity->followup = $fproject;
-        if(count($eproject) != 0){
-       }
-       $activity->project_id = $projectdetails->id;
+        $activity->project_id = $projectdetails->id;
         $activity->sub_ward_id = $project;
+        $activity->enquiry  = $eproject;
         $activity->typeofactivity = "Add Project" ;
         $activity->save();
 

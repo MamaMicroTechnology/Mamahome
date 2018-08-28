@@ -3209,6 +3209,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $assigndate =AssignStage::where('user_id',Auth::user()->id)
                      ->orderby('assigndate','DESC')->pluck('assigndate')->first();
 
+         $undate =AssignStage::where('user_id',Auth::user()->id)
+                     ->pluck('undate')->first();    
+        $previous = date('Y-m-d',strtotime('-30 days',strtotime($undate)));
+
          $rmc =AssignStage::where('user_id',Auth::user()->id)->pluck('rmc')->first();
          $auto = AssignStage::where('user_id',Auth::user()->id)->pluck('auto')->first();
          $bank = AssignStage::where('user_id',Auth::user()->id)->pluck('bank')->first();
@@ -3477,6 +3481,20 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     $projectids = $qua;
                 }
             }
+        
+         if( $undate != null){
+                if(count( $projectids) != 0){
+                    $qdate = ProjectDetails::whereIn('project_id',$projectids)->where('updated_at','>=',$previous )->pluck('project_id');
+                }else{
+                    $qdate = ProjectDetails::where('updated_at', $undate )->pluck('project_id');
+                }
+
+                if(count($qdate) > 0){
+                    $projectids = $qdate;
+                }
+            }
+             
+
 
         $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
         if($checking != null){
@@ -4962,6 +4980,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   $date = date('Y-m-d');
                   $str = ActivityLog::where('time','LIKE',$date.'%')->get();
               }
+
            $today = date('Y-m-d');
             
            $noOfCalls = array();
@@ -5898,6 +5917,8 @@ if(count($check) == 0){
         $projectassign->bank = $bank;
         $projectassign->Premium = $Premium;
         $projectassign->door = $door;
+        $projectassign->undate = $request->undate;
+
 
         $projectassign->save();
 }else{
@@ -5934,6 +5955,8 @@ if(count($check) == 0){
         $check->bank = $bank;
         $check->Premium = $Premium;
         $check->door = $door;
+        $check->undate = $request->undate;
+
 
         $check->save();
 }
