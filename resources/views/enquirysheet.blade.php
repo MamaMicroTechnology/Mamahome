@@ -40,7 +40,7 @@
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
-								<label>Sub Wards</label>
+								<label>Wards</label>
 								<select class="form-control" name="ward">
 									<option value="">--Select--</option>
 									<option value="">All</option>
@@ -90,6 +90,23 @@
 						</select>
 					</div>
                   </div>
+<!-- 
+                  <div class="col-md-6">
+					<div class="col-md-2">
+						Ward:
+					</div>
+					<div class="col-md-4">
+						<select id="myInput" required name="status" onchange="myFunction1()" class="form-control input-sm">
+							<option value="">--Select--</option>
+							@if(Auth::user()->group_id != 22)
+							<option value="all">All</option>
+							@endif
+							@foreach($mainward as $wards2)
+                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+							@endforeach
+						</select>
+					</div>
+                  </div> -->
                   @if(count($totalenq) == 0)
                    <h2 style="color: green;">Enquiry's are Not Found</h2>
                   @endif
@@ -97,7 +114,7 @@
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">Sub Ward Name</th>
+							<th style="text-align: center">Ward Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>

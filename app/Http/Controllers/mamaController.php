@@ -886,8 +886,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $statuses .= ", ".$request->status[$i];
             }
         }
-
-        ProjectDetails::where('project_id',$id)->update([
+        $projectBeforeUpdate = ProjectDetails::where('project_id',$id)->first();
+       ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
             'road_width' => $request->rWidth,
@@ -918,6 +918,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
+       
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
             'owner_email' => $request->oEmail,
