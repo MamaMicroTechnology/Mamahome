@@ -256,9 +256,5 @@ function drawSnappedPolyline() {
 
   }
   </script>
-<<<<<<< HEAD
-@endif
-=======
 @endif
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=map"></script>
->>>>>>> chaithra
