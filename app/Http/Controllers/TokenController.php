@@ -83,8 +83,8 @@ class TokenController extends Controller
     }
     public function logout()
     {
-    	Auth::logout();
-    	return redirect('/login');
+        Auth::logout();
+        return redirect('/login');
     }
     public function apilogout()
     {

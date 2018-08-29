@@ -6,16 +6,20 @@
         <div class="col-md-2 ">
              
             <div class="panel panel-default" style="border-color:#0e877f">
-                <div class="panel-heading" style="background-color:#0e877f">List Engineer</div>
+                @if(Auth::user()->group_id == 2 || Auth::user()->group_id == 22)
+                 <div class="panel-heading" style="background-color:#0e877f">Sales and Operation</div>
+                @else
+                 <div class="panel-heading" style="background-color:#0e877f">Employees</div>
+                @endif
                 <div class="panel-body">
                     
-                     @foreach($listengs as $listeng)
+                     @foreach($ofcemps as $ofcemp)
                        <?php 
-                            $content = explode(" ",$listeng->id);
+                            $content = explode(" ",$ofcemp->id);
                           
                             $con = implode("",$content);
                         ?>
-                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $listeng->name }}</a>
+                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $ofcemp->name }}</a>
                     @endforeach
                 </div>
             </div>
@@ -29,29 +33,26 @@
 
 <script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-@foreach($listengs as $listeng)
+@foreach($ofcemps as $ofcemp)
                        <?php 
-                            $content = explode(" ",$listeng->id);
+                            $content = explode(" ",$ofcemp->id);
                             $con = implode("",$content);
                         ?>
 <script type="text/javascript">            
 $(document).ready(function () {
 	
     $("#{{ $con }}").on('click',function(){
+      
         // $(document.body).css({'cursor' : 'wait'});
         var url = 
-        $('#disp').attr('src',"{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"));
-        $("#disp2").load("{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"), function(responseTxt, statusTxt, xhr){
+        $('#disp').attr('src',"{{ URL::to('/') }}/ofcemp/"+encodeURIComponent("{{ $ofcemp->name }}"));
+        $("#disp2").load("{{ URL::to('/') }}/ofcemp/"+encodeURIComponent("{{ $ofcemp->name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
         // $(document.body).css({'cursor' : 'default'});
     });
 });
-
-
-
 </script>
 @endforeach
-
 @endsection

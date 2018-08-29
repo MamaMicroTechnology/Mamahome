@@ -435,7 +435,7 @@ div#calendar{
                         @endif
                         
                         <li style="padding-top: 10px;">
-                          <button  class="btn btn-success btn-sm" onclick="submitapp()">Field Login</button>
+                          <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-danger btn-sm" onclick="submitlogout()">Field Logout</button>
@@ -533,10 +533,17 @@ div#calendar{
             <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
             <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
             <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+           
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
             <a href="{{ URL::to('/') }}/hr"> &nbsp;&nbsp;&nbsp; -Human Resourse</a>
         </div>
+         <a href="#" data-toggle="collapse" data-target="#foffice">Field and Office Logins &#x21F2;</a>
+        <div id="foffice" class="collapse">
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a>  
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
+        </div> 
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
@@ -612,12 +619,14 @@ div#calendar{
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
       </div> -->
-      <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+      <a href="#" data-toggle="collapse" data-target="#agent">Field and Office logins&#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
-          <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
-          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales and Operation</a>
+          <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a> 
+          <!-- <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> --> 
       </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
@@ -672,7 +681,7 @@ div#calendar{
 
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-      <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
+      <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
      
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
@@ -692,25 +701,37 @@ div#calendar{
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-            <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
+            <!-- <a href="{{ URL::to('/') }}/seniorteam1">&nbsp;&nbsp;&nbsp; -Senior Team Leader1</a> -->
             <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+            <!-- <a href="{{ URL::to('/') }}/teamleader1">&nbsp;&nbsp;&nbsp; -Team Leaders1</a> -->
             <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
             <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
             <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
-            <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
+             <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a> 
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
 
         </div> 
-        </div>
+        <a href="#" data-toggle="collapse" data-target="#foffice">Field and Office Logins &#x21F2;</a>
+        <div id="foffice" class="collapse">
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a>  
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
+        </div> 
+    </div>
         @endif
         @endif
+                
                 <form method="POST"  action="{{ URL::to('/') }}/logintime" >
                   {{ csrf_field() }}
-                    <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
-                </form>
+                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
+                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeapp">
+                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
+                        <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form> 
                  <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
                   {{ csrf_field() }}
                     <button id="logout" class="hidden" onsubmit="show()" type="submit" >Submit</button>
@@ -844,13 +865,88 @@ div#calendar{
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
 <script>
-  function submitapp(){
-    document.getElementById("login").form.submit();
-  }
+
   function submitlogout(){
     document.getElementById("logout").form.submit();
   }
 </script>
+ <!-- get location -->
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" charset="utf-8">
+  function submitapp(){
+      // document.getElementById("getBtn").className = "hidden";
+      console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayappLocation,
+        displayappError,
+
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+      //console.log("Exiting getLocation()");
+  }
+    
+    function displayappLocation(position){
+      //console.log("Entering displayCurrentLocation");
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+     
+      document.getElementById("longitudeapp").value = longitude;
+      document.getElementById("latitudeapp").value  = latitude;
+      //console.log("Latitude " + latitude +" Longitude " + longitude);
+
+      getAddressFromLatLangapp(latitude,longitude);
+      //console.log("Exiting displayCurrentLocation");
+    }
+   
+  function  displayappError(error){
+    console.log("Entering ConsultantLocator.displayappError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLangapp(lat,lng){
+    //console.log("Entering getAddressFromLatLangapp()");
+   
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+   
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+        // console.log("After getting address");
+        // console.log(results);
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        // console.log(results);
+
+        document.getElementById("addressapp").value = results[0].formatted_address;
+       
+        document.getElementById("login").form.submit();
+
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
+    //console.log("Entering getAddressFromLatLangapp()");
+  }
+  
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('empSuccess'))
   <div class="modal fade" id="empSuccess" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -883,11 +979,11 @@ div#calendar{
           <h4 class="modal-title">Late Login</h4>
         </div>
         <div class="modal-body">
-          <form action="{{ URL::to('/') }}/emplate" method="POST" >
+         <!--  <form action="{{ URL::to('/') }}/emplate" method="POST" > -->
           <p style="text-align:center;">{!! session('Latelogin') !!}</p>
-             {{ csrf_field() }}
+             <!-- {{ csrf_field() }}
           <center><button type="submit" class="btn btn-success" >Submit</button></center>
-         </form>
+         </form> -->
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
