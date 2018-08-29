@@ -69,7 +69,7 @@
                 	<tr>
                 		<th>Name</th>
                     @if(Auth::user()->group_id != 22)
-                		<th>Ward</th>
+                		<!-- <th>Ward</th> -->
                     @endif
                 		<th>Calls</th>
                 		<th>Fake</th>
@@ -81,7 +81,7 @@
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
-                        <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
+                       <!--  <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td> -->
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['fake'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['genuine'] }}</td>
