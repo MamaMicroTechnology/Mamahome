@@ -5132,40 +5132,44 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                           ->get();
 
 
-            foreach($tluser as $user){
-                  $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
-                                              ->where('call_attended_by',$user->id)
-                                              ->count();
-                  $noOfCalls[$user->id]['fake'] = ActivityLog::where('time','LIKE',$today.'%')
-                                              ->where('employee_id',$user->employeeId)
-                                              ->where('activity','LIKE','%Quality: Fake%')
-                                              ->count();
-                  $noOfCalls[$user->id]['genuine'] = ActivityLog::where('time','LIKE',$today.'%')
-                                              ->where('employee_id',$user->employeeId)
-                                              ->where('activity','LIKE','%Quality: Genuine%')
-                                              ->count();
-                  $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
-                                                          ->where('generated_by',$user->id)
-                                                          ->count();
-              }
+            
+         foreach($tluser as $user){
+           $today = date('Y-m-d');
+
+               $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
+                                           ->count();
+               $noOfCalls[$user->id]['fake'] = ActivityLog::where('created_at','LIKE',$today.'%')
+                                           ->where('employee_id',$user->employeeId)
+                                           ->where('quality','Fake')
+                                           ->count();
+
+               $noOfCalls[$user->id]['genuine'] = ActivityLog::where('created_at','LIKE',$today.'%')
+                                           ->where('employee_id',$user->employeeId)
+                                           ->where('quality',' Genuine')
+                                           ->count();
+               $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
+                                                       ->where('generated_by',$user->id)
+                                                       ->count();
+           }
 
 
-              foreach($users as $user){
-                  $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
-                                              ->where('call_attended_by',$user->id)
-                                              ->count();
-                  $noOfCalls[$user->id]['fake'] = ActivityLog::where('time','LIKE',$today.'%')
-                                              ->where('employee_id',$user->employeeId)
-                                              ->where('activity','LIKE','%Quality: Fake%')
-                                              ->count();
-                  $noOfCalls[$user->id]['genuine'] = ActivityLog::where('time','LIKE',$today.'%')
-                                              ->where('employee_id',$user->employeeId)
-                                              ->where('activity','LIKE','%Quality: Genuine%')
-                                              ->count();
-                  $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
-                                                          ->where('generated_by',$user->id)
-                                                          ->count();
-              }
+           foreach($users as $user){
+               $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
+                                           ->count();
+               $noOfCalls[$user->id]['fake'] = ActivityLog::where('created_at','LIKE',$today.'%')
+                                           ->where('employee_id',$user->employeeId)
+                                           ->where('quality','Fake')
+                                           ->count();
+               $noOfCalls[$user->id]['genuine'] = ActivityLog::where('created_at','LIKE',$today.'%')
+                                           ->where('employee_id',$user->employeeId)
+                                           ->where('quality','Genuine')
+                                           ->count();
+               $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
+                                                       ->where('generated_by',$user->id)
+                                                       ->count();
+           }
                $projectsCount = count($str);
               
                 
