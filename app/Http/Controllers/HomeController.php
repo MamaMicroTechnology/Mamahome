@@ -150,7 +150,7 @@ class HomeController extends Controller
 
         $depart1 = [6];
         $depart2 = [7];
-        $depart = [2,4,8,6,7,15,17,16,1,11];
+        $depart = [2,4,8,6,7,15,17,16,1,11,22];
         $projects = ProjectDetails::where('project_id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
@@ -340,7 +340,7 @@ class HomeController extends Controller
 
         $totalofenquiry = "";
         $totalenq = "";
-
+         $ward = Ward::get();
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
@@ -778,6 +778,7 @@ class HomeController extends Controller
             'wards'=>$wards,
             'category'=>$category,
             'initiators'=>$initiators,
+            'mainward'=>$ward,
             'projectOrdersReceived'=>$projectOrdersReceived
         ]);
     }
@@ -794,12 +795,14 @@ class HomeController extends Controller
                      // dd( $enquiries);
         $totalofenquiry = "";
         $totalenq = "";
+        $ward = Ward::get();
         $wards = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->get();
 
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
+
 
         if($request->status && !$request->category){
             if($request->status != "all"){
@@ -1320,7 +1323,6 @@ class HomeController extends Controller
 
              $totalenq = count($enquiries);
 
-
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
             'converter' =>$converter,
@@ -1330,6 +1332,7 @@ class HomeController extends Controller
             'wards'=>$wards,
             'category'=>$category,
             'initiators'=>$initiators,
+            'mainward'=>$ward,
             'projectOrdersReceived'=>$projectOrdersReceived,'totalenq'=>$totalenq
         ]);
     }
@@ -4351,7 +4354,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
            $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $username = User::where('name',Auth::user()->name)->pluck('name')->first();
-           $call  =  ProjectDetails::where('project_id',$request->id)->pluck('updated_at')->first();
+           $call  = date('Y-m-d H:i:s');
 
     DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
 
@@ -4931,12 +4934,12 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
                      if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
-                  $str = ActivityLog::where('time','LIKE',$date.'%')->get();
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->where('typeofactivity','!=','NULL')->get();
               }
               elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
                   $str = ActivityLog::where('time','LIKE',$request->fromdate.'%')
-                          ->where('employee_id',$request->se)
+                          ->where('employee_id',$request->se)->where('typeofactivity','!=','NULL')
                           ->get();
                           
               }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
@@ -4946,13 +4949,13 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   
                   if($from == $to){
                        $str = ActivityLog::where('time','like',$from.'%')
-                             ->where('time','LIKE',$to."%")
+                             ->where('time','LIKE',$to."%")->where('typeofactivity','!=','NULL')
                              ->get();
                        
                   }
                   else{
                   $str = ActivityLog::where('time','>',$request->fromdate)
-                          ->where('time','<',$request->todate)
+                          ->where('time','<=',$request->todate)->where('typeofactivity','!=','NULL')
                              ->get();
                             
                         
@@ -4966,21 +4969,21 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
                   $str = ActivityLog::where('time','like',$from.'%')
                       ->where('time','LIKE',$to."%")
-                      ->where('employee_id',$request->se)
+                      ->where('employee_id',$request->se)->where('typeofactivity','!=','NULL')
                         ->get();
                             
                   }
                   else{
                   $str = ActivityLog::where('time','>',$request->fromdate)
-                          ->where('time','<',$request->todate)
-                          ->where('employee_id',$request->se)
+                          ->where('time','<=',$request->todate)
+                          ->where('employee_id',$request->se)->where('typeofactivity','!=','NULL')
                            ->get();
                   }
               }else{
                   $date = date('Y-m-d');
-                  $str = ActivityLog::where('time','LIKE',$date.'%')->get();
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->where('typeofactivity','!=','NULL')->get();
               }
-
+                   
            $today = date('Y-m-d');
             
            $noOfCalls = array();
@@ -5000,16 +5003,19 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                        ->get();
 
          foreach($tluser as $user){
-               $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
-                                           ->where('call_attended_by',$user->id)
+           $today = date('Y-m-d');
+
+               $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
                                            ->count();
-               $noOfCalls[$user->id]['fake'] = ActivityLog::where('time','LIKE',$today.'%')
+               $noOfCalls[$user->id]['fake'] = ActivityLog::where('created_at','LIKE',$today.'%')
                                            ->where('employee_id',$user->employeeId)
-                                           ->where('activity','LIKE','%Quality: Fake%')
+                                           ->where('quality','Fake')
                                            ->count();
-               $noOfCalls[$user->id]['genuine'] = ActivityLog::where('time','LIKE',$today.'%')
+
+               $noOfCalls[$user->id]['genuine'] = ActivityLog::where('created_at','LIKE',$today.'%')
                                            ->where('employee_id',$user->employeeId)
-                                           ->where('activity','LIKE','%Quality: Genuine%')
+                                           ->where('quality',' Genuine')
                                            ->count();
                $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
                                                        ->where('generated_by',$user->id)
@@ -5018,16 +5024,16 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
 
            foreach($users as $user){
-               $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
-                                           ->where('call_attended_by',$user->id)
+               $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
                                            ->count();
-               $noOfCalls[$user->id]['fake'] = ActivityLog::where('time','LIKE',$today.'%')
+               $noOfCalls[$user->id]['fake'] = ActivityLog::where('created_at','LIKE',$today.'%')
                                            ->where('employee_id',$user->employeeId)
-                                           ->where('activity','LIKE','%Quality: Fake%')
+                                           ->where('quality','Fake')
                                            ->count();
-               $noOfCalls[$user->id]['genuine'] = ActivityLog::where('time','LIKE',$today.'%')
+               $noOfCalls[$user->id]['genuine'] = ActivityLog::where('created_at','LIKE',$today.'%')
                                            ->where('employee_id',$user->employeeId)
-                                           ->where('activity','LIKE','%Quality: Genuine%')
+                                           ->where('quality','Genuine')
                                            ->count();
                $noOfCalls[$user->id]['initiated'] = Requirement::where('created_at','LIKE',$today.'%')
                                                        ->where('generated_by',$user->id)
@@ -5058,13 +5064,13 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
               if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
-                  $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->get();
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
               }
               elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
                   $str = ActivityLog::where('time','LIKE',$request->fromdate.'%')
                           ->where('employee_id',$request->se)
-                          ->whereIn('sub_ward_id',$tlward)->get();
+                          ->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
                           
               }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
                   $date = $request->fromdate;
@@ -5074,14 +5080,14 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   if($from == $to){
                        $str = ActivityLog::where('time','like',$from.'%')
                              ->where('time','LIKE',$to."%")
-                             ->whereIn('sub_ward_id',$tlward)->get();
+                             ->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
                             
                        
                   }
                   else{ 
                   $str = ActivityLog::where('time','>',$request->fromdate)
-                          ->where('time','<',$request->todate)
-                             ->whereIn('sub_ward_id',$tlward)->get();
+                          ->where('time','<=',$request->todate)
+                             ->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
                         
                   }
               }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
@@ -5094,20 +5100,19 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                   $str = ActivityLog::where('time','like',$from.'%')
                       ->where('time','LIKE',$to."%")
                       ->where('employee_id',$request->se)
-                        ->whereIn('sub_ward_id',$tlward)->get();
+                        ->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
                             
                   }
                   else{
                   $str = ActivityLog::where('time','>',$request->fromdate)
-                          ->where('time','<',$request->todate)
+                          ->where('time','<=',$request->todate)
                           ->where('employee_id',$request->se)
-                           ->whereIn('sub_ward_id',$tlward)->get();
+                           ->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
                   }
               }else{
                   $date = date('Y-m-d');
-                  $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->get();
+                  $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
               }
-          
               $today = date('Y-m-d');
             
               $noOfCalls = array();
@@ -5161,9 +5166,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                           ->where('generated_by',$user->id)
                                                           ->count();
               }
+               $projectsCount = count($str);
               
-              $projectsCount = count($str);
-
+                
+            
                $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                $userIds = explode(",", $tl);
                $tlUsers = User::whereIn('id',$userIds)
