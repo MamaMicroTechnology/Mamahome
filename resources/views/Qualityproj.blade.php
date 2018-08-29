@@ -96,7 +96,10 @@ function drawChart() {
 ]);
 
   // Optional; add a title and set the width and height of the chart
-  var options = {'title':'Quality In Percentage'};
+  var options = {
+      title:'Quality In Percentage',
+      colors: ['#f9ff5e', '#5ee547', '#ec8f6e', '#f3b49f', '#f6c7b6']
+      };
 
   // Display the chart inside the <div> element with id="piechart"
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));

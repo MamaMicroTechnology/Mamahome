@@ -7526,4 +7526,61 @@ public function display(request $request){
       $manufacturer = Manufacturer::findOrFail($request->id);
       return view('updateManufacturers',['manufacturer'=>$manufacturer]);
   }
+  public function getUnverifiedProjects(Request $request)
+  {
+    $wards = Ward::orderby('ward_name','ASC')->get();
+    $wardid = $request->subward;
+    $previous = date('Y-m-d',strtotime('-30 days'));
+    $today = date('Y-m-d');
+    $total = "";
+    $site = SiteAddress::all();
+    $names = user::get();
+    $status =  $request->status;
+    if($status != null){
+        $projectsat = new Collection;
+        for($i = 0; $i<count($status); $i++)
+        {
+            $project = ProjectDetails::where('project_status' ,'LIKE', "%".$status[$i]."%")->pluck('project_id');
+            $projectsat = $projectsat->merge($project);
+        }
+
+    }
+    if(!$request->subward && $request->ward){
+        $from="";
+        $to="";
+        if($request->ward == "All"){
+            $subwards = SubWard::pluck('id');
+        }else{
+            $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
+        }
+        $projectid = ProjectDetails::where( 'quality', 'Unverified')
+                ->whereIn('sub_ward_id',$subwards)
+                ->paginate('20');
+
+        $totalproject =ProjectDetails::where( 'quality', 'Unverified')
+                ->whereIn('sub_ward_id',$subwards)->count();
+    }
+    else if($request->subward && $request->ward){
+        $from=$request->from;
+        $to=$request->to;
+
+        $projectid = ProjectDetails::where('sub_ward_id',$request->subward)
+                        ->where('quality','Unverified')
+                        ->paginate('20');
+        $totalproject = ProjectDetails::where('quality','Unverified')
+                    ->where('sub_ward_id',$request->subward)
+                    ->count();
+    }
+
+    else{
+            $projectid = new Collection;
+            $total = "";
+            $from = "";
+            $to = "";
+            $totalproject = "";
+            $site = "";
+
+    }
+    return view('unverifiedProjects',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names]);
+  }
 }
