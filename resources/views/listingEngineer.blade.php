@@ -832,6 +832,7 @@ function openCity(evt, cityName) {
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
+     
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);

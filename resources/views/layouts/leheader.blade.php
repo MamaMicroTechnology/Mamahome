@@ -55,10 +55,10 @@
                         <li> <a href="{{ URL::to('/') }}/kra" style="font-size:1.1em;font-family:Times New Roman;"><b>KRA</b></a></li>
                        <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
                       <li style="padding-top: 10px;padding-left:10px;"> 
-                      <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Login</button>
+                      <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Field Login</button>
                     </li>
                     <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="submitleheader()">Logout</button>
+                        <button class="btn btn-danger btn-sm" onclick="submitleheader()">Field Logout</button>
                     </li>
                     </ul>
 
@@ -108,6 +108,9 @@
                 </form> 
                 <form method="POST"  action="{{ URL::to('/') }}/logouttime" >
                   {{ csrf_field() }}
+                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="long"> 
+                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="lat">
+                                    <input class="hidden" id="ads" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
                     <button id="log" class="hidden"  type="submit" >Submit</button>
                 </form>             
         
@@ -136,6 +139,80 @@
     <!-- get location -->
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
+  function submitleheader(){
+    // document.getElementById("getBtn").className = "hidden";
+      console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocationforlogout,
+        displayError1,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+      //console.log("Exiting getLocation()");
+  }
+
+
+    // logout
+    function displayCurrentLocationforlogout(position){
+      //console.log("Entering displayCurrentLocation");
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+    
+      document.getElementById("long").value = longitude;
+      document.getElementById("lat").value  = latitude;
+      //console.log("Latitude " + latitude +" Longitude " + longitude);
+
+      getAddressFromLatLangforlogout(latitude,longitude);
+      //console.log("Exiting displayCurrentLocation");
+    }
+   
+  function  displayError1(error){
+    console.log("Entering ConsultantLocator.displayError1()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError1()");
+  }
+  function getAddressFromLatLangforlogout(lat,lng){
+    //console.log("Entering getAddressFromLatLangforlogout()");
+   
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+        // console.log("After getting address");
+        // console.log(results);
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        // console.log(results);
+
+        document.getElementById("ads").value = results[0].formatted_address;
+        // document.getElementById("sub").form.submit();
+        document.getElementById("log").form.submit();
+
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
+    //console.log("Entering getAddressFromLatLangforlogout()");
+  }
+  // logout end
+
   function getLocation(){
       // document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
@@ -158,7 +235,7 @@
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
-     
+    
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);
@@ -205,9 +282,7 @@
     });
     //console.log("Entering getAddressFromLatLang()");
   }
-  function submitleheader(){
-    document.getElementById("log").form.submit();
-  }
+  
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 </body>
@@ -267,12 +342,9 @@
           <h4 class="modal-title">Late Login</h4>
         </div>
         <div class="modal-body">
-         <!--  <form action="{{ URL::to('/') }}/lateremark" method="POST" > -->
+        
           <p style="text-align:center;">{!! session('Late') !!}</p>
-             <!-- {{ csrf_field() }} -->
-
-          <!-- <center><button type="submit" class="btn btn-success" >Submit</button></center>
-         </form> -->
+           
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>

@@ -1517,7 +1517,7 @@ class HomeController extends Controller
             return redirect('salesTL');
         }else if($group == "Sales Engineer" && $dept == "Sales"){
             return redirect('salesEngineer');
-        }else if($dept == "Management"){
+        }else if($dept == "Human Resource"){
             return redirect('amdashboard');
         }else if($group == "Logistic Co-ordinator (Sales)"){
             return redirect('lcodashboard');
@@ -4393,6 +4393,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
             $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
+
         }
         return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2,'category'=>$category]);
     }
@@ -5823,6 +5824,7 @@ function enquirystore(request $request){
                     ->leftJoin('wards','wards.id','ward_maps.ward_id')
                     ->select('ward_maps.*','wards.ward_name as name')
                     ->get();
+                
         if($request->wardId){
              $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
             $zones = SubWardMap::whereIn('sub_wards.id',$wards)
@@ -5877,7 +5879,7 @@ function enquirystore(request $request){
         $text = "These numbers are already assigned to ".$userName;
         return back()->with('NotAdded',$text);
     }
-            if(count($check) == 0){
+            if($check == null){
                 $number = new numbercount;
                 $number ->user_id = $request->user_id;
                 $number->num = $request->num;

@@ -120,8 +120,11 @@ Route::post('/teamlogin','mamaController@teamlogin');
 Route::post('/teamlate','mamaController@teamlogin');
 Route::post('/teamlogout','mamaController@teamlogout');
 Route::get('/seniorteam','mamaController@seniorteam');
+Route::get('/seniorteam1','mamaController@seniorteam1');
 Route::get('/teamleader','mamaController@teamleader');
+Route::get('/teamleader1','mamaController@teamleader1');
 Route::get('/saleseng','mamaController@saleseng');
+Route::get('/listatt','mamaController@listatt');
 Route::get('/accexe','mamaController@accexe');
 Route::get('/market','mamaController@market');
 Route::get('/marketexe','mamaController@marketexe');
@@ -129,6 +132,12 @@ Route::get('/hr','mamaController@hr');
 Route::get('/allteamleader','mamaController@allteamleader');
 Route::get('/allsaleseng','mamaController@allsaleseng');
 Route::get('/teamsales','mamaController@teamsales');
+Route::get('/steam/{name}','mamaController@teammap');
+Route::get('/viewEmployee','HomeController@viewEmployee');
+Route::get('/ofcemp','mamaController@officeemp');
+Route::get('/ofcemp/{name}','mamaController@officemap');
+Route::get('/atreject','mamaController@atreject');
+Route::get('/atapprove','mamaController@atapprove');
 
 
 //sales converter
@@ -252,7 +261,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
     Route::get('/anr','HomeController@getAnR');
-    Route::get('/viewEmployee','HomeController@viewEmployee');
+    
     Route::get('/amdept','HomeController@amDept');
     Route::get('/quality','HomeController@quality');
     Route::get('/getquality','HomeController@getquality');
@@ -434,9 +443,9 @@ Route::group(['middleware' => ['Buyer']],function(){
     Route::post('/updateProfile','BuyerController@updateProfile');
 });
 
-Route::group(['middleware'=>['asst']],function(){
-    // main links
     Route::get('/amdashboard','amController@getAMDashboard');
+
+    // main links
     Route::get('/pricing','amController@getPricing');
     Route::get('/amfinance','amController@getamFinance');
     Route::get('/amhumanresources','amController@getamHRPage');
@@ -531,7 +540,6 @@ Route::group(['middleware'=>['asst']],function(){
     Route::post('/inactiveEmployee','amController@inactiveEmployee');
     
     // not working
-});
 Route::group(['middleware'=>['AccountExecutive']],function(){
     // Route::get('/accountExecutive','aeController@getAccountExecutive');
     Route::get('/accountExecutive','HomeController@leDashboard');

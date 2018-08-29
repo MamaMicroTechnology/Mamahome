@@ -815,8 +815,21 @@ class amController extends Controller
              ->where('id','!=',108)
               ->where('id','!=',112)
         ->count();
+        $dept = [1,2,3,4,5,6,8];
+        $users = User::whereIn('department_id',$dept)
+                ->where('users.id','!=',7)
+                ->where('users.id','!=',27)
+                ->where('users.id','!=',28)
+                ->where('users.id','!=',101)
+                ->where('users.id','!=',105)
+                ->where('users.id','!=',107)
+                ->where('users.id','!=',108)
+                 ->where('users.id','!=',112)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
-        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount]);
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users]);
     }
      public function viewmhemployee(Request $request){
         if($request->dept == "FormerEmployees"){
