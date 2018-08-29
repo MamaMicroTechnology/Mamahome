@@ -272,9 +272,9 @@
             <div class="panel-body">
                 <table class="table table-hover">
                     <thead>
-                        <th>Constultant Name</th>
-                       <th>Constultant Contact</th>
-                       <th>Constultant Email</th>
+                        <th>Consultant Name</th>
+                       <th>Consultant Contact</th>
+                       <th>Consultant Email</th>
                     </thead>    
                     <tbody>
                         <tr>
