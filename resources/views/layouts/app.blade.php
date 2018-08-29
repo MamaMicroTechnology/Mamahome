@@ -438,7 +438,7 @@ div#calendar{
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Field Logout</button>
+                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Logout</button>
                        </li>
                         @endif
                     </ul>
