@@ -69,7 +69,7 @@
                 	<tr>
                 		<th>Name</th>
                     @if(Auth::user()->group_id != 22)
-                		<th>Ward</th>
+                		<!-- <th>Ward</th> -->
                     @endif
                 		<th>Calls</th>
                 		<th>Fake</th>
@@ -81,7 +81,7 @@
                     @foreach($users as $user)
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
-                        <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
+                       <!--  <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td> -->
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['fake'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['genuine'] }}</td>
@@ -108,9 +108,9 @@
     <div class="panel panel-primary" style="overflow-x:scroll">
         <div class="panel-heading" id="panelhead">
             <label>
-            	Daily Callings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
+            	Daily Updating For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
-            	No Of Calls: <b>{{ $projectsCount }}</b>
+            	No Of Udated Projects: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	Sales Engineer :
             		
@@ -140,12 +140,11 @@
                         <td style="text-align:center">{{ $project->user != null ? $project->user->name :'' }}</td>
                         <td style="text-align:center">{{$project->quality }}</td>
                         <td style="text-align:center">{{ $project->followup }}</td>
-                         @foreach($users as $user)
-                        @if($project->enquiry == $user->id)
-                        <td style="text-align:center" >{{ $user->name != null ? $user->name != "null" ? $user->name :'' : '' }}</td>
-                        @endif
-                    
-                        @endforeach
+                        
+                       
+                        <td style="text-align:center" >{{ $project->user1 != null ? $project->user1->name :'' }}</td>
+                        
+                      
 
                     </tr>
                      @endif

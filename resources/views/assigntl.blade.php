@@ -157,8 +157,8 @@ margin-left: 0;
                             <input type="hidden" id= "user1{{ $user->id }}" name="group_id" value="{{$user->group_id}}">
                             @foreach($tlward as $tlwards)
                             @if($user->id == $tlwards->user_id )
-                          <td style="width:40%;">{{$tlwards->ward_name}}</td>
-                          @endif
+                              <td style="width:40%;">{{ $tlwards->ward_name != null ? $tlwards->ward_name :'' }}</td>
+                            @endif
                           @endforeach
                             <td style="width: 40%;">
                             <select name="ward_id" id="date{{ $user->id }}" class="form-control">

@@ -194,12 +194,18 @@
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
+                        <?php $users = []; ?>
                         @foreach($projects as $project)
-                        @if($project->quality == "Fake")
-                        <tr style='background-color:#d2d5db'>
-                        @else
-                        <tr>
-                        @endif
+                            @if($project->quality == "Fake")
+                            <tr style='background-color:#d2d5db'>
+                            @else
+                                @if(!in_array($project->listing_engineer_id, $users))
+                                <tr style='background-color:#91dd71'>
+                                @else 
+                                    <tr>
+                                @endif
+                            @endif
+                            <?php array_push($users, $project->listing_engineer_id); ?>
                             <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>

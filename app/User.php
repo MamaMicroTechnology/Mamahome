@@ -43,4 +43,7 @@ class User extends Authenticatable
     function activity(){
         return $this->hasMany(ActivityLog::class,'updater','id');
     }
+    function activity1(){
+        return $this->hasMany(ActivityLog::class,'enquiry','id');
+    }
 }
