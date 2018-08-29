@@ -6214,6 +6214,7 @@ function enquirystore(request $request){
                     ->leftJoin('wards','wards.id','ward_maps.ward_id')
                     ->select('ward_maps.*','wards.ward_name as name')
                     ->get();
+                
         if($request->wardId){
             $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
             $zones = SubWardMap::whereIn('sub_wards.id',$wards)
@@ -6280,7 +6281,7 @@ function enquirystore(request $request){
         $text = "These numbers are already assigned to ".$userName;
         return back()->with('NotAdded',$text);
     }
-            if(count($check) == 0){
+            if($check == null){
                 $number = new numbercount;
                 $number ->user_id = $request->user_id;
                 $number->num = $request->num;
