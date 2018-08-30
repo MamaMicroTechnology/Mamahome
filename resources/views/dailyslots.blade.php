@@ -65,9 +65,11 @@
             </div>
             <div class="panel-body">
                  @if(Auth::user()->group_id != 22)
-                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label>
+                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label><br>
+                <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label>
                 @else
-                 <label style="color:black">Total Projects Added = <b>{{$tlcount}}</b></label>
+                 <label style="color:black">Total Projects Added = <b>{{$tlcount}}</b></label><br>
+                 <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
                  @endif
                 <table class="table table-striped" border="1">
                     <thead>
@@ -121,9 +123,11 @@
             </div>
             <div class="panel-body">
                 @if(Auth::user()->group_id != 22)
-              <label style="color:black">Total Count : <b>{{$acount}}</b></label>
+              <label style="color:black">Total Projects Added = <b>{{$acount}}</b></label>
+              <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label>
               @else
-              <label style="color:black">Total Count : <b>{{$tlacount}}</b></label>
+              <label style="color:black">Total Projects Added = <b>{{$tlacount}}</b></label><br>
+              <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
               @endif
                 <table class="table table-striped" border="1">
                     <thead>
