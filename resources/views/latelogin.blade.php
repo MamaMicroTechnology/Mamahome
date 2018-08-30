@@ -5,12 +5,6 @@
     <div class="col-md-9 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-heading text-center" ><b>Late Logins</b></div>
-            @if(SESSION('success'))
-                <div class="text-center alert alert-success">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <h4 style="font-size:1em">{{SESSION('success')}}</h4>
-                </div>
-                @endif
             <div class ="panel-body">
 
                        
@@ -60,4 +54,15 @@
         </div>
     </div>
 </div>
+
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('Success'))
+<script>
+    swal("error","{{ session('error') }}","error");
+</script>
+@endif
 @endsection

@@ -145,7 +145,8 @@ Route::get('/ofcemp/{name}','mamaController@officemap');
 Route::get('/atreject','mamaController@atreject');
 Route::get('/atapprove','mamaController@atapprove');
 Route::post('/empreports','mamaController@empreports');
-
+Route::get('/RandDdashboard','HomeController@getdashboard');
+Route::post('/reportsRandD','HomeController@postdashboard');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
