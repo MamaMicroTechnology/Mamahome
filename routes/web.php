@@ -121,7 +121,7 @@ Route::post('/adminapprove','mamaController@adminapprove');
 Route::post('/adminreject','mamaController@adminreject');
 Route::post('/logintime','mamaController@logintime');
 Route::Post('/emplate','mamaController@logintime');
-Route::post('/emplogouttime','mamaController@emplogouttime');
+// Route::post('/emplogouttime','mamaController@emplogouttime');
 Route::post('/teamlogin','mamaController@teamlogin');
 Route::post('/teamlate','mamaController@teamlogin');
 Route::post('/teamlogout','mamaController@teamlogout');
@@ -144,7 +144,9 @@ Route::get('/ofcemp','mamaController@officeemp');
 Route::get('/ofcemp/{name}','mamaController@officemap');
 Route::get('/atreject','mamaController@atreject');
 Route::get('/atapprove','mamaController@atapprove');
-
+Route::post('/empreports','mamaController@empreports');
+Route::get('/RandDdashboard','HomeController@getdashboard');
+Route::post('/reportsRandD','HomeController@postdashboard');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
