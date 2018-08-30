@@ -795,8 +795,10 @@ class amController extends Controller
         $depts = array();
         $today = date('Y-m-d');
         $avgAge = array();
+        $test = array();
         foreach($departments as $department){
             $age = 0;
+            $i = 0;
             $depts[$department->dept_name] = User::where('department_id',$department->id)
                 ->where('id','!=',7)
                 ->where('id','!=',27)
@@ -819,9 +821,15 @@ class amController extends Controller
                                                         ->get();
                 foreach($deptsUsers[$department->dept_name] as $deptUser){
                     $dob = EmployeeDetails::where('employee_id',$deptUser->employeeId)->pluck('dob')->first();
-                    $age +=  Carbon::parse($dob)->age;
+                    if($dob != null){
+                        $age +=  Carbon::parse($dob)->age;
+                        $i++;
+                    }
                 }
-                $avgAge[$department->dept_name] = 1 / $depts[$department->dept_name] * $age;
+                if($i != 0)
+                    $avgAge[$department->dept_name] = $age / $i;
+                else
+                $avgAge[$department->dept_name] = 0;
         }
          $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
              ->where('id','!=',7)
