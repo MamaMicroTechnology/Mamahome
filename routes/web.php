@@ -460,6 +460,7 @@ Route::group(['middleware' => ['Buyer']],function(){
     Route::get('/addvendortype','amController@addvendortype');
     Route::get('/salesreport','mamaController@salesreport');
     Route::get('/amviewattendance','HomeController@employeereports');
+    Route::get('/newamviewattendance','HomeController@newemployeereports');
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');
     Route::get('/video','HomeController@trainingVideo');

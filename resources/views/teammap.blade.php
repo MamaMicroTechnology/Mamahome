@@ -8,7 +8,7 @@
   <b>Logout :</b>{{ $login->logout }}<br><br>
   @endforeach
     <br><br>
-<div id="map" style="width:900PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
+<div id="map" style="width:950PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
 </div>
 </div>
 <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script>

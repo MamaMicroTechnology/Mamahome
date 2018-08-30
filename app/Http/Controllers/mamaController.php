@@ -2168,6 +2168,7 @@ public function checkdetailes(request $request){
                         return back()->with('Success',$text);
                     }
                     else{
+
                         $text = "You Have Already Logged In!..";
                         return back()->with('Error',$text);
                     }
@@ -2279,10 +2280,22 @@ public function checkdetailes(request $request){
     }
     public function adminapprove(Request $request)
     {  
+        $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
+        $grp = [6,11];
+        $user = user::where('id',$x)->whereIn('group_id',$grp)->pluck('id')->first();
+        if($user != null){
         FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
             'logintime' => "07.30 AM",
             'adminapproval' => "Admin Approved"
         ]);
+        }
+        else{
+            FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            'logintime' => "08.00 AM",
+            'adminapproval' => "Admin Approved"
+        ]);
+
+        }
         return back()->with('success',"Approved Successfully!");
     }
     public function adminreject(Request $request)
