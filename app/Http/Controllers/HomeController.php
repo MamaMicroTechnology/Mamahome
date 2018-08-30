@@ -4847,7 +4847,7 @@ $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
                                                     ->count();
         }
 
-        
+
         $projectsCount = count($projectIds);
          
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
@@ -5027,8 +5027,6 @@ public function myreport()
             'genuineProjects'=>$genuineProjects
         ]);
 }
-
-
 public function assigndate(request $request )
 {
      $users = User::where('users.department_id','!=',10)
