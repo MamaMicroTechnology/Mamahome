@@ -3715,7 +3715,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                                                 ->where('updated_by','=',$user->id)
                                                 ->count();
             }
-
+            
         $projcount = count($projects); 
         // if(Auth::user()->group_id == 22){
         //     $teamprojcount = count($teamprojects);
