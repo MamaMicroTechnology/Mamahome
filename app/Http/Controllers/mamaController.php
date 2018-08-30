@@ -62,6 +62,7 @@ use App\Tlwards;
 use App\FieldLogin;
 use Carbon\Carbon;
 use App\TrackLocation;
+use App\Report;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -2391,20 +2392,30 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             return back()->with('Success',$text);
         }
     }
-    public function emplogouttime(Request $request){
+    public function empreports(Request $request){
 
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
         if(count($check)== 0){
-
-            $text = "Please Login Before Logout.";
-            return back()->with('Latelogin',$text);
+            // $text = "Please Login Before Logout.";
+            // return back()->with('Latelogin',$text);
+            return back()->with('error','Your Have To Login Before Logout');
         }
         else{
             FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
             'logout' => date('h:i A')
         ]);
-            $text = "You Have Logged out Successfully!..";
-            return back()->with('empSuccess',$text);
+
+            for($i = 0; $i < count($request->report); $i++){
+            $report = new Report;
+            $report->empId = Auth::user()->employeeId;
+            $report->report = $request->report[$i];
+            $report->start = $request->from[$i];
+            $report->end = $request->to[$i];
+            $report->save();
+            }
+        return back()->with('Success','Your Report Has Been Saved Successfully');
+            // $text = "You Have Logged out Successfully!..";
+            // return back()->with('empSuccess',$text);
         }
     }
     public function teamlogout(Request $request){

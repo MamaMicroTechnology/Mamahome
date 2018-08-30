@@ -438,8 +438,9 @@ div#calendar{
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Logout</button>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report" >Logout</button>
                        </li>
+                       
                         @endif
                     </ul>
                 
@@ -483,6 +484,54 @@ div#calendar{
                 </div>
             </div>
         </nav>
+        <!-- Modal -->
+                            <div id="report" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                  <div class="modal-header" style="background-color:rgb(244, 129, 31);color:white;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">MAMAHOME EMPLOYEE ATTENDANCE</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                  <form action="{{ URL::to('/') }}/empreports" method="POST">
+                                      {{ csrf_field() }}
+                                      
+                                                  <table class="table table-hover" id="reports">
+                                                      <thead>
+                                                          <th>Report</th>
+                                                          <th>From</th>
+                                                          <th>To</th>
+                                                      </thead>
+                                                      <tbody>
+                                                          
+                                                          <tr>
+                                                              <td><input required type="text" name="report[]" id="report" class="form-control" placeholder="Report"></td>
+                                                              <td><input required type="time" name="from[]" id="from" class="form-control"></td>
+                                                              <td><input required type="time" name="to[]" id="to" class="form-control"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                  </table>
+                                                  <div class="btn-group">
+                                                      <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                      </button>
+                                                      <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                      </button>
+                                                  </div>
+                                             
+                                              <div class="panel-footer">
+                                                  <input type="submit" value="Submit" class="form-control btn btn-success">
+                                              </div>
+                                  </form>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
 @if(Auth::check())
 @if(Auth::user()->group_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -614,6 +663,7 @@ div#calendar{
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
+              <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
         </div>   
      <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
       <div id="agent" class="collapse">
@@ -624,8 +674,8 @@ div#calendar{
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
-          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales and Operation</a>
-          <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a> 
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
+          <!-- <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>  -->
           <!-- <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
           <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> --> 
       </div> 
@@ -734,10 +784,10 @@ div#calendar{
                                     <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
                         <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
                 </form> 
-                 <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
+                 <!-- <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
                   {{ csrf_field() }}
                     <button id="logout" class="hidden" onsubmit="show()" type="submit" >Submit</button>
-                </form>
+                </form> -->
         @yield('content')
     </div>
 
@@ -866,12 +916,12 @@ div#calendar{
         </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
-<script>
+<!-- <script>
 
   function submitlogout(){
     document.getElementById("logout").form.submit();
   }
-</script>
+</script> -->
  <!-- get location -->
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
@@ -898,7 +948,6 @@ div#calendar{
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
-     
       document.getElementById("longitudeapp").value = longitude;
       document.getElementById("latitudeapp").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);
@@ -981,11 +1030,9 @@ div#calendar{
           <h4 class="modal-title">Late Login</h4>
         </div>
         <div class="modal-body">
-         <!--  <form action="{{ URL::to('/') }}/emplate" method="POST" > -->
+       
           <p style="text-align:center;">{!! session('Latelogin') !!}</p>
-             <!-- {{ csrf_field() }}
-          <center><button type="submit" class="btn btn-success" >Submit</button></center>
-         </form> -->
+             
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
@@ -999,4 +1046,31 @@ div#calendar{
   });
 </script>
 @endif
-
+<script>
+    function myFunction1() {
+        var table = document.getElementById("reports");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = "<input required type='text' name='report[]' id='report' class='form-control' placeholder='Report'>";
+        cell2.innerHTML = "<input required type='time' name='from[]' id='from' class='form-control'>";
+        cell3.innerHTML = "<input required type='time' name='to[]' id='to' class='form-control'>";
+    }
+    function myDelete1() {
+        var table = document.getElementById("reports");
+        if(table.rows.length >= {{ 3 }}){
+            document.getElementById("reports").deleteRow(-1);
+        }
+    }
+ </script>
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('error'))
+<script>
+    swal("error","{{ session('error') }}","error");
+</script>
+@endif
