@@ -458,7 +458,7 @@ div#calendar{
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/listeng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/') }}/acceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
-          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales and Operation</a>
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
       </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 

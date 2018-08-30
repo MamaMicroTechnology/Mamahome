@@ -1597,6 +1597,8 @@ class HomeController extends Controller
             return redirect('auditor');
         }else if($dept == 'IT'){
             return redirect('itdashboard');
+        }else if($dept == 'Research and Development'){
+            return redirect('RandDdashboard');
         }else{
             return redirect('chat');
         }
@@ -7658,5 +7660,26 @@ public function display(request $request){
             $subward = "";
         }
         return view('projectsWithNotes',['totalproject'=>$totalproject,'projects'=>$projectid,'site'=>$site,'names'=>$names,'wards'=>$wards,'subward'=>$subward]);
+    }
+    public function getdashboard(Request $request){
+        $today = date('Y-m-d');
+        $reports = Report::where('empId',Auth::user()->employeeId)->where('created_at','LIKE',$today.'%')->get();
+        return view('RandD.dashboard',['reports'=>$reports]);
+  }
+  public function postdashboard(Request $request){
+    
+        for($i = 0; $i < count($request->report); $i++){
+            $report = new Report;
+            $report->empId = Auth::user()->employeeId;
+            $report->report = $request->report[$i];
+            $report->start = $request->from[$i];
+            $report->end = $request->to[$i];
+            $report->save();
+        }
+        FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
+            'logout' => date('h:i A')
+        ]);
+        return back()->with('Success','Your Report Has Been Saved Successfully');
+    
   }
 }
