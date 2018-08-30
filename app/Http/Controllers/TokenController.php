@@ -379,7 +379,7 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->status]);
+            return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->project_status]);
         }else{
             return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
