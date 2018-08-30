@@ -82,6 +82,7 @@ use App\NumberOfZones;
 use App\Pricing;
 use GuzzleHttp\Client;
 use App\Manufacturer;
+use App\FieldLogin;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -4780,6 +4781,46 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         }
         return view('employeereports',['text'=>$text]);
     }
+    public function newemployeereports(Request $request)
+    {
+
+        $depts = [1,2,3,4,5,6];
+        $users = User::whereIn('department_id',$depts)->where('name','NOT LIKE','%test%')->orderBy('department_id','ASC')->get();
+        if($request->month){
+            $year = $request->year;
+            $month = ($request->month < 10 ? "0".$request->month : $request->month);
+            $today = $year."-".$month;
+            $text = "";
+        }else{
+            $today = date('Y-m');
+            $text = "";
+            $year = date('Y');
+            $month = date('m');
+        }
+        $ofdays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        foreach($users as $user){
+            $count = 0;
+            $text .= "<tr><td>".$user->employeeId."</td><td>".$user->name."<br>(".($user->Group != null ? $user->Group->group_name: '').")</td>";
+            for($i = 1;$i<=$ofdays;$i++){
+                if($i < 10){
+                    $date = $today."-0".$i;
+                }else{
+                    $date = $today."-".$i;
+                    
+                }
+                    $att = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
+                    if($att == null){
+                        $text .= "<td style='background-color:rgba(999,111,021,0.3); color:black;'>Leave</td>";
+                    }else{
+                        $text .= "<td style='background-color:green; color:white;'>".$att->logintime."<br>".$att->logout."</td>";
+                        $count++;
+                    }
+            }
+            $text .= "<td>".$count."</td></tr>";
+        }
+        return view('newemployeereports',['text'=>$text]);
+    }
     public function getAddress(Request $request)
     {
         $address = SiteAddress::where('project_id',$request->projectId)->first();
@@ -5349,8 +5390,6 @@ public function myreport()
             'genuineProjects'=>$genuineProjects
         ]);
 }
-
-
 public function assigndate(request $request )
 {
      $users = User::where('users.department_id','!=',10)
