@@ -101,8 +101,6 @@
                           @endif
                       </tr>
                       @endforeach
-                      <br>
-                      {{ $totalAvg }}
                       <tr> 
                           <th style="border: 1px solid gray; text-align:right;"></th>
                           <th style="border: 1px solid gray;">{{ $totalEmp }}</th>
