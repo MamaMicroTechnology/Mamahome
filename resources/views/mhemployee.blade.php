@@ -88,20 +88,25 @@
                     <th style="border: 1px solid gray;">Average Age</th>
                   </thead>
                   <tbody>
-                  @php $totalEmp=0; $totalAvg = 0; @endphp
+                  @php $totalEmp=0; $totalAvg = 0; $i = 0; @endphp
                       @foreach($departments as $department)
                       <tr> 
                           <td style="border: 1px solid gray;">{{ $department->dept_name }}</td>
                           <td style="border: 1px solid gray;">{{ $depts[$department->dept_name] }}</td>
                           @php $totalEmp += $depts[$department->dept_name]; @endphp
                           <td style="border: 1px solid gray;">{{ round($avgAge[$department->dept_name]) }}</td>
-                          @php $totalAvg += $avgAge[$department->dept_name] @endphp
+                          @php $totalAvg += round($avgAge[$department->dept_name]); @endphp
+                          @if($avgAge[$department->dept_name] != 0)
+                            @php $i++ @endphp
+                          @endif
                       </tr>
                       @endforeach
+                      <br>
+                      {{ $totalAvg }}
                       <tr> 
                           <th style="border: 1px solid gray; text-align:right;"></th>
                           <th style="border: 1px solid gray;">{{ $totalEmp }}</th>
-                          <th style="border: 1px solid gray;">{{ round(1 / count($avgAge) * $totalAvg) }} </th>
+                          <th style="border: 1px solid gray;">{{ round($totalAvg / $i) }} </th>
                       </tr>
                     </tbody>
                      </table>
