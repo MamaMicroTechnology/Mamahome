@@ -37,6 +37,7 @@ use App\Order;
 use App\Message;
 use App\training;
 use App\MamahomeAsset;
+use Carbon\Carbon;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -792,18 +793,35 @@ class amController extends Controller
         $departments = Department::all();
         $groups = Group::all();
         $depts = array();
-
+        $today = date('Y-m-d');
+        $avgAge = array();
         foreach($departments as $department){
+            $age = 0;
             $depts[$department->dept_name] = User::where('department_id',$department->id)
-           ->where('id','!=',7)
-            ->where('id','!=',27)
-            ->where('id','!=',28) 
-             ->where('id','!=',101)
-            ->where('id','!=',105) 
-             ->where('id','!=',107) 
-            ->where('id','!=',108) 
-              ->where('id','!=',112) 
-               ->count();
+                ->where('id','!=',7)
+                ->where('id','!=',27)
+                ->where('id','!=',28) 
+                ->where('id','!=',101)
+                ->where('id','!=',105) 
+                ->where('id','!=',107) 
+                ->where('id','!=',108) 
+                ->where('id','!=',112) 
+                ->count();
+               $deptsUsers[$department->dept_name] = User::where('department_id',$department->id)
+                                                        ->where('id','!=',7)
+                                                        ->where('id','!=',27)
+                                                        ->where('id','!=',28) 
+                                                        ->where('id','!=',101)
+                                                        ->where('id','!=',105) 
+                                                        ->where('id','!=',107) 
+                                                        ->where('id','!=',108) 
+                                                        ->where('id','!=',112) 
+                                                        ->get();
+                foreach($deptsUsers[$department->dept_name] as $deptUser){
+                    $dob = EmployeeDetails::where('employee_id',$deptUser->employeeId)->pluck('dob')->first();
+                    $age +=  Carbon::parse($dob)->age;
+                }
+                $avgAge[$department->dept_name] = 1 / $depts[$department->dept_name] * $age;
         }
          $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
              ->where('id','!=',7)
@@ -829,7 +847,7 @@ class amController extends Controller
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
-        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users]);
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users,'avgAge'=>$avgAge]);
     }
      public function viewmhemployee(Request $request){
         if($request->dept == "FormerEmployees"){

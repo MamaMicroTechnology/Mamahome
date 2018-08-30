@@ -618,3 +618,4 @@ Route::post('/saveUpdatedManufacturer','mamaController@saveUpdatedManufacturer')
 Route::get('/itdashboard','ItController@getItDashboard');
 Route::post('/reportsForIt','ItController@postItReport');
 Route::get('/unverifiedProjects','HomeController@getUnverifiedProjects');
+Route::get('/projectWithNotes','HomeController@getProjectsBasedOnNotes');
