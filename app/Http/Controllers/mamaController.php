@@ -2327,6 +2327,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         return back()->with('Success',$text);
                     }
                     else{
+
                         $text = "You Have Already Logged In!..";
                         return back()->with('Error',$text);
                     }
@@ -2438,7 +2439,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function adminapprove(Request $request)
     {  
-       $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
+        $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
         $grp = [6,11];
         $user = user::where('id',$x)->whereIn('group_id',$grp)->pluck('id')->first();
         if($user != null){
