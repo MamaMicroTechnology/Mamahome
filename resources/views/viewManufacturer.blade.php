@@ -21,7 +21,7 @@
         </tr>
         @foreach($manufacturers as $manufacturer)
             <tr>
-                <td>{{ $manufacturer->sub_ward_id }}</td>
+                <td>{{ $manufacturer->sub_ward_name }}</td>
                 <td>{{ $manufacturer->name }}</td>
                 <td>{{ $manufacturer->address }}</td>
                 <td>{{ $manufacturer->total_area }}</td>

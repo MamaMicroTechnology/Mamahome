@@ -58,9 +58,9 @@
   <div class="container">
       <button id="hide" onclick="hideCaption()" class="btn btn-primary">Turn Off Caption</button>
       <button id="show" onclick="showCaption()" class="hidden">Turn On Caption</button>
-      @if(isset($_GET['zoneId']))
+      <!-- @if(isset($_GET['zoneId']))
       <a href="{{ URL::to('/') }}/viewMap?allSubwards=view" class="btn btn-success">View With All Subwards</a>
-      @endif
+      @endif -->
       <div class="slidecontainer">
         <input oninput="changeFont()" type="range" min="1" max="50" value="10" class="slider" id="myRange">
       </div>

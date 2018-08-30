@@ -770,6 +770,7 @@ class HomeController extends Controller
 
         $filtered = new Collection;
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
+        
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
             'converter' =>$converter,
@@ -1323,7 +1324,6 @@ class HomeController extends Controller
 
 
              $totalenq = count($enquiries);
-
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
             'converter' =>$converter,
@@ -6265,9 +6265,7 @@ function enquirystore(request $request){
                     ->get();
                 
         if($request->wardId){
-            $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
-            $zones = SubWardMap::whereIn('sub_wards.id',$wards)
-                    ->leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+            $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
                     ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
                     ->get();
         }
@@ -6278,11 +6276,11 @@ function enquirystore(request $request){
                     ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
                     ->get();
         }
-        if($request->allSubwards){
-            $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
-                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
-                    ->get();
-        }
+        // if($request->allSubwards){
+        //     $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+        //             ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
+        //             ->get();
+        // }
         return view('maping.viewmap',['zones'=>$zones]);
     }
     public function allProjectsWithWards(Request $request)
@@ -7538,7 +7536,9 @@ public function display(request $request){
     }
     public function viewManufacturer(Request $request)
     {
-        $manufacturers = Manufacturer::where('manufacturer_type',$request->type)->get();
+        $manufacturers = Manufacturer::where('manufacturer_type',$request->type)->leftJoin('sub_wards','manufacturers.sub_ward_id','sub_wards.id')
+                    ->select('manufacturers.*','sub_wards.sub_ward_name')
+                    ->get();
         return view('viewManufacturer',['manufacturers'=>$manufacturers]);
     }
     public function lebrands(){
@@ -7629,8 +7629,33 @@ public function display(request $request){
             $to = "";
             $totalproject = "";
             $site = "";
-
     }
     return view('unverifiedProjects',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names]);
+  }
+  public function getProjectsBasedOnNotes(Request $request)
+  {
+        $site = SiteAddress::all();
+        $names = user::get();
+        $wards = Ward::all();
+        if($request->note){
+            if($request->ward && !$request->subward){
+                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
+                $projectid = ProjectDetails::where('with_cont',$request->note)->whereIn('sub_ward_id',$subwards)->paginate('20');
+                $totalproject = ProjectDetails::where('with_cont',$request->note)->whereIn('sub_ward_id',$subwards)->count();
+                $subward = Subward::where('ward_id',$request->ward)->get();
+            }elseif($request->ward && $request->subward){
+                $projectid = ProjectDetails::where('with_cont',$request->note)->where('sub_ward_id',$request->subward)->paginate('20');
+                $totalproject = ProjectDetails::where('with_cont',$request->note)->where('sub_ward_id',$request->subward)->count();
+                $subward = Subward::where('ward_id',$request->ward)->get();
+            }else{
+                $projectid = ProjectDetails::where('with_cont',$request->note)->paginate('20');
+                $totalproject = ProjectDetails::where('with_cont',$request->note)->count();
+            }
+        }else{
+            $projectid = new Collection;
+            $totalproject = 0;
+            $subward = "";
+        }
+        return view('projectsWithNotes',['totalproject'=>$totalproject,'projects'=>$projectid,'site'=>$site,'names'=>$names,'wards'=>$wards,'subward'=>$subward]);
   }
 }
