@@ -266,9 +266,10 @@ class TokenController extends Controller
                 for($i = 1; $i < $statusCount; $i++){
                     $statuses .= ", ".$request->project_status[$i];
                 }
-            }else{
-                $statuses=null;
             }
+            // else{
+            //     $statuses=null;
+            // }
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
