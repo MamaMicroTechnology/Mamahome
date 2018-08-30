@@ -6259,13 +6259,14 @@ function enquirystore(request $request){
     public function viewMap(Request $request)
     {
         $wards = Ward::where('zone_id',$request->zoneId)->pluck('id');
-        $zones = WardMap::whereIn('wards.id',$wards)
-                    ->leftJoin('wards','wards.id','ward_maps.ward_id')
-                    ->select('ward_maps.*','wards.ward_name as name')
+        $zones =  $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
                     ->get();
                 
         if($request->wardId){
-            $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+            $wards = SubWard::where('ward_id',$request->wardId)->pluck('id');
+            $zones = SubWardMap::whereIn('sub_wards.id',$wards)
+                    ->leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
                     ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
                     ->get();
         }
@@ -6276,11 +6277,11 @@ function enquirystore(request $request){
                     ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
                     ->get();
         }
-        // if($request->allSubwards){
-        //     $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
-        //             ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
-        //             ->get();
-        // }
+        if($request->allSubwards){
+            $zones = SubWardMap::leftJoin('sub_wards','sub_wards.id','sub_ward_maps.sub_ward_id')
+                    ->select('sub_ward_maps.*','sub_wards.sub_ward_name as name')
+                    ->get();
+        }
         return view('maping.viewmap',['zones'=>$zones]);
     }
     public function allProjectsWithWards(Request $request)
