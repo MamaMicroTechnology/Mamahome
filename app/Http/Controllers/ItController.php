@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Report;
+use App\FieldLogin;
 use Auth;
 
 date_default_timezone_set("Asia/Kolkata");
@@ -25,6 +26,9 @@ class ItController extends Controller
             $report->end = $request->to[$i];
             $report->save();
         }
+        FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
+            'logout' => date('h:i A')
+        ]);
         return back()->with('Success','Your Report Has Been Saved Successfully');
     }
 }

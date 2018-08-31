@@ -7,7 +7,7 @@
              
             <div class="panel panel-default" style="border-color:#0e877f">
                 @if(Auth::user()->group_id == 2 || Auth::user()->group_id == 22)
-                 <div class="panel-heading" style="background-color:#0e877f">Sales and Operation</div>
+                 <div class="panel-heading" style="background-color:#0e877f">Sales Engineer</div>
                 @else
                  <div class="panel-heading" style="background-color:#0e877f">Employees</div>
                 @endif
