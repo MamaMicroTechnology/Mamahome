@@ -2831,16 +2831,16 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function atreject(request $request){
         FieldLogin::where('id',$request->id)->update([
-            'logintime' => "00:00",
+            'logintime' => " ",
+            'logindate' => " ",
             'status'=> "rejected"
         ]);
         return response()->json(['message'=>'Rejected']);
     }
     public function atapprove(request $request){
         FieldLogin::where('id',$request->id)->update([
-            'logintime' => "00:00",
             'status'=> "approved"
         ]);
-        return response()->json(['message'=>'Rejected']);
+        return response()->json(['message'=>'Approved']);
     }
 }
