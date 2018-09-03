@@ -190,7 +190,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of &nbsp; &nbsp;
+                                 <td>Type Of &nbsp;
                                   Contract ? </td>
                                   <td>:</td>
                                   <td>
