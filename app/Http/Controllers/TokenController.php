@@ -606,8 +606,10 @@ public function getproject(request $request){
         $data = new TrackLocation;
         $data->user_id = $request->user_id;
         $data->lat_long = $request->lat_long;
+        $data->time = $request->time;
         $data->date = $request->date;
         $data->kms = $request->kms;
+       
         
         if($data->save()){
             $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
@@ -627,6 +629,7 @@ public function getproject(request $request){
                         ->first();
             $data->user_id = $request->user_id;
             $data->lat_long = $request->lat_long;
+            $datea->time = $request->time;
             $data->date = $request->date;
             $data->kms = $request->kms;
             $data->save();

@@ -20,8 +20,9 @@
                             @foreach($users as $user)
                                    <tr>
                                     <td>{{ $user->name}}</td>
-                                    <td>{{ $user->logout != null ? $user->logout : " " }}</td>
+           
                                     <td>{{ $user->logintime}}</td>
+                                    <td>{{ $user->logout != null ? $user->logout : " " }}</td>
                                     <td>{{ $user->remark}}</td>
                                     
                                         @if( $user->tlapproval == "Pending" )

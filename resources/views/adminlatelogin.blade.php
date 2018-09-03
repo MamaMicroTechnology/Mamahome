@@ -10,9 +10,9 @@
                        <table class="table table-hover">
                            <thead>
                                <th>Date</th> 
-                               <th>name</th>
-                               <th>Login</th>
-                               <th>Logout</th>
+                               <th>Name</th>
+                               <th>Login Time</th>
+                               <th>Logout Time</th>
                                <th>Late Login Remark</th>
                                <th>Status</th>
                                <th>Action</th>
