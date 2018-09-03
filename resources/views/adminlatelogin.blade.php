@@ -10,7 +10,7 @@
                        <table class="table table-hover">
                            <thead>
                                <th>Date</th> 
-                               <th>name</th>
+                               <th>Name</th>
                                <th>Login</th>
                                <th>Logout</th>
                                <th>Late Login Remark</th>
