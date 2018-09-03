@@ -415,7 +415,7 @@ class mamaController extends Controller
             $assignWard->status = 'Not Completed';
             $assignWard->save();
         }
-        return back()->with('error','Assigned Successfully');
+        return back()->with('Success','Assigned Successfully');
     }
     public function addProject(Request $request)
     {
