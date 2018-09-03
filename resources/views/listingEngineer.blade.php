@@ -99,18 +99,33 @@
                                    
                                  </td>
                                </tr>
-                               <tr>
-                                 <td>Interested In UPVC Doors And Windows ?</td>
+                                <tr>
+                                 <td>Interested In Kitchen Cabinates and Wardrobes?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
+                                      <label><input required value="Kitchen_Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                    
-                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
+                                      <label><input required value="Kitchen_No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                    
-                                      <label><input checked="checked" required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" required value="Kitchen_None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Are You Interested In Brila Super / Ultratech Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="brila"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="No" id="dandw2" type="radio" name="brila"><span>&nbsp;</span>No</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input checked="checked" required value="None" id="dandw3" type="radio" name="brila"><span>&nbsp;</span>None</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
