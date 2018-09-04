@@ -682,5 +682,8 @@ public function getproject(request $request){
             $logintime = date('H:i:s');
             return response()->json(['message'=>$logintime]);
     }
-        
+            public function getreq(request $request){
+        $confirm =Requirement::get();
+         return response()->json(['order'=>$confirm]);
+       }    
 }

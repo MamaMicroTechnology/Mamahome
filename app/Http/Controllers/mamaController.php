@@ -581,6 +581,8 @@ class mamaController extends Controller
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
+          $projectdetails->brilaultra=$request->brila;
+
           $projectdetails->save();
         
        $activity = new ActivityLog;
@@ -894,6 +896,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'road_name' => $request->rName,
             'road_width' => $request->rWidth,
             'project_status' => $statuses,
+            'brilaultra'=>$request->brila,
             'basement' => $basement,
             'ground' => $ground,
             'length' => $length,

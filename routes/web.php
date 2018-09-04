@@ -20,6 +20,10 @@ Route::get('/', function () {
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
 Route::get('/ticketchat','HomeController@chat');
+ Route::get('/assign_manufacturer','HomeController@manufacturerwise');
+ Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
+ Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
+
 
 
 // chatting
@@ -159,6 +163,8 @@ Route::get('/enquirywise','HomeController@enqwise');
 Route::get('/storedetails','HomeController@storedetails');
 Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
+Route::get('/manustorequery','HomeController@manustorequery');
+
 
 
 
@@ -258,6 +264,7 @@ Route::post('/confirmUser','mamaController@confirmUser');
 Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
 Route::post('/confirmedProject','HomeController@confirmedProject');
+Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 
@@ -354,6 +361,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assign_number','HomeController@numberwise');
     Route::post('/storenumber','HomeController@storenumber');
     Route::post('/storecount','HomeController@storecount');
+    Route::get('/assign_manufacturer','HomeController@manufacturerwise');
 
 
     

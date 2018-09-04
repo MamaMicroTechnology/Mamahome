@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\orderconfirmation;
 use App\Mail\invoice;
 use App\Department;
+use App\assign_manufacturers;
+
 use App\User;
 use App\Builder;
 use App\Group;
@@ -4369,6 +4371,34 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
         return redirect()->back();
     }
+
+ public function confirmedmanufacture(Request $request){
+
+           $check = Manufacturer::where('id',$request->id)->first();
+           $project_id = Manufacturer::where('id',$request->id)->pluck('id')->first();
+           $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
+           $username = User::where('name',Auth::user()->name)->pluck('name')->first();
+           $call  = date('Y-m-d H:i:s');
+
+    DB::insert('insert into history (user_id,manu_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
+
+
+        if($check->confirmed == null || $check->confirmed == "true" || $check->confirmed == "false"){
+            Manufacturer::where('id',$request->id)->update(['confirmed'=>1]);
+        }else{
+            Manufacturer::where('id',$request->id)
+
+           ->increment('confirmed');
+        }
+
+        return redirect()->back();
+    }
+
+
+
+
+
+
     public function projectadmin(Request $id){
 
         $details = projectDetails::where('project_id',$id->projectId)->first();
@@ -5800,6 +5830,96 @@ if(Auth::user()->group_id != 22){
  return view('assign_project',['wardsAndSub'=>$wardsAndSub,'subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assign'=>$assign,'assignstage'=>$assignstage,'tlUsers'=>$tlUsers]);
 
 }
+
+
+
+
+
+
+public function manufacturerwise1(request $request){
+
+
+      //$ss = $request->$scount;
+
+     $depts = [1,2];
+     $wardsAndSub = [];
+    $users = User::whereIn('users.department_id',$depts)
+              ->leftjoin('assign_manufacturers','assign_manufacturers.user_id','users.id')
+              ->leftjoin('departments','departments.id','users.department_id'   )
+              ->leftjoin('groups','groups.id','users.group_id')
+
+              ->select('users.*','departments.dept_name','groups.group_name','assign_manufacturers.ward','assign_manufacturers.subward','assign_manufacturers.data' )->paginate(20);
+
+               $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+              $userIds = explode(",", $tl);
+              $tlUsers = User::whereIn('id',$userIds)->get();
+
+
+ //      $details= $request->Search;
+ // $detail = User::where(['name', 'LIKE', '%' . $details . '%'])->get();
+
+
+   $assignstage=assign_manufacturers::all();
+    $wards = Ward::all();
+    $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
+               ->select('sub_wards.*')->get();
+  
+    foreach($wards as $ward){
+        $subward = SubWard::where('ward_id',$ward->id)->get();
+        array_push($wardsAndSub,['ward'=>$ward->id,'subWards'=>$subward]);
+    }
+
+
+ return view('assign_manufacturer',['wardsAndSub'=>$wardsAndSub,'subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assignstage'=>$assignstage,'tlUsers'=>$tlUsers]);
+
+}
+
+
+public function manufacturerwise(request $request){
+
+if(Auth::user()->group_id != 22){
+    return $this->manufacturerwise1($request);
+}
+
+ $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+
+     $depts = [1,2];
+     $wardsAndSub = [];
+    $users = User::whereIn('users.department_id',$depts)
+              ->leftjoin('assign_manufacturers','assign_manufacturers.user_id','users.id')
+              ->leftjoin('departments','departments.id','users.department_id'   )
+              ->leftjoin('groups','groups.id','users.group_id')
+
+              ->select('users.*','departments.dept_name','groups.group_name','assign_manufacturers.ward','assign_manufacturers.subward','assign_manufacturers.data')->paginate(20);
+    $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+              $userIds = explode(",", $tl);
+    $tlUsers = User::whereIn('users.id',$userIds)
+              ->leftjoin('assign_manufacturers','assign_manufacturers.user_id','users.id')
+              ->leftjoin('departments','departments.id','users.department_id'   )
+              ->leftjoin('groups','groups.id','users.group_id')
+
+              ->select('users.*','departments.dept_name','groups.group_name','assign_manufacturers.ward','assign_manufacturers.subward','assign_manufacturers.data')->paginate(20);
+
+
+   $assignstage=assign_manufacturers::all();
+    $wards = Ward::where('wards.id',$tlward)->get();
+
+    $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
+               ->select('sub_wards.*')->get();
+    
+    foreach($wards as $ward){
+        $subward = SubWard::where('ward_id',$ward->id)->get();
+        array_push($wardsAndSub,['ward'=>$ward->id,'subWards'=>$subward]);
+    }
+ return view('assign_manufacturer',['wardsAndSub'=>$wardsAndSub,'subwards'=>$subwards, 'users'=>$users,'wards'=>$wards,'assignstage'=>$assignstage,'tlUsers'=>$tlUsers]);
+
+}
+
+
+
+
+
+
 
 
 
@@ -7516,6 +7636,21 @@ public function display(request $request){
 
          return redirect()->back();
     }
+
+ public function manustorequery(Request $request){
+
+
+        $id = History::where('manu_id',$request->id)->pluck('id')->last();
+        History::where('id',$id)->update(['question'=>$request->qstn,
+                                            'remarks'=>$request->remarks
+            ]);
+
+         return redirect()->back();
+    }
+
+
+
+
     public function auto(request $requests){
      $projects = ProjectDetails::where('automation',"Yes")->where('quality','!=','Fake')->paginate(10); 
      $projectcount= count($projects); 
