@@ -2794,7 +2794,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
 
     }
     else if(Auth::user()->group_id == 1){
-        $dept = [1,2,3,4,5,6,7] ; 
+        $dept = [1,2,3,4,5,7] ; 
         $ofcemps= User::whereIn('users.department_id',$dept)
                         ->select('users.employeeId','users.id','users.name')
                         ->get();

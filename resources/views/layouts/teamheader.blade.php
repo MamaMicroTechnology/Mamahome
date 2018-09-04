@@ -11,6 +11,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -373,7 +375,10 @@ div#calendar{
                         <li style="padding-top: 10px;">
                         <button id="getBtn"  class="btn btn-success btn-sm" onclick="teamlogin()">Login</button></li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="teamlogout()">Logout</button>
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
+                       </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report">Logout</button>
                        </li>
                         @endif
                    <!--  <li>
@@ -412,11 +417,92 @@ div#calendar{
                                     </li>
                                 </ul>
                             </li>
+
                         @endguest
                     </ul>
                 </div>
             </div>
         </nav>
+            <!-- Modal -->
+                            <div id="break" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:50%;" >
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Break Time</h4>
+                                  </div>
+                                  <div class="modal-body">
+
+                                    <p>Click On Start To Take a Break?</p>
+                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-success btn-sm">START</button>
+                                  </form>
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                   
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+                            <!-- Modal -->
+                            <div id="report" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                  <div class="modal-header" style="background-color:rgb(244, 129, 31);color:white;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">MAMAHOME EMPLOYEE ATTENDANCE</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                  <form action="{{ URL::to('/') }}/empreports" method="POST">
+                                      {{ csrf_field() }}
+                                      
+                                                  <table class="table table-hover" id="reports">
+                                                      <thead>
+                                                          <th>Report</th>
+                                                          <th>From</th>
+                                                          <th>To</th>
+                                                      </thead>
+                                                      <tbody>
+                                                          
+                                                          <tr>
+                                                              <td><input required type="text" name="report[]" id="report" class="form-control" placeholder="Report"></td>
+                                                              <td><input required type="time" name="from[]" id="from" class="form-control"></td>
+                                                              <td><input required type="time" name="to[]" id="to" class="form-control"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                  </table>
+                                                  <div class="btn-group">
+                                                      <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                      </button>
+                                                      <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                      </button>
+                                                  </div>
+                                             
+                                              <div class="panel-footer">
+                                                  <input type="submit" value="Submit" class="form-control btn btn-success">
+                                              </div>
+                                  </form>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
           @if(Auth::check() && Auth::user()->group_id == 22 || Auth::check() && Auth::user()->group_id == 1)
@@ -686,6 +772,33 @@ div#calendar{
   });
 </script>
 @endif
-
+<script>
+    function myFunction1() {
+        var table = document.getElementById("reports");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = "<input required type='text' name='report[]' id='report' class='form-control' placeholder='Report'>";
+        cell2.innerHTML = "<input required type='time' name='from[]' id='from' class='form-control'>";
+        cell3.innerHTML = "<input required type='time' name='to[]' id='to' class='form-control'>";
+    }
+    function myDelete1() {
+        var table = document.getElementById("reports");
+        if(table.rows.length >= {{ 3 }}){
+            document.getElementById("reports").deleteRow(-1);
+        }
+    }
+ </script>
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('error'))
+<script>
+    swal("error","{{ session('error') }}","error");
+</script>
+@endif
 </body>
 </html>

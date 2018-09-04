@@ -408,7 +408,7 @@ public function enquiry(request $request){
     public function updateEnquiry(request $request){
         
        
-        $enquiry = Requirement::where('id',$request->id)->first();
+            $enquiry = Requirement::where('id',$request->id)->first();
                 $enquiry->project_id = $request->project_id;
                 $enquiry->main_category = $request->main_category;
                 $enquiry->brand = $request->brand;
@@ -418,7 +418,7 @@ public function enquiry(request $request){
                 $enquiry->A_contact = $request->A_contact;
                 $enquiry->quantity = $request->quantity;
                 $enquiry->user_id = $request->userid;
-        $enquiry->save();
+              $enquiry->save();
                        
          
           if($enquiry->save()){
@@ -626,22 +626,19 @@ public function getproject(request $request){
       public function updateLocation(Request $request){
             $data = TrackLocation::where('user_id',$request->user_id)
                         ->where('date',$request->date)
-                        ->first();
-            $data->user_id = $request->user_id;
-            $data->lat_long = $request->lat_long;
-            $datea->time = $request->time;
-            $data->date = $request->date;
-            $data->kms = $request->kms;
-            $data->save();
-            if($data->save()){
-               $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }else{
-                $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Location could not be updated");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }
+                        ->update([
+            
+                                'user_id' => $request->user_id,
+                                'lat_long' => $request->lat_long,
+                                'time' => $request->time,
+                                'date' => $request->date,
+                                'kms' => $request->kms
+                                ]);                 
+             if($data){
+            return response()->json(['message'=>'Update Location  sucussfully']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
 
        }
        public function pending(Request $request){

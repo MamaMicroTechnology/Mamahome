@@ -156,11 +156,11 @@
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input id="dandw1" {{ $projectdetails->brilaultra == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="brila">Yes</label>
+                                      <label><input id="bs1" {{ $projectdetails->brilaultra == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="brila">Yes</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw2" {{ $projectdetails->brilaultra == "No" ? 'checked' : '' }} required value="No" type="radio" name="brila">No</label>
+                                      <label><input id="bs2" {{ $projectdetails->brilaultra == "No" ? 'checked' : '' }} required value="No" type="radio" name="brila">No</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw3" {{ $projectdetails->brilaultra == "None" ? 'checked' : '' }} required value="None" type="radio" name="brila">None</label>
+                                      <label><input id="bs3" {{ $projectdetails->brilaultra == "None" ? 'checked' : '' }} required value="None" type="radio" name="brila">None</label>
                                  </td>
                                </tr>
                                <tr>
@@ -190,7 +190,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of &nbsp; &nbsp;
+                                 <td>Type Of &nbsp;
                                   Contract ? </td>
                                   <td>:</td>
                                   <td>
@@ -1018,6 +1018,10 @@ function sum(){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false && rmc3.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false){
+            window.alert("Please tell us whether the customer is Interested In Kitchen Cabinates and Wardrobes ?");
+          }else if(bs1.checked == false && bs2.checked == false && bs3.checked == false ){
+            window.alert("Please tell us whether the customer is Interested In Brila Super / Ultratech Products?");
           }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
           }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
