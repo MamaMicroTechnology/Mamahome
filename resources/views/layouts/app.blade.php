@@ -437,6 +437,9 @@ div#calendar{
                         <li style="padding-top: 10px;">
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
+                       <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
+                       </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report" >Logout</button>
                        </li>
@@ -484,7 +487,38 @@ div#calendar{
                 </div>
             </div>
         </nav>
-        <!-- Modal -->
+                                    <!-- Modal -->
+                            <div id="break" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:50%;" >
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Break Time</h4>
+                                  </div>
+                                  <div class="modal-body">
+
+                                    <p>Click On Start To Take a Break?</p>
+                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-success btn-sm">START</button>
+                                  </form>
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                   
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+                            <!-- Modal -->
                             <div id="report" class="modal fade" role="dialog">
                               <div class="modal-dialog">
 
@@ -532,6 +566,15 @@ div#calendar{
                               </div>
                             </div>
                             <!-- mpdal end -->
+<script>
+function myTimer() {
+  var myVar = setInterval(myTimer ,1000);
+    var d = new Date();
+    document.getElementById("time").innerHTML = d.toLocaleTimeString();
+    document.getElementById("timer").form.submit();
+
+}
+</script>
 @if(Auth::check())
 @if(Auth::user()->group_id == 1)
 <div id="mySidenav" class="sidenav">

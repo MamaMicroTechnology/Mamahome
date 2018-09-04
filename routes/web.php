@@ -161,6 +161,9 @@ Route::get('/enquirywise','HomeController@enqwise');
 Route::get('/storedetails','HomeController@storedetails');
 Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
+// Route::get('/starttimer','HomeController@starttimer');
+Route::post('/breaktime','HomeController@breaktime');
+Route::post('/sbreaktime','HomeController@sbreaktime');
 
 
 
