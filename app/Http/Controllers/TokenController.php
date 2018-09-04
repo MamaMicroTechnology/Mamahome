@@ -634,7 +634,7 @@ public function getproject(request $request){
                                 'date' => $request->date,
                                 'kms' => $request->kms
                                 ]);                 
-             if($data->save()){
+             if($data){
             return response()->json(['message'=>'Update Location  sucussfully']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
