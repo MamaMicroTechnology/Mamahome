@@ -7708,6 +7708,6 @@ public function display(request $request){
     BreakTime::where('user_id',Auth::user()->id)->update([
             'stop_time' => date('h:i A')
         ]);
-        return back()->with('error','Your Break Time has been Ended');
+        return back()->with('Success','Your Break Time has been Ended');
   }
 }
