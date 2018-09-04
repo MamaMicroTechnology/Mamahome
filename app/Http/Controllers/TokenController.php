@@ -634,15 +634,11 @@ public function getproject(request $request){
                                 'date' => $request->date,
                                 'kms' => $request->kms
                                 ]);                 
-            if($data->save()){
-               $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }else{
-                $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Location could not be updated");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }
+             if($data->save()){
+            return response()->json(['success'=>'1','message'=>'Update Location  sucussfully']);
+        }else{
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
+        }
 
        }
        public function pending(Request $request){
