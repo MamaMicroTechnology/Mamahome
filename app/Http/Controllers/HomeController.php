@@ -5037,9 +5037,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                        ->get();
                 $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                 $userIds = explode(",", $tl);
-                 $grp = [7,17];
+              
                 $tluser =User::whereIn('users.id',$userIds)
-                       ->whereIn('users.group_id',$grp)
+                       ->where('department_id',2)
                        ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                        ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                        ->select('users.*','sub_wards.sub_ward_name')
@@ -5086,9 +5086,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
             $userIds = explode(",", $tl);
-            $grp = [7,17];
+           
             $tlUsers = User::whereIn('id',$userIds)
-              ->whereIn('group_id',$grp)->get();
+               ->where('department_id',2)->get();
 
            return view('salesReport',['users'=>$users,
                    'date'=>$date,
@@ -5168,9 +5168,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                    $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                    $userIds = explode(",", $tl);
                    
-                   $grp = [6,7,17];
+                 
                    $tluser =User::whereIn('users.id',$userIds)
-                          ->whereIn('users.group_id',$grp)
+                           ->where('department_id',2)
                           ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                           ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                           ->select('users.*','sub_wards.sub_ward_name')
@@ -5223,7 +5223,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                $userIds = explode(",", $tl);
                 $grp = [6,7,17];
                $tlUsers = User::whereIn('id',$userIds)
-                 ->where('group_id',$grp)->get();
+                 ->where('department_id',2)->get();
 
               return view('salesReport',['users'=>$users,
                       'date'=>$date,
