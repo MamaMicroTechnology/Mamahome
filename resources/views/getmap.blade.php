@@ -12,6 +12,8 @@
     
     @endforeach
     <br><br>
+   <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br>
+    <br><br>
 <div id="map" style="width:980PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
 </div>
 </div>

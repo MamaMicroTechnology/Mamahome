@@ -83,6 +83,7 @@ use App\Pricing;
 use GuzzleHttp\Client;
 use App\Manufacturer;
 use App\FieldLogin;
+use App\BreakTime;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -1765,8 +1766,6 @@ class HomeController extends Controller
                         ->select('users.name','users.employeeId','login_times.*','departments.id')
                         ->get();
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-
-
          $x = Ward::where('id',$tl)->pluck('ward_name')->first();
 
          return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x]);
@@ -3914,6 +3913,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         return view('humanresource',['departments'=>$departments,'groups'=>$groups,'page'=>"hr",'depts'=>$depts]);
     }
     public function getHRDept($dept, Request $request){
+
         if($dept == "Formeremployee"){
             $users = User::where('department_id',10)
                         ->leftjoin('employee_details','users.employeeId','=','employee_details.employee_id')
@@ -4233,6 +4233,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         return view('changepassword');
     }
     public function hrAttendance($id, Request $request){
+        
         if($request->month != null){
             $today = $request->year."-".$request->month;
         }else{
@@ -4243,7 +4244,14 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     ->where('created_at','LIKE',$today.'%')
                     ->orderby('date')
                     ->get();
-        return view('empattendance',['attendances'=>$attendances,'userid'=>$id,'user'=>$user]);
+        // $userid = User::where('employeeId',$id)->pluck('id')->first();
+        // $attendances = FieldLogin::where('user_id',$userid)
+        //             ->where('created_at','LIKE',$today.'%')
+        //             ->orderby('logindate')
+        //             ->get();
+
+            
+        return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
     public function forgotPw(){
         return view('forgotpassword');
@@ -7655,5 +7663,22 @@ public function display(request $request){
         ]);
         return back()->with('Success','Your Report Has Been Saved Successfully');
     
+  }
+  public function breaktime(Request $request)
+  {
+    $time = New BreakTime;
+            $time->user_id = Auth::user()->id;
+            $time->start_time = date('h:i A');
+            $time->stop_time = "";
+            $time->save();
+        return back()->with('Success','Your Break Time Started');
+  }
+  public function sbreaktime(Request $request)
+  {
+
+    BreakTime::where('user_id',Auth::user()->id)->update([
+            'stop_time' => date('h:i A')
+        ]);
+        return back()->with('error','Your Break Time has been Ended');
   }
 }
