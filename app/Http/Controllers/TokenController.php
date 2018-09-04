@@ -627,12 +627,13 @@ public function getproject(request $request){
             $data = TrackLocation::where('user_id',$request->user_id)
                         ->where('date',$request->date)
                         ->first();
-          dd($data);
+            
             $data->user_id = $request->user_id;
             $data->lat_long = $request->lat_long;
             $datea->time = $request->time;
             $data->date = $request->date;
             $data->kms = $request->kms;
+            $data->save();
             if($data->save()){
                $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
                $userResponse = json_encode($responseData);
