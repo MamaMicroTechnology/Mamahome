@@ -632,7 +632,6 @@ public function getproject(request $request){
             $datea->time = $request->time;
             $data->date = $request->date;
             $data->kms = $request->kms;
-            $data->save();
             if($data->save()){
                $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
                $userResponse = json_encode($responseData);
