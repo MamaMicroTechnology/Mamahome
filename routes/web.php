@@ -23,6 +23,10 @@ Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
  Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
+Route::post('/manuinputdata','AssignManufacturersController@inputdata');
+Route::get('/menqedit','AssignManufacturersController@editEnq');
+
+
 
 
 
@@ -89,6 +93,8 @@ Route::get('/requirements','HomeController@inputview');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
+Route::get('/manuenquiry','AssignManufacturersController@manuenquiry');
+
 Route::get('/getProjects','HomeController@getProjects');
 Route::get('/showThisProject','HomeController@showProjectDetails');
 

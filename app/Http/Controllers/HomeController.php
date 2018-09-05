@@ -10,7 +10,6 @@ use App\Mail\orderconfirmation;
 use App\Mail\invoice;
 use App\Department;
 use App\assign_manufacturers;
-
 use App\User;
 use App\Builder;
 use App\Group;
@@ -142,7 +141,7 @@ class HomeController extends Controller
         $activity->save();
         Auth()->logout();
         $request->session()->invalidate();
-        return redirect('/login');
+        return redirect('/');
     }
     public function inputview(Request $request)
     {
@@ -4616,19 +4615,22 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                if(!$request){
                     $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
                                     ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                                    ->leftjoin('manufacturers','manufacturers.id','requirements.manu_id')
                                     ->where('requirements.status','!=',"Enquiry Cancelled")
-                                    ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                                    ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name','manufacturers.sub_ward_id','manufacturers.name as mname','manufacturers.product','manufacturers.contact_no','requirements.manu_id')
                                     ->get();
 
 
                  }
+
              elseif($request->eqpipeline == 'today'){
 
                  $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
                 ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
+                ->leftjoin('manufacturers','manufacturers.id','requirements.manu_id')
                 ->where('requirements.status','!=',"Enquiry Cancelled" )
                 ->where('requirements.created_at','LIKE',$today."%")
-                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
+                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name','manufacturers.sub_ward_id','manufacturers.name','manufacturers.product','manufacturers.contact_no','requirements.manu_id','manufacturers.name as mname')
                 ->get() ;
 
 
@@ -4664,7 +4666,11 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                 $subwards2[$enquiry->project_id] = "";
             }
         }
-        return view('eqpipeline',['pipelines'=>$pipelines,'subwards2'=>$subwards2,'category'=>$category]);
+        $sub=Subward::all();
+        $manu = Manufacturer::all();
+
+
+        return view('eqpipeline',['pipelines'=>$pipelines,'manu'=>$manu,'sub'=>$sub,'subwards2'=>$subwards2,'category'=>$category]);
     }
     public function letraining(Request $request)
     {
@@ -5024,9 +5030,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                        ->get();
                 $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                 $userIds = explode(",", $tl);
-
+               
                 $tluser =User::whereIn('users.id',$userIds)
-                       ->where('users.group_id',7)
+                       ->where('department_id',2)
                        ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                        ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                        ->select('users.*','sub_wards.sub_ward_name')
@@ -5073,8 +5079,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
 
             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
             $userIds = explode(",", $tl);
+           
             $tlUsers = User::whereIn('id',$userIds)
-              ->where('group_id',7)->get();
+              ->where('department_id',2)->get();
 
            return view('salesReport',['users'=>$users,
                    'date'=>$date,
@@ -5155,7 +5162,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                    $userIds = explode(",", $tl);
 
                    $tluser =User::whereIn('users.id',$userIds)
-                          ->where('users.group_id',6)
+                          ->where('department_id',2)
                           ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                           ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                           ->select('users.*','sub_wards.sub_ward_name')
@@ -5207,7 +5214,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                $userIds = explode(",", $tl);
                $tlUsers = User::whereIn('id',$userIds)
-                 ->where('group_id',7)->get();
+                 ->where('department_id',2)->get();
 
               return view('salesReport',['users'=>$users,
                       'date'=>$date,
@@ -7615,7 +7622,9 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
-        return view('addManufacturer');
+         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+        $subwards = SubWard::where('id',$wardsAssigned)->first();
+        return view('addManufacturer',['subwards'=>$subwards]);
     }
     public function viewManufacturer(Request $request)
     {

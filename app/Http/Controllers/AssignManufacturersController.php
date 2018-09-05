@@ -10,6 +10,12 @@ use App\Tlwards;
 use App\SubWard;
 use App\History;
 use App\Manufacturer;
+use App\User;
+use App\ProjectDetails;
+use App\Point;
+use App\Requirement;
+use App\ActivityLog;
+use DB;
 use Illuminate\Support\Collection;
 
 class AssignManufacturersController extends Controller
@@ -247,8 +253,125 @@ if($aggregates_required != null){
             ]);
     }
 
+ public function manuenquiry(Request $request)
+    {
+        $category = Manufacturer::all();
+       
+
+        $depart1 = [6];
+        $depart2 = [7];
+        $depart = [2,4,8,6,7,15,17,16,1,11,22];
+        $projects = Manufacturer::where('id', $request->projectId)->first();
+        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+       $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+       $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        return view('manuenquiry',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects]);
+    }
+
+public function inputdata(Request $request)
+    {
+
+           $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
+
+         if($request->name){
+
+              $shipadress = $request->billadress;
+         }
+           $shipadress = $request->billadress;
+
+  $points = new Point;
+            $points->user_id = $request->initiator;
+            $points->point = 100;
+            $points->type = "Add";
+            $points->reason = "Generating an enquiry";
+            $points->save();
+            
+       
+        $x = DB::table('requirements')->insert(['project_id'    =>'',
+                                                'main_category' => '',
+                                                'brand' => '',
+                                                'sub_category'  =>'',
+                                                'follow_up' =>'',
+                                                'follow_up_by' =>'',
+                                                'material_spec' =>'',
+                                                'referral_image1'   =>'',
+                                                'referral_image2'   =>'',
+                                                'requirement_date'  =>$request->edate,
+                                                'measurement_unit'  =>$request->measure != null?$request->measure:'',
+                                                'unit_price'   => '',
+                                                 'quantity'     =>'',
+                                                 'total'   =>0,
+                                                'notes'  =>$request->eremarks,
+                                                'created_at' => date('Y-m-d H:i:s'),
+                                                'updated_at' => date('Y-m-d H:i:s'),
+                                                'status' => "Enquiry On Process",
+                                                'dispatch_status' => "Not yet dispatched",
+                                                'generated_by' => $request->initiator,
+                                                'billadress'=>$request->billadress,
+                                                'total_quantity'=>$request->totalquantity,
+                                                'product'=>$request->product,
+                                                'manu_id'=>$request->manu_id,
+                                                'sub_ward_id'=>$request->sub_ward_id, 
+                                                'ship' =>$shipadress
+                                        ]);
 
 
+         $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->selectprojects." at ".date('H:i A');
+        $uproject = ProjectDetails::where('project_id',$request->selectprojects)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$request->selectprojects)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$request->selectprojects)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$request->selectprojects)->pluck('generated_by')->first();
+         $project = ProjectDetails::where('project_id',$request->selectprojects)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $activity->updater = $uproject;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+
+        $activity->project_id = $request->selectprojects;
+        // $activity->req_id = $requirement->id;
+        $activity->typeofactivity = "Add Enquiry";
+        $activity->save();
+        // $y = DB::table('quantity')->insert(['req_id' =>$request->requirements->id,
+        //                                     'project_id'=>$request->selectprojects
 
 
+        //         ]);
+        if($x)
+        {
+            return back()->with('success','Enquiry Raised Successfully !!!');
+        }
+        else
+        {
+            return back()->with('success','Error Occurred !!!');
+        }
+    }
+ public function editEnq(Request $request)
+    {
+
+        $depart = [7];
+       $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        $depart1 = [6];
+       $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
+        $depart2 = [2,4,6,7,8,17,11];
+        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->get();
+
+        $enq = Requirement::where('requirements.id',$request->reqId)
+                    ->leftjoin('users','users.id','=','requirements.generated_by')
+                    ->leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                    ->select('requirements.*','users.name','manufacturers.name','manufacturers.contact_no','manufacturers.address','requirements.total_quantity')
+                    ->first();
+
+         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+    }
 }

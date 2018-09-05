@@ -5,11 +5,11 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading" style="height: 50px;">
+                <div class="panel-heading" style="height: 50px;background-color:#42c3f3;color:#ffffffe3;">
                   @if(!$subwards)
                   No Subward assigned
                   @else
-                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                 Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
@@ -179,11 +179,11 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-                               <tr>
+                               <!-- <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, ETC)</td>
                                    <td>:</td>
                                    <td><input  oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
-                               </tr>
+                               </tr> -->
                                 <tr>
                                    <td>Project Status</td>
                                    <td>:</td>

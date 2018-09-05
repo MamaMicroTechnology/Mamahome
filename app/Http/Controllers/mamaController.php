@@ -1733,6 +1733,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $manufacturer->finance_contact = $request->financeContact;
         $manufacturer->quality_department = $request->qualityDept;
         $manufacturer->save();
+       
         return back()->with('Success','Manufacturer details added successfully');
     }
     public function editsubwardimage(Request $request){

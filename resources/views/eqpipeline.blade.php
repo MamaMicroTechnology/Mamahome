@@ -81,25 +81,68 @@
 							@foreach($pipelines as $enquiry)
 							<tr>
 								
+								 @if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$subwards2[$enquiry->project_id]}}
 								</td>
+								@else
+								<td style="text-align: center">
+									@foreach($sub as $su)
+									@if($enquiry->sub_ward_id ==$su->id)
+									{{$su->sub_ward_name}}
+									@endif
+									@endforeach
+								</td>
+								@endif
+								@if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$enquiry -> procurement_name}}
 								</td>
+								@else
+								<td style="text-align: center">
+									@foreach($manu as $man)
+									@if($enquiry->manu_id == $man->id)
+									{{$man->name}}
+									@endif
+									@endforeach
+								</td>
+								@endif
+								@if($enquiry->manu_id == null)
+
 								<td style="text-align: center" >
 								<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-success btn-sm pull-right">Edit</a>
 								</td>
+								@else
+								<td style="text-align: center" >
+								<a href="{{ URL::to('/') }}/menqedit?reqId={{$enquiry->id}}" class="btn btn-primary btn-sm pull-right">Edit</a>
+								</td>
+								@endif
 								
 								<td style="text-align: center">
 									{{ date('d/m/Y', strtotime($enquiry->created_at)) }}
 								</td>
+								@if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$enquiry -> procurement_contact_no }}
 								</td>
+								@else
+								<td style="text-align: center">
+									@foreach($manu as $man)
+									@if($enquiry->manu_id == $man->id)
+									{{$man->contact_no}}
+									@endif
+									@endforeach
+								</td>
+								@endif
+                               @if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}
 								</td>
+								@else
+								<td style="text-align: center">
+									{{$enquiry->product}}
+								</td>
+								@endif
 								<td style="text-align: center">
 									{{$enquiry -> quantity}}
 								</td>
@@ -119,7 +162,7 @@
 									
 								</td>
 								<td>
-									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
+									<form method="POST" action="{{ URL::to('/') }}/manueditEnquiry">
 										{{ csrf_field() }}
 										<input type="hidden" value="{{$enquiry->id}}" name="id">
 										<select required name="status" onchange="this.form.submit();" style="width:100px;">
