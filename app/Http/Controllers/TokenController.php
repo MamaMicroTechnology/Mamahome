@@ -266,9 +266,10 @@ class TokenController extends Controller
                 for($i = 1; $i < $statusCount; $i++){
                     $statuses .= ", ".$request->project_status[$i];
                 }
-            }else{
-                $statuses=null;
             }
+            // else{
+            //     $statuses=null;
+            // }
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
@@ -379,7 +380,7 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['success'=>'1','message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->project_status]);
         }else{
             return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
@@ -407,7 +408,7 @@ public function enquiry(request $request){
     public function updateEnquiry(request $request){
         
        
-        $enquiry = Requirement::where('id',$request->id)->first();
+            $enquiry = Requirement::where('id',$request->id)->first();
                 $enquiry->project_id = $request->project_id;
                 $enquiry->main_category = $request->main_category;
                 $enquiry->brand = $request->brand;
@@ -417,7 +418,7 @@ public function enquiry(request $request){
                 $enquiry->A_contact = $request->A_contact;
                 $enquiry->quantity = $request->quantity;
                 $enquiry->user_id = $request->userid;
-        $enquiry->save();
+              $enquiry->save();
                        
          
           if($enquiry->save()){
@@ -605,8 +606,10 @@ public function getproject(request $request){
         $data = new TrackLocation;
         $data->user_id = $request->user_id;
         $data->lat_long = $request->lat_long;
+        $data->time = $request->time;
         $data->date = $request->date;
         $data->kms = $request->kms;
+       
         
         if($data->save()){
             $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
@@ -623,21 +626,19 @@ public function getproject(request $request){
       public function updateLocation(Request $request){
             $data = TrackLocation::where('user_id',$request->user_id)
                         ->where('date',$request->date)
-                        ->first();
-            $data->user_id = $request->user_id;
-            $data->lat_long = $request->lat_long;
-            $data->date = $request->date;
-            $data->kms = $request->kms;
-            $data->save();
-            if($data->save()){
-               $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }else{
-                $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Location could not be updated");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }
+                        ->update([
+            
+                                'user_id' => $request->user_id,
+                                'lat_long' => $request->lat_long,
+                                'time' => $request->time,
+                                'date' => $request->date,
+                                'kms' => $request->kms
+                                ]);                 
+             if($data){
+            return response()->json(['message'=>'Update Location  sucussfully']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
 
        }
        public function pending(Request $request){
@@ -682,8 +683,9 @@ public function getproject(request $request){
             $logintime = date('H:i:s');
             return response()->json(['message'=>$logintime]);
     }
-            public function getreq(request $request){
-        $confirm =Requirement::get();
-         return response()->json(['order'=>$confirm]);
-       }    
+    public function getreq(Request $request){
+        $pending = Requirement::get();
+         return response()->json(['order'=>$pending]);
+       }
+        
 }

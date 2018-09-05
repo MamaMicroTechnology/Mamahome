@@ -45,7 +45,7 @@
         <div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees
           </div>
 
-        <div class="panel-body" style="height:250px;max-height:250px;overflow-x:hidden; overflow-y:scroll;">
+        <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
                       
                                      <img src="http://mamahome360.com/public/android-icon-36x36.png">
                                      MAMA HOME PVT LTD&nbsp;&nbsp;
@@ -88,51 +88,25 @@
                     <th style="border: 1px solid gray;">Average Age</th>
                   </thead>
                   <tbody>
-                        <tr> 
-                                         <td style="border: 1px solid gray;">Operation</td>
-                                        <td style="border: 1px solid gray;">27</td>
-                                        <td style="border: 1px solid gray;">21</td>
-                                       
-                        </tr>
-     
-                        <tr> 
-                                 <td style="border: 1px solid gray;">Sales</td>
-                                  <td style="border: 1px solid gray;">10</td>
-                                  <td style="border: 1px solid gray;">22</td>
-                        </tr>
-                        <tr> 
-                            <td style="border: 1px solid gray;">Marketing</td>
-                            <td style="border: 1px solid gray;">1</td>
-                            <td style="border: 1px solid gray;">22</td>
-                           
-                        </tr>
-                        <tr>
-                           <td style="border: 1px solid gray;">IT</td>
-                            <td style="border: 1px solid gray;">9</td>
-                            <td style="border: 1px solid gray;">24</td>
-                           
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid gray;">Finance</td>
-                            <td style="border: 1px solid gray;">1</td>
-                            <td style="border: 1px solid gray;">23</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid gray;">Research and Development</td>
-                            <td style="border: 1px solid gray;">1</td>
-                            <td style="border: 1px solid gray;">27</td>
-                        </tr>
-                        <tr>
-                             <td style="border: 1px solid gray;">Human Resource</td>
-                            <td style="border: 1px solid gray;">1</td>
-                            <td style="border: 1px solid gray;">23</td>
-                        <tr>
-                         <tr>
-                            <td style="border: 1px solid gray;"></td>
-                            <td style="border: 1px solid gray;"><b>{{ $totalcount }}</b></td>
-                            <td style="border: 1px solid gray;"><b>23(Avg)</b></td>
-                        </tr>
-                      </tbody>
+                  @php $totalEmp=0; $totalAvg = 0; $i = 0; @endphp
+                      @foreach($departments as $department)
+                      <tr> 
+                          <td style="border: 1px solid gray;">{{ $department->dept_name }}</td>
+                          <td style="border: 1px solid gray;">{{ $depts[$department->dept_name] }}</td>
+                          @php $totalEmp += $depts[$department->dept_name]; @endphp
+                          <td style="border: 1px solid gray;">{{ round($avgAge[$department->dept_name]) }}</td>
+                          @php $totalAvg += round($avgAge[$department->dept_name]); @endphp
+                          @if($avgAge[$department->dept_name] != 0)
+                            @php $i++ @endphp
+                          @endif
+                      </tr>
+                      @endforeach
+                      <tr> 
+                          <th style="border: 1px solid gray; text-align:right;"></th>
+                          <th style="border: 1px solid gray;">{{ $totalEmp }}</th>
+                          <th style="border: 1px solid gray;">{{ round($totalAvg / $i) }} </th>
+                      </tr>
+                    </tbody>
                      </table>
                       <table  class="table table-hover table-responsive" style="border: 2px solid gray;">
                           <thead>

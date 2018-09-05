@@ -3,11 +3,9 @@
 <div class="container">
 <div class="col-md-12">
     <div class="panel panel-default" style="border-color:green;"> 
-                <div class="panel-heading text-center" style="background-color: green;color:white;">Projects To Be Updated
+                <div class="panel-heading text-center" style="background-color: green;color:white;">Unverified Projects
                 @if($totalproject != 0)
-                 <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
-               Count : <b>{{ $totalproject }}</b>
-                <p class="pull-right"> Projects Not Been Updated In 30 Days.</p>
+                    Count : <b>{{ $totalproject }}</b>
                 @endif
 
                     @if(session('ErrorFile'))
@@ -16,36 +14,42 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-md-12">
-                    <form method="GET" action="{{ URL::to('/') }}/Unupdated">
+                    <form method="GET" action="{{ URL::to('/') }}/projectWithNotes">
                         <div class="col-md-2">
-                <label>Choose Ward :</label><br>
-                          <select name="ward" class="form-control" id="ward" onchange="loadsubwards()">
-                              <option value="">--Select--</option>
-                              @if(Auth::user()->group_id != 22)
-                              <option value="All">All</option>
-                              @endif
-                              @foreach($wards as $ward)
-                              <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
-                              @endforeach
-                          </select>
-              </div>
-              <div class="col-md-2">
-                <label>Choose Subward :</label><br>
-                          <select name="subward" class="form-control" id="subward">
-                          </select>
-              </div>
-              <div class="col-md-2">
-                <label></label>
-                <input type="button" value="Select Status" style="background-color:#444743;color:white;"  class="form-control btn btn-primary" data-toggle="modal" data-target="#myModal">
-              </div>
-              <div class="col-md-2">
-                <label></label>
-                <input type="submit" value="Fetch" class="form-control btn btn-primary">
-              </div>
-
-          </form>
-          </div>
-        <br><br><br><br>
+                            <label>Choose Note :</label><br>
+                            <select name="note" class="form-control">
+                                <option value="">--Select--</option>
+                                <option {{ isset($_GET['note']) ? $_GET['note'] == "WRONG NO" ? 'selected': '' : '' }} value="WRONG NO">WRONG NO</option>
+                                <option {{ isset($_GET['note']) ? $_GET['note'] == "PROJECT CLOSED" ? 'selected': '' : '' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Choose Ward :</label><br>
+                            <select name="ward" class="form-control" id="ward" onchange="loadsubwards()">
+                                <option value="">--Select--</option>
+                                @foreach($wards as $ward)
+                                <option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Choose Subward :</label><br>
+                            <select name="subward" class="form-control" id="subward">
+                            @if(isset($_GET['ward']))
+                            <option value="">--Select--</option>
+                            @foreach($subward as $sub)
+                            <option {{ isset($_GET['subward']) ? $_GET['subward'] == $sub->id ? 'selected' : '' : '' }} value="{{ $sub->id }}">{{ $sub->sub_ward_name }}</option>
+                            @endforeach
+                            @endif
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label></label>
+                            <input type="submit" value="Fetch" class="form-control btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            <br><br><br><br>
           <table class="table table-hover">
           <thead>
             <th>Project Id</th>
@@ -87,8 +91,8 @@
           
         </table>
         @if(count($projects) != 0)
-                {{ $projects->appends($_GET)->links() }}
-                @endif
+            {{ $projects->appends($_GET)->links() }}
+        @endif
                 </div>
              
                

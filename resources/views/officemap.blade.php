@@ -56,8 +56,8 @@
         Triangle.setMap(map);
         
         window.onload = function(){
-          var time = "{{ $login->logintime}}";
-          var id = "Auth::user()->group_id";
+          // var time = "{{ $login->logintime}}";
+          // var id = "Auth::user()->group_id";
           var locat = new google.maps.LatLng(latitude,longitude);
           var resultColor =
               google.maps.geometry.poly.containsLocation(locat, bermudaTriangle) ?

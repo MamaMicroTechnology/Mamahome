@@ -131,7 +131,7 @@ Route::post('/adminapprove','mamaController@adminapprove');
 Route::post('/adminreject','mamaController@adminreject');
 Route::post('/logintime','mamaController@logintime');
 Route::Post('/emplate','mamaController@logintime');
-Route::post('/emplogouttime','mamaController@emplogouttime');
+// Route::post('/emplogouttime','mamaController@emplogouttime');
 Route::post('/teamlogin','mamaController@teamlogin');
 Route::post('/teamlate','mamaController@teamlogin');
 Route::post('/teamlogout','mamaController@teamlogout');
@@ -154,7 +154,9 @@ Route::get('/ofcemp','mamaController@officeemp');
 Route::get('/ofcemp/{name}','mamaController@officemap');
 Route::get('/atreject','mamaController@atreject');
 Route::get('/atapprove','mamaController@atapprove');
-
+Route::post('/empreports','mamaController@empreports');
+Route::get('/RandDdashboard','HomeController@getdashboard');
+Route::post('/reportsRandD','HomeController@postdashboard');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -171,6 +173,9 @@ Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
 Route::get('/manustorequery','HomeController@manustorequery');
 
+// Route::get('/starttimer','HomeController@starttimer');
+Route::post('/breaktime','HomeController@breaktime');
+Route::post('/sbreaktime','HomeController@sbreaktime');
 
 
 
@@ -482,6 +487,7 @@ Route::group(['middleware' => ['Buyer']],function(){
     Route::get('/addvendortype','amController@addvendortype');
     Route::get('/salesreport','mamaController@salesreport');
     Route::get('/amviewattendance','HomeController@employeereports');
+    Route::get('/newamviewattendance','HomeController@newemployeereports');
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');
     Route::get('/video','HomeController@trainingVideo');
@@ -631,3 +637,5 @@ Route::get('/auto',"HomeController@auto");
 Route::post('/saveUpdatedManufacturer','mamaController@saveUpdatedManufacturer');
 Route::get('/itdashboard','ItController@getItDashboard');
 Route::post('/reportsForIt','ItController@postItReport');
+Route::get('/unverifiedProjects','HomeController@getUnverifiedProjects');
+Route::get('/projectWithNotes','HomeController@getProjectsBasedOnNotes');
