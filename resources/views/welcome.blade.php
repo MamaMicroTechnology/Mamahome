@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>MAMAHOME</title>
+        <title>MAMA MICRO TECHNOLOGY</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -18,8 +18,9 @@
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
-                height: 100vh;
+                height: 80%;
                 margin: 0;
+                margin-top:5%; 
             }
 
             .full-height {
@@ -63,19 +64,40 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            #login{
+                margin-top:-85%;
+                size: 10px;
+                /*margin-left:-550%;*/
+                
+     border:3px  ;
+     color: white;
+     border-radius:10px;
+    background-color:#939598;
+     margin-right:10px;
+     padding:10px 10px 10px 10px;
+
+            
+          /*  }
+            .content{
+                margin-top: 20%;
+            }*/
+    img{
+        margin-top:10%; 
+    }
+
         </style>
+    
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
+        <center> <img src="LOGO.png" ></center>
+        <div class="flex-center">
+            <div class="content"><br><br>
                 <div class="title m-b-md">
-                    <img src="logo.png" height="60" width="70%">
-                    <br> Mama Micro Technology <br>
                     @if (Route::has('login'))
                     @auth
                     <a href="{{ url('/home') }}" class="btn btn-success btn-lg" role="button">Home</a>
                     @else
-                    <a href="{{ route('login') }}" class="btn btn-success btn-lg" role="button">Login</a>
+                   <center> <a href="{{ route('login') }}"  class="btn btn-defualt btn-sm fa fa-sign-in" id="login" role="button">&nbsp;&nbsp;Login To APS</a></center>
                     @endauth
                     @endif
                 </div>

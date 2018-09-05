@@ -5,11 +5,11 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading" style="height: 50px;">
+                <div class="panel-heading" style="height: 50px;background-color:#42c3f3;color:#ffffffe3;">
                   @if(!$subwards)
                   No Subward assigned
                   @else
-                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                 Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
@@ -115,7 +115,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Are You Interested In Brila Super / Ultratech Products?</td>
+                                 <td>Interested In Brila Super / Ultratech Products?</td>
                                  <td>:</td>
                                  <td>
                                     
@@ -179,11 +179,11 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-                               <tr>
+                               <!-- <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, ETC)</td>
                                    <td>:</td>
                                    <td><input  oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
-                               </tr>
+                               </tr> -->
                                 <tr>
                                    <td>Project Status</td>
                                    <td>:</td>
@@ -1431,7 +1431,7 @@ function validateForm(arg)
 </script>
 
   <!-- Modal -->
-@if(session('Success'))
+@if(session('test'))
   <div class="modal fade" id="Material" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -1440,7 +1440,7 @@ function validateForm(arg)
           <h4 class="modal-title">Success</h4>
         </div>
         <div class="modal-body">
-          <p style="text-align:center;">{!! session('Success') !!}</p>
+          <p style="text-align:center;">{!! session('test') !!}</p>
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>

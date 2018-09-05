@@ -5,12 +5,19 @@
             <form action="{{ URL::to('/') }}/saveManufacturer" onsubmit="return validate()" method="post">
                 {{ csrf_field() }}
                 <div class="col-md-6 col-md-offset-3">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            Manufacturer Details
-                            <button type="button" id="getBtn"  class="btn btn-success btn-sm pull-right" onclick="getLocation()">Get Location</button>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:#939598;">
+                             @if(!$subwards)
+                  No Subward assigned
+                  @else
+                 <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
+                  @endif
+                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
+                            
                         </div>
                         <div class="panel-body">
+               <center> <label id="headingPanel"> Manufacturer Details</label></center><br>
+               <center> <button type="button" id="getBtn"  class="btn btn-success btn-sm " onclick="getLocation()">Get Location</button></center><br>
                             <table class="table table-hover">
                                 <tr>
                                     <td>Manufacturer Type</td>
@@ -24,18 +31,33 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Manufacturer Name</td>
-                                    <td>:</td>
-                                    <td>
-                                        <input required placeholder="Manufacturer Name" type="text" name="name" id="name" class="form-control">
-                                    </td>
-                                </tr>
+                                
                                 <tr>
                                     <td>Plant Name</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Plant Name" type="text" name="plant_name" id="name" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                   <td>Location</td>
+                                   <td>:</td>
+                                   <td id="x">
+                                    <div class="col-sm-6">
+                                      <label>Longitude:</label>
+                                        <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Latitude:</label>
+                                        <input placeholder="Latitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                    </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                    <td>Owner Name</td>
+                                    <td>:</td>
+                                    <td>
+                                        <input required placeholder="Manufacturer Name" type="text" name="name" id="name" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -45,18 +67,10 @@
                                         <input required placeholder="Contact No" onblur="checkPhNo(this.value)" type="text" name="phNo" id="phNo" class="form-control">
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Location</td>
-                                    <td>:</td>
-                                    <td>
-                                        <div class="col-md-6">
-                                            <input readonly required placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input readonly required placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control">
-                                        </div>
-                                    </td>
-                                </tr>
+                
+                                  
+                              
+
                                 <tr>
                                     <td>Address</td>
                                     <td>:</td>
@@ -403,6 +417,34 @@
             }
         });
     }
+</script>
+<script type="text/javascript">
+   function doDate()
+  {
+      var str = "";
+
+      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+      var months = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+      var now = new Date();
+
+      str += "Today Is: " + days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      document.getElementById("currentTime").innerHTML = str;
+  }
+
+  setInterval(doDate, 1000);
+  function validateFileType(){
+    var fileName = document.getElementById("pImage").value;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+          document.getElementById('errormsg').innerHTML = "";
+    }else{
+          document.getElementById('errormsg').innerHTML = "Only <b>'.JPG'</b> , <b>'.JPEG'</b> and <b>'.PNG'</b> files are allowed!";
+          document.getElementById("pImage").value = '';
+          return false;
+         }   
+  }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('Success'))

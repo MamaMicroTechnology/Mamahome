@@ -20,6 +20,14 @@ Route::get('/', function () {
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
 Route::get('/ticketchat','HomeController@chat');
+ Route::get('/assign_manufacturer','HomeController@manufacturerwise');
+ Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
+ Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
+Route::post('/manuinputdata','AssignManufacturersController@inputdata');
+Route::get('/menqedit','AssignManufacturersController@editEnq');
+
+
+
 
 
 // chatting
@@ -85,6 +93,8 @@ Route::get('/requirements','HomeController@inputview');
 Route::get('/getSubCat','HomeController@getSubCat');
 Route::get('/getPrice','HomeController@getPrice');
 Route::get('/inputview','HomeController@inputview');
+Route::get('/manuenquiry','AssignManufacturersController@manuenquiry');
+
 Route::get('/getProjects','HomeController@getProjects');
 Route::get('/showThisProject','HomeController@showProjectDetails');
 
@@ -161,6 +171,8 @@ Route::get('/enquirywise','HomeController@enqwise');
 Route::get('/storedetails','HomeController@storedetails');
 Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
+Route::get('/manustorequery','HomeController@manustorequery');
+
 // Route::get('/starttimer','HomeController@starttimer');
 Route::post('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
@@ -263,6 +275,7 @@ Route::post('/confirmUser','mamaController@confirmUser');
 Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
 Route::post('/confirmedProject','HomeController@confirmedProject');
+Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 
@@ -359,6 +372,7 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::get('/assign_number','HomeController@numberwise');
     Route::post('/storenumber','HomeController@storenumber');
     Route::post('/storecount','HomeController@storecount');
+    Route::get('/assign_manufacturer','HomeController@manufacturerwise');
 
 
     

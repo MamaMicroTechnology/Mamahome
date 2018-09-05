@@ -709,15 +709,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-       
-        
-
-
-
-
-
-        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
-        return back()->with('Success',$text);
+      $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
+        return back()->with('test',$text);
     }
     public function updateProject($id, Request $request)
     {
@@ -897,6 +890,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'road_name' => $request->rName,
             'road_width' => $request->rWidth,
             'project_status' => $statuses,
+            'brilaultra'=>$request->brila,
             'basement' => $basement,
             'ground' => $ground,
             'length' => $length,
@@ -1735,6 +1729,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $manufacturer->finance_contact = $request->financeContact;
         $manufacturer->quality_department = $request->qualityDept;
         $manufacturer->save();
+       
         return back()->with('Success','Manufacturer details added successfully');
     }
     public function editsubwardimage(Request $request){

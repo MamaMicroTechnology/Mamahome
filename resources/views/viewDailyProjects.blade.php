@@ -75,7 +75,7 @@
                             <td>{{ $details->interested_in_doorsandwindows }}</td>
                         </tr>
                         <tr>
-                            <td><b>Are You Interested In Brila Super / Ultratech Products? : </b></td>
+                            <td><b>Interested In Brila Super / Ultratech Products? : </b></td>
                             <td>{{ $details->brilaultra }}</td>
                         </tr>
                          <tr>
@@ -276,9 +276,9 @@
             <div class="panel-body">
                 <table class="table table-hover">
                     <thead>
-                        <th>Consultant Name</th>
-                       <th>Consultant Contact</th>
-                       <th>Consultant Email</th>
+                        <th> Consultant Name</th>
+                       <th> Consultant Contact</th>
+                       <th> Consultant Email</th>
                     </thead>    
                     <tbody>
                         <tr>
