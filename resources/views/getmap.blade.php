@@ -66,7 +66,6 @@
     var created = new Array();
     var updated = new Array();
     var status = new Array();
-    var myLat = 0, myLon = 0;
     var newpath = [];
     var snaproad = [];
     var apiKey = "AIzaSyDUmSbzCrMt37QdavPl00t_Bx9jkL04w0Y";
@@ -75,7 +74,7 @@
     var col = "{{ $subwardMap->color }}";
     @else
     var latlng = "";
-    var col = "456369";
+    var col = "456369"
     @endif
     @if($storoads != null)
         var lists = "{{$storoads->lat_long}}";
@@ -90,8 +89,6 @@
     // polygon
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
-          myLat += parseFloat(places[i]);
-          myLon += parseFloat(places[i+1]);
     }
     @if($projects != null)
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -238,18 +235,7 @@ function drawSnappedPolyline() {
           strokeOpacity: 1,
           strokeWeight: 2,
           fillColor: '#'+col,
-          fillOpacity: 0.4,
-          title: "Ward",
-          labelInBackground: true,
-        });
-
-        label: new MapLabel({
-            text: "{{ $ward->sub_ward_name }}",
-            position: new google.maps.LatLng(myLat, myLon), // the lat/lng of location of the label.
-            fontSize: 17,
-            fontColor: "#000",
-            strokeColor: "#fff",
-            map: map   // The map object to place the label on
+          fillOpacity: 0.4
         });
     subward.setMap(map);
     }
