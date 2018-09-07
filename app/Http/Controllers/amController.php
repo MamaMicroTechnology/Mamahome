@@ -38,6 +38,7 @@ use App\Message;
 use App\training;
 use App\MamahomeAsset;
 use Carbon\Carbon;
+use App\FieldLogin;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -58,10 +59,15 @@ class amController extends Controller
     }
     public function getAMDashboard(){
         $prices = CategoryPrice::all();
-         $loggedInUsers = attendance::where('date',date('Y-m-d'))
-                        ->join('users','empattendance.empId','users.employeeId')
+         // $loggedInUsers = attendance::where('date',date('Y-m-d'))
+         //                ->join('users','empattendance.empId','users.employeeId')
+         //                ->where('users.id','!=',31)
+         //                ->select('users.name','empattendance.*')
+         //                ->get();
+         $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
+                        ->join('users','field_login.user_id','users.id')
                         ->where('users.id','!=',31)
-                        ->select('users.name','empattendance.*')
+                        ->select('users.name','field_login.*','users.employeeId','users.group_id')
                         ->get();
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')

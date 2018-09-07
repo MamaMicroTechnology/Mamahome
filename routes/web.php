@@ -157,6 +157,7 @@ Route::get('/atapprove','mamaController@atapprove');
 Route::post('/empreports','mamaController@empreports');
 Route::get('/RandDdashboard','HomeController@getdashboard');
 Route::post('/reportsRandD','HomeController@postdashboard');
+Route::get('/breakreport','mamaController@breakreport');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -174,6 +175,7 @@ Route::get('/storequery','HomeController@storequery');
 Route::get('/manustorequery','HomeController@manustorequery');
 
 // Route::get('/starttimer','HomeController@starttimer');
+Route::get('/starttimer','HomeController@starttimer');
 Route::post('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
 

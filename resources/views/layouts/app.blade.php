@@ -438,13 +438,14 @@ div#calendar{
                         <li style="padding-top: 10px;">
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
+                        @if(Auth::user()->department_id != 4)
                        <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
                        </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report" >Logout</button>
                        </li>
-                       
+                       @endif
                         @endif
                     </ul>
                 
@@ -826,6 +827,7 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
         </div> 
+        <a href="{{ URL::to('/') }}/breaktimes">Break Times</a>
     </div>
         @endif
         @endif
