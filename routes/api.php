@@ -61,5 +61,7 @@ Route::post('/recordtime','TokenController@recordtime');
 Route::post('/flogout','TokenController@fieldlogout');
 Route::get('/gettime','TokenController@gettime');
 Route::get('/req','TokenController@getreq');
+Route::post('/react','TokenController@data');
+
 
 

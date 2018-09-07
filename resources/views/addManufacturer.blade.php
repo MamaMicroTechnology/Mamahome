@@ -231,7 +231,197 @@
                                         <input type="number" min="1" name="moq" id="moq2" placeholder="MOQ For Free Pumping (CUM)" class="form-control">
                                     </td>
                                 </tr>
+
+
+
+
                             </table>
+                            <div class="tab"  id="second" style="overflow: hidden;
+    border: 1px solid #ccc;
+    background-color:#42c3f3;
+   ">
+  <button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;"  class="tablinks" onclick="openCity(event, 'owner')">Owner Details</button><br>
+      <button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'contractor')">Manager Details  </button><br>
+  <button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'consultant')">Sales Contact Details</button><br>
+<!--   <button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'site')">Site Engineer Details</button><br> -->
+  <button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
+<!-- 
+<button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
+</div> -->
+</div>
+
+<div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;">
+    <br>
+  <center><label>Owner Details</label></center>
+  <br>
+                           <table class="table" border="1">
+                               <tr>
+                                   <td>Owner Name</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('oName') }}" type="text" placeholder="Owner Name" class="form-control input-sm" name="oName" id="oName"></td>
+                               </tr>
+                               <tr>
+                                   <td>Owner Email</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('oEmail') }}" onblur="checkmail('oEmail')" placeholder="Owner Email" type="email"  class="form-control input-sm" name="oEmail" id="oEmail"></td>
+                               </tr>
+                               <tr>
+                                   <td>Owner Contact No 1.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('oContact') }}" onblur="checklength('oContact');" onkeyup="check('oContact','1')" maxlength="10"  minlength="10" placeholder="Owner Contact No 1." type="text" class="form-control input-sm" name="oContact" id="oContact"></td>
+                               </tr>
+                                <tr>
+                                   <td>Owner Contact No 2.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('oContact') }}" onblur="checklength('oContact');" onkeyup="check('oContact','1')" maxlength="10"  minlength="10" placeholder="Owner Contact No 2." type="text" class="form-control input-sm" name="oContact1" id="oContact"></td>
+                               </tr>
+                           </table>
+</div>
+<div id="contractor" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Manager Details</label></center>
+   <br>
+                           <table class="table"  border="1">
+                               <tr>
+                                   <td>Manager Name</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('cName') }}" type="text" placeholder="Manager Name" class="form-control input-sm" name="cName" id="cName"></td>
+                               </tr>
+                               <tr>
+                                   <td>Manager Email</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('cEmail') }}" placeholder="Manager Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
+                               </tr>
+                               <tr>
+                                   <td>Manager Contact No 1.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('cContact') }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone','1')" placeholder="Manager Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
+                               </tr>
+                                <tr>
+                                   <td>Manager Contact No 2.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('cContact') }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone','1')" placeholder="Manager Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact1"></td>
+                               </tr>
+                           </table>
+</div>
+
+<div id="consultant" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+  <center><label>Sales Contact Details</label></center><br>
+                           <table class="table"  border="1">
+                               <tr>
+                                   <td>Sales Contact Name</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('coName') }}" type="text" placeholder="Sales Contact Name" class="form-control input-sm" name="coName"></td>
+                               </tr>
+                               <tr>
+                                   <td>Sales Contact Email</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('coEmail') }}" placeholder="Sales Contact Email" type="email" class="form-control input-sm" name="coEmail" id="coEmail" onblur="checkmail('coEmail')"></td>
+                               </tr>
+                               <tr>
+                                   <td>Sales Contact Contact No 1.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('coContact') }}" onblur="checklength('coContact');" placeholder="Sales Contact Contact No." type="text" class="form-control input-sm" name="coContact" maxlength="10" id="coContact" onkeyup="check('coContact','1')"></td>
+                               </tr>
+                               <tr>
+                                   <td>Sales Contact Contact No 2.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('coContact') }}" onblur="checklength('coContact');" placeholder="Sales Contact Contact No." type="text" class="form-control input-sm" name="coContact1" maxlength="10" id="coContact" onkeyup="check('coContact','1')"></td>
+                               </tr>
+                           </table>
+
+</div>
+<div id="procurement" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Procurement Details</label></center><br>
+                           <table class="table"  border="1">
+                               <tr>
+                                   <td>Procurement Name</td>
+                                   <td>:</td>
+                                   <td><input id="prName" required type="text" placeholder="Procurement Name" class="form-control input-sm" name="prName" value="{{ old('prName') }}"></td>
+                               </tr>
+                               <tr>
+                                   <td>Procurement Email</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('pEmail') }}" placeholder="Procurement Email" type="email" class="form-control input-sm" name="pEmail" id="pEmail" onblur="checkmail('pEmail')" ></td>
+                               </tr>
+                               <tr>
+                                   <td>Procurement Contact No 1.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('pContact') }}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                               </tr>
+                                <tr>
+                                   <td>Procurement Contact No 2.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('pContact') }}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                               </tr>
+                           </table>
+</div>
+
+                        <table class="table table-responsive" >
+                          <tr>
+                            <td>Remarks</td>
+                            <td>:</td>
+                            <td>
+                          <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)"  name="remarks"></textarea>
+                          </td>
+                        </tr>
+                        </table>
+
                         </div>
                         <div class="panel-footer">
                             <button type="submit" class="btn btn-success form-control">Save</button>
@@ -239,6 +429,29 @@
                     </div>
                 </div>
             </form>
+
+
+
+<script type="text/javascript">
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "None";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+     
+</script>
+
+
+
         <script>
             function myFunction() {
                 var table = document.getElementById("types");

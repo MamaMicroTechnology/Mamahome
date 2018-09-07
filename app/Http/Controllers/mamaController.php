@@ -63,6 +63,10 @@ use App\FieldLogin;
 use Carbon\Carbon;
 use App\TrackLocation;
 use App\Report;
+use App\Salescontact_Details;
+use App\Manager_Deatils;
+use App\Mprocurement_Details;
+use App\Mowner_Deatils;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1728,8 +1732,13 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $manufacturer->sales_contact = $request->salesContact;
         $manufacturer->finance_contact = $request->financeContact;
         $manufacturer->quality_department = $request->qualityDept;
+        
+
         $manufacturer->save();
+           
        
+
+
         return back()->with('Success','Manufacturer details added successfully');
     }
     public function editsubwardimage(Request $request){
@@ -2109,7 +2118,45 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->type = $request->manufacturing_type;
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
+        $manufacturer->remarks = $request->remarks;
+
         $manufacturer->save();
+        $sales = new Salescontact_Details;
+       $sales->manu_id =  $manufacturer->id;
+       $sales->name = $request->coName;
+       $sales->email = $request->coEmail;
+       $sales->contact = $request->coContact;
+       $sales->contact1 = $request->coContact1;
+
+       $sales->save();
+
+       $manager = new Manager_Deatils;
+       $manager->manu_id =  $manufacturer->id;
+       $manager->name = $request->cName;
+       $manager->email = $request->cEmail;
+       $manager->contact = $request->cContact;
+       $manager->contact1 = $request->cContact1;
+
+       $manager->save();
+    
+       $proc = new Mprocurement_Details;
+       $proc->manu_id =  $manufacturer->id;
+       $proc->name = $request->prName;
+       $proc->email = $request->pEmail;
+       $proc->contact = $request->prPhone;
+       $proc->contact1 = $request->prPhone1;
+
+       $proc->save();
+
+        $owner = new Mowner_Deatils;
+       $owner->manu_id =  $manufacturer->id;
+       $owner->name = $request->oName;
+       $owner->email = $request->oEmail;
+       $owner->contact = $request->oContact;
+       $owner->contact1 = $request->oContact1;
+
+       $owner->save();
+
         
         if($request->type == "Blocks"){
             // saving product details
@@ -2732,6 +2779,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->address = $request->address;
         $manufacturer->contact_no = $request->phNo;
         $manufacturer->capacity = $request->capacity;
+        $manufacturer->remarks = $request->remarks;
         $manufacturer->cement_requirement = $request->cement_requirement;
         $manufacturer->cement_requirement_measurement = $request->cement_required;
         $manufacturer->prefered_cement_brand = $request->brand;
@@ -2742,6 +2790,43 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
         $manufacturer->save();
+       
+        Salescontact_Details::where("manu_id",$request->id)->update([
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->coName,
+       'email' => $request->coEmail,
+       'contact' => $request->coContact,
+       'contact1' => $request->coContact1
+
+        ]);
+       Manager_Deatils::where("manu_id",$request->id)->update([
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->cName,
+       'email' => $request->cEmail,
+       'contact' => $request->cContact,
+       'contact1' => $request->cContact1
+
+       ]);
+
+     Mprocurement_Details::where("manu_id",$request->id)->update([
+
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->prName,
+       'email' => $request->pEmail,
+       'contact' => $request->prPhone,
+       'contact1' => $request->prPhone1
+
+
+     ]);
+Mowner_Deatils::where("manu_id",$request->id)->update([
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->oName,
+       'email' => $request->oEmail,
+       'contact'=> $request->oContact,
+       'contact1'=> $request->oContact1
+
+       ]);
+
         
         if($request->type == "Blocks"){
             // saving product details
