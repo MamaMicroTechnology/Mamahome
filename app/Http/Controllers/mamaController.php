@@ -488,7 +488,12 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
+        $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }
 
+     
         $bType = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
@@ -587,6 +592,8 @@ class mamaController extends Controller
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
           $projectdetails->brilaultra=$request->brila;
+        $projectdetails->res = $btype;
+
 
           $projectdetails->save();
         
@@ -889,6 +896,14 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             }
         }
         $projectBeforeUpdate = ProjectDetails::where('project_id',$id)->first();
+
+       $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }else{
+           $btype = "null";  
+        }
+
        ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
@@ -920,6 +935,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
              'plotsize' => $size,
             'length'=> $length,
             'breadth' => $breadth,
+            'res' =>$btype,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);

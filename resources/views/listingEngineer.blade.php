@@ -68,10 +68,26 @@
                                  <td>Construction Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
+                                    <label required class="checkbox-inline" ><input  id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> <br>
+                          <div id="autoUpdate" class="autoUpdate" style="display:none;">
+                                 <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
+                                    <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                        </div>
                                  </td>
                                </tr>
+                               <script type="text/javascript">
+                                 $(document).ready(function(){
+                                      $('#constructionType1').change(function(){
+                                      if(this.checked)
+                                      $('#autoUpdate').fadeIn('slow');
+                                      else
+                                      $('#autoUpdate').fadeOut('slow');
+
+                                      });
+                                      });
+                               </script>
                                <tr>
                                  <td>Interested In RMC ?</td>
                                  <td>:</td>
@@ -1165,7 +1181,6 @@ function openCity(evt, cityName) {
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }
-
           for(var i = base; i>0; i--){
             opts += "<option value='Base "+i+"'>Base "+i+"</option>";
           }

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
      
-      <table class="table">
+      <table class="table" ><center><span style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">No Of project :&nbsp;&nbsp;{{$projectlist1}}</span></center>
         <thead>
           <th>Project Name</th>
           <th>Project Id</th>
@@ -36,8 +36,8 @@
 
               @else
                 <div class="btn-group">
-               <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-success btn-xs">Edit</a>
-                <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Add Enquiry</a>
+               <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Edit</a>
+                <!-- <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Add Enquiry</a> -->
               </div>
                 
               @endif
