@@ -91,13 +91,13 @@
         @endif
 
          
-        <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
-          <tbody >
+        <!-- <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody > -->
                 <!-- <tr>
                   <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
                 </tr> -->
-                <tr>
+               <!--  <tr>
                   <td style="border: 1px solid gray;"> <label>TOtal number of projects in {{$subwards->sub_ward_name}}</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $totalprojects}}</strong></td>
                 </tr>
@@ -122,7 +122,7 @@
                   <td style="border: 1px solid gray;">{{ $bal }}<strong><strong></td>
                 </tr>
           </tbody>
-        </table>
+        </table> -->
         @else
         <div style="text-align: center;">
           <div class="col-md-6 col-md-offset-3">
