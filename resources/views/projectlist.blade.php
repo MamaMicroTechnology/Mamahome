@@ -40,7 +40,7 @@
               @else
                 <div class="btn-group">
                <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Edit</a>
-                <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Add Enquiry</a>
+                <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-success btn-xs">Add Enquiry</a>
               </div>
                 
               @endif
