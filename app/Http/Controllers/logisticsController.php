@@ -38,6 +38,9 @@ use App\SiteAddress;
 use App\OwnerDetails;
 use App\Payment;
 use App\Deposit;
+use App\FieldLogin;
+
+
 class logisticsController extends Controller
 {
     public function __construct()
@@ -88,6 +91,9 @@ class logisticsController extends Controller
     
     public function orders(Request $request)
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $view = Order::orderBy('project_id','DESC')
                 ->leftJoin('users','orders.delivery_boy','=','users.id')
                 ->leftJoin('delivery_details','delivery_details.order_id','orders.id')
@@ -102,7 +108,7 @@ class logisticsController extends Controller
         $payment = Payment::all();
         $deposit = Deposit::all();
         $zone = Zone::all();
-        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment,'deposit'=>$deposit,'zone'=>$zone]);
+        return view('logistics.orders',['view' => $view,'count' => $countview,'payment'=>$payment,'deposit'=>$deposit,'zone'=>$zone,'log'=>$log,'log1'=>$log1]);
     }
     
     public function showProjectDetails(Request $id)

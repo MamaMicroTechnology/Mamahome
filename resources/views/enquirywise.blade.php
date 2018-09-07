@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.leheader')
 @section('content')
 <div class="col-md-12" >
         <div class="panel panel-primary"  style="overflow-x:scroll">
