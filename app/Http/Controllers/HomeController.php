@@ -2665,8 +2665,8 @@ date_default_timezone_set("Asia/Kolkata");
             ->where('sub_ward_id',$assignment)
                 ->count();
         }
-        return view('projectlist',['projectlist'=>$projectlist,'projectlist1'=>$projectlist1,'pageName'=>"Requirements"]);
-        return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements",'log'=>$log,'log1'=>$log1]);
+        return view('projectlist',['projectlist'=>$projectlist,'projectlist1'=>$projectlist1,'pageName'=>"Requirements",'log'=>$log,'log1'=>$log1]);
+        
     }
     public function getRequirements(Request $request)
     {
