@@ -1,10 +1,52 @@
-@extends('layouts.app')
+@extends('layouts.leheader')
 
 @section('content')
-
-<div class="col-md-4 col-md-offset-4">
+<div class="container">
+<div class="row">
+<div class="col-md-4">
 	<div class="panel panel-default">
-		<div class="panel-heading">Select</div>
+		<div class="panel-heading">Projects</div>
+		<div class="panel-body">
+			<table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody >
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"> <label>TOtal number of projects in {{$subwards->sub_ward_name}}</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $totalprojects}}</strong></td>
+                </tr>
+                <tr>  
+                  <td style="border: 1px solid gray;"><label>Genuine Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $genuineprojects }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Unverified Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $unverifiedprojects }}</strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Fake Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $fakeprojects }}<strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>Last 30 Days Updated Projects</label></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $update  }}<strong></td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid gray;"><label>remaining Projects</label></td>
+                  <td style="border: 1px solid gray;">{{ $bal }}<strong><strong></td>
+                </tr>
+          </tbody>
+        </table>
+	
+		</div>
+		
+	</div>
+</div>
+<div class="col-md-4" style="margin-left: 20%;">
+	<div class="panel panel-default">
+		<div class="panel-heading">Select<span class="pull-right">{{$gc}}</span></div>
 		<div class="panel-body">
 			<ul class="list-group">
 				<li class="list-group-item">
@@ -23,5 +65,7 @@
 		</div>
 		
 	</div>
+</div>
+</div>
 </div>
 @endsection

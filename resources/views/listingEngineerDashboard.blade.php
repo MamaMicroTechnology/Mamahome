@@ -28,7 +28,7 @@
         <!-- <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br><!--  -->
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Update Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Projects</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
         <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br> -->
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
@@ -37,7 +37,7 @@
          
         @elseif(Auth::user()->group_id == 11 && Auth::user()->department_id == 2)
           <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountlistingEngineer">Add New Project</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Update Project</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountroads">Projects</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
          <!-- <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br> -->
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
@@ -91,13 +91,13 @@
         @endif
 
          
-        <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
-          <tbody >
+        <!-- <table class="table table-responsive table-striped table-hover" style="border: 2px solid gray;">
+          <tbody > -->
                 <!-- <tr>
                   <td style="border: 1px solid gray;"> <label>Total Number of Projects Listed till nOw</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $numbercount }}</strong></td>
                 </tr> -->
-                <tr>
+               <!--  <tr>
                   <td style="border: 1px solid gray;"> <label>TOtal number of projects in {{$subwards->sub_ward_name}}</label></td>
                   <td style="border: 1px solid gray;"><strong>{{ $totalprojects}}</strong></td>
                 </tr>
@@ -122,7 +122,7 @@
                   <td style="border: 1px solid gray;">{{ $bal }}<strong><strong></td>
                 </tr>
           </tbody>
-        </table>
+        </table> -->
         @else
         <div style="text-align: center;">
           <div class="col-md-6 col-md-offset-3">

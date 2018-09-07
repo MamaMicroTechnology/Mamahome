@@ -488,7 +488,12 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
+        $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }
 
+     
         $bType = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
@@ -587,6 +592,8 @@ class mamaController extends Controller
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
           $projectdetails->brilaultra=$request->brila;
+        $projectdetails->res = $btype;
+
 
           $projectdetails->save();
         
@@ -889,6 +896,14 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             }
         }
         $projectBeforeUpdate = ProjectDetails::where('project_id',$id)->first();
+
+       $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }else{
+           $btype = "null";  
+        }
+
        ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
@@ -920,6 +935,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
              'plotsize' => $size,
             'length'=> $length,
             'breadth' => $breadth,
+            'res' =>$btype,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
@@ -2418,6 +2434,24 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ->pluck('logindate')->toarray();
         return view('adminlatelogin',['users'=>$users,'dates'=>$dates]);
     }
+    public function hrlatelogins(Request $request){
+        // $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        // $userIds = explode(",", $tl);
+        $dept = [1,2,3,4,6];
+        $thiMonth = date('Y-m');
+        $userIds = User::whereIn('department_id',$dept)->pluck('id');
+        $users = FieldLogin::whereIn('field_login.user_id',$userIds)
+        ->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->where('remark','!='," ")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')
+        ->get();
+        $dates = FieldLogin::where('field_login.created_at','LIKE',$thiMonth."%")
+        ->where('remark','!='," ")
+        ->distinct()
+        ->pluck('logindate')->toarray();
+        return view('hrlatelogins',['users'=>$users,'dates'=>$dates]);
+    }
     public function logouttime(Request $request){
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
         if(count($check)== 0){
@@ -2489,34 +2523,64 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function reject(Request $request)
     {  
         FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
-            'tlapproval' => Auth::user()->name."has Rejected"
+            'tlapproval' => Auth::user()->name." has Rejected"
         ]);
         return back()->with('error',"Permission Rejected.");
     }
     public function adminapprove(Request $request)
     {  
+       
         $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
         $grp = [6,11];
         $user = user::where('id',$x)->whereIn('group_id',$grp)->pluck('id')->first();
         if($user != null){
         FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
             'logintime' => "07.30 AM",
-            'adminapproval' => "Admin Approved"
+            'adminapproval' => Auth::user()->name. " has Approved"
         ]);
         }
         else{
             FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
             'logintime' => "08.00 AM",
-            'adminapproval' => "Admin Approved"
+            'adminapproval' => Auth::user()->name. " has Approved"
         ]);
 
         }
+
         return back()->with('Success',"Approved Successfully!");
     }
     public function adminreject(Request $request)
     {  
         FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
-            'adminapproval' => "Admin Rejected"
+            'adminapproval' => Auth::user()->name. " has Rejected"
+        ]);
+        return back()->with('error',"Permission Rejected.");
+    }
+    public function hrapprove(Request $request)
+    {  
+       
+        $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
+        $grp = [6,11];
+        $user = user::where('id',$x)->whereIn('group_id',$grp)->pluck('id')->first();
+        if($user != null){
+        FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+           
+            'hrapproval' => Auth::user()->name. " has Approved"
+        ]);
+        }
+        else{
+            FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            
+            'hrapproval' => Auth::user()->name. " has Approved"
+        ]);
+
+        }
+        return back()->with('Success',"Approved Successfully!");
+    }
+    public function hrreject(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            'hrapproval' => Auth::user()->name." has Rejected"
         ]);
         return back()->with('error',"Permission Rejected.");
     }
@@ -2539,7 +2603,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         if( $now > $start && count($check)== 0 && $remark == null){
 
             
-            $text = " <form action='emplate?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+            $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
@@ -2551,12 +2615,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $remark;
-                        $field->latitude = $request->latitude;
-                        $field->longitude = $request->longitude;
-                        $field->address = $request->address;
+                        $field->latitude = "";
+                        $field->longitude = "";
+                        $field->address = "";
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
+                        $field->hrapproval = "Pending";
                         $field->save();
 
 

@@ -1,10 +1,12 @@
+
 @extends('layouts.app')
 @section('content')
-
     <div class="col-md-12">
         <div class="panel panel-primary">
             <div class="panel-heading text-center" ><b>Late Logins</b></div>
-            <div class ="panel-body"> 
+            <div class ="panel-body">
+
+                       
                        <table class="table table-hover">
                            <thead>
                                <th>Date</th> 
@@ -13,7 +15,7 @@
                                <th>Logout Time</th>
                                <th>Late Login Remark</th>
                                <th>Team Leader Approval</th>
-                               <th>Human Resource Approval</th>
+                               <th>Admin Approval</th>
                                <th>Action</th>
                            </thead>
                             <tbody>
@@ -24,13 +26,13 @@
                                     <td>{{ $user->name}}</td>
                                     <td>{{ $user->logintime}}</td>
                                     <td>{{ $user->logout != null ? $user->logout  : " "}}</td>
-                                    <td style="width: 30%">{{  $user->remark}}</td>
+                                    <td style="width:30%">{{ $user->remark}}</td>
                                     <td>{{ $user->tlapproval}}</td>
-                                     <td> {{ $user->hrapproval }} </td>
-                                        @if( $user->adminapproval == "Pending" )
+                                    <td>{{ $user->adminapproval}}</td>
+                                        @if( $user->hrapproval == "Pending" )
                                         <td>
                                         <div class="btn-group">
-                                            <form action="{{ URL::to('/') }}/adminapprove" method="post">
+                                            <form action="{{ URL::to('/') }}/hrapprove" method="post">
                                                  {{ csrf_field() }}
                                             <input type="hidden" name="id" value="{{ $user->user_id }}">
                                              <input type="hidden" name="logindate" value="{{ $user->logindate }}">
@@ -38,7 +40,7 @@
                                                 Approve
                                             </button>
                                             </form>
-                                            <form action="{{ URL::to('/') }}/adminreject" method="post">
+                                            <form action="{{ URL::to('/') }}/hrreject" method="post">
                                                  {{ csrf_field() }}
                                             <input type="hidden" name="id" value="{{ $user->user_id }}">
                                             <input type="hidden" name="logindate" value="{{ $user->logindate }}">
@@ -48,9 +50,8 @@
                                         </form>
                                         </div>
                                         </td>
-
                                         @else
-                                        <td style="padding-right :60px;">{{ $user->adminapproval}}</td>
+                                        <td style="padding-right :60px;">{{ $user->hrapproval}}</td>
                                         @endif
 
                                 </tr>
@@ -60,7 +61,6 @@
             </div>
         </div>
     </div>
-
 @if(session('Success'))
 <script>
     swal("success","{{ session('Success') }}","success");

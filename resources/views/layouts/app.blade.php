@@ -660,7 +660,7 @@ function myTimer() {
     <!-- <a href="{{ URL::to('/employeereports') }}">Attendance</a> -->
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
-   <a href="{{ URL::to('/letracking') }}">Tracking</a>
+  <!--  <a href="{{ URL::to('/letracking') }}">Tracking</a> -->
     <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
     <div id="manufacturer_details" class="collapse">
        <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
@@ -707,7 +707,7 @@ function myTimer() {
      <a href="#" data-toggle="collapse" data-target="#operation">Operation &#x21F2;</a>
         <div id="operation" class="collapse">
               <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
-              <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a>
+             <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
                <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
                <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
                <a href="{{ URL::to('/') }}/projectWithNotes">&nbsp;&nbsp;&nbsp; -Projects With Notes</a>
@@ -827,16 +827,17 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
         </div> 
-        <a href="{{ URL::to('/') }}/breaktimes">Break Times</a>
+         <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
+       <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
     </div>
         @endif
         @endif
                 
                 <form method="POST"  action="{{ URL::to('/') }}/logintime" >
                   {{ csrf_field() }}
-                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
+                                   <!--  <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
                                     <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeapp">
-                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
+                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
                         <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
                 </form> 
                  <!-- <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
@@ -981,74 +982,7 @@ function myTimer() {
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
   function submitapp(){
-      // document.getElementById("getBtn").className = "hidden";
-      console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayappLocation,
-        displayappError,
-
-        { 
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-      //console.log("Exiting getLocation()");
-  }
-    
-    function displayappLocation(position){
-      //console.log("Entering displayCurrentLocation");
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      document.getElementById("longitudeapp").value = longitude;
-      document.getElementById("latitudeapp").value  = latitude;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
-
-      getAddressFromLatLangapp(latitude,longitude);
-      //console.log("Exiting displayCurrentLocation");
-    }
-   
-  function  displayappError(error){
-    console.log("Entering ConsultantLocator.displayappError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLangapp(lat,lng){
-    //console.log("Entering getAddressFromLatLangapp()");
-   
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-   
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        // console.log(results);
-
-        document.getElementById("addressapp").value = results[0].formatted_address;
-       
         document.getElementById("login").form.submit();
-
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-    //console.log("Entering getAddressFromLatLangapp()");
   }
   
 </script>

@@ -1,9 +1,13 @@
 <?php
   $user = Auth::user()->group_id;
+  if(Auth::user()->group_id != 6){
   $ext = ($user == 4? "layouts.amheader":"layouts.app");
+  }
+  else{
+    $ext = "layouts.leheader";
+  }
 ?>
 @extends($ext)
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -109,7 +113,28 @@
                                     </label>
                                     <label required class="checkbox-inline">
                                       <input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
-                                    </label>
+                                    </label><br>
+                                  <div id="autoUpdate" class="autoUpdate" style="display:none;">
+                                 <label required class="checkbox-inline" style="color:#42c3f3;"><input  id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
+
+                                    <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
+
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2"  name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                        </div>
+                                 </td>
+                               </tr>
+                               <script type="text/javascript">
+                                 $(document).ready(function(){
+                                      $('#constructionType1').change(function(){
+                                      if(this.checked)
+                                      $('#autoUpdate').fadeIn('slow');
+                                      else
+                                      $('#autoUpdate').fadeOut('slow');
+
+                                      });
+                                      });
+                               </script>
+                               <tr>
                                  </td>
                                </tr>
                                <tr>
