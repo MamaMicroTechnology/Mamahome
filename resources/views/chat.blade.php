@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.leheader')
 @section('content')
 
 <div class="embed-responsive embed-responsive-16by9">
