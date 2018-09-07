@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layouts.leheader')
 @section('content')
 
 <div class="col-md-12 col-sm-12">

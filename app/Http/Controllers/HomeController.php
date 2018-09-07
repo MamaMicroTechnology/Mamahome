@@ -147,6 +147,9 @@ class HomeController extends Controller
     }
     public function inputview(Request $request)
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $category = Category::all();
         $brand = brand::leftjoin('category','category.id','=','brands.category_id')
                 ->select('brand')->get();
@@ -158,7 +161,7 @@ class HomeController extends Controller
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
+        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'log'=>$log,'log1'=>$log1]);
     }
 
     public function inputdata(Request $request)
@@ -1895,9 +1898,12 @@ class HomeController extends Controller
 
     public function listingEngineer()
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('listingEngineer',['subwards'=>$subwards]);
+        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1]);
     }
     public function leDashboard()
     {
@@ -2121,6 +2127,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     }
     public function editProject(Request $request)
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $projectdetails = ProjectDetails::where('project_id',$request->projectId)->first();
         $projectimages = ProjectImage::where('project_id',$request->projectId)->get();
         $projectupdate = ProjectImage::where('project_id',$request->projectId)->pluck('created_at')->last();
@@ -2139,7 +2148,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                     'projectimages'=>$projectimages,
                     'projectward'=>$projectward,
                     'projectupdate'=>$projectupdate,
-                    'roomtypes'=>$roomtypes
+                    'roomtypes'=>$roomtypes,
+                    'log'=>$log,
+                    'log1'=>$log1
 
                 ]);
     }
@@ -2157,7 +2168,9 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
     }
     public function getRoads()
     {
-
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
        $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         // $roads = ProjectDetails::where('sub_ward_id',$assignment)->select('road_name')->groupby('road_name')->paginate(10);
 
@@ -2263,6 +2276,8 @@ $fake1 = ProjectDetails::where('quality','Fake')
             'unverifiedprojects'=>$unverifiedprojects,
             'fakeprojects'=>$fakeprojects,
             'bal'=>$bal,'update'=>$update,
+             'log'=>$log,
+             'log1'=>$log1,
                   'gc'=>$gc]);
 
 
@@ -2289,6 +2304,9 @@ $fake1 = ProjectDetails::where('quality','Fake')
 
     public function getMyReports(Request $request)
     {
+         $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $now = date('H:i:s');
         $currentURL = url()->current();;
         $display = "";
@@ -2360,7 +2378,9 @@ $fake1 = ProjectDetails::where('quality','Fake')
                 'display'=>$display,
                 'loginTimes'=>$loginTimes,
                 'projectCount'=>$projectCount,
-                'now'=>$now
+                'now'=>$now,
+                'log'=>$log,
+                'log1'=>$log1
             ]);
         }else{
             $projectCount = count(ProjectDetails::where('listing_engineer_id',Auth::user()->id)
@@ -2429,7 +2449,9 @@ $fake1 = ProjectDetails::where('quality','Fake')
                 'projectCount'=>$projectCount,
                 'display'=>$display,
                 'evening'=>$evening,
-                'now'=>$now
+                'now'=>$now,
+                'log'=>$log,
+                'log1'=>$log1
             ]);
         }
     }
@@ -2504,6 +2526,9 @@ $fake1 = ProjectDetails::where('quality','Fake')
     }
     public function getRequirementRoads()
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+        $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $roadname = ProjectDetails::where('sub_ward_id',$assignment)->groupBy('road_name')->pluck('road_name');
         $roads = ProjectDetails::where('sub_ward_id',$assignment)->select('road_name')->groupBy('road_name')->paginate(10);
@@ -2604,11 +2629,18 @@ date_default_timezone_set("Asia/Kolkata");
             'unverifiedprojects'=>$unverifiedprojects,
             'fakeprojects'=>$fakeprojects,
             'bal'=>$bal,'update'=>$update,
+             'log'=>$log,
+             'log1'=>$log1,
                   'gc'=>$gc
+                                        
 ]);
+        return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname,'log'=>$log,'log1'=>$log1]);
     }
     public function projectRequirement(Request $request)
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         if($request->today){
             $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->get();
         }
@@ -2634,6 +2666,7 @@ date_default_timezone_set("Asia/Kolkata");
                 ->count();
         }
         return view('projectlist',['projectlist'=>$projectlist,'projectlist1'=>$projectlist1,'pageName'=>"Requirements"]);
+        return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Requirements",'log'=>$log,'log1'=>$log1]);
     }
     public function getRequirements(Request $request)
     {
@@ -3400,6 +3433,9 @@ date_default_timezone_set("Asia/Kolkata");
     public function projectsUpdate(Request $request)
     {   
         
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
          if(Auth::user()->id == 191){
             return $this->auto($request);
         }
@@ -3741,7 +3777,9 @@ date_default_timezone_set("Asia/Kolkata");
                 'subwardid' => $subwardid,
                 'his'=>$his,
                 'orders' => $orders,
-                'projectcount'=>$projectcount
+                'projectcount'=>$projectcount,
+                'log'=>$log,
+                'log1'=>$log1
 
 
             ]);
@@ -4422,7 +4460,10 @@ date_default_timezone_set("Asia/Kolkata");
         return view('ledetails',['projectDetails'=>$projectDetails]);
     }
     public function changePassword(){
-        return view('changepassword');
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+        return view('changepassword',['log'=>$log,'$log1'=>$log1]);
     }
     public function hrAttendance($id, Request $request){
         
@@ -4453,6 +4494,7 @@ date_default_timezone_set("Asia/Kolkata");
         return redirect('/home');
     }
     public function updateAdminAssignment(){
+         
         salesassignment::where('user_id',Auth::user()->id)->delete();
         return redirect('/leDashboard');
     }
@@ -4681,6 +4723,9 @@ date_default_timezone_set("Asia/Kolkata");
         return view('manufacturerdetails',['mfdetails'=>$mfdetails,'category'=>$category]);
     }
     public function getKRA(){
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $kras = DB::table('key_results')
             ->join('departments', 'key_results.department_id', '=', 'departments.id')
             ->join('groups', 'key_results.group_id', '=', 'groups.id')
@@ -4688,10 +4733,13 @@ date_default_timezone_set("Asia/Kolkata");
             ->where('key_results.group_id','=',Auth::user()->group_id)
             ->where('key_results.department_id','=',Auth::user()->department_id)
             ->get();
-        return view('kra',['kras'=>$kras]);
+        return view('kra',['kras'=>$kras,'log'=>$log,'log1'=>$log1]);
     }
     public function getMyProfile(){
-        return view('myProfile');
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+        return view('my_Profile',['log'=>$log,'log1'=>$log1]);
     }
     public function postMyProfile(Request $request){
         $imageName1 = Auth::user()->name.time().'.'.request()->pp->getClientOriginalExtension();
@@ -4812,6 +4860,9 @@ date_default_timezone_set("Asia/Kolkata");
     public function eqpipeline(Request $request)
     {
 
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
                 $category = Category::all();
                 $today = date('Y-m-d');
                if(!$request){
@@ -4872,11 +4923,15 @@ date_default_timezone_set("Asia/Kolkata");
         $manu = Manufacturer::all();
 
 
-        return view('eqpipeline',['pipelines'=>$pipelines,'manu'=>$manu,'sub'=>$sub,'subwards2'=>$subwards2,'category'=>$category]);
+        return view('eqpipeline',['pipelines'=>$pipelines,'manu'=>$manu,'sub'=>$sub,'subwards2'=>$subwards2,'category'=>$category,'log'=>$log,'log1'=>$log1]);
     }
     public function letraining(Request $request)
     {
-         $depts = Department::all();
+        
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+        $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+        $depts = Department::all();
         $grps = Group::all();
         $users = User::all();
         $videos = training::where('dept',"1")
@@ -4892,7 +4947,7 @@ date_default_timezone_set("Asia/Kolkata");
                 $video->save();
             }
         }
-        return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users]);
+        return view('letraining',['video'=>$videos,'depts'=>$depts,'grps'=>$grps,'users'=>$users,'log'=>$log,'$log1'=>$log1]);
 
     }
     public function setraining(Request $request)
@@ -5539,6 +5594,9 @@ date_default_timezone_set("Asia/Kolkata");
 
     public function getChat()
     {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+        $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $reads = Message::where('read_by','NOT LIKE',"%".Auth::user()->id."%")->get();
         foreach($reads as $read){
             $reader = $read->read_by;
@@ -5551,7 +5609,7 @@ date_default_timezone_set("Asia/Kolkata");
             }
         }
 
-        return view('chat');
+        return view('chat',['log'=>$log,'log1'=>$log1]);
     }
 
 public function approval(request $request  )
@@ -6505,6 +6563,9 @@ function enquirystore(request $request){
         return redirect()->back()->with('success','Assig enquiry successfully');
     }
     public function enqwise(Request $request){
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $assigndate =Assignenquiry::where('user_id',Auth::user()->id)
                        ->orderby('dateenq','DESC')->pluck('dateenq')->first();
          $tlWard = Assignenquiry::where('user_id',Auth::user()->id)->pluck('ward')->first();
@@ -6584,7 +6645,7 @@ function enquirystore(request $request){
 
 
 
-        return view('enquirywise',['projects'=>$projects]);
+        return view('enquirywise',['projects'=>$projects,'log'=>$log,'$log1'=>$log1]);
     }
     public function viewMap(Request $request)
     {
@@ -7863,9 +7924,12 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
-         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('addManufacturer',['subwards'=>$subwards]);
+        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1]);
     }
     public function viewManufacturer(Request $request)
     {
@@ -7876,7 +7940,10 @@ public function display(request $request){
     }
     public function lebrands(){
 
-        return view('lebrands');
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+        return view('lebrands',['log'=>$log,'log1'=>$log1]);
     }
     public function storequery(Request $request){
 
@@ -7915,9 +7982,12 @@ public function display(request $request){
   }
   public function getUpdateManufacturer()
   {
+        $date=date('Y-m-d');
+        $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
+        $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
         $manufacturers = Manufacturer::where('sub_ward_id',$wardsAssigned)->get();
-        return view('updateManufacturer',['manufacturers'=>$manufacturers]);
+        return view('updateManufacturer',['manufacturers'=>$manufacturers,'log'=>$log,'log1'=>$log1]);
   }
   public function updateManufacturerDetails(Request $request)
   {
