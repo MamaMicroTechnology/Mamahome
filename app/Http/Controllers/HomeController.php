@@ -2276,6 +2276,8 @@ $fake1 = ProjectDetails::where('quality','Fake')
             'unverifiedprojects'=>$unverifiedprojects,
             'fakeprojects'=>$fakeprojects,
             'bal'=>$bal,'update'=>$update,
+             'log'=>$log,
+             'log1'=>$log1,
                   'gc'=>$gc]);
 
 
