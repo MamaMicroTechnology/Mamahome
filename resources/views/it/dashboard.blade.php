@@ -45,6 +45,7 @@
 
 <script>
 function myFunction1() {
+    alert();
     var table = document.getElementById("reports");
     var row = table.insertRow(-1);
     var cell1 = row.insertCell(0);
