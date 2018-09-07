@@ -2843,4 +2843,9 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ]);
         return response()->json(['message'=>'Approved']);
     }
+    public function breakreport(){
+        $date= date('Y-m-d');
+       $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
+        dd($time);
+    }
 }

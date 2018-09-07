@@ -27,6 +27,7 @@ use App\SubWardMap;
 use App\TrackLocation;
 use App\Order;
 use App\FieldLogin;
+use App\FakeGPS;
 
 use App\Http\Resources\Message as MessageResource;
 date_default_timezone_set("Asia/Kolkata");
@@ -616,6 +617,19 @@ public function getproject(request $request){
             $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Unable to add location.");
             $userResponse = json_encode($responseData);
             print $userResponse;
+        }
+    }
+    public function fakegps(Request $request){
+        $fake = new FakeGPS;
+        $fake->user_id = $request->user_id;
+        $fake->date = $request->$date;
+        $fake->fakegps = $request->fakegps;
+        
+        if($fake->save()){
+            return response()->json(['success'=>'1','message'=>'fake gps found']);
+        }
+        else{
+            return reponse()->json(['success'=>'0','message'=>'no fake gps']);
         }
     }
 

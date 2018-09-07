@@ -201,7 +201,8 @@ function drawSnappedPolyline() {
       // marker end
 
       // marker
-    @if($projects != null)
+    @if($projects->logout_lat != null)
+    alert();
     var infowindow = new google.maps.InfoWindow();
     var marker, i;
     var latitude = "{{ $projects->logout_lat }}";

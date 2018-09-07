@@ -1559,11 +1559,17 @@ class HomeController extends Controller
         $dept = Department::where('id',Auth::user()->department_id)->pluck('dept_name')->first();
         $users = User::where('department_id','!=',0)->paginate(10);
         $departments = Department::all();
+        // $depts = [1,2,3,4,5,7];
         $groups = Group::where('group_name','!=','Admin')->get();
-        $loggedInUsers = attendance::where('date',date('Y-m-d'))
-                        ->join('users','empattendance.empId','users.employeeId')
-                        ->select('users.name','empattendance.*')
+        // $loggedInUsers = attendance::where('date',date('Y-m-d'))
+        //                 ->join('users','empattendance.empId','users.employeeId')
+        //                 ->select('users.name','empattendance.*')
+        //                 ->get();
+        $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
+                        ->join('users','field_login.user_id','users.id')
+                        ->select('users.name','field_login.*','users.group_id','users.employeeId')
                         ->get();
+                       
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
                         ->select('users.name','users.employeeId','login_times.*','users.group_id')
@@ -1751,14 +1757,21 @@ class HomeController extends Controller
     }
     public function teamLeadHome(){
          $depts=[1,2];
-         $loggedInUsers = attendance::where('date',date('Y-m-d'))
-                        ->join('users','empattendance.empId','users.employeeId')
+         // $loggedInUsers = attendance::where('date',date('Y-m-d'))
+         //                ->join('users','empattendance.empId','users.employeeId')
+         //                ->whereIn('department_id',$depts)
+         //                ->leftjoin('departments','users.department_id','departments.id')
+         //                ->select('users.name','empattendance.*','departments.id')
+         //                ->get();
+        $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
+                        ->join('users','field_login.user_id','users.id')
                         ->whereIn('department_id',$depts)
-                        ->leftjoin('departments','users.department_id','departments.id')
-                        ->select('users.name','empattendance.*','departments.id')
+                        ->select('users.name','field_login.*','users.employeeId')
                         ->get();
-                        $depts=[1,2];
-                        $users = User::where('department_id',$depts)->get();
+        
+
+        $depts=[1,2];
+        $users = User::where('department_id',$depts)->get();
 
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
@@ -1769,8 +1782,8 @@ class HomeController extends Controller
          $x = Ward::where('id',$tl)->pluck('ward_name')->first();
 
          return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x]);
-    }
-    public function assignListSlots(){
+   }
+     public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
     $group = [6,11];
 
@@ -7679,6 +7692,9 @@ public function display(request $request){
     BreakTime::where('user_id',Auth::user()->id)->update([
             'stop_time' => date('h:i A')
         ]);
-        return back()->with('error','Your Break Time has been Ended');
+        return back()->with('Success','Your Break Time has been Ended');
   }
+  // public function starttimer(){
+  //   return view("timer");
+  //}
 }

@@ -60,5 +60,6 @@ Route::get('/confirmorders','TokenController@confirm');
 Route::post('/recordtime','TokenController@recordtime');
 Route::post('/flogout','TokenController@fieldlogout');
 Route::get('/gettime','TokenController@gettime');
+Route::get('/fakegps','TokenController@fakegps');
 
 
