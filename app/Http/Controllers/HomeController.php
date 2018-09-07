@@ -2627,7 +2627,10 @@ date_default_timezone_set("Asia/Kolkata");
             'unverifiedprojects'=>$unverifiedprojects,
             'fakeprojects'=>$fakeprojects,
             'bal'=>$bal,'update'=>$update,
+             'log'=>$log,
+             'log1'=>$log1,
                   'gc'=>$gc
+                                        
 ]);
         return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname,'log'=>$log,'log1'=>$log1]);
     }
