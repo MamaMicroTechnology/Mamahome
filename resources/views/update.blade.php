@@ -1,11 +1,7 @@
 <?php
   $user = Auth::user()->group_id;
-  if(Auth::user()->group_id != 6){
   $ext = ($user == 4? "layouts.amheader":"layouts.app");
-  }
-  else{
-    $ext = "layouts.leheader";
-  }
+  
 ?>
 @extends($ext)
 @section('content')
@@ -1031,10 +1027,6 @@ function sum(){
         { 
           if(document.getElementById("pName").value == ""){
             window.alert("You Have Not Entered Project Name");
-          }else if(document.getElementById("longitude").value == ""){
-            window.alert("Please click on Get Location button");
-          }else if(document.getElementById("latitude").value == ""){
-            window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
           } else if(document.getElementById('rWidth').value == ""){
