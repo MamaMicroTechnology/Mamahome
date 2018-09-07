@@ -1431,7 +1431,7 @@ function validateForm(arg)
 </script>
 
   <!-- Modal -->
-@if(session('Success'))
+@if(session('test'))
   <div class="modal fade" id="Material" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -1440,7 +1440,7 @@ function validateForm(arg)
           <h4 class="modal-title">Success</h4>
         </div>
         <div class="modal-body">
-          <p style="text-align:center;">{!! session('Success') !!}</p>
+          <p style="text-align:center;">{!! session('test') !!}</p>
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>

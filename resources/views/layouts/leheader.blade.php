@@ -56,7 +56,12 @@
                         <li> <a href="{{ URL::to('/') }}/kra" style="font-size:1.1em;font-family:Times New Roman;"><b>KRA</b></a></li>
                        <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
                       <li style="padding-top: 10px;padding-left:10px;"> 
-                      <button id="getBtn"   class="btn btn-success btn-sm" onclick="getLocation()">Field Login</button>
+                      
+                      @if($log != 0)
+                      <button id="getBtn" disabled  class="btn btn-success btn-sm " onclick="getLocation()">Field Login</button>
+                      @else
+                       <button id="getBtn" class="btn btn-success btn-sm " onclick="getLocation()">Field Login</button>
+                      @endif
                     </li>
                     <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-danger btn-sm" onclick="submitleheader()">Field Logout</button>

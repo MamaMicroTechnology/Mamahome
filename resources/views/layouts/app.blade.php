@@ -666,7 +666,11 @@ function myTimer() {
         <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
         <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a>
     </div>
-    <a href="{{ URL::to('/manufacturerdetails') }}">Direct Aligned Partners</a>
+    <a href="#" data-toggle="collapse" data-target="#manufacturer_details1">Direct Aligned Partners &#x21F2;</a>
+    <div id="manufacturer_details1" class="collapse">
+    <a href="{{ URL::to('/manufacturerdetails') }}">Suppliers</a>
+    <a href="{{ URL::to('/lebrands') }}">Brands</a>
+</div>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <!-- <a href="{{ URL::to('/confidential') }}">Confidential</a> -->

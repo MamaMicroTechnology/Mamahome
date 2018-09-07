@@ -1890,6 +1890,12 @@ class HomeController extends Controller
     {
 
         $date = date('Y-m-d');
+           $log = FieldLogin::where('user_id',Auth::user()->id)->where('logintime','LIKE',$date.'%')->count();
+           
+           $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+
+      
+          
         $users = User::where('department_id','1')->where('group_id','6')
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
@@ -2034,7 +2040,10 @@ class HomeController extends Controller
                                                 'accusers'=>$accusers,
                                                 // 'totalaccount'=>$totalaccount,
                                                 'update' =>  $update,
-                                                'bal'=>$bal
+                                                'bal'=>$bal,
+                                                'log'=>$log,
+                                                'log1'=>$log1
+
                                                 // 'total'=>$total
                                                 ]);
     }
@@ -5081,11 +5090,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                        ->get();
                 $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                 $userIds = explode(",", $tl);
-<<<<<<< HEAD
-               
-=======
               
->>>>>>> master
                 $tluser =User::whereIn('users.id',$userIds)
                        ->where('department_id',2)
                        ->leftjoin('salesassignments','salesassignments.user_id','users.id')
@@ -5218,11 +5223,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
                    
                  
                    $tluser =User::whereIn('users.id',$userIds)
-<<<<<<< HEAD
-                          ->where('department_id',2)
-=======
                            ->where('department_id',2)
->>>>>>> master
                           ->leftjoin('salesassignments','salesassignments.user_id','users.id')
                           ->leftJoin('sub_wards','sub_wards.id','salesassignments.assigned_date')
                           ->select('users.*','sub_wards.sub_ward_name')
