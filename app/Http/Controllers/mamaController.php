@@ -2927,4 +2927,9 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
         ]);
         return response()->json(['message'=>'Approved']);
     }
+    public function breakreport(){
+        $date= date('Y-m-d');
+       $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
+        dd($time);
+    }
 }
