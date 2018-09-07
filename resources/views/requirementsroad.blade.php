@@ -46,7 +46,7 @@
 </div>
 <div class="col-md-4" style="margin-left: 20%;">
 	<div class="panel panel-default">
-		<div class="panel-heading">Select<span class="pull-right">{{$gc}}</span></div>
+		<div class="panel-heading">Select</div>
 		<div class="panel-body">
 			<ul class="list-group">
 				<li class="list-group-item">
@@ -59,7 +59,7 @@
 			    <option value="">-----Select----</option>
 				<option value="Genuine">Genuine</option>
 					<option value="Unverified">Unverified</option>
-						<option value="Fake">Fake</option>
+						<!-- <option value="Fake">Fake</option> -->
 			</select> 
 			</form>
 		</div>

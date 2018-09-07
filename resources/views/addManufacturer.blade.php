@@ -53,7 +53,7 @@
                                     </div>
                                    </td>
                                </tr>
-                               <tr>
+                               <!-- <tr>
                                     <td>Owner Name</td>
                                     <td>:</td>
                                     <td>
@@ -66,7 +66,7 @@
                                     <td>
                                         <input required placeholder="Contact No" onblur="checkPhNo(this.value)" type="text" name="phNo" id="phNo" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                 
                                   
                               
