@@ -687,5 +687,19 @@ public function getproject(request $request){
         $pending = Requirement::get();
          return response()->json(['order'=>$pending]);
        }
-        
+        public function data(request $request){
+
+
+            $data = new User;
+            $data->name = $request->username;
+            $data->email = $request->email;
+            $data->contactNo = $request->birthdate;
+            if($data->save()){
+                   return response()->json(['message'=>'logout successfull']);
+        }else{
+                return response()->json(['message'=>'Something went wrong']);
+        }
+
+
+        }
 }
