@@ -296,22 +296,22 @@
                                <tr>
                                    <td>Owner Name</td>
                                    <td>:</td>
-                                   <td><input value="{{ $manufacturer->owner->name }}"  type="text" placeholder="Owner Name" class="form-control input-sm" name="oName" id="oName"></td>
+                                   <td><input value="{{$manufacturer->owner !=null ? $manufacturer->owner->name :'' }}"  type="text" placeholder="Owner Name" class="form-control input-sm" name="oName" id="oName"></td>
                                </tr>
                                <tr>
                                    <td>Owner Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ $manufacturer->owner->email }}"  onblur="checkmail('oEmail')" placeholder="Owner Email" type="email"  class="form-control input-sm" name="oEmail" id="oEmail"></td>
+                                   <td><input value="{{$manufacturer->owner !=null ? $manufacturer->owner->email :'' }}"  onblur="checkmail('oEmail')" placeholder="Owner Email" type="email"  class="form-control input-sm" name="oEmail" id="oEmail"></td>
                                </tr>
                                <tr>
                                    <td>Owner Contact No 1.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ $manufacturer->owner->contact }}"  onblur="checklength('oContact');" onkeyup="check('oContact','1')" maxlength="10"  minlength="10" placeholder="Owner Contact No." type="text" class="form-control input-sm" name="oContact" id="oContact"></td>
+                                   <td><input value="{{$manufacturer->owner !=null ? $manufacturer->owner->contact :''}}"  onblur="checklength('oContact');" onkeyup="check('oContact','1')" maxlength="10"  minlength="10" placeholder="Owner Contact No." type="text" class="form-control input-sm" name="oContact" id="oContact"></td>
                                </tr>
                                <tr>
                                    <td>Owner Contact No 2.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ $manufacturer->owner->contact1 }}"  onblur="checklength('oContact');" onkeyup="check('oContact','1')" maxlength="10"  minlength="10" placeholder="Owner Contact No." type="text" class="form-control input-sm" name="oContact1" id="oContact"></td>
+                                   <td><input value="{{$manufacturer->owner !=null ? $manufacturer->owner->contact1 :'' }}"  onblur="checklength('oContact');" onkeyup="check('oContact','1')" maxlength="10"  minlength="10" placeholder="Owner Contact No." type="text" class="form-control input-sm" name="oContact1" id="oContact"></td>
                                </tr>
                            </table>
 </div>
@@ -324,22 +324,22 @@
                                <tr>
                                    <td>Manager Name</td>
                                    <td>:</td>
-                                   <td><input value="{{ $manufacturer->manager->name }}"  type="text" placeholder="Manager Name" class="form-control input-sm" name="cName" id="cName"></td>
+                                   <td><input value="{{$manufacturer->manager !=null ? $manufacturer->manager->name :'' }}"  type="text" placeholder="Manager Name" class="form-control input-sm" name="cName" id="cName"></td>
                                </tr>
                                <tr>
                                    <td>Manager Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ $manufacturer->manager->email }}" placeholder="Manager Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
+                                   <td><input value="{{$manufacturer->manageer !=null ? $manufacturer->manager->email:''}}" placeholder="Manager Email" type="email" class="form-control input-sm" name="cEmail" id="cEmail" onblur="checkmail('cEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Manager Contact No 1.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-<td><input value="{{ $manufacturer->manager->contact }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone','1')" placeholder="Manager Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
+<td><input value="{{ $manufacturer->manager !=null ? $manufacturer->manager->contact :'' }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone','1')" placeholder="Manager Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact"></td>
                                </tr>
                                <tr>
                                    <td>Manager Contact No 2.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-<td><input value="{{ $manufacturer->manager->contact1 }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone','1')" placeholder="Manager Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact1"></td>
+<td><input value="{{ $manufacturer->manager !=null ? $manufacturer->manager->contact1 :'' }}" onblur="checklength('cPhone');" id="cContact" onkeyup="check('cPhone','1')" placeholder="Manager Contact No." type="text" maxlength="10" class="form-control input-sm" name="cContact1"></td>
                                </tr>
                            </table>
 </div>
@@ -352,22 +352,22 @@
                                <tr>
                                    <td>Sales Contact Name</td>
                                    <td>:</td>
-                                   <td><input value="{{ $manufacturer->sales->name }}"  type="text" placeholder="Sales Contact Name" class="form-control input-sm" name="coName"></td>
+                                   <td><input value="{{$manufacturer->sales !=null ? $manufacturer->sales->name : '' }}"  type="text" placeholder="Sales Contact Name" class="form-control input-sm" name="coName"></td>
                                </tr>
                                <tr>
                                    <td>Sales Contact Email</td>
                                    <td>:</td>
-                                   <td><input value="{{ $manufacturer->sales->email }}" placeholder="Sales Contact Email" type="email" class="form-control input-sm" name="coEmail" id="coEmail" onblur="checkmail('coEmail')"></td>
+                                   <td><input value="{{ $manufacturer->sales !=null ? $manufacturer->sales->email :'' }}" placeholder="Sales Contact Email" type="email" class="form-control input-sm" name="coEmail" id="coEmail" onblur="checkmail('coEmail')"></td>
                                </tr>
                                <tr>
                                    <td>Sales Contact Contact No 1.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ $manufacturer->sales->contact }}" onblur="checklength('coContact');" placeholder="Sales Contact Contact No." type="text" class="form-control input-sm" name="coContact" maxlength="10" id="coContact" onkeyup="check('coContact','1')"></td>
+                                   <td><input value="{{ $manufacturer->sales !=null ?  $manufacturer->sales->contact :'' }}" onblur="checklength('coContact');" placeholder="Sales Contact Contact No." type="text" class="form-control input-sm" name="coContact" maxlength="10" id="coContact" onkeyup="check('coContact','1')"></td>
                                </tr>
                                <tr>
                                    <td>Sales Contact Contact No 2.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ $manufacturer->sales->contact1 }}" onblur="checklength('coContact');" placeholder="Sales Contact Contact No." type="text" class="form-control input-sm" name="coContact1" maxlength="10" id="coContact" onkeyup="check('coContact','1')"></td>
+                                   <td><input value="{{$manufacturer->sales !=null ?  $manufacturer->sales->contact1 : ''}}" onblur="checklength('coContact');" placeholder="Sales Contact Contact No." type="text" class="form-control input-sm" name="coContact1" maxlength="10" id="coContact" onkeyup="check('coContact','1')"></td>
                                </tr>
                            </table>
 
@@ -380,22 +380,22 @@
                                <tr>
                                    <td>Procurement Name</td>
                                    <td>:</td>
-                                   <td><input id="prName" required type="text" placeholder="Procurement Name" class="form-control input-sm" name="prName" value="{{$manufacturer->proc->name}}"></td>
+                                   <td><input id="prName" required type="text" placeholder="Procurement Name" class="form-control input-sm" name="prName" value="{{$manufacturer->proc !=null ? $manufacturer->proc->name :''}}"></td>
                                </tr>
                                <tr>
                                    <td>Procurement Email</td>
                                    <td>:</td>
-                                   <td><input value="{{$manufacturer->proc->email}}" placeholder="Procurement Email" type="email" class="form-control input-sm" name="pEmail" id="pEmail" onblur="checkmail('pEmail')" ></td>
+                                   <td><input value="{{$manufacturer->proc !=null ? $manufacturer->proc->email :''}}" placeholder="Procurement Email" type="email" class="form-control input-sm" name="pEmail" id="pEmail" onblur="checkmail('pEmail')" ></td>
                                </tr>
                                <tr>
                                    <td>Procurement Contact No 1.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{$manufacturer->proc->contact}}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                                   <td><input value="{{$manufacturer->proc !=null ? $manufacturer->proc->contact :''}}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
                                </tr>
                                <tr>
                                    <td>Procurement Contact No 2.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{$manufacturer->proc->contact1}}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                                   <td><input value="{{$manufacturer->proc !=null ? $manufacturer->proc->contact1 : ''}}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
                                </tr>
 
                            </table>
