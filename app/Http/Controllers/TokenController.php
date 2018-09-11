@@ -626,17 +626,16 @@ public function getproject(request $request){
     public function fakegps(Request $request){
         $fake = new FakeGPS;
         $fake->user_id = $request->user_id;
-        $fake->date = $request->$date;
+        $fake->date = $request->date;
         $fake->fakegps = $request->fakegps;
         
         if($fake->save()){
-            return response()->json(['success'=>'1','message'=>'fake gps found']);
+            return response()->json(['success'=>'1','message'=>'recieved']);
         }
         else{
-            return reponse()->json(['success'=>'0','message'=>'no fake gps']);
+            return reponse()->json(['success'=>'0','message'=>'error']);
         }
     }
-
         //update location
       public function updateLocation(Request $request){
             $data = TrackLocation::where('user_id',$request->user_id)

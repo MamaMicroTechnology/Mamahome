@@ -619,6 +619,7 @@ function myTimer() {
            <!--  <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
+    <a href="{{ URL::to('/') }}/holidays">&nbsp;&nbsp;&nbsp; -Holiday List</a> 
     <div id="demo" class="collapse">
         <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
         <div id="agent" class="collapse">
