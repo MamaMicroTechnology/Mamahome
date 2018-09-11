@@ -1,9 +1,13 @@
 <?php
   $user = Auth::user()->group_id;
+  if(Auth::user()->group_id != 6){
   $ext = ($user == 4? "layouts.amheader":"layouts.app");
+  }
+  else{
+    $ext = "layouts.leheader";
+  }
 ?>
 @extends($ext)
-
 @section('content')
 <div class="container">
     <div class="row">

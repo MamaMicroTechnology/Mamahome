@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.leheader')
 @section('content')
 
 <div class="container">
@@ -874,7 +874,7 @@ function openCity(evt, cityName) {
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
   function getLocation(){
-    alert();
+   
       document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){
