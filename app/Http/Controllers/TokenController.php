@@ -630,10 +630,10 @@ public function getproject(request $request){
         $fake->fakegps = $request->fakegps;
         
         if($fake->save()){
-            return response()->json(['success'=>'1','message'=>'fake gps found']);
+            return response()->json(['success'=>'1','message'=>'recieved']);
         }
         else{
-            return reponse()->json(['success'=>'0','message'=>'no fake gps']);
+            return reponse()->json(['success'=>'0','message'=>'error']);
         }
     }
         //update location
