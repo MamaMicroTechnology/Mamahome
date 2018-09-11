@@ -73,8 +73,12 @@ class amController extends Controller
                         ->join('users','login_times.user_id','users.id')
                         ->select('users.name','users.employeeId','login_times.*','users.group_id')
                         ->get();
-        
-        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins]);
+        $login =attendance::where('date',date('Y-m-d'))
+                        ->join('users','empattendance.empId','users.employeeId')
+                        ->select('users.name','users.employeeId','empattendance.*','users.group_id')
+                        ->get();
+              
+        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'login'=>$login]);
     }
     public function getPricing(){
         $prices = CategoryPrice::all();
