@@ -494,7 +494,7 @@ class mamaController extends Controller
         }
 
      
-        $bType = count($request->budgetType);
+        $btype = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
