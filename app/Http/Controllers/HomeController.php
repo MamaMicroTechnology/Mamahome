@@ -8101,6 +8101,7 @@ public function display(request $request){
   {
     $time = New BreakTime;
             $time->user_id = Auth::user()->id;
+            $time->date = date('Y-m-d');
             $time->start_time = date('h:i A');
             $time->stop_time = "";
             $time->save();
