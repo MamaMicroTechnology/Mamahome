@@ -61,6 +61,16 @@
                 </tr>
             @endif
             @endforeach
+          <tr>
+            @foreach($login as $log)
+                    <td>{{ $log->employeeId }}</td>
+                    <td>{{ $log->name }}</td>
+                    <td>{{ $log->inTime }}</td>
+                    <td>{{ $log->outTime }}</td>
+            @endforeach
+          </tr>
+
+
         </table>
         </div>
     </div>

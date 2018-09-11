@@ -28,6 +28,7 @@ use App\TrackLocation;
 use App\Order;
 use App\FieldLogin;
 use App\FakeGPS;
+use App\Reactuser;
 
 use App\Http\Resources\Message as MessageResource;
 date_default_timezone_set("Asia/Kolkata");
@@ -629,13 +630,12 @@ public function getproject(request $request){
         $fake->fakegps = $request->fakegps;
         
         if($fake->save()){
-            return response()->json(['success'=>'1','message'=>'fake gps found']);
+            return response()->json(['success'=>'1','message'=>'recieved']);
         }
         else{
-            return reponse()->json(['success'=>'0','message'=>'no fake gps']);
+            return reponse()->json(['success'=>'0','message'=>'error']);
         }
     }
-
         //update location
       public function updateLocation(Request $request){
             $data = TrackLocation::where('user_id',$request->user_id)
@@ -704,14 +704,15 @@ public function getproject(request $request){
         public function data(request $request){
 
 
-            $data = new User;
+            $data = new Reactuser;
             $data->name = $request->username;
-            $data->email = $request->email;
-            $data->contactNo = $request->birthdate;
+            $data->password = $request->email;
+            $data->birthdate = $request->birthdate;
+            
             if($data->save()){
-                   return response()->json(['message'=>'logout successfull']);
+                   return response()->json(['data'=>'successfull']);
         }else{
-                return response()->json(['message'=>'Something went wrong']);
+                return response()->json(['data'=>'Something went wrong']);
         }
 
 

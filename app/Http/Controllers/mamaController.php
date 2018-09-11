@@ -488,13 +488,13 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
-        $bapart = 12;
+       $bapart = count($request->apart);
         if($request->apart != 0){
             $btype = implode(", ",$request->apart);
         }
 
      
-         $btype = 12;
+        $btype = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
