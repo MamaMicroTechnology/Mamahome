@@ -209,10 +209,10 @@ class TokenController extends Controller
         if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
         {
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
+            return response()->json(['message' => 'true','success'=>1,'userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
         }
         else{
-            return response()->json(['message' => 'false']);
+            return response()->json(['message' => 'false','success'=>0]);
         }
     }
 
