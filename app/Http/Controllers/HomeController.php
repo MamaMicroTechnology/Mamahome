@@ -4197,7 +4197,7 @@ date_default_timezone_set("Asia/Kolkata");
     {
          $wards = Ward::all();
         
-        $qualityCheck = ['Genuine','Fake','Unverified'];
+        $qualityCheck = ['Genuine','Unverified'];
 
         // getting total no of projects
         $wardsselect = Ward::pluck('id');
