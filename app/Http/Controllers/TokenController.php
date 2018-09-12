@@ -627,6 +627,7 @@ public function getproject(request $request){
         $fake = new FakeGPS;
         $fake->user_id = $request->user_id;
         $fake->date = $request->date;
+        $fake->time = $request->time;
         $fake->fakegps = $request->fakegps;
         
         if($fake->save()){
