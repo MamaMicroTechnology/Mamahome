@@ -130,8 +130,21 @@
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
-                              
-
+                               <tr>
+                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="brila"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="No" id="dandw2" type="radio" name="brila"><span>&nbsp;</span>No</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input checked="checked" required value="None" id="dandw3" type="radio" name="brila"><span>&nbsp;</span>None</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                 </td>
+                               </tr>
                                <tr>
                                  <td>Interested In Home Automation ?</td>
                                  <td>:</td>
