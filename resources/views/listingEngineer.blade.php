@@ -667,7 +667,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('oContact').value="";
                             }
@@ -687,7 +699,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('coContact').value="";
                                 // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
@@ -708,7 +732,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('cPhone').value="";
                             }
@@ -729,7 +765,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Error : Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('eContact').value="";
                                 // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
@@ -750,7 +798,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Error : Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                                swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('prPhone').value="";
                                 // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
@@ -805,7 +865,7 @@ function openCity(evt, cityName) {
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         floor       += sum;
-        alert();
+        
         if(document.getElementById("total").innerHTML != null)
           document.getElementById("total").innerHTML = floor;
         else
@@ -942,19 +1002,19 @@ function openCity(evt, cityName) {
         if(current == 'first')
         { 
           if(document.getElementById("pName").value == ""){
-            window.alert("You Have Not Entered Project Name");
+            swal("You Have Not Entered Project Name");
           }else if(document.getElementById("longitude").value == ""){
-            window.alert("Please Click On Get Location Button");
+            swal("Please Click On Get Location Button");
           }else if(document.getElementById("latitude").value == ""){
-            window.alert("Kindly Click On Get Location Button");
+            swal("Kindly Click On Get Location Button");
           }else if(document.getElementById("road").value == ""){
-            window.alert("You Have Not Entered Road Name");
+            swal("You Have Not Entered Road Name");
           } else if(document.getElementById('rWidth').value == ""){
-            window.alert("You Have Not Entered Road Width");
+            swal("You Have Not Entered Road Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
-            window.alert("Please Choose The Construction Type");
+            swal("Please Choose The Construction Type");
           }else if(document.getElementById("contract").value == ""){
-            window.alert("Please Select Contract Type");
+            swal("Please Select Contract Type");
 
           }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
@@ -966,28 +1026,28 @@ function openCity(evt, cityName) {
           }
           if(countinput == 0){
 
-              window.alert("Select Atleast One Project Status");
+             swal("Select Atleast One Project Status");
           
           }else if(document.getElementById("basement").value == ""){
-            window.alert("You Have Not Entered Basement Value");
+           swal("You Have Not Entered Basement Value");
             
           } else if(document.getElementById("ground").value == ""){
-            window.alert("You Have Not Entered Floor Value");
+           swal("You Have Not Entered Floor Value");
             
           }else if(document.getElementById("length").value == ""){
-            window.alert("You Have Not Entered Length Value");
+           swal("You Have Not Entered Length Value");
            
           }else if(document.getElementById("breadth").value == ""){
-            window.alert("You Have Not Entered Breadth Value");
+           swal("You Have Not Entered Breadth Value");
              
           }else if(document.getElementById("pSize").value == ""){
-            window.alert("You Have Not Entered Project Size");
+           swal("You Have Not Entered Project Size");
           }else if(constructionType3.checked == false && constructionType4.checked == false){
-            window.alert("Please Choose The Budget Type");
+           swal("Please Choose The Budget Type");
           }else if(document.getElementById("budget").value == ""){
-            window.alert("You have Not Entered Budget");
+           swal("You have Not Entered Budget");
           }else if (document.getElementById("pImage").value == ""){
-            window.alert("You Have Not Chosen a File To Upload");
+           swal("You Have Not Chosen a File To Upload");
           }else if(document.getElementById('prName').value == ''){
                     alert('Please Enter a Procurement Details');
                     document.getElementById('prName').focus();
@@ -1029,7 +1089,7 @@ function openCity(evt, cityName) {
     //         alert('Please Enter Phone Number');
     //         document.getElementById('prPhone').focus();
     //       }else if(document.getElementById("prName").value == ""){
-    //         window.alert("Please Enter Procurement Name");
+    //        swal("Please Enter Procurement Name");
     //       }else if(document.getElementById("pContact") == ""){
     //         window.alert("Please enter phone number");
     //       }else { 
@@ -1145,8 +1205,7 @@ function openCity(evt, cityName) {
             // both residential and commercial
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
-                      "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor'  class=\"form-control\" >"+
                       "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
@@ -1157,11 +1216,12 @@ function openCity(evt, cityName) {
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses\"></td>";
             document.getElementById('selection').innerHTML = sel;
+           
           }else if(ctype1.checked == true && ctype2.checked == false){
             // residential only
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor'  class=\"form-control\" onchange =\"load();\">"+
                       "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
@@ -1193,9 +1253,9 @@ function openCity(evt, cityName) {
         }
         else
           document.getElementById("total").innerHTML = '';
+
       }
     }
-
     return false;
   }
   function addRow() {
@@ -1226,8 +1286,8 @@ function openCity(evt, cityName) {
         }
         if(ctype1.checked == true && ctype2.checked == true){
           // both residential and commercial
-          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control' id=\"floorNo2\" onchange =\"count(this.value);\">"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\" onchange =\"count(this.value);\" id=\"floorNo1\">"+
                                                           "<option value=\"Commercial Floor\">Commercial Floor</option>"+
                                                           "<option value=\"1RK\">1RK</option>"+
                                                           "<option value=\"1BHK\">1BHK</option>"+
@@ -1240,7 +1300,9 @@ function openCity(evt, cityName) {
         }
     }
     var numbers = [];
+
     function count(){
+
       var status = document.getElementsByName('status[]');
       var selected = "";
       var check = 0;
@@ -1468,5 +1530,6 @@ function validateForm(arg)
       $("#Material").modal('show');
   });
 </script>
+
 @endif
 @endsection

@@ -389,6 +389,7 @@ class TokenController extends Controller
     }
 public function enquiry(request $request){
     
+      
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
         $enquiry->main_category = $request->main_category;
@@ -402,7 +403,7 @@ public function enquiry(request $request){
        
         $enquiry->save();
           if($enquiry->save() ){
-            return response()->json(['message'=>'Enquiry Added sucuss']);
+            return response()->json(['message'=>'Enquiry Added sucuss','']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }

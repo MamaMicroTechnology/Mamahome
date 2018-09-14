@@ -2115,6 +2115,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function postSaveManufacturer(Request $request)
     {
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+
+           if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+
         $manufacturer = new Manufacturer;
         $manufacturer->listing_engineer_id = Auth::user()->id;
         $manufacturer->name = $request->name;
@@ -2135,6 +2142,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
         $manufacturer->remarks = $request->remarks;
+        $manufacturer->production_type = $pro;
+
 
         $manufacturer->save();
         $sales = new Salescontact_Details;
@@ -2834,9 +2843,15 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function saveUpdatedManufacturer(Request $request)
     {
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+       
+       if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
-
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
@@ -2854,6 +2869,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->type = $request->manufacturing_type;
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
+        $manufacturer->production_type = $pro;
+
         $manufacturer->save();
        
         Salescontact_Details::where("manu_id",$request->id)->update([

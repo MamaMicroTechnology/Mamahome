@@ -25,13 +25,13 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
+                               <!--  <tr>
                                     <td>Manufacturer Name</td>
                                     <td>:</td>
                                     <td>
                                         <input value="{{ $manufacturer->name }}" required placeholder="Manufacturer Name" type="text" name="name" id="name" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>Plant Name</td>
                                     <td>:</td>
@@ -40,13 +40,23 @@
 
                                     </td>
                                 </tr>
-                                <tr>
+                                 <tr>
+                                    <td>Production Type</td>
+                                    <td>:</td>
+                                    <td>
+                                 <label required class="checkbox-inline"><input  id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
+                                  <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
+                                      <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                    </td>
+                                </tr>
+                               <!--  <tr>
                                     <td>Contact No</td>
                                     <td>:</td>
                                     <td>
                                         <input value="{{ $manufacturer->contact_no }}" required placeholder="Contact No" onblur="checkPhNo(this.value)" type="text" name="phNo" id="phNo" class="form-control">
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>Location</td>
                                     <td>:</td>
@@ -395,7 +405,7 @@
                                <tr>
                                    <td>Procurement Contact No 2.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{$manufacturer->proc !=null ? $manufacturer->proc->contact1 : ''}}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                                   <td><input value="{{$manufacturer->proc !=null ? $manufacturer->proc->contact1 : ''}}"   minlength=10 onblur="checklength('prPhone');" placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
                                </tr>
 
                            </table>
@@ -415,13 +425,32 @@
 
                         </div>
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-success form-control">Save</button>
+                            <button type="submit" class="btn btn-success form-control" onclick="pageNext()">Save</button>
                         </div>
                     </div>
                 </div>
             </form>
 
-            
+     <script>
+    function pageNext(){
+      if(document.getElementById('type').value == ""){
+        swal("You Have Not Selected Manufacturing Type");
+      }else if(document.getElementById('name').value == ""){
+        swal("You Have Not Entered the Plant Name")
+      }else if(document.getElementById('longitude').value == ""){
+        swal("Please click The Location Button")
+      }
+      else if(document.getElementById('area').value == ""){
+        swal("You Have Not Entered the Total Area")
+      }
+      else if(document.getElementById('prName').value == ""){
+        swal("You Have Not Entered the Procurement Name")
+      }
+      else if(document.getElementById('prPhone').value == ""){
+        swal("You Have Not Entered the Procurement Number")
+      }
+    }
+</script>       
 <script type="text/javascript">
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
