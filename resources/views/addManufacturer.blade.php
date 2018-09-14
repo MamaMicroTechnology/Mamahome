@@ -26,12 +26,24 @@
                                         <select required onchange="hideordisplay(this.value);" name="type" id="type" class="form-control">
                                             <option value="">--Select--</option>
                                             <option value="RMC">RMC</option>
-                                            <option value="Blocks">Blocks</option>
+                                            <option value="Blocks">BLOCKS</option>
+                                            <option value="M-Sand">M-SAND</option>
+                                            <option value="AGGRGATES">AGGREGATES</option>
+
                                             <!-- <option value="Crusher">Crusher</option> -->
                                         </select>
                                     </td>
                                 </tr>
-                                
+                                <tr>
+                                    <td>Production Type</td>
+                                    <td>:</td>
+                                    <td>
+                                 <label required class="checkbox-inline"><input id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
+                                  <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
+                                      <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>Plant Name</td>
                                     <td>:</td>
@@ -109,14 +121,14 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input  placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Aggregates Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input required placeholder="Aggregates Required" min="0" type="number" name="aggregate_requirement" id="aggregate_requirement" class="form-control">
+                                        <input placeholder="Aggregates Required" min="0" type="number" name="aggregate_requirement" id="aggregate_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
@@ -407,7 +419,7 @@
                                 <tr>
                                    <td>Procurement Contact No 2.</td>
                                    <td>: <p class="pull-right">+91</p></td>
-                                   <td><input value="{{ old('pContact') }}" required  minlength=10 onblur="checklength('prPhone');" required placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                                   <td><input value="{{ old('pContact') }}"   minlength=10 onblur="checklength('prPhone');" placeholder="Procurement Contact No." type="text" class="form-control input-sm" name="prPhone1" maxlength="10" id="prPhone1" onkeyup="check('prPhone','1')"></td>
                                </tr>
                            </table>
 </div>
@@ -424,13 +436,32 @@
 
                         </div>
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-success form-control">Save</button>
+                            <button type="submit" class="btn btn-success form-control" onclick="pageNext()">Save</button>
                         </div>
                     </div>
                 </div>
             </form>
 
-
+<script>
+    function pageNext(){
+      if(document.getElementById('type').value == ""){
+        swal("You Have Not Selected Manufacturing Type");
+      }else if(document.getElementById('name').value == ""){
+        swal("You Have Not Entered the Plant Name")
+      }else if(document.getElementById('longitude').value == ""){
+        swal("Please click The Location Button")
+      }
+      else if(document.getElementById('area').value == ""){
+        swal("You Have Not Entered the Total Area")
+      }
+      else if(document.getElementById('prName').value == ""){
+        swal("You Have Not Entered the Procurement Name")
+      }
+      else if(document.getElementById('prPhone').value == ""){
+        swal("You Have Not Entered the Procurement Number")
+      }
+    }
+</script>
 
 <script type="text/javascript">
 function openCity(evt, cityName) {
@@ -664,5 +695,6 @@ function openCity(evt, cityName) {
 <script>
     swal("success","{{ session('Success') }}","success");
 </script>
+
 @endif
 @endsection
