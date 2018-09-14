@@ -107,14 +107,14 @@
                                     <td>M-Sand Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input value="{{ $manufacturer->sand_requirement }}" required placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
+                                        <input value="{{ $manufacturer->sand_requirement }}"  placeholder="M-Sand Required" min="0" type="number" name="sand_requirement" id="sand_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Aggregates Required</td>
                                     <td>:</td>
                                     <td>
-                                        <input value="{{ $manufacturer->aggregates_required }}" required placeholder="Aggregates Required" min="0" type="number" name="aggregate_requirement" id="aggregate_requirement" class="form-control">
+                                        <input value="{{ $manufacturer->aggregates_required }}" placeholder="Aggregates Required" min="0" type="number" name="aggregate_requirement" id="aggregate_requirement" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
