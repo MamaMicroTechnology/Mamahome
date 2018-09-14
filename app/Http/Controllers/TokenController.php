@@ -209,10 +209,10 @@ class TokenController extends Controller
         if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
         {
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
+            return response()->json(['message' => 'true','success'=>1,'userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
         }
         else{
-            return response()->json(['message' => 'false']);
+            return response()->json(['message' => 'false','success'=>0]);
         }
     }
 
@@ -627,17 +627,17 @@ public function getproject(request $request){
     public function fakegps(Request $request){
         $fake = new FakeGPS;
         $fake->user_id = $request->user_id;
-        $fake->date = $request->$date;
+        $fake->date = $request->date;
+        $fake->time = $request->time;
         $fake->fakegps = $request->fakegps;
         
         if($fake->save()){
-            return response()->json(['success'=>'1','message'=>'fake gps found']);
+            return response()->json(['success'=>'1','message'=>'recieved']);
         }
         else{
-            return reponse()->json(['success'=>'0','message'=>'no fake gps']);
+            return reponse()->json(['success'=>'0','message'=>'error']);
         }
     }
-
         //update location
       public function updateLocation(Request $request){
             $data = TrackLocation::where('user_id',$request->user_id)

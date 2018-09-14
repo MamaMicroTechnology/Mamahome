@@ -163,6 +163,7 @@ Route::post('/empreports','mamaController@empreports');
 Route::get('/RandDdashboard','HomeController@getdashboard');
 Route::post('/reportsRandD','HomeController@postdashboard');
 Route::get('/breakreport','mamaController@breakreport');
+Route::get('/holidays','mamaController@holidays');
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');

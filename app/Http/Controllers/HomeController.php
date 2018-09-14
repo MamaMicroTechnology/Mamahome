@@ -1623,22 +1623,25 @@ class HomeController extends Controller
         $groups = Group::where('group_name','!=','Admin')->get();
         return view('depdesign',['departments'=>$departments,'users'=>$users,'groups'=>$groups]);
     }
-    public function quality()
+   public function quality()
     {
-        $genuine = ProjectDetails::where('quality',"GENUINE")->count();
+    
+        $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->pluck('project_id');
+        $genuine = ProjectDetails::where('quality',"GENUINE")->whereNotIn('project_id',$closed)->count();
+        
+        
         $fake = ProjectDetails::where('quality',"FAKE")->count();
-        $notConfirmed = ProjectDetails::where('quality',"Unverified")->count();
+        $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
         $le = User::where('group_id','6')->get();
         $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
         $count = array();
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
         }
-        $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
+
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
         return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed,'closed'=>$closed]);
     }
-
     public function getquality(Request $request)
     {
         $id = $request->id;
@@ -4196,7 +4199,7 @@ date_default_timezone_set("Asia/Kolkata");
     {
          $wards = Ward::all();
         
-        $qualityCheck = ['Genuine','Fake','Unverified'];
+        $qualityCheck = ['Genuine','Unverified'];
 
         // getting total no of projects
         $wardsselect = Ward::pluck('id');
@@ -8103,6 +8106,7 @@ public function display(request $request){
   {
     $time = New BreakTime;
             $time->user_id = Auth::user()->id;
+            $time->date = date('Y-m-d');
             $time->start_time = date('h:i A');
             $time->stop_time = "";
             $time->save();

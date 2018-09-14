@@ -488,13 +488,13 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
-        $bapart = count($request->apart);
+       $bapart = count($request->apart);
         if($request->apart != 0){
             $btype = implode(", ",$request->apart);
         }
 
      
-        $bType = count($request->budgetType);
+        $btype = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
@@ -592,7 +592,7 @@ class mamaController extends Controller
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
           $projectdetails->brilaultra=$request->brila;
-        $projectdetails->res = $btype;
+          $projectdetails->res = $btype;
 
 
           $projectdetails->save();
@@ -3014,4 +3014,10 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
        $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
         dd($time);
     }
+    public function holidays(){
+
+
+        return view('holidays');
+    }
+
 }
