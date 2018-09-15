@@ -31,9 +31,9 @@
                     <td><form method="post" action="{{ URL::to('/') }}/confirmedmanufacture" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->id }}" name="id">
-                                      <div class="btn-group">
-                                      <a style="padding:5.5px;color:white" class="btn btn-primary btn-sm" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{$project->id}}" target="_blank">Edit</a>
-                                      <a class="btn btn-sm btn-success " name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?projectId={{ $project->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
+                                      <div>
+                                   
+                                      <a class="btn btn-sm btn-success" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?projectId={{ $project->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $project->confirmed !== "0" ||  $project->confirmed == "true" )
                                    <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373;color:white" class="btn btn-sm " {{ $project->confirmed !== "0" ||  $project->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called

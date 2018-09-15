@@ -7,11 +7,13 @@
                 <input type="hidden" name="id" value="{{ isset($_GET['id']) ? $_GET['id'] : '' }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            Manufacturer Details
-                            <!-- <button type="button" id="getBtn"  class="btn btn-success btn-sm pull-right" onclick="getLocation()">Get Location</button> -->
+                        <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
+                         <span class="pull-lect"> Manufacturer Id : {{$manufacturer->id}}</span>
+                           <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
+                             
                         </div>
                         <div class="panel-body">
+                             <center> <label id="headingPanel"> Manufacturer Details</label></center><br>
                             <table class="table table-hover">
                                 <tr>
                                     <td>Manufacturer Type</td>
@@ -643,6 +645,34 @@ function openCity(evt, cityName) {
             }
         });
     }
+</script>
+<script type="text/javascript">
+   function doDate()
+  {
+      var str = "";
+
+      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+      var months = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+      var now = new Date();
+
+      str += "Today Is: " + days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      document.getElementById("currentTime").innerHTML = str;
+  }
+
+  setInterval(doDate, 1000);
+  function validateFileType(){
+    var fileName = document.getElementById("pImage").value;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+          document.getElementById('errormsg').innerHTML = "";
+    }else{
+          document.getElementById('errormsg').innerHTML = "Only <b>'.JPG'</b> , <b>'.JPEG'</b> and <b>'.PNG'</b> files are allowed!";
+          document.getElementById("pImage").value = '';
+          return false;
+         }   
+  }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('Success'))

@@ -26,10 +26,6 @@ Route::get('/ticketchat','HomeController@chat');
 Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
 
-
-
-
-
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
 Route::get('/token','TokenController@token');
@@ -168,6 +164,8 @@ Route::get('/holidays','mamaController@holidays');
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
 Route::get('/projectDetailsForTL','HomeController@projectDetailsForTL');
+Route::get('/projectsearch','HomeController@projectsearch');
+
 Route::get('/chat','HomeController@getChat');
 Route::get('/assignconverterSlots','HomeController@assignListSlots');
 Route::get('/scmaps','HomeController@tlMaps');
@@ -322,6 +320,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/activitylog','HomeController@activityLog');
     Route::get('/employeereports','HomeController@employeereports');
     Route::get('/viewallProjects','HomeController@viewallProjects');
+
     Route::get('/deleteProject','mamaController@deleteProject');
     Route::get('/salesreports','HomeController@salesreports');
     Route::post('/saveEdit','mamaController@save_edit');
