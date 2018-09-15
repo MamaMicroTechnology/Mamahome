@@ -619,8 +619,8 @@ function myTimer() {
            <!--  <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
-    <a href="{{ URL::to('/') }}/holidays">&nbsp;&nbsp;&nbsp; -Holiday List</a> 
     <div id="demo" class="collapse">
+    <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
         <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
@@ -782,6 +782,7 @@ function myTimer() {
 
      @endif
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
+    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
      
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
@@ -829,6 +830,7 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
         </div> 
          <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
+         <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
        <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
     </div>
         @endif
@@ -890,7 +892,7 @@ function myTimer() {
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
-         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
+         <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
         </div>
         
         <!-- Modal footer -->
@@ -908,7 +910,7 @@ function myTimer() {
       
         <!-- Modal Header -->
         <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
-          <h4 class="modal-title">Reason For Rejecting?</h4>
+          <h4 class="modal-title">Time Need To Complete?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -919,15 +921,20 @@ function myTimer() {
         @if(isset($stages))
          <input type="hidden" name="user_id" value="{{ $stages->user_id }}">
          @endif
-         <label>Reason : </label>
+         <label>Date :</label>
+         <input type="date" name="date" class="form-control" style="width:50%;">
+
+         <label>Time :</label>
+         <input type="time" name="time" class="form-control" style="width:50%;">
+         <label>Reason : </label> <br>
          <textarea type="text" name="remark" style="width:400px;" ></textarea>
         </div>
-       <center> <button type="sunmit" value="submit" class="btn btn-primary">Submit</button></center> 
+       <center> <button type="submit" value="submit" class="btn btn-primary">Submit</button></center> 
         </form>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <div class="modal-footer" style="padding:2px;"> 
+          <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
         </div>
         
       </div>

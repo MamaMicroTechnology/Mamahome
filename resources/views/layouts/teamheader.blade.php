@@ -561,9 +561,9 @@ div#calendar{
                 </form> -->
                 <form method="POST"  action="{{ URL::to('/') }}/teamlogin" >
                   {{ csrf_field() }}
-                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeteam"> 
+                                    <!-- <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeteam"> 
                                     <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeteam">
-                                    <input class="hidden" id="addressteam" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">
+                                    <input class="hidden" id="addressteam" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
                         <button id="team" class="hidden" onsubmit="show()" type="submit" >Submit</button>
                 </form>
                  <form method="POST"  action="{{ URL::to('/') }}/teamlogout" >
@@ -639,90 +639,15 @@ div#calendar{
     </script>
 <script>
 
-  // function teamlogin(){
-  //   document.getElementById("team").form.submit();
-  // }
+  function teamlogin(){
+    document.getElementById("team").form.submit();
+  }
   function teamlogout(){
     document.getElementById("lteam").form.submit();
   }
 
 </script>
-<!-- get location -->
-<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" charset="utf-8">
-  function teamlogin(){
-      // document.getElementById("getBtn").className = "hidden";
-      console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayteamLocation,
-        displayteamError,
-        { 
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-      //console.log("Exiting getLocation()");
-  }
-    
-    function displayteamLocation(position){
-      //console.log("Entering displayCurrentLocation");
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
-     
-      document.getElementById("longitudeteam").value = longitude;
-      document.getElementById("latitudeteam").value  = latitude;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
 
-      getAddressFromLatLangteam(latitude,longitude);
-      //console.log("Exiting displayCurrentLocation");
-    }
-   
-  function  displayteamError(error){
-    console.log("Entering ConsultantLocator.displayteamError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLangteam(lat,lng){
-    //console.log("Entering getAddressFromLatLangteam()");
-   
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-   
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        // console.log(results);
-
-        document.getElementById("addressteam").value = results[0].formatted_address;
-       document.getElementById("team").form.submit();
-        // document.getElementById("login").form.submit();
-
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-    //console.log("Entering getAddressFromLatLangteam()");
-  }
-  
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('TeamSuccess'))
   <div class="modal fade" id="teamSuccess" role="dialog">
     <div class="modal-dialog modal-sm">
