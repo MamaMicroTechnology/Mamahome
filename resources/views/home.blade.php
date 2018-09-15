@@ -87,6 +87,7 @@
     </div>
 </div>
 
+
 <!-- <div class="col-md-4 ">
     <div class="panel panel-default">
         <div class="panel-heading">MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; <span>  Dashboard Login Time</span></div>
@@ -107,5 +108,37 @@
     </div>
 </div> -->
 
+</div>
+<div class="col-md-5 col-md-offset-1">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>MINI ATTENDANCE</b></div>
+        <div class="panel-body">
+        <table class="table table-hover">
+           <!-- <thead>
+            <tr>
+                <th>Employee-Id</th>
+                <th>Name</th>
+                <th>Login Time</th>
+                <th>Logout Time</th>
+            </tr>
+           </thead> -->
+           <tr>
+            <td>Total Employees Present</td>
+            <td>{{$present }}</td>
+            </tr>
+            <tr>
+                <td>Total Employees Absent</td>
+                <td>{{$absent}}</td>
+            </tr>
+           @foreach($ntlogins as $ntlogin)
+             <tr>
+                <td>{{$ntlogin->employeeId}}</td>
+                <td>{{$ntlogin->name}}</td>
+            </tr>
+
+            @endforeach
+        </table>
+        </div>
+    </div>
 </div>
 @endsection

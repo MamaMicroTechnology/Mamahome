@@ -2652,7 +2652,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         if( $now > $start && count($check)== 0 && $remark == null){
 
             // $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
-            $text = " <form action='teamlate?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+            $text = " <form action='teamlate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('TeamLate',$text); 
             }
         else
@@ -2663,9 +2663,9 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $remark;
-                         $field->latitude = $request->latitude;
-                        $field->longitude = $request->longitude;
-                        $field->address = $request->address;
+                         $field->latitude = "";
+                        $field->longitude = "";
+                        $field->address = "";
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";

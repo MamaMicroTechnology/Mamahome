@@ -1,17 +1,21 @@
 <div class="panel panel-default" style="border-color:#0e877f">
 <div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white"></div>
+<div style="margin-left: 600px;" id="currentTime" class="pull-right"></div>
+
 <div class="panel-body" style="height:500px;max-height:500px">
   <b>Name : </b>{{ $name }}<br><br>
   @foreach($login as $login)
   <b>Field Login Time : </b>{{ $login->logintime }}<br><br>
   <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
-  <b>Logout :</b>{{ $login->logout }}<br><br>
+  <b>Field Logout Time:</b>{{ $login->logout }}<br><br>
   @endforeach
    @foreach($ward as $ward)
                 <b>Assigned Ward : </b>{{ $ward->sub_ward_name }}
     @endforeach
     <br><br>
-<div id="map" style="width:900PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
+     <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br>
+     <br><br>
+<div id="map" style="width:980PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
 </div>
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
@@ -71,19 +75,22 @@
     @if($subwardMap != "None")
     var latlng = "{{ $subwardMap->lat }}";
     var col = "{{ $subwardMap->color }}";
+    var time = "{{$storoads->time }}";
     @else
     var latlng = "";
-    var col = "456369"
+    var col = "456369";
     @endif
     @if($storoads != null)
         var lists = "{{$storoads->lat_long}}";
         var col = "456369"
     @else
         var lists ="";
-        var col = "456369"
+        var col = "456369";
+        var time = "";
     @endif
     var places = latlng.split(",");
      var lat_long = lists.split("|");
+      var times = time.split(",");
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
     }
@@ -127,14 +134,96 @@
           drawSnappedPolyline();
           // getAndDrawSpeedLimits();
         });
-        console.log(text);
-        console.log(count);
+        // console.log(text);
+        // console.log(count);
         text = "";
         count += 90;
       }else{
         text += "|";
       }
     }
+
+      var timemarker = [];
+    // stopmarker
+    for(var k=0; k<times.length-1;k++){
+       var  A = times[k];
+      var   B = times[k+1];
+  
+       var timeA = Number(A.split(':')[0])*60*60+Number(A.split(':')[1])*60;
+       var timeB = Number(B.split(':')[0])*60*60+Number(B.split(':')[1])*60;
+         var timeConvert = A.match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [timeConvert];
+        if (timeConvert.length > 1) { // If timeConvert format correct
+          timeConvert = timeConvert.slice (1);  // Remove full string match value
+          timeConvert[5] = +timeConvert[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+          timeConvert[0] = +timeConvert[0] % 12 || 12; // Adjust hours
+        }
+        var timeConvert2 = B.match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [timeConvert2];
+        if (timeConvert2.length > 1) { // If timeConvert2 format correct
+          timeConvert2 = timeConvert2.slice (1);  // Remove full string match value
+          timeConvert2[5] = +timeConvert2[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+          timeConvert2[0] = +timeConvert2[0] % 12 || 12; // Adjust hours
+        }
+        if(timeB >= timeA+2400){
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+            var contentString ="From" +" "+ timeConvert +"<br>"+"To"+" "+ timeConvert2 ;
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+              });
+            var icon = {
+                url: 'http://icongal.com/gallery/image/446881/map_marker_ball_pink.png', // url
+                scaledSize: new google.maps.Size(50, 40), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+               anchor: new google.maps.Point(17, 34)  // anchor
+            };
+           var ltlg = lat_long[k].split(",");
+          
+           timemarker.push({lat: parseFloat(ltlg[0]), lng: parseFloat(ltlg[1])});
+              marker = new google.maps.Marker({
+                position: new google.maps.LatLng(ltlg[0],ltlg[1]),
+                 icon: icon,
+                map: map,
+              });
+              marker.addListener('click', function() {
+               
+                  infowindow.open(map, marker);
+                });
+      }
+      else if(timeB >= timeA+1200){
+      
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+            var contentString ="From" +" "+ timeConvert +"<br>"+"To"+" "+ timeConvert2 ;
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+              });
+            var icon = {
+                url: 'http://pngimage.net/wp-content/uploads/2018/06/location-emoji-png.png', // url
+                scaledSize: new google.maps.Size(50, 40), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+               anchor: new google.maps.Point(17, 34)  // anchor
+            };
+           var ltlg = lat_long[k].split(",");
+          
+           timemarker.push({lat: parseFloat(ltlg[0]), lng: parseFloat(ltlg[1])});
+              marker = new google.maps.Marker({
+                position: new google.maps.LatLng(ltlg[0],ltlg[1]),
+                 icon: icon,
+                map: map,
+              });
+              marker.addListener('click', function() {
+               
+                  infowindow.open(map, marker);
+                });
+      }
+      else{
+       
+      }
+    }
+    // stopmarker end
+    
     // Store snapped polyline returned by the snap-to-road service.
 function processSnapToRoadResponse(data) {
   snappedCoordinates = [];
@@ -196,6 +285,7 @@ function drawSnappedPolyline() {
 
     // marker
     @if($projects != null)
+     @if($projects->logout_lat != null)
     var infowindow = new google.maps.InfoWindow();
     var marker, i;
     var latitude = "{{ $projects->logout_lat }}";
@@ -219,6 +309,7 @@ function drawSnappedPolyline() {
           infowindow.open(map, marker);
         });
       @endif
+      @endif
       // marker end
 
     if(newpath.length > 1){
@@ -236,4 +327,20 @@ function drawSnappedPolyline() {
   }
   </script>
 @endif
+<script>
+  function doDate()
+  {
+      var str = "";
+
+      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+      var months = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+      var now = new Date();
+
+      str += "Today Is: " + days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      document.getElementById("currentTime").innerHTML = str;
+  }
+
+  setInterval(doDate, 1000);
+</script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=map"></script>

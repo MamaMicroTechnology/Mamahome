@@ -1571,6 +1571,7 @@ class HomeController extends Controller
         //                 ->get();
         $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
                         ->join('users','field_login.user_id','users.id')
+                        ->where('users.department_id','!=',0)
                         ->select('users.name','field_login.*','users.group_id','users.employeeId')
                         ->get();
                        
@@ -1578,7 +1579,10 @@ class HomeController extends Controller
                         ->join('users','login_times.user_id','users.id')
                         ->select('users.name','users.employeeId','login_times.*','users.group_id')
                         ->get();
+
+        // dd($absent);
         if($group == "Team Lead" && $dept == "Operation"){
+
             return redirect('teamLead');
         }else if($group == "Team Leader" && $dept == "Operation"){
             return redirect('teamLead');
@@ -1596,7 +1600,18 @@ class HomeController extends Controller
         }else if($group == "Account Executive"){
             return redirect('accountExecutive');
         }else if($group == "Admin"){
-            return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins]);
+        $log =  FieldLogin::where('logindate',date('Y-m-d'))
+                    ->join('users','field_login.user_id','users.id')
+                    ->where('users.department_id','!=',0)->pluck('field_login.user_id');
+        // dd($present);
+        $dept =[1,2,3,4,5,6,7];
+        $ntlogins = user::whereIn('department_id',$dept)->whereNotIn('id',$log)->
+                select('users.name','users.employeeId')->get();
+        $present = count($log);
+        $absent = count($ntlogins);        
+        // $absent = user::where('logindate',date('Y-m-d'))->whereNotIn('user_id',$total)
+                     
+            return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
         }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
@@ -1625,16 +1640,20 @@ class HomeController extends Controller
     }
     public function quality()
     {
-        $genuine = ProjectDetails::where('quality',"GENUINE")->count();
+    
+        $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->pluck('project_id');
+        $genuine = ProjectDetails::where('quality',"GENUINE")->whereNotIn('project_id',$closed)->count();
+        
+        
         $fake = ProjectDetails::where('quality',"FAKE")->count();
-        $notConfirmed = ProjectDetails::where('quality',"Unverified")->count();
+        $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
         $le = User::where('group_id','6')->get();
         $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
         $count = array();
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
         }
-        $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->count();
+
         $projects = ProjectDetails::join('users','users.id','=','project_details.listing_engineer_id')->orderBy('project_details.created_at','DESC')->get();
         return view('Qualityproj', ['notes'=>$notes,'count'=>$count,'le' => $le, 'projects' => $projects,'genuine'=>$genuine,'fake'=>$fake,'notConfirmed'=>$notConfirmed,'closed'=>$closed]);
     }
@@ -4233,6 +4252,7 @@ date_default_timezone_set("Asia/Kolkata");
         $closedSize         = ProjectDetails::whereIn('sub_ward_id',$subwards)->where('project_status','LIKE','Closed%')->sum('project_size');
 
         $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount;
+        
 
         if($request->ward && !$request->subward){
             if($request->ward == "All"){
