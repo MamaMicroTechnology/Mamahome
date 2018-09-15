@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <iframe class="col-md-9 img img-thumbnail" style="height: 600px;border-color: #0e877f" id="disp"></iframe>
+        <iframe class="col-md-9 img img-thumbnail" style="height:800px;border-color: #0e877f" id="disp"></iframe>
         <!-- <div class="col-md-10" id="disp">
 
         </div> -->

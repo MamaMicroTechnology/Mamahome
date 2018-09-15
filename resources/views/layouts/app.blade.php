@@ -619,8 +619,8 @@ function myTimer() {
            <!--  <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
-    <a href="{{ URL::to('/') }}/holidays">&nbsp;&nbsp;&nbsp; -Holiday List</a> 
     <div id="demo" class="collapse">
+    <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
         <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
@@ -830,6 +830,7 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
         </div> 
          <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
+         <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
        <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
     </div>
         @endif

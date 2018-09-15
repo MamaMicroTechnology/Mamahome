@@ -87,6 +87,20 @@
       </tr>
     </tbody>
   </table>
+  <table class="table" border="1px;">
+    <tr>
+        <td>FH</td>
+        <td colspan="2">Festival Holiday</td>
+        <td>7</td>
+       
+      </tr>
+      <tr>
+        <td>NH</td>
+        <td colspan="2">National Holiday</td>
+        <td >3</td>
+       
+      </tr>
+  </table>
 </div>
 
 @endsection
