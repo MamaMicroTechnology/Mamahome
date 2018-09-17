@@ -3463,7 +3463,7 @@ date_default_timezone_set("Asia/Kolkata");
 
            $filtered = array_unique($merge);
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
-            dd($unique);
+
            for($ss=1;$ss<count($unique);$ss++){
              DB::insert('insert into numbers (number) values(?)',[$unique[$ss] ]);
 
