@@ -171,10 +171,17 @@
                                </tr>
 
                         <tr>
-
                         <tr>
                             <td style="width:40%"><b>Followup Started : </b></td>
                             <td>{{ $details->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
+                        </tr>
+                        <tr>
+                            <td><b>Questions :</b></td>
+                            <td>{{ $details->with_cont}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Quality :</b></td>
+                            <td>{{ $details->quality}}</td>
                         </tr>
                         <tr>
                             <td><b>Remarks : </b></td>
