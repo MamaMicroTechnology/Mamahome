@@ -5589,6 +5589,7 @@ date_default_timezone_set("Asia/Kolkata");
                                            ->where('employee_id',$user->employeeId)
                                            ->where('quality','Fake')
                                            ->count();
+         }
 
               foreach($users as $user){
                   $noOfCalls[$user->id]['calls'] = ProjectDetails::where('updated_at','LIKE',$today.'%')
@@ -5651,6 +5652,8 @@ date_default_timezone_set("Asia/Kolkata");
                       'tluser'=>$tluser
                   ]);
           }
+        
+    
 
     public function stages(Request $request)
     {
@@ -5671,12 +5674,6 @@ date_default_timezone_set("Asia/Kolkata");
          return view('assignStages',['le' => $le ,'se' => $se,'users'=>$users]);
 
     }
-
-
-
-
-
-
 
      public function store(Request $request)
     {
