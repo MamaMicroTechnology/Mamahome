@@ -313,11 +313,11 @@
               <div class="col-sm-4">
               <h4 style="background-color:#9e9e9e;width: 50%;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget </h4>
               <div class="col-sm-6">
-              <h5 style="color:black;">From</h5>
+              <h5 style="color:black;">To</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budget" placeholder="Budget Min 10lac">
               </div>
               <div class="col-sm-6">
-              <h5 style="color:black;">To</h5>
+              <h5 style="color:black;">From</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budgetto" placeholder="Budget Min 10lac">
               </div>
               </div>
