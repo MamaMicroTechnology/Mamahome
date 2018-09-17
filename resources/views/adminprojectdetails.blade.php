@@ -15,7 +15,7 @@
                     <table class="table table-responsive table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td style="width:40%"><b>Listed On : </b></td>
+                            <td style="width:40%"><b> : </b></td>
                             
                             <td>{{ date('d-m-Y h:i:s A',strtotime($rec->created_at)) }}</td>
                         </tr>

@@ -929,7 +929,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                        'brilaultra'=>$request->brila,
 
             'contract'=>$request->contract,
-            // 'with_cont'=>$request->qstn,
+            'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'automation'=> $request->automation,
              'plotsize' => $size,
@@ -2595,7 +2595,6 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function logintime(Request $request)
     {
-
         if($request->remark != null){
                 $remark = $request->remark;
         }
@@ -2607,17 +2606,21 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
-                        $start = "08:00 AM";
-                        $now = date('H:i A');
+       if(Auth::user()->department_id == 4){
+                $start = "07:00 AM";
+                $now = date('h:i A');
+        }
+        else{
+             $start = "08:00 AM";
+             $now = date('h:i A');
+        }
         if( $now > $start && count($check)== 0 && $remark == null){
-
             
             $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
         {
-                   
                     if(count($check)== 0){
                         $field = new FieldLogin;
                         $field->user_id = $id;
@@ -2656,10 +2659,10 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
-                        $start = "08:05 AM";
+                        $start = "07:30 AM";
                         $now = date('H:i A');
         if( $now > $start && count($check)== 0 && $remark == null){
-
+           
             // $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
             $text = " <form action='teamlate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('TeamLate',$text); 

@@ -283,7 +283,7 @@ function drawSnappedPolyline() {
 
     // marker
     @if($projects != null)
-    var infowindow = new google.maps.InfoWindow();
+    // var infowindow = new google.maps.InfoWindow();
     var marker3, i;
     var latitude = "{{ $projects->latitude }}";
     var longitude = "{{ $projects->longitude }}";
