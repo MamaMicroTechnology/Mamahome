@@ -5509,7 +5509,6 @@ date_default_timezone_set("Asia/Kolkata");
                   $str = ActivityLog::where('time','LIKE',$date.'%')->whereIn('sub_ward_id',$tlward)->where('typeofactivity','!=','NULL')->get();
               }
               $today = date('Y-m-d');
-<<<<<<< HEAD
               $exploded = array();
               $projectIds = array();
               foreach($str as $strings){
@@ -5561,9 +5560,6 @@ date_default_timezone_set("Asia/Kolkata");
                  }
 
               }
-=======
-            
->>>>>>> 4754fcc908098445005f58b21f67f69e709763ab
               $noOfCalls = array();
               $users = User::where('department_id',2)
                           ->leftjoin('salesassignments','salesassignments.user_id','users.id')
