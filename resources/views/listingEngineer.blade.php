@@ -5,11 +5,11 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading" style="height: 50px;">
+                <div class="panel-heading" style="height: 50px;background-color:#42c3f3;color:#ffffffe3;">
                   @if(!$subwards)
                   No Subward assigned
                   @else
-                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                 Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
@@ -68,10 +68,26 @@
                                  <td>Construction Type</td>
                                  <td>:</td>
                                  <td>
-                                    <label required class="checkbox-inline"><input id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
+                                    <label required class="checkbox-inline" ><input  id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
+                                    <label required class="checkbox-inline"><input id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> <br>
+                          <div id="autoUpdate" class="autoUpdate" style="display:none;">
+                                 <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
+                                    <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                        </div>
                                  </td>
                                </tr>
+                               <script type="text/javascript">
+                                 $(document).ready(function(){
+                                      $('#constructionType1').change(function(){
+                                      if(this.checked)
+                                      $('#autoUpdate').fadeIn('slow');
+                                      else
+                                      $('#autoUpdate').fadeOut('slow');
+
+                                      });
+                                      });
+                               </script>
                                <tr>
                                  <td>Interested In RMC ?</td>
                                  <td>:</td>
@@ -99,22 +115,36 @@
                                    
                                  </td>
                                </tr>
-                               <tr>
-                                 <td>Interested In UPVC Doors And Windows ?</td>
+                                <tr>
+                                 <td>Interested In Kitchen Cabinates and Wardrobes?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input required value="Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
+                                      <label><input required value="Kitchen_Yes" id="dandw1" type="radio" name="dandwinterest"><span>&nbsp;</span>Yes</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                    
-                                      <label><input required value="No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
+                                      <label><input required value="Kitchen_No" id="dandw2" type="radio" name="dandwinterest"><span>&nbsp;</span>No</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                    
-                                      <label><input checked="checked" required value="None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
+                                      <label><input checked="checked" required value="Kitchen_None" id="dandw3" type="radio" name="dandwinterest"><span>&nbsp;</span>None</label>
                                       <span>&nbsp;&nbsp;&nbsp;  </span>
                                  </td>
                                </tr>
-
+                               <tr>
+                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input required value="Yes" id="dandw1" type="radio" name="brila"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input required value="No" id="dandw2" type="radio" name="brila"><span>&nbsp;</span>No</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                   
+                                      <label><input checked="checked" required value="None" id="dandw3" type="radio" name="brila"><span>&nbsp;</span>None</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                 </td>
+                               </tr>
                                <tr>
                                  <td>Interested In Home Automation ?</td>
                                  <td>:</td>
@@ -164,11 +194,11 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-                               <tr>
+                               <!-- <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, ETC)</td>
                                    <td>:</td>
                                    <td><input  oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]"></td>
-                               </tr>
+                               </tr> -->
                                 <tr>
                                    <td>Project Status</td>
                                    <td>:</td>
@@ -390,7 +420,17 @@
     padding: 12px 16px;
     transition: 0.3s;
     font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button>
+     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
+
+<button style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
 </div>
 
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
@@ -509,6 +549,28 @@
                                </tr>
                            </table>
 </div>
+<div id="Builder" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Builder Details</label></center><br>
+                           <table class="table"  border="1">
+                               <tr>
+                                   <td>Builder Name</td>
+                                   <td>:</td>
+                                   <td><input id="prName"  type="text" placeholder="Builder Name" class="form-control input-sm" name="bName" value="{{ old('prName') }}"></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Email</td>
+                                   <td>:</td>
+                                   <td><input value="{{ old('pEmail') }}" placeholder="Builder Email" type="email" class="form-control input-sm" name="bEmail" id="pEmail" onblur="checkmail('pEmail')" ></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Contact No.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input value="{{ old('pContact') }}"  minlength=10 onblur="checklength('prPhone');" placeholder="Builder Contact No." type="text" class="form-control input-sm" name="bPhone" maxlength="10" id="prPhone" onkeyup="check('prPhone','1')"></td>
+                               </tr>
+                           </table>
+</div>
                         <table class="table table-responsive" >
                           <tr>
                             <td>Remarks</td>
@@ -605,7 +667,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('oContact').value="";
                             }
@@ -625,7 +699,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('coContact').value="";
                                 // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
@@ -646,7 +732,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('cPhone').value="";
                             }
@@ -667,7 +765,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Error : Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                              swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('eContact').value="";
                                 // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
@@ -688,7 +798,19 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
-                            if(!confirm("Error : Phone Number Already Exists.\n Click 'ok' if you want to add the same number?"))
+                                swal({
+                                  title:"Are you sure?",
+                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                }, function () {
+                                  setTimeout(function () {
+                                    swal("Your request Is accepted  Thank You!");
+                                  }, 1000);
+                                });
                             {
                                 document.getElementById('prPhone').value="";
                                 // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
@@ -743,7 +865,7 @@ function openCity(evt, cityName) {
         var floor    = 'B('+basement+')' + ' + G + ('+ground+') = ';
         sum          = basement+ground+1;
         floor       += sum;
-        alert();
+        
         if(document.getElementById("total").innerHTML != null)
           document.getElementById("total").innerHTML = floor;
         else
@@ -811,6 +933,7 @@ function openCity(evt, cityName) {
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
   function getLocation(){
+   
       document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){
@@ -830,6 +953,7 @@ function openCity(evt, cityName) {
     function displayCurrentLocation(position){
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
+     
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       getAddressFromLatLang(latitude,longitude);
@@ -878,19 +1002,19 @@ function openCity(evt, cityName) {
         if(current == 'first')
         { 
           if(document.getElementById("pName").value == ""){
-            window.alert("You Have Not Entered Project Name");
+            swal("You Have Not Entered Project Name");
           }else if(document.getElementById("longitude").value == ""){
-            window.alert("Please Click On Get Location Button");
+            swal("Please Click On Get Location Button");
           }else if(document.getElementById("latitude").value == ""){
-            window.alert("Kindly Click On Get Location Button");
+            swal("Kindly Click On Get Location Button");
           }else if(document.getElementById("road").value == ""){
-            window.alert("You Have Not Entered Road Name");
+            swal("You Have Not Entered Road Name");
           } else if(document.getElementById('rWidth').value == ""){
-            window.alert("You Have Not Entered Road Width");
+            swal("You Have Not Entered Road Width");
           }else if(ctype1.checked == false && ctype2.checked == false){
-            window.alert("Please Choose The Construction Type");
+            swal("Please Choose The Construction Type");
           }else if(document.getElementById("contract").value == ""){
-            window.alert("Please Select Contract Type");
+            swal("Please Select Contract Type");
 
           }else if(ctype1.checked == true && ctype2.checked == true){
                 countinput = document.querySelectorAll('input[type="checkbox"]:checked').length - 2;
@@ -902,28 +1026,28 @@ function openCity(evt, cityName) {
           }
           if(countinput == 0){
 
-              window.alert("Select Atleast One Project Status");
+             swal("Select Atleast One Project Status");
           
           }else if(document.getElementById("basement").value == ""){
-            window.alert("You Have Not Entered Basement Value");
+           swal("You Have Not Entered Basement Value");
             
           } else if(document.getElementById("ground").value == ""){
-            window.alert("You Have Not Entered Floor Value");
+           swal("You Have Not Entered Floor Value");
             
           }else if(document.getElementById("length").value == ""){
-            window.alert("You Have Not Entered Length Value");
+           swal("You Have Not Entered Length Value");
            
           }else if(document.getElementById("breadth").value == ""){
-            window.alert("You Have Not Entered Breadth Value");
+           swal("You Have Not Entered Breadth Value");
              
           }else if(document.getElementById("pSize").value == ""){
-            window.alert("You Have Not Entered Project Size");
+           swal("You Have Not Entered Project Size");
           }else if(constructionType3.checked == false && constructionType4.checked == false){
-            window.alert("Please Choose The Budget Type");
+           swal("Please Choose The Budget Type");
           }else if(document.getElementById("budget").value == ""){
-            window.alert("You have Not Entered Budget");
+           swal("You have Not Entered Budget");
           }else if (document.getElementById("pImage").value == ""){
-            window.alert("You Have Not Chosen a File To Upload");
+           swal("You Have Not Chosen a File To Upload");
           }else if(document.getElementById('prName').value == ''){
                     alert('Please Enter a Procurement Details');
                     document.getElementById('prName').focus();
@@ -965,7 +1089,7 @@ function openCity(evt, cityName) {
     //         alert('Please Enter Phone Number');
     //         document.getElementById('prPhone').focus();
     //       }else if(document.getElementById("prName").value == ""){
-    //         window.alert("Please Enter Procurement Name");
+    //        swal("Please Enter Procurement Name");
     //       }else if(document.getElementById("pContact") == ""){
     //         window.alert("Please enter phone number");
     //       }else { 
@@ -1081,8 +1205,7 @@ function openCity(evt, cityName) {
             // both residential and commercial
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
-                      "<option value='Commercial Floor'>Commercial Floor</option>"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor'  class=\"form-control\" >"+
                       "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
@@ -1093,11 +1216,12 @@ function openCity(evt, cityName) {
                       "</td><td>"+
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses\"></td>";
             document.getElementById('selection').innerHTML = sel;
+           
           }else if(ctype1.checked == true && ctype2.checked == false){
             // residential only
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor'  class=\"form-control\" onchange =\"load();\">"+
                       "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
@@ -1117,7 +1241,6 @@ function openCity(evt, cityName) {
                       "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }
-
           for(var i = base; i>0; i--){
             opts += "<option value='Base "+i+"'>Base "+i+"</option>";
           }
@@ -1130,9 +1253,9 @@ function openCity(evt, cityName) {
         }
         else
           document.getElementById("total").innerHTML = '';
+
       }
     }
-
     return false;
   }
   function addRow() {
@@ -1163,8 +1286,8 @@ function openCity(evt, cityName) {
         }
         if(ctype1.checked == true && ctype2.checked == true){
           // both residential and commercial
-          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
+          cell3.innerHTML = "<select name='floorNo[]' class='form-control' id=\"floorNo2\" onchange =\"count(this.value);\">"+existing+"</select>";
+          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\" onchange =\"count(this.value);\" id=\"floorNo1\">"+
                                                           "<option value=\"Commercial Floor\">Commercial Floor</option>"+
                                                           "<option value=\"1RK\">1RK</option>"+
                                                           "<option value=\"1BHK\">1BHK</option>"+
@@ -1177,7 +1300,9 @@ function openCity(evt, cityName) {
         }
     }
     var numbers = [];
+
     function count(){
+
       var status = document.getElementsByName('status[]');
       var selected = "";
       var check = 0;
@@ -1383,7 +1508,7 @@ function validateForm(arg)
 </script>
 
   <!-- Modal -->
-@if(session('Success'))
+@if(session('test'))
   <div class="modal fade" id="Material" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -1392,7 +1517,7 @@ function validateForm(arg)
           <h4 class="modal-title">Success</h4>
         </div>
         <div class="modal-body">
-          <p style="text-align:center;">{!! session('Success') !!}</p>
+          <p style="text-align:center;">{!! session('test') !!}</p>
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
@@ -1405,6 +1530,6 @@ function validateForm(arg)
       $("#Material").modal('show');
   });
 </script>
+
 @endif
 @endsection
-

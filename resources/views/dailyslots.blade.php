@@ -65,14 +65,16 @@
             </div>
             <div class="panel-body">
                  @if(Auth::user()->group_id != 22)
-                <label style="color:black">Total Count : <b>{{$lcount}}</b></label>
+                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label><br>
+                <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label>
                 @else
-                 <label style="color:black">Total Count : <b>{{$tlcount}}</b></label>
+                 <label style="color:black">Total Projects Added = <b>{{$tlcount}}</b></label><br>
+                 <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
                  @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
-                        <th style="font-size: 10px;">Ward Name</th>
+                        <th style="font-size: 10px;">Sub Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
                         <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
@@ -88,11 +90,11 @@
                     </tr>
                     @endforeach
                     <tr>
-                        <td style="font-size: 10px;">Total</td>
-                        <td style="font-size: 10px;"></td>
-                        <td style="font-size: 10px;">{{ $lcount}}</td>
-                        <td style="font-size: 10px;">{{ $lupcount}}</td>
-                        <td style="font-size: 10px;"></td>
+                        <th style="font-size: 10px;">Total</th>
+                        <th style="font-size: 10px;"></th>
+                        <th style="font-size: 10px;">{{ $lcount}}</th>
+                        <th style="font-size: 10px;">{{ $lupcount}}</th>
+                        <th style="font-size: 10px;"></th>
                     </tr>
                     @else
                      @foreach($tlUsers as $user)
@@ -105,11 +107,11 @@
                     </tr>
                     @endforeach
                     <tr>
-                        <td style="font-size: 10px;">Total</td>
-                        <td style="font-size: 10px;"></td>
-                        <td style="font-size: 10px;">{{$tlcount}}</td>
-                        <td style="font-size: 10px;">{{ $tlupcount}}</td>
-                        <td style="font-size: 10px;"></td>
+                        <th style="font-size: 10px;">Total</th>
+                        <th style="font-size: 10px;"></th>
+                        <th style="font-size: 10px;">{{$tlcount}}</th>
+                        <th style="font-size: 10px;">{{ $tlupcount}}</th>
+                        <th style="font-size: 10px;"></th>
                     </tr>
                     @endif
                 </table>
@@ -121,14 +123,16 @@
             </div>
             <div class="panel-body">
                 @if(Auth::user()->group_id != 22)
-              <label style="color:black">Total Count : <b>{{$acount}}</b></label>
+              <label style="color:black">Total Projects Added = <b>{{$acount}}</b></label>
+              <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label>
               @else
-              <label style="color:black">Total Count : <b>{{$tlacount}}</b></label>
+              <label style="color:black">Total Projects Added = <b>{{$tlacount}}</b></label><br>
+              <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
               @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
-                        <th style="font-size: 10px;">Ward Name</th>
+                        <th style="font-size: 10px;">Sub Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
                         <th style="font-size: 10px;">Updated</th>
                         <th style="font-size: 10px;">Total</th>
@@ -175,7 +179,7 @@
     <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>{{$projcount}}</b></label>
                 <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
             </div>
             <div class="panel-body">
@@ -194,12 +198,18 @@
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
+                        <?php $users = []; ?>
                         @foreach($projects as $project)
-                        @if($project->quality == "Fake")
-                        <tr style='background-color:#d2d5db'>
-                        @else
-                        <tr>
-                        @endif
+                            @if($project->quality == "Fake")
+                            <tr style='background-color:#d2d5db'>
+                            @else
+                                @if(!in_array($project->listing_engineer_id, $users))
+                                <tr style='background-color:#91dd71'>
+                                @else 
+                                    <tr>
+                                @endif
+                            @endif
+                            <?php array_push($users, $project->listing_engineer_id); ?>
                             <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>

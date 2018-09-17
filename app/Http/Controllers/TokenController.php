@@ -27,9 +27,11 @@ use App\SubWardMap;
 use App\TrackLocation;
 use App\Order;
 use App\FieldLogin;
+use App\FakeGPS;
+use App\Reactuser;
 
 use App\Http\Resources\Message as MessageResource;
-
+date_default_timezone_set("Asia/Kolkata");
 class TokenController extends Controller
 {
     /**
@@ -83,8 +85,8 @@ class TokenController extends Controller
     }
     public function logout()
     {
-    	Auth::logout();
-    	return redirect('/login');
+        Auth::logout();
+        return redirect('/login');
     }
     public function apilogout()
     {
@@ -207,10 +209,10 @@ class TokenController extends Controller
         if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
         {
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
+            return response()->json(['message' => 'true','success'=>1,'userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
         }
         else{
-            return response()->json(['message' => 'false']);
+            return response()->json(['message' => 'false','success'=>0]);
         }
     }
 
@@ -266,9 +268,10 @@ class TokenController extends Controller
                 for($i = 1; $i < $statusCount; $i++){
                     $statuses .= ", ".$request->project_status[$i];
                 }
-            }else{
-                $statuses=null;
             }
+            // else{
+            //     $statuses=null;
+            // }
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
@@ -379,13 +382,14 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->project_status]);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
     }
 public function enquiry(request $request){
     
+      
         $enquiry = new Requirement;
         $enquiry->project_id = $request->project_id;
         $enquiry->main_category = $request->main_category;
@@ -399,7 +403,7 @@ public function enquiry(request $request){
        
         $enquiry->save();
           if($enquiry->save() ){
-            return response()->json(['message'=>'Enquiry Added sucuss']);
+            return response()->json(['message'=>'Enquiry Added sucuss','']);
         }else{
             return response()->json(['message'=>'Something went wrong']);
         }
@@ -407,7 +411,7 @@ public function enquiry(request $request){
     public function updateEnquiry(request $request){
         
        
-        $enquiry = Requirement::where('id',$request->id)->first();
+            $enquiry = Requirement::where('id',$request->id)->first();
                 $enquiry->project_id = $request->project_id;
                 $enquiry->main_category = $request->main_category;
                 $enquiry->brand = $request->brand;
@@ -417,7 +421,7 @@ public function enquiry(request $request){
                 $enquiry->A_contact = $request->A_contact;
                 $enquiry->quantity = $request->quantity;
                 $enquiry->user_id = $request->userid;
-        $enquiry->save();
+              $enquiry->save();
                        
          
           if($enquiry->save()){
@@ -477,8 +481,6 @@ public function getproject(request $request){
     }
     public function postUpdateProject(Request $request)
     {
-
-       
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         $otherApprovals = "";
@@ -488,7 +490,6 @@ public function getproject(request $request){
         }else{
              $type=null;
         }
-
         
         $statusCount = count($request->project_status);
         $statuses = $request->project_status[0];
@@ -517,14 +518,14 @@ public function getproject(request $request){
                 'project_size' => $request->project_size,
                 'budgetType' => $request->budgetType,
                 'budget' => $request->budget,
-//                 'user_id' => $request->userid,
+                'user_id' => $request->userid,
                 'basement' => $basement,
                 'ground' => $ground,
                 'project_type' => $floor,
                 'length' => $length,
                 'breadth' => $breadth,
                 'plotsize' => $size,
-                'user_id' => $request->userid,
+                
                 'remarks' => $request->remarks,
                 'contract' => $request->contract
             ]);
@@ -536,13 +537,7 @@ public function getproject(request $request){
             // $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
             // $projectdetails->road_name = $request->road_name;
             $projectdetails = ProjectDetails::where('project_id',$request->project_id)->first();
-            $projectdetails->project_name = $request->project_name;
-            $projectdetails->road_width = $request->road_width;
-            $projectdetails->construction_type =$request->construction_type;
-            $projectdetails->interested_in_rmc = $request->interested_in_rmc;
-            $projectdetails->interested_in_loan = $request->interested_in_loan;
-            $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
-            $projectdetails->road_name = $request->road_name;
+            
             if($request->municipality_approval != NULL){
                 $data = $request->all();
                 $png_url = $request->userid."municipality_approval-".time().".jpg";
@@ -577,12 +572,6 @@ public function getproject(request $request){
                 $projectdetails->save();
             }
             
-           
-            $projectdetails->remarks = $request->remarks;
-            $projectdetails->contract = $request->contract;
-           
-            $projectdetails->save();
-            
             $basement = $request->basement;
             $ground = $request->ground;
             $floor = $basement + $ground + 1;
@@ -597,29 +586,33 @@ public function getproject(request $request){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->peoject_id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
-
-            $siteaddress = SiteAddress::where('project_id',$request->project_id);
-            $siteaddress->project_id = $projectdetails->peoject_id;
-            $siteaddress->latitude = $request->latitude;
-            $siteaddress->longitude = $request->longitude;
-            $siteaddress->save();
+            if($request->latitude){
+                $siteaddress = SiteAddress::where('project_id',$request->project_id);
+                $siteaddress->project_id = $projectdetails->project_id;
+                $siteaddress->latitude = $request->latitude;
+                $siteaddress->longitude = $request->longitude;
+                $siteaddress->address = $request->address;
+                $siteaddress->save();
+            }
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
-            return response()->json(['message'=>'Add project sucuss']);
+            return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
-            return response()->json(['message'=>'Something went wrong']);
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
         }
-    }
+    } 
     public function addLocation(Request $request){
 
        
         $data = new TrackLocation;
         $data->user_id = $request->user_id;
         $data->lat_long = $request->lat_long;
+        $data->time = $request->time;
         $data->date = $request->date;
         $data->kms = $request->kms;
+       
         
         if($data->save()){
             $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
@@ -631,34 +624,46 @@ public function getproject(request $request){
             print $userResponse;
         }
     }
-
+    public function fakegps(Request $request){
+        $fake = new FakeGPS;
+        $fake->user_id = $request->user_id;
+        $fake->date = $request->date;
+        $fake->time = $request->time;
+        $fake->fakegps = $request->fakegps;
+        
+        if($fake->save()){
+            return response()->json(['success'=>'1','message'=>'recieved']);
+        }
+        else{
+            return reponse()->json(['success'=>'0','message'=>'error']);
+        }
+    }
         //update location
       public function updateLocation(Request $request){
-              $data = TrackLocation::where('user_id',$request->user_id)
-                          ->where('date',$request->date)
-                          ->first();
-              $data->user_id = $request->user_id;
-            $data->lat_long = $request->lat_long;
-            $data->date = $request->date;
-            $data->kms = $request->kms;
-            if($data->save()){
-               $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location has been Updated successfully");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }else{
-                $responseData = array('success'=>'0', 'data'=>$data, 'message'=>"Location could not be updated");
-               $userResponse = json_encode($responseData);
-               print $userResponse;
-            }
+            $data = TrackLocation::where('user_id',$request->user_id)
+                        ->where('date',$request->date)
+                        ->update([
+            
+                                'user_id' => $request->user_id,
+                                'lat_long' => $request->lat_long,
+                                'time' => $request->time,
+                                'date' => $request->date,
+                                'kms' => $request->kms
+                                ]);                 
+             if($data){
+            return response()->json(['message'=>'Update Location  sucussfully']);
+        }else{
+            return response()->json(['message'=>'Something went wrong']);
+        }
 
        }
        public function pending(Request $request){
-        $pending = Order::where('status','Enquiry Confirmed')->get();
-         return response()->json(['pending'=>$pending]);
+        $pending = Order::where('status','Enquiry Confirmed')->where('user_id',$request->userid)->get();
+         return response()->json(['order'=>$pending]);
        }
         public function confirm(request $request){
-        $confirm = Order::where('status','Order Confirmed')->get();
-         return response()->json(['confirm'=>$confirm]);
+        $confirm = Order::where('status','Order Confirmed')->where('user_id',$request->userid)->get();
+         return response()->json(['order'=>$confirm]);
        }
 
 
@@ -690,4 +695,28 @@ public function getproject(request $request){
                 return response()->json(['message'=>'Something went wrong']);
         }
     }
+    public function gettime(){
+            $logintime = date('H:i:s');
+            return response()->json(['message'=>$logintime]);
+    }
+    public function getreq(Request $request){
+        $pending = Requirement::get();
+         return response()->json(['order'=>$pending]);
+       }
+        public function data(request $request){
+
+
+            $data = new Reactuser;
+            $data->name = $request->username;
+            $data->password = $request->email;
+            $data->birthdate = $request->birthdate;
+            
+            if($data->save()){
+                   return response()->json(['data'=>'successfull']);
+        }else{
+                return response()->json(['data'=>'Something went wrong']);
+        }
+
+
+        }
 }

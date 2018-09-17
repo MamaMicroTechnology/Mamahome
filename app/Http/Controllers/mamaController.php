@@ -11,6 +11,8 @@ use App\Department;
 use App\User;
 use Session;
 use App\Group;
+use App\Builder;
+
 use App\Ward;
 use App\SubWard;
 use App\Country;
@@ -59,6 +61,13 @@ use App\ProjectImage;
 use App\Tlwards;
 use App\FieldLogin;
 use Carbon\Carbon;
+use App\TrackLocation;
+use App\Report;
+use App\Salescontact_Details;
+use App\Manager_Deatils;
+use App\Mprocurement_Details;
+use App\Mowner_Deatils;
+
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -410,7 +419,7 @@ class mamaController extends Controller
             $assignWard->status = 'Not Completed';
             $assignWard->save();
         }
-        return back()->with('error','Assigned Successfully');
+        return back()->with('Success','Assigned Successfully');
     }
     public function addProject(Request $request)
     {
@@ -479,8 +488,13 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
+       $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }
 
-        $bType = count($request->budgetType);
+     
+        $btype = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
@@ -577,10 +591,31 @@ class mamaController extends Controller
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
           $projectdetails->automation=$request->automation;
-           
-            $projectdetails->save();
-            
-            $room_types = $request->roomType[0]." (".$request->number[0].")";
+          $projectdetails->brilaultra=$request->brila;
+          $projectdetails->res = $btype;
+
+
+          $projectdetails->save();
+        
+       $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
+        $project = ProjectDetails::where('project_id',$projectdetails->id)->pluck('sub_ward_id')->first();
+        $uproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$projectdetails->id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$projectdetails->id)->pluck('generated_by')->first();
+        $activity->updater = Auth::user()->id;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        $activity->project_id = $projectdetails->id;
+        $activity->sub_ward_id = $project;
+        $activity->enquiry  = $eproject;
+        $activity->typeofactivity = "Add Project" ;
+        $activity->save();
+
+$room_types = $request->roomType[0]." (".$request->number[0].")";
             $count = count($request->roomType);
             for($i = 0;$i<$count;$i++){
                 $roomtype = new RoomType;
@@ -632,7 +667,14 @@ class mamaController extends Controller
         $procurementDetails->procurement_email = $request->pEmail;
         $procurementDetails->procurement_contact_no = $request->prPhone;
         $procurementDetails->save();
-        $no = $request->prPhone;
+ 
+        $procurementDetails = New Builder;
+        $procurementDetails->project_id = $projectdetails->id;
+        $procurementDetails->builder_name = $request->bName;
+        $procurementDetails->builder_email = $request->bEmail;
+        $procurementDetails->builder_contact_no = $request->bPhone;
+        $procurementDetails->save();
+       $no = $request->prPhone;
         $pid = $projectdetails->id;
        
         $newtime = date('H:i A');
@@ -678,13 +720,8 @@ class mamaController extends Controller
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-        $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
-        $activity->employee_id = Auth::user()->employeeId;
-        $activity->activity = Auth::user()->name." has added a new project id: ".$projectdetails->id." at ".date('H:i A');
-        $activity->save();
-        $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
-        return back()->with('Success',$text);
+      $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
+        return back()->with('test',$text);
     }
     public function updateProject($id, Request $request)
     {
@@ -858,12 +895,21 @@ class mamaController extends Controller
                 $statuses .= ", ".$request->status[$i];
             }
         }
+        $projectBeforeUpdate = ProjectDetails::where('project_id',$id)->first();
 
-        ProjectDetails::where('project_id',$id)->update([
+       $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }else{
+           $btype = "null";  
+        }
+
+       ProjectDetails::where('project_id',$id)->update([
             'project_name' => $request->pName,
             'road_name' => $request->rName,
             'road_width' => $request->rWidth,
             'project_status' => $statuses,
+            'brilaultra'=>$request->brila,
             'basement' => $basement,
             'ground' => $ground,
             'length' => $length,
@@ -880,6 +926,8 @@ class mamaController extends Controller
             'follow_up_date' =>$request->follow_up_date,
             'followup' => $request->follow,
             'budget' => $request->budget,
+                       'brilaultra'=>$request->brila,
+
             'contract'=>$request->contract,
             // 'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
@@ -887,9 +935,11 @@ class mamaController extends Controller
              'plotsize' => $size,
             'length'=> $length,
             'breadth' => $breadth,
+            'res' =>$btype,
             'updated_by'=>Auth::user()->id,
             'call_attended_by'=>Auth::user()->id
         ]);
+       
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
             'owner_email' => $request->oEmail,
@@ -915,6 +965,14 @@ class mamaController extends Controller
             'procurement_email' => $request->pEmail,
             'procurement_contact_no' => $request->pContact
         ]);
+
+        Builder::where('project_id',$id)->update([
+            'builder_name' => $request->bName,
+            'builder_email' => $request->bEmail,
+            'builder_contact_no' => $request->bPhone
+        ]);
+
+
         date_default_timezone_set("Asia/Kolkata");
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
             'lastUpdateTime' => date('H:i A')
@@ -972,10 +1030,31 @@ class mamaController extends Controller
                 $roomtype->save();
             }
         }
+        $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+        
         $activity = new ActivityLog;
+        $uproject = ProjectDetails::where('project_id',$id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A');
+        $activity->project_id = $id;
+        $activity->sub_ward_id = $project;
+        $activity->typeofactivity = "Updated Project" ;
         $activity->save();
         return back()->with('Success','Updated Successfully');
     }
@@ -1104,11 +1183,34 @@ class mamaController extends Controller
         }
         $requirement->generated_by = Auth::user()->id;
         $requirement->save();
+        
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->pId." at ".date('H:i A');
+        $uproject = ProjectDetails::where('project_id',$request->pId)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$request->pId)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$request->pId)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$request->pId)->pluck('generated_by')->first();
+        $project = ProjectDetails::where('project_id',$request->pId)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $activity->updater = $uproject;
+        $activity->quality = $qproject;
+        $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+
+        $activity->project_id = $request->pId;
+        $activity->req_id = $requirement->id;
+        $activity->typeofactivity = "Add Enquiry";
         $activity->save();
+
         return back();
     }
     public function placeOrder($id, Request $request)
@@ -1386,6 +1488,26 @@ class mamaController extends Controller
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
+        $activity->project_id = $id;
+         $uproject = ProjectDetails::where('project_id',$id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+        if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+        $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $activity->typeofactivity = "Project Updated";
         $activity->activity = Auth::user()->name." has updated a project id: ".$id." at ".date('H:i A')." with data - Status: ".$statuses.", Remarks: ".$request->materials.", Question: ".$request->qstn.", Followup: ".$request->follow.", Quality: ".$request->quality.", With contractor: ".$request->contract.", Note: ".$request->note;
         $activity->save();
         return back();
@@ -1626,7 +1748,13 @@ class mamaController extends Controller
         $manufacturer->sales_contact = $request->salesContact;
         $manufacturer->finance_contact = $request->financeContact;
         $manufacturer->quality_department = $request->qualityDept;
+        
+
         $manufacturer->save();
+           
+       
+
+
         return back()->with('Success','Manufacturer details added successfully');
     }
     public function editsubwardimage(Request $request){
@@ -1667,6 +1795,25 @@ class mamaController extends Controller
         $points->save();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
+        $activity->project_id = $request->id;
+         $uproject = ProjectDetails::where('project_id',$request->id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$request->id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$request->id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+       if(count($eproject) != 0){
+        
+       $activity->enquiry = $eproject;
+       }
+        else{
+       $activity->enquiry ="null";
+
+        }
+        $project=ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has marked project ".$request->id." as ".$request->quality;
         $activity->save();
@@ -1718,10 +1865,30 @@ class mamaController extends Controller
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
+        $activity->req_id = $request->id;
+        $activity->project_id = $requirement->project_id;
+        $project = ProjectDetails::where('project_id',$requirement->project_id)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+         $uproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('updated_by')->first();
+        $qproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$requirement->project_id)->pluck('generated_by')->first();
+       
+       $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+       if(count($eproject) != 0){
+        $activity->enquiry = $eproject;
+       }
+        else{
+           $activity->enquiry ="null";
+          }
+         $activity->typeofactivity = "Enquiry Updated";
         $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note.$request->status;
         $activity->save();
         return back();
-    }
+        }
+    
     public function editManualEnquiry(Request $request)
     {
         RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
@@ -1734,7 +1901,7 @@ class mamaController extends Controller
     }
     public function deleteProject(Request $request)
     {
-        ProjectDetails::where('project_id',$request->projectId)->update(['deleted'=>1]);
+        ProjectDetails::where('project_id',$request->projectId)->delete();
         return back();
     }
     public function editinputdata(Request $request)
@@ -1787,6 +1954,32 @@ class mamaController extends Controller
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate
         ]);
+$pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
+        $activity = new ActivityLog;
+        $activity->time = date('Y-m-d H:i A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->req_id = $request->reqId;
+        $activity->project_id = $pro;
+        $project = ProjectDetails::where('project_id',$pro)->pluck('sub_ward_id')->first();
+        $activity->sub_ward_id = $project;
+        $uproject = ProjectDetails::where('project_id',$pro)->pluck('updated_by')->first();
+        
+        $qproject = ProjectDetails::where('project_id',$pro)->pluck('quality')->first();
+        $fproject = ProjectDetails::where('project_id',$pro)->pluck('followup')->first();
+        $eproject = Requirement::where('project_id',$pro)->pluck('generated_by')->first();
+        $activity->updater = $uproject;
+       $activity->quality = $qproject;
+       $activity->followup = $fproject;
+       if(count($eproject) != 0){
+        $activity->enquiry = $eproject;
+       }
+        else{
+           $activity->enquiry ="null";
+          }
+         $activity->typeofactivity = "Enquiry Updated";
+        $activity->activity = Auth::user()->name." has updated requirement id: ".$pro." as ".$request->note.$request->status;
+        $activity->save();
+
        if($x)
         {
             return back()->with('success','Enquiry updated Successfully !!!');
@@ -1897,46 +2090,100 @@ class mamaController extends Controller
         $empimage = time().'.'.request()->image->getClientOriginalExtension();
         $request->image->move(public_path('chequeimages'),$empimage);
 
-     $check = new Check;
-     $check->project_id=$request->project_id;
-     $check->orderId = $request->orderId;
-     $check->checkno  = $request->checkno; 
-     $check->amount = $request->amount;
-     $check->bank = $request->bank;
+        $check = new Check;
+        $check->project_id=$request->project_id;
+        $check->orderId = $request->orderId;
+        $check->checkno  = $request->checkno; 
+        $check->amount = $request->amount;
+        $check->bank = $request->bank;
 
-     $check->date = $request->date;
-     $check->image = $empimage;
-     $check->save();
-     $check = "Check";
-    Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
-     return back();
-}
-public function checkdetailes(request $request){
-    $details = Check::all();
-    $countrec = count($details);
-    $check = Order::all();
+        $check->date = $request->date;
+        $check->image = $empimage;
+        $check->save();
+        $check = "Check";
+        Order::where('id',$request->orderId)->update(['payment_mode' =>$check]);
+        return back();
+    }
+    public function checkdetailes(request $request){
+        $details = Check::all();
+        $countrec = count($details);
+        $check = Order::all();
 
-     return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
-}
+        return view('checkdetailes',['details' => $details,'countrec'=>$countrec,'check'=>$check]);
+    }
    
     public function postSaveManufacturer(Request $request)
     {
-        if($request->type == "blocks"){
-            // $modes = implode(", ", $request->paymentMode);
-            $manufacturer = new Manufacturer;
-            $manufacturer->name = $request->name;
-            $manufacturer->address = $request->address;
-            $manufacturer->area = $request->area;
-            $manufacturer->capacity = $request->capacity;
-            $manufacturer->present_utilization = $request->utilization;
-            $manufacturer->cement_requirement = $request->cement_requirement;
-            $manufacturer->prefered_cement_brand = $request->brand;
-            $manufacturer->deliverability = $request->deliverability;
-            $manufacturer->sand_requirement = $request->sand_requirement;
-            $manufacturer->type = $request->manufacturing_type;
-            // $manufacturer->payment_mode = $modes;
-            $manufacturer->save();
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
 
+           if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+
+        $manufacturer = new Manufacturer;
+        $manufacturer->listing_engineer_id = Auth::user()->id;
+        $manufacturer->name = $request->name;
+        $manufacturer->sub_ward_id = $wardsAssigned;
+        $manufacturer->plant_name = $request->plant_name;
+        $manufacturer->latitude = $request->latitude;
+        $manufacturer->longitude = $request->longitude;
+        $manufacturer->address = $request->address;
+        $manufacturer->contact_no = $request->phNo;
+        $manufacturer->capacity = $request->capacity;
+        $manufacturer->cement_requirement = $request->cement_requirement;
+        $manufacturer->cement_requirement_measurement = $request->cement_required;
+        $manufacturer->prefered_cement_brand = $request->brand;
+        $manufacturer->sand_requirement = $request->sand_requirement;
+        $manufacturer->aggregates_required = $request->aggregate_requirement;
+        $manufacturer->manufacturer_type = $request->type;
+        $manufacturer->type = $request->manufacturing_type;
+        $manufacturer->moq = $request->moq;
+        $manufacturer->total_area = $request->total_area;
+        $manufacturer->remarks = $request->remarks;
+        $manufacturer->production_type = $pro;
+
+
+        $manufacturer->save();
+        $sales = new Salescontact_Details;
+       $sales->manu_id =  $manufacturer->id;
+       $sales->name = $request->coName;
+       $sales->email = $request->coEmail;
+       $sales->contact = $request->coContact;
+       $sales->contact1 = $request->coContact1;
+
+       $sales->save();
+
+       $manager = new Manager_Deatils;
+       $manager->manu_id =  $manufacturer->id;
+       $manager->name = $request->cName;
+       $manager->email = $request->cEmail;
+       $manager->contact = $request->cContact;
+       $manager->contact1 = $request->cContact1;
+
+       $manager->save();
+    
+       $proc = new Mprocurement_Details;
+       $proc->manu_id =  $manufacturer->id;
+       $proc->name = $request->prName;
+       $proc->email = $request->pEmail;
+       $proc->contact = $request->prPhone;
+       $proc->contact1 = $request->prPhone1;
+
+       $proc->save();
+
+        $owner = new Mowner_Deatils;
+       $owner->manu_id =  $manufacturer->id;
+       $owner->name = $request->oName;
+       $owner->email = $request->oEmail;
+       $owner->contact = $request->oContact;
+       $owner->contact1 = $request->oContact1;
+
+       $owner->save();
+
+        
+        if($request->type == "Blocks"){
             // saving product details
             for($i = 0; $i < count($request->blockType); $i++){
                 $products = new ManufacturerProduce;
@@ -1946,36 +2193,22 @@ public function checkdetailes(request $request){
                 $products->price = $request->price[$i];
                 $products->save();
             }
-        }else{
-            $manufacturer = new Manufacturer;
-            $manufacturer->name = $request->name;
-            $manufacturer->address = $request->address;
-            $manufacturer->area = $request->area;
-            $manufacturer->capacity = $request->capacity;
-            $manufacturer->present_utilization = $request->utilization;
-            $manufacturer->cement_requirement = $request->cement_requirement;
-            $manufacturer->cement_used = $request->cement_used;
-            $manufacturer->prefered_cement_brand = $request->brand;
-            $manufacturer->deliverability = $request->deliverability;
-            $manufacturer->sand_requirement = $request->sand_requirement;
-            $manufacturer->moq = $request->moq;
-            $manufacturer->save();
-
+        }elseif($request->type == "RMC"){
             // saving product details
-            for($i = 0; $i < count($request->blockType); $i++){
+            for($i = 0; $i < count($request->grade); $i++){
                 $products = new ManufacturerProduce;
                 $products->manufacturer_id = $manufacturer->id;
-                $products->block_type = $request->blockType[$i];
-                // $products->block_size = $request->blockSize[$i];
-                $products->price = $request->price[$i];
+                $products->block_type = $request->grade[$i];
+                $products->price = $request->gradeprice[$i];
                 $products->save();
             }
         }
-        return back()->with('Success','Manufacturer Saved Successfully');;
+        return back()->with('Success','Manufacturer Saved Successfully');
     }
     public function listeng(request $request){
        // $s = User::pluck('id');
        // $tl = Tlwards::whereIn('user_id',$s)->pluck('users');
+
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
         $userIds = explode(",", $tl);
        
@@ -2001,10 +2234,10 @@ public function checkdetailes(request $request){
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
-                       
-                       
+                    
         return view('listeng',['listengs'=>$listengs]);
     }
+
     
     public function acceng(request $request){
        // $s = User::pluck('id');
@@ -2035,8 +2268,9 @@ public function checkdetailes(request $request){
                         ->get();
         return view('acceng',['accengs'=>$accengs]);
     }
-     public function getmap(request $request)
+      public function getmap(request $request)
     {
+       
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
       // $login = loginTime::where('user_id',$id)
@@ -2046,7 +2280,8 @@ public function checkdetailes(request $request){
     $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
     $subwards = SubWard::where('id',$wardsAssigned)->first();
         $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
-        if($subwards != null){
+        // dd($projects);
+      if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
             
         }else{
@@ -2061,8 +2296,13 @@ public function checkdetailes(request $request){
         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
         ->where('department_id','!=','10')
         ->select('sub_wards.sub_ward_name')->get();
-      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login]);
+    $storoads = TrackLocation::where('user_id',$id)
+                        ->where('date',date('Y-m-d'))
+                        ->first();
+        
+      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads]);
     }
+
     public function getaccmap(request $request)
     {
       $name = $request->name;
@@ -2087,8 +2327,36 @@ public function checkdetailes(request $request){
         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
         ->where('department_id','!=','10')
         ->select('sub_wards.sub_ward_name')->get();
-      return view('getaccmap',['name'=>$name,'ward'=>$ward,'login'=>$login,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
+
+         $storoads = TrackLocation::where('user_id',$id)
+                        ->where('date',date('Y-m-d'))
+                        ->first();
+
+      return view('getaccmap',['name'=>$name,'ward'=>$ward,'login'=>$login,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'storoads'=>$storoads]);
     }
+
+    // public function teammap(request $request)
+    // {
+    //   $name = $request->name;
+    //   $id = user::where('name',$name)->pluck('id');
+    //   $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
+    //  $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();   
+    
+    //  $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+    // $subwards = SubWard::where('id',$wardsAssigned)->first();
+    //     $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+       
+    //   if($subwards != null){
+    //         $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+    //     }else{
+    //         $subwardMap = "None";
+    //     }   
+    // if($subwardMap == Null){
+    //     $subwardMap = "None";
+    // }      
+   
+    //   return view('teammap',['name'=>$name,'login'=>$login,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
+    // }
     public function recordtime(Request $request)
     {
 
@@ -2123,6 +2391,7 @@ public function checkdetailes(request $request){
                         $field->address = $request->address;
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
+                        $field->status = "Pending";
                         $field->save();
 
 
@@ -2130,6 +2399,7 @@ public function checkdetailes(request $request){
                         return back()->with('Success',$text);
                     }
                     else{
+
                         $text = "You Have Already Logged In!..";
                         return back()->with('Error',$text);
                     }
@@ -2146,8 +2416,7 @@ public function checkdetailes(request $request){
         return view('latelogin',['users'=>$users]);
     }
     public function teamlatelogin(Request $request){
-        // $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
-        // $userIds = explode(",", $tl);
+        
         $dept = [1,2];
         $userIds = User::whereIn('department_id',$dept)->pluck('id');
         $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
@@ -2159,24 +2428,40 @@ public function checkdetailes(request $request){
      public function adminlatelogin(Request $request){
         // $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
         // $userIds = explode(",", $tl);
-        $dept = [1,2,3,5,6];
-        $previous = date('Y-m-d',strtotime('- days'));
+        $dept = [1,2,3,4,5,6];
         $thiMonth = date('Y-m');
         $userIds = User::whereIn('department_id',$dept)->pluck('id');
         $users = FieldLogin::whereIn('field_login.user_id',$userIds)
         ->where('field_login.created_at','LIKE',$thiMonth."%")
         ->where('remark','!='," ")
         ->leftjoin('users','field_login.user_id','users.id')
-        ->select('field_login.*','users.name')->get();
-
+        ->select('field_login.*','users.name')
+        ->get();
         $dates = FieldLogin::where('field_login.created_at','LIKE',$thiMonth."%")
         ->where('remark','!='," ")
         ->distinct()
         ->pluck('logindate')->toarray();
         return view('adminlatelogin',['users'=>$users,'dates'=>$dates]);
     }
+    public function hrlatelogins(Request $request){
+        // $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        // $userIds = explode(",", $tl);
+        $dept = [1,2,3,4,6];
+        $thiMonth = date('Y-m');
+        $userIds = User::whereIn('department_id',$dept)->pluck('id');
+        $users = FieldLogin::whereIn('field_login.user_id',$userIds)
+        ->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->where('remark','!='," ")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')
+        ->get();
+        $dates = FieldLogin::where('field_login.created_at','LIKE',$thiMonth."%")
+        ->where('remark','!='," ")
+        ->distinct()
+        ->pluck('logindate')->toarray();
+        return view('hrlatelogins',['users'=>$users,'dates'=>$dates]);
+    }
     public function logouttime(Request $request){
-
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
         if(count($check)== 0){
 
@@ -2184,27 +2469,41 @@ public function checkdetailes(request $request){
             return back()->with('Late',$text);
         }
         else{
+
             FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('H:i A')
+            'logout' => date('h:i A'),
+            'logout_lat' => $request->latitude,
+            'logout_long' => $request->longitude,
+            'logout_address' => $request->address
         ]);
             $text = "You Have Logged out Successfully!..";
             return back()->with('Success',$text);
         }
     }
-    public function emplogouttime(Request $request){
+    public function empreports(Request $request){
 
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
         if(count($check)== 0){
-
-            $text = "Please Login Before Logout.";
-            return back()->with('Latelogin',$text);
+            // $text = "Please Login Before Logout.";
+            // return back()->with('Latelogin',$text);
+            return back()->with('error','Your Have To Login Before Logout');
         }
         else{
             FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('H:i A')
+            'logout' => date('h:i A')
         ]);
-            $text = "You Have Logged out Successfully!..";
-            return back()->with('empSuccess',$text);
+
+            for($i = 0; $i < count($request->report); $i++){
+            $report = new Report;
+            $report->empId = Auth::user()->employeeId;
+            $report->report = $request->report[$i];
+            $report->start = $request->from[$i];
+            $report->end = $request->to[$i];
+            $report->save();
+            }
+        return back()->with('Success','Your Report Has Been Saved Successfully');
+            // $text = "You Have Logged out Successfully!..";
+            // return back()->with('empSuccess',$text);
         }
     }
     public function teamlogout(Request $request){
@@ -2217,7 +2516,7 @@ public function checkdetailes(request $request){
         }
         else{
             FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('H:i A')
+            'logout' => date('h:i A')
         ]);
             $text = "You Have Logged out Successfully!..";
             return back()->with('TeamSuccess',$text);
@@ -2226,30 +2525,73 @@ public function checkdetailes(request $request){
     public function approve(Request $request)
     {  
         FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
-            'tlapproval' => "Team Leader Approved"
+            'tlapproval' => Auth::user()->name." has Approved"
         ]);
-        return back()->with('success',"Approved Successfully!");
+        return back()->with('Success',"Approved Successfully!");
     }
     public function reject(Request $request)
     {  
         FieldLogin::where('user_id',$request->id)->where('logindate',date('Y-m-d'))->update([
-            'tlapproval' => "Team Leader Rejected"
+            'tlapproval' => Auth::user()->name." has Rejected"
         ]);
-        return back()->with('success',"You Rejected.");
+        return back()->with('error',"Permission Rejected.");
     }
     public function adminapprove(Request $request)
     {  
+       
+        $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
+        $grp = [6,11];
+        $user = user::where('id',$x)->whereIn('group_id',$grp)->pluck('id')->first();
+        if($user != null){
         FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
-            'adminapproval' => "Admin Approved"
+            'logintime' => "07.30 AM",
+            'adminapproval' => Auth::user()->name. " has Approved"
         ]);
-        return back()->with('success',"Approved Successfully!");
+        }
+        else{
+            FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            'logintime' => "08.00 AM",
+            'adminapproval' => Auth::user()->name. " has Approved"
+        ]);
+
+        }
+
+        return back()->with('Success',"Approved Successfully!");
     }
     public function adminreject(Request $request)
     {  
         FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
-            'adminapproval' => "Admin Rejected"
+            'adminapproval' => Auth::user()->name. " has Rejected"
         ]);
-        return back()->with('success',"You Rejected.");
+        return back()->with('error',"Permission Rejected.");
+    }
+    public function hrapprove(Request $request)
+    {  
+       
+        $x = FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->pluck('user_id')->first();
+        $grp = [6,11];
+        $user = user::where('id',$x)->whereIn('group_id',$grp)->pluck('id')->first();
+        if($user != null){
+        FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+           
+            'hrapproval' => Auth::user()->name. " has Approved"
+        ]);
+        }
+        else{
+            FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            
+            'hrapproval' => Auth::user()->name. " has Approved"
+        ]);
+
+        }
+        return back()->with('Success',"Approved Successfully!");
+    }
+    public function hrreject(Request $request)
+    {  
+        FieldLogin::where('user_id',$request->id)->where('logindate',$request->logindate)->update([
+            'hrapproval' => Auth::user()->name." has Rejected"
+        ]);
+        return back()->with('error',"Permission Rejected.");
     }
     public function logintime(Request $request)
     {
@@ -2261,27 +2603,34 @@ public function checkdetailes(request $request){
             $remark = null;
         }
         $id = user::where('id',Auth::user()->id)->pluck('id')->first();
-       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
+       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get(); 
+       $lat = $request->latitude;
+       $lon = $request->longitude;
+       $address = $request->address; 
                         $start = "08:00 AM";
                         $now = date('H:i A');
         if( $now > $start && count($check)== 0 && $remark == null){
 
-            $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
+            
+            $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
         {
+                   
                     if(count($check)== 0){
                         $field = new FieldLogin;
                         $field->user_id = $id;
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $remark;
-                        $field->latitude = " ";
-                        $field->longitude = " ";
-                        $field->address = " ";
+                        $field->latitude = "";
+                        $field->longitude = "";
+                        $field->address = "";
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
+                        $field->status = "Pending";
+                        $field->hrapproval = "Pending";
                         $field->save();
 
 
@@ -2304,11 +2653,15 @@ public function checkdetailes(request $request){
         }
         $id = user::where('id',Auth::user()->id)->pluck('id')->first();
        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();  
+       $lat = $request->latitude;
+       $lon = $request->longitude;
+       $address = $request->address; 
                         $start = "08:05 AM";
                         $now = date('H:i A');
         if( $now > $start && count($check)== 0 && $remark == null){
 
-            $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
+            // $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
+            $text = " <form action='teamlate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('TeamLate',$text); 
             }
         else
@@ -2319,11 +2672,12 @@ public function checkdetailes(request $request){
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $remark;
-                        $field->latitude = " ";
-                        $field->longitude = " ";
-                        $field->address = " ";
+                         $field->latitude = "";
+                        $field->longitude = "";
+                        $field->address = "";
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
+                        $field->status = "Pending";
                         $field->save();
 
 
@@ -2345,6 +2699,22 @@ public function checkdetailes(request $request){
         ->leftjoin('users','field_login.user_id','users.id')
         ->select('field_login.*','users.name')->get();
         return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function seniorteam1(){
+                     
+         $teams= User::where('users.group_id',2)
+                        ->where('department_id','!=','10')
+                        ->get();
+        return view('stlogin',['teams'=>$teams]);
+
+    }
+    public function teamleader1(){
+                     
+         $teams= User::where('users.group_id',22)
+                        ->where('department_id','!=','10')
+                        ->get();
+        return view('teamleader',['teams'=>$teams]);
 
     }
     public function teamleader(){
@@ -2375,6 +2745,18 @@ public function checkdetailes(request $request){
 
        $group = [7,17];
        $name = Group::where('id',7)->pluck('group_name')->first();
+       $thiMonth = date('Y-m');
+        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
+        ->leftjoin('users','field_login.user_id','users.id')
+        ->select('field_login.*','users.name')->get();
+        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+    }
+    public function listatt(){
+
+       $group = [6,11];
+       $name = Group::where('id',6)->pluck('group_name')->first();
        $thiMonth = date('Y-m');
         $userIds = User::whereIn('group_id',$group)->pluck('id');
         $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
@@ -2458,4 +2840,184 @@ public function checkdetailes(request $request){
             
         return view('seniorteam',['users'=>$users,'name'=>$name]);
     }
+    public function saveUpdatedManufacturer(Request $request)
+    {
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+       
+       if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+
+        $manufacturer = Manufacturer::findOrFail($request->id);
+        $manufacturer->name = $request->name;
+        $manufacturer->sub_ward_id = $wardsAssigned;
+        $manufacturer->plant_name = $request->plant_name;
+        $manufacturer->latitude = $request->latitude;
+        $manufacturer->longitude = $request->longitude;
+        $manufacturer->address = $request->address;
+        $manufacturer->contact_no = $request->phNo;
+        $manufacturer->capacity = $request->capacity;
+        $manufacturer->remarks = $request->remarks;
+        $manufacturer->cement_requirement = $request->cement_requirement;
+        $manufacturer->cement_requirement_measurement = $request->cement_required;
+        $manufacturer->prefered_cement_brand = $request->brand;
+        $manufacturer->sand_requirement = $request->sand_requirement;
+        $manufacturer->aggregates_required = $request->aggregate_requirement;
+        $manufacturer->manufacturer_type = $request->type;
+        $manufacturer->type = $request->manufacturing_type;
+        $manufacturer->moq = $request->moq;
+        $manufacturer->total_area = $request->total_area;
+        $manufacturer->production_type = $pro;
+
+        $manufacturer->save();
+       
+        Salescontact_Details::where("manu_id",$request->id)->update([
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->coName,
+       'email' => $request->coEmail,
+       'contact' => $request->coContact,
+       'contact1' => $request->coContact1
+
+        ]);
+       Manager_Deatils::where("manu_id",$request->id)->update([
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->cName,
+       'email' => $request->cEmail,
+       'contact' => $request->cContact,
+       'contact1' => $request->cContact1
+
+       ]);
+
+     Mprocurement_Details::where("manu_id",$request->id)->update([
+
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->prName,
+       'email' => $request->pEmail,
+       'contact' => $request->prPhone,
+       'contact1' => $request->prPhone1
+
+
+     ]);
+Mowner_Deatils::where("manu_id",$request->id)->update([
+       'manu_id' =>  $manufacturer->id,
+       'name' => $request->oName,
+       'email' => $request->oEmail,
+       'contact'=> $request->oContact,
+       'contact1'=> $request->oContact1
+
+       ]);
+
+        
+        if($request->type == "Blocks"){
+            // saving product details
+            for($i = 0; $i < count($request->product_id1); $i++){
+                $products = ManufacturerProduce::find($request->product_id1[$i]);
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
+            for($j = $i; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$j];
+                $products->block_size = $request->blockSize[$j];
+                $products->price = $request->price[$j];
+                $products->save();
+            }
+        }elseif($request->type == "RMC"){
+            // saving product details
+            for($i = 0; $i < count($request->product_id2); $i++){
+                $products = ManufacturerProduce::find($request->product_id2[$i]);
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->grade[$i];
+                $products->price = $request->gradeprice[$i];
+                $products->save();
+            }
+            for($j = $i; $j < count($request->grade); $j++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->grade[$j];
+                $products->price = $request->gradeprice[$j];
+                $products->save();
+            }
+        }
+        return back()->with('Success','Manufacturer Saved Successfully');
+    }
+    public function officeemp(request $request){
+    if(Auth::user()->group_id == 14 ){
+        $dept = [1,2,3,4,6,7,8] ; 
+        $ofcemps= User::whereIn('users.department_id',$dept)
+                        ->select('users.employeeId','users.id','users.name')
+                        ->get();
+
+    }
+    else if(Auth::user()->group_id == 1){
+        $dept = [1,2,3,4,5,7] ; 
+        $ofcemps= User::whereIn('users.department_id',$dept)
+                        ->select('users.employeeId','users.id','users.name')
+                        ->get();
+                       
+    }
+    else if(Auth::user()->group_id == 22){
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+        $grp = [17,7];
+            $ofcemps= User::whereIn('users.id',$userIds)
+                        ->whereIn('group_id',$grp)
+                        ->select('users.employeeId','users.id','users.name')
+                        ->get();
+                       
+    }
+    else{
+      $grp = [7,22,17] ; 
+      $ofcemps= User::whereIn('users.group_id',$grp)
+                        ->where('department_id','!=','10')
+                        ->select('users.employeeId','users.id','users.name')
+                        ->get();
+    }
+        return view('ofcemp',['ofcemps'=>$ofcemps]);
+    }
+    public function officemap(request $request)
+    {
+      $name = $request->name;
+      $id = user::where('name',$name)->pluck('id');
+      $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->pluck('id')->first();
+      if($login != null){
+        $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
+        
+      }
+      else{
+        $login = "None";
+      }
+      return view('officemap',['name'=>$name,'login'=>$login]);
+    }
+    public function atreject(request $request){
+        FieldLogin::where('id',$request->id)->update([
+            'logintime' => " ",
+            'logindate' => " ",
+            'status'=> "rejected"
+        ]);
+        return response()->json(['message'=>'Rejected']);
+    }
+    public function atapprove(request $request){
+        FieldLogin::where('id',$request->id)->update([
+            'status'=> "approved"
+        ]);
+        return response()->json(['message'=>'Approved']);
+    }
+    public function breakreport(){
+        $date= date('Y-m-d');
+       $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
+        dd($time);
+    }
+    public function holidays(){
+
+
+        return view('holidays');
+    }
+
 }

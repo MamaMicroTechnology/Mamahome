@@ -1,9 +1,9 @@
 <?php
   $user = Auth::user()->group_id;
   $ext = ($user == 4? "layouts.amheader":"layouts.app");
+  
 ?>
 @extends($ext)
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -109,7 +109,28 @@
                                     </label>
                                     <label required class="checkbox-inline">
                                       <input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
-                                    </label>
+                                    </label><br>
+                                  <div id="autoUpdate" class="autoUpdate" style="display:none;">
+                                 <label required class="checkbox-inline" style="color:#42c3f3;"><input  id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
+
+                                    <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
+
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2"  name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                        </div>
+                                 </td>
+                               </tr>
+                               <script type="text/javascript">
+                                 $(document).ready(function(){
+                                      $('#constructionType1').change(function(){
+                                      if(this.checked)
+                                      $('#autoUpdate').fadeIn('slow');
+                                      else
+                                      $('#autoUpdate').fadeOut('slow');
+
+                                      });
+                                      });
+                               </script>
+                               <tr>
                                  </td>
                                </tr>
                                <tr>
@@ -139,16 +160,28 @@
                                    
                                  </td>
                                </tr>
-                               <tr>
-                                 <td>Interested In UPVC Doors And Windows ?</td>
+                              <tr>
+                                 <td>Interested In Kitchen Cabinates and Wardrobes ?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
+                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_Yes" ? 'checked' : '' }} required value="Kitchen_Yes" type="radio" name="dandwinterest">Yes</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_No" ? 'checked' : '' }} required value="Kitchen_No" type="radio" name="dandwinterest">No</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_None" ? 'checked' : '' }} required value="Kitchen_None" type="radio" name="dandwinterest">None</label>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input id="bs1" {{ $projectdetails->brilaultra == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="brila">Yes</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="bs2" {{ $projectdetails->brilaultra == "No" ? 'checked' : '' }} required value="No" type="radio" name="brila">No</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="bs3" {{ $projectdetails->brilaultra == "None" ? 'checked' : '' }} required value="None" type="radio" name="brila">None</label>
                                  </td>
                                </tr>
                                <tr>
@@ -178,7 +211,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of &nbsp; &nbsp;
+                                 <td>Type Of &nbsp;
                                   Contract ? </td>
                                   <td>:</td>
                                   <td>
@@ -583,7 +616,17 @@
     padding: 12px 16px;
     transition: 0.3s;
     font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button>
+     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
+
+     <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'builder')">Builder Details</button>
 </div>
 
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
@@ -700,6 +743,33 @@
                                </tr>
                            </table>
                       </div><br>
+
+
+   <div id="builder" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Builder Details</label></center><br>
+                          <table class="table">
+                               <tr>
+                                   <td>Builder Name</td>
+                                   <td>:</td>
+                                   <td><input id="bName" value="{{ $projectdetails->builders != null ? $projectdetails->builders->builder_name: '' }}"  type="text" placeholder="Builder Name" class="form-control input-sm" id="pName" name="bName"></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Email</td>
+                                   <td>:</td>
+                                   <td><input id="pEmail" value="{{ $projectdetails->builders != null ? $projectdetails->builders->builder_email: '' }}" placeholder="Builder Email" type="Email" class="form-control input-sm" id="pEmail" name="bEmail"></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Contact No.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input id="prPhone" value="{{ $projectdetails->builders != null ? $projectdetails->builders->builder_contact_no: '' }}"  placeholder="Builder Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="bPhone" id="pContact"></td>
+                               </tr>
+                           </table>
+                      </div><br>
+
+
+
                       <tr id="quepanelright-{{$projectdetails->project_id}}">
                                     <td>Questions</td><br>
                                     <td>
@@ -957,10 +1027,6 @@ function sum(){
         { 
           if(document.getElementById("pName").value == ""){
             window.alert("You Have Not Entered Project Name");
-          }else if(document.getElementById("longitude").value == ""){
-            window.alert("Please click on Get Location button");
-          }else if(document.getElementById("latitude").value == ""){
-            window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
           } else if(document.getElementById('rWidth').value == ""){
@@ -969,6 +1035,10 @@ function sum(){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false && rmc3.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false){
+            window.alert("Please tell us whether the customer is Interested In Kitchen Cabinates and Wardrobes ?");
+          }else if(bs1.checked == false && bs2.checked == false && bs3.checked == false ){
+            window.alert("Please tell us whether the customer is Interested In Brila Super / Ultratech Products?");
           }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
           }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){

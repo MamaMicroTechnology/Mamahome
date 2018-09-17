@@ -3,48 +3,46 @@
     <div class="col-md-10 col-md-offset-1">
         <table class="table" border=1>
         <tr>
+            <th>SubWardId</th>
             <th>Name</th>
             <th>Address</th>
             <th>Area</th>
             <th>Capacity</th>
-            <th>Present Utilization</th>
+            <!-- <th>Present Utilization</th> -->
             <th>Cement Requirement</th>
             <th>Prefered Cement Brand</th>
-            <th>Deliverability</th>
+            <!-- <th>Deliverability</th> -->
             <th>Sand Requirement</th>
+            @if(isset($_GET['type']) && $_GET['type'] == "Blocks")
             <th>Manufacturing Type</th>
-            <th>Payment Mode</th>
+            @endif
+            <!-- <th>Payment Mode</th> -->
             <th>Products</th>
         </tr>
         @foreach($manufacturers as $manufacturer)
             <tr>
+                <td>{{ $manufacturer->sub_ward_name }}</td>
                 <td>{{ $manufacturer->name }}</td>
                 <td>{{ $manufacturer->address }}</td>
-                <td>{{ $manufacturer->area }}</td>
+                <td>{{ $manufacturer->total_area }}</td>
                 <td>{{ $manufacturer->capacity }}</td>
-                <td>{{ $manufacturer->present_utilization }}</td>
-                <td>{{ $manufacturer->cement_requirement }}</td>
+                <td>{{ $manufacturer->cement_requirement }} {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->prefered_cement_brand }}</td>
-                <td>{{ $manufacturer->deliverability }}</td>
                 <td>{{ $manufacturer->sand_requirement }}</td>
+                @if(isset($_GET['type']) && $_GET['type'] == "Blocks")
                 <td>{{ $manufacturer->type }}</td>
+                @endif
                 <td>
-                    <?php $payments = explode(", ", $manufacturer->payment_mode); ?>
-                    @foreach($payments as $payment)
-                        {{ $payment }}<br>
-                    @endforeach
-                </td>
-                <td>
-                    <table class="table table-striped">
+                    <table class="table table-striped" border=1>
                     <tr>
                         <th>Type</th>
-                        <th>Size</th>
+                        <th class="{{ isset($_GET['type']) ? $_GET['type'] == 'RMC' ? 'hidden' : '' : '' }}">Size</th>
                         <th>Price</th>
                     </tr>
                     @foreach($manufacturer->manufacturerProduct as $products)
                         <tr>
                             <td>{{ $products->block_type }}</td>
-                            <td>{{ $products->block_size }}</td>
+                            <td class="{{ isset($_GET['type']) ? $_GET['type'] == 'RMC' ? 'hidden' : '' : '' }}">{{ $products->block_size }}</td>
                             <td>₹{{ $products->price }}/-</td>
                         </tr>
                     @endforeach

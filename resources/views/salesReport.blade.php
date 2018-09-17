@@ -28,7 +28,7 @@
                                             @endforeach
                                         @else
                                             @foreach($tlUsers as $user)
-                                                <option>{{ $user->name }}</option>
+                                                <option {{ isset($_GET['se']) ? $_GET['se'] == $user->employeeId ? 'selected' : '' : ''}}  value="{{$user->employeeId}}">{{ $user->name }}</option>
     	                                    @endforeach
                                         @endif
 	                                </select>
@@ -69,7 +69,7 @@
                 	<tr>
                 		<th>Name</th>
                     @if(Auth::user()->group_id != 22)
-                		<th>Ward</th>
+                		<!-- <th>Ward</th> -->
                     @endif
                 		<th>Calls</th>
                 		<th>Fake</th>
@@ -82,7 +82,7 @@
                     <tr>
 
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
-                        <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td>
+                       <!--  <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td> -->
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['fake'] }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['genuine'] }}</td>
@@ -109,14 +109,12 @@
     <div class="panel panel-primary" style="overflow-x:scroll">
         <div class="panel-heading" id="panelhead">
             <label>
-            	Daily Callings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
+            	Daily Updating For The Date : <b>{{ date('d-m-Y',strtotime($date)) }} {{ isset($_GET['todate']) && $_GET['todate'] != null ? " to ".date('d-m-Y',strtotime($_GET['todate'])) : '' }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
-            	No Of Calls: <b>{{ $projectsCount }}</b>
+            	No Of Udated Projects: <b>{{ $projectsCount }}</b>
             	&nbsp;&nbsp;&nbsp;&nbsp;
             	Sales Engineer :
-            		@if(isset($_GET['se']) && $_GET['se'] != "ALL")
-            			{{ $projectIds != null ? $projectIds[0]['updater'] : '' }}
-            		@endif
+            		
             </label>
             <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
         </div>
@@ -126,10 +124,10 @@
                     <tr>
                         <th style="text-align:center">Ward No.</th>
                         <th style="text-align:center">Project-ID</th>
-                        <th style="text-align:center" class="{{ isset($_GET['se']) ? 'hidden' : '' }}">Updater</th>
+                        <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center">Followup</th>
-                        <th style="text-align:center">Enquiry Initiated</th>
+                        <th style="text-align:center">Enquiry Initiated By</th>
                     </tr>
                 </thead>
                 <tbody id="mainPanel">
@@ -144,14 +142,7 @@
                         <td style="text-align:center">{{ $projectIds[$i]['quality'] }}</td>
                         <td style="text-align:center">{{ $projectIds[$i]['followup'] }}</td>
                         <td style="text-align:center">
-                        	@if($projectIds[$i]['enquiryInitiated'] != 0)
-                        	Yes<br>
-                        		@foreach($projectIds[$i]['enquiryInitiatedBy'] as $enquiries)
-                        			<a href="{{ URL::to('/') }}/editenq?reqId={{ $enquiries->id }}">Initiated by {{ $enquiries->name }}</a><br>
-                        		@endforeach
-                        	@else
-                        	No
-                        	@endif
+                        	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->updater }}">{{$project->project_id }}</a>
                         </td>
                     </tr>
                  

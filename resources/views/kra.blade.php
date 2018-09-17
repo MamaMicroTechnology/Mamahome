@@ -1,4 +1,13 @@
-@extends('layouts.app')
+<?php
+  $user = Auth::user()->group_id;
+  if(Auth::user()->group_id != 11){
+  $ext = ($user == 6? "layouts.leheader":"layouts.app");
+    }
+    else{
+         $ext = "layouts.leheader";
+    }
+?>
+@extends($ext)
 @section('content')
 
 <div class="col-md-8 col-md-offset-2">

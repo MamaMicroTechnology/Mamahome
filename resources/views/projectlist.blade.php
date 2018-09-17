@@ -1,10 +1,13 @@
-@extends('layouts.app')
-
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 6? "layouts.leheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 <div class="container">
     <div class="row">
      
-      <table class="table">
+      <table class="table" style="width:100%;"><center><span style="background-color:#9e9e9e;width:60%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">No Of project :&nbsp;&nbsp;{{$projectlist1}}</span></center>
         <thead>
           <th>Project Name</th>
           <th>Project Id</th>
@@ -12,8 +15,9 @@
           <th>Status</th>
           <th>Procurement Name</th>
           <th>Procurement Contact No.</th>
-          <th></th>
           <th>Action</th>
+          
+
         </thead>
         <tbody>
           @foreach($projectlist as $project)
@@ -35,12 +39,9 @@
                 <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-success input-sm">Edit</a>
 
               @else
-                <div class="btn-group">
-               <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-success btn-xs">Edit</a>
-                <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Add Enquiry</a>
-              </div>
-                
-              @endif
+               <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Edit</a>
+               <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-success btn-xs" style="margin-top:-42%;margin-left:40%;" >Add Enquiry</a>
+             @endif
               </td>
             </tr>
             @endif

@@ -37,6 +37,8 @@ use App\Order;
 use App\Message;
 use App\training;
 use App\MamahomeAsset;
+use Carbon\Carbon;
+use App\FieldLogin;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -57,17 +59,26 @@ class amController extends Controller
     }
     public function getAMDashboard(){
         $prices = CategoryPrice::all();
-         $loggedInUsers = attendance::where('date',date('Y-m-d'))
-                        ->join('users','empattendance.empId','users.employeeId')
+         // $loggedInUsers = attendance::where('date',date('Y-m-d'))
+         //                ->join('users','empattendance.empId','users.employeeId')
+         //                ->where('users.id','!=',31)
+         //                ->select('users.name','empattendance.*')
+         //                ->get();
+         $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
+                        ->join('users','field_login.user_id','users.id')
                         ->where('users.id','!=',31)
-                        ->select('users.name','empattendance.*')
+                        ->select('users.name','field_login.*','users.employeeId','users.group_id')
                         ->get();
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
                         ->select('users.name','users.employeeId','login_times.*','users.group_id')
                         ->get();
-        
-        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins]);
+        $login =attendance::where('date',date('Y-m-d'))
+                        ->join('users','empattendance.empId','users.employeeId')
+                        ->select('users.name','users.employeeId','empattendance.*','users.group_id')
+                        ->get();
+              
+        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'login'=>$login]);
     }
     public function getPricing(){
         $prices = CategoryPrice::all();
@@ -792,18 +803,43 @@ class amController extends Controller
         $departments = Department::all();
         $groups = Group::all();
         $depts = array();
-
+        $today = date('Y-m-d');
+        $avgAge = array();
+        $test = array();
         foreach($departments as $department){
+            $age = 0;
+            $i = 0;
             $depts[$department->dept_name] = User::where('department_id',$department->id)
-           ->where('id','!=',7)
-            ->where('id','!=',27)
-            ->where('id','!=',28) 
-             ->where('id','!=',101)
-            ->where('id','!=',105) 
-             ->where('id','!=',107) 
-            ->where('id','!=',108) 
-              ->where('id','!=',112) 
-               ->count();
+                ->where('id','!=',7)
+                ->where('id','!=',27)
+                ->where('id','!=',28) 
+                ->where('id','!=',101)
+                ->where('id','!=',105) 
+                ->where('id','!=',107) 
+                ->where('id','!=',108) 
+                ->where('id','!=',112) 
+                ->count();
+               $deptsUsers[$department->dept_name] = User::where('department_id',$department->id)
+                                                        ->where('id','!=',7)
+                                                        ->where('id','!=',27)
+                                                        ->where('id','!=',28) 
+                                                        ->where('id','!=',101)
+                                                        ->where('id','!=',105) 
+                                                        ->where('id','!=',107) 
+                                                        ->where('id','!=',108) 
+                                                        ->where('id','!=',112) 
+                                                        ->get();
+                foreach($deptsUsers[$department->dept_name] as $deptUser){
+                    $dob = EmployeeDetails::where('employee_id',$deptUser->employeeId)->pluck('dob')->first();
+                    if($dob != null){
+                        $age +=  Carbon::parse($dob)->age;
+                        $i++;
+                    }
+                }
+                if($i != 0)
+                    $avgAge[$department->dept_name] = $age / $i;
+                else
+                $avgAge[$department->dept_name] = 0;
         }
          $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
              ->where('id','!=',7)
@@ -815,8 +851,21 @@ class amController extends Controller
              ->where('id','!=',108)
               ->where('id','!=',112)
         ->count();
+         $dept = [1,2,3,4,5,6,8];
+        $users = User::whereIn('department_id',$dept)
+                ->where('users.id','!=',7)
+                ->where('users.id','!=',27)
+                ->where('users.id','!=',28)
+                ->where('users.id','!=',101)
+                ->where('users.id','!=',105)
+                ->where('users.id','!=',107)
+                ->where('users.id','!=',108)
+                 ->where('users.id','!=',112)
+                ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->get();
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
-        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount]);
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users,'avgAge'=>$avgAge]);
     }
      public function viewmhemployee(Request $request){
         if($request->dept == "FormerEmployees"){

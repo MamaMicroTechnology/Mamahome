@@ -70,9 +70,13 @@
                             <td><b>Interested In Bank Loans ? :</b></td>
                             <td>{{ $details->interested_in_loan }}</td>
                         </tr>
-                         <tr>
-                            <td><b>Interested in UPVC Doors and Windows ? : </b></td>
+                          <tr>
+                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
                             <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested In Brila Super / Ultratech Products? : </b></td>
+                            <td>{{ $details->brilaultra }}</td>
                         </tr>
                          <tr>
                             <td><b>Interested in Home Automation ? : </b></td>
@@ -272,9 +276,9 @@
             <div class="panel-body">
                 <table class="table table-hover">
                     <thead>
-                        <th>Constultant Name</th>
-                       <th>Constultant Contact</th>
-                       <th>Constultant Email</th>
+                        <th> Consultant Name</th>
+                       <th> Consultant Contact</th>
+                       <th> Consultant Email</th>
                     </thead>    
                     <tbody>
                         <tr>
@@ -331,6 +335,32 @@
                             <td>{{ $details->procurementdetails != null ? $details->procurementdetails->procurement_name : '' }}</td>
                             <td>{{ $details->procurementdetails != null ? $details->procurementdetails->procurement_contact_no : '' }}</td>
                             <td>{{ $details->procurementdetails != null ? $details->procurementdetails->procurement_email : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Builder Details</b> 
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Builder Name</th>
+                        <th>Builder Contact</th>
+                        <th>Builder Email</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $details->builders != null ? $details->builders->builder_name : '' }}</td>
+                            <td>{{ $details->builders != null ? $details->builders->builder_contact_no : '' }}</td>
+                            <td>{{ $details->builders != null ? $details->builders->builder_email : '' }}</td>
                         </tr>
                     </tbody>
                 </table>        

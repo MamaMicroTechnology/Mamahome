@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Creative Button Styles  - Modern and subtle styles &amp; effects for buttons" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MamaHome</title>
@@ -435,11 +436,16 @@ div#calendar{
                         @endif
                         
                         <li style="padding-top: 10px;">
-                          <button  class="btn btn-success btn-sm" onclick="submitapp()">Field Login</button>
+                          <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
-                        <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" onclick="submitlogout()">Field Logout</button>
+                        @if(Auth::user()->department_id != 4)
+                       <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
                        </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report" >Logout</button>
+                       </li>
+                       @endif
                         @endif
                     </ul>
                 
@@ -447,7 +453,7 @@ div#calendar{
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <!-- <li><a href="{{ route('login') }}">Login</a></li> -->
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -483,6 +489,94 @@ div#calendar{
                 </div>
             </div>
         </nav>
+                                    <!-- Modal -->
+                            <div id="break" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:50%;" >
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Break Time</h4>
+                                  </div>
+                                  <div class="modal-body">
+
+                                    <p>Click On Start To Take a Break?</p>
+                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-success btn-sm">START</button>
+                                  </form>
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                   
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+                            <!-- Modal -->
+                            <div id="report" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                  <div class="modal-header" style="background-color:rgb(244, 129, 31);color:white;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">MAMAHOME EMPLOYEE ATTENDANCE</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                  <form action="{{ URL::to('/') }}/empreports" method="POST">
+                                      {{ csrf_field() }}
+                                      
+                                                  <table class="table table-hover" id="reports">
+                                                      <thead>
+                                                          <th>Report</th>
+                                                          <th>From</th>
+                                                          <th>To</th>
+                                                      </thead>
+                                                      <tbody>
+                                                          
+                                                          <tr>
+                                                              <td><input required type="text" name="report[]" id="report" class="form-control" placeholder="Report"></td>
+                                                              <td><input required type="time" name="from[]" id="from" class="form-control"></td>
+                                                              <td><input required type="time" name="to[]" id="to" class="form-control"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                  </table>
+                                                  <div class="btn-group">
+                                                      <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                      </button>
+                                                      <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                      </button>
+                                                  </div>
+                                             
+                                              <div class="panel-footer">
+                                                  <input type="submit" value="Submit" class="form-control btn btn-success">
+                                              </div>
+                                  </form>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+<script>
+function myTimer() {
+  var myVar = setInterval(myTimer ,1000);
+    var d = new Date();
+    document.getElementById("time").innerHTML = d.toLocaleTimeString();
+    document.getElementById("timer").form.submit();
+
+}
+</script>
 @if(Auth::check())
 @if(Auth::user()->group_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -504,8 +598,8 @@ div#calendar{
             <a href="{{ URL::to('/expenditure') }}">&nbsp;&nbsp;&nbsp; - Expenditure</a>
             <a href="{{ URL::to('/five_years_expenditure') }}">&nbsp;&nbsp;&nbsp; - Five Years Expenditure</a>
         </div>
-    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
@@ -526,6 +620,7 @@ div#calendar{
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
+    <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
         <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
@@ -533,10 +628,17 @@ div#calendar{
             <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
             <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
             <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+           
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
             <a href="{{ URL::to('/') }}/hr"> &nbsp;&nbsp;&nbsp; -Human Resourse</a>
         </div>
+         <a href="#" data-toggle="collapse" data-target="#foffice">Field and Office Logins &#x21F2;</a>
+        <div id="foffice" class="collapse">
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a>  
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
+        </div> 
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
@@ -559,9 +661,18 @@ div#calendar{
     <!-- <a href="{{ URL::to('/employeereports') }}">Attendance</a> -->
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
-   <a href="{{ URL::to('/letracking') }}">Tracking</a>
-    <a href="{{ URL::to('/viewManufacturer') }}">Manufacturer Details</a>
-    <a href="{{ URL::to('/manufacturerdetails') }}">Direct Aligned Partners</a>
+  <!--  <a href="{{ URL::to('/letracking') }}">Tracking</a> -->
+    <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
+    <div id="manufacturer_details" class="collapse">
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
+        <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a>
+    </div>
+    <a href="#" data-toggle="collapse" data-target="#manufacturer_details1">Direct Aligned Partners &#x21F2;</a>
+    <div id="manufacturer_details1" class="collapse">
+    <a href="{{ URL::to('/manufacturerdetails') }}">Suppliers</a>
+    <a href="{{ URL::to('/lebrands') }}">Brands</a>
+</div>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
     <!-- <a href="{{ URL::to('/confidential') }}">Confidential</a> -->
@@ -592,27 +703,33 @@ div#calendar{
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
               <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone numbers</a>
               <a href="{{ URL::to('/assign_enquiry') }}">&nbsp;&nbsp;&nbsp; -Assign Enquiry</a>
+              <a href="{{ URL::to('/assign_manufacturer') }}">&nbsp;&nbsp;&nbsp; -Assign Manufacturers</a>
         </div>
      <a href="#" data-toggle="collapse" data-target="#operation">Operation &#x21F2;</a>
         <div id="operation" class="collapse">
               <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
-              <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a>
+             <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
                <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
+               <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
+               <a href="{{ URL::to('/') }}/projectWithNotes">&nbsp;&nbsp;&nbsp; -Projects With Notes</a>
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
+              <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
         </div>   
      <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
       </div> -->
-      <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+      <a href="#" data-toggle="collapse" data-target="#agent">Field and Office logins&#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
-          <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
-          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
+          <!-- <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>  -->
+          <!-- <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> --> 
       </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
@@ -626,6 +743,7 @@ div#calendar{
     <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
+    <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
@@ -663,11 +781,14 @@ div#calendar{
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
 
      @endif
+    <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
+    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
+     
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-      <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
+      <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
      
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
@@ -683,32 +804,49 @@ div#calendar{
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/mhemployee">MAMAHOME Employee</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+            <a href="{{ URL::to('/') }}/newamviewattendance">New Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-            <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
+            <!-- <a href="{{ URL::to('/') }}/seniorteam1">&nbsp;&nbsp;&nbsp; -Senior Team Leader1</a> -->
             <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+            <!-- <a href="{{ URL::to('/') }}/teamleader1">&nbsp;&nbsp;&nbsp; -Team Leaders1</a> -->
             <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
             <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
             <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+             <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a> 
             <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
             <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
 
         </div> 
-        </div>
+        <a href="#" data-toggle="collapse" data-target="#foffice">Field and Office Logins &#x21F2;</a>
+        <div id="foffice" class="collapse">
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a>  
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
+        </div> 
+         <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
+         <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+       <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
+    </div>
         @endif
         @endif
+                
                 <form method="POST"  action="{{ URL::to('/') }}/logintime" >
                   {{ csrf_field() }}
-                    <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
-                </form>
-                 <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
+                                   <!--  <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
+                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeapp">
+                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
+                        <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form> 
+                 <!-- <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
                   {{ csrf_field() }}
                     <button id="logout" class="hidden" onsubmit="show()" type="submit" >Submit</button>
-                </form>
+                </form> -->
         @yield('content')
     </div>
 
@@ -754,7 +892,7 @@ div#calendar{
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
-         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
+         <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
         </div>
         
         <!-- Modal footer -->
@@ -772,7 +910,7 @@ div#calendar{
       
         <!-- Modal Header -->
         <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
-          <h4 class="modal-title">Reason For Rejecting?</h4>
+          <h4 class="modal-title">Time Need To Complete?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -783,15 +921,20 @@ div#calendar{
         @if(isset($stages))
          <input type="hidden" name="user_id" value="{{ $stages->user_id }}">
          @endif
-         <label>Reason : </label>
+         <label>Date :</label>
+         <input type="date" name="date" class="form-control" style="width:50%;">
+
+         <label>Time :</label>
+         <input type="time" name="time" class="form-control" style="width:50%;">
+         <label>Reason : </label> <br>
          <textarea type="text" name="remark" style="width:400px;" ></textarea>
         </div>
-       <center> <button type="sunmit" value="submit" class="btn btn-primary">Submit</button></center> 
+       <center> <button type="submit" value="submit" class="btn btn-primary">Submit</button></center> 
         </form>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <div class="modal-footer" style="padding:2px;"> 
+          <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
         </div>
         
       </div>
@@ -837,14 +980,21 @@ div#calendar{
         </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
-<script>
-  function submitapp(){
-    document.getElementById("login").form.submit();
-  }
+<!-- <script>
+
   function submitlogout(){
     document.getElementById("logout").form.submit();
   }
+</script> -->
+ <!-- get location -->
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" charset="utf-8">
+  function submitapp(){
+        document.getElementById("login").form.submit();
+  }
+  
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('empSuccess'))
   <div class="modal fade" id="empSuccess" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -877,11 +1027,9 @@ div#calendar{
           <h4 class="modal-title">Late Login</h4>
         </div>
         <div class="modal-body">
-          <form action="{{ URL::to('/') }}/emplate" method="POST" >
+       
           <p style="text-align:center;">{!! session('Latelogin') !!}</p>
-             {{ csrf_field() }}
-          <center><button type="submit" class="btn btn-success" >Submit</button></center>
-         </form>
+             
         </div>
         <div class="modal-footer">
           <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
@@ -895,4 +1043,31 @@ div#calendar{
   });
 </script>
 @endif
-
+<script>
+    function myFunction1() {
+        var table = document.getElementById("reports");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = "<input required type='text' name='report[]' id='report' class='form-control' placeholder='Report'>";
+        cell2.innerHTML = "<input required type='time' name='from[]' id='from' class='form-control'>";
+        cell3.innerHTML = "<input required type='time' name='to[]' id='to' class='form-control'>";
+    }
+    function myDelete1() {
+        var table = document.getElementById("reports");
+        if(table.rows.length >= {{ 3 }}){
+            document.getElementById("reports").deleteRow(-1);
+        }
+    }
+ </script>
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('error'))
+<script>
+    swal("error","{{ session('error') }}","error");
+</script>
+@endif

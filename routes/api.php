@@ -29,7 +29,7 @@ Route::post('itMessage','TokenController@itMessage');
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
 Route::get('buyerlogin','TokenController@buyerLogin');
-Route::get('login/{username}/{password}','TokenController@getLogin');
+Route::get('/login','TokenController@getLogin');
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
 //Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']); 
@@ -56,6 +56,12 @@ Route::post('/addLocation','TokenController@addLocation');
 Route::post('/updateLocation','TokenController@updateLocation');
 
 Route::get('pending','TokenController@pending');
-Route::get('/confirmgorders','TokenController@confirm');
+Route::get('/confirmorders','TokenController@confirm');
 Route::post('/recordtime','TokenController@recordtime');
 Route::post('/flogout','TokenController@fieldlogout');
+Route::get('/gettime','TokenController@gettime');
+Route::get('/req','TokenController@getreq');
+Route::post('/react','TokenController@data');
+Route::get('/fakegps','TokenController@fakegps');
+
+
