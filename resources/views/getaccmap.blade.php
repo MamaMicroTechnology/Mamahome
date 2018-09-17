@@ -75,7 +75,6 @@
     @if($subwardMap != "None")
     var latlng = "{{ $subwardMap->lat }}";
     var col = "{{ $subwardMap->color }}";
-    var time = "{{$storoads->time }}";
     @else
     var latlng = "";
     var col = "456369";
@@ -83,6 +82,7 @@
     @if($storoads != null)
         var lists = "{{$storoads->lat_long}}";
         var col = "456369"
+        var time = "{{$storoads->time }}";
     @else
         var lists ="";
         var col = "456369";
