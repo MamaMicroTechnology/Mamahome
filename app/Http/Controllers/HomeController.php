@@ -5072,8 +5072,7 @@ $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
                   $ward = Ward::where('id',$tl)->pluck('id')->first();
                   $sub  = Subward::where('ward_id',$ward)->pluck('id');
 
-                  $project = ProjectDetails::whereIn('sub_ward_id',$sub)->where('project_id',$projectIds[$i]['projectId'])->first();
-
+                  $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->whereIn('sub_ward_id',$sub)->first();
                   if($project != null){
                     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
                     $userIds = explode(",", $tl);
@@ -5082,14 +5081,15 @@ $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
 
     $projectIds[$i]['quality'] = $project->quality;
     $projectIds[$i]['followup'] = $project->followup;
-    $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->whereIn('id',$userIds)->pluck('name')->first();
-    $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->whereIn('id',$userIds)->pluck('name')->first();
-    $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->whereIn('id',$sub)->pluck('sub_ward_name')->first();
+    $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
+    $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
+    $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
     $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
-    $projectIds[$i]['enquiryInitiatedBy'] = Requirement::where('requirements.project_id',$projectIds[$i]['projectId'])
-                                                ->leftjoin('users','requirements.generated_by','users.id')
-                                                ->select('users.name','requirements.id')
-                                                ->get();
+    $projectIds[$i]['enquiryInitiatedBy'] = 
+    Requirement::where('requirements.project_id',$project->project_id)
+                 ->leftjoin('users','requirements.generated_by','users.id')
+                  ->select('users.name','requirements.id')
+                  ->get();
                        }else{
                       $projectIds[$i]['quality'] = "";
                       $projectIds[$i]['followup'] = "";
@@ -5152,6 +5152,12 @@ $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
                                                           ->where('generated_by',$user->id)
                                                           ->count();
               }
+              // for($i = 0; $i < count($projectIds); $i++){
+              //   if($projectIds[$i]["sub_ward_name"] == ""){
+              //       array_pop($projectIds[$i]);
+              //       // dd($projectIds);
+              //   }
+              // }
               $projectsCount = count($projectIds);
 
                $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
