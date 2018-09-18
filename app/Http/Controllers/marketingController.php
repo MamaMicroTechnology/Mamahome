@@ -71,23 +71,41 @@ class marketingController extends Controller
         return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
     }
     public function addCategory(Request $request){
+       
+            if($request->catimage){
+               
+        $cat = $request->category.time().'.'.request()->catimage->getClientOriginalExtension();
+        $request->catimage->move(public_path('category'),$cat);
+            }
+
+
         $category = new Category;
         $category->category_name = $request->category;
         $category->measurement_unit = $request->measurement;
+        $category->catimage = $cat;
         $category->save();
         return back()->with('Success','Category added successfully');
     }
     public function addSubCategory(Request $request){
+
+
+       if($request->subimage){
+            $sub = $request->category.time().'.'.request()->subimage->getClientOriginalExtension();
+            $request->subimage->move(public_path('subcat'),$sub);
+        }
+
         $subcat = new SubCategory;
         $subcat->category_id = $request->category;
         $subcat->brand_id = $request->brand;
         $subcat->sub_cat_name = $request->subcategory;
         $subcat->Quantity = $request->Quantity;
+        $subcat->subimage = $sub;
         $subcat->save();
         $cprice = new CategoryPrice;
         $cprice->category_id = $request->category;
         $cprice->category_sub_id = $subcat->id;
         $cprice->price = 0;
+
         $cprice->save();
         return back()->with('Success','Sub Category added successfully');
     }
@@ -105,28 +123,50 @@ class marketingController extends Controller
         return back()->with('Success','Sub-Category has been deleted');
     }
     public function updateCategory(Request $request){
+
+            if($request->catimage){
+               
+        $cat = $request->category.time().'.'.request()->catimage->getClientOriginalExtension();
+        $request->catimage->move(public_path('category'),$cat);
+            } 
         Category::where('id',$request->id)
-            ->update(['category_name'=>$request->name]);
+            ->update(['category_name'=>$request->name,'catimage'=>$cat]);
         return back()->with('Success','Category has been updated');
     }
     public function updateBrand(Request $request){
+        if($request->brandimage){
+            $brandimg = $request->brand.time().'.'.request()->brandimage->getClientOriginalExtension();
+            $request->brandimage->move(public_path('brands'),$brandimg);
+        }
         brand::where('id',$request->id)
-            ->update(['brand'=>$request->name]);
+            ->update(['brand'=>$request->name,'brandimage'=>$brandimg]);
         return back()->with('Success','Brand has been updated');
     }
     public function updateSubCategory(Request $request){
+       if($request->subimage){
+            $sub = $request->category.time().'.'.request()->subimage->getClientOriginalExtension();
+            $request->subimage->move(public_path('subcat'),$sub);
+        }
+           
         SubCategory::where('id',$request->id)
         ->update(['sub_cat_name'=>$request->name,   
-                'Quantity'=>$request->Quantity
+                'Quantity'=>$request->Quantity,
+                'subimage'=>$sub
 
             ]);
         return back()->with('Success','Sub-Category has been updated');
     }
     public function addBrand(Request $request)
     {
+        if($request->brandimage){
+            $brandimg = $request->brand.time().'.'.request()->brandimage->getClientOriginalExtension();
+            $request->brandimage->move(public_path('brands'),$brandimg);
+        }
+
         $brand = new brand;
         $brand->category_id = $request->cat;
         $brand->brand = $request->brand;
+        $brand->brandimage = $brandimg;
         $brand->save();
         return back()->with('Success','Brand added');
     }
