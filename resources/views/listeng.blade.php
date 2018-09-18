@@ -20,13 +20,14 @@
                 </div>
             </div>
         </div>
-        <iframe class="col-md-9 img img-thumbnail" style="height: 800px;border-color: #0e877f" id="disp"></iframe>
+        <iframe class="col-md-9 img img-thumbnail" style="height: 1000px;border-color: #0e877f" id="disp">
+            
+        </iframe>
         <!-- <div class="col-md-10" id="disp">
 
         </div> -->
     </div>
 </div>
-
 <script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($listengs as $listeng)

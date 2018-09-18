@@ -2270,36 +2270,41 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
       public function getmap(request $request)
     {
-       
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
-      // $login = loginTime::where('user_id',$id)
-      //   ->where('logindate',date('Y-m-d'))->pluck('loginTime')->first();
       $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
-    
-    $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
-    $subwards = SubWard::where('id',$wardsAssigned)->first();
+      $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+      $subwards = SubWard::where('id',$wardsAssigned)->first();
         $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
         // dd($projects);
-      if($subwards != null){
+        if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
             
         }else{
             $subwardMap = "None";
         }   
-    if($subwardMap == Null){
-        $subwardMap = "None";
-    }          
-    $ward = user::where('users.id',$id)
-        ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
-        ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
-        ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
-        ->where('department_id','!=','10')
-        ->select('sub_wards.sub_ward_name')->get();
-    $storoads = TrackLocation::where('user_id',$id)
+        if($subwardMap == Null){
+            $subwardMap = "None";
+        }          
+        $ward = user::where('users.id',$id)
+            ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
+            ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
+            ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
+            ->where('department_id','!=','10')
+            ->pluck('sub_wards.sub_ward_name')->first();
+
+       if($request->getmap){
+                $storoads = TrackLocation::where('user_id',$id)
+                        ->where('date',$request->getmap)
+                         ->first();
+                
+        }
+        else{
+                $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',date('Y-m-d'))
                         ->first();
-        
+        }
+    
       return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads]);
     }
 
@@ -2308,29 +2313,36 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
       $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
-
-    $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
-    $subwards = SubWard::where('id',$wardsAssigned)->first();
-        $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+      $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
+      $subwards = SubWard::where('id',$wardsAssigned)->first();
+      $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
        
       if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
         }else{
             $subwardMap = "None";
         }   
-    if($subwardMap == Null){
-        $subwardMap = "None";
-    }          
-    $ward = user::where('users.id',$id)
+        if($subwardMap == Null){
+            $subwardMap = "None";
+        }          
+        $ward = user::where('users.id',$id)
         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
         ->where('department_id','!=','10')
-        ->select('sub_wards.sub_ward_name')->get();
+        ->pluck('sub_wards.sub_ward_name')->first();
 
-         $storoads = TrackLocation::where('user_id',$id)
+        if($request->getmap){
+                $storoads = TrackLocation::where('user_id',$id)
+                        ->where('date',$request->getmap)
+                         ->first();
+                
+        }
+        else{
+                $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',date('Y-m-d'))
                         ->first();
+        }
 
       return view('getaccmap',['name'=>$name,'ward'=>$ward,'login'=>$login,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'storoads'=>$storoads]);
     }
@@ -2435,6 +2447,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ->where('field_login.created_at','LIKE',$thiMonth."%")
         ->where('remark','!='," ")
         ->leftjoin('users','field_login.user_id','users.id')
+        ->orderBy('created_at','desc')
         ->select('field_login.*','users.name')
         ->get();
         $dates = FieldLogin::where('field_login.created_at','LIKE',$thiMonth."%")
@@ -3016,11 +3029,6 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
         $date= date('Y-m-d');
        $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
         dd($time);
-    }
-    public function holidays(){
-
-
-        return view('holidays');
     }
 
 }
