@@ -25,7 +25,6 @@ Route::get('/ticketchat','HomeController@chat');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
 Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
-
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
 Route::get('/token','TokenController@token');
@@ -422,10 +421,11 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::post('/{id}/assignthisSlot','mamaController@assignthisSlot');
 });
 
+    
+    Route::get('/listingEngineer','HomeController@listingEngineer');
 
 // Listing Engineer
 Route::group(['middleware' => ['listingEngineer']],function(){
-    Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
     Route::get('/sales','HomeController@sales');
 
