@@ -1801,7 +1801,7 @@ class HomeController extends Controller
 
 
         $depts=[1,2];
-        $users = User::where('department_id',$depts)->get();
+        $users = User::all();
 
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
