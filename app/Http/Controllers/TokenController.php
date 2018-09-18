@@ -195,7 +195,7 @@ class TokenController extends Controller
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
          if(count($check)==0){
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
-           DB::table('track_history')->insert(['user_id'=>$userdetails->id,'date'=>date('H:i A'),'sub_ward'=>$subwards]);
+          
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
                     }
