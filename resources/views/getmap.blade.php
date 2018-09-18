@@ -186,7 +186,7 @@
                 content: text1
               });
             var icon = {
-                url: 'http://icongal.com/gallery/image/446881/map_marker_ball_pink.png', // url
+                url: 'http://pngimage.net/wp-content/uploads/2018/06/location-emoji-png.png', // url
                 scaledSize: new google.maps.Size(50, 40), // scaled size
                 origin: new google.maps.Point(0,0), // origin
                anchor: new google.maps.Point(17, 34)  // anchor
@@ -214,7 +214,7 @@
                 content: text2
               });
             var icon = {
-                url: 'http://pngimage.net/wp-content/uploads/2018/06/location-emoji-png.png', // url
+                url: 'http://icongal.com/gallery/image/446881/map_marker_ball_pink.png', // url
                 scaledSize: new google.maps.Size(50, 40), // scaled size
                 origin: new google.maps.Point(0,0), // origin
                anchor: new google.maps.Point(17, 34)  // anchor

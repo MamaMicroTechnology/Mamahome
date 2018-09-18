@@ -5262,13 +5262,13 @@ date_default_timezone_set("Asia/Kolkata");
                 }
 
             }
-        if(Auth::user()->group_id == 7 || Auth::user()->group_id == 17){
+        if(Auth::user()->group_id == 57 || Auth::user()->group_id == 97){
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->where('wards.id',$found1)
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
                         
 
