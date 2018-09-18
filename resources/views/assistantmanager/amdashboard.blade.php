@@ -79,15 +79,7 @@
                 <th>Logout Time</th>
             </tr>
            </thead>
-            <!-- @foreach($leLogins as $leLogin)
-            @if($leLogin->group_id == 6 || $leLogin->group_id == 11 || $leLogin->group_id == 12)
-                <tr>
-                    <td>{{ $leLogin->employeeId }}</td>
-                    <td>{{ $leLogin->name }}</td>
-                    <td>{{ $leLogin->loginTime }}</td>
-                </tr>
-                @endif
-            @endforeach -->
+           
              @foreach($loggedInUsers as $loggedInUser)
             @if($loggedInUser->group_id == 6 || $loggedInUser->group_id == 11)
                 <tr>
@@ -102,27 +94,29 @@
         </div>
     </div>
 </div>
-
-<!-- <div class="col-md-4 ">
+</div>
+<div class="col-md-5 col-md-offset-1">
     <div class="panel panel-default">
-        <div class="panel-heading">MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; <span>  Dashboard Login Time</span></div>
+        <div class="panel-heading"><b>MINI ATTENDANCE</b></div>
         <div class="panel-body">
         <table class="table table-hover">
-           
-            @foreach($leLogins as $leLogin)
-            @if( $leLogin->group_id == 7 || $leLogin->group_id == 17 || $leLogin->group_id == 22 || $leLogin->group_id == 2)
+           <tr>
+            <td>Total Employees Present</td>
+            <td>{{$present }}</td>
+            </tr>
+            <tr>
+                <td>Total Employees Absent</td>
+                <td>{{$absent}}</td>
+            </tr>
+           @foreach($ntlogins as $ntlogin)
+             <tr>
+                <td>{{$ntlogin->employeeId}}</td>
+                <td>{{$ntlogin->name}}</td>
+            </tr>
 
-                <tr>
-                    <td>{{ $leLogin->employeeId }}</td>
-                    <td>{{ $leLogin->name }}</td>
-                    <td>{{ $leLogin->loginTime }}</td>
-                </tr>
-                @endif
             @endforeach
         </table>
         </div>
     </div>
-</div> -->
-
 </div>
 @endsection
