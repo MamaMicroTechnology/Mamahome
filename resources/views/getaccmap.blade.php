@@ -1,20 +1,49 @@
 <div class="panel panel-default" style="border-color:#0e877f">
-<div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white"></div>
-<div style="margin-left: 600px;" id="currentTime" class="pull-right"></div>
-
-<div class="panel-body" style="height:500px;max-height:500px">
+<div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white">
+ {{ $ward}}
+ <div style="margin-left: 600px;margin-top: -20;" id="currentTime" ></div>
+</div><br>
+<div style="margin-left: 600px;" class="col-md-2">
+  <form method="GET" action="{{ URL::to('/') }}/getmaphistory1">
+                <input type="hidden" value="{{$name}}" name="name">
+                <label>Select Date : </label>
+                <input required value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="getmap">
+                <input type="submit" value="Fetch" class="form-control btn btn-primary">
+  </form>
+</div>
+<table style="margin-left: 600px;" class="table" border="1">
+   <tbody>
+      <tr>
+        <td>Red Marker</td>
+        <td>Login Location</td>
+      </tr>
+      <tr>
+        <td>Blue Marker</td>
+        <td>Logout Location</td>
+      </tr>
+      <tr>
+        <td>Pink Pin</td>
+        <td>more than 20mins</td>
+      </tr>
+      <tr>
+        <td>Red Pin</td>
+        <td>more than 40mins</td>
+      </tr>
+    </tbody>
+</table>
+<div style="margin-top: -130px;">
   <b>Name : </b>{{ $name }}<br><br>
   @foreach($login as $login)
   <b>Field Login Time : </b>{{ $login->logintime }}<br><br>
-  <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
   <b>Field Logout Time:</b>{{ $login->logout }}<br><br>
+  <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
+  <b>Approved By :</b><br><br>
   @endforeach
-   @foreach($ward as $ward)
-                <b>Assigned Ward : </b>{{ $ward->sub_ward_name }}
-    @endforeach
-    <br><br>
      <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br>
      <br><br>
+</div>
+<br><br>
+<div  class="panel-body" style="height:500px;max-height:500px">
 <div id="map" style="width:980PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
 </div>
 </div>
@@ -337,7 +366,7 @@ function drawSnappedPolyline() {
 
       var now = new Date();
 
-      str += "Today Is: " + days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      str += days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
       document.getElementById("currentTime").innerHTML = str;
   }
 
