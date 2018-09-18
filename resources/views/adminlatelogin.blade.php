@@ -21,11 +21,11 @@
                             @foreach($users as $user)
                                 <tr>
                                     <td>{{ date('d-m-Y',strTotime($user->logindate)) }}</td>
-                                    <td>{{ $user->name}}</td>
+                                    <td style="width: 10%">{{ $user->name}}</td>
                                     <td>{{ $user->logintime}}</td>
                                     <td>{{ $user->logout != null ? $user->logout  : " "}}</td>
-                                    <td style="width: 30%">{{  $user->remark}}</td>
-                                    <td>{{ $user->tlapproval}}</td>
+                                    <td style="width: 20%">{{  $user->remark}}</td>
+                                    <td style="width: 10%">{{ $user->tlapproval}}</td>
                                      <td> {{ $user->hrapproval }} </td>
                                         @if( $user->adminapproval == "Pending" )
                                         <td>
