@@ -86,42 +86,13 @@
         </div>
     </div>
 </div>
-
-
-<!-- <div class="col-md-4 ">
-    <div class="panel panel-default">
-        <div class="panel-heading">MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; <span>  Dashboard Login Time</span></div>
-        <div class="panel-body">
-        <table class="table table-hover">
-           
-            @foreach($leLogins as $leLogin)
-            @if( $leLogin->group_id == 7 || $leLogin->group_id == 17 || $leLogin->group_id == 22 || $leLogin->group_id == 2)
-                <tr>
-                    <td>{{ $leLogin->employeeId }}</td>
-                    <td>{{ $leLogin->name }}</td>
-                    <td>{{ $leLogin->loginTime }}</td>
-                </tr>
-                @endif
-            @endforeach
-        </table>
-        </div>
-    </div>
-</div> -->
-
 </div>
 <div class="col-md-5 col-md-offset-1">
     <div class="panel panel-default">
         <div class="panel-heading"><b>MINI ATTENDANCE</b></div>
         <div class="panel-body">
         <table class="table table-hover">
-           <!-- <thead>
-            <tr>
-                <th>Employee-Id</th>
-                <th>Name</th>
-                <th>Login Time</th>
-                <th>Logout Time</th>
-            </tr>
-           </thead> -->
+          
            <tr>
             <td>Total Employees Present</td>
             <td>{{$present }}</td>
