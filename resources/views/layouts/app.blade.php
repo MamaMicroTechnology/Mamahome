@@ -689,7 +689,10 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
-   
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 

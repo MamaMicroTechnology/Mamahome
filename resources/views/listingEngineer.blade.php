@@ -16,7 +16,13 @@
                   @endif -->
                   <div id="currentTime" class="pull-right"></div>
                 </div>
-                @if($subwards)
+                <?php 
+                  if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){
+                    $subwards = "NULL";
+                  }
+
+                ?>
+                @if($subwards || $subwards == "NULL")
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
                    <br>              
