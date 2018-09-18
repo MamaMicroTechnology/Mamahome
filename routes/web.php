@@ -176,6 +176,9 @@ Route::get('/storedetails','HomeController@storedetails');
 Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
 Route::get('/manustorequery','HomeController@manustorequery');
+Route::get('/getmaphistory','mamaController@getmap');
+Route::get('/getmaphistory1','mamaController@getaccmap');
+
 
 // Route::get('/starttimer','HomeController@starttimer');
 Route::get('/starttimer','HomeController@starttimer');
