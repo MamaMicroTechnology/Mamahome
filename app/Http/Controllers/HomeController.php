@@ -5267,8 +5267,8 @@ date_default_timezone_set("Asia/Kolkata");
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->where('wards.id',$found1)
+                            ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
                         
 
