@@ -16,12 +16,12 @@
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
 @endif
+@if(Auth::user()->group_id == 22)
 <table class="table" style="width:50%;">
   <tr>
     <th>Under Your Employees</th>
     <th>Designation</th>
   </tr>
-@if(Auth::user()->group_id == 22)
  <h2>Assigned Ward : {{$x}}</h2>
      @foreach($users as $user)
        @if(in_array($user->id,$usersId))
