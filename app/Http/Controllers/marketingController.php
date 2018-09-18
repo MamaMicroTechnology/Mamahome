@@ -162,6 +162,7 @@ class marketingController extends Controller
             $brandimg = $request->brand.time().'.'.request()->brandimage->getClientOriginalExtension();
             $request->brandimage->move(public_path('brands'),$brandimg);
         }
+        
 
         $brand = new brand;
         $brand->category_id = $request->cat;

@@ -680,9 +680,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('oContact').value="";
-                            }
+                            
                         }
                     }
                 });
@@ -712,10 +710,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('coContact').value="";
-                                // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
-                            }
+                            
                         }
                     }
                 });
@@ -745,9 +740,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('cPhone').value="";
-                            }
+                            
                             // alert('Phone Number '+y+' Already Stored in Database. Are you sure you want to add the same number?');
                         }
                     }
@@ -778,10 +771,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('eContact').value="";
-                                // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
-                            }
+                            
                         }
                     }
                 });
@@ -811,10 +801,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('prPhone').value="";
-                                // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
-                            }
+                            
                         }
                     }
                 });
