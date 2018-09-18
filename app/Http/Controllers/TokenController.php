@@ -29,6 +29,7 @@ use App\Order;
 use App\FieldLogin;
 use App\FakeGPS;
 use App\Reactuser;
+use App\Banner;
 
 use App\Http\Resources\Message as MessageResource;
 date_default_timezone_set("Asia/Kolkata");
@@ -719,4 +720,8 @@ public function getproject(request $request){
 
 
         }
+         public function bannerdata(Request $request){
+        $banner = Banner::all();
+         return response()->json(['banner'=>$banner,'message'=>"Banner data"]);
+       }
 }
