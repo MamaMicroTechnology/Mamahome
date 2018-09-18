@@ -1779,18 +1779,20 @@ class HomeController extends Controller
     }
     public function teamLeadHome(){
          $depts=[1,2];
-         // $loggedInUsers = attendance::where('date',date('Y-m-d'))
-         //                ->join('users','empattendance.empId','users.employeeId')
-         //                ->whereIn('department_id',$depts)
-         //                ->leftjoin('departments','users.department_id','departments.id')
-         //                ->select('users.name','empattendance.*','departments.id')
-         //                ->get();
         $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
                         ->join('users','field_login.user_id','users.id')
                         ->whereIn('department_id',$depts)
                         ->select('users.name','field_login.*','users.employeeId')
                         ->get();
         
+        $tl1= Tlwards::where('group_id','=',22)->get();
+        $usersId = "null";
+        $userid = Auth::user()->id;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+        }
+       
+
 
         $depts=[1,2];
         $users = User::where('department_id',$depts)->get();
@@ -1803,7 +1805,7 @@ class HomeController extends Controller
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
          $x = Ward::where('id',$tl)->pluck('ward_name')->first();
 
-         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x]);
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x,'usersId'=>$usersId]);
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
@@ -2898,6 +2900,21 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function getSalesEngineer()
     {
+           
+        $tl1= Tlwards::where('group_id','=',22)->get();
+        $userid = Auth::user()->id;
+        $found1 = null;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+            if(in_array($userid, $usersId)){
+                $found1 = $searchWard->ward_id;
+            }
+        }
+    
+     $ward =Ward::where('id',$found1)->pluck('ward_name');
+     
+
+    
         $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
@@ -2939,7 +2956,9 @@ date_default_timezone_set("Asia/Kolkata");
             'points_earned_so_far'=>$points_earned_so_far,
             'points_subtracted'=>$points_subtracted,
             'total'=>$total,
-            'stages'=>$stages
+            'stages'=>$stages,
+            'ward' =>$ward,
+
         ]);
     }
     public function printLPO($id, Request $request)
