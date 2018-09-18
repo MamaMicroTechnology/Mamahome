@@ -75,7 +75,6 @@
     @if($subwardMap != "None")
     var latlng = "{{ $subwardMap->lat }}";
     var col = "{{ $subwardMap->color }}";
-    var time = "{{$storoads->time }}";
     @else
     var latlng = "";
     var col = "456369";
@@ -83,6 +82,7 @@
     @if($storoads != null)
         var lists = "{{$storoads->lat_long}}";
         var col = "456369"
+        var time = "{{$storoads->time }}";
     @else
         var lists ="";
         var col = "456369";
@@ -164,11 +164,39 @@
           timeConvert2[0] = +timeConvert2[0] % 12 || 12; // Adjust hours
         }
         if(timeB >= timeA+2400){
-            var infowindow = new google.maps.InfoWindow();
-            var marker, i;
+            // var infowindow = new google.maps.InfoWindow();
+            var mark, i;
             var contentString ="From" +" "+ timeConvert +"<br>"+"To"+" "+ timeConvert2 ;
 
-            var infowindow = new google.maps.InfoWindow({
+            var infowindow1 = new google.maps.InfoWindow({
+                content: contentString
+              });
+            var icon = {
+                 url: 'http://pngimage.net/wp-content/uploads/2018/06/location-emoji-png.png', // url
+                scaledSize: new google.maps.Size(50, 40), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+               anchor: new google.maps.Point(17, 34)  // anchor
+            };
+           var ltlg = lat_long[k].split(",");
+          
+           timemarker.push({lat: parseFloat(ltlg[0]), lng: parseFloat(ltlg[1])});
+              mark = new google.maps.Marker({
+                position: new google.maps.LatLng(ltlg[0],ltlg[1]),
+                 icon: icon,
+                map: map,
+              });
+              mark.addListener('click', function() {
+               
+                  infowindow1.open(map, mark);
+                });
+      }
+      else if(timeB >= timeA+1200){
+      
+            // var infowindow = new google.maps.InfoWindow();
+            var marker1, i;
+            var contentString ="From" +" "+ timeConvert +"<br>"+"To"+" "+ timeConvert2 ;
+
+            var infowindow2 = new google.maps.InfoWindow({
                 content: contentString
               });
             var icon = {
@@ -180,42 +208,14 @@
            var ltlg = lat_long[k].split(",");
           
            timemarker.push({lat: parseFloat(ltlg[0]), lng: parseFloat(ltlg[1])});
-              marker = new google.maps.Marker({
+              marker1 = new google.maps.Marker({
                 position: new google.maps.LatLng(ltlg[0],ltlg[1]),
                  icon: icon,
                 map: map,
               });
-              marker.addListener('click', function() {
+              marker1.addListener('click', function() {
                
-                  infowindow.open(map, marker);
-                });
-      }
-      else if(timeB >= timeA+1200){
-      
-            var infowindow = new google.maps.InfoWindow();
-            var marker, i;
-            var contentString ="From" +" "+ timeConvert +"<br>"+"To"+" "+ timeConvert2 ;
-
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
-              });
-            var icon = {
-                url: 'http://pngimage.net/wp-content/uploads/2018/06/location-emoji-png.png', // url
-                scaledSize: new google.maps.Size(50, 40), // scaled size
-                origin: new google.maps.Point(0,0), // origin
-               anchor: new google.maps.Point(17, 34)  // anchor
-            };
-           var ltlg = lat_long[k].split(",");
-          
-           timemarker.push({lat: parseFloat(ltlg[0]), lng: parseFloat(ltlg[1])});
-              marker = new google.maps.Marker({
-                position: new google.maps.LatLng(ltlg[0],ltlg[1]),
-                 icon: icon,
-                map: map,
-              });
-              marker.addListener('click', function() {
-               
-                  infowindow.open(map, marker);
+                  infowindow2.open(map, marker1);
                 });
       }
       else{
@@ -241,7 +241,7 @@ function processSnapToRoadResponse(data) {
 function drawSnappedPolyline() {
   var snappedPolyline = new google.maps.Polyline({
     path: snappedCoordinates,
-    strokeColor: 'black',
+    strokeColor: "#1f5dc1",
     strokeWeight: 3
   });
 
@@ -265,33 +265,33 @@ function drawSnappedPolyline() {
     // snaptoraod end
 
      @if($projects != null)
-    var infowindow = new google.maps.InfoWindow();
-    var marker, i;
+    // var infowindow = new google.maps.InfoWindow();
+    var marker2, i;
     var latitude = "{{ $projects->latitude }}";
     var longitude = "{{ $projects->longitude }}";
     var contentString = "{{ $projects->address }}";
-    var infowindow = new google.maps.InfoWindow({
+    var infowindow3 = new google.maps.InfoWindow({
         content: contentString
       });
 
-      marker = new google.maps.Marker({
+      marker2 = new google.maps.Marker({
         position: new google.maps.LatLng(latitude, longitude),
         map: map,
       });
-      marker.addListener('click', function() {
-          infowindow.open(map, marker);
+      marker2.addListener('click', function() {
+          infowindow3.open(map, marker2);
         });
     @endif
 
     // marker
     @if($projects != null)
      @if($projects->logout_lat != null)
-    var infowindow = new google.maps.InfoWindow();
-    var marker, i;
+    // var infowindow = new google.maps.InfoWindow();
+    var marker3, i;
     var latitude = "{{ $projects->logout_lat }}";
     var longitude = "{{ $projects->logout_long }}";
     var contentString = "{{ $projects->logout_address }}";
-    var infowindow = new google.maps.InfoWindow({
+    var infowindow4 = new google.maps.InfoWindow({
         content: contentString
       });
     var icon = {
@@ -300,13 +300,13 @@ function drawSnappedPolyline() {
                 origin: new google.maps.Point(0,0), // origin
                 anchor: new google.maps.Point(0, 0) // anchor
             };
-      marker = new google.maps.Marker({
+      marker3 = new google.maps.Marker({
         position: new google.maps.LatLng(latitude, longitude),
         icon: icon,
         map: map,
       });
-      marker.addListener('click', function() {
-          infowindow.open(map, marker);
+      marker3.addListener('click', function() {
+          infowindow4.open(map, marker3);
         });
       @endif
       @endif

@@ -80,6 +80,7 @@
 
                     @foreach($users as $user)
                     <tr>
+
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
                        <!--  <td style="font-size: 10px; text-align: center;">{{ $user->sub_ward_name }}</td> -->
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
@@ -130,25 +131,22 @@
                     </tr>
                 </thead>
                 <tbody id="mainPanel">
-                	@foreach($str as $project)
-                     <tr>
-                     @if($project->project_id != null)
-                        <td style="text-align:center">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}</td>
+                	@for($i = 0; $i<count($projectIds);$i++)
+                     
+                       <tr>
+                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
+                        <td style="text-align:center">
+                        	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$projectIds[$i]['projectId']}}&&lename={{ $projectIds[$i]['updater'] }}">{{ $projectIds[$i]['projectId'] }}</a>
+                        </td>
+                        <td style="text-align:center" class="{{ isset($_GET['se']) ? 'hidden' : '' }}">{{ $projectIds[$i]['updater'] }}</td>
+                        <td style="text-align:center">{{ $projectIds[$i]['quality'] }}</td>
+                        <td style="text-align:center">{{ $projectIds[$i]['followup'] }}</td>
                         <td style="text-align:center">
                         	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->updater }}">{{$project->project_id }}</a>
                         </td>
-                        <td style="text-align:center">{{ $project->user != null ? $project->user->name :'' }}</td>
-                        <td style="text-align:center">{{$project->quality }}</td>
-                        <td style="text-align:center">{{ $project->followup }}</td>
-                        
-                       
-                        <td style="text-align:center" >{{ $project->user1 != null ? $project->user1->name :'' }}</td>
-                        
-                      
-
                     </tr>
-                     @endif
-                    @endforeach
+                 
+                    @endfor
                 </tbody>
             </table>
         </div>
