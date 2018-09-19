@@ -593,14 +593,14 @@ public function getproject(request $request){
                 $roomtype->save();
             }
             if($request->latitude){
-                $siteaddress = SiteAddress::where('project_id',$request->project_id);
+                $siteaddress = SiteAddress::where('project_id',$request->project_id)->first();
                 $siteaddress->project_id = $projectdetails->project_id;
                 $siteaddress->latitude = $request->latitude;
                 $siteaddress->longitude = $request->longitude;
                 $siteaddress->address = $request->address;
                 $siteaddress->save();
             }
-        if(  $siteaddress->save() ||  $roomtype->save() ){
+        if( $projectdetails->save() || $siteaddress->save() ||  $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
             return response()->json(['success'=>'0','message'=>'Something went wrong']);
