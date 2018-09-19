@@ -592,7 +592,7 @@ public function getproject(request $request){
             }
           
                 $siteaddress = SiteAddress::where('project_id',$request->project_id)->first();
-                $siteaddress->project_id = $projectdetails->project_id;
+                
                 $siteaddress->latitude = $request->latitude;
                 $siteaddress->longitude = $request->longitude;
                 $siteaddress->address = $request->address;
