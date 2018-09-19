@@ -500,8 +500,6 @@ public function getproject(request $request){
             for($i = 1; $i < $statusCount; $i++){
                 $statuses .= ", ".$request->project_status[$i];
             }
-        }else{
-            $statuses=null;
         }
             $basement = $request->basement;
             $ground = $request->ground;
@@ -594,7 +592,7 @@ public function getproject(request $request){
             }
           
                 $siteaddress = SiteAddress::where('project_id',$request->project_id)->first();
-                $siteaddress->project_id = $projectdetails->project_id;
+                
                 $siteaddress->latitude = $request->latitude;
                 $siteaddress->longitude = $request->longitude;
                 $siteaddress->address = $request->address;
