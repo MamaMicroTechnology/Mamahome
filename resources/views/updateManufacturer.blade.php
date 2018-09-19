@@ -14,9 +14,9 @@
                 <tbody>
                     @foreach($manufacturers as $manufacturer)
                     <tr>
-                        <td>{{ $manufacturer->name }}</td>
+                        <td>{{ $manufacturer->proc->name }}</td>
                         <td>{{ $manufacturer->address }}</td>
-                        <td>{{ $manufacturer->contact_no }}</td>
+                        <td>{{ $manufacturer->proc->contact}}</td>
                         <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}" class="btn btn-success btn-xs">Update</a></td>
                     </tr>
                     @endforeach

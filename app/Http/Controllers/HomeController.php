@@ -5281,7 +5281,8 @@ date_default_timezone_set("Asia/Kolkata");
                 }
 
             }
-        if(Auth::user()->group_id == 57 || Auth::user()->group_id == 97){
+        if(Auth::user()->group_id == 7 || Auth::user()->group_id == 17){
+           
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
@@ -8197,8 +8198,12 @@ public function display(request $request){
   }
   public function updateManufacturerDetails(Request $request)
   {
+   
       $manufacturer = Manufacturer::findOrFail($request->id);
-      return view('updateManufacturers',['manufacturer'=>$manufacturer]);
+      $ward=Subward::leftjoin('manufacturers','manufacturers.sub_ward_id','sub_wards.id')
+      ->where('manufacturers.id',$request->id)->pluck('sub_wards.sub_ward_name')->first();
+     
+      return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
   }
   public function getUnverifiedProjects(Request $request)
   {
