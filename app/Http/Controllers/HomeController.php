@@ -5252,7 +5252,7 @@ date_default_timezone_set("Asia/Kolkata");
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
 
-    public function projectDetailsForTL(Request $request)
+public function projectDetailsForTL(Request $request)
     {
  $assigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id');
      
@@ -5270,9 +5270,7 @@ date_default_timezone_set("Asia/Kolkata");
                 $found1 = $searchWard->ward_id;
             }
         }
-
      $sub_ward = Subward::where('ward_id',$found1)->pluck('id');
-
         
         if($request->phNo){
             $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo )->orwhere('project_id',$request->phNo)->pluck('project_id');
@@ -5287,15 +5285,15 @@ date_default_timezone_set("Asia/Kolkata");
                 }
 
             }
-        if(Auth::user()->group_id == 57 || Auth::user()->group_id == 97){
-            $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
+        if(Auth::user()->group_id == 7 && Auth::user()->group_id == 17){
+
+                           $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$found1)
+                            ->whereIn('sub_wards.id',$sub_ward)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
-                        
 
 
             }elseif(Auth::user()->group_id == 22){
