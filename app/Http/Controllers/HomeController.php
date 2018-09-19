@@ -5802,6 +5802,7 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function salesConverterDashboard()
     {
+        
         return view('scdashboard');
     }
 
@@ -8204,8 +8205,12 @@ public function display(request $request){
   }
   public function updateManufacturerDetails(Request $request)
   {
+   
       $manufacturer = Manufacturer::findOrFail($request->id);
-      return view('updateManufacturers',['manufacturer'=>$manufacturer]);
+      $ward=Subward::leftjoin('manufacturers','manufacturers.sub_ward_id','sub_wards.id')
+      ->where('manufacturers.id',$request->id)->pluck('sub_wards.sub_ward_name')->first();
+     
+      return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
   }
   public function getUnverifiedProjects(Request $request)
   {
