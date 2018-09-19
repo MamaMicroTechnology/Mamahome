@@ -127,7 +127,7 @@
                         <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center">Followup</th>
-                        <th style="text-align:center">Enquiry Initiated By</th>
+                       
                     </tr>
                 </thead>
                 <tbody id="mainPanel">
@@ -141,9 +141,7 @@
                         <td style="text-align:center" class="{{ isset($_GET['se']) ? 'hidden' : '' }}">{{ $projectIds[$i]['updater'] }}</td>
                         <td style="text-align:center">{{ $projectIds[$i]['quality'] }}</td>
                         <td style="text-align:center">{{ $projectIds[$i]['followup'] }}</td>
-                        <td style="text-align:center">
-                        	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->updater }}">{{$project->project_id }}</a>
-                        </td>
+                        
                     </tr>
                  
                     @endfor
