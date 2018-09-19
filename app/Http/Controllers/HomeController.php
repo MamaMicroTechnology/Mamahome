@@ -5796,8 +5796,18 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function salesConverterDashboard()
     {
-        
-        return view('scdashboard');
+         $tl1= Tlwards::where('group_id','=',22)->get();
+        $userid = Auth::user()->id;
+        $found1 = null;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+            if(in_array($userid, $usersId)){
+                $found1 = $searchWard->ward_id;
+            }
+        }
+    
+     $ward =Ward::where('id',$found1)->pluck('ward_name')
+        return view('scdashboard',['ward'=>$ward]);
     }
 
 
