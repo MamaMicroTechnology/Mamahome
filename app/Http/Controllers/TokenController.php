@@ -500,8 +500,6 @@ public function getproject(request $request){
             for($i = 1; $i < $statusCount; $i++){
                 $statuses .= ", ".$request->project_status[$i];
             }
-        }else{
-            $statuses=null;
         }
             $basement = $request->basement;
             $ground = $request->ground;
