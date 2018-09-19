@@ -5812,7 +5812,7 @@ date_default_timezone_set("Asia/Kolkata");
             }
         }
     
-     $ward =Ward::where('id',$found1)->pluck('ward_name');
+       $ward =Ward::where('id',$found1)->pluck('ward_name');
         return view('scdashboard',['ward'=>$ward]);
     }
 
