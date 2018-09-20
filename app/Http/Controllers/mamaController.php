@@ -1831,7 +1831,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
                 $projectid = ProjectDetails::where('project_id',$requirement->project_id)->pluck('project_id')->first();
-               
+                dd($projectid);
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
