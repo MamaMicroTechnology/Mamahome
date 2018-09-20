@@ -110,6 +110,7 @@
 @endforeach
 </tbody>
 </table>
+@foreach($projects as $project)
 <div class="modal fade" id="myModal1{{$project->id}}" role="dialog">
     <div class="modal-dialog">
     
@@ -194,6 +195,7 @@
       
     </div>
     </div>
+    @endforeach
 </div>
 </div>
 </div>

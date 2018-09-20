@@ -30,7 +30,11 @@ Route::post('itMessage','TokenController@itMessage');
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
 Route::get('buyerlogin','TokenController@buyerLogin');
+
 Route::get('/login','TokenController@getLogin');
+
+
+
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
 //Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']); 
@@ -49,7 +53,7 @@ Route::get('/getproject','TokenController@getproject');
 Route::get('/getsingleproject','TokenController@getsingleProject');
 Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
-Route::get('/updateProject','TokenController@getUpdateProject');
+// Route::get('/updateProject','TokenController@getUpdateProject');
 Route::post('/updateProject','TokenController@postUpdateProject');
 Route::post('/updateEnquiry','TokenController@updateEnquiry');
 

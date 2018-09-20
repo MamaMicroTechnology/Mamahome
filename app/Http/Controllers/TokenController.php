@@ -195,7 +195,7 @@ class TokenController extends Controller
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
          if(count($check)==0){
            DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
-           // DB::table('track_history')->insert(['user_id'=>$userdetails->id,'date'=>date('H:i A'),'sub_ward'=>$subwards]);
+          
           }else{
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
                     }
@@ -499,8 +499,6 @@ public function getproject(request $request){
             for($i = 1; $i < $statusCount; $i++){
                 $statuses .= ", ".$request->project_status[$i];
             }
-        }else{
-            $statuses=null;
         }
             $basement = $request->basement;
             $ground = $request->ground;
@@ -538,6 +536,11 @@ public function getproject(request $request){
             // $projectdetails->interested_in_loan = $request->interested_in_loan;
             // $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
             // $projectdetails->road_name = $request->road_name;
+          $siteaddress = SiteAddress::where('project_id',$request->project_id)->update([
+                    'latitude' =>$request->latitude,
+                    'longitude' =>$request->longitude,
+                    'address' =>$request->address]);
+                                                       
             $projectdetails = ProjectDetails::where('project_id',$request->project_id)->first();
             
             if($request->municipality_approval != NULL){
@@ -591,15 +594,12 @@ public function getproject(request $request){
                 $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
-            if($request->latitude){
-                $siteaddress = SiteAddress::where('project_id',$request->project_id);
-                $siteaddress->project_id = $projectdetails->project_id;
-                $siteaddress->latitude = $request->latitude;
-                $siteaddress->longitude = $request->longitude;
-                $siteaddress->address = $request->address;
-                $siteaddress->save();
-            }
-        if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
+          
+                                                 
+                
+                
+           
+        if( $projectdetails->save() || $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
             return response()->json(['success'=>'0','message'=>'Something went wrong']);

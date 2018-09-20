@@ -1823,13 +1823,14 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     {
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+           
         }elseif($request->status != null){
 
             Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
+           
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                
                
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
