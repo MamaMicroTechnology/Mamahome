@@ -8,4 +8,14 @@
     We appreciate you services.
     </SMALL>
 </center></h2></div>
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('error'))
+<script>
+    swal("success","{{ session('error') }}","success");
+</script>
+@endif
 @endsection

@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                   <td style="border: 1px solid gray;"><label>remaining Projects</label></td>
-                  <td style="border: 1px solid gray;">{{ $bal }}<strong><strong></td>
+                  <td style="border: 1px solid gray;"><strong>{{ $bal }}<strong></td>
                 </tr>
           </tbody>
         </table>
@@ -66,6 +66,20 @@
 		
 	</div>
 </div>
+<div class="col-sm-4" style="margin-left: 20%;">
+  <h4>Project Search </h4>
+  <form method="GET" action="{{ URL::to('/') }}/projectrequirement">
+         
+            <div class="input-group">
+              <input type="text" name="phNo" class="form-control" placeholder="Phone number and project_id search">
+              <div class="input-group-btn">
+                <input type="submit" class="form-control" value="Search">
+              </div>
+            </div>
+        
+        </form>
 </div>
 </div>
+
+       
 @endsection

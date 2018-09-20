@@ -520,6 +520,11 @@ div#calendar{
           <a href="{{ URL::to('/orders') }}">Orders</a>
           <a href="{{ URL::to('/tltraining') }}">Training Video</a>
           <a href="{{ URL::to('/') }}/kra">KRA</a> -->
+          <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; -Add New Project</a>
+         <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; -Add New Manufacturer</a>
+         <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; -Add New Enquiry</a>
+
+        <a  href="{{ URL::to('/')}}/lebrands">&nbsp;&nbsp;&nbsp; -Brands</a>
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
@@ -537,6 +542,8 @@ div#calendar{
               <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
              <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
               <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
+              <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
+            
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>

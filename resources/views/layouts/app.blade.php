@@ -438,12 +438,12 @@ div#calendar{
                         <li style="padding-top: 10px;">
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="lll()" data-target="#report" >Logout</button>
+                       </li>
                         @if(Auth::user()->department_id != 4)
                        <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
-                       </li>
-                        <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report" >Logout</button>
                        </li>
                        @endif
                         @endif
@@ -621,7 +621,7 @@ function myTimer() {
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
     <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
-        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+       <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
             <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
@@ -689,7 +689,10 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
-   
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
@@ -782,6 +785,7 @@ function myTimer() {
 
      @endif
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
+    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
      
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
@@ -808,7 +812,7 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+       <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
             <!-- <a href="{{ URL::to('/') }}/seniorteam1">&nbsp;&nbsp;&nbsp; -Senior Team Leader1</a> -->
@@ -891,7 +895,7 @@ function myTimer() {
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
-         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
+         <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
         </div>
         
         <!-- Modal footer -->
@@ -909,7 +913,7 @@ function myTimer() {
       
         <!-- Modal Header -->
         <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
-          <h4 class="modal-title">Reason For Rejecting?</h4>
+          <h4 class="modal-title">Time Need To Complete?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -920,15 +924,20 @@ function myTimer() {
         @if(isset($stages))
          <input type="hidden" name="user_id" value="{{ $stages->user_id }}">
          @endif
-         <label>Reason : </label>
+         <label>Date :</label>
+         <input type="date" name="date" class="form-control" style="width:50%;">
+
+         <label>Time :</label>
+         <input type="time" name="time" class="form-control" style="width:50%;">
+         <label>Reason : </label> <br>
          <textarea type="text" name="remark" style="width:400px;" ></textarea>
         </div>
-       <center> <button type="sunmit" value="submit" class="btn btn-primary">Submit</button></center> 
+       <center> <button type="submit" value="submit" class="btn btn-primary">Submit</button></center> 
         </form>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <div class="modal-footer" style="padding:2px;"> 
+          <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
         </div>
         
       </div>
@@ -986,7 +995,9 @@ function myTimer() {
   function submitapp(){
         document.getElementById("login").form.submit();
   }
-  
+  function lll(){
+    
+  }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('empSuccess'))

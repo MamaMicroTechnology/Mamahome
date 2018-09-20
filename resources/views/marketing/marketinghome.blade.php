@@ -20,12 +20,12 @@
                 <div class="panel panel-default" style="border-color:green;">
                     <div class="panel-heading" style="background-color:green;color:white;">Category</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
-                        <form method="post" action="{{ URL::to('/') }}/addCategory">
+                        <form method="post" action="{{ URL::to('/') }}/addCategory" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input required type="text" placeholder="Category" name="category" class="form-control">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <select class="form-control" required name="measurement">
                                     <option value="" disabled selected>-Select-</option>
                                     <option value="Ton">Ton</option>
@@ -38,6 +38,9 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
+                                <input required type="file" placeholder="category image" name="catimage" class="form-control">
+                            </div>
+                            <div class="col-md-2">
                                 <input type="submit" value="Save" class="form-control btn btn-primary">
                             </div>
                         </form>
@@ -64,11 +67,12 @@
                             <tr class="hidden" id="edit{{ $category->id }}">
                                 
                                 <td colspan=3>
-                                <form method="POST" action="{{ URL::to('/') }}/updateCategory">
+                                <form method="POST" action="{{ URL::to('/') }}/updateCategory" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $category->id }}" name="id">
                                     <div class="input-group">
                                         <input type="text" name="name" value="{{ $category->category_name }}" class="form-control input-sm">
+                                        <input required type="file" placeholder="category image" name="catimage" class="form-control">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>
@@ -86,9 +90,9 @@
                 <div class="panel panel-default" style="border-color:green;">
                     <div class="panel-heading" style="background-color:green;color:white;">Brand</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
-                        <form method="post" action="{{ URL::to('/') }}/addBrand">
+                        <form method="post" action="{{ URL::to('/') }}/addBrand" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <select name="cat" class="form-control">
                                     <option value="">--Category--</option>
                                     @foreach($categories as $category)
@@ -96,10 +100,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input required type="text" placeholder="Brand" name="brand" class="form-control">
                             </div>
                             <div class="col-md-4">
+                                <input required type="file" placeholder="Brand" name="brandimage" class="form-control">
+                            </div>
+                            <div class="col-md-2">
                                 <input type="submit" value="Save" class="form-control btn btn-primary">
                             </div>
                         </form>
@@ -126,11 +133,12 @@
                              <tr class="hidden" id="editb{{ $brand->id }}">
                                 
                                 <td colspan=3>
-                                <form method="POST" action="{{ URL::to('/') }}/updateBrand">
+                                <form method="POST" action="{{ URL::to('/') }}/updateBrand" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $brand->id }}" name="id">
                                     <div class="input-group">
                                         <input type="text" name="name" value="{{ $brand->brand }}" class="form-control input-sm">
+                                        <input required type="file" placeholder="Brand" name="brandimage" class="form-control">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>
@@ -172,7 +180,7 @@
                             </tr>
                             <tr id="editsub{{ $subcategory->id }}" class="hidden">
                                 <td colspan=3>
-                                <form method="POST" action="{{ URL::to('/') }}/updateSubCategory">
+                                <form method="POST" action="{{ URL::to('/') }}/updateSubCategory" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $subcategory->id }}" name="id">
                                     <div class="input-group">
@@ -180,6 +188,8 @@
                                         class="form-control input-sm"><br><br>
                                         <input type="text" name="Quantity" value="{{ $subcategory->Quantity }}" 
                                         class="form-control input-sm" style="width: 50%">
+                                        
+             <input required type="file" placeholder="Minimum Quantity" name="subimage" class="form-control">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-success" type="submit">Save</button>
                                         </div>
@@ -195,7 +205,7 @@
         </div>
     </div>
 </div>
-<form method="post" action="{{ URL::to('/') }}/addSubCategory">
+<form method="post" action="{{ URL::to('/') }}/addSubCategory" enctype="multipart/form-data">
     {{ csrf_field() }}
   <div class="modal fade" id="addCategory" role="dialog">
     <div class="modal-dialog modal-md">
@@ -215,7 +225,9 @@
                 
             </select><br>
             <input required type="text" placeholder="Sub Category" name="subcategory" class="form-control"><br>
-            <input required type="text" placeholder="Minimum Quantity" name="Quantity" class="form-control" style="width:30%;">
+            <input required type="text" placeholder="Minimum Quantity" name="Quantity" class="form-control" ><br>
+
+             <input required type="file" placeholder="Minimum Quantity" name="subimage" class="form-control">
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success">Add</button>

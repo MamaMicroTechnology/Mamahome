@@ -21,10 +21,16 @@
                               <option value="">--Select--</option>
                               @if(Auth::user()->group_id != 22)
                               <option value="All">All</option>
-                              @endif
                               @foreach($wards as $ward)
                               <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
                               @endforeach
+                              @else
+                              @foreach($tlwards as $ward)
+                              <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
+                              @endforeach
+                              @endif
+                              
+
                           </select>
               </div>
               <div class="col-md-2">

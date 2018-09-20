@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('messages','TokenController@index');
 Route::post('message','TokenController@store');
 Route::get('privatemessage','TokenController@pms');
+Route::get('/banner','TokenController@bannerdata');
 // invoices
 Route::get('ManagementMessages','TokenController@ManagementMessages');
 Route::post('ManagementMessage','TokenController@ManagementMessage');
@@ -29,7 +30,11 @@ Route::post('itMessage','TokenController@itMessage');
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
 Route::get('buyerlogin','TokenController@buyerLogin');
+
 Route::get('/login','TokenController@getLogin');
+
+
+
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
 //Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']); 
@@ -48,7 +53,7 @@ Route::get('/getproject','TokenController@getproject');
 Route::get('/getsingleproject','TokenController@getsingleProject');
 Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
-Route::get('/updateProject','TokenController@getUpdateProject');
+// Route::get('/updateProject','TokenController@getUpdateProject');
 Route::post('/updateProject','TokenController@postUpdateProject');
 Route::post('/updateEnquiry','TokenController@updateEnquiry');
 
@@ -64,4 +69,5 @@ Route::get('/req','TokenController@getreq');
 Route::post('/react','TokenController@data');
 Route::get('/fakegps','TokenController@fakegps');
 
-
+//listing engineers
+Route::post('/addleProject','TokenController@addleProject');

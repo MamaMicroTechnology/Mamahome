@@ -27,11 +27,10 @@
                             <th style="width:15%">Previously Assigned Sub Ward </th>
                             <th style="width:15%">Previously Assigned Date </th>
                             <th style="width:15%">Previously Assigned Stage </th>
-                            <th style="width:15%">Count Of Projects</th>
                            <th style="width:15%">Action </th>
                            <th></th>
 
-                           <th style="width:15%">Status </th>
+                           <!-- <th style="width:15%">Status </th> -->
                             
                           </thead>
                            <tr>
@@ -45,15 +44,9 @@
                              <td>{{ $user->prv_subward }}</td>
                              <td>{{ $user->prv_date }}</td>
                              <td>{{ $user->prv_stage }}</td>
-                             <td>
-                              @foreach($assignstage as $qq)
-                              @if($user->id == $qq->user_id)
-                                  {{ $qq->count }}
-                             @endif
-                             @endforeach
-                             </td>
+                            
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
-                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
+                             <!-- <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
                               @foreach($assignstage as $qq)
                               @if($user->id == $qq->user_id)
                               @if($qq->remark != NULL)
@@ -62,7 +55,7 @@
                              <td><button disabled class="btn btn-primary btn-sm ">Accept</button></td>
                              @endif
                              @endif
-                            @endforeach
+                            @endforeach -->
                          
                           </tr> 
  <!-- The Modal -->
@@ -106,24 +99,8 @@
                              <td>{{ $user->prv_subward }}</td>
                              <td>{{ $user->prv_date }}</td>
                              <td>{{ $user->prv_stage }}</td>
-                             <td>
-                              @foreach($assignstage as $qq)
-                              @if($user->id == $qq->user_id)
-                                  {{ $qq->count }}
-                             @endif
-                             @endforeach
-                             </td>
+                             
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
-                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
-                              @foreach($assignstage as $qq)
-                              @if($user->id == $qq->user_id)
-                              @if($qq->remark != NULL)
-                             <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
-                             @else
-                             <td><button disabled class="btn btn-primary btn-sm ">Accept</button></td>
-                             @endif
-                             @endif
-                            @endforeach
                          
                           </tr> 
  <!-- The Modal -->
@@ -336,11 +313,11 @@
               <div class="col-sm-4">
               <h4 style="background-color:#9e9e9e;width: 50%;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget </h4>
               <div class="col-sm-6">
-              <h5 style="color:black;">From</h5>
+              <h5 style="color:black;">To</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budget" placeholder="Budget Min 10lac">
               </div>
               <div class="col-sm-6">
-              <h5 style="color:black;">To</h5>
+              <h5 style="color:black;">From</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budgetto" placeholder="Budget Min 10lac">
               </div>
               </div>
@@ -396,7 +373,7 @@
                      <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="pre[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
                   </div> 
                   <div class="col-sm-3">
-                   <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Interested_In_DoorsandWindows </h4>      
+                   <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Kitchen Cabinates and Wardrobes </h4>      
                     <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="door[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
                     <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
                      <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>

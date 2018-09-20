@@ -1,7 +1,7 @@
 
 <?php
-	$user = Auth::user()->group_id;
-	$ext = ($user == 2? "layouts.app":"layouts.teamheader");
+        $user = Auth::user()->group_id;
+        $ext = ($user == 2? "layouts.app":"layouts.teamheader");
 ?>
 @extends($ext)
 @section('content')
@@ -17,8 +17,23 @@
 <BR><br>
 @endif
 @if(Auth::user()->group_id == 22)
-<h2>Assigned Ward : {{$x}}</h2>
+<table class="table" style="width:50%;">
+  <tr>
+    <th>Under Your Employees</th>
+    <th>Designation</th>
+  </tr>
+ <h2>Assigned Ward : {{$x}}</h2>
+     @foreach($users as $user)
+       @if(in_array($user->id,$usersId))
+       <tr>
+        <td> {{$user->name}}</td>
+         <td>{{$user->group->group_name}}</td>
+    </tr>
+       @endif
+     @endforeach    
+</table>
 @endif
+</table>
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
     </SMALL>
