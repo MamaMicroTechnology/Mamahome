@@ -14,7 +14,7 @@
                                <th>Login Time</th>
                                <th>Logout Time</th>
                                <th>Late Login Remark</th>
-                               <th>Team Leader Approval</th>
+                               <th>Early Logout remark</th>
                                <th>Admin Approval</th>
                                <th>Action</th>
                            </thead>
@@ -27,7 +27,7 @@
                                     <td>{{ $user->logintime}}</td>
                                     <td>{{ $user->logout != null ? $user->logout  : " "}}</td>
                                     <td style="width:30%">{{ $user->remark}}</td>
-                                    <td>{{ $user->tlapproval}}</td>
+                                    <td >{{ $user->logout_remark}}</td>
                                     <td>{{ $user->adminapproval}}</td>
                                         @if( $user->hrapproval == "Pending" )
                                         <td>
