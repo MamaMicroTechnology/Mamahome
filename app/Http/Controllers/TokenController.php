@@ -444,7 +444,6 @@ public function getproject(request $request){
       }else{
          return response()->json(['message'=>'No projects Found']);
       }
-
   }  
  public function getsingleProject(Request $request)
     {
@@ -716,14 +715,212 @@ public function getproject(request $request){
             
             if($data->save()){
                    return response()->json(['data'=>'successfull']);
-        }else{
-                return response()->json(['data'=>'Something went wrong']);
-        }
-
-
+            }else{
+                    return response()->json(['data'=>'Something went wrong']);
+            }
         }
          public function bannerdata(Request $request){
         $banner = Banner::all();
          return response()->json(['banner'=>$banner,'message'=>"Banner data"]);
        }
+       public function addleProject(Request $request)
+    {
+
+        $point = 0;
+        // counting points
+        // project name
+        $point = $request->pName != null ? $point+2 : $point+0;
+        // road name
+        $point = $request->rName != null ? $point+2 : $point+0;        
+        // road width
+        $point = $request->rWidth != null ? $point+4 : $point+0;
+        // Construction type
+        $point = $request->constructionType != null ? $point+5 : $point+0;
+        // interested in rmc
+        $point = $request->rmcinterest != null ? $point+3 : $point+0;
+        // type of contract
+        $point = $request->contract != null ? $point+6 : $point+0;
+        // project status
+        $point = $request->status != null ? $point+5 : $point+0;
+        // project type
+        $point = $request->basement != null && $request->ground != null ? $point+5 : $point+0;
+        // project size
+        $point = $request->pSize != null ? $point+8 : $point+0;
+        // budgettype
+        $point = $request->budgetType != null ? $point+3 : $point+0;
+        // total budget
+        $point = $request->budget != null ? $point+5 : $point+0;
+        // project Image
+        $point = $request->pImage != null ? $point+6 : $point+0;
+        // room types
+        $point = $request->roomType[0] != null ? $point+5 : $point+0;
+        // owner details
+        $point = $request->oName != null ? $point+5 : $point+0;
+        $point = $request->oEmail != null ? $point+5 : $point+0;
+        $point = $request->oContact != null ? $point+5 : $point+0;
+        // contractor details
+        $point = $request->cName != null ? $point+3 : $point+0;
+        $point = $request->cEmail != null ? $point+3 : $point+0;
+        $point = $request->cContact != null ? $point+3 : $point+0;
+        // consultant details
+        // $point = $request->coName != null ? $point+3 : $point+0;
+        // $point = $request->coEmail != null ? $point+3 : $point+0;
+        // $point = $request->coContact != null ? $point+3 : $point+0;
+        // site engineer details
+        $point = $request->eName != null ? $point+3 : $point+0;
+        $point = $request->eEmail != null ? $point+3 : $point+0;
+        $point = $request->eContact != null ? $point+3 : $point+0;
+        // procurement details
+        $point = $request->prName != null ? $point+3 : $point+0;
+        $point = $request->pEmail != null ? $point+3 : $point+0;
+        $point = $request->prPhone != null ? $point+3 : $point+0;
+        $point = $request->remarks != null ? $point+10 : $point+0;
+        
+        // store points to database
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = "Adding a project";
+        $points->save();
+        $cType = count($request->constructionType);
+        $type = $request->constructionType[0];
+        $otherApprovals = "";
+        $projectimage = "";
+        if($cType != 1){
+            $type .= ", ".$request->constructionType[1];
+        }else{
+             $type=null;
+        }
+
+        $bapart = count($request->apart);
+        if($request->apart != 0){
+            $btype = implode(", ",$request->apart);
+        }
+
+     
+        $btype = count($request->budgetType);
+        if($request->budgetType != 0){
+            $type2 = implode(", ",$request->budgetType);
+        }
+        $statusCount = count($request->project_status);
+        $statuses = $request->project_status[0];
+            if($statusCount > 1){
+                for($i = 1; $i < $statusCount; $i++){
+                    $statuses .= ", ".$request->project_status[$i];
+                }
+            }
+            // else{
+            //     $statuses=null;
+            // }
+            $basement = $request->basement;
+            $ground = $request->ground;
+            $floor = $basement + $ground + 1;
+            $length = $request->length;
+            $breadth = $request->breadth;
+            $size = $length * $breadth;
+            
+            if($request->municipality_approval != NULL){
+             $data = $request->all();
+                $png_url = $request->userid."municipality_approval-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_url;
+                $img = $data['municipality_approval'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['municipality_approval']);   
+                $success = file_put_contents($path, $decoded);
+
+            }
+            else{
+                 $png_url  = "N/A";
+            }
+            
+
+      
+            if($request->other_approvals){
+                $data = $request->all();
+                $png_other = $request->userid."other_approvals-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_other;
+                $img = $data['other_approvals'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['other_approvals']);   
+                $success = file_put_contents($path, $decoded);
+                  
+                
+            }
+            else{
+              $png_other = null;   
+            }
+          
+          if($request->image){
+                $data = $request->all();
+                $png_project =$request->userid."project_image-".time().".jpg";
+                $path = public_path() . "/projectImages/" . $png_project;
+                $img = $data['image'];
+                $img = substr($img, strpos($img, ",")+1);
+                $decoded = base64_decode($data['image']);   
+                $success = file_put_contents($path, $decoded);
+
+            }
+            else{
+                $png_project = null;
+            }
+           
+            $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+            $projectdetails = New ProjectDetails;
+        
+            $projectdetails->project_name = $request->project_name;
+            $projectdetails->sub_ward_id = $ward;
+            $projectdetails->road_width = $request->road_width;
+            $projectdetails->construction_type =$request->construction_type;
+            $projectdetails->interested_in_rmc = $request->interested_in_rmc;
+            $projectdetails->interested_in_loan = $request->interested_in_loan;
+            $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
+            $projectdetails->interested_in_premium = $request->premium;
+            $projectdetails->automation=$request->automation;
+            $projectdetails->brilaultra=$request->brila;
+            $projectdetails->road_name = $request->road_name;
+            $projectdetails->municipality_approval = $png_url;
+            $projectdetails->other_approvals = $png_other;
+            $projectdetails->project_status = $statuses;
+            $projectdetails->project_size = $request->project_size;
+            $projectdetails->budgetType = $request->budgetType;
+            $projectdetails->budget = $request->budget;
+            $projectdetails->image = $png_project;
+            $projectdetails->user_id = $request->userid;
+            $projectdetails->basement = $basement;
+            $projectdetails->ground = $ground;
+            $projectdetails->project_type = $floor;
+            $projectdetails->length = $length;
+            $projectdetails->breadth = $breadth;
+            $projectdetails->plotsize = $size;
+            $projectdetails->remarks = $request->remarks;
+            $projectdetails->contract = $request->contract;
+            $projectdetails->res = $btype;
+            $projectdetails->save();
+
+            
+            $room_types = $request->roomType[0]." (".$request->number[0].")";
+            $count = count($request->roomType);
+            for($i = 0;$i<$count;$i++){
+                $roomtype = new RoomType;
+                $roomtype->floor_no = $request->floorNo[$i];
+                $roomtype->room_type = $request->roomType[$i];
+                $roomtype->no_of_rooms = $request->number[$i];
+                $roomtype->project_id = $projectdetails->id;
+                $roomtype->save();
+            }
+
+            $siteaddress = New SiteAddress;
+            $siteaddress->project_id = $projectdetails->id;
+             $siteaddress->latitude = $request->latitude;
+            $siteaddress->longitude = $request->longitude;
+            $siteaddress->address = $request->address;
+            $siteaddress->save();
+        if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
+            return response()->json(['success'=>'1','message'=>'Add project successfully','status'=>$request->project_status]);
+        }else{
+            return response()->json(['success'=>'0','message'=>'Something went wrong']);
+        }
+    }
+
 }

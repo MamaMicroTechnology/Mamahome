@@ -590,9 +590,9 @@ class mamaController extends Controller
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
-          $projectdetails->automation=$request->automation;
-          $projectdetails->brilaultra=$request->brila;
-          $projectdetails->res = $btype;
+              $projectdetails->automation=$request->automation;
+              $projectdetails->brilaultra=$request->brila;
+              $projectdetails->res = $btype;
 
 
           $projectdetails->save();
@@ -1823,6 +1823,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     {
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+           
         }elseif($request->status != null){
 
             Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
@@ -1830,8 +1831,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
            
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                $projectid = ProjectDetails::where('project_id',$requirement->project_id)->pluck('project_id')->first();
-                dd($projectid);
+               
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1867,7 +1867,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->req_id = $request->id;
-        $activity->project_id = $projectid;
+        $activity->project_id = $requirement->project_id;
         $project = ProjectDetails::where('project_id',$requirement->project_id)->pluck('sub_ward_id')->first();
         $activity->sub_ward_id = $project;
          $uproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('updated_by')->first();
@@ -2269,7 +2269,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         ->get();
         return view('acceng',['accengs'=>$accengs]);
     }
-      public function getmap(request $request)
+    public function getmap(request $request)
     {
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
@@ -2405,6 +2405,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
+                        $field->hrapproval = "Pending";
+                        $field->logout_remark = "";
                         $field->save();
 
 
@@ -2495,30 +2497,61 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         }
     }
     public function empreports(Request $request){
-
+        if($request->remark != null){
+                $remark = $request->remark;
+        }
+        else{
+            $remark = null;
+        }
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
+        $logout = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logout');
+
+        if(Auth::user()->department_id == 4){
+             $start = "16:10 ";
+             $now = date('H:i ');
+        }
+        else if(Auth::user()->group_id == 22){
+             $start = "16:30 ";
+             $now = date('H:i ');
+        }
+        else{
+            $start = "17:00 ";
+             $now = date('H:i ');
+        }
+            if( $now < $start && $remark == null){
+                $text = " <form action='earlyremark' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For early Logout..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+                for($i = 0; $i < count($request->report); $i++){
+                    $report = new Report;
+                    $report->empId = Auth::user()->employeeId;
+                    $report->report = $request->report[$i];
+                    $report->start = $request->from[$i];
+                    $report->end = $request->to[$i];
+                    $report->save();
+                }
+            return back()->with('earlylogout',$text); 
+            }
+            else{
+                if($logout == null){
+                    for($i = 0; $i < count($request->report); $i++){
+                        $report = new Report;
+                        $report->empId = Auth::user()->employeeId;
+                        $report->report = $request->report[$i];
+                        $report->start = $request->from[$i];
+                        $report->end = $request->to[$i];
+                        $report->save();
+                    }
+                }
+            }
         if(count($check)== 0){
-            // $text = "Please Login Before Logout.";
-            // return back()->with('Latelogin',$text);
-            return back()->with('error','Your Have To Login Before Logout');
+                return back()->with('error','Your Have To Login Before Logout');
         }
         else{
             FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('h:i A')
+            'logout' => date('h:i A'),
+            'logout_remark' => $remark
         ]);
-
-            for($i = 0; $i < count($request->report); $i++){
-            $report = new Report;
-            $report->empId = Auth::user()->employeeId;
-            $report->report = $request->report[$i];
-            $report->start = $request->from[$i];
-            $report->end = $request->to[$i];
-            $report->save();
-            }
-        return back()->with('Success','Your Report Has Been Saved Successfully');
-            // $text = "You Have Logged out Successfully!..";
-            // return back()->with('empSuccess',$text);
         }
+        return back()->with('Success','Your Report Has Been Saved Successfully');   
     }
     public function teamlogout(Request $request){
 
@@ -2621,7 +2654,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lon = $request->longitude;
        $address = $request->address; 
        if(Auth::user()->department_id == 4){
-                $start = "07:00 AM";
+                $start = "07:10 AM";
                 $now = date('h:i A');
         }
         else{
@@ -2648,6 +2681,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
                         $field->hrapproval = "Pending";
+                        $field->logout_remark = "";
                         $field->save();
 
 
@@ -2695,6 +2729,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
+                         $field->hrapproval = "Pending";
+                        $field->logout_remark = "";
                         $field->save();
 
 
