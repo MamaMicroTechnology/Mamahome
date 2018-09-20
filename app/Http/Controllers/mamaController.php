@@ -488,13 +488,13 @@ class mamaController extends Controller
         if($cType != 1){
             $type .= ", ".$request->constructionType[1];
         }
-        $bapart = 12;
+       $bapart = count($request->apart);
         if($request->apart != 0){
             $btype = implode(", ",$request->apart);
         }
 
      
-         $btype = 12;
+        $btype = count($request->budgetType);
         if($request->budgetType != 0){
             $type2 = implode(", ",$request->budgetType);
         }
@@ -590,9 +590,9 @@ class mamaController extends Controller
             $projectdetails->remarks = $request->remarks;
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
-          $projectdetails->automation=$request->automation;
-          $projectdetails->brilaultra=$request->brila;
-          $projectdetails->res = $btype;
+              $projectdetails->automation=$request->automation;
+              $projectdetails->brilaultra=$request->brila;
+              $projectdetails->res = $btype;
 
 
           $projectdetails->save();
@@ -929,7 +929,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                        'brilaultra'=>$request->brila,
 
             'contract'=>$request->contract,
-            // 'with_cont'=>$request->qstn,
+            'with_cont'=>$request->qstn,
             'budgetType' => $request->budgetType,
             'automation'=> $request->automation,
              'plotsize' => $size,
@@ -2115,6 +2115,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function postSaveManufacturer(Request $request)
     {
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+
+           if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+
         $manufacturer = new Manufacturer;
         $manufacturer->listing_engineer_id = Auth::user()->id;
         $manufacturer->name = $request->name;
@@ -2135,6 +2142,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
         $manufacturer->remarks = $request->remarks;
+        $manufacturer->production_type = $pro;
+
 
         $manufacturer->save();
         $sales = new Salescontact_Details;
@@ -2259,7 +2268,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         ->get();
         return view('acceng',['accengs'=>$accengs]);
     }
-      public function getmap(request $request)
+    public function getmap(request $request)
     {
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
@@ -2395,6 +2404,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
+                        $field->hrapproval = "Pending";
+                        $field->logout_remark = "";
                         $field->save();
 
 
@@ -2485,30 +2496,61 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         }
     }
     public function empreports(Request $request){
-
+        if($request->remark != null){
+                $remark = $request->remark;
+        }
+        else{
+            $remark = null;
+        }
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
+        $logout = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logout');
+
+        if(Auth::user()->department_id == 4){
+             $start = "16:10 ";
+             $now = date('H:i ');
+        }
+        else if(Auth::user()->group_id == 22){
+             $start = "16:30 ";
+             $now = date('H:i ');
+        }
+        else{
+            $start = "17:00 ";
+             $now = date('H:i ');
+        }
+            if( $now < $start && $remark == null){
+                $text = " <form action='earlyremark' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For early Logout..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+                for($i = 0; $i < count($request->report); $i++){
+                    $report = new Report;
+                    $report->empId = Auth::user()->employeeId;
+                    $report->report = $request->report[$i];
+                    $report->start = $request->from[$i];
+                    $report->end = $request->to[$i];
+                    $report->save();
+                }
+            return back()->with('earlylogout',$text); 
+            }
+            else{
+                if($logout == null){
+                    for($i = 0; $i < count($request->report); $i++){
+                        $report = new Report;
+                        $report->empId = Auth::user()->employeeId;
+                        $report->report = $request->report[$i];
+                        $report->start = $request->from[$i];
+                        $report->end = $request->to[$i];
+                        $report->save();
+                    }
+                }
+            }
         if(count($check)== 0){
-            // $text = "Please Login Before Logout.";
-            // return back()->with('Latelogin',$text);
-            return back()->with('error','Your Have To Login Before Logout');
+                return back()->with('error','Your Have To Login Before Logout');
         }
         else{
             FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('h:i A')
+            'logout' => date('h:i A'),
+            'logout_remark' => $remark
         ]);
-
-            for($i = 0; $i < count($request->report); $i++){
-            $report = new Report;
-            $report->empId = Auth::user()->employeeId;
-            $report->report = $request->report[$i];
-            $report->start = $request->from[$i];
-            $report->end = $request->to[$i];
-            $report->save();
-            }
-        return back()->with('Success','Your Report Has Been Saved Successfully');
-            // $text = "You Have Logged out Successfully!..";
-            // return back()->with('empSuccess',$text);
         }
+        return back()->with('Success','Your Report Has Been Saved Successfully');   
     }
     public function teamlogout(Request $request){
 
@@ -2599,7 +2641,6 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function logintime(Request $request)
     {
-
         if($request->remark != null){
                 $remark = $request->remark;
         }
@@ -2611,17 +2652,21 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
-                        $start = "08:00 AM";
-                        $now = date('H:i A');
+       if(Auth::user()->department_id == 4){
+                $start = "07:10 AM";
+                $now = date('h:i A');
+        }
+        else{
+             $start = "08:00 AM";
+             $now = date('h:i A');
+        }
         if( $now > $start && count($check)== 0 && $remark == null){
-
             
             $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
         {
-                   
                     if(count($check)== 0){
                         $field = new FieldLogin;
                         $field->user_id = $id;
@@ -2635,6 +2680,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
                         $field->hrapproval = "Pending";
+                        $field->logout_remark = "";
                         $field->save();
 
 
@@ -2660,10 +2706,10 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
-                        $start = "08:05 AM";
+                        $start = "07:30 AM";
                         $now = date('H:i A');
         if( $now > $start && count($check)== 0 && $remark == null){
-
+           
             // $text = "<textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br>";
             $text = " <form action='teamlate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('TeamLate',$text); 
@@ -2682,6 +2728,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
+                         $field->hrapproval = "Pending";
+                        $field->logout_remark = "";
                         $field->save();
 
 
@@ -2847,9 +2895,15 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function saveUpdatedManufacturer(Request $request)
     {
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+       
+       if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
-
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
@@ -2867,6 +2921,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->type = $request->manufacturing_type;
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
+        $manufacturer->production_type = $pro;
+
         $manufacturer->save();
        
         Salescontact_Details::where("manu_id",$request->id)->update([
