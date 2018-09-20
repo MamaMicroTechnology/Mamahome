@@ -2917,10 +2917,7 @@ date_default_timezone_set("Asia/Kolkata");
             }
         }
     
-     $ward =Ward::where('id',$found1)->pluck('ward_name');
-     
-
-    
+     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
         $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
@@ -5812,7 +5809,7 @@ date_default_timezone_set("Asia/Kolkata");
             }
         }
     
-       $ward =Ward::where('id',$found1)->pluck('ward_name');
+       $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
         return view('scdashboard',['ward'=>$ward]);
     }
 
