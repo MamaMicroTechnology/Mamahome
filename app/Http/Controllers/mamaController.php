@@ -1827,6 +1827,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
 
             Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
+            dd($requirement);
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
                 $projectid = ProjectDetails::where('project_id',$requirement->project_id)pluck('project_id')->first();
