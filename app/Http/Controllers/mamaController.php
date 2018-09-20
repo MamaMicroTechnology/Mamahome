@@ -1823,6 +1823,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     {
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+           
         }elseif($request->status != null){
 
             Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
@@ -1830,8 +1831,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
            
             if($requirement->status == "Enquiry Confirmed"){
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                $projectid = ProjectDetails::where('project_id',$requirement->project_id)->pluck('project_id')->first();
-                dd($projectid);
+               
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1867,7 +1867,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->req_id = $request->id;
-        $activity->project_id = $projectid;
+        $activity->project_id = $requirement->project_id;
         $project = ProjectDetails::where('project_id',$requirement->project_id)->pluck('sub_ward_id')->first();
         $activity->sub_ward_id = $project;
          $uproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('updated_by')->first();
