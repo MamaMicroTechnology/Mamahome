@@ -438,12 +438,12 @@ div#calendar{
                         <li style="padding-top: 10px;">
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="lll()" data-target="#report" >Logout</button>
+                       </li>
                         @if(Auth::user()->department_id != 4)
                        <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
-                       </li>
-                        <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report" >Logout</button>
                        </li>
                        @endif
                         @endif
@@ -995,7 +995,9 @@ function myTimer() {
   function submitapp(){
         document.getElementById("login").form.submit();
   }
-  
+  function lll(){
+    
+  }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('empSuccess'))
