@@ -1590,17 +1590,7 @@ class HomeController extends Controller
         }else if($group == "Sales Engineer" && $dept == "Sales"){
             return redirect('salesEngineer');
         }else if($dept == "Human Resource"){
-            $log =  FieldLogin::where('logindate',date('Y-m-d'))
-                    ->join('users','field_login.user_id','users.id')
-                    ->where('users.department_id','!=',0)->pluck('field_login.user_id');
-        // dd($present);
-        $dept =[1,2,3,4,5,6,7];
-        $ntlogins = user::whereIn('department_id',$dept)->whereNotIn('id',$log)->
-                select('users.name','users.employeeId')->get();
-        $present = count($log);
-        $absent = count($ntlogins);
-
-            return redirect('amdashboard');
+            return redirect('amdashboard',['present'=>$present,'absent'=>$absent]);
         }else if($group == "Logistic Co-ordinator (Sales)"){
             return redirect('lcodashboard');
         }else if($group == "Account Executive"){
@@ -1615,7 +1605,7 @@ class HomeController extends Controller
                 select('users.name','users.employeeId')->get();
         $present = count($log);
         $absent = count($ntlogins);        
-        // $absent = user::where('logindate',date('Y-m-d'))->whereNotIn('user_id',$total)
+       
                      
         return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
         }else if($group == "Sales Converter" && $dept == "Sales"){
