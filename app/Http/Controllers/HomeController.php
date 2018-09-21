@@ -1774,6 +1774,10 @@ class HomeController extends Controller
         return view('viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates]);
     }
     public function teamLeadHome(){
+
+           $this->getid();
+           $data=$this->variable;
+
          $depts=[1,2];
         $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
                         ->join('users','field_login.user_id','users.id')
@@ -1914,6 +1918,10 @@ class HomeController extends Controller
 
     public function listingEngineer()
     {
+
+        
+
+
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
@@ -2896,7 +2904,8 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function getSalesEngineer()
     {
-           
+         
+
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
         $found1 = null;
@@ -5444,19 +5453,6 @@ date_default_timezone_set("Asia/Kolkata");
 
               }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
            $noOfCalls = array();
            $users = User::where('department_id',2)
                        ->leftjoin('salesassignments','salesassignments.user_id','users.id')
@@ -5802,10 +5798,7 @@ date_default_timezone_set("Asia/Kolkata");
        $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
         return view('scdashboard',['ward'=>$ward]);
     }
-
-
-
-    public function getChat()
+ public function getChat()
     {
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
@@ -8099,13 +8092,15 @@ public function display(request $request){
     }
    public function tickets(request $request)
     {
-
+        $options['timeout'] = 300;
+        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
    $client = new \GuzzleHttp\Client();
-    $request = $client->get('http://localhost:8000/api/ticket');
+    $request = $client->get($url,$options);
    $response = $request->getBody();
    $data = json_decode($response);
 
 
+dd($data);
         return view('/ticket',['data'=>$data]);
     }
     public function chat(request $request)
@@ -8115,7 +8110,6 @@ public function display(request $request){
     $request = $client->get('http://localhost:8000/api/ticket');
    $response = $request->getBody();
    $data = json_decode($response);
-
 
         return view('/ticketchat',['data'=>$data]);
     }
@@ -8338,4 +8332,22 @@ public function display(request $request){
   // public function starttimer(){
   //   return view("timer");
   //}
+
+
+  public function getid(){
+        $tl1= Tlwards::where('group_id','=',22)->get();
+        $userid = Auth::user()->id;
+        $found1 = null;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+            if(in_array($userid, $usersId)){
+                $found1 = $searchWard->ward_id;
+            }
+        }
+    $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+     $this->variable = $tl1;
+     // return $tl1;
+    return array(
+        'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);
+  }
 }

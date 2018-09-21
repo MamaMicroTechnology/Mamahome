@@ -27,4 +27,11 @@
       0 => 'Carbon\\Laravel\\ServiceProvider',
     ),
   ),
+  'spatie/laravel-activitylog' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    ),
+  ),
 );
