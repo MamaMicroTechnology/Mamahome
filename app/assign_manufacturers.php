@@ -16,7 +16,7 @@ protected $fillable = ['user_id','ward','subward','totalarea','capacity','presen
 ];
 
 
- // protected static $logOnlyDirty = true; 
+ protected static $logOnlyDirty = true; 
       protected static $causerId = 3;
       protected static $logName = "";
 }

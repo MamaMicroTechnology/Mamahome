@@ -16,7 +16,7 @@ protected $fillable = ['type','created_at','updated_at',
 ];
 
 
- // protected static $logOnlyDirty = true; 
+  protected static $logOnlyDirty = true; 
       protected static $causerId = 3;
       protected static $logName = "";
 
