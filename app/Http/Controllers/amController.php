@@ -77,8 +77,15 @@ class amController extends Controller
                         ->join('users','empattendance.empId','users.employeeId')
                         ->select('users.name','users.employeeId','empattendance.*','users.group_id')
                         ->get();
-              
-        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'login'=>$login]);
+         $log =  FieldLogin::where('logindate',date('Y-m-d'))
+                    ->join('users','field_login.user_id','users.id')
+                    ->where('users.department_id','!=',0)->pluck('field_login.user_id');
+        $dept =[1,2,3,4,5,6,7];
+        $ntlogins = user::whereIn('department_id',$dept)->whereNotIn('id',$log)->
+                select('users.name','users.employeeId')->get();
+        $present = count($log);
+        $absent = count($ntlogins);
+        return view('assistantmanager.amdashboard',['prices'=>$prices, 'pageName'=>'Home','loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'login'=>$login,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
     }
     public function getPricing(){
         $prices = CategoryPrice::all();
