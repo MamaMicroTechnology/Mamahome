@@ -414,7 +414,7 @@ div#calendar{
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
                         @endif
-            <?php $d =0 ?>
+                        <?php $d =0 ?>
                          @if(Auth::user()->group_id == 14)
                         <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;&nbsp;</span></b></a></li>
                         @endif
@@ -435,17 +435,15 @@ div#calendar{
                           <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                         
-                        <li style="padding-top: 10px;">
+                        <li style="padding-top: 10px;padding-left: 10px;">
                           <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
                         </li>
-                        <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="lll()" data-target="#report" >Logout</button>
-                       </li>
-                        @if(Auth::user()->department_id != 4)
                        <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
                        </li>
-                       @endif
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="confirmthis()">Logout</button>
+                       </li>
                         @endif
                     </ul>
                 
@@ -995,9 +993,19 @@ function myTimer() {
   function submitapp(){
         document.getElementById("login").form.submit();
   }
-  function lll(){
+  // function lll(){
     
-  }
+  // }
+   function confirmthis()
+    {
+        var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
+            $(document).ready(function(){
+              $("#report").modal('show');
+          });
+        }
+    }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 @if(session('empSuccess'))

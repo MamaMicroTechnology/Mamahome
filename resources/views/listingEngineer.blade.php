@@ -79,7 +79,7 @@
                           <div id="autoUpdate" class="autoUpdate" style="display:none;">
                                  <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
-                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="villas">Independent villas</label> 
                         </div>
                                  </td>
                                </tr>

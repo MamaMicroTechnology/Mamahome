@@ -1590,7 +1590,7 @@ class HomeController extends Controller
         }else if($group == "Sales Engineer" && $dept == "Sales"){
             return redirect('salesEngineer');
         }else if($dept == "Human Resource"){
-            return redirect('amdashboard',['present'=>$present,'absent'=>$absent]);
+            return redirect('amdashboard');
         }else if($group == "Logistic Co-ordinator (Sales)"){
             return redirect('lcodashboard');
         }else if($group == "Account Executive"){
@@ -6635,7 +6635,7 @@ public function projectstore1(request $request){
 
 public function reject(request $request){
     $check = AssignStage::where('user_id',$request->user_id)->first();
-      dd($request->date);
+    
        if(count($check) != 0){
      $check->remark = $request->remark;
      $check->adate = $request->date;
@@ -8332,8 +8332,6 @@ dd($data);
   // public function starttimer(){
   //   return view("timer");
   //}
-
-
   public function getid(){
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
