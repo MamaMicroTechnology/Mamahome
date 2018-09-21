@@ -8117,15 +8117,12 @@ public function display(request $request){
    public function tickets(request $request)
     {
         $options['timeout'] = 300;
-        $url = 'https://localhost/mamaReu/webapp/api/req';
+        $url = 'http://127.0.0.1:8000/api/req';
        $client = new \GuzzleHttp\Client();
        $request = $client->get($url,$options);
        $response = $request->getBody();
        $data = json_decode($response);
-
-
-dd($data);
-        return view('/ticket',['data'=>$data]);
+   return view('/ticket',['data'=>$data]);
     }
     public function chat(request $request)
     {
@@ -8368,7 +8365,7 @@ dd($data);
             }
         }
     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
-     $this->variable = $tl1;
+     $this->variable = $ward;
      // return $tl1;
     return array(
         'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);

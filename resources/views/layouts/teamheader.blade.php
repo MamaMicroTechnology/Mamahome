@@ -520,13 +520,13 @@ div#calendar{
           <a href="{{ URL::to('/orders') }}">Orders</a>
           <a href="{{ URL::to('/tltraining') }}">Training Video</a>
           <a href="{{ URL::to('/') }}/kra">KRA</a> -->
-            <a href="#" data-toggle="collapse" data-target="#sales">Add &#x21F2;</a>
-         <div id="sales" class="collapse">
+          <!--   <a href="#" data-toggle="collapse" data-target="#sales">Add &#x21F2;</a>
+         <div id="sales" class="collapse"> -->
       <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
-   </div>
+  <!--  </div> -->
 
        
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
