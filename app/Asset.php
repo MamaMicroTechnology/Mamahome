@@ -12,8 +12,7 @@ class Asset extends Model
 
 
 
-protected $fillable = ['type','created_at','updated_at',
-];
+protected $fillable = ['type','created_at','updated_at'];
 
 
   protected static $logOnlyDirty = true; 
