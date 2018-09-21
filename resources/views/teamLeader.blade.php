@@ -19,7 +19,7 @@
 @if(Auth::user()->group_id == 22)
 <table class="table" style="width:50%;">
   <tr>
-    <th>Under Your Employees</th>
+    <th>Team Members</th>
     <th>Designation</th>
   </tr>
  <h2>Assigned Ward : {{$x}}</h2>

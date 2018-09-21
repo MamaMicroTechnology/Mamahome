@@ -1528,7 +1528,12 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return back();
     }
     public function gradetoEmp(Request $request){
-        attendance::where('empId',$request->userId)->where('date',$request->date)->update(['grade'=>$request->grade,'remarks'=>$request->remark,'am_remarks'=>$request->amremark]);
+        // attendance::where('empId',$request->userId)->where('date',$request->date)->update(['grade'=>$request->grade,'remarks'=>$request->remark,'am_remarks'=>$request->amremark]);
+        // dd($request->userId);
+
+        $empid = User::where('employeeId',$request->userId)->pluck('id')->first();
+        FieldLogin::where('user_id',$empid)->where('logindate',$request->date)->update(['grade'=>$request->grade,'remarks'=>$request->remark,'am_remarks'=>$request->amremark]);
+
         return back();
     }
     public function saveEdit(Request $request){
@@ -2535,7 +2540,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         }
             if( $now < $start && $remark == null){
                 $text = " <form action='earlyremark' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For early Logout..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
-                for($i = 0; $i < count($request->report); $i++){
+                for($i = 0; $i < 1; $i++){
                     $report = new Report;
                     $report->empId = Auth::user()->employeeId;
                     $report->report = $request->report[$i];
@@ -2547,7 +2552,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
             else{
                 if($logout == null){
-                    for($i = 0; $i < count($request->report); $i++){
+                    for($i = 0; $i < 1; $i++){
                         $report = new Report;
                         $report->empId = Auth::user()->employeeId;
                         $report->report = $request->report[$i];

@@ -147,6 +147,9 @@
 <script type="text/javascript" charset="utf-8">
   function submitleheader(){
     // document.getElementById("getBtn").className = "hidden";
+    var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
       console.log("Entering getLocation()");
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(
@@ -218,7 +221,7 @@
     //console.log("Entering getAddressFromLatLangforlogout()");
   }
   // logout end
-
+}
   function getLocation(){
       // document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
