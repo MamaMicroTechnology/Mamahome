@@ -419,6 +419,16 @@ class mamaController extends Controller
             $assignWard->status = 'Not Completed';
             $assignWard->save();
         }
+        $user = User::findOrFail($id);
+        $subward = SubWard::findOrFail($request->subward);
+        $activity = New ActivityLog;
+        $activity->time = date('H:i:s A');
+        $activity->employee_id = Auth::user()->employeeId;
+        $activity->activity = Auth::user()->name . " has assigned " . $user->name . " to a new Sub Ward " . $subward->sub_ward_name;
+        $activity->typeofactivity = "Assignation of sub ward";
+        $activity->sub_ward_id = $request->subward;
+        $activity->save();
+
         return back()->with('Success','Assigned Successfully');
     }
     public function addProject(Request $request)
