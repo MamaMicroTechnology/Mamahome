@@ -18,7 +18,7 @@ protected $fillable = ['employeeId','asset_type','id','name','serial_no','emp_si
 ];
 
 
- // protected static $logOnlyDirty = true; 
+  protected static $logOnlyDirty = true; 
       protected static $causerId = 3;
       protected static $logName = "";
 
