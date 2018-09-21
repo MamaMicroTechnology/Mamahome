@@ -2864,7 +2864,9 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function placeOrder($id, Request $request)
     {
-        Requirement::where('id',$id)->update([ 'status' => 'Order Placed']);
+        $requirement = Requirement::where('id',$id)->first();
+        $requirement->status = 'Order Placed';
+        $requirement->save();
         $orders = Requirement::where('id',$id)->first();
         return view('confirm',['orders'=>$orders,'id'=>$id])->with('Success','Order has been placed successfully');
     }
@@ -2887,7 +2889,6 @@ date_default_timezone_set("Asia/Kolkata");
      public function completethis1(Request $user_id)
     {
         $assignment =AssignStage::where('user_id',Auth::user()->id)->first();
-
         $assignment->state = 'Completed';
         $assignment->save();
         AssignStage::where('user_id',Auth::user()->id)->delete();
@@ -3100,18 +3101,19 @@ date_default_timezone_set("Asia/Kolkata");
     public function confirmOrder(Request $request)
     {
         $id = $request->id;
-
-
-            $x = Order::where('id', $id)->update(['status' => 'Order Confirmed','payment_status'=>'Payment Pending']);
-
-                return back();
+        $x = Order::where('id', $id)->first();
+        $x->status = 'Order Confirmed';
+        $x->payment_status = 'Payment Pending';
+        $x->save();
+        return back();
 
     }
     public function cancelOrder(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['status' => 'Order Cancelled']);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->status = 'Order Cancelled';
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3147,7 +3149,10 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating owner details";
             $points->save();
         }
-        $x = OwnerDetails::where('project_id',$id)->update(['owner_name' => $name, 'owner_contact_no' => $phone, 'owner_email' => $email]);
+        $x = OwnerDetails::where('project_id',$id)->first();
+        $x->owner_name = $name;
+        $x->owner_contact_no = $phone;
+        $x->owner_email = $email;
         if($x)
         {
             return response()->json('Success !!!');
@@ -3176,8 +3181,11 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating contractor details";
             $points->save();
         }
-        $x = ContractorDetails::where('project_id',$id)->update(['contractor_name' => $name, 'contractor_contact_no' => $phone, 'contractor_email' => $email]);
-        if($x)
+        $x = ContractorDetails::where('project_id',$id)->first();
+        $x->contractor_name = $name;
+        $x->contractor_contact_no = $phone;
+        $x->contractor_email = $email;
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3205,8 +3213,11 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating consultant details";
             $points->save();
         }
-        $x = ConsultantDetails::where('project_id',$id)->update(['consultant_name' => $name, 'consultant_contact_no' => $phone, 'consultant_email' => $email]);
-        if($x)
+        $x = ConsultantDetails::where('project_id',$id)->first();
+        $x->consultant_name = $name;
+        $x->consultant_contact_no = $phone;
+        $x->consultant_email = $email;
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3234,8 +3245,11 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating procurement details";
             $points->save();
         }
-        $x = ProcurementDetails::where('project_id',$id)->update(['procurement_name' => $name, 'procurement_contact_no' => $phone, 'procurement_email' => $email]);
-        if($x)
+        $x = ProcurementDetails::where('project_id',$id)->first();
+        $x->procurement_name = $name;
+        $x->procurement_contact_no = $phone;
+        $x->procurement_email = $email;
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3248,8 +3262,9 @@ date_default_timezone_set("Asia/Kolkata");
     {
         $id = $request->id;
         $update = $request->payment;
-        $x = Order::where('id', $id)->update(['payment_status' => $update]);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->payment_status = $update;
+        if($x->save())
         {
             return response()->json($update);
         }
@@ -3261,8 +3276,10 @@ date_default_timezone_set("Asia/Kolkata");
     public function updateamdispatch(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['dispatch_status' => "Yes",'delivery_status'=>'Not Delivered']);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->dispatch_status = "Yes";
+        $x->delivery_status = 'Not Delivered';
+        if($x->save())
         {
             return response()->json("Updated");
         }
@@ -3275,8 +3292,10 @@ date_default_timezone_set("Asia/Kolkata");
     {
         $id = $request->id;
         $today = date('Y-m-d');
-        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered','delivered_on'=>$today]);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->delivery_status = 'Delivered';
+        $x->delivered_on = $today;
+        if($x->save())
         {
             return response()->json("Updated");
         }
@@ -3323,22 +3342,27 @@ date_default_timezone_set("Asia/Kolkata");
     public function confirmstatus($id, Request $request)
     {
         $var2 = $request->only('opt');
-        $var = ProjectDetails::where('project_id',$var2['opt'])->update(['status' => "Ready"]);
+        $var = ProjectDetails::where('project_id',$var2['opt'])->first();
+        $var->status = "Ready";
+        $var->save();
         $c = count($check);
         return response()->json($c);
     }
     public function confirmthis($id, Request $request)
     {
         $var = $request->only('opt');
-        $var2 = ProjectDetails::where('project_id',$id)->update(['with_cont' => $var['opt']]);
+        $var2 = ProjectDetails::where('project_id',$id)->first();
+        $var2->with_cont = $var['opt'];
+        $var2->save();
         return response()->json($var2);
     }
     public function updateNoteFollowUp(Request $request)
     {
         $id = $request->id;
         $value = $request->value;
-        $x = ProjectDetails::where('project_id', $id)->update(['note' => $value]);
-        if($x){
+        $x = ProjectDetails::where('project_id', $id)->first();
+        $x->note = $value;
+        if($x->save()){
             return response()->json('Successful !!');
         }
         else{
@@ -3348,8 +3372,9 @@ date_default_timezone_set("Asia/Kolkata");
     public function updateStatusReq(Request $request)
     {
         $id = $request->id;
-        $x =DB::table('requirements')->where('id', $id)->update(['status' => 'Order Initiated']);
-        if($x)
+        $x =DB::table('requirements')->where('id', $id)->first();
+        $x->status = 'Order Initiated';
+        if($x->save())
         {
             return response()->json('Successful !!!');
         }
@@ -3362,54 +3387,53 @@ date_default_timezone_set("Asia/Kolkata");
     {
         $view = $request->only('opt');
         $view = $view['opt'];
-        ProjectDetails::where('project_id', $id)->update(['project_status' => $view]);
+        $project = ProjectDetails::where('project_id', $id)->first();
+        $project->project_status = $view;
+        $project->save();
         return response()->json($view);
     }
     public function updateMat($id, Request $request)
     {
         $view = $request->only('opt');
         $view = $view['opt'];
-        ProjectDetails::where('project_id', $id)->update(['remarks' => $view]);
+        $project = ProjectDetails::where('project_id', $id)->first();
+        $project->remarks = $view;
+        $project->save();
         return response()->json($view);
     }
     public function updatelocation($id, Request $request)
     {
         $view = $request->only('newtext');
         $view = $view['newtext'];
-        SiteAddress::where('project_id', $id)->update(['address' => $view]);
+        $address = SiteAddress::where('project_id', $id)->first();
+        $address->address = $view;
+        $address->save();
         return response()->json($view);
     }
     public function smstonumber(Request $request)
     {
-
-                        if(Auth::user()->group_id != 22){
-                        return $this->smstonumber1($request);
-                        }
-    
+        if(Auth::user()->group_id != 22){
+            return $this->smstonumber1($request);
+        }
         if(!$request->stage ){
             $stages =null;
         }else{
             $stages = $request->stage;
         }
-
-     $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-     $subwards = Subward::where('ward_id',$tlward)->pluck('id');
-     
-
-         $projectids = new Collection();
-         $orders = Order::where('status','Order Confirmed')->pluck('project_id');
-        
-
-       if($stages != null){
+        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $subwards = Subward::where('ward_id',$tlward)->pluck('id');
+        $projectids = new Collection();
+        $orders = Order::where('status','Order Confirmed')->pluck('project_id');
+        if($stages != null){
             $projectids = ProjectDetails::whereIn('sub_ward_id',$subwards)
-             ->whereIn('project_status',$stages)
-             ->where('quality','!=','Fake')
-             ->whereNotIn('project_id',$orders)
-             ->pluck('project_id');
-         }else{
+            ->whereIn('project_status',$stages)
+            ->where('quality','!=','Fake')
+            ->whereNotIn('project_id',$orders)
+            ->pluck('project_id');
+        }else{
             $projectids = null;
-         }
-    if($projectids != null){
+        }
+        if($projectids != null){
 
            //fetch phonee numbers//
             $procurement =ProcurementDetails::whereIn('project_id',$projectids)->where('procurement_contact_no','!=',null)->pluck('procurement_contact_no')->toarray();
@@ -8122,9 +8146,9 @@ dd($data);
     public function storedetails(Request $request){
          $id = $request->id;
          $value= $request->value;
-          $x = ProjectDetails::where('project_id',$id)->update([
-                'detailed_mcal' => $request->value
-            ]);
+        $x = ProjectDetails::where('project_id',$id)->first();
+        $x->detailed_mcal = $request->value;
+        $x->save();
          if($x && $value== "yes")
         {
             return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
@@ -8160,11 +8184,10 @@ dd($data);
 
 
         $id = History::where('project_id',$request->id)->pluck('id')->last();
-        History::where('id',$id)->update(['question'=>$request->qstn,
-                                            'remarks'=>$request->remarks
-            ]);
-
-         return redirect()->back();
+        $hist = History::where('id',$id)->first();
+        $hist->question=$request->qstn;
+        $hist->remarks=$request->remarks;
+        return redirect()->back();
     }
 
  public function manustorequery(Request $request){
@@ -8311,9 +8334,9 @@ dd($data);
             $report->end = $request->to[$i];
             $report->save();
         }
-        FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('h:i A')
-        ]);
+        $fieldLogin = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->first();
+        $fieldLogin->logout = date('h:i A');
+        $fieldLogin->save();
         return back()->with('Success','Your Report Has Been Saved Successfully');
     
   }

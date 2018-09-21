@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Manufacturer extends Model
 {
+    use LogsActivity;
     public function manufacturerProduct(){
         return $this->hasMany('App\ManufacturerProduce');
     }
@@ -25,6 +27,38 @@ class Manufacturer extends Model
     {
     	return $this->hasOne('App\Mowner_Deatils','manu_id','id');
     }
+    protected $fillable = [
+            'sub_ward_id',
+            'name',
+            'address',
+            'area',
+            'capacity',
+            'present_utilization',
+            'cement_requirement',
+            'prefered_cement_brand',
+            'deliverability',
+            'sand_requirement',
+            'type',
+            'payment_mode',
+            'cement_used',
+            'moq',
+            'manufacturer_type',
+            'plant_name',
+            'latitude',
+            'longitude',
+            'cement_requirement_measurement',
+            'contact_no',
+            'listing_engineer_id',
+            'aggregates_required',
+            'total_area',
+            'confirmed',
+            'remarks',
+            'production_type',
+        ];
+    protected static $causerId = 3;
+    protected static $logName = "";
+    protected static $logFillable = true;
+    protected static $logOnlyDirty = true;
 }
 
 
