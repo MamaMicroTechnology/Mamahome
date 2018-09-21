@@ -17,6 +17,8 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/getid','HomeController@getid');
+
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
 Route::get('/ticketchat','HomeController@chat');
