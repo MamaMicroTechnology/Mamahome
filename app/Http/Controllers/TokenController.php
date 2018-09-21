@@ -29,6 +29,7 @@ use App\Order;
 use App\FieldLogin;
 use App\FakeGPS;
 use App\Reactuser;
+use App\Banner;
 
 use App\Http\Resources\Message as MessageResource;
 date_default_timezone_set("Asia/Kolkata");
@@ -597,7 +598,7 @@ public function getproject(request $request){
                 $siteaddress->address = $request->address;
                 $siteaddress->save();
             }
-        if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
+        if($siteaddress->save() ||  $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
             return response()->json(['success'=>'0','message'=>'Something went wrong']);
@@ -719,4 +720,8 @@ public function getproject(request $request){
 
 
         }
+         public function bannerdata(Request $request){
+        $banner = Banner::all();
+         return response()->json(['banner'=>$banner,'message'=>"Banner data"]);
+       }
 }

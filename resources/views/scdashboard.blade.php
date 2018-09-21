@@ -12,6 +12,7 @@
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
     </SMALL>
+    <h2>Your Ward Is : {{$ward[0]}}</h2>
 </center></h2></div>
 <center class="countdownContainer">
     <h1>Operation <i style="color:yellow; font-size: 50px;" class="fa fa-bolt"></i> Lightning</h1>

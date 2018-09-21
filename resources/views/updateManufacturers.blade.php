@@ -8,7 +8,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
-                         <span class="pull-lect"> Manufacturer Id : {{$manufacturer->id}}</span>
+                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Id : {{$manufacturer->id}}</span>
                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
                              
                         </div>

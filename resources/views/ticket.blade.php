@@ -31,95 +31,16 @@
                 <tbody>
                 <?php $i = 1 ?>
    @foreach($data->ticket as $ticket)
-      @if(Auth::user()->id == $ticket->user_id)
-        <tr>
-            <td>{{ $i++ }}</td>
-            <td>{{ $ticket->name }}</td>
-            <td>{{ $ticket->sub }}</td>
-            <td>{{ $ticket->message }}</td>
-            <td>{{ $ticket->cat }}</td>
-            <td>{{ $ticket->product }}</td>
-            <td> <button disabled class=" btn btn-sm" style="background-color:green;color:white;">{{ $ticket->status }}</button> </td>
-            <td><a href="ticketchat" class="btn btn-sm btn-primary">Chat
-            </a></td>
-            <td>
-             <form  method="post" action="http://localhost:8000/api/close">
-                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+          <tr>
 
-              <select name="close" class="form-control" onchange="form.submit();">
-                <option value="">-----Select---</option>
-                <option {{ $ticket->status == "Close" ? 'selected' : '' }} value="Close">Close</option>
-                <option {{ $ticket->status == "Open" ? 'selected' : '' }} value="Open">Open</option>
-           </select>
-           </form></td>
-            <td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{{$ticket->id}}">Feedback</td>
-        </tr>
-         <!-- The Modal -->
- 
-        @endif
+            <td></td>
+          </tr>
+    
     @endforeach
                 
 </tbody>
 </table>
- @foreach($data->ticket as $ticket)
- <div class="modal" id="myModal{{$ticket->id}}">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header" style="background-color:#f4811f;padding:1px;">
-          <h3 class="modal-title">Customer Feedback</h3>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-         <p>We Would Love to hear your thoughts or feedback on how we can improve your experience!<br><br>
-        <form  method="post" id="submit{{ $ticket->id }}"  action="http://localhost:8000/api/feedback">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                    <input type="hidden" name="user_name" value="{{ $ticket->user_name }}">
-                    <input type="hidden" name="user_id" value="{{ $ticket->user_id }}">
-                    
-          <h4>Feedback Type</h4>
-          <label>
-         <input type="radio" name="bug" value="comment">Comments
-          </label> <br>
-          <label>
-              
-         <input type="radio" name="bug" value="question">Questions
-          </label><br>  
-          <label>
-              
-         <input type="radio" name="bug" value="bug">Bug Reports
-          </label><br>
-          <label>
-              
-         <input type="radio" name="bug" value="feature request"> Feature Request
-          </label><br>
-    
-        
-         <h4>Feedback  </h4>
-         
-         <input type="text" name="feedback" class="form-control" style="width:70%;">
-         <h4>Suggestions for Improvement  </h4>
-         
-         <input type="text" name="improve" class="form-control" style="width:70%;"><br>
-        
-        <center> <button type="submit"  class="btn btn-sm btn-default" style="background-color:#f4811f;color:black;" onclick="submit('{{ $ticket->id }}')">Send  &rarr;</button></center>
-        
-   </form>
-        </div>
 
-         <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  @endforeach
 </div>
 </div>
 </div>

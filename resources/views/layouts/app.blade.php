@@ -621,7 +621,7 @@ function myTimer() {
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
     <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
-        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+       <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
             <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
@@ -689,7 +689,10 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
-   
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
    
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
@@ -809,7 +812,7 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-        <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a>
+       <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
             <!-- <a href="{{ URL::to('/') }}/seniorteam1">&nbsp;&nbsp;&nbsp; -Senior Team Leader1</a> -->

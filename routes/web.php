@@ -17,6 +17,8 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/getid','HomeController@getid');
+
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
 Route::get('/ticketchat','HomeController@chat');
@@ -25,7 +27,6 @@ Route::get('/ticketchat','HomeController@chat');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
 Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
-
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
 Route::get('/token','TokenController@token');
@@ -177,6 +178,9 @@ Route::get('/storedetails','HomeController@storedetails');
 Route::get('/lebrands','HomeController@lebrands');
 Route::get('/storequery','HomeController@storequery');
 Route::get('/manustorequery','HomeController@manustorequery');
+Route::get('/getmaphistory','mamaController@getmap');
+Route::get('/getmaphistory1','mamaController@getaccmap');
+
 
 // Route::get('/starttimer','HomeController@starttimer');
 Route::get('/starttimer','HomeController@starttimer');
@@ -422,10 +426,11 @@ Route::group(['middleware' => ['operationTL']],function(){
     Route::post('/{id}/assignthisSlot','mamaController@assignthisSlot');
 });
 
+    
+    Route::get('/listingEngineer','HomeController@listingEngineer');
 
 // Listing Engineer
 Route::group(['middleware' => ['listingEngineer']],function(){
-    Route::get('/listingEngineer','HomeController@listingEngineer');
     Route::get('/leDashboard','HomeController@leDashboard');
     Route::get('/sales','HomeController@sales');
 
