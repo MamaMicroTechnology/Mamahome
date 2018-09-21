@@ -8099,11 +8099,11 @@ public function display(request $request){
    public function tickets(request $request)
     {
         $options['timeout'] = 300;
-        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
-   $client = new \GuzzleHttp\Client();
-    $request = $client->get($url,$options);
-   $response = $request->getBody();
-   $data = json_decode($response);
+        $url = 'https://localhost/mamaReu/webapp/api/req';
+       $client = new \GuzzleHttp\Client();
+       $request = $client->get($url,$options);
+       $response = $request->getBody();
+       $data = json_decode($response);
 
 
 dd($data);
