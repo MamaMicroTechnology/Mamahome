@@ -3839,7 +3839,6 @@ date_default_timezone_set("Asia/Kolkata");
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
 
-
      $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      //dd($scount);
@@ -3857,8 +3856,6 @@ date_default_timezone_set("Asia/Kolkata");
             $assigncount->count = $scount;
             $assigncount->save();
         }
-
-
 
         $orders = Order::all();
        return view('salesengineer',[
