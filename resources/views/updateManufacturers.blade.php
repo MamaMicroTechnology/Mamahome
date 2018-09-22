@@ -240,7 +240,7 @@
     border: 1px solid #ccc;
     background-color:#42c3f3;
    ">
-  <button style="background-color: inherit;
+  <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -249,7 +249,7 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;"  class="tablinks" onclick="openCity(event, 'owner')">Owner Details</button><br>
-      <button style="background-color: inherit;
+      <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -258,7 +258,7 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'contractor')">Manager Details  </button><br>
-  <button style="background-color: inherit;
+  <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -267,16 +267,8 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'consultant')">Sales Contact Details</button><br>
-<!--   <button style="background-color: inherit;
-    
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 12px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'site')">Site Engineer Details</button><br> -->
-  <button style="background-color: inherit;
+
+  <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -285,17 +277,7 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
-<!-- 
-<button style="background-color: inherit;
-    
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 12px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
-</div> -->
+
 </div>
 
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
@@ -427,7 +409,7 @@
 
                         </div>
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-success form-control" onclick="pageNext()">Save</button>
+                            <button type="submit" class="btn btn-success form-control">Save</button>
                         </div>
                     </div>
                 </div>
