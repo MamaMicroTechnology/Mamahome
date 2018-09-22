@@ -8117,7 +8117,7 @@ public function display(request $request){
    public function tickets(request $request)
     {
         $options['timeout'] = 300;
-        $url = 'http://127.0.0.1:8000/api/req';
+        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
        $client = new \GuzzleHttp\Client();
        $request = $client->get($url,$options);
        $response = $request->getBody();
