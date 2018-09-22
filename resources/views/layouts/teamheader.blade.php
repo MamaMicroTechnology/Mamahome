@@ -378,11 +378,11 @@ div#calendar{
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
                        </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report">Logout</button>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="confirmit()">Logout</button>
                        </li>
                         @endif
                    <!--  <li>
-                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
+                    <a style="font-size:20px;cursor:pointer;"  href="{{ url('/simple') }}">Raise Ticket</a>
                       
                     </li>
                       <li>
@@ -520,11 +520,15 @@ div#calendar{
           <a href="{{ URL::to('/orders') }}">Orders</a>
           <a href="{{ URL::to('/tltraining') }}">Training Video</a>
           <a href="{{ URL::to('/') }}/kra">KRA</a> -->
-          <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; -Add New Project</a>
-         <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; -Add New Manufacturer</a>
-         <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; -Add New Enquiry</a>
+          <!--   <a href="#" data-toggle="collapse" data-target="#sales">Add &#x21F2;</a>
+         <div id="sales" class="collapse"> -->
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+  <!--  </div> -->
 
-        <a  href="{{ URL::to('/')}}/lebrands">&nbsp;&nbsp;&nbsp; -Brands</a>
+       
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
@@ -653,6 +657,18 @@ div#calendar{
     document.getElementById("lteam").form.submit();
   }
 
+  function confirmit()
+    {
+     
+        var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
+            $(document).ready(function(){
+              $("#report").modal('show');
+          });
+        }
+    }
+
 </script>
 
 @if(session('TeamSuccess'))
@@ -703,7 +719,9 @@ div#calendar{
   $(document).ready(function(){
       $("#teamlate").modal('show');
   });
+
 </script>
+
 @endif
 <script>
     function myFunction1() {

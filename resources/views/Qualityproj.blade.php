@@ -1,6 +1,18 @@
 @extends('layouts.app')
 @section('content')
 <div class="col-md-4">
+     <div class="panel panel-primary">
+            <div class="panel-heading">Quality Of Projects</div>
+            <div id="piechart">
+                
+            </div>
+        </div>
+    <div class="panel panel-primary">
+            <div class="panel-heading">Call Records</div>
+            <div id="piechart2">
+                
+            </div>
+    </div>
     <div class="panel panel-primary">
         <div class="panel-heading">Call Records</div>
         <div class="panel-body">
@@ -13,18 +25,7 @@
             @endforeach
         </div>
     </div>
-    <div class="panel panel-primary">
-            <div class="panel-heading">Call Records</div>
-            <div id="piechart2">
-                
-            </div>
-        </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">Quality Of Projects</div>
-            <div id="piechart">
-                
-            </div>
-        </div>
+       
 </div>
 <div class="col-md-8">
     <div class='col-md-12'>

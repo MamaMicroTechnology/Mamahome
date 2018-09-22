@@ -1234,7 +1234,35 @@ function sum(){
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
     }
-   
+    function checkinput(arg){
+      var floorNo = document.getElementsByName('floorNo[]');
+      var roomType = document.getElementsByName('roomType[]');
+      var floors = [];
+      var rooms = [];
+      var myIndex = roomType[0].selectedIndex;
+      for(var i = 0; i < floorNo.length; i++){
+        floors.push(floorNo[i].value);
+        rooms.push(roomType[i].value);
+      }
+      for(var j = 0; j < floors.length; j++){
+        if(floors[j] == floors[j + 1]){
+          for(i = j+1; i < rooms.length; i++){
+            if(rooms[j] == rooms[i]){
+              alert("This room type has been already selected");
+              roomType[0].options[myIndex].disabled = true;
+              roomType[0].selectedIndex = 0;
+              break;
+            }
+          }
+        }
+      }
+    }
+    function enableoption(){
+      var roomType = document.getElementsByName('roomType[]');
+      for(var i = 1; i < 6; i++){
+        roomType[0].options[i].disabled = false;
+      }
+    }
       // var ctype1 = document.getElementById('constructionType1');
       // var ctype2 = document.getElementById('constructionType2');
       // var ctype3 = document.getElementById('constructionType3');
