@@ -653,3 +653,4 @@ Route::get('/itdashboard','ItController@getItDashboard');
 Route::post('/reportsForIt','ItController@postItReport');
 Route::get('/unverifiedProjects','HomeController@getUnverifiedProjects');
 Route::get('/projectWithNotes','HomeController@getProjectsBasedOnNotes');
+Route::get('/newActivityLog','HomeController@getNewActivityLog');
