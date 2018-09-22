@@ -464,7 +464,7 @@ public function getproject(request $request){
       }
   }   
    public function getbrands(){
-        $category = Category::all();
+        $category = Category::orderBy('priority','ASC')->get();
         $brand = brand::all();
         $sub_cat = SubCategory::all();   
 
