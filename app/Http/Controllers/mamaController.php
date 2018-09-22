@@ -1922,7 +1922,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function deleteProject(Request $request)
     {
-        ProjectDetails::where('project_id',$request->projectId)->delete();
+        $project = ProjectDetails::find($request->projectId);
+        $project->delete();
         return back();
     }
     public function editinputdata(Request $request)

@@ -134,7 +134,7 @@
                                    {{ $updater->name }}
                                 @endif</td>
                             @endif
-							@if(Auth::user()->group_id == 1 || Auth::user()->group->group_name == "Team Leader")
+							@if(Auth::user()->group_id == 1 || Auth::user()->group_id == 2)
 							<td>
 								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>
 								<!-- Modal -->
