@@ -2491,6 +2491,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ->where('field_login.created_at','LIKE',$thiMonth."%")
         ->where('remark','!='," ")
         ->leftjoin('users','field_login.user_id','users.id')
+         ->orderBy('created_at','desc')
         ->select('field_login.*','users.name')
         ->get();
         $dates = FieldLogin::where('field_login.created_at','LIKE',$thiMonth."%")
