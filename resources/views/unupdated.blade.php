@@ -15,7 +15,7 @@
                     @endif 
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-12">
+                <div class="col-md-12">
                     <form method="GET" action="{{ URL::to('/') }}/Unupdated">
                         <div class="col-md-2">
                 <label>Choose Ward :</label><br>

@@ -1549,10 +1549,6 @@ class HomeController extends Controller
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
 
-
-
-
-
     public function index()
     {
         if(Auth::user()->confirmation == 0){
@@ -1594,7 +1590,7 @@ class HomeController extends Controller
         }else if($group == "Sales Engineer" && $dept == "Sales"){
             return redirect('salesEngineer');
         }else if($dept == "Human Resource"){
-            return redirect('amdashboard');
+            return redirect('amdashboard',['present'=>$present,'absent'=>$absent]);
         }else if($group == "Logistic Co-ordinator (Sales)"){
             return redirect('lcodashboard');
         }else if($group == "Account Executive"){
@@ -1609,9 +1605,9 @@ class HomeController extends Controller
                 select('users.name','users.employeeId')->get();
         $present = count($log);
         $absent = count($ntlogins);        
-        // $absent = user::where('logindate',date('Y-m-d'))->whereNotIn('user_id',$total)
+       
                      
-            return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
+        return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
         }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
@@ -2920,10 +2916,8 @@ date_default_timezone_set("Asia/Kolkata");
                 $found1 = $searchWard->ward_id;
             }
         }
-    $ward =Ward::where('id',$found1)->pluck('ward_name');
-     
-
     
+     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
         $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
@@ -5278,7 +5272,7 @@ date_default_timezone_set("Asia/Kolkata");
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
 
-    public function projectDetailsForTL(Request $request)
+ public function projectDetailsForTL(Request $request)
     {
  $assigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id');
      
@@ -5825,7 +5819,7 @@ date_default_timezone_set("Asia/Kolkata");
             }
         }
     
-     $ward =Ward::where('id',$found1)->pluck('ward_name');
+       $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
         return view('scdashboard',['ward'=>$ward]);
     }
  public function getChat()
@@ -8124,14 +8118,11 @@ public function display(request $request){
     {
         $options['timeout'] = 300;
         $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
-   $client = new \GuzzleHttp\Client();
-    $request = $client->get($url,$options);
-   $response = $request->getBody();
-   $data = json_decode($response);
-
-
-dd($data);
-        return view('/ticket',['data'=>$data]);
+       $client = new \GuzzleHttp\Client();
+       $request = $client->get($url,$options);
+       $response = $request->getBody();
+       $data = json_decode($response);
+   return view('/ticket',['data'=>$data]);
     }
     public function chat(request $request)
     {
@@ -8374,7 +8365,7 @@ dd($data);
             }
         }
     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
-     $this->variable = $tl1;
+     $this->variable = $ward;
      // return $tl1;
     return array(
         'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);

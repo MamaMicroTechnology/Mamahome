@@ -520,11 +520,15 @@ div#calendar{
           <a href="{{ URL::to('/orders') }}">Orders</a>
           <a href="{{ URL::to('/tltraining') }}">Training Video</a>
           <a href="{{ URL::to('/') }}/kra">KRA</a> -->
-          <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; -Add New Project</a>
-         <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; -Add New Manufacturer</a>
-         <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; -Add New Enquiry</a>
+          <!--   <a href="#" data-toggle="collapse" data-target="#sales">Add &#x21F2;</a>
+         <div id="sales" class="collapse"> -->
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+  <!--  </div> -->
 
-        <a  href="{{ URL::to('/')}}/lebrands">&nbsp;&nbsp;&nbsp; -Brands</a>
+       
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
@@ -735,3 +739,26 @@ div#calendar{
 @endif
 </body>
 </html>
+@if(session('earlylogout'))
+  <div class="modal fade" id="emplate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Early logout</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('earlylogout') !!}</p>  
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#emplate").modal('show');
+  });
+</script>
+@endif
