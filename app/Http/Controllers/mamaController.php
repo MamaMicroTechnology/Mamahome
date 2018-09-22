@@ -2319,7 +2319,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',$request->getmap)
                          ->first();
-                
+                $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get(); 
         }
         else{
                 $storoads = TrackLocation::where('user_id',$id)
@@ -2358,6 +2358,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',$request->getmap)
                          ->first();
+            $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get();  
                 
         }
         else{
