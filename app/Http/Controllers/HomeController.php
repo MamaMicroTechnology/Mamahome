@@ -85,6 +85,7 @@ use GuzzleHttp\Client;
 use App\Manufacturer;
 use App\FieldLogin;
 use App\BreakTime;
+use Spatie\Activitylog\Models\Activity;
 
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -1549,10 +1550,6 @@ class HomeController extends Controller
            return view('date_wise_project',['projects' => $projects,'assigndate'=>$assigndate,'totalListing'=>$totalListing ]);
           }
 
-
-
-
-
     public function index()
     {
         if(Auth::user()->confirmation == 0){
@@ -1609,9 +1606,9 @@ class HomeController extends Controller
                 select('users.name','users.employeeId')->get();
         $present = count($log);
         $absent = count($ntlogins);        
-        // $absent = user::where('logindate',date('Y-m-d'))->whereNotIn('user_id',$total)
+       
                      
-            return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
+        return view('home',['departments'=>$departments,'users'=>$users,'groups'=>$groups,'loggedInUsers'=>$loggedInUsers,'leLogins'=>$leLogins,'present'=>$present,'absent'=>$absent,'ntlogins'=>$ntlogins]);
         }else if($group == "Sales Converter" && $dept == "Sales"){
             return redirect('scdashboard');
         }else if($group == "Marketing Exective" && $dept == "Marketing"){
@@ -1778,22 +1775,28 @@ class HomeController extends Controller
         return view('viewEmployee',['user'=>$user,'details'=>$details,'bankdetails'=>$bankdetails,'assets'=>$assets,'certificates'=>$certificates]);
     }
     public function teamLeadHome(){
+
+           $this->getid();
+           $data=$this->variable;
+
          $depts=[1,2];
-         // $loggedInUsers = attendance::where('date',date('Y-m-d'))
-         //                ->join('users','empattendance.empId','users.employeeId')
-         //                ->whereIn('department_id',$depts)
-         //                ->leftjoin('departments','users.department_id','departments.id')
-         //                ->select('users.name','empattendance.*','departments.id')
-         //                ->get();
         $loggedInUsers = FieldLogin::where('logindate',date('Y-m-d'))
                         ->join('users','field_login.user_id','users.id')
                         ->whereIn('department_id',$depts)
                         ->select('users.name','field_login.*','users.employeeId')
                         ->get();
         
+        $tl1= Tlwards::where('group_id','=',22)->get();
+        $usersId = "null";
+        $userid = Auth::user()->id;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+        }
+       
+
 
         $depts=[1,2];
-        $users = User::where('department_id',$depts)->get();
+        $users = User::all();
 
         $leLogins = loginTime::where('logindate',date('Y-m-d'))
                         ->join('users','login_times.user_id','users.id')
@@ -1803,7 +1806,7 @@ class HomeController extends Controller
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
          $x = Ward::where('id',$tl)->pluck('ward_name')->first();
 
-         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x]);
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x,'usersId'=>$usersId]);
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
@@ -1916,6 +1919,10 @@ class HomeController extends Controller
 
     public function listingEngineer()
     {
+
+        
+
+
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
@@ -2854,7 +2861,9 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function placeOrder($id, Request $request)
     {
-        Requirement::where('id',$id)->update([ 'status' => 'Order Placed']);
+        $requirement = Requirement::where('id',$id)->first();
+        $requirement->status = 'Order Placed';
+        $requirement->save();
         $orders = Requirement::where('id',$id)->first();
         return view('confirm',['orders'=>$orders,'id'=>$id])->with('Success','Order has been placed successfully');
     }
@@ -2877,7 +2886,6 @@ date_default_timezone_set("Asia/Kolkata");
      public function completethis1(Request $user_id)
     {
         $assignment =AssignStage::where('user_id',Auth::user()->id)->first();
-
         $assignment->state = 'Completed';
         $assignment->save();
         AssignStage::where('user_id',Auth::user()->id)->delete();
@@ -2898,6 +2906,19 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function getSalesEngineer()
     {
+         
+
+        $tl1= Tlwards::where('group_id','=',22)->get();
+        $userid = Auth::user()->id;
+        $found1 = null;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+            if(in_array($userid, $usersId)){
+                $found1 = $searchWard->ward_id;
+            }
+        }
+    
+     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
         $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
@@ -2939,7 +2960,9 @@ date_default_timezone_set("Asia/Kolkata");
             'points_earned_so_far'=>$points_earned_so_far,
             'points_subtracted'=>$points_subtracted,
             'total'=>$total,
-            'stages'=>$stages
+            'stages'=>$stages,
+            'ward' =>$ward,
+
         ]);
     }
     public function printLPO($id, Request $request)
@@ -3073,18 +3096,19 @@ date_default_timezone_set("Asia/Kolkata");
     public function confirmOrder(Request $request)
     {
         $id = $request->id;
-
-
-            $x = Order::where('id', $id)->update(['status' => 'Order Confirmed','payment_status'=>'Payment Pending']);
-
-                return back();
+        $x = Order::where('id', $id)->first();
+        $x->status = 'Order Confirmed';
+        $x->payment_status = 'Payment Pending';
+        $x->save();
+        return back();
 
     }
     public function cancelOrder(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['status' => 'Order Cancelled']);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->status = 'Order Cancelled';
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3120,7 +3144,10 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating owner details";
             $points->save();
         }
-        $x = OwnerDetails::where('project_id',$id)->update(['owner_name' => $name, 'owner_contact_no' => $phone, 'owner_email' => $email]);
+        $x = OwnerDetails::where('project_id',$id)->first();
+        $x->owner_name = $name;
+        $x->owner_contact_no = $phone;
+        $x->owner_email = $email;
         if($x)
         {
             return response()->json('Success !!!');
@@ -3149,8 +3176,11 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating contractor details";
             $points->save();
         }
-        $x = ContractorDetails::where('project_id',$id)->update(['contractor_name' => $name, 'contractor_contact_no' => $phone, 'contractor_email' => $email]);
-        if($x)
+        $x = ContractorDetails::where('project_id',$id)->first();
+        $x->contractor_name = $name;
+        $x->contractor_contact_no = $phone;
+        $x->contractor_email = $email;
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3178,8 +3208,11 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating consultant details";
             $points->save();
         }
-        $x = ConsultantDetails::where('project_id',$id)->update(['consultant_name' => $name, 'consultant_contact_no' => $phone, 'consultant_email' => $email]);
-        if($x)
+        $x = ConsultantDetails::where('project_id',$id)->first();
+        $x->consultant_name = $name;
+        $x->consultant_contact_no = $phone;
+        $x->consultant_email = $email;
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3207,8 +3240,11 @@ date_default_timezone_set("Asia/Kolkata");
             $points->reason = "Updating procurement details";
             $points->save();
         }
-        $x = ProcurementDetails::where('project_id',$id)->update(['procurement_name' => $name, 'procurement_contact_no' => $phone, 'procurement_email' => $email]);
-        if($x)
+        $x = ProcurementDetails::where('project_id',$id)->first();
+        $x->procurement_name = $name;
+        $x->procurement_contact_no = $phone;
+        $x->procurement_email = $email;
+        if($x->save())
         {
             return response()->json('Success !!!');
         }
@@ -3221,8 +3257,9 @@ date_default_timezone_set("Asia/Kolkata");
     {
         $id = $request->id;
         $update = $request->payment;
-        $x = Order::where('id', $id)->update(['payment_status' => $update]);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->payment_status = $update;
+        if($x->save())
         {
             return response()->json($update);
         }
@@ -3234,8 +3271,10 @@ date_default_timezone_set("Asia/Kolkata");
     public function updateamdispatch(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->update(['dispatch_status' => "Yes",'delivery_status'=>'Not Delivered']);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->dispatch_status = "Yes";
+        $x->delivery_status = 'Not Delivered';
+        if($x->save())
         {
             return response()->json("Updated");
         }
@@ -3248,8 +3287,10 @@ date_default_timezone_set("Asia/Kolkata");
     {
         $id = $request->id;
         $today = date('Y-m-d');
-        $x = Order::where('id', $id)->update(['delivery_status'=>'Delivered','delivered_on'=>$today]);
-        if($x)
+        $x = Order::where('id', $id)->first();
+        $x->delivery_status = 'Delivered';
+        $x->delivered_on = $today;
+        if($x->save())
         {
             return response()->json("Updated");
         }
@@ -3296,22 +3337,27 @@ date_default_timezone_set("Asia/Kolkata");
     public function confirmstatus($id, Request $request)
     {
         $var2 = $request->only('opt');
-        $var = ProjectDetails::where('project_id',$var2['opt'])->update(['status' => "Ready"]);
+        $var = ProjectDetails::where('project_id',$var2['opt'])->first();
+        $var->status = "Ready";
+        $var->save();
         $c = count($check);
         return response()->json($c);
     }
     public function confirmthis($id, Request $request)
     {
         $var = $request->only('opt');
-        $var2 = ProjectDetails::where('project_id',$id)->update(['with_cont' => $var['opt']]);
+        $var2 = ProjectDetails::where('project_id',$id)->first();
+        $var2->with_cont = $var['opt'];
+        $var2->save();
         return response()->json($var2);
     }
     public function updateNoteFollowUp(Request $request)
     {
         $id = $request->id;
         $value = $request->value;
-        $x = ProjectDetails::where('project_id', $id)->update(['note' => $value]);
-        if($x){
+        $x = ProjectDetails::where('project_id', $id)->first();
+        $x->note = $value;
+        if($x->save()){
             return response()->json('Successful !!');
         }
         else{
@@ -3321,8 +3367,9 @@ date_default_timezone_set("Asia/Kolkata");
     public function updateStatusReq(Request $request)
     {
         $id = $request->id;
-        $x =DB::table('requirements')->where('id', $id)->update(['status' => 'Order Initiated']);
-        if($x)
+        $x =DB::table('requirements')->where('id', $id)->first();
+        $x->status = 'Order Initiated';
+        if($x->save())
         {
             return response()->json('Successful !!!');
         }
@@ -3335,54 +3382,53 @@ date_default_timezone_set("Asia/Kolkata");
     {
         $view = $request->only('opt');
         $view = $view['opt'];
-        ProjectDetails::where('project_id', $id)->update(['project_status' => $view]);
+        $project = ProjectDetails::where('project_id', $id)->first();
+        $project->project_status = $view;
+        $project->save();
         return response()->json($view);
     }
     public function updateMat($id, Request $request)
     {
         $view = $request->only('opt');
         $view = $view['opt'];
-        ProjectDetails::where('project_id', $id)->update(['remarks' => $view]);
+        $project = ProjectDetails::where('project_id', $id)->first();
+        $project->remarks = $view;
+        $project->save();
         return response()->json($view);
     }
     public function updatelocation($id, Request $request)
     {
         $view = $request->only('newtext');
         $view = $view['newtext'];
-        SiteAddress::where('project_id', $id)->update(['address' => $view]);
+        $address = SiteAddress::where('project_id', $id)->first();
+        $address->address = $view;
+        $address->save();
         return response()->json($view);
     }
     public function smstonumber(Request $request)
     {
-
-                        if(Auth::user()->group_id != 22){
-                        return $this->smstonumber1($request);
-                        }
-    
+        if(Auth::user()->group_id != 22){
+            return $this->smstonumber1($request);
+        }
         if(!$request->stage ){
             $stages =null;
         }else{
             $stages = $request->stage;
         }
-
-     $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-     $subwards = Subward::where('ward_id',$tlward)->pluck('id');
-     
-
-         $projectids = new Collection();
-         $orders = Order::where('status','Order Confirmed')->pluck('project_id');
-        
-
-       if($stages != null){
+        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $subwards = Subward::where('ward_id',$tlward)->pluck('id');
+        $projectids = new Collection();
+        $orders = Order::where('status','Order Confirmed')->pluck('project_id');
+        if($stages != null){
             $projectids = ProjectDetails::whereIn('sub_ward_id',$subwards)
-             ->whereIn('project_status',$stages)
-             ->where('quality','!=','Fake')
-             ->whereNotIn('project_id',$orders)
-             ->pluck('project_id');
-         }else{
+            ->whereIn('project_status',$stages)
+            ->where('quality','!=','Fake')
+            ->whereNotIn('project_id',$orders)
+            ->pluck('project_id');
+        }else{
             $projectids = null;
-         }
-    if($projectids != null){
+        }
+        if($projectids != null){
 
            //fetch phonee numbers//
             $procurement =ProcurementDetails::whereIn('project_id',$projectids)->where('procurement_contact_no','!=',null)->pluck('procurement_contact_no')->toarray();
@@ -3794,7 +3840,6 @@ date_default_timezone_set("Asia/Kolkata");
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
 
-
      $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      //dd($scount);
@@ -3812,8 +3857,6 @@ date_default_timezone_set("Asia/Kolkata");
             $assigncount->count = $scount;
             $assigncount->save();
         }
-
-
 
         $orders = Order::all();
        return view('salesengineer',[
@@ -3853,6 +3896,8 @@ date_default_timezone_set("Asia/Kolkata");
 
 
         $totalListing = array();
+        $totalRMCListing = array();
+        $totalBlocksListing = array();
         $date = date('Y-m-d');
         $users = User::where('department_id','1')->where('group_id','6')
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
@@ -3872,12 +3917,16 @@ date_default_timezone_set("Asia/Kolkata");
         $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
         ->pluck('id');
         $tlcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
+        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
+        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
         $tlupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
 
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
         ->pluck('id');
         $tlacount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->count();
+        $tlAcRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->where('manufacturer_type',"RMC")->count();
+        $tlAcBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->where('manufacturer_type',"Blocks")->count();
         $tlaupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tlaccuser)->count();
 
 
@@ -3890,9 +3939,13 @@ date_default_timezone_set("Asia/Kolkata");
         $list = DB::table('users')->where('group_id',6)->where('department_id','!=',10)->pluck('id');
         $lcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->count();
         $lupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$list)->count();
+        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"RMC")->count();
+        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"Blocks")->count();
             // total prolect of account in st
         $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
         $acount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
+        $aRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"RMC")->count();
+        $aBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"Blocks")->count();
         $aupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
         $projects = ProjectDetails::where('created_at','like',$date.'%')->get();
         $groupid = [6,11];
@@ -3951,20 +4004,52 @@ date_default_timezone_set("Asia/Kolkata");
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
+                $totalRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
             }
             foreach($tlUsers as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
                                                 ->count();
             }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
+                $totalAccountRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalAccountBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
             }
              foreach($tlUsers1 as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalAccountRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalAccountBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
                                                 ->count();
             }
             foreach($users as $user){
@@ -4000,7 +4085,11 @@ date_default_timezone_set("Asia/Kolkata");
         // else{
         //     $teamprojcount = 0;
         // }
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount,
+            'totalRMCListing'=>$totalRMCListing,'totalBlocksListing'=>$totalBlocksListing,'lRMCCount'=>$lRMCcount,'lBlocksCount'=>$lBlocksCount,'aRMCcount'=>$aRMCcount,'aBlocksCount'=>$aBlocksCount,
+            'totalAccountRMCListing'=>$totalAccountRMCListing,'totalAccountBlocksListing'=>$totalAccountBlocksListing,'tlRMCcount'=>$tlRMCcount,'tlBlocksCount'=>$tlBlocksCount,
+            'tlAcBlocksCount'=>$tlAcBlocksCount,'tlAcRMCcount'=>$tlAcRMCcount
+        ]);
     }
 
 
@@ -5227,7 +5316,7 @@ date_default_timezone_set("Asia/Kolkata");
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
 
-    public function projectDetailsForTL(Request $request)
+ public function projectDetailsForTL(Request $request)
     {
  $assigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id');
      
@@ -5262,7 +5351,8 @@ date_default_timezone_set("Asia/Kolkata");
                 }
 
             }
-        if(Auth::user()->group_id == 57 || Auth::user()->group_id == 97){
+        if(Auth::user()->group_id == 7 || Auth::user()->group_id == 17){
+           
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
@@ -5379,7 +5469,58 @@ date_default_timezone_set("Asia/Kolkata");
               }
                    
            $today = date('Y-m-d');
-            
+           $exploded = array();
+              $projectIds = array();
+              foreach($str as $strings){
+                  array_push($exploded,explode(" ",$strings->activity));
+              }
+
+           for($i = 0;$i<count($exploded);$i++){
+                  $key = array_search("id:", $exploded[$i]);
+                  $name = array_search("has", $exploded[$i]);
+                  $quality = array_search("Quality:", $exploded[$i]);
+                  $projectIds[$i]['projectId'] = $exploded[$i][$key+1];
+                  if($name == 3){
+                      $projectIds[$i]['updater'] = $exploded[$i][$name-3]." ".$exploded[$i][$name-2]." ".$exploded[$i][$name-1];
+                  }elseif($name == 2){
+                      $projectIds[$i]['updater'] = $exploded[$i][$name-2]." ".$exploded[$i][$name-1];
+                  }else{
+                      $projectIds[$i]['updater'] = $exploded[$i][$name-1];
+                  }
+                  $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+                  $ward = Ward::where('id',$tl)->pluck('id')->first();
+                  $sub  = Subward::where('ward_id',$ward)->pluck('id');
+
+                  $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->first();
+                  if($project != null){
+                    $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+                    $userIds = explode(",", $tl);
+
+
+
+    $projectIds[$i]['quality'] = $project->quality;
+    $projectIds[$i]['followup'] = $project->followup;
+    $projectIds[$i]['followupby'] = User::where('id',$project->follow_up_by)->pluck('name')->first();
+    $projectIds[$i]['caller'] = User::where('id',$project->call_attended_by)->pluck('name')->first();
+    $projectIds[$i]['sub_ward_name'] = SubWard::where('id',$project->sub_ward_id)->pluck('sub_ward_name')->first();
+    $projectIds[$i]['enquiryInitiated'] = Requirement::where('project_id',$projectIds[$i]['projectId'])->count();
+    $projectIds[$i]['enquiryInitiatedBy'] = 
+    Requirement::where('requirements.project_id',$project->project_id)
+                 ->leftjoin('users','requirements.generated_by','users.id')
+                  ->select('users.name','requirements.id')
+                  ->get();
+                       }else{
+                      $projectIds[$i]['quality'] = "";
+                      $projectIds[$i]['followup'] = "";
+                      $projectIds[$i]['followupby'] = "";
+                      $projectIds[$i]['caller'] = "";
+                      $projectIds[$i]['sub_ward_name'] = "";
+                      $projectIds[$i]['enquiryInitiated'] = "";
+                      $projectIds[$i]['enquiryInitiatedBy'] = "";
+                 }
+
+              }
+
            $noOfCalls = array();
            $users = User::where('department_id',2)
                        ->leftjoin('salesassignments','salesassignments.user_id','users.id')
@@ -5448,7 +5589,8 @@ date_default_timezone_set("Asia/Kolkata");
                    'tl' =>$tl,
                    'str'=>$str,
                    'tlUsers'=>$tlUsers,
-                   'tluser'=>$tluser
+                   'tluser'=>$tluser,
+                   'projectIds'=>$projectIds
                ]);
        }
        public function salesreports1(Request $request)
@@ -5649,7 +5791,8 @@ date_default_timezone_set("Asia/Kolkata");
                       'str'=>$str,
                       'tl' =>$tl,
                       'tlUsers'=>$tlUsers,
-                      'tluser'=>$tluser
+                      'tluser'=>$tluser,
+                      'projectIds'=>$projectIds
                   ]);
           }
         
@@ -5710,12 +5853,20 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function salesConverterDashboard()
     {
-        return view('scdashboard');
+         $tl1= Tlwards::where('group_id','=',22)->get();
+        $userid = Auth::user()->id;
+        $found1 = null;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+            if(in_array($userid, $usersId)){
+                $found1 = $searchWard->ward_id;
+            }
+        }
+    
+       $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+        return view('scdashboard',['ward'=>$ward]);
     }
-
-
-
-    public function getChat()
+ public function getChat()
     {
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
@@ -6552,7 +6703,7 @@ public function projectstore1(request $request){
 
 public function reject(request $request){
     $check = AssignStage::where('user_id',$request->user_id)->first();
-      dd($request->date);
+    
        if(count($check) != 0){
      $check->remark = $request->remark;
      $check->adate = $request->date;
@@ -8009,14 +8160,13 @@ public function display(request $request){
     }
    public function tickets(request $request)
     {
-
-   $client = new \GuzzleHttp\Client();
-    $request = $client->get('http://localhost:8000/api/ticket');
-   $response = $request->getBody();
-   $data = json_decode($response);
-
-
-        return view('/ticket',['data'=>$data]);
+        $options['timeout'] = 300;
+        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
+       $client = new \GuzzleHttp\Client();
+       $request = $client->get($url,$options);
+       $response = $request->getBody();
+       $data = json_decode($response);
+   return view('/ticket',['data'=>$data]);
     }
     public function chat(request $request)
     {
@@ -8026,15 +8176,14 @@ public function display(request $request){
    $response = $request->getBody();
    $data = json_decode($response);
 
-
         return view('/ticketchat',['data'=>$data]);
     }
     public function storedetails(Request $request){
          $id = $request->id;
          $value= $request->value;
-          $x = ProjectDetails::where('project_id',$id)->update([
-                'detailed_mcal' => $request->value
-            ]);
+        $x = ProjectDetails::where('project_id',$id)->first();
+        $x->detailed_mcal = $request->value;
+        $x->save();
          if($x && $value== "yes")
         {
             return back()->with('success','MAMAHOME Executive Will Contact You Shortly.');
@@ -8070,11 +8219,10 @@ public function display(request $request){
 
 
         $id = History::where('project_id',$request->id)->pluck('id')->last();
-        History::where('id',$id)->update(['question'=>$request->qstn,
-                                            'remarks'=>$request->remarks
-            ]);
-
-         return redirect()->back();
+        $hist = History::where('id',$id)->first();
+        $hist->question=$request->qstn;
+        $hist->remarks=$request->remarks;
+        return redirect()->back();
     }
 
  public function manustorequery(Request $request){
@@ -8112,8 +8260,12 @@ public function display(request $request){
   }
   public function updateManufacturerDetails(Request $request)
   {
+   
       $manufacturer = Manufacturer::findOrFail($request->id);
-      return view('updateManufacturers',['manufacturer'=>$manufacturer]);
+      $ward=Subward::leftjoin('manufacturers','manufacturers.sub_ward_id','sub_wards.id')
+      ->where('manufacturers.id',$request->id)->pluck('sub_wards.sub_ward_name')->first();
+     
+      return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
   }
   public function getUnverifiedProjects(Request $request)
   {
@@ -8125,6 +8277,9 @@ public function display(request $request){
     $site = SiteAddress::all();
     $names = user::get();
     $status =  $request->status;
+     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+        $tlwards = Ward::where('id',$tl)->get();
+       
     if($status != null){
         $projectsat = new Collection;
         for($i = 0; $i<count($status); $i++)
@@ -8169,13 +8324,15 @@ public function display(request $request){
             $totalproject = "";
             $site = "";
     }
-    return view('unverifiedProjects',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names]);
+    return view('unverifiedProjects',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names,'tlwards'=>$tlwards]);
   }
   public function getProjectsBasedOnNotes(Request $request)
   {
         $site = SiteAddress::all();
         $names = user::get();
         $wards = Ward::all();
+
+
         if($request->note){
             if($request->ward && !$request->subward){
                 $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
@@ -8212,9 +8369,9 @@ public function display(request $request){
             $report->end = $request->to[$i];
             $report->save();
         }
-        FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
-            'logout' => date('h:i A')
-        ]);
+        $fieldLogin = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->first();
+        $fieldLogin->logout = date('h:i A');
+        $fieldLogin->save();
         return back()->with('Success','Your Report Has Been Saved Successfully');
     
   }
@@ -8239,4 +8396,43 @@ public function display(request $request){
   // public function starttimer(){
   //   return view("timer");
   //}
+  public function getid(){
+        $tl1= Tlwards::where('group_id','=',22)->get();
+        $userid = Auth::user()->id;
+        $found1 = null;
+        foreach($tl1 as $searchWard){
+            $usersId = explode(",",$searchWard->users);
+            if(in_array($userid, $usersId)){
+                $found1 = $searchWard->ward_id;
+            }
+        }
+    $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+     $this->variable = $ward;
+     // return $tl1;
+    return array(
+        'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);
+  }
+  public function getNewActivityLog()
+  {
+        $activities = Activity::where('causer_id','7')->get();
+        echo("<table border=1><thead><th>User Name</th><th>Time</th><th>Type</th><th>Activity</th>");
+        foreach($activities as $activity){
+            $actions = array();
+            echo("<tr><td>");
+            echo($activity->causer->name);
+            echo("</td><td>");
+            echo(date('d-m-Y h:i:s a',strtotime($activity->created_at)));
+            echo("</td><td>");
+            echo($activity->description);
+            echo("</td><td>");
+            $something = $activity->changes();
+            foreach($something["attributes"] as $key=>$value){
+                $actions[] = "$key : $value";
+            }
+            $realValues = implode('<br>',$actions);
+            echo($realValues);
+            echo("</td></tr>");
+        }
+        // return $activity;
+  }
 }

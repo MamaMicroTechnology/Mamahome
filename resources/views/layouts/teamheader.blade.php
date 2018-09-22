@@ -378,11 +378,11 @@ div#calendar{
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
                        </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report">Logout</button>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="confirmit()">Logout</button>
                        </li>
                         @endif
                    <!--  <li>
-                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
+                    <a style="font-size:20px;cursor:pointer;"  href="{{ url('/simple') }}">Raise Ticket</a>
                       
                     </li>
                       <li>
@@ -520,6 +520,15 @@ div#calendar{
           <a href="{{ URL::to('/orders') }}">Orders</a>
           <a href="{{ URL::to('/tltraining') }}">Training Video</a>
           <a href="{{ URL::to('/') }}/kra">KRA</a> -->
+          <!--   <a href="#" data-toggle="collapse" data-target="#sales">Add &#x21F2;</a>
+         <div id="sales" class="collapse"> -->
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+  <!--  </div> -->
+
+       
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
@@ -537,6 +546,8 @@ div#calendar{
               <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
              <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
               <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
+              <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
+            
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
@@ -646,6 +657,18 @@ div#calendar{
     document.getElementById("lteam").form.submit();
   }
 
+  function confirmit()
+    {
+     
+        var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
+            $(document).ready(function(){
+              $("#report").modal('show');
+          });
+        }
+    }
+
 </script>
 
 @if(session('TeamSuccess'))
@@ -696,7 +719,9 @@ div#calendar{
   $(document).ready(function(){
       $("#teamlate").modal('show');
   });
+
 </script>
+
 @endif
 <script>
     function myFunction1() {
@@ -728,3 +753,26 @@ div#calendar{
 @endif
 </body>
 </html>
+@if(session('earlylogout'))
+  <div class="modal fade" id="emplate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Early logout</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('earlylogout') !!}</p>  
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#emplate").modal('show');
+  });
+</script>
+@endif

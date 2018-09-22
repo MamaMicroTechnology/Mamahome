@@ -10,7 +10,7 @@
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
 				@if(Auth::user()->group_id == 1)
-				<form method="GET" action="{{ URL::to('/') }}/viewallProjects1">
+				<form method="GET" action="{{ URL::to('/') }}/viewallProjects">
 					<div class="col-md-6">
 						<div class="col-md-4">
 							<select name="ward" onchange="getSubwards()" id="ward" class="form-control">
@@ -134,7 +134,7 @@
                                    {{ $updater->name }}
                                 @endif</td>
                             @endif
-							@if(Auth::user()->group_id == 1)
+							@if(Auth::user()->group_id == 1 || Auth::user()->group_id == 2)
 							<td>
 								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>
 								<!-- Modal -->

@@ -9,6 +9,9 @@
     We appreciate you services.
     </SMALL>
 </center></h2></div>
+
+<center><h2>Your Ward is : {{$ward}}</h2></center>
+
 <div class="row hidden">
       <div class="col-md-4 col-md-offset-4">
         <table class="table table-hover" border=1>

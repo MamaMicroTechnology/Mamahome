@@ -16,7 +16,13 @@
                   @endif -->
                   <div id="currentTime" class="pull-right"></div>
                 </div>
-                @if($subwards)
+                <?php 
+                  if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){
+                    $subwards = "NULL";
+                  }
+
+                ?>
+                @if($subwards || $subwards == "NULL")
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
                    <br>              
@@ -73,7 +79,7 @@
                           <div id="autoUpdate" class="autoUpdate" style="display:none;">
                                  <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
-                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="villas">Independent villas</label> 
                         </div>
                                  </td>
                                </tr>
@@ -680,9 +686,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('oContact').value="";
-                            }
+                            
                         }
                     }
                 });
@@ -712,10 +716,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('coContact').value="";
-                                // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
-                            }
+                            
                         }
                     }
                 });
@@ -745,9 +746,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('cPhone').value="";
-                            }
+                            
                             // alert('Phone Number '+y+' Already Stored in Database. Are you sure you want to add the same number?');
                         }
                     }
@@ -778,10 +777,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('eContact').value="";
-                                // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
-                            }
+                            
                         }
                     }
                 });
@@ -811,10 +807,7 @@ function openCity(evt, cityName) {
                                     swal("Your request Is accepted  Thank You!");
                                   }, 1000);
                                 });
-                            {
-                                document.getElementById('prPhone').value="";
-                                // alert('Phone Number '+ y +' Already Present in Database. Are you sure you want to add the same number?');
-                            }
+                            
                         }
                     }
                 });
@@ -1268,9 +1261,9 @@ function openCity(evt, cityName) {
         var ctype2 = document.getElementById('constructionType2');
         var existing = document.getElementById('floorNo').innerHTML;
         if(ctype1.checked == true && ctype2.checked == false){
-          cell3.innerHTML = "<select name='floorNo[]' class='form-control'>"+existing+"</select>";
-          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\">"+
-                                                          "<option value=\"1RK\">1RK</option>"+
+          cell3.innerHTML = "<select onchange='enableoption()' name='floorNo[]' class='form-control'>"+existing+"</select>";
+          cell1.innerHTML = "<select onchange='checkinput(this.value)' name=\"roomType[]\" class=\"form-control\">"+
+                                                          "<option value=\"\">--Select--</option><option value=\"1RK\">1RK</option>"+
                                                           "<option value=\"1BHK\">1BHK</option>"+
                                                           "<option value=\"2BHK\">2BHK</option>"+
                                                           "<option value=\"3BHK\">3BHK</option>"+
@@ -1286,9 +1279,9 @@ function openCity(evt, cityName) {
         }
         if(ctype1.checked == true && ctype2.checked == true){
           // both residential and commercial
-          cell3.innerHTML = "<select name='floorNo[]' class='form-control' id=\"floorNo2\" onchange =\"count(this.value);\">"+existing+"</select>";
-          cell1.innerHTML = " <select name=\"roomType[]\" class=\"form-control\" onchange =\"count(this.value);\" id=\"floorNo1\">"+
-                                                          "<option value=\"Commercial Floor\">Commercial Floor</option>"+
+          cell3.innerHTML = "<select onchange='enableoption()' name='floorNo[]' class='form-control' id=\"floorNo2\" onchange =\"count(this.value);\">"+existing+"</select>";
+          cell1.innerHTML = " <select onchange='checkinput(this.value)' name=\"roomType[]\" class=\"form-control\" onchange =\"count(this.value);\" id=\"floorNo1\">"+
+                                                          "<option value=\"\">--Select</option><option value=\"Commercial Floor\">Commercial Floor</option>"+
                                                           "<option value=\"1RK\">1RK</option>"+
                                                           "<option value=\"1BHK\">1BHK</option>"+
                                                           "<option value=\"2BHK\">2BHK</option>"+
@@ -1300,7 +1293,35 @@ function openCity(evt, cityName) {
         }
     }
     var numbers = [];
-
+    function checkinput(arg){
+      var floorNo = document.getElementsByName('floorNo[]');
+      var roomType = document.getElementsByName('roomType[]');
+      var floors = [];
+      var rooms = [];
+      var myIndex = roomType[0].selectedIndex;
+      for(var i = 0; i < floorNo.length; i++){
+        floors.push(floorNo[i].value);
+        rooms.push(roomType[i].value);
+      }
+      for(var j = 0; j < floors.length; j++){
+        if(floors[j] == floors[j + 1]){
+          for(i = j+1; i < rooms.length; i++){
+            if(rooms[j] == rooms[i]){
+              alert("This room type has been already selected");
+              roomType[0].options[myIndex].disabled = true;
+              roomType[0].selectedIndex = 0;
+              break;
+            }
+          }
+        }
+      }
+    }
+    function enableoption(){
+      var roomType = document.getElementsByName('roomType[]');
+      for(var i = 1; i < 6; i++){
+        roomType[0].options[i].disabled = false;
+      }
+    }
     function count(){
 
       var status = document.getElementsByName('status[]');

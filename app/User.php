@@ -3,21 +3,26 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+ 
 class User extends Authenticatable
 {
     use Notifiable;
-
+    use LogsActivity;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','employeeId','department_id','category','contactNo','group_id','confirmation','profilepic',
+        'remember_token',
     ];
-
+      protected static $logOnlyDirty = true; 
+      protected static $causerId = 3;
+      protected static $logName = "";
+      protected static $logFillable = true;
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -47,3 +52,4 @@ class User extends Authenticatable
         return $this->hasMany(ActivityLog::class,'enquiry','id');
     }
 }
+ 
