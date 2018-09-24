@@ -1328,7 +1328,7 @@ class HomeController extends Controller
             $r = Requirement::whereIn('project_id',$pp)->pluck('id');
 
 
-             $totalenq = count($enquiries);
+    $totalenq = count($enquiries);
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
             'converter' =>$converter,
@@ -8369,4 +8369,20 @@ public function display(request $request){
     return array(
         'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);
   }
+
+ public function enqticket(request $request)
+    {
+        $options['timeout'] = 300;
+        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
+       $client = new \GuzzleHttp\Client();
+       $request = $client->get($url,$options);
+       $response = $request->getBody();
+       $data = json_decode($response);
+   return view('/ticket',['data'=>$data]);
+    }
+
+
+
+
+
 }

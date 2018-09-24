@@ -923,4 +923,30 @@ public function getproject(request $request){
         }
     }
 
+ public function getreq1(request $request){
+ $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
+                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
+                        ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+            foreach($enquiries as $enquiry){
+                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+            }
+        }
+
+      
+        
+        return response()->json(['sucuss'=>1, 'enquiries'=>$enquiries,'totalenq' =>$totalenq]);
+
+
+    }
+
+
+
+
+
 }

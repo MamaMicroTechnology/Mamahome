@@ -16,7 +16,7 @@
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
 @endif
-<!-- @if(Auth::user()->group_id == 22)
+@if(Auth::user()->group_id == 22)
 <table class="table" style="width:50%;">
   <tr>
     <th>Team Members</th>
@@ -24,14 +24,15 @@
   </tr>
  <h2>Assigned Ward : {{$x}}</h2>
      @foreach($users as $user)
-      
+       @if(in_array($user->id,$usersId))
        <tr>
         <td> {{$user->name}}</td>
+         <td>{{$user->group->group_name}}</td>
     </tr>
-      
+       @endif
      @endforeach    
 </table>
-@endif -->
+@endif
 </table>
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
