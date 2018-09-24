@@ -122,7 +122,7 @@
                         <th style="font-size: 10px;">{{$tlcount}}</th>
                         <th style="font-size: 10px;">{{ $tlupcount}}</th>
                         <th style="font-size: 10px;">{{ $tlRMCcount}}</th>
-                        <th style="font-size: 10px;">{{ $tlBlockscount}}</th>
+                        <th style="font-size: 10px;">{{ $tlBlocksCount}}</th>
                         <th style="font-size: 10px;"></th>
                     </tr>
                     @endif
@@ -194,7 +194,7 @@
                         <td style="font-size: 10px;">{{$tlacount}}</td>
                         <td style="font-size: 10px;">{{ $tlaupcount}}</td>
                         <td style="font-size: 10px;">{{ $tlAcRMCcount}}</td>
-                        <td style="font-size: 10px;">{{ $tlAcBlockscount}}</td>
+                        <td style="font-size: 10px;">{{ $tlAcBlocksCount}}</td>
                         <td style="font-size: 10px;"></td>
                     </tr>
                     @endif
