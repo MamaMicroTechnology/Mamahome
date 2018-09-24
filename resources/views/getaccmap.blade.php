@@ -7,7 +7,7 @@
   <form method="GET" action="{{ URL::to('/') }}/getmaphistory1">
                 <input type="hidden" value="{{$name}}" name="name">
                 <label>Select Date : </label>
-                <input required value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="getmap">
+                <input required value = "{{ isset($_GET['getmap']) ? $_GET['getmap']: '' }}" type="date" class="form-control" name="getmap">
                 <input type="submit" value="Fetch" class="form-control btn btn-primary">
   </form>
 </div>
@@ -44,6 +44,7 @@
 </div>
 <br><br>
 <div  class="panel-body" style="height:500px;max-height:500px">
+<div style="margin-left: 900px;">{{ isset($_GET['getmap']) ? date('d/m/Y', strtotime($_GET['getmap'])) : '' }}</div>
 <div id="map" style="width:980PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
 </div>
 </div>
