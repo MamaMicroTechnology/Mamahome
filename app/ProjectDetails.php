@@ -18,7 +18,9 @@ class ProjectDetails extends Model
 
        'sub_ward_id','project_name','construction_type','interested_in_rmc','interested_in_loan','interested_in_doorsandwindows',' road_width','road_name','municipality_approval','other_approvals','project_status','quality','contract','basement','ground',  'project_type' ,'project_size' ,   'budget' , 'image' ,  'remarks' ,    'note'   , 'reqDate',     'listing_engineer_id' ,    'created_at' , 'updated_at', 'with_cont', 'followup', 'follow_up_by','confirmed','call_attended_by ','updated_by',' deleted','budgetType','follow_up_date','length ', 'breadth' ,'plotsize', 'user_id', 'automation', 'interested_in_premium', 'brilaultra','detailed_mcal','deleted_at','res',
                          ];
-
+protected static $logFillable = true;
+     protected static $logOnlyDirty = true; 
+      protected static $causerId = 3;
     public function siteaddress()
     {
     	return $this->hasOne("App\SiteAddress",'project_id','project_id');
@@ -51,8 +53,5 @@ class ProjectDetails extends Model
     {
     	return $this->hasOne('App\Requirement','project_id','project_id');
     }
-     protected static $logFillable = true;
-         protected static $logOnlyDirty = true;
-    // protected static $logOnlyDirty = true; 
-      protected static $causerId = 3;
+     
 }

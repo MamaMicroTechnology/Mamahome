@@ -293,6 +293,7 @@ Route::post('/deleteCertificate','amController@deleteCertificate');
 
 
 // Admin
+Route::get('/deleteProject','mamaController@deleteProject');
 Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
@@ -327,7 +328,6 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/employeereports','HomeController@employeereports');
     Route::get('/viewallProjects','HomeController@viewallProjects');
 
-    Route::get('/deleteProject','mamaController@deleteProject');
     Route::get('/salesreports','HomeController@salesreports');
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');

@@ -388,12 +388,17 @@ class amController extends Controller
     }
     public function hrAttendance(Request $request){
         $user = User::where('employeeId',$request->userId)->first();
+      
         if($request->month){
+
             $date = $request->year.'-'.$request->month;
             $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
         }else{
             $date = date('Y-m');
-            $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
+            // $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
+            $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$date.'%')->orderby('logindate')
+            ->leftjoin('users','field_login.user_id','users.id')->get();
+           
         }
         return view('assistantmanager.empattendance',['attendances'=>$attendances,'userid'=>$request->userId,'user'=>$user,'pageName'=>'HR']);
     }
@@ -402,7 +407,8 @@ class amController extends Controller
         $date = $request->date;
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
-        $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
+        // $attendance = attendance::where('empId',$user->id)->where('date',$date)->first();
+        $attendance = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
         return view('assistantmanager.viewdailyreport',['reports'=>$reports,'date'=>$date,'user'=>$user,'attendance'=>$attendance,'pageName'=>'HR']);
     }
     public function addvendortype()

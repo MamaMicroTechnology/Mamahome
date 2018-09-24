@@ -378,11 +378,11 @@ div#calendar{
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
                        </li>
                         <li style="padding-top: 10px;padding-left: 10px;"> 
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#report">Logout</button>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="confirmit()">Logout</button>
                        </li>
                         @endif
                    <!--  <li>
-                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
+                    <a style="font-size:20px;cursor:pointer;"  href="{{ url('/simple') }}">Raise Ticket</a>
                       
                     </li>
                       <li>
@@ -657,6 +657,18 @@ div#calendar{
     document.getElementById("lteam").form.submit();
   }
 
+  function confirmit()
+    {
+     
+        var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
+            $(document).ready(function(){
+              $("#report").modal('show');
+          });
+        }
+    }
+
 </script>
 
 @if(session('TeamSuccess'))
@@ -707,7 +719,9 @@ div#calendar{
   $(document).ready(function(){
       $("#teamlate").modal('show');
   });
+
 </script>
+
 @endif
 <script>
     function myFunction1() {
