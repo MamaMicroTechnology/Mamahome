@@ -924,7 +924,7 @@ public function getproject(request $request){
     }
 
  public function getreq1(request $request){
-            $enquiries = Requirement::get();
+            $enquiries = Requirement::where('requirements.status','!=',"Enquiry Cancelled")->get();
             $converter = user::get();
             $totalenq = count($enquiries);
 
