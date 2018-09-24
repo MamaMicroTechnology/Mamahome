@@ -940,11 +940,7 @@ public function getproject(request $request){
      
         }
 
-      
-        
-
-
-    }
+ 
 
 
 
