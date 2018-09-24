@@ -1788,11 +1788,15 @@ class HomeController extends Controller
         $tl1= Tlwards::where('group_id','=',22)->get();
         $usersId = "null";
         $userid = Auth::user()->id;
-        foreach($tl1 as $searchWard){
-            $usersId = explode(",",$searchWard->users);
-        }
-       
 
+
+        foreach($tl1 as $searchWard){
+            if($searchWard->user_id == $userid){
+                
+            $usersId = explode(",",$searchWard->users);
+            }
+        }
+ 
 
         $depts=[1,2];
         $users = User::all();
