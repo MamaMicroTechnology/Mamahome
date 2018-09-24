@@ -924,14 +924,12 @@ public function getproject(request $request){
     }
 
  public function getreq1(request $request){
-                       $enquiries = Requirement::where('requirements.status','!=',"Enquiry Cancelled")
+             $enquiries = Requirement::where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
             $converter = user::get();
             $totalenq = count($enquiries);
 
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+            
         return response()->json(['sucuss'=>1, 'enquiries'=>$enquiries,'totalenq' =>$totalenq]);
      
         }
