@@ -241,7 +241,7 @@
                 });
       }
       else if(timeB >= timeA+1200){
-      for(var m=0; m<times.length-1;m++){
+    
       
             // var infowindow = new google.maps.InfoWindow();
             var marker1, i;
@@ -267,7 +267,7 @@
              
                   infowindow2.open(map, marker1);
                 });
-      }
+      
     }
       else{
        
