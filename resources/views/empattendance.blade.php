@@ -6,11 +6,11 @@
     $logintimes = array();
 ?>
 @foreach($attendances as $attendance)
-    <?php array_push($dates,"$attendance->date"); ?>
+    <?php array_push($dates,"$attendance->logindate"); ?>
 @endforeach
 @foreach($attendances as $attendance)
 <?php
-    $text = "In: ".$attendance->inTIme."<br>Out: ".$attendance->outTime."<br><a href=\"".$attendance->date."\">Report</a>";
+    $text = "In: ".$attendance->logintime."<br>Out: ".$attendance->logout."<br><a href=\"".$attendance->logindate."\">Report</a>";
     array_push($logintimes,$text);
 ?>
 @endforeach

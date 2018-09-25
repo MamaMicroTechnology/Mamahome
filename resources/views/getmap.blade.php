@@ -1,6 +1,6 @@
 <div class="panel panel-default" style="border-color:#0e877f">
-<div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white">
- {{ $ward}}
+<div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white;">
+ <div style="margin-left: 20px;">{{ $ward ? $ward : "No Ward"}} {{ isset($_GET['$ward']) ? date('d/m/Y', strtotime($_GET['$ward'])) : '' }}</div>
  <div style="margin-left: 600px;margin-top: -20;" id="currentTime" ></div>
 </div>
 <br>
@@ -8,7 +8,7 @@
   <form method="GET" action="{{ URL::to('/') }}/getmaphistory">
                 <input type="hidden" value="{{$name}}" name="name">
                 <label>Select Date : </label>
-                <input required value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="getmap">
+                <input required value = "{{ isset($_GET['getmap']) ? $_GET['getmap']: '' }}" type="date" class="form-control" name="getmap">
                 <input type="submit" value="Fetch" class="form-control btn btn-primary">
   </form>
 </div>
@@ -40,11 +40,12 @@
         <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
         <b>Approved By :</b><br><br>
         @endforeach
-         <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br>
-        <br><br>
+         <!-- <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br> -->
+        <br><br><br>
   </div>
 <br><br>
 <div  class="panel-body" style="height:500px;max-height:500px">
+<div style="margin-left: 900px;">{{ isset($_GET['getmap']) ? date('d/m/Y', strtotime($_GET['getmap'])) : '' }}</div>
 <div id="map" style="width:980PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
 </div>
 </div>
@@ -123,6 +124,7 @@
     var times = time.split(",");
     // alert(times);
     // polygon
+
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
     }
@@ -133,9 +135,14 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     @endif
-
+   
+    @if($subwardMap != "None")
     var lat = newpath[0].lat;
     var lon = newpath[1].lng;
+    @else
+    var lat = "12.9716";
+    var lon = "77.5946";
+    @endif
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 12,
       center: new google.maps.LatLng(lat, lon),
@@ -234,11 +241,11 @@
                 });
       }
       else if(timeB >= timeA+1200){
+      for(var m=0; m<times.length-1;m++){
       
             // var infowindow = new google.maps.InfoWindow();
             var marker1, i;
             var text2 ="From" +" "+" "+ timeConvert +"<br>"+"To"+" "+" "+ timeConvert2 ;
-
             var infowindow2 = new google.maps.InfoWindow({
                 content: text2
               });
@@ -261,6 +268,7 @@
                   infowindow2.open(map, marker1);
                 });
       }
+    }
       else{
        
       }

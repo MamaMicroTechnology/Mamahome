@@ -3873,7 +3873,9 @@ date_default_timezone_set("Asia/Kolkata");
     {
 
 
-        $totalListing = array();
+       $totalListing = array();
+        $totalRMCListing = array();
+        $totalBlocksListing = array();
         $date = date('Y-m-d');
         $users = User::where('department_id','1')->where('group_id','6')
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
@@ -3893,12 +3895,17 @@ date_default_timezone_set("Asia/Kolkata");
         $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
         ->pluck('id');
         $tlcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
+        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
+        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
+
         $tlupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
 
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
         ->pluck('id');
         $tlacount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->count();
+        $tlAcRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->where('manufacturer_type',"RMC")->count();
+        $tlAcBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->where('manufacturer_type',"Blocks")->count();
         $tlaupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tlaccuser)->count();
 
 
@@ -3911,9 +3918,13 @@ date_default_timezone_set("Asia/Kolkata");
         $list = DB::table('users')->where('group_id',6)->where('department_id','!=',10)->pluck('id');
         $lcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->count();
         $lupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$list)->count();
+        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"RMC")->count();
+        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"Blocks")->count();
             // total prolect of account in st
         $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
         $acount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
+        $aRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"RMC")->count();
+        $aBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"Blocks")->count();
         $aupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
         $projects = ProjectDetails::where('created_at','like',$date.'%')->get();
         $groupid = [6,11];
@@ -3972,20 +3983,52 @@ date_default_timezone_set("Asia/Kolkata");
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
+                $totalRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
             }
             foreach($tlUsers as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
                                                 ->count();
             }
             foreach($accusers as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
+                $totalAccountRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalAccountBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
             }
              foreach($tlUsers1 as $user){
                 $totalaccountlist[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalAccountRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalAccountBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
                                                 ->count();
             }
             foreach($users as $user){
@@ -4021,7 +4064,11 @@ date_default_timezone_set("Asia/Kolkata");
         // else{
         //     $teamprojcount = 0;
         // }
-        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount]);
+        return view('dailyslots', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount,
+            'totalRMCListing'=>$totalRMCListing,'totalBlocksListing'=>$totalBlocksListing,'lRMCCount'=>$lRMCcount,'lBlocksCount'=>$lBlocksCount,'aRMCcount'=>$aRMCcount,'aBlocksCount'=>$aBlocksCount,
+            'totalAccountRMCListing'=>$totalAccountRMCListing,'totalAccountBlocksListing'=>$totalAccountBlocksListing,'tlRMCcount'=>$tlRMCcount,'tlBlocksCount'=>$tlBlocksCount,
+            'tlAcBlocksCount'=>$tlAcBlocksCount,'tlAcRMCcount'=>$tlAcRMCcount
+        ]);
     }
 
 
@@ -4541,17 +4588,11 @@ date_default_timezone_set("Asia/Kolkata");
             $today = date('Y-m');
         }
         $user = User::where('employeeId',$id)->first();
-        $attendances = attendance::where('empId',$id)
-                    ->where('created_at','LIKE',$today.'%')
-                    ->orderby('date')
-                    ->get();
-        // $userid = User::where('employeeId',$id)->pluck('id')->first();
-        // $attendances = FieldLogin::where('user_id',$userid)
+        // $attendances = attendance::where('empId',$id)
         //             ->where('created_at','LIKE',$today.'%')
-        //             ->orderby('logindate')
-        //             ->get();
-
-            
+        //             ->orderby('date')
+        //             ->get();   
+        $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
     public function forgotPw(){

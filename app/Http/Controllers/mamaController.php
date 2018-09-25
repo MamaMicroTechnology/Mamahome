@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Collection;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\registration;
@@ -68,6 +70,9 @@ use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
+use Spatie\Activitylog\Models\Activity;
+// use LogsActivity;
+// use App\ActivityLog;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -2286,7 +2291,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
       $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
       $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
       $subwards = SubWard::where('id',$wardsAssigned)->first();
-        $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+      $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
         // dd($projects);
         if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
@@ -2305,17 +2310,43 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             ->pluck('sub_wards.sub_ward_name')->first();
 
        if($request->getmap){
-                $storoads = TrackLocation::where('user_id',$id)
+        $date = $request->getmap;
+            $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',$request->getmap)
                          ->first();
+              $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get();
+              $wardsAssigned = WardAssignment::where('user_id',$id)->pluck('id');
+              $activity =Activity::where('subject_id',$wardsAssigned)->where('created_at','LIKE',$date.'%')->get();
+              // dd($activity);
+              $wardid = " ";
+              foreach($activity as $act){
+                  $act2 = $act->changes();
+                   foreach ($act2['attributes'] as $act3=>$value) {
+                        if($act3 == "subward_id"){
+                            $wardid = $value;
+                        }
+                   }
+              }
                 
+               $subwards = SubWard::where('id',$wardid)->first();
+                    if($subwards != null){
+                    $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+                    
+                    }else{
+                        $subwardMap = "None";
+                    }   
+                    if($subwardMap == Null){
+                        $subwardMap = "None";
+                    } 
+
+               $ward = SubWard::where('id',$wardid)->pluck('sub_ward_name')->first();
+
         }
         else{
                 $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',date('Y-m-d'))
                         ->first();
         }
-    
       return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads]);
     }
 
@@ -2344,10 +2375,36 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ->pluck('sub_wards.sub_ward_name')->first();
 
         if($request->getmap){
-                $storoads = TrackLocation::where('user_id',$id)
+             $date = $request->getmap;
+            $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',$request->getmap)
                          ->first();
+            $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get(); 
+             $wardsAssigned = WardAssignment::where('user_id',$id)->pluck('id');
+              $activity =Activity::where('subject_id',$wardsAssigned)->where('created_at','LIKE',$date.'%')->get();
+              // dd($activity);
+              $wardid = " ";
+              foreach($activity as $act){
+                  $act2 = $act->changes();
+                   foreach ($act2['attributes'] as $act3=>$value) {
+                        if($act3 == "subward_id"){
+                            $wardid = $value;
+                        }
+                   }
+              }
                 
+               $subwards = SubWard::where('id',$wardid)->first();
+                    if($subwards != null){
+                    $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+                    
+                    }else{
+                        $subwardMap = "None";
+                    }   
+                    if($subwardMap == Null){
+                        $subwardMap = "None";
+                    } 
+
+               $ward = SubWard::where('id',$wardid)->pluck('sub_ward_name')->first();
         }
         else{
                 $storoads = TrackLocation::where('user_id',$id)
