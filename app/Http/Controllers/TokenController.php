@@ -936,14 +936,14 @@ public function getproject(request $request){
             foreach($enquiries as $enquiry){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
             }
+        return response()->json(['sucuss'=>1, 'enquiries'=>$enquiries,'totalenq' =>$totalenq]);
         }
 
       
         
-        return response()->json(['sucuss'=>1, 'enquiries'=>$enquiries,'totalenq' =>$totalenq]);
 
 
-    }
+    
 
 
 

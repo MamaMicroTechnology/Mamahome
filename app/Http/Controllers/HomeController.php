@@ -374,8 +374,7 @@ class HomeController extends Controller
                 }
             }else{
 
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
@@ -759,10 +758,9 @@ class HomeController extends Controller
             // no selection
              $from = $request->from;
             $to = $request->to;
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+            $enquiries = Requirement::leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','project_details.sub_ward_id')
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
             $converter = user::get();
@@ -6250,7 +6248,7 @@ public function savenumber(request $request){
         $check->user_id = Auth::user()->id;
         $check->totalnumber = 100;
         $check->save();
-        return back();
+        return back()->with('Success',"successfully Added Your Phone Number");
 
 }
 public function storenumber(request $request){
@@ -8373,12 +8371,12 @@ public function display(request $request){
  public function enqticket(request $request)
     {
         $options['timeout'] = 300;
-        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req';
+        $url = 'https://mamamicrotechnology.com/clients/MH/webapp/api/req1';
        $client = new \GuzzleHttp\Client();
        $request = $client->get($url,$options);
        $response = $request->getBody();
        $data = json_decode($response);
-   return view('/ticket',['data'=>$data]);
+   return view('/enq',['data'=>$data]);
     }
 
 
