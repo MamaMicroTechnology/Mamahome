@@ -23,4 +23,9 @@ class ProcurementDetails extends Model
     protected static $logName = "";
     protected static $logFillable = true;
     protected static $logOnlyDirty = true;
+
+    public function requirement()
+    {
+        return $this->belongsTo("App\Requirement");
+    }
 }

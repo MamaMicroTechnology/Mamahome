@@ -180,7 +180,7 @@
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
                 <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>{{$projcount}}</b></label>
-                <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+                 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button> 
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">

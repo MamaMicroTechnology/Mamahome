@@ -166,18 +166,18 @@
                         @endforeach
                         
 						@foreach($enquiries as $enquiry)
-						@if($enquiry->status != "Not Processed")
+                        @if($enquiry->status != "Not Processed")
 					
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
 								</a> 
 							</td>
-							<td style="text-align: center">{{$subwards2[$enquiry->project_id]}}</td>
-							<td style="text-align: center">{{$enquiry -> procurement_name}}</td>
+							<td style="text-align: center">{{ $enquiry->subward != null ? $enquiry->subward->sub_ward_name : '' }}</td>
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name : '' }}</td>
 							<td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
-							<td style="text-align: center">{{$enquiry -> procurement_contact_no }}</td>
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}</td>
 							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}</td>
 							<td style="text-align: center">
 								<?php $quantity = explode(", ",$enquiry->quantity); ?>
@@ -187,21 +187,13 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
-							<td style="text-align: center">{{$enquiry -> name}}</td>
+							<td style="text-align: center">{{$enquiry->name}}</td>
 							<td style="text-align: center">
-							@foreach($converter as $convert)
-								@if($enquiry->converted_by == $convert->id)
-								{{ $convert->name}}
-								@endif
-							@endforeach
+							{{ $enquiry->user != null ? $enquiry->user->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
-								@foreach($converter as $convert)
-								@if($enquiry->updated_by == $convert->id)
-								 {{ $convert->name}} 
-								@endif
-							@endforeach
+								{{ $enquiry->user != null ? $enquiry->user->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ $enquiry->status}}
