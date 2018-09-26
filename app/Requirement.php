@@ -22,6 +22,16 @@ class Requirement extends Model
     public function project(){
         return $this->belongsTo('App\ProjectDetails','project_id','project_id');
     }
+    public function procurementdetails()
+    {
+      return $this->hasOne('App\ProcurementDetails','project_id','project_id');
+    
+    }
+     public function subward()
+    {
+      return $this->hasOne('App\SubWard','id','sub_ward_id');
+    
+    }
 }
 	
 

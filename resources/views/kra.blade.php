@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                     @foreach($kras as $kra)
-                    <tr>
+                    <tr>s
                         <td>{{ $kra->dept_name }}</td>
                         <td>{{ $kra->group_name }}</td>
                         <td>{{ $kra->role }}</td>

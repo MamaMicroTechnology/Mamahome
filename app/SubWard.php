@@ -31,6 +31,9 @@ class SubWard extends Model
     {
     	return $this->hasMany(Activity::class,'sub_ward_id','id');
     } 
+     public function req(){
+        return $this->belongsTo('App\Requirement');
+    }
 }
  
  
