@@ -173,7 +173,14 @@
 									<b>{{$enquiry -> project_id }}</b>
 								</a> 
 							</td>
-							<td style="text-align: center">{{ $enquiry->subward != null ? $enquiry->subward->sub_ward_name : '' }}</td>
+							<td style="text-align: center">
+
+                               @foreach($wards as $ward)
+                                 @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : '') )
+                                 {{$ward->sub_ward_name}}
+                                  @endif
+                               @endforeach
+
 							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name : '' }}</td>
 							<td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>

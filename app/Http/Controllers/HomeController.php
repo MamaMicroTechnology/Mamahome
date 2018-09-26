@@ -657,12 +657,13 @@ class HomeController extends Controller
        return  $this->enquirysheet1($request);
      }   
         $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-       
-                     // dd( $enquiries);
-        $totalofenquiry = "";
+         $totalofenquiry = "";
         $totalenq = "";
         $ward = Ward::get();
         $wards = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->get();
+        $sub = SubWard::where('ward_id',$tlward)->pluck('id');
+        $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
+
 
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
@@ -673,80 +674,45 @@ class HomeController extends Controller
         if($request->status && !$request->category){
             if($request->status != "all"){
                $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                            ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                            ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$tlward)
+                $enquiries = Requirement::whereIn('project_id',$pids)
                             ->where('status','like','%'.$request->status)
-                            ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                            ->where('status','!=',"Enquiry Cancelled")
+                            
                             ->get();
 
                        $enquiries = Response::Json( $enquiries);
 
-                       $converter = user::get();
+                      
 
 
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }else{
 
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                            ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                            ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$tlward)
-                            ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                            ->where('status','!=',"Enquiry Cancelled")
+                           
                             ->get();
                              $enquiries = Response::Json( $enquiries);
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }
         }elseif($request->status && $request->category){
 
             if($request->status != "all"){
 
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
                             ->where('status','like','%'.$request->status)
-                            ->where('requirements.main_category',$request->category)
-                            ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                            ->where('main_category',$request->category)
+                            ->where('status','!=',"Enquiry Cancelled")
                             ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
             }else{
 
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                            ->where('requirements.main_category',$request->category)
-                            ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                            ->where('main_category',$request->category)
+                            ->where('status','!=',"Enquiry Cancelled")
+                           
                             ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }
         }elseif($request->from && $request->to  && !$request->initiator && !$request->category && !$request->ward){
             // only from and to
@@ -755,123 +721,74 @@ class HomeController extends Controller
 
 
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                            ->orderBy('requirements.created_at','DESC')
-                            ->where('requirements.created_at','LIKE',$from."%")
-                            ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                            ->orderBy('created_at','DESC')
+                            ->where('created_at','LIKE',$from."%")
+                            ->where('status','!=',"Enquiry Cancelled")
                             ->get();
-            $converter = user::get();
+           
 
             }
             else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                            ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                            ->orderBy('requirements.created_at','DESC')
-                            ->where('requirements.created_at','>',$from)
-                            ->where('requirements.created_at','<',$to)
-                            ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                            ->orderBy('created_at','DESC')
+                            ->where('created_at','>',$from)
+                            ->where('created_at','<',$to)
+                            ->where('status','!=',"Enquiry Cancelled")
                             ->get();
-            $converter = user::get();
+       
             }
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+            
 
         }elseif(!$request->from && !$request->to && !$request->initiator && !$request->category && $request->ward){
             // only ward
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+            $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                         ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                         ->where('project_details.sub_ward_id',$request->ward)
                         ->where('requirements.status','!=',"Enquiry Cancelled")
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->get();
-            $converter = user::get();
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+           
         }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward){
             // only category
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                         ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                        ->where('requirements.main_category',$request->category)
-                        ->where('requirements.status','!=',"Enquiry Cancelled")
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+            $enquiries = Requirement::whereIn('project_id',$pids)
+                        ->where('main_category',$request->category)
+                        ->where('status','!=',"Enquiry Cancelled")
+                        
                         ->get();
 
 
-          $converter = user::get();
+          
 
             $totalofenquiry = Requirement::where('main_category',$request->category)->where('requirements.status','!=',"Enquiry Cancelled")->sum('quantity');
 
 
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+            
         }elseif(!$request->from && !$request->to && $request->initiator && !$request->category && !$request->ward){
             // only initiator
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                         ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                        ->where('requirements.generated_by',$request->initiator)
-                        ->where('requirements.status','!=',"Enquiry Cancelled")
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+            $enquiries = Requirement::whereIn('project_id',$pids)
+                        ->where('generated_by',$request->initiator)
+                        ->where('status','!=',"Enquiry Cancelled")
                         ->get();
-            $converter = user::get();
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+           
         }elseif($request->from && $request->to && $request->initiator && $request->category && $request->ward){
             // everything
             $from = $request->from;
             $to = $request->to;
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
+                 ->orderBy('requirements.created_at','DESC')
                 ->where('project_details.sub_ward_id','=',$request->ward)
                 ->where('requirements.generated_by',$request->initiator)
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                
                 ->get();
-            $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+          
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                             ->orderBy('requirements.created_at','DESC')
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.generated_by',$request->initiator)
@@ -879,92 +796,57 @@ class HomeController extends Controller
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+
             }
         }elseif($request->from && $request->to && !$request->initiator && !$request->category && $request->ward){
             // from, to and ward
             $from = $request->from;
             $to = $request->to;
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                 ->orderBy('requirements.created_at','DESC')
                 ->where('project_details.sub_ward_id','=',$request->ward)
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                 ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                 ->orderBy('requirements.created_at','DESC')
                 ->where('project_details.sub_ward_id','=',$request->ward)
                 ->where('requirements.created_at','>',$from)
                 ->where('requirements.created_at','<',$to)
                 ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                
                 ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }
         }elseif($request->from && $request->to && $request->initiator && !$request->category && !$request->ward){
             // from, to and initiator
             $from = $request->from;
             $to = $request->to;
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
-                ->where('requirements.generated_by','=',$request->initiator)
-                ->where('requirements.created_at','LIKE',$from."%")
-                ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                ->orderBy('created_at','DESC')
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','LIKE',$from."%")
+                ->where('status','!=',"Enquiry Cancelled")
+               
                 ->get();
-               $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
-                ->where('requirements.generated_by','=',$request->initiator)
-                ->where('requirements.created_at','>',$from)
-                ->where('requirements.created_at','<',$to)
-                ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                ->orderBy('created_at','DESC')
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','>',$from)
+                ->where('created_at','<',$to)
+                ->where('status','!=',"Enquiry Cancelled")
+               
                 ->get();
-               $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+              
             }
         }elseif($request->from && $request->to && !$request->initiator && $request->category && !$request->ward){
             // from, to and category
@@ -972,208 +854,121 @@ class HomeController extends Controller
             $to = $request->to;
             if($from == $to){
 
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                 ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                 ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
-                ->where('requirements.main_category','=',$request->category)
-                ->where('requirements.created_at','LIKE',$from."%")
-                ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                ->orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('created_at','LIKE',$from."%")
+                ->where('status','!=',"Enquiry Cancelled")
                 ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+               
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
-                ->where('requirements.main_category','=',$request->category)
-                ->where('requirements.created_at','>',$from)
-                ->where('requirements.created_at','<',$to)
-                ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                ->orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('created_at','>',$from)
+                ->where('created_at','<',$to)
+                ->where('status','!=',"Enquiry Cancelled")
+              
                 ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
             }
         }elseif($request->from && $request->to && $request->initiator && $request->category && !$request->ward){
             // from, to, initiator and category
             $from = $request->from;
             $to = $request->to;
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
-                ->where('requirements.main_category','=',$request->category)
-                ->where('requirements.generated_by','=',$request->initiator)
-                ->where('requirements.created_at','LIKE',$from."%")
-                ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                ->orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','LIKE',$from."%")
+                ->where('status','!=',"Enquiry Cancelled")
                 ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                 ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                ->orderBy('requirements.created_at','DESC')
-                ->where('requirements.main_category','=',$request->category)
-                ->where('requirements.generated_by','=',$request->initiator)
-                ->where('requirements.created_at','>',$from)
-                ->where('requirements.created_at','<',$to)
-                ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                $enquiries = Requirement::whereIn('project_id',$pids)
+                ->orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','>',$from)
+                ->where('created_at','<',$to)
+                ->where('status','!=',"Enquiry Cancelled")
+                
                 ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
             }
         }elseif($request->from && $request->to && !$request->initiator && $request->category && $request->ward){
             // from, to, wards and category
             $from = $request->from;
             $to = $request->to;
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                            ->orderBy('requirements.created_at','DESC')
+                             ->orderBy('requirements.created_at','DESC')
                             ->where('requirements.main_category','=',$request->category)
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','LIKE',$from."%")
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                        $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                       
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                             ->orderBy('requirements.created_at','DESC')
                             ->where('requirements.main_category','=',$request->category)
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                            ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                             ->get();
+              
             }
         }elseif($request->from && $request->to && $request->initiator && !$request->category && $request->ward){
             // from, to, wards and initiator
             $from = $request->from;
             $to = $request->to;
             if($from == $to){
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                            ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                             ->orderBy('requirements.created_at','DESC')
                             ->where('requirements.generated_by','=',$request->initiator)
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','LIKE',$from."%")
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+                            
                             ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
             }else{
-                $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                            ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
+                $enquiries = Requirement::whereIn('requirements.project_id',$pids)
                             ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                             ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
                             ->orderBy('requirements.created_at','DESC')
                             ->where('requirements.generated_by','=',$request->initiator)
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                            ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                             ->get();
-                $converter = user::get();
-                foreach($enquiries as $enquiry){
-                    $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-                }
+                
             }
         }elseif(!$request->from && !$request->to && $request->initiator && $request->category && !$request->ward){
             //initiator and category
             $from = $request->from;
             $to = $request->to;
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-
-                        ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                        ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                        ->where('wards.id',$tlward)
-                        ->where('requirements.main_category','=',$request->category)
-                        ->where('requirements.generated_by','=',$request->initiator)
-                        ->where('requirements.status','!=',"Enquiry Cancelled")
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+            $enquiries = Requirement::whereIn('project_id',$pids)
+                        ->where('main_category','=',$request->category)
+                        ->where('generated_by','=',$request->initiator)
+                        ->where('status','!=',"Enquiry Cancelled")
                         ->get();
-            $converter = user::get();
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+            
         }else{
-            // no selection
-             $from = $request->from;
-            $to = $request->to;
-            $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                        ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
-                            ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$tlward)
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
+            
+            $enquiries = Requirement::whereIn('project_id',$pids)
                         ->where('requirements.status','!=',"Enquiry Cancelled")
                         ->get();
+         
 
-
-
-            $converter = user::get();
+          
             $totalenq = count($enquiries);
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+            
         }
 
         $filtered = new Collection;
@@ -1190,7 +985,6 @@ class HomeController extends Controller
     $totalenq = count($enquiries);
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
-            'converter' =>$converter,
             'totalofenquiry'=>$totalofenquiry,
             'subwards2'=>$subwards2,
             'enquiries'=>$enquiries,
