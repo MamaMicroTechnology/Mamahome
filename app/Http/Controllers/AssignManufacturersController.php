@@ -383,7 +383,6 @@ public function inputdata(Request $request)
 
          return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
-   
 
 
 }

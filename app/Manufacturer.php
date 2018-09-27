@@ -27,6 +27,10 @@ class Manufacturer extends Model
     {
     	return $this->hasOne('App\Mowner_Deatils','manu_id','id');
     }
+     public function subward()
+    {
+        return $this->hasOne('App\SubWard','id','sub_ward_id');
+    }
     protected $fillable = [
             'sub_ward_id',
             'name',
