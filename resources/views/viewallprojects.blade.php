@@ -87,7 +87,7 @@
 							<td>{{ $project->budget }}</td>
 							<td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $project->project_id }}">View Image</button>
 								<div id="viewimage{{$project->project_id }}" class="modal fade" role="dialog">
-								  <div class="modal-dialog" style="width: 50%;height: 30%">
+								  <div class="modal-dialog" style="width: 40%;height: 30%">
 
 								    <!-- Modal content-->
 								    <div class="modal-content">
