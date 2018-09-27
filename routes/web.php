@@ -21,6 +21,8 @@ Route::get('/getid','HomeController@getid');
 
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
+Route::get('/enq','HomeController@enqticket');
+
 Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
  Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');

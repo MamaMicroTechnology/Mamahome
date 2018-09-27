@@ -2,11 +2,11 @@
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading" style="background-color: green;color: white;">Project Details 
+			<div class="panel-heading" style="background-color: green;"><p style="color: white">Project Details </p>
 				@if($projects != "None")
 					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)
 				@endif
-				 <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
+				  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
 				@if(Auth::user()->group_id == 1)
