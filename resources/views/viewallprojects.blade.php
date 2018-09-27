@@ -95,19 +95,32 @@
 								        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
 								        <h4 class="modal-title">Image</h4>
 								      </div>
-								      <div class="modal-body">
+								      
+                                             
+								    <div class="modal-body">
 								      	 <?php
 								      	 $images = explode(",", $project->image);
                                                ?>
-
-
                                                  @for($i = 0; $i < count($images); $i++)
-								        <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" >
-                                                   
-                                                          
+                                               
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br>
                                                     
                                                  @endfor
-                                             
+                                                 <br>
+                                              @if($projectimages != null)
+                                            <p> Updated images<p><br>
+                                             @endif
+                                             @foreach($projectimages as $project)
+                                             <?php
+										      	 $images = explode(",", $project->image);
+		                                               ?>
+                                                 @for($i = 0; $i < count($images); $i++)
+                                               
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br>
+                                                    
+                                                 @endfor
+                                                 @endforeach
+
 								      </div>
 								      <div class="modal-footer">
 								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
