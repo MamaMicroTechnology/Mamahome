@@ -4944,7 +4944,7 @@ date_default_timezone_set("Asia/Kolkata");
                             
                             ->get();
              $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
-            return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+            return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users,'projectimages'=>$projectimages]);
         }
         if($request->subward && $request->ward){
             $projects = ProjectDetails::where('project_details.sub_ward_id',$request->subward)
