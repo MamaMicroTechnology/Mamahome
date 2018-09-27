@@ -1297,7 +1297,14 @@ class HomeController extends Controller
         $fake = ProjectDetails::where('quality',"FAKE")->count();
         $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
         $le = User::where('group_id','6')->get();
-        $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
+        $notes = ProjectDetails::groupBy('with_cont')
+                    ->where('with_cont','!=',"DUPLICATE NUMBER")
+                    ->where('with_cont','!=',"FINISHING")
+                    ->where('with_cont','!=',"NOT INTERESTED")
+                    ->where('with_cont','!=',"PROJECT CLOSED")
+                    ->where('with_cont','!=',"THEY HAVE REGULAR SUPPLIERS")
+                    ->where('with_cont','!=',"WRONG NO")
+                    ->pluck('with_cont');
         $count = array();
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
