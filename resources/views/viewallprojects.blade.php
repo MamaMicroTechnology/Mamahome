@@ -102,7 +102,7 @@
 
 
                                                  @for($i = 0; $i < count($images); $i++)
-								        <img style=" height:350px; width:640px;" src="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">
+								        <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" >
                                                    
                                                           
                                                     
