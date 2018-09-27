@@ -4969,12 +4969,13 @@ date_default_timezone_set("Asia/Kolkata");
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            
                             ->get();
             }
+             $projectimages = ProjectImage::where('project_id',$ids)->get();
         }
         else{
             $projects = "None";
+             $projectimages = ProjectImage::where('project_id',$ids)->get();
         }
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
     }
@@ -5060,12 +5061,12 @@ date_default_timezone_set("Asia/Kolkata");
 
             $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
             $updater = User::whereIn('id',$projectdetails)->first();
+             $projectimages = ProjectImage::where('project_id',$ids)->get();
 
-
-            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users,'updater'=>$updater]);
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users,'updater'=>$updater,'projectimages'=>$projectimages]);
         }else{
-            
-            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
+             $projectimages = ProjectImage::where('project_id',$ids)->get();
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None",'projectimages'=>$projectimages]);
         }
     }
 
