@@ -4943,6 +4943,7 @@ date_default_timezone_set("Asia/Kolkata");
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
                             ->get();
+             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
             return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
         }
         if($request->subward && $request->ward){
@@ -4953,6 +4954,7 @@ date_default_timezone_set("Asia/Kolkata");
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
                             ->get();
+             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
         }elseif(!$request->subward && $request->ward){
             if($request->ward == "All"){
             $projects = ProjectDetails::leftjoin('users','users.id','=','project_details.listing_engineer_id')
@@ -4961,6 +4963,7 @@ date_default_timezone_set("Asia/Kolkata");
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
                             ->get();
+                 $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
             }
             else{
                  $subwards = SubWard::where('ward_id',$request->ward)->get()->pluck('id');
@@ -4970,14 +4973,16 @@ date_default_timezone_set("Asia/Kolkata");
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->get();
+                 $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
             }
-             $projectimages = ProjectImage::where('project_id',$ids)->get();
+           
         }
         else{
+             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
             $projects = "None";
              $projectimages = ProjectImage::where('project_id',$ids)->get();
         }
-        return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users]);
+        return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users,'projectimages'=>$projectimages]);
     }
 
  public function projectDetailsForTL(Request $request)
@@ -5061,7 +5066,7 @@ date_default_timezone_set("Asia/Kolkata");
 
             $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
             $updater = User::whereIn('id',$projectdetails)->first();
-             $projectimages = ProjectImage::where('project_id',$ids)->get();
+             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
 
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users,'updater'=>$updater,'projectimages'=>$projectimages]);
         }else{
