@@ -719,7 +719,13 @@ function myTimer() {
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
               <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
-        </div>   
+        </div>  
+        <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
+    <div id="manufacturer_details" class="collapse">
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
+        <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a>
+    </div> 
      <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 

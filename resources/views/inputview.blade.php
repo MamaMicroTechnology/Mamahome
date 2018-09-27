@@ -102,7 +102,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             <label class="checkbox-inline">
                             
                                
-                                <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+                                <input onclick="countthis('{{$cat->id}}')" type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
                                 <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"  name="quan[]" class="form-control">
                             </label>
                             <br><br>
@@ -457,7 +457,7 @@ function submitinputview(){
             document.getElementById("sub").submit();
         }
 }
-</script>
+
 
 @endsection
 

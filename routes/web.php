@@ -31,6 +31,7 @@ Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
+
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
