@@ -96,7 +96,18 @@
 								        <h4 class="modal-title">Image</h4>
 								      </div>
 								      <div class="modal-body">
+								      	 <?php
+								      	 $images = explode(",", $project->image);
+                                               ?>
+
+
+                                                 @for($i = 0; $i < count($images); $i++)
 								        <img style=" height:350px; width:640px;" src="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">
+                                                   
+                                                          
+                                                    
+                                                 @endfor
+                                             
 								      </div>
 								      <div class="modal-footer">
 								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -105,9 +116,6 @@
 
 								  </div>
 							</div>
-
-
-
 							</td>
 							
 							<td>{{ $project->remarks }}</td>
