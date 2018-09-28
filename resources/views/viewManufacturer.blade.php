@@ -205,7 +205,7 @@ tr:nth-child(even) {
         @endforeach
         </table>
         @foreach($manufacturers as $project)
-<div class="modal fade" id="myModal1{{$manufacturer->id}}" role="dialog">
+<div class="modal fade" id="myModal1{{$project->id}}" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
