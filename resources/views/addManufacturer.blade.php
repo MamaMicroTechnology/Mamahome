@@ -87,7 +87,7 @@
                                 </tr> -->
                 
                                    <tr>
-                                   <td>Project Images</td>
+                                   <td>Manufacturer Images</td>
                                    <td>:</td>
                                    <td><input id="pImage" oninput="fileuploadimage()" required type="file" accept="image/*" class="form-control input-sm" name="pImage[]" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
                                </tr>

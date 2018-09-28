@@ -16,10 +16,6 @@
                        <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
                        @endforeach
                      </select>
-                   
-                   @endif
-                  @if(!$subwards)
-                  No Subward assigned
                   @else
                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                   @endif

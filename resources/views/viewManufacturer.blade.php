@@ -100,15 +100,15 @@ tr:nth-child(even) {
                                       <input type="hidden" value="{{ $manufacturer->id }}" name="id">
                                       <div>
                                    
-                                      <a class="btn btn-sm btn-success" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?projectId={{ $manufacturer->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
+                                      <a class="btn btn-sm btn-success" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?manufacturerId={{ $manufacturer->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" )
-                                   <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373;color:white" class="btn btn-sm " {{ $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
+                                   <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373;color:white" class="btn btn-sm " {{ $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()" type="submit">Called
                                    <span class="badge">&nbsp;{{  $manufacturer->confirmed }}&nbsp;</span>
                                    </button>
                                   @endif
                                    @if( $manufacturer->confirmed == "0" ||  $manufacturer->confirmed == "false" )
-                                   <button style="padding: 5.5px;background-color: #aed581;color:white" id="demo"  type="button" class="btn  btn-sm "  {{ $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()">Called
+                                   <button style="padding: 5.5px;background-color: #aed581;color:white" id="demo"  type="button" class="btn  btn-sm "  {{ $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()" type="submit">Called
                                     <span class="badge">&nbsp;{{  $manufacturer->confirmed }}&nbsp;</span>
                                    </button></div>
                                   @endif
@@ -136,7 +136,7 @@ tr:nth-child(even) {
                                     <option value="NOT INTERESTED">NOT INTERESTED</option>
                                     <option  value="BUSY">BUSY</option>
                                     <option  value="WRONG NO">WRONG NO</option>
-                                    <option  value="Project CLOSED">PROJECT CLOSED</option>
+                                    <option  value="PROJECT CLOSED">PROJECT CLOSED</option>
                                     <option  value="CALL BACK LATER">CALL BACK LATER</option>
                                     <option value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
                                     <option value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>

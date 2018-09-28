@@ -45,7 +45,6 @@ id="error"></div></td>
 NULL?$projects->proc->contact_no:'' }}</td>
 @endif
 </tr>
-<input type="hidden" name="sub_ward_id" value="{{$projects->sub_ward_id}}">
 <!-- <tr>
 <td><label>Name* : </label></td>
 <td><input required type="text" name="ename" id="ename"
