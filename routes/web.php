@@ -273,7 +273,7 @@ Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
 Route::get('/viewwardmap','HomeController@viewwardmap');
 Route::get('/viewsubward','HomeController@viewsubward');
-
+Route::get('/manufacturemap','HomeController@manufacturemap');
 
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');

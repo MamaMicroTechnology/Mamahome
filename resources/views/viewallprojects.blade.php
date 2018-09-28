@@ -2,10 +2,10 @@
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading" style="background-color: green;"><p style="color: white">Project Details </p>
-				@if($projects != "None")
-					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)
-				@endif
+			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects : {{ count($projects) }}</p>
+				<!-- @if($projects != "None")
+					<p style="coloe:white;">({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)<p>
+				@endif -->
 				  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
@@ -47,7 +47,7 @@
 						<th>Project Id</th>
 						<th>Project Name</th>
 						<th>Construction Type</th>
-						<th>Sub-Ward</th>
+						<th>Sub-Ward Number</th>
 						<th>Project Status</th>
 						<th>Quality</th>
 						<th>Address</th>

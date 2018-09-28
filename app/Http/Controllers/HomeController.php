@@ -83,9 +83,9 @@ use App\NumberOfZones;
 use App\Pricing;
 use GuzzleHttp\Client;
 use App\Manufacturer;
+use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
-
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -7421,8 +7421,14 @@ public function display(request $request){
                         ->select('site_addresses.*')
                         ->get();   
 
-             return view('viewsubward',['projects'=>$projects,'subwardMap'=>$subwardMap]);
-                       
+             return view('viewsubward',['projects'=>$projects,'subwardMap'=>$subwardMap]);            
+    }
+    public function manufacturemap(Request $request){
+                $name = SubWard::where('id',$request->subwardid)->pluck('sub_ward_name')->first();
+                $subwardMap = SubWardMap::where('sub_ward_id',$request->subwardid)->first();
+                $projects = Manufacturer::where('id',$request->id)
+                        ->get();   
+             return view('manufacturemap',['projects'=>$projects,'subwardMap'=>$subwardMap,'name'=>$name]);
     }
     public function Unupdated(Request $request){
     if(Auth::user()->group_id == 22){
