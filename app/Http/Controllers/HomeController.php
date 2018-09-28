@@ -8181,6 +8181,12 @@ public function viewManufacturer1(Request $request)
   }
   public function deleteward(Request $request){
 
+     $tlward = Tlwards::where('user_id',$request->id)->update([
+        'users'=>null,
+        ]);
+        return response()->json('Success');
+  }
+
  public function enqticket(request $request)
     {
         $options['timeout'] = 300;
