@@ -52,10 +52,10 @@
                                     <td>Production Type</td>
                                     <td>:</td>
                                     <td>
-                                 <label required class="checkbox-inline"><input  id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
-                                  <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
-                                      <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                 <label required class="checkbox-inline"><input {{ $manufacturer->manufacturer_type == "RMC" ? 'checked' : ''}} id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
+                                    <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "BLOCKS" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
+                                  <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "M-SAND" ? 'checked' : ''}}  id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
+                                      <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "AGGREGATES" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
                                     </td>
                                 </tr>
                                <!--  <tr>
