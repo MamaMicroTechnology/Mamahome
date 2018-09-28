@@ -90,7 +90,7 @@
 						</select>
 					</div>
                   </div>
-<!-- 
+
                   <div class="col-md-6">
 					<div class="col-md-2">
 						Ward:
@@ -106,10 +106,8 @@
 							@endforeach
 						</select>
 					</div>
-                  </div> -->
-                  @if(count($totalenq) == 0)
-                   <h2 style="color: green;">Enquiry's are Not Found</h2>
-                  @endif
+                  </div>
+                
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>

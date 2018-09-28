@@ -371,7 +371,6 @@ function drawSnappedPolyline() {
       @endif
       // marker end
     if(newpath.length > 1){
-      
       var subward = new google.maps.Polygon({
           paths: newpath,
           strokeColor: '#'+col,
@@ -382,7 +381,6 @@ function drawSnappedPolyline() {
         });
     subward.setMap(map);
     }
-
   }
   </script>
 @endif

@@ -686,8 +686,8 @@ function myTimer() {
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-      <!-- <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
-       <a href="#" data-toggle="collapse" data-target="#sales1">Add &#x21F2;</a>
+      <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+       <!-- <a href="#" data-toggle="collapse" data-target="#sales1">Add &#x21F2;</a>
          <div id="sales" class="collapse"> -->
       <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>

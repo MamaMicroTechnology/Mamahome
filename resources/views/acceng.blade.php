@@ -6,7 +6,7 @@
         <div class="col-md-2 ">
              
             <div class="panel panel-default" style="border-color:#0e877f">
-                <div class="panel-heading" style="background-color:#0e877f">List Engineer</div>
+                <div class="panel-heading" style="background-color:#0e877f;color:white;">Account Executive</div>
                 <div class="panel-body">
                     
                      @foreach($accengs as $acceng)

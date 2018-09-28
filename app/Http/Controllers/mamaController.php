@@ -881,7 +881,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                                    $i++;
                                   }
                              }
-                            
                             $statusCount = count($request->status);
                             $statuses = $request->status[0];
                             if($statusCount > 1){
@@ -919,11 +918,17 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         }
         $projectBeforeUpdate = ProjectDetails::where('project_id',$id)->first();
 
-       $bapart = count($request->apart);
+        //
         if($request->apart != 0){
             $btype = implode(", ",$request->apart);
         }else{
            $btype = "null";  
+        }
+        
+        if($request->follow == "Yes"){
+            $pro = ProjectDetails::where('project_id',$id)->first();
+             $pro->follow_up_by = Auth::user()->id;
+             $pro->save();
         }
         $projectdetails = ProjectDetails::where('project_id',$id)->first();
             $projectdetails->project_name = $request->pName;
@@ -960,6 +965,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             $projectdetails->call_attended_by = Auth::user()->id;
             $projectdetails->save();
        
+
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
             'owner_email' => $request->oEmail,
@@ -2485,15 +2491,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->hrapproval = "Pending";
                         $field->logout_remark = "";
                         $field->save();
-
-
                         $text = "You Have Logged In Successfully!..";
                         return back()->with('Success',$text);
                     }
                     else{
 
                         $text = "You Have Already Logged In!..";
-                        return back()->with('Error',$text);
+                        return back()->with('success',$text);
                     }
             }
     }

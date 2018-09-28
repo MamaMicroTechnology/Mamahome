@@ -47,7 +47,6 @@
 						<th>Project Id</th>
 						<th>Project Name</th>
 						<th>Construction Type</th>
-						
 						<th>Sub-Ward</th>
 						<th>Project Status</th>
 						<th>Quality</th>
@@ -77,7 +76,9 @@
 							<td>{{ $project->project_name }}</td>
 							<td>{{ $project->construction_type }}</td>
 							
-							<td>{{ $project->sub_ward_name }}</td>
+							<td>
+								<a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" target="_blank">{{ $project->sub_ward_name }}</td>
+                                    </a>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
 							<td><a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}" target="_blank">{{ $project->address }}</a></td>
@@ -87,7 +88,7 @@
 							<td>{{ $project->budget }}</td>
 							<td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $project->project_id }}">View Image</button>
 								<div id="viewimage{{$project->project_id }}" class="modal fade" role="dialog">
-								  <div class="modal-dialog" style="width: 50%;height: 30%">
+								  <div class="modal-dialog" style="width: 40%;height: 30%">
 
 								    <!-- Modal content-->
 								    <div class="modal-content">
@@ -96,7 +97,29 @@
 								        <h4 class="modal-title">Image</h4>
 								      </div>
 								      <div class="modal-body">
-								        <img style=" height:350px; width:640px;" src="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}">
+								      	 <?php
+								      	 $images = explode(",", $project->image);
+                                               ?>
+                                                 @for($i = 0; $i < count($images); $i++)
+                                               
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br>
+                                                    
+                                                 @endfor
+                                                 <br>
+                                              @if($projectimages != null)
+                                            <p>Updated images<p><br>
+                                             @endif
+                                             @foreach($projectimages as $project)
+                                             <?php
+										      	 $images = explode(",", $project->image);
+		                                               ?>
+                                                 @for($i = 0; $i < count($images); $i++)
+                                               
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br>
+                                                    
+                                                 @endfor
+                                                 @endforeach
+
 								      </div>
 								      <div class="modal-footer">
 								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -105,9 +128,6 @@
 
 								  </div>
 							</div>
-
-
-
 							</td>
 							
 							<td>{{ $project->remarks }}</td>

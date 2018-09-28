@@ -163,6 +163,8 @@ Route::get('/RandDdashboard','HomeController@getdashboard');
 Route::post('/reportsRandD','HomeController@postdashboard');
 Route::get('/breakreport','mamaController@breakreport');
 Route::get('/holidays','mamaController@holidays');
+Route::get('/deleteward','HomeController@deleteward');
+
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -267,6 +269,8 @@ Route::post('/sms','HomeController@smstonumber');\
 Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
 Route::get('/viewwardmap','HomeController@viewwardmap');
+Route::get('/viewsubward','HomeController@viewsubward');
+
 
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
