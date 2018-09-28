@@ -1625,14 +1625,15 @@ class HomeController extends Controller
     {
 
         
-
-
+       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $tlwards = Subward::where('ward_id',$tl)->get();
+        $this->variable=$tlwards;
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1]);
+        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards]);
     }
     public function leDashboard()
     {
@@ -7846,34 +7847,56 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
+
+        $this->listingEngineer();
+         $tlwards=$this->variable;
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1]);
+        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards]);
     }
     public function viewManufacturer(Request $request)
     {
         if(Auth::user()->group_id == 22){
             return $this->viewManufacturer1($request);
         }
-        $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
+        $his = History::get();
+        $dd= $request->type;
+        if($request->type){
+            $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
                     ->get();
-                $count = count($manufacturers);
+           $count = count($manufacturers);
+                    
+         }else{
 
-        return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count]);
+        $manufacturers = Manufacturer::get();
+          $count = count($manufacturers);
+         }
+
+        return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
     }
 public function viewManufacturer1(Request $request)
     {
+
        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
        $ward = Subward::where('ward_id',$tl)->pluck('id');
-        $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
-                    ->whereIn('sub_ward_id',$ward)
+         $dd= $request->type;
+          $his = History::get();
+         if($request->type){
+            $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)
                     ->get();
-                $count = count($manufacturers);
+    $count = count($manufacturers);
+
+         }else{
+
+        $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)
+                    ->get();
+    $count = count($manufacturers);
+         }
                    
-        return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count]);
+        return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
     }
 
 

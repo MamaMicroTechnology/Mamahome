@@ -2,19 +2,25 @@
 @section('content')
 
     <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
-            <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post">
+            <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" value="{{ isset($_GET['id']) ? $_GET['id'] : '' }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
-                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Id : {{$manufacturer->id}}</span>
+                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
                              
                         </div>
                         <div class="panel-body">
-                             <center> <label id="headingPanel"> Manufacturer Details</label></center><br>
+                             <center> <label id="headingPanel"> Manufacturer Details</label></center>
                             <table class="table table-hover">
+                                <tr>
+                                    <td>Manufacturer Id</td>
+                                    <td>:</td>
+                                    <td>{{$manufacturer->id}}</td>
+
+                                </tr>
                                 <tr>
                                     <td>Manufacturer Type</td>
                                     <td>:</td>
@@ -78,6 +84,30 @@
                                         <input value="{{ $manufacturer->address }}" required placeholder="Address" type="text" name="address" id="address" class="form-control">
                                     </td>
                                 </tr>
+
+                       <tr>
+                                   <td>Manufacturer Image</td>
+                                   <td>:</td>
+                                    <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
+                            
+                                          <?php
+                                               $images = explode(",", $manufacturer->image);
+                                               ?>
+                                             
+                                             <div class="row">
+
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/Manufacturerimage/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
+                                   </td>
+                               </tr>
+
+                             
+
+
                                 <tr>
                                     <td>Total Area</td>
                                     <td>:</td>
