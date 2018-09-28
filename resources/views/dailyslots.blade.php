@@ -352,7 +352,9 @@
                                 var head = "<tr><td>";
                             }
                             document.getElementById('mainPanel').innerHTML +=
-                            head + response[0][i].sub_ward_name+
+                            head + "<a href='{{URL::to('/')}}/viewsubward?projectId="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"
+                                +response[0][i].sub_ward_name+
+                            "</a>"+
                             "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -422,7 +424,9 @@
                                 var head = "<tr><td>";
                             }
                             document.getElementById('mainPanel').innerHTML +=
-                            head+response[0][i].sub_ward_name+
+                            head+ "<a href='{{URL::to('/')}}/viewsubward?projectId="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"
+                                +response[0][i].sub_ward_name+
+                            "</a>"+
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
