@@ -4,11 +4,10 @@
 <div class="col-md-12">
     <div class="panel panel-default" style="border-color:green;"> 
                 <div class="panel-heading text-center" style="background-color: green;color:white;">Projects To Be Updated
-                  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
                 @if($totalproject != 0)
                  <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
                Count : <b>{{ $totalproject }}</b>
-                <p class="pull-right"> Projects Not Been Updated In 30 Days.</p>
+                <p class="pull-right"> Projects Not Been Updated In 45 Days.</p>
                 @endif
 
                     @if(session('ErrorFile'))
@@ -16,15 +15,13 @@
                     @endif 
                 </div>
                 <div class="panel-body">
-                <div class="col-md-12">
+                    <div class="col-md-12">
                     <form method="GET" action="{{ URL::to('/') }}/Unupdated">
                         <div class="col-md-2">
                 <label>Choose Ward :</label><br>
                           <select name="ward" class="form-control" id="ward" onchange="loadsubwards()">
                               <option value="">--Select--</option>
-                              @if(Auth::user()->group_id != 22)
                               <option value="All">All</option>
-                              @endif
                               @foreach($wards as $ward)
                               <option value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
                               @endforeach
@@ -37,12 +34,108 @@
               </div>
               <div class="col-md-2">
                 <label></label>
-                <input type="button" value="Select Status" style="background-color:#444743;color:white;"  class="form-control btn btn-primary" data-toggle="modal" data-target="#myModal">
+                <input type="button" value="Select Status" style="background-color:#444743;color:white;"  class="form-control btn btn-primary" data-toggle="modal" data-target="#unupdate">
               </div>
               <div class="col-md-2">
                 <label></label>
                 <input type="submit" value="Fetch" class="form-control btn btn-primary">
               </div>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="unupdate" role="dialog">
+                    <div class="modal-dialog">
+                    
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header" style="background-color: #478229;color: white;">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Project Status</h4>
+                        </div>
+                        <div class="modal-body">
+                          
+
+                             <div class="col-sm-12">
+                                    <div class="col-md-3" >
+                                            <label class="checkbox-inline">
+                                              <input style="width: 33px;" id="planning" type="checkbox"  name="status[]" value="Planning"><span>&nbsp;&nbsp;&nbsp;</span>Planning
+                                            </label>
+                                          
+                                             <label class="checkbox-inline">
+                                              <input id="digging" type="checkbox"  name="status[]" value="Digging">Digging
+                                            </label>
+                                          
+                                             <label class="checkbox-inline">
+                                              <input id="foundation" type="checkbox"  name="status[]" value="Foundation">Foundation
+                                            </label>
+                                         
+                                             <label class="checkbox-inline">
+                                              <input id="pillars" type="checkbox"  name="status[]" value="Pillars">Pillars
+                                            </label>
+
+                                            <label class="checkbox-inline">
+                                            <input id="walls" type="checkbox"  name="status[]" value="Walls">Walls
+                                          </label>
+                                          </div>
+                                         <div class="col-md-3">
+                                          
+                                          <label class="checkbox-inline">
+                                          <input id="roofing" style="width: 33px;" type="checkbox"  name="status[]" value="Roofing"><span>&nbsp;&nbsp;&nbsp;</span>Roofing
+                                        </label>
+                                       
+                                          <label class="checkbox-inline">
+                                          <input id="electrical" type="checkbox"  name="status[]" value="Electrical">Electrical
+                                        </label>
+                                       
+                                          <label class="checkbox-inline">
+                                          <input id="plumbing" type="checkbox"  name="status[]" value="Plumbing">Plumbing
+                                        </label>
+
+                                        <label class="checkbox-inline">
+                                          <input id="plastering" type="checkbox"  name="status[]" value="Plastering">Plastering
+                                        </label>
+                                       
+                                          <label class="checkbox-inline">
+                                          <input id="flooring" type="checkbox"  name="status[]" value="Flooring">Flooring
+                                        </label>
+
+                                      </div>
+                                       <div class="col-md-3">
+                                        
+                                          <label class="checkbox-inline">
+                                          <input id="carpentry" style="width: 33px;" type="checkbox"  name="status[]" value="Carpentry"><span>&nbsp;&nbsp;&nbsp;</span>Carpentry
+                                        </label>
+                                       
+                                          <label class="checkbox-inline">
+                                          <input id="paintings" type="checkbox"  name="status[]" value="Paintings">Paintings
+                                        </label>
+
+                                        <label class="checkbox-inline">
+                                          <input id="fixtures" type="checkbox"  name="status[]" value="Fixtures">Fixtures
+                                        </label>
+                                      
+                                          <label class="checkbox-inline">
+                                          <input id="completion" type="checkbox"  name="status[]" value="Completion">Completion
+                                        </label>
+                                        
+                                          <label class="checkbox-inline">
+                                          <input id="closed" type="checkbox"  name="status[]" value="Closed">Closed
+                                        </label>
+                                       </div>
+                                 </div>
+                             
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <!-- modal end -->
+                  </div>
+
+
+
 
           </form>
           </div>
