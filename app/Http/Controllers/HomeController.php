@@ -86,11 +86,6 @@ use App\Manufacturer;
 use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
-<<<<<<< HEAD
-use Spatie\Activitylog\Models\Activity;
-
-=======
->>>>>>> chaithra
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
