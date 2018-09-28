@@ -3009,14 +3009,19 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function saveUpdatedManufacturer(Request $request)
     {
+        if(Auth::user()->group_id == 22){
+            $wardsAssigned = $request->subward;
+        }else{
+            
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        }
        
        if($request->production){
             $pro = implode(",",$request->production);
            }else{
             $pro = "null";
            }
-$projectimage = "";
+              $projectimage = "";
            
                     if($request->pImage){
                         if($request->pImage != null){
@@ -3040,7 +3045,7 @@ $projectimage = "";
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
         $manufacturer->image = $projectimage;
-
+       
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
