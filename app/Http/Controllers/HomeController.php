@@ -1863,7 +1863,12 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $projectdetails = ProjectDetails::where('project_id',$request->projectId)->first();
         $projectimages = ProjectImage::where('project_id',$request->projectId)->get();
         $projectupdate = ProjectImage::where('project_id',$request->projectId)->pluck('created_at')->last();
+        if(Auth::user()->group_id == 22){
+           $wardsAssigned = $request->subward; 
+        }else{
+            
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+        }
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         $roomtypes = RoomType::where('project_id',$request->projectId)->get();
         $projectward = SubWard::where('id',$projectdetails->sub_ward_id)->pluck('sub_ward_name')->first();

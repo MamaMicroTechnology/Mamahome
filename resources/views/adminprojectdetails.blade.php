@@ -79,11 +79,11 @@
                         </tr>
                         <tr>
                             <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
-                            <td>{{ $details->interested_in_doorsandwindows }}</td>
+                            <td>{{ $rec->interested_in_doorsandwindows }}</td>
                         </tr>
                         <tr>
                             <td><b>Interested In Brila Super / Ultratech Products? : </b></td>
-                            <td>{{ $details->brilaultra }}</td>
+                            <td>{{ $rec->brilaultra }}</td>
                         </tr>
                          <tr>
                             <td><b>Interested in Premium Products ? : </b></td>
