@@ -2,17 +2,23 @@
 @section('content')
 
     <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
-            <form action="{{ URL::to('/') }}/saveManufacturer" onsubmit="return validate()" method="post">
+            <form action="{{ URL::to('/') }}/saveManufacturer" onsubmit="return validate()" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-default">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:#939598;">
-                             @if(!$subwards)
-                  No Subward assigned
+                             @if(Auth::user()->group_id == 22)
+                  
+                     <select class="form-control" style="width:20%" name="tlward">
+                       <option value="">Select SubWard</option>
+                       @foreach($tlwards as $wa)
+                       <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
+                       @endforeach
+                     </select>
                   @else
                  <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
                   @endif
-                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
+                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;margin-top:-25px;"></div>
                             
                         </div>
                         <div class="panel-body">
@@ -80,7 +86,11 @@
                                     </td>
                                 </tr> -->
                 
-                                  
+                                   <tr>
+                                   <td>Project Images</td>
+                                   <td>:</td>
+                                   <td><input id="pImage" oninput="fileuploadimage()" required type="file" accept="image/*" class="form-control input-sm" name="pImage[]" onchange="validateFileType()" multiple><p id="errormsg"></p></td>
+                               </tr>
                               
 
                                 <tr>
@@ -694,6 +704,15 @@ function openCity(evt, cityName) {
 @if(session('Success'))
 <script>
     swal("success","{{ session('Success') }}","success");
+</script>
+<script type="text/javascript">
+    function fileuploadimage(){ 
+      var count = document.getElementById('pImage').files.length;
+      if(count > 4){
+        document.getElementById('pImage').value="";
+        alert('You are allowed to upload a maximum of 4 files');
+      }
+    }
 </script>
 
 @endif

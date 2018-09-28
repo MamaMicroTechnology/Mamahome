@@ -580,8 +580,13 @@ class mamaController extends Controller
                 }
         
             }
-           
-            $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+              if(Auth::user()->group_id == 22){
+                $ward = $request->tlward;
+              }else{
+
+                $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+              }
+
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
             $projectdetails->project_name = $request->pName;
@@ -2136,17 +2141,43 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
    
     public function postSaveManufacturer(Request $request)
     {
+        
+
+             if(Auth::user()->group_id == 22){
+                  $wardsAssigned = $request->tlward;
+             }else{
+                
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+             }
+
 
            if($request->production){
             $pro = implode(",",$request->production);
            }else{
             $pro = "null";
            }
+        $projectimage = "";
+            $i = 0;
+            if($request->pImage){
+                foreach($request->pImage as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                     if($i == 0){
+                        $projectimage .= $imageName3;
+                     }
+                     else{
+                            $projectimage .= ",".$imageName3;
+                     }
+                     $i++;
+                }
+        
+            }
 
         $manufacturer = new Manufacturer;
         $manufacturer->listing_engineer_id = Auth::user()->id;
         $manufacturer->name = $request->name;
+        $manufacturer->image = $projectimage;
+
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
@@ -2925,9 +2956,31 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
            }else{
             $pro = "null";
            }
+$projectimage = "";
+           
+                    if($request->pImage){
+                        if($request->pImage != null){
+                                   $i = 0;
+                                    $projectimage = ""; 
 
+                                    foreach($request->pImage as $pimage){
+                                         $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                                         $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                                    
+                                           if($i == 0){
+                                                $projectimage .= $imageName3;
+                                           }
+                                           else{
+                                                $projectimage .= ",".$imageName3;
+                                           }
+                                   $i++;
+                                  }
+                             }
+                         }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
+        $manufacturer->image = $projectimage;
+
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;

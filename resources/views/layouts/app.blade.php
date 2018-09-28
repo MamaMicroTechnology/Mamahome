@@ -1174,6 +1174,8 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+      
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
@@ -1201,12 +1203,7 @@ function myTimer() {
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
               <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
         </div>  
-        <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
-    <div id="manufacturer_details" class="collapse">
-       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
-        <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
-        <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a>
-    </div> 
+       
      <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
