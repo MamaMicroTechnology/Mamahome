@@ -14,11 +14,8 @@
             <p class="pull-right">{{ date('d-m-Y',strtotime($projection)) }} to {{ date('d-m-Y',strtotime($toDate)) }}</p>
         </div>
         <div class="panel-body">
-            <?php $time = strtotime($projection);
-                $from = date_create($projection);
-                $to = date_create($toDate);
-                $diff = date_diff($from,$to);
-                $cal = $diff->format("%a");
+            <?php
+                $dates = explode(",",$projection);
             ?>
             <?php
                 $transactionalProfit = $percent = isset($_GET['percent']) ? $_GET['percent'] : '';
@@ -29,18 +26,18 @@
                     <th style="text-align:center">Daily Target</th>
                     <th style="text-align:center">Daily Transactional Profit</th>
                 </tr>
+                @for($i = 0; $i < count($dates); $i++)
                 <tr>
-                    <th style="text-align:center;">{{ date('d-M-Y',strtotime($projection)) }}</th>
+                    <th style="text-align:center">{{ date('d-M-Y',strtotime($dates[$i])) }}</th>
+                    <th style='text-align:center'>{{ number_format($totalTarget / count($dates)) }}</th>
+                    <th style='text-align:center'>{{ number_format($totalTP / count($dates)) }}</th>
+                </tr>
+                @endfor
+                <tr>
+                    <th style="text-align:center;">Total</th>
                     <th style='text-align:center'>{{ number_format($totalTarget) }}</th>
                     <th style='text-align:center'>{{ number_format($totalTP) }}</th>
                 </tr>
-                @for($i = 1; $i < $cal; $i++)
-                <tr>
-                    <th style="text-align:center">{{ date('d-M-Y',strtotime('+'.$i.' days',$time)) }}</th>
-                    <th style='text-align:center'>{{ number_format($totalTarget / $cal) }}</th>
-                    <th style='text-align:center'>{{ number_format($totalTP / $cal) }}</th>
-                </tr>
-                @endfor
             </table>
         </div>
     </div>

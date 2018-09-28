@@ -194,7 +194,7 @@
                         <td style="font-size: 10px;">{{$tlacount}}</td>
                         <td style="font-size: 10px;">{{ $tlaupcount}}</td>
                         <td style="font-size: 10px;">{{ $tlAcRMCcount}}</td>
-                        <td style="font-size: 10px;">{{ $tlAcBlockscount}}</td>
+                        <td style="font-size: 10px;">{{ $tlAcBlocksCount}}</td>
                         <td style="font-size: 10px;"></td>
                     </tr>
                     @endif
