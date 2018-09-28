@@ -83,10 +83,14 @@ use App\NumberOfZones;
 use App\Pricing;
 use GuzzleHttp\Client;
 use App\Manufacturer;
+use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
+<<<<<<< HEAD
 use Spatie\Activitylog\Models\Activity;
 
+=======
+>>>>>>> chaithra
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -1993,9 +1997,9 @@ $fake1 = ProjectDetails::where('quality','Fake')
 
     public function getMyReports(Request $request)
     {
-         $date=date('Y-m-d');
+        $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
-         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
+        $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $now = date('H:i:s');
         $currentURL = url()->current();;
         $display = "";
@@ -3559,7 +3563,7 @@ date_default_timezone_set("Asia/Kolkata");
     {
 
 
-        $totalListing = array();
+       $totalListing = array();
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
@@ -4273,17 +4277,11 @@ date_default_timezone_set("Asia/Kolkata");
             $today = date('Y-m');
         }
         $user = User::where('employeeId',$id)->first();
-        $attendances = attendance::where('empId',$id)
-                    ->where('created_at','LIKE',$today.'%')
-                    ->orderby('date')
-                    ->get();
-        // $userid = User::where('employeeId',$id)->pluck('id')->first();
-        // $attendances = FieldLogin::where('user_id',$userid)
+        // $attendances = attendance::where('empId',$id)
         //             ->where('created_at','LIKE',$today.'%')
-        //             ->orderby('logindate')
-        //             ->get();
-
-            
+        //             ->orderby('date')
+        //             ->get();   
+        $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
     public function forgotPw(){
@@ -4347,16 +4345,57 @@ date_default_timezone_set("Asia/Kolkata");
     //     return view('followupproject',['projects'=>$projects]);
     // }
 
+    // public function followup(Request $request){
+    //     $today = date('Y-m-d');
+    //     $from = $request->from;
+    //     $to = $request->to;
+
+
+
+
+
+    //                   if($request->from && $request->to)
+    //                   {
+    //                         $from = $request->from;
+    //                         $to = $request->to;
+    //                         if($from == $to)
+    //                          {
+    //                                 $projects = ProjectDetails::
+    //                                 where('follow_up_by',Auth::user()->id)
+    //                                 ->where('follow_up_date','>=',$from)
+    //                                 ->where('follow_up_date','<=',$to)
+    //                                  ->paginate(10);
+    //                          }
+    //                          else{
+
+    //                                 $projects = ProjectDetails::
+    //                                 where('follow_up_by',Auth::user()->id)
+    //                                 ->where('follow_up_date','>=',$from)
+    //                                 ->where('follow_up_date','<=',$to)
+    //                                  ->paginate(10);
+
+
+    //                          }
+
+
+    //                   }
+
+    //                   else
+    //                   {
+    //                             $projects = ProjectDetails::where('follow_up_date','LIKE',$today."%")
+    //                             ->where('follow_up_by',Auth::user()->id)
+
+    //                             ->paginate(10);
+
+    //                   }
+
+    // return view('followup',['projects'=>$projects]);
+    // }
     public function followup(Request $request){
         $today = date('Y-m-d');
         $from = $request->from;
         $to = $request->to;
-
-
-
-
-
-                      if($request->from && $request->to)
+        if($request->from && $request->to)
                       {
                             $from = $request->from;
                             $to = $request->to;
@@ -4381,17 +4420,10 @@ date_default_timezone_set("Asia/Kolkata");
 
 
                       }
-
-                      else
-                      {
-                                $projects = ProjectDetails::where('follow_up_date','LIKE',$today."%")
-                                ->where('follow_up_by',Auth::user()->id)
-
-                                ->paginate(10);
-
-                      }
-
-    return view('followup',['projects'=>$projects]);
+        else{
+        $projects = ProjectDetails::where('followup',"yes")->where('follow_up_by',Auth::user()->id)->get();
+        }
+        return view('followup',['projects'=>$projects]);
     }
     public function confirmedProject(Request $request){
 
@@ -4955,16 +4987,15 @@ date_default_timezone_set("Asia/Kolkata");
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
                             ->get();
-             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
+            $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
         }elseif(!$request->subward && $request->ward){
             if($request->ward == "All"){
             $projects = ProjectDetails::leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            
                             ->get();
-                 $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
+            $projectimages = ProjectImage::whereIn('project_id',$ids)->get();        
             }
             else{
                  $subwards = SubWard::where('ward_id',$request->ward)->get()->pluck('id');
@@ -4974,7 +5005,7 @@ date_default_timezone_set("Asia/Kolkata");
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             ->get();
-                 $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
+            $projectimages = ProjectImage::whereIn('project_id',$ids)->get();                
             }
            
         }
@@ -5071,8 +5102,9 @@ date_default_timezone_set("Asia/Kolkata");
 
             return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>$projects,'wards'=>$wards,'users'=>$users,'updater'=>$updater,'projectimages'=>$projectimages]);
         }else{
-            
-            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None"]);
+           
+        $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
+            return view('viewallprojects',['wards'=>$wards,'users'=>$users,'projects'=>"None",'projectimages'=>$projectimages]);
         }
     }
 
@@ -6264,7 +6296,7 @@ public function projectstore(request $request)
 $check = AssignStage::where('user_id',$request->user_id)->first();
 
 
-if(count($check) == 0){
+if($check == null){
 
         $projectassign = new AssignStage;
 
@@ -6396,41 +6428,42 @@ public function reject(request $request){
 
 public function enquirywise(request $request){
 
-if(Auth::user()->group_id != 22){
-    return $this->enquirywise1($request);
-}
+        if(Auth::user()->group_id != 22){
+            return $this->enquirywise1($request);
+        }
 
-   $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-   $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
-  $userIds = explode(",", $tl);
+           $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+           $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+          $userIds = explode(",", $tl);
 
- $wards = Ward::where('wards.id',$tlward)->get();
- $depts = [17,6];
- $wardsAndSub = [];
- $users = User::whereIn('users.group_id',$depts)
-              ->leftjoin('departments','departments.id','users.department_id')
-              ->leftjoin('groups','groups.id','users.group_id')
-              ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
-
-   $tlUsers = User::whereIn('users.id',$userIds)
-              ->leftjoin('departments','departments.id','users.department_id')
-              ->leftjoin('groups','groups.id','users.group_id')
-              ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
-                $category = Category::all();
-                $brands = brand::all();
-                $sub = SubCategory::all();
-                foreach($wards as $ward){
-                    $subward = SubWard::where('ward_id',$ward->id)->get();
-                    array_push($wardsAndSub,['ward'=>$ward->id,'subwards'=>$subward]);
-                }
+         $wards = Ward::where('wards.id',$tlward)->get();
+         $depts = [17,6];
+         $wardsAndSub = []; 
+         $users = User::whereIn('users.group_id',$depts)
+                      ->leftjoin('departments','departments.id','users.department_id')
+                      ->leftjoin('groups','groups.id','users.group_id')
+                      ->select('users.*','departments.dept_name','groups.group_name')->get();
+      
+           $tlUsers = User::whereIn('users.id',$userIds)
+                      ->leftjoin('departments','departments.id','users.department_id')
+                      ->leftjoin('groups','groups.id','users.group_id')
+                      ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
+                        $category = Category::all();
+                        $brands = brand::all();
+                        $sub = SubCategory::all();
+                        foreach($wards as $ward){
+                            $subward = SubWard::where('ward_id',$ward->id)->get();
+                            array_push($wardsAndSub,['ward'=>$ward->id,'subwards'=>$subward]);
+                        }
     return view('/assign_enquiry',['wardsAndSub'=>$wardsAndSub, 'users'=>$users,'sub'=>$sub,'wards'=> $wards,'category'=>$category,'brands'=>$brands,'tlUsers'=>$tlUsers ]);
 }
 
 public function enquirywise1(request $request){
 
- $depts = [17,6];
+ $depts = [17,6,7];
  $wardsAndSub = [];
  $users = User::whereIn('users.group_id',$depts)
+              ->where('department_id','!=',10)
               ->leftjoin('departments','departments.id','users.department_id')
               ->leftjoin('groups','groups.id','users.group_id')
               ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
@@ -6485,7 +6518,7 @@ function enquirystore(request $request){
     //     $sub = "null";
     // }
         $check = Assignenquiry::where('user_id',$request->user_id)->first();
-        if(count($check) == 0){
+        if($check == null){
             $enquiry = new Assignenquiry;
             $enquiry ->user_id = $request->user_id;
             $enquiry->ward = $wards;
@@ -6505,7 +6538,7 @@ function enquirystore(request $request){
             // $check->sub=$sub;
             $check->save();
         }
-        return redirect()->back()->with('success','Assig enquiry successfully');
+        return redirect()->back()->with('success','Enquiry Assigned Successfully');
     }
     public function enqwise(Request $request){
         $date=date('Y-m-d');
@@ -7344,7 +7377,7 @@ public function display(request $request){
                         ->get();
         if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
-            // dd($subwardMap);
+            
         }else{
             $subwardMap = "None";
         }
@@ -7352,7 +7385,24 @@ public function display(request $request){
             $subwardMap = "None";
         }
         return view('viewwardmap',['subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
+    }
+    public function viewsubward(Request $request){
+                $subwardid = SubWard::where('sub_ward_name',$request->subward)->pluck('id');
+                $subwardMap = SubWardMap::where('sub_ward_id',$subwardid)->first();
+               
+                $projects = ProjectDetails::where('project_details.project_id',$request->projectid)
+                        ->leftjoin('site_addresses','project_details.project_id','=','site_addresses.project_id')
+                        ->select('site_addresses.*')
+                        ->get();   
 
+             return view('viewsubward',['projects'=>$projects,'subwardMap'=>$subwardMap]);            
+    }
+    public function manufacturemap(Request $request){
+                $name = SubWard::where('id',$request->subwardid)->pluck('sub_ward_name')->first();
+                $subwardMap = SubWardMap::where('sub_ward_id',$request->subwardid)->first();
+                $projects = Manufacturer::where('id',$request->id)
+                        ->get();   
+             return view('manufacturemap',['projects'=>$projects,'subwardMap'=>$subwardMap,'name'=>$name]);
     }
     public function Unupdated(Request $request){
     if(Auth::user()->group_id == 22){
@@ -8134,6 +8184,7 @@ public function viewManufacturer1(Request $request)
     return array(
         'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);
   }
+  public function deleteward(Request $request){
 
  public function enqticket(request $request)
     {

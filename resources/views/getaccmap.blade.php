@@ -1,6 +1,6 @@
 <div class="panel panel-default" style="border-color:#0e877f">
 <div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white">
- {{ $ward}}
+ <div style="margin-left: 20px;">{{ $ward ? $ward : "No Ward"}} {{ isset($_GET['$ward']) ? date('d/m/Y', strtotime($_GET['$ward'])) : '' }}</div>
  <div style="margin-left: 600px;margin-top: -20;" id="currentTime" ></div>
 </div><br>
 <div style="margin-left: 600px;" class="col-md-2">
@@ -39,8 +39,8 @@
   <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
   <b>Approved By :</b><br><br>
   @endforeach
-     <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br>
-     <br><br>
+     <!-- <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}} -->
+     <br><br><br>
 </div>
 <br><br>
 <div  class="panel-body" style="height:500px;max-height:500px">
@@ -134,8 +134,13 @@
     @endif
 
 
+   @if($subwardMap != "None")
     var lat = newpath[0].lat;
     var lon = newpath[1].lng;
+    @else
+    var lat = "12.9716";
+    var lon = "77.5946";
+    @endif
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 12,
       center: new google.maps.LatLng(lat, lon),

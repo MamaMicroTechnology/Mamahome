@@ -102,8 +102,8 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             <label class="checkbox-inline">
                             
                                
-                                <input onclick="countthis('{{$cat->id}}')" type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"  name="quan[]" class="form-control">
+                                <input type="checkbox"  name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="" >{{ $subcategory->sub_cat_name}}
+                                <input type="text" placeholder="Quantity"  id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"   name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -174,37 +174,40 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Billing And Shipping Address </h4>
+      <div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" >Billing And Shipping Address </h4>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-       
-        <label>Blling Adderss</label>
-            <textarea required class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;">
-        </textarea>
-            
+        <label>Billing Address</label>
+            <textarea required id="val"  class="form-control" type="text" name="billadress" cols="50" rows="5" style="resize:none;">
+        </textarea>  
        <br>
-        <label>Shipping Adderss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br><br>
+
         <div class="col-md-12">
             <div class="col-md-9">
-               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;&nbsp;same Address</label><br><br>
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;same as above</label><br><br>
             </div>
             
         </div>
-        <label id="sp1">Shipping Adderss</label>
-            <textarea  required class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;">
+        <label id="sp1">Shipping Address</label>
+            <textarea  required class="form-control" id="sp" type="text" name="ship" cols="50" rows="5" style="resize:none;">
         </textarea>
            <script type="text/javascript">
                function myfunction(){
-          
+                var ans = document.getElementById('val').value;
+               
+                if(ans){
                 document.getElementById('sp').style.display = "none";
                 document.getElementById('sp1').style.display = "none";
+                }
+                else{
+                    alert("You Have Not Entered Billing Address");
+                    document.getElementById('ss').checked = false;
+                }
                }
-
-
            </script> 
        <br>
         </div>
@@ -457,7 +460,11 @@ function submitinputview(){
             document.getElementById("sub").submit();
         }
 }
+// function countthis(arg){
 
+//     return arg.
+    
+// }
+</script>
 
 @endsection
-
