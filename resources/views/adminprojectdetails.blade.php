@@ -15,7 +15,7 @@
                     <table class="table table-responsive table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td style="width:40%"><b> : </b></td>
+                            <td style="width:40%"><b>Listed On: </b></td>
                             
                             <td>{{ date('d-m-Y h:i:s A',strtotime($rec->created_at)) }}</td>
                         </tr>
@@ -76,6 +76,14 @@
                          <tr>
                             <td><b>Interested in Home Automation ? : </b></td>
                             <td>{{ $rec->automation }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
+                            <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested In Brila Super / Ultratech Products? : </b></td>
+                            <td>{{ $details->brilaultra }}</td>
                         </tr>
                          <tr>
                             <td><b>Interested in Premium Products ? : </b></td>
@@ -161,12 +169,8 @@
                                   @else
                                       <td>{{ date('d-m-Y h:i:s A', strtotime($projectupdate))}}</td>
                                   @endif
-                                 
-                                 
                                </tr>
-
                         <tr>
-
                         <tr>
                             <td style="width:40%"><b>Followup Started : </b></td>
                             <td>{{ $rec->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>

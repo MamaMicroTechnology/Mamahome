@@ -113,7 +113,7 @@
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">Ward Name</th>
+							<th style="text-align: center">SubWard Number</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
@@ -175,7 +175,8 @@
 
                                @foreach($wards as $ward)
                                  @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : '') )
-                                 {{$ward->sub_ward_name}}
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
+                                    {{$ward->sub_ward_name}}</a></td>
                                   @endif
                                @endforeach
 

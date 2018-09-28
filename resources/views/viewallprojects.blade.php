@@ -77,8 +77,8 @@
 							<td>{{ $project->construction_type }}</td>
 							
 							<td>
-								<a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" target="_blank">{{ $project->sub_ward_name }}</td>
-                                    </a>
+								<a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->sub_ward_name }}
+                                    </a></td>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
 							<td><a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}" target="_blank">{{ $project->address }}</a></td>
@@ -209,4 +209,12 @@
 	        });    
 	    }
 	</script>
+	<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+
+</script>
 @endsection

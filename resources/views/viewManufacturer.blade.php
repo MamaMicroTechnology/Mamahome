@@ -53,7 +53,7 @@ tr:nth-child(even) {
             <tr>
                 <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}">{{$manufacturer->id}}</a></td>
                 <td>
-                      <a href="{{ URL::to('/')}}/manufacturemap?id={{ $manufacturer->id }} && subwardid={{ $manufacturer->sub_ward_id }}" target="_blank">
+                      <a href="{{ URL::to('/')}}/manufacturemap?id={{ $manufacturer->id }} && subwardid={{ $manufacturer->sub_ward_id }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">
                     {{$manufacturer->subward != null ? $manufacturer->subward->sub_ward_name :'' }}
                                     </a> 
                 </td>
@@ -293,4 +293,12 @@ tr:nth-child(even) {
     </div>
 </div>
 </div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+
+</script>
 @endsection
