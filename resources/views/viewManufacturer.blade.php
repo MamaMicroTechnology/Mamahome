@@ -13,9 +13,6 @@
                      <option value="M-SAND">M-SAND</option>
                      <option value="AGGREGATES">AGGREGATES</option>
                  </select>
-                
-                    
-                
             </div>
             <div class="panel-body" style="overflow-x: auto">
         <style>
@@ -48,40 +45,52 @@ tr:nth-child(even) {
             <th>Sand Requirement</th>
             <th>Aggregates Requirement</th>
             <th>Remarks</th>
-            <th style="width:400px;"></th>
-            <th></th>
-           <!--  <th>Name</th>
-            <th>Phone Number 1</th>
-            <th>Phone Number 2</th>
-
-            <th>Address</th>
-            <th>Area</th>
-            <th>Capacity</th>
-            <th>Present Utilization</th>
-            <th>Prefered Cement Brand</th>
-            <th>Deliverability</th>
-            @if(isset($_GET['type']) && $_GET['type'] == "Blocks")
-            <th>Manufacturing Type</th>
-            @endif
-            <th>Payment Mode</th>
-            <th>Products</th>
-            <th>Payment Method</th>
-           <th></th> -->
-            
+            <th style="width:400px;padding-left: 100px;">Action</th>
+            <th>History</th>  
         </tr>
     </thead>
         @foreach($manufacturers as $manufacturer)
             <tr>
                 <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}">{{$manufacturer->id}}</a></td>
                 <td>
-                                    <a href="{{ URL::to('/')}}/viewwardmap?UserId={{ $manufacturer->id }} && wardname={{ $manufacturer->sub_ward_id }}" target="_blank">
+                      <a href="{{ URL::to('/')}}/manufacturemap?id={{ $manufacturer->id }} && subwardid={{ $manufacturer->sub_ward_id }}" target="_blank">
                     {{$manufacturer->subward != null ? $manufacturer->subward->sub_ward_name :'' }}
                                     </a> 
                 </td>
                
                 <td> {{$manufacturer->user != null ? $manufacturer->user->name :'' }}</td>
                 <td>{{ $manufacturer->plant_name }}</td>
-                <td> <a href="#" class="btn btn-primary btn-xm" >View Image</a></td>
+               <!--  <td> <a href="#" class="btn btn-primary btn-xm" >View Image</a></td> -->
+                            <td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $manufacturer->id }}">View Image</button>
+                <div id="viewimage{{$manufacturer->id}}" class="modal fade" role="dialog">
+                  <div class="modal-dialog" style="width: 40%;height: 30%">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header" style="background-color: green;color:white;">
+                        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+                        <h4 class="modal-title">Image</h4>
+                      </div>
+                      <div class="modal-body">
+                         <?php
+                         $images = explode(",", $manufacturer->image);
+                                               ?>
+                                                 @for($i = 0; $i < count($images); $i++)
+                                               
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/Manufacturerimage/{{ $images[$i] }}" ><br>
+                                                    
+                                                 @endfor
+                                                
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+
+                  </div>
+              </div>
+              </td>
                 <td>{{ $manufacturer->cement_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->sand_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer-> aggregates_required }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
@@ -196,7 +205,7 @@ tr:nth-child(even) {
         @endforeach
         </table>
         @foreach($manufacturers as $project)
-<div class="modal fade" id="myModal1{{$manufacturer->id}}" role="dialog">
+<div class="modal fade" id="myModal1{{$project->id}}" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->

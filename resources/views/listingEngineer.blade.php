@@ -449,7 +449,6 @@
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
 </div>
-
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;">
@@ -474,7 +473,6 @@
                                </tr>
                            </table>
 </div>
-
 <div id="contractor" class="tabcontent" style="display: none;padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;"><br>
@@ -1562,6 +1560,7 @@ function validateForm(arg)
       $("#Material").modal('show');
   });
 </script>
-
 @endif
+<script>
+swal("Hello world!");</script>
 @endsection

@@ -2,10 +2,10 @@
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading" style="background-color: green;"><p style="color: white">Project Details </p>
-				@if($projects != "None")
-					({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)
-				@endif
+			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects : {{ count($projects) }}</p>
+				<!-- @if($projects != "None")
+					<p style="coloe:white;">({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)<p>
+				@endif -->
 				  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
@@ -47,8 +47,7 @@
 						<th>Project Id</th>
 						<th>Project Name</th>
 						<th>Construction Type</th>
-						
-						<th>Sub-Ward</th>
+						<th>Sub-Ward Number</th>
 						<th>Project Status</th>
 						<th>Quality</th>
 						<th>Address</th>
@@ -77,7 +76,9 @@
 							<td>{{ $project->project_name }}</td>
 							<td>{{ $project->construction_type }}</td>
 							
-							<td>{{ $project->sub_ward_name }}</td>
+							<td>
+								<a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" target="_blank">{{ $project->sub_ward_name }}</td>
+                                    </a>
 							<td>{{ $project->project_status }}</td>
 							<td>{{ $project->quality }}</td>
 							<td><a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}" target="_blank">{{ $project->address }}</a></td>
@@ -95,9 +96,7 @@
 								        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
 								        <h4 class="modal-title">Image</h4>
 								      </div>
-								      
-                                             
-								    <div class="modal-body">
+								      <div class="modal-body">
 								      	 <?php
 								      	 $images = explode(",", $project->image);
                                                ?>
@@ -108,7 +107,7 @@
                                                  @endfor
                                                  <br>
                                               @if($projectimages != null)
-                                            <p> Updated images<p><br>
+                                            <p>Updated images<p><br>
                                              @endif
                                              @foreach($projectimages as $project)
                                              <?php

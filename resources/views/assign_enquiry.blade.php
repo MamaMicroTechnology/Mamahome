@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -18,9 +17,7 @@
 
   {{ csrf_field() }}
              <table class="table table-responsive table-striped table-hover" class="table">
-               @if (session()->has('success'))
-                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
-                    @endif
+              
                         <thead>
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Designation</th>
@@ -56,9 +53,9 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header" style="background-color: rgb(244, 129, 31);padding:5px;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Select Wards and category's</h4>
+      <div class="modal-header" style="background-color:#f4811f;color:white;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select Ward and Category</h4>
       </div>
       <div class="modal-body" >
         <div id="first">
@@ -99,7 +96,6 @@
   <div class="row">
         <h4>&nbsp;&nbsp; Select Category</h4>
        @foreach($category as $cat)
-      
          <div class="col-sm-4">
          <label>
        <input type="checkbox" id="cat{{ $cat->id }}" onclick = "displaybrand( {{ $cat->id }})"; style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
@@ -134,8 +130,13 @@
 </div> 
    <!-- model -->
   
- @endsection          
+@if(session('message'))
+<script>
+    swal("success","{{ session('message') }}","success");
+</script>
+@endif
 
+ @endsection          
  <script type="text/javascript">
 
 function hide(arg){
@@ -178,10 +179,20 @@ var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
 </script>   
 <script>
 function displaybrand(arg){
+
     if(document.getElementById('cat'+arg).checked == true){
         document.getElementById('brand'+arg).className="";
     }else{
         document.getElementById('brand'+arg).className = "hidden";
+    }
+}
+function submitassign(){
+  alert();
+    if(document.getElementById('cat').checked == true){
+      alert("1");
+       
+    }else{
+       alert("2");
     }
 }
 </script>  
