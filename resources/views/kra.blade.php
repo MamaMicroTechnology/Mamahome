@@ -13,7 +13,7 @@
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color: green;color:white;">KRA List
-        <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
+        <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                     @foreach($kras as $kra)
-                    <tr>
+                    <tr>s
                         <td>{{ $kra->dept_name }}</td>
                         <td>{{ $kra->group_name }}</td>
                         <td>{{ $kra->role }}</td>

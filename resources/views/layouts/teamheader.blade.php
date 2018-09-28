@@ -527,7 +527,7 @@ div#calendar{
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
   <!--  </div> -->
-
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
        
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
@@ -552,6 +552,12 @@ div#calendar{
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
         </div>  
+       <!--  <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
+    <div id="manufacturer_details" class="collapse"> -->
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        
+        <!-- <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a> -->
+    <!-- </div> -->
         <a href="#" data-toggle="collapse" data-target="#agent">Field and Office Logins &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/listeng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 

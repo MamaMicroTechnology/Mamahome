@@ -14,7 +14,7 @@
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
-                    <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+                    <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
               </div>
 			<div class="panel-body" style="overflow-x:scroll;overflow-y:scroll;height:1000px">
 

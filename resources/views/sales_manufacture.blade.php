@@ -23,11 +23,11 @@
                    
 
                    <td  style="text-align:center"><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{$project->id}}" target="_blank">{{$project->id}}</a></td>
-                   <td>{{$project->name}}</td>
+                   <td>{{ $project->proc != null ? $project->proc->name : '' }}</td>
                     <td>
                                      <a target="_blank" href="https://maps.google.co.in?q={{ $project->address != null ? $project->address : '' }}">{{$project->address}}</a>
                                     </td>
-                   <td>{{$project->contact_no }}</td>
+                   <td>{{ $project->proc != null ? $project->proc->contact : '' }}</td>
                     <td><form method="post" action="{{ URL::to('/') }}/confirmedmanufacture" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->id }}" name="id">

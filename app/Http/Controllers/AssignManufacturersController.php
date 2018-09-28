@@ -237,13 +237,22 @@ if($aggregates_required != null){
             }
         
         $his = History::all();
+        
+          $assigncount = assign_manufacturers::where('user_id',Auth::user()->id)->first();
+        if($assigncount != null){
+            $assigncount->manu_ids = $projectids;
+            $assigncount->save();
+        }
+
+
+
         $projects = Manufacturer::whereIn('id',$projectids)
                     ->select('manufacturers.*','id')
                     ->orderBy('id','ASC')
                     ->paginate(15);
 
            $projectcount=count($projects);
-
+             
        return view('sales_manufacture',[
                 'projects'=>$projects,
                 'his'=>$his,
@@ -374,7 +383,6 @@ public function inputdata(Request $request)
 
          return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
-   
 
 
 }

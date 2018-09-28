@@ -9,6 +9,7 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 <div class="panel panel-default" style="border-color: #f4811f">
 <div class="panel-heading" style="background-color: #f4811f;text-align:center">
 <b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
 <br><br>
 <p>(Add Only One Category With One Enquiry,<br>
 Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
@@ -101,7 +102,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             <label class="checkbox-inline">
                             
                                
-                                <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+                                <input onclick="countthis('{{$cat->id}}')" type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
                                 <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"  name="quan[]" class="form-control">
                             </label>
                             <br><br>
@@ -154,11 +155,11 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     <td><label>Location* : </label></td>
     <td>
     @if(isset($_GET['projectId']))
-    <input type="text" value="{{ $projects->siteaddress != Null ?
+    <input disabled type="text" value="{{ $projects->siteaddress != Null ?
     $projects->siteaddress->address : '' }}" name="elocation"
-    id="elocation" class="form-control" />
+    id="elocation" class="form-control disabled" />
     @else
-    <input type="text" name="elocation" id="elocation" class="form-control" />
+    <input disabled type="text" name="elocation" id="elocation" class="form-control disabled" required />
     @endif
     </td>
 </tr>
@@ -456,7 +457,7 @@ function submitinputview(){
             document.getElementById("sub").submit();
         }
 }
-</script>
+
 
 @endsection
 
