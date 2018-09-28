@@ -21,6 +21,8 @@ Route::get('/getid','HomeController@getid');
 
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
+Route::get('/enq','HomeController@enqticket');
+
 Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
  Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
@@ -29,6 +31,7 @@ Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
+
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
@@ -297,6 +300,7 @@ Route::post('/deleteCertificate','amController@deleteCertificate');
 
 
 // Admin
+Route::get('/deleteProject','mamaController@deleteProject');
 Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
@@ -331,7 +335,6 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/employeereports','HomeController@employeereports');
     Route::get('/viewallProjects','HomeController@viewallProjects');
 
-    Route::get('/deleteProject','mamaController@deleteProject');
     Route::get('/salesreports','HomeController@salesreports');
     Route::post('/saveEdit','mamaController@save_edit');
     Route::get('/check','HomeController@getCheck');

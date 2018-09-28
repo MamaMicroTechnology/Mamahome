@@ -2,19 +2,25 @@
 @section('content')
 
     <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
-            <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post">
+            <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" value="{{ isset($_GET['id']) ? $_GET['id'] : '' }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
-                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Id : {{$manufacturer->id}}</span>
+                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
                              
                         </div>
                         <div class="panel-body">
-                             <center> <label id="headingPanel"> Manufacturer Details</label></center><br>
+                             <center> <label id="headingPanel"> Manufacturer Details</label></center>
                             <table class="table table-hover">
+                                <tr>
+                                    <td>Manufacturer Id</td>
+                                    <td>:</td>
+                                    <td>{{$manufacturer->id}}</td>
+
+                                </tr>
                                 <tr>
                                     <td>Manufacturer Type</td>
                                     <td>:</td>
@@ -78,6 +84,30 @@
                                         <input value="{{ $manufacturer->address }}" required placeholder="Address" type="text" name="address" id="address" class="form-control">
                                     </td>
                                 </tr>
+
+                       <tr>
+                                   <td>Manufacturer Image</td>
+                                   <td>:</td>
+                                    <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
+                            
+                                          <?php
+                                               $images = explode(",", $manufacturer->image);
+                                               ?>
+                                             
+                                             <div class="row">
+
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/Manufacturerimage/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
+                                   </td>
+                               </tr>
+
+                             
+
+
                                 <tr>
                                     <td>Total Area</td>
                                     <td>:</td>
@@ -240,7 +270,7 @@
     border: 1px solid #ccc;
     background-color:#42c3f3;
    ">
-  <button style="background-color: inherit;
+  <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -249,7 +279,7 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;"  class="tablinks" onclick="openCity(event, 'owner')">Owner Details</button><br>
-      <button style="background-color: inherit;
+      <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -258,7 +288,7 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'contractor')">Manager Details  </button><br>
-  <button style="background-color: inherit;
+  <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -267,16 +297,8 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'consultant')">Sales Contact Details</button><br>
-<!--   <button style="background-color: inherit;
-    
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 12px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'site')">Site Engineer Details</button><br> -->
-  <button style="background-color: inherit;
+
+  <button type="button" style="background-color: inherit;
     
     border: none;
     outline: none;
@@ -285,17 +307,7 @@
     transition: 0.3s;
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
-<!-- 
-<button style="background-color: inherit;
-    
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 12px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
-</div> -->
+
 </div>
 
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
@@ -427,7 +439,7 @@
 
                         </div>
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-success form-control" onclick="pageNext()">Save</button>
+                            <button type="submit" class="btn btn-success form-control">Save</button>
                         </div>
                     </div>
                 </div>

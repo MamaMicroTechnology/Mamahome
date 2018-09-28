@@ -4,6 +4,7 @@
 <div class="col-md-12">
     <div class="panel panel-default" style="border-color:green;"> 
                 <div class="panel-heading text-center" style="background-color: green;color:white;">Projects To Be Updated
+                  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
                 @if($totalproject != 0)
                  <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
                Count : <b>{{ $totalproject }}</b>
