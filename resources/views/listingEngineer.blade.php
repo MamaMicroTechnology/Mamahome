@@ -1561,6 +1561,4 @@ function validateForm(arg)
   });
 </script>
 @endif
-<script>
-swal("Hello world!");</script>
 @endsection

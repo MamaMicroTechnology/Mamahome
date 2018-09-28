@@ -8,7 +8,7 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                    <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
+                    <a  href="{{URL::to('/')}}/viewManufacturer" class="btn btn-sm btn-danger pull-right">Back</a>    
 
                 </div>
                 <div class="panel-body">

@@ -62,7 +62,7 @@
 							<br><br><br><br>
 							<tr>
 								
-								<th style="text-align: center">Ward Name</th>
+								<th style="text-align: center">SubWard Number</th>
 								<th style="text-align: center">Name</th>
 								<th style="text-align: center">Action</th>
 								<th style="text-align: center">Enquiry Date</th>
@@ -79,8 +79,7 @@
 						</thead>
 						<tbody>
 							@foreach($pipelines as $enquiry)
-							<tr>
-								
+							<tr>	
 								 @if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$subwards2[$enquiry->project_id]}}
@@ -89,7 +88,8 @@
 								<td style="text-align: center">
 									@foreach($sub as $su)
 									@if($enquiry->sub_ward_id ==$su->id)
-									{{$su->sub_ward_name}}
+									<a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry->project_id}} && subward={{$su->sub_ward_name}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$su->sub_ward_name}}
+                                    </a>
 									@endif
 									@endforeach
 								</td>
@@ -251,5 +251,13 @@ function searchphone(){
 	  }
 	}
 }
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+
 </script>
 @endsection

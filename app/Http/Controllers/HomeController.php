@@ -4775,8 +4775,6 @@ date_default_timezone_set("Asia/Kolkata");
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
                 ->get() ;
-
-
             }
 
         $subwards2 = array();
@@ -7424,7 +7422,7 @@ public function display(request $request){
              return view('viewsubward',['projects'=>$projects,'subwardMap'=>$subwardMap]);            
     }
     public function manufacturemap(Request $request){
-                $name = SubWard::where('id',$request->subwardid)->pluck('sub_ward_name');
+                $name = SubWard::where('id',$request->subwardid)->pluck('sub_ward_name')->first();
                 $subwardMap = SubWardMap::where('sub_ward_id',$request->subwardid)->first();
                 $projects = Manufacturer::where('id',$request->id)
                         ->get();   
