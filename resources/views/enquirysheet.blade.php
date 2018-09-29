@@ -15,8 +15,9 @@
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
 					
-				Enquiry Data
-					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+				Enquiry Data : {{count($enquiries)}}
+				 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
+				
 					
 				
 			</div>
@@ -90,7 +91,7 @@
 						</select>
 					</div>
                   </div>
-<!-- 
+
                   <div class="col-md-6">
 					<div class="col-md-2">
 						Ward:
@@ -106,15 +107,13 @@
 							@endforeach
 						</select>
 					</div>
-                  </div> -->
-                  @if(count($totalenq) == 0)
-                   <h2 style="color: green;">Enquiry's are Not Found</h2>
-                  @endif
+                  </div>
+                
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">Ward Name</th>
+							<th style="text-align: center">SubWard Number</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
@@ -165,18 +164,26 @@
                         @endforeach
                         
 						@foreach($enquiries as $enquiry)
-						@if($enquiry->status != "Not Processed")
+                        @if($enquiry->status != "Not Processed")
 					
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry -> project_id }}</b>
 								</a> 
 							</td>
-							<td style="text-align: center">{{$subwards2[$enquiry->project_id]}}</td>
-							<td style="text-align: center">{{$enquiry -> procurement_name}}</td>
+							<td style="text-align: center">
+
+                               @foreach($wards as $ward)
+                                 @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : '') )
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
+                                    {{$ward->sub_ward_name}}</a></td>
+                                  @endif
+                               @endforeach
+
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name : '' }}</td>
 							<td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
-							<td style="text-align: center">{{$enquiry -> procurement_contact_no }}</td>
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}</td>
 							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}</td>
 							<td style="text-align: center">
 								<?php $quantity = explode(", ",$enquiry->quantity); ?>
@@ -186,21 +193,13 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
-							<td style="text-align: center">{{$enquiry -> name}}</td>
+							<td style="text-align: center">{{$enquiry->name}}</td>
 							<td style="text-align: center">
-							@foreach($converter as $convert)
-								@if($enquiry->converted_by == $convert->id)
-								{{ $convert->name}}
-								@endif
-							@endforeach
+							{{ $enquiry->user != null ? $enquiry->user->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
-								@foreach($converter as $convert)
-								@if($enquiry->updated_by == $convert->id)
-								 {{ $convert->name}} 
-								@endif
-							@endforeach
+								{{ $enquiry->user != null ? $enquiry->user->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ $enquiry->status}}

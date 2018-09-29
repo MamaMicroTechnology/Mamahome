@@ -4,14 +4,14 @@
   <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
 
-        <div class="panel-heading" style="background-color: green;color: white;">Select Project Status Before Assigning The Phone Numbers  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="panel-heading" style="background-color: green;color: white;">Select Project Status Before Assigning The Phone Numbers  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
            <form method="GET" action="{{ URL::to('/') }}/assign_number">
                 <input type="hidden" name="delete" value="delete">
-                <input type="submit" value="Reset" class="pull-right btn-danger btn btn-sm">
+                <input type="submit" value="Reset" class=" btn-danger btn btn-sm">
               </form>
 
        <center> <button class="btn btn-success " type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal">Select Project Status</button></center>
-         <a  style="margin-top:-3%;" href="javascript:history.back()" class="btn btn-sm btn-danger pull-left">Back</a>
+          <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-60px;margin-left:10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
         <div class="panel-body">
            @if (session('Success'))

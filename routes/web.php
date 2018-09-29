@@ -21,6 +21,8 @@ Route::get('/getid','HomeController@getid');
 
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
+Route::get('/enq','HomeController@enqticket');
+
 Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
  Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
@@ -29,6 +31,7 @@ Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
+
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/assignStages','HomeController@stages');
@@ -163,6 +166,8 @@ Route::get('/RandDdashboard','HomeController@getdashboard');
 Route::post('/reportsRandD','HomeController@postdashboard');
 Route::get('/breakreport','mamaController@breakreport');
 Route::get('/holidays','mamaController@holidays');
+Route::get('/deleteward','HomeController@deleteward');
+
 
 //sales converter
 Route::get('/scdashboard','HomeController@salesConverterDashboard');
@@ -267,6 +272,8 @@ Route::post('/sms','HomeController@smstonumber');\
 Route::get('/sms','HomeController@sms');
 Route::post('/savenumber','HomeController@savenumber');
 Route::get('/viewwardmap','HomeController@viewwardmap');
+Route::get('/viewsubward','HomeController@viewsubward');
+Route::get('/manufacturemap','HomeController@manufacturemap');
 
 
 Route::get('/{userid}/getLEDetails','HomeController@getLEDetails');
@@ -654,3 +661,5 @@ Route::post('/reportsForIt','ItController@postItReport');
 Route::get('/unverifiedProjects','HomeController@getUnverifiedProjects');
 Route::get('/projectWithNotes','HomeController@getProjectsBasedOnNotes');
 Route::get('/newActivityLog','HomeController@getNewActivityLog');
+Route::get('/bulkBusiness','ProjectionController@getBulkBusiness');
+Route::post('/saveBulk','ProjectionController@saveProjection');

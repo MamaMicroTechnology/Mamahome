@@ -45,6 +45,7 @@
                     </center>
                       
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
+                    <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
                     <div id="first">
                     {{ csrf_field() }}
                            <table class="table">
@@ -86,7 +87,7 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" pattern="^[0-9]*$"></td>
+                                   <td><input id="rWidth" onkeyup="check('rWidth')" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" pattern="^[0-9]*$"></td>
                                </tr>
                                  <tr>
                                    <td>Full Address</td>
@@ -228,10 +229,10 @@
               <td>:</td>
               <td>
                   <div class="radio">
-                                <label><input {{ $projectdetails->followup == 'No'?'checked':'' }} type="radio" name="follow" value="No">No</label>
+                                <label><input id="f1" {{ $projectdetails->followup == 'No'?'checked':'' }} type="radio"  name="follow" value="No">No</label>
                               </div>
                               <div class="radio">
-                                <label><input {{ $projectdetails->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
+                                <label><input  {{ $projectdetails->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
                               </div>
              </td>
 
@@ -392,7 +393,7 @@
                                      <div class="col-md-4 pull-left">
                                     <input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize">
                                   </div>
-                                  <div class="col-md-8 alert-success pull-right" id="pSizeTag"></div>
+                                  <div class="col-md-8 alert-success pull-right" id="pSizeTag" style="font-size:12px;"></div>
                                   </td>
                                </tr>
                                 <tr>
@@ -426,7 +427,7 @@
                               <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
-                                    <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
+                                    <td> <input id="pImage" type="file" oninput="fileuploadimage()" onchange="validateFileType()" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
                                        
                                           @if($projectdetails->updated_by == Null || $projectdetails->updated_by != Null)
                                           <?php
@@ -874,6 +875,7 @@ function openCity(evt, cityName) {
   }
 
 function check(arg){
+  alert();
     var input = document.getElementById(arg).value;
     if(isNaN(input)){
       while(isNaN(document.getElementById(arg).value)){
@@ -939,17 +941,26 @@ function check(arg){
                 breadth = 0;
               }
       if(!isNaN(breadth) && !isNaN(length)){
-        var sum          = basement+ground+1;
-        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum1          = length*breadth;
-        Size    += sum1;
-        var total = sum * sum1;
-        if(document.getElementById("totalsize").innerHTML != null)
-          document.getElementById("totalsize").innerHTML = Size;
-        else
-          document.getElementById("totalsize").innerHTML = '';
-        
-      }
+              
+              var t1 = parseInt(document.getElementById("basement").value);
+              var t2 = parseInt(document.getElementById("ground").value);
+              sumup  = t1+t2+1;
+             
+              var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+              sum1   = length*breadth;
+              Size    += sum1;
+              var total = sumup* sum1;
+            
+              if(document.getElementById("totalsize").innerHTML != null)
+                document.getElementById("totalsize").innerHTML = Size;
+              else
+                document.getElementById("totalsize").innerHTML = '';
+               if(document.getElementById("pSize").value != null){
+                var text = 'This Is Recommended Project Size : '+total+' <br> You Can Change If Required!!'
+                 document.getElementById("pSizeTag").innerHTML = text;
+               }else
+                document.getElementById("pSize").value = '';
+            }
     }
     return false;
   }
@@ -1047,6 +1058,8 @@ function sum(){
             window.alert("Please tell us whether the customer is interested in Home Automation");
           }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
             window.alert("Please tell us whether the customer is interested in premium product");
+          }else if(document.getElementById("contract").value == ""){
+
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
@@ -1475,7 +1488,25 @@ function sum(){
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
-
+     function fileuploadimage(){ 
+      var count = document.getElementById('pImage').files.length;
+      if(count > 4){
+        document.getElementById('pImage').value="";
+        alert('You are allowed to upload a maximum of 4 files');
+      }
+    }
+    function validateFileType(){
+    var fileName = document.getElementById("pImage").value;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+          document.getElementById('errormsg').innerHTML = "";
+    }else{
+          document.getElementById('errormsg').innerHTML = "Only <b>'.JPG'</b> , <b>'.JPEG'</b> and <b>'.PNG'</b> files are allowed!";
+          document.getElementById("pImage").value = '';
+          return false;
+         }   
+  }
 </script> 
 
 @endsection

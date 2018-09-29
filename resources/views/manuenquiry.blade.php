@@ -29,8 +29,8 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 <tbody>
 <tr>
 <td style="width:30%"><label> Requirement Date* : </label></td>
-<td style="width:70%"><input required type="date" name="edate"
-id="edate" class="form-control" style="width:30%" /></td>
+<td style="width:70%"><input  type="date" name="edate"
+id="edate" class="form-control" style="width:30%" required="" /></td>
 </tr>
 <tr>
 @if(!isset($_GET['projectId']))
@@ -41,11 +41,10 @@ placeholder="10 Digits Only" class="form-control" /><div
 id="error"></div></td>
 @else
 <td><label>Contact Number: </label></td>
-<td >{{ $projects->contact_no !=
-NULL?$projects->contact_no:'' }}</td>
+<td >{{ $projects->proc !=
+NULL?$projects->proc->contact_no:$projects->contact_no }}</td>
 @endif
 </tr>
-<input type="hidden" name="sub_ward_id" value="{{$projects->sub_ward_id}}">
 <!-- <tr>
 <td><label>Name* : </label></td>
 <td><input required type="text" name="ename" id="ename"
@@ -63,6 +62,8 @@ name="selectprojects" onchange="getAddress()">
 <td><label>Manufacturer ID : </label></td>
 <td >
 <input type="hidden" value="{{ $projects->id }}" name="manu_id">
+<input type="hidden" value="{{ $projects->sub_ward_id }}" name="sub_ward_id">
+
 {{ $projects->id }}</td>
 @endif
 </tr>
@@ -105,7 +106,7 @@ name="selectprojects" onchange="getAddress()">
 <tr>
     <td><label>Select Products* : </label></td>
     <td>
-    <select required class="form-control" name="product">
+    <select  class="form-control" name="product"  id="product">
     <option value="">--Select--</option>
     <option value="CEMENT">CEMENT</option>
     <option value="SAND">SAND</option>
@@ -245,6 +246,11 @@ function quan(arg){
 function submitinputview(){
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
+          }
+      else if(document.getElementById("product").value == ""){
+            window.alert("You Have Not Select Product");
+          }else if(document.getElementById("edate").value == ""){
+            window.alert("You Have Not Select date");
           }
         else{
             document.getElementById("sub").submit();

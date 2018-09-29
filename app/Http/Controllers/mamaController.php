@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Collection;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\registration;
@@ -68,6 +70,9 @@ use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
+use Spatie\Activitylog\Models\Activity;
+// use LogsActivity;
+// use App\ActivityLog;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -580,8 +585,13 @@ class mamaController extends Controller
                 }
         
             }
-           
-            $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+              if(Auth::user()->group_id == 22){
+                $ward = $request->tlward;
+              }else{
+
+                $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+              }
+
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
             $projectdetails->project_name = $request->pName;
@@ -876,7 +886,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                                    $i++;
                                   }
                              }
-                            
                             $statusCount = count($request->status);
                             $statuses = $request->status[0];
                             if($statusCount > 1){
@@ -914,11 +923,17 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         }
         $projectBeforeUpdate = ProjectDetails::where('project_id',$id)->first();
 
-       $bapart = count($request->apart);
+        //
         if($request->apart != 0){
             $btype = implode(", ",$request->apart);
         }else{
            $btype = "null";  
+        }
+        
+        if($request->follow == "Yes"){
+            $pro = ProjectDetails::where('project_id',$id)->first();
+             $pro->follow_up_by = Auth::user()->id;
+             $pro->save();
         }
         $projectdetails = ProjectDetails::where('project_id',$id)->first();
             $projectdetails->project_name = $request->pName;
@@ -955,6 +970,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             $projectdetails->call_attended_by = Auth::user()->id;
             $projectdetails->save();
        
+
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
             'owner_email' => $request->oEmail,
@@ -1841,6 +1857,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editEnquiry(Request $request)
     {
+
+
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
            
@@ -1849,10 +1867,18 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
            
+        
             if($requirement->status == "Enquiry Confirmed"){
+                $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-               
+                if($request->manu_id){
+                $subward = SubWard::where('id',$project1->sub_ward_id)->first();
+                        
+                }else{
+
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                }
+
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
                 $country = Country::where('id',$ward->country_id)->first();
@@ -2136,17 +2162,43 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
    
     public function postSaveManufacturer(Request $request)
     {
+        
+
+             if(Auth::user()->group_id == 22){
+                  $wardsAssigned = $request->tlward;
+             }else{
+                
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+             }
+
 
            if($request->production){
             $pro = implode(",",$request->production);
            }else{
             $pro = "null";
            }
+        $projectimage = "";
+            $i = 0;
+            if($request->pImage){
+                foreach($request->pImage as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                     if($i == 0){
+                        $projectimage .= $imageName3;
+                     }
+                     else{
+                            $projectimage .= ",".$imageName3;
+                     }
+                     $i++;
+                }
+        
+            }
 
         $manufacturer = new Manufacturer;
         $manufacturer->listing_engineer_id = Auth::user()->id;
         $manufacturer->name = $request->name;
+        $manufacturer->image = $projectimage;
+
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
@@ -2297,7 +2349,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
       $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
       $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
       $subwards = SubWard::where('id',$wardsAssigned)->first();
-        $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
+      $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
         // dd($projects);
         if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
@@ -2316,17 +2368,43 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             ->pluck('sub_wards.sub_ward_name')->first();
 
        if($request->getmap){
-                $storoads = TrackLocation::where('user_id',$id)
+        $date = $request->getmap;
+            $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',$request->getmap)
                          ->first();
-                $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get(); 
+              $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get();
+              $wardsAssigned = WardAssignment::where('user_id',$id)->pluck('id');
+              $activity =Activity::where('subject_id',$wardsAssigned)->where('created_at','LIKE',$date.'%')->get();
+              // dd($activity);
+              $wardid = " ";
+              foreach($activity as $act){
+                  $act2 = $act->changes();
+                   foreach ($act2['attributes'] as $act3=>$value) {
+                        if($act3 == "subward_id"){
+                            $wardid = $value;
+                        }
+                   }
+              }
+                
+               $subwards = SubWard::where('id',$wardid)->first();
+                    if($subwards != null){
+                    $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+                    
+                    }else{
+                        $subwardMap = "None";
+                    }   
+                    if($subwardMap == Null){
+                        $subwardMap = "None";
+                    } 
+
+               $ward = SubWard::where('id',$wardid)->pluck('sub_ward_name')->first();
+
         }
         else{
                 $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',date('Y-m-d'))
                         ->first();
         }
-    
       return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads]);
     }
 
@@ -2355,11 +2433,36 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ->pluck('sub_wards.sub_ward_name')->first();
 
         if($request->getmap){
-                $storoads = TrackLocation::where('user_id',$id)
+             $date = $request->getmap;
+            $storoads = TrackLocation::where('user_id',$id)
                         ->where('date',$request->getmap)
                          ->first();
-            $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get();  
+            $login = FieldLogin::where('user_id',$id)->where('logindate',$request->getmap)->get(); 
+             $wardsAssigned = WardAssignment::where('user_id',$id)->pluck('id');
+              $activity =Activity::where('subject_id',$wardsAssigned)->where('created_at','LIKE',$date.'%')->get();
+              // dd($activity);
+              $wardid = " ";
+              foreach($activity as $act){
+                  $act2 = $act->changes();
+                   foreach ($act2['attributes'] as $act3=>$value) {
+                        if($act3 == "subward_id"){
+                            $wardid = $value;
+                        }
+                   }
+              }
                 
+               $subwards = SubWard::where('id',$wardid)->first();
+                    if($subwards != null){
+                    $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+                    
+                    }else{
+                        $subwardMap = "None";
+                    }   
+                    if($subwardMap == Null){
+                        $subwardMap = "None";
+                    } 
+
+               $ward = SubWard::where('id',$wardid)->pluck('sub_ward_name')->first();
         }
         else{
                 $storoads = TrackLocation::where('user_id',$id)
@@ -2430,15 +2533,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->hrapproval = "Pending";
                         $field->logout_remark = "";
                         $field->save();
-
-
                         $text = "You Have Logged In Successfully!..";
                         return back()->with('Success',$text);
                     }
                     else{
 
                         $text = "You Have Already Logged In!..";
-                        return back()->with('Error',$text);
+                        return back()->with('success',$text);
                     }
             }
     }
@@ -2918,16 +3019,43 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function saveUpdatedManufacturer(Request $request)
     {
+        if(Auth::user()->group_id == 22){
+            $wardsAssigned = $request->subward;
+        }else{
+            
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        }
        
        if($request->production){
             $pro = implode(",",$request->production);
            }else{
             $pro = "null";
            }
+              $projectimage = "";
+           
+                    if($request->pImage){
+                        if($request->pImage != null){
+                                   $i = 0;
+                                    $projectimage = ""; 
 
+                                    foreach($request->pImage as $pimage){
+                                         $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                                         $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                                    
+                                           if($i == 0){
+                                                $projectimage .= $imageName3;
+                                           }
+                                           else{
+                                                $projectimage .= ",".$imageName3;
+                                           }
+                                   $i++;
+                                  }
+                             }
+                         }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
+        $manufacturer->image = $projectimage;
+       
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;

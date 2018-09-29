@@ -23,14 +23,7 @@
     <th>Designation</th>
   </tr>
  <h2>Assigned Ward : {{$x}}</h2>
-     @foreach($users as $user)
-       @if(in_array($user->id,$usersId))
-       <tr>
-        <td> {{$user->name}}</td>
-         <td>{{$user->group->group_name}}</td>
-    </tr>
-       @endif
-     @endforeach    
+       
 </table>
 @endif
 </table>

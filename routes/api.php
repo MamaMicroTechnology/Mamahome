@@ -66,6 +66,8 @@ Route::post('/recordtime','TokenController@recordtime');
 Route::post('/flogout','TokenController@fieldlogout');
 Route::get('/gettime','TokenController@gettime');
 Route::get('/req','TokenController@getreq');
+Route::get('/req1','TokenController@getreq1');
+
 Route::post('/react','TokenController@data');
 Route::get('/fakegps','TokenController@fakegps');
 

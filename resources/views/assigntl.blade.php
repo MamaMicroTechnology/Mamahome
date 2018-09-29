@@ -96,11 +96,10 @@ margin-left: 0;
   }
 }
 </style>
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
         <div class="col-md-12">
             <div class="panel panel-default" style="border-color:#f4811f">
-                <div class="panel-heading text-center" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">Assign Ward To Team Leaders Of Operation And Sales</b>
+                <div class="panel-heading text-center" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">Assign Ward To Team Leaders Of Sales And Operation </b>
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
@@ -150,17 +149,18 @@ margin-left: 0;
                         <tbody>
 
                            <tr>
-                           <th>{{ $i++ }}</th>
+                           <td>{{ $i++ }}</td>
                             <td>{{ $user->name }}</td>
-                            
-                            <input type="hidden" id= "user{{ $user->id }}" name="user_id" value="{{$user->id}}">
-                            <input type="hidden" id= "user1{{ $user->id }}" name="group_id" value="{{$user->group_id}}">
-                            @foreach($tlward as $tlwards)
-                            @if($user->id == $tlwards->user_id )
-                              <td style="width:40%;">{{ $tlwards->ward_name != null ? $tlwards->ward_name :'' }}</td>
-                            @endif
-                          @endforeach
-                            <td style="width: 40%;">
+                            <td >
+                                <input type="hidden" id= "user{{ $user->id }}" name="user_id" value="{{$user->id}}">
+                                <input type="hidden" id= "user1{{ $user->id }}" name="group_id" value="{{$user->group_id}}">
+                                @foreach($tlward as $tlwards)
+                                @if($user->id == $tlwards->user_id )
+                                  {{ $tlwards->ward_name != null ? $tlwards->ward_name :'' }}
+                                @endif
+                              @endforeach
+                          </td>
+                            <td>
                             <select name="ward_id" id="date{{ $user->id }}" class="form-control">
                               <option value="select">----Select Ward----</option>
                             @foreach($ward as $wards)
@@ -173,7 +173,7 @@ margin-left: 0;
                             
                           <td>
                             <div class="form-group">
-                             <select id="menu{{$user->id}}" name="framework[]" multiple class="form-control" style="width: 60%;" required>
+                             <select id="menu{{$user->id}}" name="framework[]" multiple class="form-control"  required>
                              @foreach($user1 as $users2)
                               <option  value="{{$users2->id}}"> {{ $users2->name }} [{{$users2->dept_name}}]</option>
                              @endforeach
@@ -181,10 +181,11 @@ margin-left: 0;
                              </div>
                             </td>
                             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{ $user->id }}">
-           Assigned Users
-</button></td>
+                                       Assigned Users
+                            </button></td>
                             <td>
-                              <button class="btn btn-success pull-left" onclick="return confirm('Are you sure You Select Ward and Subward ?');">Assign</button>
+                              <button class="btn btn-success pull-left" onclick="return confirm('Are You Sure You Have Selected The Ward ?');">Assign</button>
+                              
                             </td>
                           </tr>         
                        </tbody>
@@ -199,8 +200,8 @@ margin-left: 0;
 
       <!-- Modal Header -->
       <div class="modal-header" style="background-color:#f4811f">
-        <h4 class="modal-title">Assigned Users</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="color:white;">Assigned Users</h4>
       </div>
 
       <!-- Modal body -->
@@ -209,7 +210,7 @@ margin-left: 0;
                         <thead>
                           <tr>
                             <th style="color:#337ab7;size:20px;">Name</th>
-                            <th style="color:#337ab7;size:20px;">Designation</th>
+                            <th style="color:#337ab7;size:20px;">Department</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -232,7 +233,8 @@ margin-left: 0;
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
+      <button class="btn btn-danger pull-left" onclick="confirmthis('{{ $newUser['tl_id']}}')">Reset</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
       </div>
 
     </div>
@@ -244,7 +246,7 @@ margin-left: 0;
                   </div>
               </div>
           </div>
-    </div>
+    
 </div>
  </nav>
   
@@ -261,7 +263,25 @@ margin-left: 0;
         document.getElementById('assign').submit();
     }
 </script>
-
+<script>
+  function confirmthis(arg)
+    {
+        var ans = confirm('Are You Sure You Want To Reset?');
+        var id = arg;
+        if(ans)
+        {
+                $.ajax({
+                type: 'GET',
+                url: "{{ URL::to('/') }}/deleteward",
+                async: false,
+                data:{id : id},
+                success: function(response){
+                    window.location.reload()
+                }
+            })
+        }
+    }
+</script>
 <script>
 $(document).ready(function(){
   @foreach($users as $user)
@@ -298,7 +318,6 @@ $(document).ready(function(){
 
 <script>
 function checkall(arg){
-  alert(arg);
 var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
   if(document.getElementById('check'+arg).checked == true){
     for (var i = 0; i < clist.length; ++i) 

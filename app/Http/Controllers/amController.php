@@ -390,15 +390,15 @@ class amController extends Controller
         $user = User::where('employeeId',$request->userId)->first();
       
         if($request->month){
-
             $date = $request->year.'-'.$request->month;
-            $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
+            // $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
+             $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$date.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();
+
         }else{
             $date = date('Y-m');
             // $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
             $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$date.'%')->orderby('logindate')
             ->leftjoin('users','field_login.user_id','users.id')->get();
-           
         }
         return view('assistantmanager.empattendance',['attendances'=>$attendances,'userid'=>$request->userId,'user'=>$user,'pageName'=>'HR']);
     }

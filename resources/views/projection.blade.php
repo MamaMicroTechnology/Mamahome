@@ -104,15 +104,16 @@
                     <div class="form-group">
                         <label style="text-align:left;" for="from" class="control-label col-sm-6">From</label>
                         <div class="col-md-6">
-                            <input type="date" required name="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" id="from" class="form-control input-sm">
+                            <input type="text" name="from" id="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" required class="form-control date" placeholder="Pick dates">
+                            <!-- <input type="date" required name="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" id="from" class="form-control input-sm"> -->
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label style="text-align:left;" for="to" class="control-label col-sm-6">To</label>
                         <div class="col-md-6">
                             <input type="date" required name="to" value="{{ isset($_GET['to']) ? $_GET['to'] : ''}}" id="to" class="form-control input-sm">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label style="text-align:left;" for="wards" class="control-label col-sm-6">Wards</label>
                         <div class="col-md-6">
@@ -406,7 +407,7 @@
         document.getElementById('priceSave').value = document.getElementById('price').value;
         document.getElementById('businessCycle').value = {{ isset($conversion) ? $conversion->business_cycle : '' }};
         document.getElementById('category').value = document.getElementById('categories').value;
-        document.getElementById('from_date').value= document.getElementById('from').value;
+        document.getElementById('from_date').value= "{{ isset($_GET['from']) ? $_GET['from'] : '' }}";
         document.getElementById('to_date').value = document.getElementById('to').value;
         if(document.getElementById('incrementalP').className != "hidden"){
             if(document.getElementById('perc').value == ""){
