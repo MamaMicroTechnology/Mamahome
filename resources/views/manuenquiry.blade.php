@@ -42,7 +42,7 @@ id="error"></div></td>
 @else
 <td><label>Contact Number: </label></td>
 <td >{{ $projects->proc !=
-NULL?$projects->proc->contact_no:'' }}</td>
+NULL?$projects->proc->contact_no:$projects->contact_no }}</td>
 @endif
 </tr>
 <!-- <tr>
@@ -62,6 +62,8 @@ name="selectprojects" onchange="getAddress()">
 <td><label>Manufacturer ID : </label></td>
 <td >
 <input type="hidden" value="{{ $projects->id }}" name="manu_id">
+<input type="hidden" value="{{ $projects->sub_ward_id }}" name="sub_ward_id">
+
 {{ $projects->id }}</td>
 @endif
 </tr>

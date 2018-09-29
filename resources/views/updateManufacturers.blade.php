@@ -30,6 +30,8 @@
                                             <option value="">--Select--</option>
                                             <option {{ $manufacturer->manufacturer_type == "RMC" ? 'selected' : ''}} value="RMC">RMC</option>
                                             <option {{ $manufacturer->manufacturer_type == "Blocks" ? 'selected' : ''}} value="Blocks">Blocks</option>
+                                             <option {{ $manufacturer->manufacturer_type == "M-SAND" ? 'selected' : ''}} value="M-SAND">M-SAND</option>
+                                            <option {{ $manufacturer->manufacturer_type == "AGGREGATES" ? 'selected' : ''}} value="AGGREGATES">AGGREGATES</option>
                                             <!-- <option value="Crusher">Crusher</option> -->
                                         </select>
                                     </td>
@@ -194,6 +196,7 @@
                                                     <input value="{{ $products->price }}" min="0" type="number" name="price[]" id="bp" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
+                                            @endforeach
                                         </table>
                                             <div class="btn-group">
                                                 <button type="button" onclick="myFunction()" class="btn btn-warning btn-sm">
@@ -424,7 +427,7 @@
                                </tr>
 
                            </table>
-</div>
+                </div>
 
                         <table class="table table-responsive" >
                           <tr>
@@ -436,7 +439,6 @@
                           </td>
                         </tr>
                         </table>
-                                            @endforeach
 
                         </div>
                         <div class="panel-footer">
@@ -536,6 +538,7 @@ function openCity(evt, cityName) {
 
           function hideordisplay(arg){
               if(arg == "Blocks"){
+               
                 document.getElementById('blockTypes1').className = "";
                 document.getElementById('blockTypes2').className = "";
                 document.getElementById('mfType').className = "";
@@ -543,6 +546,7 @@ function openCity(evt, cityName) {
                 document.getElementById('grades2').className = "hidden";
                 document.getElementById('moq').className = "hidden";
               }else if(arg=="RMC"){
+               
                 document.getElementById('blockTypes1').className = "hidden";
                 document.getElementById('blockTypes2').className = "hidden";
                 document.getElementById('mfType').className = "hidden";
@@ -550,12 +554,13 @@ function openCity(evt, cityName) {
                 document.getElementById('grades2').className = "";
                 document.getElementById('moq').className = "";
               }else{
+               
                 document.getElementById('blockTypes1').className = "hidden";
                 document.getElementById('blockTypes2').className = "hidden";
                 document.getElementById('mfType').className = "hidden";
                 document.getElementById('grades1').className = "hidden";
                 document.getElementById('grades2').className = "hidden";
-                  console.log(arg);
+                  // console.log(arg);
               }
           }
           function checkPhNo(x){
