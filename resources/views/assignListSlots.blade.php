@@ -55,14 +55,15 @@
                                     </td>
                                 @else
                                     <td style="text-align:center">
-                                    <a href="{{ URL::to('/')}}/viewwardmap?UserId={{$user->id}} && wardname={{ $user->sub_ward_name }}" target="_blank">{{$user->sub_ward_name}}
+                                    <a href="{{ URL::to('/')}}/viewwardmap?UserId={{$user->id}} && wardname={{ $user->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$user->sub_ward_name}}
                                     </a>
                                     </td>  
                                 @endif
                                 <td style="text-align: center;">
                                     @foreach($subwards as $subward)
                                         @if($subward->id == $user->prev_subward_id)
-                                            {{$subward->sub_ward_name}}
+                                            <a href="{{ URL::to('/')}}/viewwardmap?UserId={{$user->id}} && wardname={{$subward->sub_ward_name}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$subward->sub_ward_name}}
+                                    </a>
                                         @endif
                                     @endforeach
                                 </td>
@@ -299,4 +300,11 @@ function Subs(arg)
       }
 }
     </script>
+    <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+</script>
 @endsection
