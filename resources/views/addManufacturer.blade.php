@@ -9,7 +9,7 @@
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:#939598;">
                              @if(Auth::user()->group_id == 22)
                   
-                     <select class="form-control" style="width:20%" name="tlward">
+                     <select class="form-control" style="width:20%" name="tlward" required>
                        <option value="">Select SubWard</option>
                        @foreach($tlwards as $wa)
                        <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
