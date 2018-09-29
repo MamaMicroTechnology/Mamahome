@@ -16,8 +16,10 @@
                        <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
                        @endforeach
                      </select>
-                  @else
+                  @elseif(Auth::user()->group_id == 6)
                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                  @else
+                  Seniot TL
                   @endif
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
