@@ -4514,6 +4514,7 @@ date_default_timezone_set("Asia/Kolkata");
 
     public function projectadmin(Request $id){
 
+
         $details = projectDetails::where('project_id',$id->projectId)->first();
          $projectupdate = ProjectImage::where('project_id',$id->projectId)->pluck('created_at')->last();
        $check =projectDetails::where('project_id',Auth::user()->name)
@@ -7411,14 +7412,14 @@ public function display(request $request){
         return view('viewwardmap',['subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap]);
     }
     public function viewsubward(Request $request){
+       
                 $subwardid = SubWard::where('sub_ward_name',$request->subward)->pluck('id');
                 $subwardMap = SubWardMap::where('sub_ward_id',$subwardid)->first();
-               
                 $projects = ProjectDetails::where('project_details.project_id',$request->projectid)
                         ->leftjoin('site_addresses','project_details.project_id','=','site_addresses.project_id')
                         ->select('site_addresses.*')
                         ->get();   
-
+                    
              return view('viewsubward',['projects'=>$projects,'subwardMap'=>$subwardMap]);            
     }
     public function manufacturemap(Request $request){
