@@ -4787,7 +4787,7 @@ date_default_timezone_set("Asia/Kolkata");
         foreach($pipelines as $enquiry){
 
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
-            if($pId != null){
+            if(count($pId) != 0){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
             }else{
                 $subwards2[$enquiry->project_id] = "";
