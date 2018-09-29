@@ -91,7 +91,7 @@
 						</select>
 					</div>
                   </div>
-<!-- 
+
                   <div class="col-md-6">
 					<div class="col-md-2">
 						Ward:
@@ -107,15 +107,13 @@
 							@endforeach
 						</select>
 					</div>
-                  </div> -->
-                  @if(count($totalenq) == 0)
-                   <h2 style="color: green;">Enquiry's are Not Found</h2>
-                  @endif
+                  </div>
+                
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">Ward Name</th>
+							<th style="text-align: center">SubWard Number</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
@@ -177,7 +175,8 @@
 
                                @foreach($wards as $ward)
                                  @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : '') )
-                                 {{$ward->sub_ward_name}}
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">
+                                    {{$ward->sub_ward_name}}</a></td>
                                   @endif
                                @endforeach
 
@@ -357,5 +356,12 @@ function myFunction() {
 	// }
 	// }
 }
+</script>
+ <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
 </script>
 @endsection

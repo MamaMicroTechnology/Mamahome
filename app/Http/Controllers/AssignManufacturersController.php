@@ -267,8 +267,8 @@ if($aggregates_required != null){
         $category = Manufacturer::all();
        
 
-        $depart1 = [6];
-        $depart2 = [7];
+        $depart1 = [6,22];
+        $depart2 = [7,22];
         $depart = [2,4,8,6,7,15,17,16,1,11,22];
         $projects = Manufacturer::where('id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
@@ -288,14 +288,14 @@ public function inputdata(Request $request)
          }
            $shipadress = $request->billadress;
 
-  $points = new Point;
+         $points = new Point;
             $points->user_id = $request->initiator;
             $points->point = 100;
             $points->type = "Add";
             $points->reason = "Generating an enquiry";
             $points->save();
             
-       
+        $ward = $request->sub_ward_id;
         $x = DB::table('requirements')->insert(['project_id'    =>'',
                                                 'main_category' => '',
                                                 'brand' => '',
@@ -320,7 +320,7 @@ public function inputdata(Request $request)
                                                 'total_quantity'=>$request->totalquantity,
                                                 'product'=>$request->product,
                                                 'manu_id'=>$request->manu_id,
-                                                'sub_ward_id'=>$request->sub_ward_id, 
+                                                'sub_ward_id'=>$ward, 
                                                 'ship' =>$shipadress
                                         ]);
 
@@ -383,7 +383,6 @@ public function inputdata(Request $request)
 
          return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
-   
 
 
 }

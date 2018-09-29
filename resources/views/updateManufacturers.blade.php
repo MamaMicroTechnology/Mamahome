@@ -2,19 +2,26 @@
 @section('content')
 
     <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
-            <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post">
+            <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
+                <input type="hidden" name="subward" value="{{$manufacturer->sub_ward_id}}">
                 <input type="hidden" name="id" value="{{ isset($_GET['id']) ? $_GET['id'] : '' }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
-                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Id : {{$manufacturer->id}}</span>
+                      <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
                              
                         </div>
                         <div class="panel-body">
-                             <center> <label id="headingPanel"> Manufacturer Details</label></center><br>
+                             <center> <label id="headingPanel"> Manufacturer Details</label></center>
                             <table class="table table-hover">
+                                <tr>
+                                    <td>Manufacturer Id</td>
+                                    <td>:</td>
+                                    <td>{{$manufacturer->id}}</td>
+
+                                </tr>
                                 <tr>
                                     <td>Manufacturer Type</td>
                                     <td>:</td>
@@ -23,6 +30,8 @@
                                             <option value="">--Select--</option>
                                             <option {{ $manufacturer->manufacturer_type == "RMC" ? 'selected' : ''}} value="RMC">RMC</option>
                                             <option {{ $manufacturer->manufacturer_type == "Blocks" ? 'selected' : ''}} value="Blocks">Blocks</option>
+                                             <option {{ $manufacturer->manufacturer_type == "M-SAND" ? 'selected' : ''}} value="M-SAND">M-SAND</option>
+                                            <option {{ $manufacturer->manufacturer_type == "AGGREGATES" ? 'selected' : ''}} value="AGGREGATES">AGGREGATES</option>
                                             <!-- <option value="Crusher">Crusher</option> -->
                                         </select>
                                     </td>
@@ -46,10 +55,10 @@
                                     <td>Production Type</td>
                                     <td>:</td>
                                     <td>
-                                 <label required class="checkbox-inline"><input  id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
-                                  <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
-                                      <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                 <label required class="checkbox-inline"><input {{ $manufacturer->manufacturer_type == "RMC" ? 'checked' : ''}} id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
+                                    <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "BLOCKS" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
+                                  <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "M-SAND" ? 'checked' : ''}}  id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
+                                      <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "AGGREGATES" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
                                     </td>
                                 </tr>
                                <!--  <tr>
@@ -78,6 +87,30 @@
                                         <input value="{{ $manufacturer->address }}" required placeholder="Address" type="text" name="address" id="address" class="form-control">
                                     </td>
                                 </tr>
+
+                       <tr>
+                                   <td>Manufacturer Image</td>
+                                   <td>:</td>
+                                    <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
+                            
+                                          <?php
+                                               $images = explode(",", $manufacturer->image);
+                                               ?>
+                                             
+                                             <div class="row">
+
+                                                 @for($i = 0; $i < count($images); $i++)
+                                                     <div class="col-md-3">
+                                                          <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/Manufacturerimage/{{ $images[$i] }}" class="img img-thumbnail">
+                                                     </div>
+                                                 @endfor
+                                              </div>
+                                   </td>
+                               </tr>
+
+                             
+
+
                                 <tr>
                                     <td>Total Area</td>
                                     <td>:</td>
@@ -163,6 +196,7 @@
                                                     <input value="{{ $products->price }}" min="0" type="number" name="price[]" id="bp" placeholder="Price" class="form-control">
                                                 </td>
                                             </tr>
+                                            @endforeach
                                         </table>
                                             <div class="btn-group">
                                                 <button type="button" onclick="myFunction()" class="btn btn-warning btn-sm">
@@ -393,7 +427,7 @@
                                </tr>
 
                            </table>
-</div>
+                </div>
 
                         <table class="table table-responsive" >
                           <tr>
@@ -405,7 +439,6 @@
                           </td>
                         </tr>
                         </table>
-                                            @endforeach
 
                         </div>
                         <div class="panel-footer">
@@ -505,6 +538,7 @@ function openCity(evt, cityName) {
 
           function hideordisplay(arg){
               if(arg == "Blocks"){
+               
                 document.getElementById('blockTypes1').className = "";
                 document.getElementById('blockTypes2').className = "";
                 document.getElementById('mfType').className = "";
@@ -512,6 +546,7 @@ function openCity(evt, cityName) {
                 document.getElementById('grades2').className = "hidden";
                 document.getElementById('moq').className = "hidden";
               }else if(arg=="RMC"){
+               
                 document.getElementById('blockTypes1').className = "hidden";
                 document.getElementById('blockTypes2').className = "hidden";
                 document.getElementById('mfType').className = "hidden";
@@ -519,12 +554,13 @@ function openCity(evt, cityName) {
                 document.getElementById('grades2').className = "";
                 document.getElementById('moq').className = "";
               }else{
+               
                 document.getElementById('blockTypes1').className = "hidden";
                 document.getElementById('blockTypes2').className = "hidden";
                 document.getElementById('mfType').className = "hidden";
                 document.getElementById('grades1').className = "hidden";
                 document.getElementById('grades2').className = "hidden";
-                  console.log(arg);
+                  // console.log(arg);
               }
           }
           function checkPhNo(x){

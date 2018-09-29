@@ -122,7 +122,7 @@
             <table class='table table-responsive table-striped' style="color:black" border="1">
                 <thead>
                     <tr>
-                        <th style="text-align:center">Ward No.</th>
+                        <th style="text-align:center">Subward Number</th>
                         <th style="text-align:center">Project-ID</th>
                         <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
@@ -134,7 +134,9 @@
                 	@for($i = 0; $i<count($projectIds);$i++)
                      
                        <tr>
-                        <td style="text-align:center">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}</td>
+                        <td style="text-align:center">
+                        <a href="{{ URL::to('/')}}/viewsubward?projectid={{$projectIds[$i]['projectId']}} && subward={{ $projectIds[$i]['sub_ward_name'] }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $projectIds[$i]['sub_ward_name'] != null ? $projectIds[$i]['sub_ward_name'] : '' }}
+                                    </a></td>
                         <td style="text-align:center">
                         	<a href="{{ URL::to('/') }}/admindailyslots?projectId={{$projectIds[$i]['projectId']}}&&lename={{ $projectIds[$i]['updater'] }}">{{ $projectIds[$i]['projectId'] }}</a>
                         </td>

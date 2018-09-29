@@ -212,7 +212,7 @@
                 <table class='table table-responsive table-striped' style="color:black" border="1">
                     <thead>
                         <tr>
-                            <th style="text-align:center">Ward No.</th>
+                            <th style="text-align:center">Subward Ward No.</th>
                             <th style="text-align:center">Project-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Site Engineer Contact Number</th>
@@ -236,7 +236,9 @@
                                 @endif
                             @endif
                             <?php array_push($users, $project->listing_engineer_id); ?>
-                            <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
+                            <td style="text-align:center" >
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->sub_ward_name }}
+                             </a></td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>
                             <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
@@ -350,7 +352,9 @@
                                 var head = "<tr><td>";
                             }
                             document.getElementById('mainPanel').innerHTML +=
-                            head + response[0][i].sub_ward_name+
+                            head + "<a href='{{URL::to('/')}}/viewsubward?projectid="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"
+                                +response[0][i].sub_ward_name+
+                            "</a>"+
                             "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -420,7 +424,8 @@
                                 var head = "<tr><td>";
                             }
                             document.getElementById('mainPanel').innerHTML +=
-                            head+response[0][i].sub_ward_name+
+                            head+ "<a href='{{URL::to('/')}}/viewsubward?projectid="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"+response[0][i].sub_ward_name+
+                            "</a>"+
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -444,5 +449,12 @@
             return false;
         }
     </script>
+    <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
 
+});
+
+</script>
 @endsection

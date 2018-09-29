@@ -1,5 +1,4 @@
 
-
 <?php
     $user = Auth::user()->group_id;
     $ext = ($user == 14? "layouts.app":"layouts.amheader");

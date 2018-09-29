@@ -4,17 +4,27 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
+        <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
             <div class="panel panel-default">
                 <div class="panel-heading" style="height: 50px;background-color:#42c3f3;color:#ffffffe3;">
-                  @if(!$subwards)
-                  No Subward assigned
-                  @else
+
+                  @if(Auth::user()->group_id == 22)
+                  
+                     <select class="form-control" style="width:20%" name="tlward">
+                       <option value="">Select SubWard</option>
+                       @foreach($tlwards as $wa)
+                       <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
+                       @endforeach
+                     </select>
+                  @elseif(Auth::user()->group_id == 6)
                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                  @else
+                  Seniot TL
                   @endif
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
                   @endif -->
-                  <div id="currentTime" class="pull-right"></div>
+                  <div id="currentTime" class="pull-right" style="margin-top:-15px;"></div>
                 </div>
                 <?php 
                   if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){
@@ -28,7 +38,6 @@
                    <br>              
                      <center>       
                      <button id="getBtn"  class="btn btn-success btn-sm" onclick="getLocation()">Get Location</button></center><br>
-                   <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
                     <div id="first">
                     {{ csrf_field() }}
                             <table class="table">
@@ -438,7 +447,6 @@
     font-size: 17px;
      color:white;" class="tablinks" onclick="openCity(event, 'Builder')">Builder Details</button>
 </div>
-
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;">
@@ -463,7 +471,6 @@
                                </tr>
                            </table>
 </div>
-
 <div id="contractor" class="tabcontent" style="display: none;padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;"><br>
@@ -1551,6 +1558,5 @@ function validateForm(arg)
       $("#Material").modal('show');
   });
 </script>
-
 @endif
 @endsection

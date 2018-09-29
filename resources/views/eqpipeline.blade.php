@@ -62,7 +62,7 @@
 							<br><br><br><br>
 							<tr>
 								
-								<th style="text-align: center">Ward Name</th>
+								<th style="text-align: center">SubWard Number</th>
 								<th style="text-align: center">Name</th>
 								<th style="text-align: center">Action</th>
 								<th style="text-align: center">Enquiry Date</th>
@@ -79,17 +79,18 @@
 						</thead>
 						<tbody>
 							@foreach($pipelines as $enquiry)
-							<tr>
-								
+							<tr>	
 								 @if($enquiry->manu_id == null)
 								<td style="text-align: center">
-									{{$subwards2[$enquiry->project_id]}}
+									<a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry->project_id}} && subward={{$subwards2[$enquiry->project_id]}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$subwards2[$enquiry->project_id]}}
+                                    </a>
 								</td>
 								@else
 								<td style="text-align: center">
 									@foreach($sub as $su)
 									@if($enquiry->sub_ward_id ==$su->id)
-									{{$su->sub_ward_name}}
+									<a href="{{ URL::to('/')}}/manufacturemap?id={{$enquiry->manu_id}} && subwardid={{$enquiry->sub_ward_id}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$su->sub_ward_name}}
+                                    </a>
 									@endif
 									@endforeach
 								</td>
@@ -162,9 +163,11 @@
 									
 								</td>
 								<td>
-									<form method="POST" action="{{ URL::to('/') }}/manueditEnquiry">
+									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 										{{ csrf_field() }}
 										<input type="hidden" value="{{$enquiry->id}}" name="id">
+										<input type="hidden" value="{{$enquiry->manu_id}}" name="manu_id">
+
 										<select required name="status" onchange="this.form.submit();" style="width:100px;">
 											<option value="">--Select--</option>
 											<option>Enquiry On Process</option>
@@ -251,5 +254,20 @@ function searchphone(){
 	  }
 	}
 }
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
 </script>
 @endsection
