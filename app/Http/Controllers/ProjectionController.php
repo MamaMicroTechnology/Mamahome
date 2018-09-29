@@ -46,4 +46,9 @@ class ProjectionController extends Controller
             return back()->with('error','Target Already Set For This Manufacturer Type');
         }
     }
+    public function viewBulk()
+    {
+        $projections = BulkProjection::where('sub_ward_id',"All")->get();
+        dd($projections);
+    }
 }

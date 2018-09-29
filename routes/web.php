@@ -658,3 +658,4 @@ Route::get('/projectWithNotes','HomeController@getProjectsBasedOnNotes');
 Route::get('/newActivityLog','HomeController@getNewActivityLog');
 Route::get('/bulkBusiness','ProjectionController@getBulkBusiness');
 Route::post('/saveBulk','ProjectionController@saveProjection');
+Route::get('/bulkView','ProjectionController@viewBulk');
