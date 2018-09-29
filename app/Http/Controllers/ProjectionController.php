@@ -51,4 +51,8 @@ class ProjectionController extends Controller
         $projections = BulkProjection::where('sub_ward_id',"All")->get();
         dd($projections);
     }
+    public function fiveyearsWithZones()
+    {
+        return view('projection.fiveYearsWithZones');
+    }
 }
