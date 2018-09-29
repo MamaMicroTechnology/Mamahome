@@ -4,6 +4,7 @@
     <!-- <center><a href="{{ URL::previous()  }}" class="btn btn-danger">Back</a></center><br> -->
             <form action="{{ URL::to('/') }}/saveUpdatedManufacturer" onsubmit="return validate()" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
+                <input type="hidden" name="subward" value="{{$manufacturer->sub_ward_id}}">
                 <input type="hidden" name="id" value="{{ isset($_GET['id']) ? $_GET['id'] : '' }}">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-primary">
