@@ -1071,7 +1071,7 @@ function myTimer() {
             <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - One Year India Country Projection</a>
             <a href="{{ URL::to('/daily') }}">&nbsp;&nbsp;&nbsp; - Daily Sales Target</a>
             <a href="{{ URL::to('/extensionPlanner') }}">&nbsp;&nbsp;&nbsp; - Extension Planner</a>
-            <a href="{{ URL::to('/bulkBusiness') }}">&nbsp;&nbsp;&nbsp; - Bulk Business</a>
+            <!-- <a href="{{ URL::to('/bulkBusiness') }}">&nbsp;&nbsp;&nbsp; - Bulk Business</a> -->
         </div>
         <a href="#" data-toggle="collapse" data-target="#Expenditure">Expenditure &#x21F2;</a>
         <div id="Expenditure" class="collapse">
