@@ -263,4 +263,11 @@ $(document).ready(function(){
 });
 
 </script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+</script>
 @endsection
