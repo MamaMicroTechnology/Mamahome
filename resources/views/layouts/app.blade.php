@@ -1100,7 +1100,7 @@ function myTimer() {
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
-    <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+    <!-- <a href="{{ URL::to('/') }}/holidays">Holiday List</a>  -->
        <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
