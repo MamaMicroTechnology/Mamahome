@@ -1082,7 +1082,7 @@ function myTimer() {
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
-            <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
+             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
@@ -1100,7 +1100,7 @@ function myTimer() {
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
-    <!-- <a href="{{ URL::to('/') }}/holidays">Holiday List</a>  -->
+    <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
        <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
@@ -1175,7 +1175,7 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
-            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufactur Details</a>
       
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>

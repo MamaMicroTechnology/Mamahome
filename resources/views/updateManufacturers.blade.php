@@ -241,10 +241,10 @@
                                             @endforeach
                                         </table>
                                             <div class="btn-group">
-                                                <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                <button type="button" onclick="addRMC()" class="btn btn-warning btn-sm">
                                                     &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
                                                 </button>
-                                                <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                <button type="button" onclick="RMC()" class="btn btn-danger btn-sm">
                                                     &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
                                                 </button>
                                             </div>
@@ -514,7 +514,7 @@ function openCity(evt, cityName) {
                 }
             }
 
-            function myFunction1() {
+            function addRMC() {
                 var table = document.getElementById("types1");
                 var row = table.insertRow(-1);
                 var cell1 = row.insertCell(0);
@@ -529,7 +529,7 @@ function openCity(evt, cityName) {
                                 "<option value='M35'>M35</option> </select>";
                 cell2.innerHTML = "<input type='number' min='0' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
-            function myDelete1() {
+            function RMC() {
                 var table = document.getElementById("types1");
                 if(table.rows.length >= 3){
                     document.getElementById("types1").deleteRow(-1);
