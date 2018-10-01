@@ -100,7 +100,7 @@ tr:nth-child(even) {
                                       <input type="hidden" value="{{ $manufacturer->id }}" name="id">
                                       <div>
                                    
-                                      <a class="btn btn-sm btn-success" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?manufacturerId={{ $manufacturer->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
+                                      <a class="btn btn-sm btn-success" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?projectId={{ $manufacturer->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                                       @if( $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" )
                                    <button  type="button" id="demo"  style="padding: 5.5px;background-color:#e57373;color:white" class="btn btn-sm " {{ $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" ? 'checked': ''}}  name="confirmed" onclick="this.form.submit()" type="submit">Called
