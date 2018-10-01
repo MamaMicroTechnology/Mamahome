@@ -3054,7 +3054,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                          }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
+         if($projectimage != ""){
+            
         $manufacturer->image = $projectimage;
+        }
+       
        
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
