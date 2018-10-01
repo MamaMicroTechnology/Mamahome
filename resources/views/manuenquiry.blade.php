@@ -42,17 +42,18 @@ id="error"></div></td>
 @else
 <td><label>Contact Number: </label></td>
 <td >{{ $projects->proc !=
-NULL?$projects->proc->contact_no:$projects->contact_no }}</td>
+NULL?$projects->proc->contact:$projects->contact_no }}</td>
 @endif
 </tr>
-<!-- <tr>
-<td><label>Name* : </label></td>
-<td><input required type="text" name="ename" id="ename"
-class="form-control"/></td>
-</tr> -->
 <tr>
 @if(!isset($_GET['projectId']))
-
+<td><label>Project* : </label></td>
+<td>
+<select required class="form-control" id='selectprojects'
+name="selectprojects" onchange="getAddress()">
+</select>
+</td>
+@else
 <td><label>Manufacturer ID : </label></td>
 <td >
 <input type="hidden" value="{{ $projects->id }}" name="manu_id">
