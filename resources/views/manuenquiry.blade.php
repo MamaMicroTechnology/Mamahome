@@ -42,7 +42,7 @@ id="error"></div></td>
 @else
 <td><label>Contact Number: </label></td>
 <td >{{ $projects->proc !=
-NULL?$projects->proc->contact_no:$projects->contact_no }}</td>
+NULL?$projects->proc->contact:$projects->contact_no }}</td>
 @endif
 </tr>
 <!-- <tr>
