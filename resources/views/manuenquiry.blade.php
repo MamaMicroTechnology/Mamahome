@@ -42,14 +42,9 @@ id="error"></div></td>
 @else
 <td><label>Contact Number: </label></td>
 <td >{{ $projects->proc !=
-NULL?$projects->proc->contact_no:$projects->contact_no }}</td>
+NULL?$projects->proc->contact:$projects->contact_no }}</td>
 @endif
 </tr>
-<!-- <tr>
-<td><label>Name* : </label></td>
-<td><input required type="text" name="ename" id="ename"
-class="form-control"/></td>
-</tr> -->
 <tr>
 @if(!isset($_GET['projectId']))
 <td><label>Project* : </label></td>

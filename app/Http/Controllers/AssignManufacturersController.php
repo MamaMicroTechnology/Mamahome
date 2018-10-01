@@ -238,7 +238,7 @@ if($aggregates_required != null){
         
         $his = History::all();
         
-          $assigncount = assign_manufacturers::where('user_id',Auth::user()->id)->first();
+        $assigncount = assign_manufacturers::where('user_id',Auth::user()->id)->first();
         if($assigncount != null){
             $assigncount->manu_ids = $projectids;
             $assigncount->save();
@@ -267,8 +267,8 @@ if($aggregates_required != null){
         $category = Manufacturer::all();
        
 
-        $depart1 = [6,22];
-        $depart2 = [7,22];
+        $depart1 = [6];
+        $depart2 = [7];
         $depart = [2,4,8,6,7,15,17,16,1,11,22];
         $projects = Manufacturer::where('id', $request->projectId)->first();
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();

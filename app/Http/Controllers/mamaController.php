@@ -1857,6 +1857,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editEnquiry(Request $request)
     {
+
+
         if($request->note != null){
             Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
            
@@ -1865,10 +1867,18 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             Requirement::where('id',$request->id)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->id)->first();
            
+        
             if($requirement->status == "Enquiry Confirmed"){
+                $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-               
+                if($request->manu_id){
+                $subward = SubWard::where('id',$project1->sub_ward_id)->first();
+                        
+                }else{
+
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                }
+
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
                 $country = Country::where('id',$ward->country_id)->first();
@@ -1925,7 +1935,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->save();
         return back();
         }
-    
     public function editManualEnquiry(Request $request)
     {
         RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
@@ -3044,7 +3053,10 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                          }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
+        if($projectimage != ""){
+            
         $manufacturer->image = $projectimage;
+        }
        
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
