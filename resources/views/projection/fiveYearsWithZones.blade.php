@@ -94,58 +94,58 @@
                         <br>
                         Jan - Mar
                     </td>
-                    <td style="background-color:#f2bce7;"></td>
-                    <td style="background-color:#f2bce7;"></td>
-                    <td style="background-color:#f2bce7;">Z1 - Z12</td>
-                    <td style="background-color:#f2bce7;">Z1 TO Z28</td>
-                    <td style="background-color:#f2bce7;">Z1 TO Z47</td>
-                    <td style="background-color:#f2bce7;">Z1 TO Z72</td>
-                    <td style="background-color:#f2bce7;">Z1 TO Z100</td>
+                    <td class="text-center" style="background-color:#f2bce7;"></td>
+                    <td class="text-center" style="background-color:#f2bce7;"></td>
+                    <td class="text-center" style="background-color:#f2bce7;">Z1 - Z12</td>
+                    <td class="text-center" style="background-color:#f2bce7;">Z1 TO Z28</td>
+                    <td class="text-center" style="background-color:#f2bce7;">Z1 TO Z47</td>
+                    <td class="text-center" style="background-color:#f2bce7;">Z1 TO Z72</td>
+                    <td class="text-center" style="background-color:#f2bce7;">Z1 TO Z100</td>
                 </tr>
                 <tr style="background-color: #f2bce7;">
                     <td>Revenue</td>
                     <td></td>
-                    <td id="revenue_4"></td>
-                    <td id="revenue_8"></td>
-                    <td id="revenue_12"></td>
-                    <td id="revenue_16"></td>
-                    <td id="revenue_20"></td>
+                    <td class="text-right" id="revenue_4"></td>
+                    <td class="text-right" id="revenue_8"></td>
+                    <td class="text-right" id="revenue_12"></td>
+                    <td class="text-right" id="revenue_16"></td>
+                    <td class="text-right" id="revenue_20"></td>
                 </tr>
                 <tr style="background-color: #f2bce7;">
                     <td>Expense</td>
                     <td></td>
-                    <td id="expense_4"></td>
-                    <td id="expense_8"></td>
-                    <td id="expense_12"></td>
-                    <td id="expense_16"></td>
-                    <td id="expense_20"></td>
+                    <td class="text-right" id="expense_4"></td>
+                    <td class="text-right" id="expense_8"></td>
+                    <td class="text-right" id="expense_12"></td>
+                    <td class="text-right" id="expense_16"></td>
+                    <td class="text-right" id="expense_20"></td>
                 </tr>
                 <tr style="background-color: #f2bce7;">
                     <td>Profit Before Tax</td>
                     <td></td>
-                    <td id="pbt_4"></td>
-                    <td id="pbt_8"></td>
-                    <td id="pbt_12"></td>
-                    <td id="pbt_16"></td>
-                    <td id="pbt_20"></td>
+                    <td class="text-right" id="pbt_4"></td>
+                    <td class="text-right" id="pbt_8"></td>
+                    <td class="text-right" id="pbt_12"></td>
+                    <td class="text-right" id="pbt_16"></td>
+                    <td class="text-right" id="pbt_20"></td>
                 </tr>
                 <tr style="background-color: #f2bce7;">
                     <td>Tax</td>
                     <td></td>
-                    <td id="tax_4"></td>
-                    <td id="tax_8"></td>
-                    <td id="tax_12"></td>
-                    <td id="tax_16"></td>
-                    <td id="tax_20"></td>
+                    <td class="text-right" id="tax_4"></td>
+                    <td class="text-right" id="tax_8"></td>
+                    <td class="text-right" id="tax_12"></td>
+                    <td class="text-right" id="tax_16"></td>
+                    <td class="text-right" id="tax_20"></td>
                 </tr>
                 <tr style="background-color: #f2bce7;">
                     <td>Profit After Tax</td>
                     <td></td>
-                    <td id="pat_4"></td>
-                    <td id="pat_8"></td>
-                    <td id="pat_12"></td>
-                    <td id="pat_16"></td>
-                    <td id="pat_20"></td>
+                    <td class="text-right" id="pat_4"></td>
+                    <td class="text-right" id="pat_8"></td>
+                    <td class="text-right" id="pat_12"></td>
+                    <td class="text-right" id="pat_16"></td>
+                    <td class="text-right" id="pat_20"></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -167,56 +167,56 @@
                         Apr - Jun
                     </td>
                     <td style="background-color:#adc5ed;"></td>
-                    <td style="background-color:#adc5ed;">Z1 TO Z3</td>
-                    <td style="background-color:#adc5ed;">Z1 TO Z16</td>
-                    <td style="background-color:#adc5ed;">Z1 TO Z32</td>
-                    <td style="background-color:#adc5ed;">Z1 TO Z53</td>
-                    <td style="background-color:#adc5ed;">Z1 TO Z79</td>
+                    <td class="text-center" style="background-color:#adc5ed;">Z1 TO Z3</td>
+                    <td class="text-center" style="background-color:#adc5ed;">Z1 TO Z16</td>
+                    <td class="text-center" style="background-color:#adc5ed;">Z1 TO Z32</td>
+                    <td class="text-center" style="background-color:#adc5ed;">Z1 TO Z53</td>
+                    <td class="text-center" style="background-color:#adc5ed;">Z1 TO Z79</td>
                     <td style="background-color:#adc5ed;"></td>
                 </tr>
                 <tr style="background-color:#adc5ed;">
                     <td>Revenue</td>
-                    <td id="revenue_1"></td>
-                    <td id="revenue_5"></td>
-                    <td id="revenue_9"></td>
-                    <td id="revenue_13"></td>
-                    <td id="revenue_17"></td>
+                    <td class="text-right" id="revenue_1"></td>
+                    <td class="text-right" id="revenue_5"></td>
+                    <td class="text-right" id="revenue_9"></td>
+                    <td class="text-right" id="revenue_13"></td>
+                    <td class="text-right" id="revenue_17"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#adc5ed;">
                     <td>Expense</td>
-                    <td id="expense_1"></td>
-                    <td id="expense_5"></td>
-                    <td id="expense_9"></td>
-                    <td id="expense_13"></td>
-                    <td id="expense_17"></td>
+                    <td class="text-right" id="expense_1"></td>
+                    <td class="text-right" id="expense_5"></td>
+                    <td class="text-right" id="expense_9"></td>
+                    <td class="text-right" id="expense_13"></td>
+                    <td class="text-right" id="expense_17"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#adc5ed;">
                     <td>Profit Before Tax</td>
-                    <td id="pbt_1"></td>
-                    <td id="pbt_5"></td>
-                    <td id="pbt_9"></td>
-                    <td id="pbt_13"></td>
-                    <td id="pbt_17"></td>
+                    <td class="text-right" id="pbt_1"></td>
+                    <td class="text-right" id="pbt_5"></td>
+                    <td class="text-right" id="pbt_9"></td>
+                    <td class="text-right" id="pbt_13"></td>
+                    <td class="text-right" id="pbt_17"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#adc5ed;">
                     <td>Tax</td>
-                    <td id="tax_1"></td>
-                    <td id="tax_5"></td>
-                    <td id="tax_9"></td>
-                    <td id="tax_13"></td>
-                    <td id="tax_17"></td>
+                    <td class="text-right" id="tax_1"></td>
+                    <td class="text-right" id="tax_5"></td>
+                    <td class="text-right" id="tax_9"></td>
+                    <td class="text-right" id="tax_13"></td>
+                    <td class="text-right" id="tax_17"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#adc5ed;">
                     <td>Profit After Tax</td>
-                    <td id="pat_1"></td>
-                    <td id="pat_5"></td>
-                    <td id="pat_9"></td>
-                    <td id="pat_13"></td>
-                    <td id="pat_17"></td>
+                    <td class="text-right" id="pat_1"></td>
+                    <td class="text-right" id="pat_5"></td>
+                    <td class="text-right" id="pat_9"></td>
+                    <td class="text-right" id="pat_13"></td>
+                    <td class="text-right" id="pat_17"></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -239,56 +239,56 @@
                         Jul - Sept
                     </td>
                     <td style="background-color:#c6f2c7;"></td>
-                    <td style="background-color:#c6f2c7;">Z1 TO Z5</td>
-                    <td style="background-color:#c6f2c7;">Z1 TO Z20</td>
-                    <td style="background-color:#c6f2c7;">Z1 TO Z37</td>
-                    <td style="background-color:#c6f2c7;">Z1 TO Z59</td>
-                    <td style="background-color:#c6f2c7;">Z1 TO Z86</td>
+                    <td class="text-center" style="background-color:#c6f2c7;">Z1 TO Z5</td>
+                    <td class="text-center" style="background-color:#c6f2c7;">Z1 TO Z20</td>
+                    <td class="text-center" style="background-color:#c6f2c7;">Z1 TO Z37</td>
+                    <td class="text-center" style="background-color:#c6f2c7;">Z1 TO Z59</td>
+                    <td class="text-center" style="background-color:#c6f2c7;">Z1 TO Z86</td>
                     <td style="background-color:#c6f2c7;"></td>
                 </tr>
                 <tr style="background-color:#c6f2c7;">
                     <td>Revenue</td>
-                    <td id="revenue_2"></td>
-                    <td id="revenue_6"></td>
-                    <td id="revenue_10"></td>
-                    <td id="revenue_14"></td>
-                    <td id="revenue_18"></td>
+                    <td class="text-right" id="revenue_2"></td>
+                    <td class="text-right" id="revenue_6"></td>
+                    <td class="text-right" id="revenue_10"></td>
+                    <td class="text-right" id="revenue_14"></td>
+                    <td class="text-right" id="revenue_18"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#c6f2c7;">
                     <td>Expense</td>
-                    <td id="expense_2"></td>
-                    <td id="expense_6"></td>
-                    <td id="expense_10"></td>
-                    <td id="expense_14"></td>
-                    <td id="expense_18"></td>
+                    <td class="text-right" id="expense_2"></td>
+                    <td class="text-right" id="expense_6"></td>
+                    <td class="text-right" id="expense_10"></td>
+                    <td class="text-right" id="expense_14"></td>
+                    <td class="text-right" id="expense_18"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#c6f2c7;">
                     <td>Profit Before Tax</td>
-                    <td id="pbt_2"></td>
-                    <td id="pbt_6"></td>
-                    <td id="pbt_10"></td>
-                    <td id="pbt_14"></td>
-                    <td id="pbt_18"></td>
+                    <td class="text-right" id="pbt_2"></td>
+                    <td class="text-right" id="pbt_6"></td>
+                    <td class="text-right" id="pbt_10"></td>
+                    <td class="text-right" id="pbt_14"></td>
+                    <td class="text-right" id="pbt_18"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#c6f2c7;">
                     <td>Tax</td>
-                    <td id="tax_2"></td>
-                    <td id="tax_6"></td>
-                    <td id="tax_10"></td>
-                    <td id="tax_14"></td>
-                    <td id="tax_18"></td>
+                    <td class="text-right" id="tax_2"></td>
+                    <td class="text-right" id="tax_6"></td>
+                    <td class="text-right" id="tax_10"></td>
+                    <td class="text-right" id="tax_14"></td>
+                    <td class="text-right" id="tax_18"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#c6f2c7;">
                     <td>Profit After Tax</td>
-                    <td id="pat_2"></td>
-                    <td id="pat_6"></td>
-                    <td id="pat_10"></td>
-                    <td id="pat_14"></td>
-                    <td id="pat_18"></td>
+                    <td class="text-right" id="pat_2"></td>
+                    <td class="text-right" id="pat_6"></td>
+                    <td class="text-right" id="pat_10"></td>
+                    <td class="text-right" id="pat_14"></td>
+                    <td class="text-right" id="pat_18"></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -311,56 +311,56 @@
                         Oct - Dec
                     </td>
                     <td style="background-color:#f1e0c5;"></td>
-                    <td style="background-color:#f1e0c5;">Z1 TO Z8</td>
-                    <td style="background-color:#f1e0c5;">Z1 TO Z24</td>
-                    <td style="background-color:#f1e0c5;">Z1 TO Z42</td>
-                    <td style="background-color:#f1e0c5;">Z1 TO Z65</td>
-                    <td style="background-color:#f1e0c5;">Z1 TO Z93</td>
+                    <td class="text-center" style="background-color:#f1e0c5;">Z1 TO Z8</td>
+                    <td class="text-center" style="background-color:#f1e0c5;">Z1 TO Z24</td>
+                    <td class="text-center" style="background-color:#f1e0c5;">Z1 TO Z42</td>
+                    <td class="text-center" style="background-color:#f1e0c5;">Z1 TO Z65</td>
+                    <td class="text-center" style="background-color:#f1e0c5;">Z1 TO Z93</td>
                     <td style="background-color:#f1e0c5;"></td>
                 </tr>
                 <tr style="background-color:#f1e0c5;">
                     <td>Revenue</td>
-                    <td id="revenue_3"></td>
-                    <td id="revenue_7"></td>
-                    <td id="revenue_11"></td>
-                    <td id="revenue_15"></td>
-                    <td id="revenue_19"></td>
+                    <td class="text-right" id="revenue_3"></td>
+                    <td class="text-right" id="revenue_7"></td>
+                    <td class="text-right" id="revenue_11"></td>
+                    <td class="text-right" id="revenue_15"></td>
+                    <td class="text-right" id="revenue_19"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#f1e0c5;">
                     <td>Expense</td>
-                    <td id="expense_3"></td>
-                    <td id="expense_7"></td>
-                    <td id="expense_11"></td>
-                    <td id="expense_15"></td>
-                    <td id="expense_19"></td>
+                    <td class="text-right" id="expense_3"></td>
+                    <td class="text-right" id="expense_7"></td>
+                    <td class="text-right" id="expense_11"></td>
+                    <td class="text-right" id="expense_15"></td>
+                    <td class="text-right" id="expense_19"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#f1e0c5;">
                     <td>Profit Before Tax</td>
-                    <td id="pbt_3"></td>
-                    <td id="pbt_7"></td>
-                    <td id="pbt_11"></td>
-                    <td id="pbt_15"></td>
-                    <td id="pbt_19"></td>
+                    <td class="text-right" id="pbt_3"></td>
+                    <td class="text-right" id="pbt_7"></td>
+                    <td class="text-right" id="pbt_11"></td>
+                    <td class="text-right" id="pbt_15"></td>
+                    <td class="text-right" id="pbt_19"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#f1e0c5;">
                     <td>Tax</td>
-                    <td id="tax_3"></td>
-                    <td id="tax_7"></td>
-                    <td id="tax_11"></td>
-                    <td id="tax_15"></td>
-                    <td id="tax_19"></td>
+                    <td class="text-right" id="tax_3"></td>
+                    <td class="text-right" id="tax_7"></td>
+                    <td class="text-right" id="tax_11"></td>
+                    <td class="text-right" id="tax_15"></td>
+                    <td class="text-right" id="tax_19"></td>
                     <td></td>
                 </tr>
                 <tr style="background-color:#f1e0c5;">
                     <td>Profit After Tax</td>
-                    <td id="pat_3"></td>
-                    <td id="pat_7"></td>
-                    <td id="pat_11"></td>
-                    <td id="pat_15"></td>
-                    <td id="pat_19"></td>
+                    <td class="text-right" id="pat_3"></td>
+                    <td class="text-right" id="pat_7"></td>
+                    <td class="text-right" id="pat_11"></td>
+                    <td class="text-right" id="pat_15"></td>
+                    <td class="text-right" id="pat_19"></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -576,15 +576,17 @@
                 document.getElementById('tax_'+disp).innerHTML = parseInt(tax_cal[i]).toLocaleString();
                 document.getElementById('pat_'+disp).innerHTML = parseInt(pat_cal[i]).toLocaleString();
             }
-            for(var i = 0; i < 5; i++){
-                for(var j = 0; j < 20; j += 5){
-                    one_year_revenue[i] = revenue_cal[j] + revenue_cal[j+1] + revenue_cal[j+2] + revenue_cal[j + 3] + revenue_cal[j + 4];
-                    one_year_expense[i] = expense_cal[j] + expense_cal[j+1] + expense_cal[j+2] + expense_cal[j + 3] + expense_cal[j + 4];
-                    one_year_pbt[i] = pbt_cal[j] + pbt_cal[j+1] + pbt_cal[j+2] + pbt_cal[j + 3] + pbt_cal[j + 4];
-                    one_year_tax[i] = tax_cal[j] + tax_cal[j+1] + tax_cal[j+2] + tax_cal[j + 3] + tax_cal[j + 4];
-                    one_year_pat[i] = pat_cal[j] + pat_cal[j+1] + pat_cal[j+2] + pat_cal[j + 3] + pat_cal[j + 4];
+            // for(var i = 0; i < 5; i++){
+                for(var j = 0; j < 20; j += 4){
+                    var s = 0;
+                    s = s + j / 4;
+                    one_year_revenue[s] = revenue_cal[j] + revenue_cal[j+1] + revenue_cal[j+2] + revenue_cal[j + 3];
+                    one_year_expense[s] = expense_cal[j] + expense_cal[j+1] + expense_cal[j+2] + expense_cal[j + 3];
+                    one_year_pbt[s] = pbt_cal[j] + pbt_cal[j+1] + pbt_cal[j+2] + pbt_cal[j + 3];
+                    one_year_tax[s] = tax_cal[j] + tax_cal[j+1] + tax_cal[j+2] + tax_cal[j + 3];
+                    one_year_pat[s] = pat_cal[j] + pat_cal[j+1] + pat_cal[j+2] + pat_cal[j + 3];
                 }
-            }
+            // }
             for(var k = 0; k < 5; k++){
                 var next = k+1;
                 document.getElementById('one_year_revenue_'+next).innerHTML = parseInt(one_year_revenue[k]).toLocaleString();
