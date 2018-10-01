@@ -6554,13 +6554,13 @@ public function enquirywise(request $request){
           $userIds = explode(",", $tl);
 
          $wards = Ward::where('wards.id',$tlward)->get();
-         $depts = [17,6];
+         $depts = [17,6,7,11];
          $wardsAndSub = []; 
          $users = User::whereIn('users.group_id',$depts)
+                    ->where('department_id','!=',10)
                       ->leftjoin('departments','departments.id','users.department_id')
                       ->leftjoin('groups','groups.id','users.group_id')
                       ->select('users.*','departments.dept_name','groups.group_name')->get();
-      
            $tlUsers = User::whereIn('users.id',$userIds)
                       ->leftjoin('departments','departments.id','users.department_id')
                       ->leftjoin('groups','groups.id','users.group_id')
@@ -6577,7 +6577,7 @@ public function enquirywise(request $request){
 
 public function enquirywise1(request $request){
 
- $depts = [17,6,7];
+ $depts = [17,6,7,11];
  $wardsAndSub = [];
  $users = User::whereIn('users.group_id',$depts)
               ->where('department_id','!=',10)
@@ -6600,6 +6600,7 @@ public function enquirywise1(request $request){
 
 
 function enquirystore(request $request){
+
     if($request->ward){
     $wards = implode(", ", $request->ward);
     }else{
@@ -6730,7 +6731,9 @@ function enquirystore(request $request){
                 $datec = Requirement::where('created_at','LIKE' , $assigndate."%")->pluck('project_id');
             $projectids=$projectids->merge($datec);
         }
+        // $enq = Requirement:: where('status','=',"Enquiry On Process")->pluck('project_id');
         $projects = Requirement::whereIn('requirements.project_id',$projectids)
+                         ->where('requirements.status','=',"Enquiry On Process")
                         ->leftjoin('procurement_details','requirements.project_id', '=' ,'procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no')
                         ->paginate(20);

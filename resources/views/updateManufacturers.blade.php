@@ -529,7 +529,7 @@ function openCity(evt, cityName) {
                                 "<option value='M35'>M35</option> </select>";
                 cell2.innerHTML = "<input type='number' min='0' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
-            function myDelete1RMC() {
+            function RMC() {
                 var table = document.getElementById("types1");
                 if(table.rows.length >= 3){
                     document.getElementById("types1").deleteRow(-1);

@@ -15,8 +15,10 @@
                        <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
                        @endforeach
                      </select>
-                  @else 
+                  @elseif(Auth::user()->group_id == 6)
                  <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
+                 @else 
+                 Senior TL
                   @endif
                             <div id="currentTime" class="pull-right" style="color:#ffffffe3;margin-top:-25px;"></div>
                             

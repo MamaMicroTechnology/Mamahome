@@ -11,7 +11,7 @@
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-success">
         <div class="panel-heading">Daily Target For MH_91_Z1
-            <p class="pull-right">{{ date('d-m-Y',strtotime($projection)) }} to {{ date('d-m-Y',strtotime($toDate)) }}</p>
+            <!-- <p class="pull-right">{{ date('d-m-Y',strtotime($projection)) }} to {{ date('d-m-Y',strtotime($toDate)) }}</p> -->
         </div>
         <div class="panel-body">
             <?php

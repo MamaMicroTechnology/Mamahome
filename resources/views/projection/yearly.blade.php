@@ -22,16 +22,6 @@
             ?>
             <form action="">
             <div class="form-group">
-            <!-- <label style="text-align:left;" for="from" class="control-label col-sm-2">Category :</label> -->
-                <!-- <div class="col-md-2">
-                    <select name="category" id="category" class="form-control input-sm">
-                        <option value="">--Select Categories--</option>
-                        <option value="all">All</option>
-                        @foreach($categories as $category)
-                        <option value="{{ $category->category }}">{{ ucwords($category->category) }}</option>
-                        @endforeach
-                    </select>
-                </div> -->
                 <label style="text-align:left;" for="from" class="control-label col-sm-5">Input Monthly Incremental Target Percentage :</label>
                 <div class="col-md-4">
                     <input required value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}" required type="text" name="percent" id="percent" placeholder="Monthly Incremental Target Percentage" class="form-control">
@@ -59,23 +49,6 @@
                         <td style="text-align:center">{{ date('d-M-Y',strtotime('+'.$i.' months',$time)) }}</td>
                         <td style='text-align:center'>{{ number_format($totalTarget = $totalTarget + $totalTarget * ($percent/100)) }}</td>
                         <td style='text-align:center'>{{ number_format($totalTP = $totalTP + $totalTP * ($transactionalProfit/100)) }}</td>
-                    </tr>
-                    <?php
-                        $total += $totalTarget;
-                        $totalTransaction += $totalTP;
-                    ?>
-                    @endfor
-                    <tr>
-                        <th style="text-align:center">Total</th>
-                        <th style='text-align:center'>{{ number_format($total) }}</th>
-                        <th style='text-align:center'>{{ number_format($totalTransaction) }}</th>
-                    </tr>
-                @elseif($planning != null)
-                    @for($i = 1; $i < 12; $i++)
-                    <tr>
-                        <td style="text-align:center">{{ date('d-M-Y',strtotime('+'.$i.' months',$time)) }}</td>
-                        <td style='text-align:center'>{{ number_format($totalTarget = $totalTarget + $totalTarget * ($planning->incremental_percentage/100)) }}</td>
-                        <td style='text-align:center'>{{ number_format($totalTP = $totalTP + $totalTP * ($planning->incremental_percentage/100)) }}</td>
                     </tr>
                     <?php
                         $total += $totalTarget;

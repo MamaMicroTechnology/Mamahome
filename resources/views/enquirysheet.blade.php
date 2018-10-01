@@ -41,7 +41,7 @@
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
-								<label>Wards</label>
+								<label>Sub Wards</label>
 								<select class="form-control" name="ward">
 									<option value="">--Select--</option>
 									<option value="">All</option>
@@ -369,5 +369,12 @@ function myFunction() {
 	// }
 	// }
 }
+</script>
+ <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
 </script>
 @endsection

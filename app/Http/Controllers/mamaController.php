@@ -3220,5 +3220,9 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
        $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
         dd($time);
     }
+    public function holidays()
+    {
+        return view('holidays');
+    }
 
 }
