@@ -230,7 +230,7 @@
                                                 <button type="button" onclick="addRMC()" class="btn btn-warning btn-sm">
                                                     &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
                                                 </button>
-                                                <button type="button" onclick="addRMC()" class="btn btn-danger btn-sm">
+                                                <button type="button" onclick="RMC()" class="btn btn-danger btn-sm">
                                                     &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
                                                 </button>
                                             </div>
@@ -538,7 +538,7 @@ function openCity(evt, cityName) {
                                 "<option value='M35'>M35</option> </select>";
                 cell2.innerHTML = "<input type='number' min='1' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
-            function addRMC() {
+            function RMC() {
                 var table = document.getElementById("types1");
                 if(table.rows.length >= 3){
                     document.getElementById("types1").deleteRow(-1);
