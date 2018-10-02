@@ -4864,9 +4864,7 @@ date_default_timezone_set("Asia/Kolkata");
              else
             {
                 $pipelines = Requirement::where('requirements.generated_by',Auth::user()->id)
-                ->leftjoin('procurement_details','requirements.project_id','procurement_details.project_id')
                 ->where('requirements.status','!=',"Enquiry Cancelled")
-                ->select('requirements.*','procurement_details.procurement_contact_no','procurement_details.procurement_name')
                 ->get() ;
             }
 

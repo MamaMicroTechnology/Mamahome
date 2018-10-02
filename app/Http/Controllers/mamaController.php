@@ -1858,8 +1858,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
    public function editEnquiry(Request $request)
     {
 
-            
-
         if($request->note != null){
             Requirement::where('id',$request->eid)->update(['notes'=>$request->note]);
            
@@ -1867,7 +1865,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
 
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
-        
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
@@ -1890,7 +1887,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order = new Order;
                 $order->id = $orderNo;
                 $order->req_id = $request->id;
-                $order->project_id = $requirement->project_id;
+                $order->manu_id = $request->manu_id;
+                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
                 $order->sub_category = $requirement->sub_category;
