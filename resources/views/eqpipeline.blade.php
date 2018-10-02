@@ -165,7 +165,7 @@
 								<td>
 									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 										{{ csrf_field() }}
-										<input type="hidden" value="{{$enquiry->id}}" name="id">
+										<input type="hidden" value="{{$enquiry->id}}" name="eid">
 										<input type="hidden" value="{{$enquiry->manu_id}}" name="manu_id">
 
 										<select required name="status" onchange="this.form.submit();" style="width:100px;">
