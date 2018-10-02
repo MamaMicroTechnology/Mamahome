@@ -10,8 +10,10 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
                       <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                           <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
-                             
+                           <div  class="pull-right" style="color:#ffffffe3;">
+                                 Listed On : {{$manufacturer->created_at}}
+                           </div>
+                           
                         </div>
                         <div class="panel-body">
                              <center> <label id="headingPanel"> Manufacturer Details</label></center>

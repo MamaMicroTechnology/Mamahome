@@ -1175,7 +1175,7 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
-            <a href="{{ URL::to('/viewManufacturer') }}"> Manufactur Details</a>
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacturer Details</a>
       
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>

@@ -165,26 +165,37 @@
                         
 						@foreach($enquiries as $enquiry)
                         @if($enquiry->status != "Not Processed")
-					
+					        @if($enquiry->manu_id == NULL)
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
-									<b>{{$enquiry -> project_id }}</b>
+									<b>{{$enquiry->project_id }}</b>
 								</a> 
 							</td>
+							@else
+							<td style="text-align:center;background-color:rgb(21, 137, 66);color:black;">
+								<a target="_blank" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">
+									<b style="color:white;"> {{$enquiry->manu_id}}</b>
+								</a> 
+							</td>
+							@endif
 							<td style="text-align: center">
 
                                @foreach($wards as $ward)
-                                 @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : '') )
-                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">
+                                 @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : $enquiry->sub_ward_id) )
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
                                     {{$ward->sub_ward_name}}</a></td>
                                   @endif
                                @endforeach
 
-							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name : '' }}</td>
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name :''  }}
+                       {{ $enquiry->proc != null ? $enquiry->proc->name :''  }}
+							</td>
 							<td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
-							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}</td>
-							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}</td>
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
+							 {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
+							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }} {{ $enquiry->product }} 
+							</td>
 							<td style="text-align: center">
 								<?php $quantity = explode(", ",$enquiry->quantity); ?>
 								@for($i = 0; $i<count($quantity); $i++)
@@ -217,6 +228,8 @@
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
 									<input type="hidden" value="{{$enquiry->id}}" name="id">
+									<input type="hidden" value="{{$enquiry->manu_id}}" name="id">
+
 									
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>

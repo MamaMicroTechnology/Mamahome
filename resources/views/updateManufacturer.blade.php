@@ -6,6 +6,7 @@
         <div class="panel-body">
             <table class="table table-hover">
                 <thead>
+                    <th>Manufacturer Id</th>
                     <th>Name</th>
                     <th>Address</th>
                     <th>Contact No</th>
@@ -14,10 +15,13 @@
                 <tbody>
                     @foreach($manufacturers as $manufacturer)
                     <tr>
+                        <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}">{{ $manufacturer->id }}</td>
                         <td>{{ $manufacturer->proc->name }}</td>
                         <td>{{ $manufacturer->address }}</td>
                         <td>{{ $manufacturer->proc->contact}}</td>
-                        <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}" class="btn btn-success btn-xs">Update</a></td>
+                        <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}" class="btn btn-primary btn-sm">Edit</a>
+                         <a class="btn btn-sm btn-success btn-sm" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?projectId={{ $manufacturer->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
+                     </td>
                     </tr>
                     @endforeach
                 </tbody>

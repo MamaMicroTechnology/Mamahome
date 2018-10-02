@@ -1890,6 +1890,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order = new Order;
                 $order->id = $orderNo;
                 $order->req_id = $request->id;
+                $order->manu_id = $request->manu_id;
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;
@@ -1935,7 +1936,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->save();
         return back();
         }
-    
     public function editManualEnquiry(Request $request)
     {
         RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
@@ -3054,11 +3054,10 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                          }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
-         if($projectimage != ""){
+        if($projectimage != ""){
             
         $manufacturer->image = $projectimage;
         }
-       
        
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;

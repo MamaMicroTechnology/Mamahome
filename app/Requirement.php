@@ -32,6 +32,15 @@ class Requirement extends Model
       return $this->hasOne('App\SubWard','id','sub_ward_id');
     
     }
+    public function manu()
+    {
+      return $this->hasOne('App\Manufacturer','id','manu_id');
+    
+    }
+     public function proc()
+    {
+      return $this->hasOne('App\Mprocurement_Details','manu_id','manu_id');
+    }
 }
 	
 
