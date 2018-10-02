@@ -1890,6 +1890,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order = new Order;
                 $order->id = $orderNo;
                 $order->req_id = $request->id;
+                $order->manu_id = $request->manu_id;
                 $order->project_id = $requirement->project_id;
                 $order->main_category = $requirement->main_category;
                 $order->brand = $requirement->brand;

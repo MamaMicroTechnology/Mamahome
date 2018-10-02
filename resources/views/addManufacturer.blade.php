@@ -17,6 +17,13 @@
                      </select>
                   @elseif(Auth::user()->group_id == 6)
                  <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
+                  @elseif(Auth::user()->group_id == 11)
+                   <select class="form-control" style="width:20%" name="tlward">
+                       <option value="">Select SubWard</option>
+                       @foreach($acc as $w)
+                       <option value="{{$w->id}}">{{$w->sub_ward_name}}</option>
+                       @endforeach
+                     </select>
                  @else 
                  Senior TL
                   @endif

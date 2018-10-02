@@ -18,7 +18,14 @@
                      </select>
                   @elseif(Auth::user()->group_id == 6)
                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
-                  @else
+                  @elseif(Auth::user()->group_id == 11)
+                   <select class="form-control" style="width:20%" name="tlward">
+                       <option value="">Select SubWard</option>
+                       @foreach($acc as $w)
+                       <option value="{{$w->id}}">{{$w->sub_ward_name}}</option>
+                       @endforeach
+                     </select>
+                     @else
                   Seniot TL
                   @endif
                  <!--  @if(session('Error'))

@@ -1706,8 +1706,9 @@ class HomeController extends Controller
 
     public function listingEngineer()
     {
+         
+        $acc =Subward::where('ward_id',10)->get();
 
-        
        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
        $tlwards = Subward::where('ward_id',$tl)->get();
         $this->variable=$tlwards;
@@ -1716,7 +1717,7 @@ class HomeController extends Controller
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards]);
+        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc]);
     }
     public function leDashboard()
     {
@@ -8034,7 +8035,8 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
-
+        $acc =Subward::where('ward_id',10)->get();
+       
         $this->listingEngineer();
          $tlwards=$this->variable;
         $date=date('Y-m-d');
@@ -8042,7 +8044,7 @@ public function display(request $request){
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards]);
+        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc]);
     }
     public function viewManufacturer(Request $request)
     {
@@ -8289,6 +8291,8 @@ public function viewManufacturer1(Request $request)
         }
     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
      $this->variable = $ward;
+     
+      
      // return $tl1;
     return array(
         'ward' =>$ward,'tls'=>$tl1,'user_id'=>$userid,'found'=>$found1);
