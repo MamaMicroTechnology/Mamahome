@@ -7,6 +7,7 @@
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
     </SMALL>
+    <h3>Your Assigned Category Name : {{$catname}}
 </center></h2></div>
 @if(session('Success'))
 <script>

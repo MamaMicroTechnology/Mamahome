@@ -58,7 +58,7 @@
   
                   <div class="col-md-2">
                    
-                    <button type="submit"  class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Submit Data</button> 
+                    <button type="submit"  class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Assign</button> 
                  </div> 
 
             </div>

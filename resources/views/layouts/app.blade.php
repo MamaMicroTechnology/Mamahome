@@ -1172,12 +1172,10 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
-      <a href="#" data-toggle="collapse" data-target="#so">Assign Sales Officers &#x21F2;</a>
+      <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
        <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
-        <a href="{{ URL::to('/leDashboard') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
-        <a href="{{ URL::to('/teamLead') }}">&nbsp;&nbsp;&nbsp; - Assign Enquiry</a>
-        <a href="{{ URL::to('/salesEngineer') }}">&nbsp;&nbsp;&nbsp; - Assign Project</a>
+        <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
     </div>
        <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
     <div id="add" class="collapse">
@@ -1255,14 +1253,11 @@ function myTimer() {
 @elseif(Auth::user()->group_id == 23 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-
-    <a href="{{ URL::to('/') }}/projectsUpdate" >Assigned Task</a>
-    <a href="{{ URL::to('/') }}/sales_manufacture">Assigned Enquiry</a>
-    <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-    <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
-    <a href="{{ URL::to('/') }}/scenquirysheet">Add Enquiry</a>
+     <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+    <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
+    <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
+    <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
     <a href="{{ URL::to('/') }}/orders" >Orders</a>   
-    <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)

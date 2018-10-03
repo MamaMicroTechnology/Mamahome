@@ -9,7 +9,7 @@
     <div class="col-md-12">
     <div class="panel panel-default" style="border-color:rgb(244,129,31);text-align: center;">
                     <div class="panel-heading" style="background-color:rgb(244,129,31);color:white;">Begin adding the products by category and brand followed by sub-category</div>
-    
+                               
                 <td style=""></td>
      </div>      
 </div>
@@ -20,7 +20,8 @@
                 <div class="panel panel-default" style="border-color:green;">
                     <div class="panel-heading" style="background-color:green;color:white;">Category</div>
                     <div class="panel-body" style="height:400px; max-height: 400px; overflow-y: scroll;">
-                        <form method="post" action="{{ URL::to('/') }}/addCategory" enctype="multipart/form-data">
+                     @if(Auth::user()->group_id != 23)
+                       <form method="post" action="{{ URL::to('/') }}/addCategory" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="col-md-3">
                                 <input required type="text" placeholder="Category" name="category" class="form-control">
@@ -44,15 +45,20 @@
                                 <input type="submit" value="Save" class="form-control btn btn-primary">
                             </div>
                         </form>
-                        <br><br>
+                        @endif
+                        <br>
                         <table class="table table-hover">
                             <tr>
                             <td>Category</td>
                             <td>Action</td>
                             </tr>
                             @foreach($categories as $category)
-                            <tr id="current{{ $category->id }}">
+                              <tr id="current{{ $category->id }}">
+                             @if(Auth::user()->group_id != 23)
                                 <td>{{ $category->category_name }}</td>
+                                @else
+                                @if($category->id == $sub)
+                                 <td>{{ $category->category_name }}</td>
                                 <td>
                                 <form method="POST" action="{{ URL::to('/') }}/deleteCategory">
                                     {{ csrf_field() }}
@@ -63,6 +69,20 @@
                                 <td>
                                     <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit</button>
                                 </td>
+                                 @endif
+                              @endif 
+                              @if(Auth::user()->group_id != 23)   
+                              <td>
+                                <form method="POST" action="{{ URL::to('/') }}/deleteCategory">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $category->id }}" name="id">
+                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                </form>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit</button>
+                                </td>
+                                @endif
                             </tr>
                             <tr class="hidden" id="edit{{ $category->id }}">
                                 
@@ -96,7 +116,13 @@
                                 <select name="cat" class="form-control">
                                     <option value="">--Category--</option>
                                     @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                    @if(Auth::user()->group_id != 23)
+                                       <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                       @else
+                                          @if($category->id == $sub)
+                                       <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                           @endif
+                                     @endif      
                                     @endforeach
                                 </select>
                             </div>
@@ -119,7 +145,7 @@
                             </tr>
                             @foreach($brands as $brand)
                             <tr id="currentb{{ $brand->id }}">
-                                <td>{{ $brand->category_name }}</td>
+                                <td>{{ $brand->category->category_name }}</td>
                                 <td>{{ $brand->brand }}</td>
                                 <td>
                                 <form method="POST" action="{{ URL::to('/') }}/deletebrand">
@@ -167,7 +193,7 @@
                             @foreach($subcategories as $subcategory)
                             <tr id="currentsub{{ $subcategory->id }}">
                                 <td>{{ $subcategory->category->category_name }}</td>
-                                 <td>{{ $subcategory->brand }}</td>
+                                 <td>{{ $subcategory->brand->brand }}</td>
                                  <td>{{ $subcategory->sub_cat_name }}</td>
                                 <td>
                                     <form method="POST" action="{{ URL::to('/') }}/deleteSubCategory">
@@ -218,7 +244,13 @@
             <select class="form-control" required name="category" onchange="getBrands()" id="category">
                 <option value="">-Select-</option>
                 @foreach($categories as $category)
+                 @if(Auth::user()->group_id != 23)
                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                @else 
+                     @if($category->id == $sub)
+                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                      @endif
+                 @endif     
                 @endforeach
             </select><br>
             <select class="form-control" required name="brand" id="brand">
