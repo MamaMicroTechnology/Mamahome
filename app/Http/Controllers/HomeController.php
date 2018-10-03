@@ -3670,7 +3670,11 @@ date_default_timezone_set("Asia/Kolkata");
                     ->paginate(15);
                  $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();                 
              }
-      $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+         if(Auth::user()->group_id == 23){
+             $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();  
+         }else{
+               $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+         }
      $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      //dd($scount);
 
