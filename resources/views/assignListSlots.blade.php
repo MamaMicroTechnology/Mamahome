@@ -91,7 +91,12 @@
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center">
                                         <div class="btn-group">
+                                            @if($user->status == null)
+                                            @else
                                             <a  class="btn btn-sm btn-success" id="sale" onclick="Subs('{{ $user->id }}')"><b>Completed</b></a>
+
+                                            @endif
+
                                             <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
                                         </div>
                                     </td>
@@ -102,21 +107,23 @@
                             </tr>
                             @endforeach
                             @else
-                            
                              @foreach($tlUsers as $user)
                             <tr>
                                 <td  style="text-align: center;">{{$user->employeeId}}</td>
                                
                                 <td  style="text-align: center;">{{$user->name}}</td>
                                 <!-- Assign Ward Button -->
-                                @if($user->status == 'Completed')
+                                @if($user->status == 'Completed' || $user->status == null)
                                     <td style="text-align:center;">
                                         <a data-toggle="modal" data-target="#assignWards{{ $user->id }}" class="btn btn-sm btn-primary">
                                             <b>Assign Wards</b>
                                         </a>
                                     </td>
                                 @else
-                                    <td style="text-align:center">{{$user->sub_ward_name}}</td>
+                                    <td style="text-align:center">
+                                    <a href="{{ URL::to('/')}}/viewwardmap?UserId={{$user->id}} && wardname={{ $user->sub_ward_name }}" target="_blank">{{$user->sub_ward_name}}
+                                    </a>
+                                    </td>  
                                 @endif
                                 <td style="text-align: center;">
                                     @foreach($subwards as $subward)
@@ -129,10 +136,10 @@
                                     <a href="{{ URL::to('/')}}/public/subWardImages/{{$user->sub_ward_image}}" target="_blank">View Image
                                     </a>
                                 </td>
-                                <td style="text-align:center">
+                                <!-- <td style="text-align:center">
                                     <a href="{{ URL::to('/')}}/viewwardmap?UserId={{$user->id}} && wardname={{ $user->sub_ward_name }}" target="_blank">View map
                                     </a>                                   
-                                </td>
+                                </td> -->
                                 <td style="text-align:center">
                                     {{ $user->office_phone }}
                                 </td>            
@@ -140,6 +147,7 @@
                                 @if($user->status == 'Completed')
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center;">
+                
                                         <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary form-control"><b>Report</b></a>
                                     </td>
                                 @else
@@ -149,7 +157,10 @@
                                 @if(Auth::user()->group_id != 17)
                                     <td style="text-align:center">
                                         <div class="btn-group">
+                                            @if($user->status == null)
+                                            @else
                                             <a  class="btn btn-sm btn-success" id="sale" onclick="Subs('{{ $user->id }}')"><b>Completed</b></a>
+                                            @endif
                                             <a href="{{URL::to('/')}}/viewReport?UserId={{$user->id}}" class="btn btn-sm btn-primary"><b>Report</b></a>
                                         </div>
                                     </td>

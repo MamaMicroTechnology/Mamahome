@@ -295,7 +295,7 @@ public function inputdata(Request $request)
             $points->reason = "Generating an enquiry";
             $points->save();
             
-       
+        $ward = $request->sub_ward_id;
         $x = DB::table('requirements')->insert(['project_id'    =>'',
                                                 'main_category' => '',
                                                 'brand' => '',
@@ -320,7 +320,7 @@ public function inputdata(Request $request)
                                                 'total_quantity'=>$request->totalquantity,
                                                 'product'=>$request->product,
                                                 'manu_id'=>$request->manu_id,
-                                                'sub_ward_id'=>$request->sub_ward_id, 
+                                                'sub_ward_id'=>$ward, 
                                                 'ship' =>$shipadress
                                         ]);
 

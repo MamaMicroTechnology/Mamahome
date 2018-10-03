@@ -1322,6 +1322,8 @@ class HomeController extends Controller
             return redirect('itdashboard');
         }else if($dept == 'Research and Development'){
             return redirect('RandDdashboard');
+        }else if($group == 'Sales Officer'){
+             return redirect('salesofficer');
         }else{
             return redirect('chat');
         }
@@ -4787,7 +4789,7 @@ date_default_timezone_set("Asia/Kolkata");
         foreach($pipelines as $enquiry){
 
             $pId = ProjectDetails::where('project_id',$enquiry->project_id)->first();
-            if(count($pId) != 0){
+            if($pId != null){
                 $subwards2[$enquiry->project_id] = SubWard::where('id',$pId->sub_ward_id)->pluck('sub_ward_name')->first();
             }else{
                 $subwards2[$enquiry->project_id] = "";
@@ -6471,13 +6473,13 @@ public function enquirywise(request $request){
           $userIds = explode(",", $tl);
 
          $wards = Ward::where('wards.id',$tlward)->get();
-         $depts = [17,6];
+         $depts = [17,6,7,11];
          $wardsAndSub = []; 
          $users = User::whereIn('users.group_id',$depts)
+                    ->where('department_id','!=',10)
                       ->leftjoin('departments','departments.id','users.department_id')
                       ->leftjoin('groups','groups.id','users.group_id')
                       ->select('users.*','departments.dept_name','groups.group_name')->get();
-      
            $tlUsers = User::whereIn('users.id',$userIds)
                       ->leftjoin('departments','departments.id','users.department_id')
                       ->leftjoin('groups','groups.id','users.group_id')
@@ -6494,7 +6496,7 @@ public function enquirywise(request $request){
 
 public function enquirywise1(request $request){
 
- $depts = [17,6,7];
+ $depts = [17,6,7,11];
  $wardsAndSub = [];
  $users = User::whereIn('users.group_id',$depts)
               ->where('department_id','!=',10)
@@ -6517,6 +6519,7 @@ public function enquirywise1(request $request){
 
 
 function enquirystore(request $request){
+
     if($request->ward){
     $wards = implode(", ", $request->ward);
     }else{
@@ -6647,7 +6650,9 @@ function enquirystore(request $request){
                 $datec = Requirement::where('created_at','LIKE' , $assigndate."%")->pluck('project_id');
             $projectids=$projectids->merge($datec);
         }
+        // $enq = Requirement:: where('status','=',"Enquiry On Process")->pluck('project_id');
         $projects = Requirement::whereIn('requirements.project_id',$projectids)
+                         ->where('requirements.status','=',"Enquiry On Process")
                         ->leftjoin('procurement_details','requirements.project_id', '=' ,'procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no')
                         ->paginate(20);
@@ -8153,6 +8158,10 @@ public function viewManufacturer1(Request $request)
         $today = date('Y-m-d');
         $reports = Report::where('empId',Auth::user()->employeeId)->where('created_at','LIKE',$today.'%')->get();
         return view('RandD.dashboard',['reports'=>$reports]);
+  }
+  public function getsalesofficer(Request $request){
+    
+        return view('Salesofficer.dashboard');
   }
   public function postdashboard(Request $request){
     
