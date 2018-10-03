@@ -1322,6 +1322,8 @@ class HomeController extends Controller
             return redirect('itdashboard');
         }else if($dept == 'Research and Development'){
             return redirect('RandDdashboard');
+        }else if($group == 'Sales Officer'){
+             return redirect('salesofficer');
         }else{
             return redirect('chat');
         }
@@ -8156,6 +8158,10 @@ public function viewManufacturer1(Request $request)
         $today = date('Y-m-d');
         $reports = Report::where('empId',Auth::user()->employeeId)->where('created_at','LIKE',$today.'%')->get();
         return view('RandD.dashboard',['reports'=>$reports]);
+  }
+  public function getsalesofficer(Request $request){
+    
+        return view('Salesofficer.dashboard');
   }
   public function postdashboard(Request $request){
     

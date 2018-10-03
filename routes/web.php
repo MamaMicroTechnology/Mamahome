@@ -163,6 +163,7 @@ Route::get('/atreject','mamaController@atreject');
 Route::get('/atapprove','mamaController@atapprove');
 Route::post('/empreports','mamaController@empreports');
 Route::get('/RandDdashboard','HomeController@getdashboard');
+Route::get('/salesofficer','HomeController@getsalesofficer');
 Route::post('/reportsRandD','HomeController@postdashboard');
 Route::get('/breakreport','mamaController@breakreport');
 Route::get('/holidays','mamaController@holidays');
