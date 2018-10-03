@@ -12,7 +12,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                   @if($subwards)
-                 
                   @else
                   Update Project&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   @endif
@@ -255,13 +254,17 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-                               <tr>
+<<<<<<< HEAD
+                               <!-- <tr>
                                    <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
                                    <td>:</td>
                                    <td>
                                     <input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]">
                                   </td>
-                               </tr>
+                               </tr> -->
+=======
+                              
+>>>>>>> eb326b0d735aeee2d8f92bba2ca711fc36d86e25
                                <tr>
                                 <?php
                                   $statuses = explode(", ", $projectdetails->project_status);

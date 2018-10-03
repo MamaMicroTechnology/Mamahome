@@ -10,8 +10,10 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
                       <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                           <div id="currentTime" class="pull-right" style="color:#ffffffe3;"></div>
-                             
+                           <div  class="pull-right" style="color:#ffffffe3;">
+                                 Listed On : {{$manufacturer->created_at}}
+                           </div>
+                           
                         </div>
                         <div class="panel-body">
                              <center> <label id="headingPanel"> Manufacturer Details</label></center>
@@ -241,10 +243,10 @@
                                             @endforeach
                                         </table>
                                             <div class="btn-group">
-                                                <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                <button type="button" onclick="addRMC()" class="btn btn-warning btn-sm">
                                                     &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
                                                 </button>
-                                                <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                <button type="button" onclick="RMC()" class="btn btn-danger btn-sm">
                                                     &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
                                                 </button>
                                             </div>
@@ -514,7 +516,7 @@ function openCity(evt, cityName) {
                 }
             }
 
-            function myFunction1() {
+            function addRMC() {
                 var table = document.getElementById("types1");
                 var row = table.insertRow(-1);
                 var cell1 = row.insertCell(0);
@@ -529,7 +531,7 @@ function openCity(evt, cityName) {
                                 "<option value='M35'>M35</option> </select>";
                 cell2.innerHTML = "<input type='number' min='0' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
-            function myDelete1() {
+            function RMC() {
                 var table = document.getElementById("types1");
                 if(table.rows.length >= 3){
                     document.getElementById("types1").deleteRow(-1);

@@ -47,6 +47,7 @@ use App\Message;
 use App\training;
 use App\Pricing;
 use App\Deposit;
+use App\AssignCategory;
 
 class marketingController extends Controller
 {
@@ -333,6 +334,24 @@ class marketingController extends Controller
           $price->save();
       
         return back();
+ }
+ public function postcat(request $request){
+      $check = AssignCategory::where('user_id',$request->user_id)->first();
+          if($check == null){
+           $price = new AssignCategory;
+           $price->cat_id = $request->cat;
+           $price->user_id = $request->user_id;
+          
+          $price->save();
+      
+            
+          }else{
+           $check->cat_id = $request->cat;
+           $check->user_id = $request->user_id;
+           $check->save();
+      
+          }
+               return back()->with('Success','successfully Assigned Category');
  }
 
  public function cashdeposit(request $request)

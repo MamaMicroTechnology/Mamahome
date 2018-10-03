@@ -238,7 +238,7 @@ if($aggregates_required != null){
         
         $his = History::all();
         
-          $assigncount = assign_manufacturers::where('user_id',Auth::user()->id)->first();
+        $assigncount = assign_manufacturers::where('user_id',Auth::user()->id)->first();
         if($assigncount != null){
             $assigncount->manu_ids = $projectids;
             $assigncount->save();
@@ -288,7 +288,7 @@ public function inputdata(Request $request)
          }
            $shipadress = $request->billadress;
 
-  $points = new Point;
+         $points = new Point;
             $points->user_id = $request->initiator;
             $points->point = 100;
             $points->type = "Add";

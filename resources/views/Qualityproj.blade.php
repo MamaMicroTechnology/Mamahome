@@ -7,13 +7,13 @@
                 
             </div>
         </div>
-    <div class="panel panel-primary">
+    <!-- <div class="panel panel-primary">
             <div class="panel-heading">Call Records</div>
             <div id="piechart2">
                 
             </div>
-    </div>
-    <div class="panel panel-primary">
+    </div> -->
+    <!-- <div class="panel panel-primary">
         <div class="panel-heading">Call Records</div>
         <div class="panel-body">
             @foreach($notes as $note)
@@ -24,7 +24,7 @@
             @endif
             @endforeach
         </div>
-    </div>
+    </div> -->
        
 </div>
 <div class="col-md-8">

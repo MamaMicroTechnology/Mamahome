@@ -1069,10 +1069,11 @@ function myTimer() {
             <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Target</a>
             <a href="{{ URL::to('/yearly') }}">&nbsp;&nbsp;&nbsp; - Yearly Sales Projection</a>
             <a href="{{ URL::to('/fiveyears') }}">&nbsp;&nbsp;&nbsp; - Five Years Sales Projection</a>
+            <a href="{{ URL::to('/fiveyearsWithZones') }}">&nbsp;&nbsp;&nbsp; - Five Years Sales Projection With Zone</a>
             <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - One Year India Country Projection</a>
             <a href="{{ URL::to('/daily') }}">&nbsp;&nbsp;&nbsp; - Daily Sales Target</a>
             <a href="{{ URL::to('/extensionPlanner') }}">&nbsp;&nbsp;&nbsp; - Extension Planner</a>
-            <a href="{{ URL::to('/bulkBusiness') }}">&nbsp;&nbsp;&nbsp; - Bulk Business</a>
+            <!-- <a href="{{ URL::to('/bulkBusiness') }}">&nbsp;&nbsp;&nbsp; - Bulk Business</a> -->
         </div>
         <a href="#" data-toggle="collapse" data-target="#Expenditure">Expenditure &#x21F2;</a>
         <div id="Expenditure" class="collapse">
@@ -1083,7 +1084,7 @@ function myTimer() {
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
-            <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
+             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
@@ -1185,7 +1186,7 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
-            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacturer Details</a>
       
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
