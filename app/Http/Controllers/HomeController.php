@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\orderconfirmation;
 use App\Mail\invoicomee;
 use App\Department;
+use App\AssignCategory;
 use App\assign_manufacturers;
 use App\User;
 use App\Builder;
@@ -2779,10 +2780,13 @@ date_default_timezone_set("Asia/Kolkata");
     public function setprice(Request $request){
         $prices = CategoryPrice::all();
         $categories = Category::all();
+
         $myPrices = Pricing::leftJoin('category','pricing.cat','category.id')
                             ->leftJoin('brands','pricing.brand','brands.id')
                             ->leftJoin('category_sub','pricing.suncat','category_sub.id')
                             ->get();
+
+             $this->variable = $categories;                
         return view('setprice',['prices'=>$prices,'categories'=>$categories,'myPrices'=>$myPrices]);
     }
  public function allprice(Request $request){
@@ -8318,8 +8322,13 @@ public function viewManufacturer1(Request $request)
    return view('/enq',['data'=>$data]);
     }
 
+  public function Assigncat(request $request){
+        $categories = Category::all();
+        $users = User::where('group_id',22)->get();
+        $cat = AssignCategory::all();
+      return view('/cat',['categories'=>$categories,'users'=>$users,'cat'=>$cat]);
 
-
+  }
 
 
   public function getNewActivityLog()
@@ -8345,4 +8354,5 @@ public function viewManufacturer1(Request $request)
         }
         // return $activity;
   }
+
 }
