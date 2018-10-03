@@ -3668,7 +3668,7 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
-                                 
+                 $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();                 
              }
       $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
