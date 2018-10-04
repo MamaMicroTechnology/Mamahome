@@ -47,6 +47,7 @@ use App\Message;
 use App\training;
 use App\Pricing;
 use App\Deposit;
+use App\AssignCategory;
 
 class marketingController extends Controller
 {
@@ -65,10 +66,22 @@ class marketingController extends Controller
         });
     }
     public function getHome(){
+        $sub = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+        $subcat = Brand::where('category_id',$sub)->pluck('id')->first();
         $categories = Category::all();
+        if(Auth::user()->group_id != 23){
         $subcategories = SubCategory::leftjoin('brands','category_sub.brand_id','=','brands.id')->select('brands.brand','category_sub.*')->get();
-        $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
-        return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
+          
+          $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
+        }
+        else{
+               $subcategories = SubCategory::where('brand_id',$subcat)->select('category_sub.*')->get();
+               
+               $brands = brand::where('category_id',$sub)->select('brands.*')->get();
+        }
+           
+        
+        return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands,'sub'=>$sub]);
     }
     public function addCategory(Request $request){
        
@@ -333,6 +346,24 @@ class marketingController extends Controller
           $price->save();
       
         return back();
+ }
+ public function postcat(request $request){
+      $check = AssignCategory::where('user_id',$request->user_id)->first();
+          if($check == null){
+           $price = new AssignCategory;
+           $price->cat_id = $request->cat;
+           $price->user_id = $request->user_id;
+          
+          $price->save();
+      
+            
+          }else{
+           $check->cat_id = $request->cat;
+           $check->user_id = $request->user_id;
+           $check->save();
+      
+          }
+               return back()->with('Success','successfully Assigned Category');
  }
 
  public function cashdeposit(request $request)

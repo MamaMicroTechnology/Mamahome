@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\orderconfirmation;
 use App\Mail\invoicomee;
 use App\Department;
+use App\AssignCategory;
 use App\assign_manufacturers;
 use App\User;
 use App\Builder;
@@ -1405,6 +1406,8 @@ class HomeController extends Controller
             return redirect('itdashboard');
         }else if($dept == 'Research and Development'){
             return redirect('RandDdashboard');
+        }else if($group == 'Sales Officer'){
+             return redirect('salesofficer');
         }else{
             return redirect('chat');
         }
@@ -2779,10 +2782,13 @@ date_default_timezone_set("Asia/Kolkata");
     public function setprice(Request $request){
         $prices = CategoryPrice::all();
         $categories = Category::all();
+
         $myPrices = Pricing::leftJoin('category','pricing.cat','category.id')
                             ->leftJoin('brands','pricing.brand','brands.id')
                             ->leftJoin('category_sub','pricing.suncat','category_sub.id')
                             ->get();
+
+             $this->variable = $categories;                
         return view('setprice',['prices'=>$prices,'categories'=>$categories,'myPrices'=>$myPrices]);
     }
  public function allprice(Request $request){
@@ -2819,6 +2825,20 @@ date_default_timezone_set("Asia/Kolkata");
 
 
         }
+        if(Auth::user()->group_id == 23){
+         $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+
+             $view = Order::orderby('orders.id','DESC')
+                     ->where('orders.main_category',$catsub)
+                    ->leftJoin('users','orders.generated_by','=','users.id')
+                    ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
+                    ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
+                    ->paginate(25);
+
+        }
 
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
@@ -2830,9 +2850,10 @@ date_default_timezone_set("Asia/Kolkata");
   public function amorders(Request $request)
        {
              $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-             if(Auth::user()->group_id != 22){
+             if(Auth::user()->group_id != 22 || Auth::user()->group_id != 23){
                return $this->amorders1($request);
              }
+
            if($request->projectId){
                $view = Order::orderby('orders.id','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -2859,6 +2880,7 @@ date_default_timezone_set("Asia/Kolkata");
                        'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
                        ->paginate(25);
            }
+
            $depts = [1,2];
            $users = User::whereIn('department_id',$depts)->get();
            $req = Requirement::pluck('project_id');
@@ -3637,7 +3659,22 @@ date_default_timezone_set("Asia/Kolkata");
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
 
-     $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+          if(Auth::user()->group_id == 23){
+          $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+          $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+          $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
+
+          $projects = ProjectDetails::whereIn('project_id',$sprojectids)
+                    ->select('project_details.*','project_id')
+                    ->orderBy('project_id','ASC')
+                    ->paginate(15);
+                 $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();                 
+             }
+         if(Auth::user()->group_id == 23){
+             $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();  
+         }else{
+               $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+         }
      $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      //dd($scount);
 
@@ -6734,12 +6771,21 @@ function enquirystore(request $request){
             $projectids=$projectids->merge($datec);
         }
         // $enq = Requirement:: where('status','=',"Enquiry On Process")->pluck('project_id');
-        $projects = Requirement::whereIn('requirements.project_id',$projectids)
+           $projects = Requirement::whereIn('requirements.project_id',$projectids)
                          ->where('requirements.status','=',"Enquiry On Process")
                         ->leftjoin('procurement_details','requirements.project_id', '=' ,'procurement_details.project_id')
                         ->select('requirements.*','procurement_details.procurement_contact_no')
                         ->paginate(20);
+       if(Auth::user()->group_id == 23){
+            $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
 
+            $projects = Requirement::where('requirements.main_category',$catsub)
+                         ->where('requirements.status','=',"Enquiry On Process")
+                        ->leftjoin('procurement_details','requirements.project_id', '=' ,'procurement_details.project_id')
+                        ->select('requirements.*','procurement_details.procurement_contact_no')
+                        ->paginate(20);
+                    }
 
 
         return view('enquirywise',['projects'=>$projects,'log'=>$log,'$log1'=>$log1]);
@@ -8244,6 +8290,14 @@ public function viewManufacturer1(Request $request)
         $reports = Report::where('empId',Auth::user()->employeeId)->where('created_at','LIKE',$today.'%')->get();
         return view('RandD.dashboard',['reports'=>$reports]);
   }
+  public function getsalesofficer(Request $request){
+
+         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+         $catname = Category::where('id',$cat)->pluck('category_name')->first();
+
+    
+        return view('Salesofficer.dashboard',['catname'=>$catname]);
+  }
   public function postdashboard(Request $request){
     
         for($i = 0; $i < count($request->report); $i++){
@@ -8318,8 +8372,13 @@ public function viewManufacturer1(Request $request)
    return view('/enq',['data'=>$data]);
     }
 
+  public function Assigncat(request $request){
+        $categories = Category::all();
+        $users = User::where('group_id',23)->get();
+        $cat = AssignCategory::all();
+      return view('/cat',['categories'=>$categories,'users'=>$users,'cat'=>$cat]);
 
-
+  }
 
 
   public function getNewActivityLog()
@@ -8345,4 +8404,5 @@ public function viewManufacturer1(Request $request)
         }
         // return $activity;
   }
+
 }

@@ -864,6 +864,8 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                      @elseif(Auth::user()->group_id == 14)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                     @elseif(Auth::user()->group_id == 23)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
                 </div>
@@ -1169,11 +1171,18 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
-       <!-- <a href="#" data-toggle="collapse" data-target="#sales1">Add &#x21F2;</a>
-         <div id="sales" class="collapse"> -->
-      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
-      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
-      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
+      <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
+    <div id="so" class="collapse">
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
+    </div>
+       <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
+    <div id="add" class="collapse">
+      <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; - Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; - Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
+    </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
             <a href="{{ URL::to('/viewManufacturer') }}"> Manufacturer Details</a>
       
@@ -1240,6 +1249,17 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
+
+@elseif(Auth::user()->group_id == 23 && Auth::user()->department_id == 2)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+     <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+    <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
+    <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
+    <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
+    <a href="{{ URL::to('/') }}/orders" >Orders</a>   
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
+</div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
@@ -1267,7 +1287,6 @@ function myTimer() {
        @endif
      @else
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
-
      @endif
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
