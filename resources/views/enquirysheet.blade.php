@@ -93,6 +93,7 @@
 					</div>
                   </div>
                     <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
+					@if(Auth::user()->group_id != 22)
                   <div class="col-md-3">
 					<div class="col-md-2">
 						Ward:
@@ -106,6 +107,7 @@
 						</select>
 					</div>
                   </div>
+					@endif
                    <div class="col-md-4">
 					<div class="col-md-3">
 						 Manufacturer :
