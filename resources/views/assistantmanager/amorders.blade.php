@@ -7,42 +7,7 @@
 			<a class="pull-right btn btn-sm btn-danger" href="{{ url()->previous() }}" id="btn1" style="color:white;"><b>Back</b></a>
 		</div>
 		<div class="panel-body">
-		    <!-- <form method="GET" action="{{URL::to('/')}}/amorderss">
-		    <table class="table table-responsive table-hover" style="width:100%">
-		        <tbody>
-		            <tr>
-		                <td style="width:10%;text-align: center">
-		                    From Date : 
-		                </td>
-		                <td style="width:15%">
-		                    <input type="date" class="form-control" id="fromdate" name="fromdate"/>
-		                </td>
-		                <td style="width:10%;text-align: center">
-		                    To Date :
-		                </td>
-		                <td style="width:15%">
-		                    <input type="date" class="form-control" id="todate" name="todate" />
-		                </td>
-		                <td style="width:15%;text-align: center">
-		                	Filter By :
-		                </td>
-		                <td style="width:20%">
-		                	<select id='filterorder' name="filterorder" class="form-control">
-			    				<option value="" selected>---SELECT---</option>
-			    				<option value="Not Processed">Not Processed</option>
-			    				<option value="Order Confirmed">Order Confirmed</option>
-			    				<option value="Order Placed">Order Placed</option>
-			    				<option value="Order Initiated">Order Initiated</option>
-			    				<option value="Order Cancelled">Order Cancelled</option>
-			    			</select>
-		                </td>
-		                <td style="width:20%">
-		                    <input type="submit" class="btn btn-md btn-primary" style="width:100%" value="Filter" />
-		                </td>
-		            </tr>        
-		        </tbody>
-		    </table>
-		    </form> -->				
+		    
 		    <table class="table table-responsive table-striped" border="1" id='table'>
 				<thead>
 				    <tr>

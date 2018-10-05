@@ -70,6 +70,7 @@
 								@endforeach
 							</select>
 						</div>
+						
 						<div class="col-md-2">
 							<label></label>
 							<input type="submit" value="Fetch" class="form-control btn btn-primary">
@@ -78,11 +79,11 @@
 				</form>
 				
 				<br><br><br><br>
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<div class="col-md-2">
 						Status:
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
 							<option value="">--Select--</option>
 							<option value="all">All</option>
@@ -91,29 +92,37 @@
 						</select>
 					</div>
                   </div>
-
-                  <div class="col-md-6">
+                    <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
+                  <div class="col-md-3">
 					<div class="col-md-2">
 						Ward:
 					</div>
-					<div class="col-md-4">
-						<select id="myInput" required name="status" onchange="myFunction1()" class="form-control input-sm">
+					<div class="col-md-6">
+						<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control input-sm">
 							<option value="">--Select--</option>
-							@if(Auth::user()->group_id != 22)
-							<option value="all">All</option>
-							@endif
-							@foreach($mainward as $wards2)
+							@foreach($wardwise as $wards2)
                             <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
 							@endforeach
 						</select>
 					</div>
                   </div>
-                
+                   <div class="col-md-4">
+					<div class="col-md-3">
+						 Manufacturer :
+					</div>
+					<div class="col-md-6">
+						<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
+								<option value="">--Select--</option>
+								<option value="manu">All</option>
+							</select>
+					</div>
+                  </div>
+                </form>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">SubWard Number</th>
+							<th style="text-align: center">SubWard Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>

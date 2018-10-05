@@ -29,8 +29,11 @@ Route::get('/ticketchat','HomeController@chat');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
 Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
+
+
 // chatting
 Route::get('/Unupdated','HomeController@Unupdated');
+Route::get('/cat','HomeController@Assigncat');
 
 Route::get('/token','TokenController@token');
 Route::get('/logoutFromChat','TokenController@logout');
@@ -38,6 +41,7 @@ Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/h','HomeController@hstore');
  Route::get('/viewMap','HomeController@viewMap');
  Route::post('/saveinvoice','marketingController@saveinvoice');
+ Route::post('/postcat','marketingController@postcat');
  Route::post('/price','marketingController@price');
  Route::get('/allprice','HomeController@allprice');
  Route::get('/assigntl','HomeController@assigntl');
@@ -163,6 +167,7 @@ Route::get('/atreject','mamaController@atreject');
 Route::get('/atapprove','mamaController@atapprove');
 Route::post('/empreports','mamaController@empreports');
 Route::get('/RandDdashboard','HomeController@getdashboard');
+Route::get('/salesofficer','HomeController@getsalesofficer');
 Route::post('/reportsRandD','HomeController@postdashboard');
 Route::get('/breakreport','mamaController@breakreport');
 Route::get('/holidays','mamaController@holidays');
