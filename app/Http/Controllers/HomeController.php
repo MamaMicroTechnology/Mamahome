@@ -691,6 +691,7 @@ class HomeController extends Controller
             
         }elseif($request->manu){
          $enquiries = Requirement::where('manu_id','!=',NULL)
+                       ->where('status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
             $converter = user::get();
@@ -703,6 +704,7 @@ class HomeController extends Controller
           $pro = ProjectDetails::whereIn('sub_ward_id',$wardtotal )->pluck('project_id');
 
          $enquiries = Requirement::whereIn('project_id',$pro)
+                       ->where('status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
                        
@@ -1110,6 +1112,7 @@ class HomeController extends Controller
 
         elseif($request->manu){
          $enquiries = Requirement::where('manu_id','!=',NULL)
+                     ->where('status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
             $converter = user::get();
