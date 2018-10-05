@@ -122,7 +122,7 @@
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">SubWard Number</th>
+							<th style="text-align: center">SubWard Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>

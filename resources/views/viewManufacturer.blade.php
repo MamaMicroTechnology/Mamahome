@@ -37,7 +37,7 @@ tr:nth-child(even) {
            <thead class="thead-dark">
         <tr>
             <th>Manufacturer Id</th>
-            <th>SubWard Number</th>
+            <th>SubWard Name</th>
             <th>listing Engineer Name</th> 
             <th>Plant Name</th>
             <th>Manufacturer Image</th>
