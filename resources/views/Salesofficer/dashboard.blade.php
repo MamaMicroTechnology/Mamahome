@@ -43,17 +43,17 @@
 </script>
 @endif
 <div class="col-md-2">
-                 <h4><b>Select Category</b></h4>
+                 <h4><b></b></h4>
                  @foreach($categories as $category)
                   <button onclick="brands('{{ $category->id}}')">{{ $category->category_name }}</button>
                   @endforeach
                 </div>
                 <div class="col-md-2">
-                  <h4><b>Select Brand</b></h4>
+                  <h4><b></b></h4>
                     <div id="brands2"></div>
                 </div>
                  <div class="col-md-2">
-                   <h4><b>Select Sub Category</b></h4>
+                   <h4><b></b></h4>
                      <div id="sub2"></div>
                 </div>
                 <script type="text/javascript">
