@@ -344,10 +344,10 @@ class HomeController extends Controller
     public function enquirysheet1(Request $request)
     {
                          // dd( $enquiries);
-
+          
         $totalofenquiry = "";
         $totalenq = "";
-         $ward = Ward::get();
+         $wardwise = Ward::get();
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
@@ -689,7 +689,27 @@ class HomeController extends Controller
                         ->get();
             $totalenq = count($enquiries);
             
-        }else{
+        }elseif($request->manu){
+         $enquiries = Requirement::where('manu_id','!=',NULL)
+                       ->orderby('created_at','DESC')
+                        ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+        }
+          elseif($request->enqward){
+
+          $wardtotal = Subward::where('ward_id',$request->enqward)->pluck('id');
+          $pro = ProjectDetails::whereIn('sub_ward_id',$wardtotal )->pluck('project_id');
+
+         $enquiries = Requirement::whereIn('project_id',$pro)
+                       ->orderby('created_at','DESC')
+                        ->get();
+                       
+            $converter = user::get();
+            $totalenq = count($enquiries);
+        }
+        else{
             // no selection
            
             $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")
@@ -700,19 +720,16 @@ class HomeController extends Controller
 
          
             }
-
-        
-         
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
         
         return view('enquirysheet',[
             'totalenq' =>$totalenq,
             'totalofenquiry'=>$totalofenquiry,
             'enquiries'=>$enquiries,
-            'wards'=>$wards,
+            'wardwise'=>$wardwise,
             'category'=>$category,
             'initiators'=>$initiators,
-            'mainward'=>$ward,
+            'wards'=>$wards,
             'projectOrdersReceived'=>$projectOrdersReceived
         ]);
     }
@@ -1089,7 +1106,22 @@ class HomeController extends Controller
                         ->get();
             $totalenq = count($enquiries);
             
-        }else{
+        }
+
+        elseif($request->manu){
+         $enquiries = Requirement::where('manu_id','!=',NULL)
+                       ->orderby('created_at','DESC')
+                        ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+
+
+
+
+        }
+
+        else{
             
             $enquiries = Requirement::whereIn('project_id',$pids)
                         ->where('requirements.status','!=',"Enquiry Cancelled")
@@ -2837,7 +2869,9 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
+                    
 
+            
         }
 
         $depts = [1,2];
@@ -2866,7 +2900,7 @@ date_default_timezone_set("Asia/Kolkata");
                        ->where('project_id',$request->projectId)
                        ->where('wards.id',$tlward)
                       ->paginate(25);
-
+                  
            }else{
                $view = Order::orderby('orders.id','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -3668,6 +3702,7 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
+          $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();
                                  
              }
       $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
@@ -7986,6 +8021,7 @@ public function display(request $request){
             $newUsers = [];
             $user1 = User::leftjoin('departments','departments.id','users.department_id')
             ->whereIn('department_id',$def)
+            ->where('department_id','!=', 10)
             ->select('departments.*','departments.dept_name','users.name','users.id')->get();
             
              
@@ -8290,9 +8326,11 @@ public function viewManufacturer1(Request $request)
 
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
          $catname = Category::where('id',$cat)->pluck('category_name')->first();
+         $categories = Category::where('id',$cat)->get();
+
 
     
-        return view('Salesofficer.dashboard',['catname'=>$catname]);
+        return view('Salesofficer.dashboard',['catname'=>$catname,'categories'=>$categories]);
   }
   public function postdashboard(Request $request){
     
