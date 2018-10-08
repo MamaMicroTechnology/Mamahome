@@ -1408,6 +1408,8 @@ class HomeController extends Controller
             return redirect('RandDdashboard');
         }else if($group == 'Sales Officer'){
              return redirect('salesofficer');
+        }else if($group == 'Finance'){
+            return redirect('financeDashboard');
         }else{
             return redirect('chat');
         }
