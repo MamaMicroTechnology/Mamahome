@@ -6,7 +6,9 @@
     <div class="panel panel-primary" style="overflow-x: scroll;">
         <div class="panel-heading text-center">
             <b style="color:white;font-size:1.4em">Orders</b>
-            <a class="pull-left btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
+           <button type="button" onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-3px;" > <i class="fa fa-arrow-circle-left" style="width:30px;"></i></button>
+            <h4 class="pull-left" style="margin-top: -0.5px;">Total Count : {{ $view->total() }}</h4>
+
         </div>
         <div id="myordertable" class="panel-body">
         <form action="orders" method="get">

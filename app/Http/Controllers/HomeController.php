@@ -1516,8 +1516,7 @@ class HomeController extends Controller
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
-    $group = [6,11];
-
+    $group = [6,11,7,17];
         $users = User::whereIn('group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
@@ -1526,6 +1525,7 @@ class HomeController extends Controller
                         ->where('department_id','!=','10')
                         ->select('users.employeeId','users.id','users.name','ward_assignments.status','sub_wards.sub_ward_name','sub_wards.sub_ward_image','ward_assignments.prev_subward_id','employee_details.office_phone')
                         ->get();
+                        
         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
         $userIds = explode(",", $tl);
       $tlUsers= User::whereIn('users.id',$userIds)
@@ -2745,9 +2745,10 @@ date_default_timezone_set("Asia/Kolkata");
   public function amorders(Request $request)
        {
              $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-             if(Auth::user()->group_id != 22){
+             if(Auth::user()->group_id != 22 || Auth::user()->group_id != 23){
                return $this->amorders1($request);
              }
+
            if($request->projectId){
                $view = Order::orderby('orders.id','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -2760,7 +2761,7 @@ date_default_timezone_set("Asia/Kolkata");
                        ->where('project_id',$request->projectId)
                        ->where('wards.id',$tlward)
                       ->paginate(25);
-
+                  
            }else{
                $view = Order::orderby('orders.id','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -2774,12 +2775,12 @@ date_default_timezone_set("Asia/Kolkata");
                        'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
                        ->paginate(25);
            }
+
            $depts = [1,2];
            $users = User::whereIn('department_id',$depts)->get();
            $req = Requirement::pluck('project_id');
             return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
        }
-
     public function getSubCat(Request $request)
     {
         $cat = $request->cat;
@@ -4732,6 +4733,7 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function activityLog()
     {
+    
         $activities = ActivityLog::orderby('time','DESC')->get();
         return view('activitylog',['activities'=>$activities]);
     }
@@ -5657,6 +5659,7 @@ public function approval(request $request  )
                         ->select('sub_wards.*','sub_ward_maps.lat','sub_ward_maps.color','sub_ward_maps.sub_ward_id','sub_wards.sub_ward_name as name')
                         ->where('sub_wards.id',$request->subWardId)
                         ->first();
+                        
             $page = "Sub Ward";
         }
         return view('maping.wardmaping',['zones'=>$zones,'page'=>$page]);
@@ -6072,10 +6075,6 @@ public function storenumber(request $request){
 }
 
 public function projectwise1(request $request){
-
-
-      //$ss = $request->$scount;
-
      $depts = [1,2];
      $wardsAndSub = [];
     $users = User::whereIn('users.department_id',$depts)
@@ -6112,8 +6111,9 @@ public function projectwise1(request $request){
 
 public function projectwise(request $request){
 
-if(Auth::user()->group_id != 22){
+    if(Auth::user()->group_id != 22){
     return $this->projectwise1($request);
+
 }
 
  $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
@@ -8262,4 +8262,22 @@ public function viewManufacturer1(Request $request)
         }
         // return $activity;
   }
+  public function breaks(Request $request){
+       $date = date('Y-m');
+       if(Auth::user()->group_id == 2){
+       $dept = [1,2];
+       $userIds = User::whereIn('department_id',$dept)->select('id')->get();
+       }else if(Auth::user()->group_id == 1){
+            $dept = [1,2,3,4,5,6];
+            $userIds = User::whereIn('department_id',$dept)->select('id')->get();
+       }else{
+       $dept = [1,2,3,4,6];
+       $userIds = User::whereIn('department_id',$dept)->select('id')->get();
+       }
+        $breaks = breaktime::whereIn('user_id',$userIds)->where('breaktime.created_at','LIKE',$date.'%')
+        ->leftjoin('users','breaktime.user_id','users.id')
+        ->orderBy('created_at','desc')->
+        select('breaktime.*','users.name')->get();
+        return view('breaks',['breaks'=>$breaks]);
+    }
 }

@@ -1102,6 +1102,8 @@ function myTimer() {
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
     <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+    <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
+
        <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
@@ -1128,6 +1130,8 @@ function myTimer() {
         <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
         <a href="{{ URL::to('/') }}/adminlatelogin">&nbsp;&nbsp;&nbsp; - Late Logins</a>
+        <a href="{{ URL::to('/') }}/breaks">&nbsp;&nbsp;&nbsp; - BreakTime</a>
+
         
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
@@ -1185,7 +1189,7 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
-            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+    <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
       
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
@@ -1232,6 +1236,7 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
+
 </div>  
 
 
@@ -1341,7 +1346,8 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
         </div> 
          <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
-         <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+         <a href="{{ URL::to('/') }}/holidays">Holiday List</a>
+         <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
        <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
     </div>
         @endif
