@@ -40,6 +40,7 @@
 								<label>To (Enquiry Date)</label>
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
+							@if(Auth::user()->group_id != 22)
 							<div class="col-md-2">
 								<label>Ward</label>
 								<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control ">
@@ -49,6 +50,7 @@
 									@endforeach
 								</select>
 							</div>
+							@endif
 							<div class="col-md-2">
 								<label>Sub Wards</label>
 								<select class="form-control" name="ward">
@@ -91,7 +93,7 @@
 					</div>
                   </div>
                   <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
-					@if(Auth::user()->group_id != 22)
+					
                   <div class="col-md-3">
 						<div class="col-md-3">
 								<label>Category: </label>
@@ -106,7 +108,7 @@
 								</select>
 						</div>
 					</div>
-					@endif
+					
 					<div class="col-md-4">
 						<div class="col-md-3">
 							<label> Manufacturer: </label>
