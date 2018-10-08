@@ -94,7 +94,8 @@
                         </tr>
                         <tr>
                             <td style="width:40%"><b>Sub-ward : </b></td>
-                            <td>{{ $subward }}</td>
+                            <td><a href="{{ URL::to('/')}}/viewsubward?projectid={{$details->project_id}} && subward={{ $subward }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $subward }}
+                                    </a></td>
                         </tr>
                        <tr>
                             @if($details->municipality_approval == "N/A")
@@ -342,7 +343,11 @@
         </div>
     </div>
 </div>
-        
-        
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
 
+});
+</script>
 @endsection

@@ -6,8 +6,9 @@
     <div class="panel panel-primary" style="overflow-x: scroll;">
         <div class="panel-heading text-center">
             <b style="color:white;font-size:1.4em">Orders</b>
-           <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-left" style="margin-top:-8px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
-            <h4 class="pull-right" style="font-size:25px;margin-top:-6px;">{{ $view->total() }}</h4>
+           <button type="button" onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-3px;" > <i class="fa fa-arrow-circle-left" style="width:30px;"></i></button>
+            <h4 class="pull-left" style="margin-top: -0.5px;">Total Count : {{ $view->total() }}</h4>
+
         </div>
         <div id="myordertable" class="panel-body">
         <form action="orders" method="get">

@@ -3,10 +3,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects : {{ count($projects) }}</p>
-				<!-- @if($projects != "None")
-					<p style="coloe:white;">({{ count($projects) }} {{ count($projects) < 2 ? 'project' : 'projects' }} selected)<p>
-				@endif -->
-				  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
+				  <a href="{{ URL::to('/') }}/home" class="btn btn-default pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></a>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
 				@if(Auth::user()->group_id == 1)
@@ -101,23 +98,25 @@
 								      	 $images = explode(",", $project->image);
                                                ?>
                                                  @for($i = 0; $i < count($images); $i++)
-                                               
-                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br>
-                                                    
+                                                 
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br/><br>
+                                                  
                                                  @endfor
                                                  <br>
                                               @if($projectimages != null)
-                                            <p>Updated images<p><br>
+                                            <p>Updated images</p>
                                              @endif
                                              @foreach($projectimages as $project)
+                                             <p>Status : {{$project->project_status }}</p>
                                              <?php
 										      	 $images = explode(",", $project->image);
 		                                               ?>
                                                  @for($i = 0; $i < count($images); $i++)
-                                               
-                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br>
-                                                    
+                                                
+                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br/><br>
+                                                 
                                                  @endfor
+                                                 <br>
                                                  @endforeach
 
 								      </div>
