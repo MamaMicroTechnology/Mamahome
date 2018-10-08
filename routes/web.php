@@ -670,3 +670,6 @@ Route::get('/bulkBusiness','ProjectionController@getBulkBusiness');
 Route::post('/saveBulk','ProjectionController@saveProjection');
 Route::get('/bulkView','ProjectionController@viewBulk');
 Route::get('/fiveyearsWithZones','ProjectionController@fiveyearsWithZones');
+
+// Finance
+Route::get('/financeDashboard','FinanceDashboard@getFinanceDashboard');

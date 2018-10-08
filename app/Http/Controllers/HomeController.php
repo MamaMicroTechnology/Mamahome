@@ -1112,7 +1112,11 @@ class HomeController extends Controller
 
         elseif($request->manu){
          $enquiries = Requirement::where('manu_id','!=',NULL)
+<<<<<<< HEAD
                        ->where('requirements.status','!=',"Enquiry Cancelled")
+=======
+                     ->where('status','!=',"Enquiry Cancelled")
+>>>>>>> 00c230f24bd2f19125e57582c6cbb7653b069a0a
                        ->orderby('created_at','DESC')
                         ->get();
             $converter = user::get();
@@ -1443,6 +1447,8 @@ class HomeController extends Controller
             return redirect('RandDdashboard');
         }else if($group == 'Sales Officer'){
              return redirect('salesofficer');
+        }else if($group == 'Finance'){
+            return redirect('financeDashboard');
         }else{
             return redirect('chat');
         }
@@ -3705,10 +3711,13 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
-          $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();
-                                 
+                 $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();                 
              }
-      $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+         if(Auth::user()->group_id == 23){
+             $projectcount = ProjectDetails::whereIn('project_id',$sprojectids)->count();  
+         }else{
+               $projectcount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
+         }
      $scount = ProjectDetails::whereIn('project_id',$projectids)->whereNotIn('project_id',$projectOrdersReceived)->count();
      //dd($scount);
 

@@ -18,7 +18,7 @@ class Order extends Model
     function check(){
     	return $this->hasOne(Check::class,'id','orderId');
     }
-    protected $fillable = [ 	
+    protected $fillable = [
             'project_id',
             'req_id',
             'main_category',
