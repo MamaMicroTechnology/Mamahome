@@ -679,7 +679,7 @@ class HomeController extends Controller
             }
         }elseif(!$request->from && !$request->to && $request->initiator && $request->category && !$request->ward){
             //initiator and category
-            $from = $request->from;
+            $from = $request->from; 
             $to = $request->to;
             $enquiries = Requirement::where('main_category','=',$request->category)
                         ->where('generated_by','=',$request->initiator)
@@ -690,14 +690,26 @@ class HomeController extends Controller
             $totalenq = count($enquiries);
             
         }elseif($request->manu){
-         $enquiries = Requirement::where('manu_id','!=',NULL)
-                       ->where('status','!=',"Enquiry Cancelled")
-                       ->orderby('created_at','DESC')
-                        ->get();
-            $converter = user::get();
-            $totalenq = count($enquiries);
+                         if($request->manu != "manu"){
+                            $enquiries = Requirement::where('manu_id','!=',NULL)
+                                        ->where('status','like','%'.$request->manu)
+                                        ->orderby('created_at','DESC')
+                                        ->select('requirements.*')
+                                        ->get();
+                           $converter = user::get();
+                        $totalenq = count($enquiries);
+                            }
+                        else{
+                           
+                             $enquiries = Requirement::where('manu_id','!=',NULL)
+                                           ->where('status','!=',"Enquiry Cancelled")
+                                           ->orderby('created_at','DESC')
+                                           ->get();
+                                $converter = user::get();
+                                $totalenq = count($enquiries);
 
-        }
+                            }
+                        }
           elseif($request->enqward){
 
           $wardtotal = Subward::where('ward_id',$request->enqward)->pluck('id');
