@@ -433,7 +433,7 @@ class HomeController extends Controller
             $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('project_details.sub_ward_id',$request->ward)
                         ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                         ->get();
             $converter = user::get();
@@ -474,7 +474,7 @@ class HomeController extends Controller
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                 ->get();
             $converter = user::get();
@@ -489,7 +489,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                             ->get();
                 $converter = user::get();
@@ -623,7 +623,7 @@ class HomeController extends Controller
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','LIKE',$from."%")
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                       ->orderby('created_at','DESC')
+                       ->orderby('requirements.created_at','DESC')
 
                             ->get();
             $totalenq = count($enquiries);
@@ -637,7 +637,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                       ->orderby('created_at','DESC')
+                       ->orderby('requirements.created_at','DESC')
                             
                             ->get();
                 $converter = user::get();
@@ -658,7 +658,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','LIKE',$from."%")
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->select('requirements.*','project_details.sub_ward_id')
-                       ->orderby('created_at','DESC')
+                       ->orderby('requirements.created_at','DESC')
 
                             ->get();
             $totalenq = count($enquiries);
@@ -671,7 +671,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                       ->orderby('created_at','DESC')
+                       ->orderby('requirements.created_at','DESC')
 
                             ->get();
             $totalenq = count($enquiries);
@@ -691,6 +691,7 @@ class HomeController extends Controller
             
         }elseif($request->manu){
          $enquiries = Requirement::where('manu_id','!=',NULL)
+          ->where('requirements.status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
             $converter = user::get();
@@ -703,6 +704,7 @@ class HomeController extends Controller
           $pro = ProjectDetails::whereIn('sub_ward_id',$wardtotal )->pluck('project_id');
 
          $enquiries = Requirement::whereIn('project_id',$pro)
+                        ->where('status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
                        
@@ -892,7 +894,7 @@ class HomeController extends Controller
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
                 
                 ->get();
             $totalenq = count($enquiries);
@@ -907,7 +909,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                             ->get();
             $totalenq = count($enquiries);
@@ -924,7 +926,7 @@ class HomeController extends Controller
                 ->where('project_details.sub_ward_id','=',$request->ward)
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
                 ->get();
             $totalenq = count($enquiries);
                                   
@@ -936,7 +938,7 @@ class HomeController extends Controller
                 ->where('requirements.created_at','>',$from)
                 ->where('requirements.created_at','<',$to)
                 ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
                 
                 ->get();
             $totalenq = count($enquiries);
@@ -1041,7 +1043,7 @@ class HomeController extends Controller
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','LIKE',$from."%")
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                             ->get();
             $totalenq = count($enquiries);
@@ -1055,7 +1057,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                              ->get();
             $totalenq = count($enquiries);
@@ -1073,7 +1075,7 @@ class HomeController extends Controller
                             ->where('project_details.sub_ward_id','=',$request->ward)
                             ->where('requirements.created_at','LIKE',$from."%")
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
                             
                             ->get();
             $totalenq = count($enquiries);
@@ -1087,7 +1089,7 @@ class HomeController extends Controller
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('requirements.created_at','DESC')
 
                             ->get();
             $totalenq = count($enquiries);
@@ -1110,6 +1112,7 @@ class HomeController extends Controller
 
         elseif($request->manu){
          $enquiries = Requirement::where('manu_id','!=',NULL)
+                       ->where('requirements.status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
             $converter = user::get();
@@ -3722,7 +3725,7 @@ date_default_timezone_set("Asia/Kolkata");
             $assigncount->count = $scount;
             $assigncount->save();
         }
-
+        $category = Category::all();
         $orders = Order::all();
        return view('salesengineer',[
                 'projects'=>$projects,
@@ -3733,7 +3736,8 @@ date_default_timezone_set("Asia/Kolkata");
                 'orders' => $orders,
                 'projectcount'=>$projectcount,
                 'log'=>$log,
-                'log1'=>$log1
+                'log1'=>$log1,
+                'category'=>$category
 
 
             ]);
