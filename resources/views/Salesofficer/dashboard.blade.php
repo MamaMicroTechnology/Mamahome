@@ -42,4 +42,71 @@
   });
 </script>
 @endif
+<div class="col-md-2">
+                 <h4><b></b></h4>
+                 @foreach($categories as $category)
+                  <button onclick="brands('{{ $category->id}}')">{{ $category->category_name }}</button>
+                  @endforeach
+                </div>
+                <div class="col-md-2">
+                  <h4><b></b></h4>
+                    <div id="brands2"></div>
+                </div>
+                 <div class="col-md-2">
+                   <h4><b></b></h4>
+                     <div id="sub2"></div>
+                </div>
+                <script type="text/javascript">
+  var category;
+function brands(arg){
+ 
+        // var e = document.getElementById('category2');
+        // var cat = e.options[e.selectedIndex].value;
+        var ans = "";
+        category = arg;
+        $("html body").css("cursor", "progress");
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : arg },
+            success: function(response)
+            {
+                console.log(response);
+               
+                for(var i=0;i<response[0].length;i++)
+                {
+                    var text = "<button class='form-control' btn btn-warning btn-sm' onclick=\"Subs(\'" + response[0][i].id + "\')\">" + response[0][i].brand+"</button><br>";
+                    ans += text;
+                }
+                document.getElementById('brands2').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+function Subs(arg)
+    {
+        var ans = "";
+
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getSubCatPrices",
+            async:false,
+            data:{brand : arg, cat: category},
+            success: function(response)
+            {
+                var ans = " ";
+
+                for(var i=0;i<response[1].length;i++)
+                {
+                     ans += "<button class='form-control btn btn-default btn-sm' value='"+response[1][i].id+"'>"+response[1][i].sub_cat_name+"</button><br><br>";
+                   
+                }
+
+                document.getElementById('sub2').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</script>
 @endsection
