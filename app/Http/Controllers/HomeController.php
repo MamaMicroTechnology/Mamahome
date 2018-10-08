@@ -1112,11 +1112,7 @@ class HomeController extends Controller
 
         elseif($request->manu){
          $enquiries = Requirement::where('manu_id','!=',NULL)
-<<<<<<< HEAD
                        ->where('requirements.status','!=',"Enquiry Cancelled")
-=======
-                     ->where('status','!=',"Enquiry Cancelled")
->>>>>>> 00c230f24bd2f19125e57582c6cbb7653b069a0a
                        ->orderby('created_at','DESC')
                         ->get();
             $converter = user::get();
