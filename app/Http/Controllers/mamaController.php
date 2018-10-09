@@ -15,7 +15,7 @@ use App\User;
 use Session;
 use App\Group;
 use App\Builder;
-
+use App\ProjectUpdate;
 use App\Ward;
 use App\SubWard;
 use App\Country;
@@ -752,7 +752,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function updateProject($id, Request $request)
     {
-
+        
         $point = 0;
         $project = ProjectDetails::where('project_id',$id)->first();
         $projectimages = ProjectImage::where('project_id',$id)->first();
@@ -1011,21 +1011,25 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $first = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->first();
         $assigned = subWard::where('id',$ward)->pluck('sub_ward_name')->first();
+        if($assigned != null){
         if($first->firstUpdateTime == NULL){
             loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
                 'firstUpdateTime' => date('H:i A'),
                 'allocatedWard' => $assigned,
             ]);
         }
+    }
         $check = mktime(12,00,00);
         $checktime = date('H:i:sA',$check);
         $morningcheck=loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->first();
         if(date('H:i:sA') <= $checktime){
+              if($morningcheck != null){
             if($morningcheck->noOfProjectsUpdatedInMorning == NULL){
                 loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
                     'noOfProjectsUpdatedInMorning' => 1
                 ]);                
-            }else{
+            }
+        }else{
                 $number=loginTime::where('user_id',Auth::user()->id)
                     ->where('logindate',date('Y-m-d'))
                     ->pluck('noOfProjectsUpdatedInMorning')
@@ -1035,11 +1039,13 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 ]); 
             }
         }
+        if($morningcheck != null){
         if($morningcheck->totalProjectsUpdated == NULL){
              loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
                     'totalProjectsUpdated' => 1
                 ]);
-        }else{
+        }
+    }else{
             $number2=loginTime::where('user_id',Auth::user()->id)
                     ->where('logindate',date('Y-m-d'))
                     ->pluck('totalProjectsUpdated')
@@ -1087,6 +1093,23 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->sub_ward_id = $project;
         $activity->typeofactivity = "Updated Project" ;
         $activity->save();
+       
+        if(Auth::user()->group_id != 6 && Auth::user()->group_id != 17){
+        $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
+        $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+        $projectupdate = new ProjectUpdate;
+        $projectupdate->project_id = $id;
+        $projectupdate->user_id = Auth::user()->id;
+        $projectupdate->lat = $request->longitude1;
+        $projectupdate->lag = $request->latitude1;
+        $projectupdate->location = $request->address1;
+        $projectupdate->sub_ward_id = $project;
+        $projectupdate->quality=$qproject;
+        $projectupdate->save();
+            
+        }
+
+
         return back()->with('Success','Updated Successfully');
     }
     // uses gtracing column to store morning meter reading

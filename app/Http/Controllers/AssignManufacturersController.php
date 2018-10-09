@@ -16,6 +16,10 @@ use App\Point;
 use App\Requirement;
 use App\ActivityLog;
 use DB;
+use App\ProjectUpdate;
+use App\AssignCategory;
+use App\Category;
+use App\Salesofficer;
 use Illuminate\Support\Collection;
 
 class AssignManufacturersController extends Controller
@@ -383,6 +387,93 @@ public function inputdata(Request $request)
 
          return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
+public function addcat(request $request){
+         
+         if($request->cat){
+            $category = implode(",", $request->cat);
+         }
+                
 
+                 $check = new Salesofficer;
+                 $check->category = $category;
+                 $check->user_id = $request->user_id;
+                 $check->location = $request->location;
+                 $check->project_id = $request->project_id;
+                
 
+    if($check->save())
+        {
+            return back()->with('success','category Added Successfully !!!');
+        }
+        else
+        {
+            return back()->with('success','Error Occurred !!!');
+        }
+
+}
+ public function catsalesreports(Request $request)
+       {
+            if($request->se == "ALL" && $request->fromdate && !$request->todate){
+                  $date = $request->fromdate;
+                  $str = ActivityLog::where('created_at','LIKE',$date.'%')->get();
+              }
+              elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
+                  $date = $request->fromdate;
+                  $str = ActivityLog::where('created_at','LIKE',$request->fromdate.'%')
+                          ->where('user_id',$request->se)
+                          ->get();
+                          
+              }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
+                  $date = $request->fromdate;
+                  $from= $request->fromdate;
+                  $to= $request->todate;
+                  
+                  if($from == $to){
+                       $str = ProjectUpdate::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->get();
+                       
+                  }
+                  else{
+                  $str = ProjectUpdate::where('created_at','>',$request->fromdate)
+                          ->where('created_at','<=',$request->todate)
+                             ->get();
+                            
+                        
+                  }
+              }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
+
+                  $date = $request->fromdate;
+                  $from= $request->fromdate;
+                  $to= $request->todate;
+                  if($from == $to){
+
+                  $str = ProjectUpdate::where('created_at','like',$from.'%')
+                      ->where('created_at','LIKE',$to."%")
+                      ->where('user_id',$request->se)
+                        ->get();
+                            
+                  }
+                  else{
+                  $str = ProjectUpdate::where('created_at','>',$request->fromdate)
+                          ->where('created_at','<=',$request->todate)
+                          ->where('user_id',$request->se)
+                           ->get();
+                  }
+              }else{
+                  $date = date('Y-m-d');
+                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->get();
+              }
+                
+           $users = User::where('group_id',23)
+                       ->get();
+            $sales_officers = User::where('group_id',23)->pluck('id');
+          $date = date('Y-m-d');
+         $ac = AssignCategory::whereIn('user_id',$sales_officers)->pluck('cat_id')->first();
+          $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+           $enq = Requirement::whereIn('generated_by',$sales_officers)->where('main_category',$catsub)->where('created_at','LIKE',$date.'%')->count();        
+          $updateprojects = ProjectUpdate::whereIn('user_id',$sales_officers)->where('created_at','LIKE',$date.'%')->get();
+           return view('catofficer',['users'=>$users,'str'=>$str,'updateprojects'=>$updateprojects,'enq'=>$enq
+               ]);
+       }
 }
