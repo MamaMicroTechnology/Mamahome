@@ -49,7 +49,7 @@
                         </td>
                      
                         <td>{{ $rec->orderid }}  </td>
-                        <td>{{$rec->name }}</td>
+                        <td>{{$rec->name}}</td>
                         <td>
                             {{$rec -> main_category}}<br>
                             {{$rec -> sub_category}}<br>

@@ -2849,7 +2849,6 @@ date_default_timezone_set("Asia/Kolkata");
     }
  public function amorders1(Request $request)
     {
-
          $id = $request->projectId;
         if($request->projectId){
             $view = Order::orderby('orders.id','DESC')
