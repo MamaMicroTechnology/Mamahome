@@ -174,10 +174,10 @@
                               <table class="table table-responsive table-hover">
                                        <thead>
                                           <!-- <th>User_id</th> -->
-                                          <th>Serial No</th>
+                                          <th>No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
-                                          <th> Name </th>
+                                          <th>Name</th>
                                           <th>Question</th>
                                           <th>Call Remark</th>
                                        </thead>
@@ -221,77 +221,7 @@
       
     </div>
     </div>
-     <div class="modal fade" id="Customer{{ $project->project_id }}" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header  " style="background-color:#42c3f3;padding:5px; " >
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">  Customers Interested Categories </h4>
-        </div>
-        <div class="modal-body">
-                  <div class="row">
-                        <h4>&nbsp;&nbsp; Select Category</h4>
-                       @foreach($category as $cat)
-                         <div class="col-sm-4">
-                         <label>
-                       <input type="checkbox" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
-                        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                       </div>
-                        @endforeach
-                        </div>
 
-                      <table class="table table-responsive table-hover">
-                                       <thead>
-                                          <!-- <th>User_id</th> -->
-                                          <th>Serial No</th>
-                                          <th>Called Date</th>
-                                          <th>Called Time</th>
-                                          <th> Name </th>
-                                          <th>Question</th>
-                                          <th>Call Remark</th>
-                                       </thead>
-                                       <tbody>
-                                    
-                                         <?php $i=1 ?>
-                                          @foreach($his as $call)
-                                          @if($call->project_id == $project->project_id)
-                                          <tr>
-                                           <!--  <td>
-                                              {{ $call->user_id }}
-                                            </td> -->
-                                           
-                                            <td>{{ $i++ }}</td>
-                                            <td>
-                                              {{ date('d-m-Y', strtotime($call->called_Time)) }}
-                                            </td>
-                                            <td>
-                                              {{ date('h:i:s A', strtotime($call->called_Time)) }}
-                                            </td>
-                                            <td>
-                                             {{$call->username}}
-                                            </td>
-                                            <td>
-                                              {{ $call->question }}
-                                            </td>
-                                            <td>
-                                              {{ $call->remarks }}
-                                            </td>
-                                          </tr>
-                                      @endif
-                                       @endforeach
-                                    </tbody>
-                        </table>
-                                      
-        </div>
-        <div class="modal-footer" style="padding:1px;">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-    </div>
 @endforeach
 
 </div>
@@ -309,6 +239,79 @@
   </div>
  </div>
   </div>
+@foreach($projects as $project)
+
+  <div>
+<form action="{{ URL::to('/') }}/addcat" method="POST"
+enctype="multipart/form-data" >
+        {{ csrf_field() }}
+     <div class="modal fade" id="Customer{{ $project->project_id }}" role="dialog">
+    <div class="modal-dialog">
+      <input type="hidden" name="project_id" value="{{$project->project_id}}">
+      <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header  " style="background-color:#42c3f3;padding:5px; " >
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">  Customers Interested Categories </h4>
+        </div>
+        <div class="modal-body">
+                  <div class="row">
+                        <h4>&nbsp;&nbsp; Select Category</h4>
+                       @foreach($category as $cat)
+                         <div class="col-sm-4">
+                         <label>
+                       <input type="checkbox" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       </div>
+                        @endforeach
+                     <center>   <button type="submit" class="btn btn-primary btn-sm">submit Data</button></center>
+                        </div>  
+                        <table class="table table-responsive table-hover">
+                                       <thead>
+                                          <!-- <th>User_id</th> -->
+                                          <th>No</th>
+                                          <th>Date</th>
+                                          <th style="width:160px;">Category Added By</th>
+                                          <th>Interested Category</th>
+                                          
+                                       </thead>
+                                       <tbody>
+                                         <?php $i=1 ?>
+                                          @foreach($sales as $call)
+                                          @if($call->project_id == $project->project_id)
+                                          <tr>
+                                           <!--  <td>
+                                              {{ $call->user_id }}
+                                            </td> -->
+                                           
+                                            <td>{{ $i++ }}</td>
+                                            <td>
+                                              {{ date('d-m-Y', strtotime($call->created_at)) }}
+                                            </td>
+                                            <td>
+                                            {{ $call->user != null ? $call->user->name :''  }}
+                                            </td>
+                                            <td>
+                                              {{ $call->category }}
+                                            </td>
+                                          </tr>
+                                      @endif
+                                       @endforeach
+                                    </tbody>
+                        </table>      
+        </div>
+        <div class="modal-footer" style="padding:1px;">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+    </div>
+</form>
+</div>
+@endforeach
     </div>  
 <script type="text/javascript">
 

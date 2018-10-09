@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 <div style="background-color:white" class="container" >
 <h2 ><center>WELCOME TO  SALES OFFICER
 <br>ZONE 1, BANGALORE'S DASHBOARD
@@ -8,7 +9,7 @@
     We appreciate you services.
     </SMALL>
     <h3>Your Assigned Category Name : {{$catname}}
-</center></h2></div>
+</center></h2></div><br><br>
 @if(session('Success'))
 <script>
     swal("success","{{ session('Success') }}","success");
@@ -43,18 +44,43 @@
 </script>
 @endif
 <div class="col-md-2">
-                 <h4><b></b></h4>
+                <h4 style="color:rgb(69, 198, 246);"><b>Click Here To Get Your Brands And Sub Categories</b></h4><br>
                  @foreach($categories as $category)
-                  <button onclick="brands('{{ $category->id}}')">{{ $category->category_name }}</button>
+                  <button class="button" onclick="brands('{{ $category->id}}')">{{ $category->category_name }}</button>
+                 
                   @endforeach
                 </div>
+               
                 <div class="col-md-2">
                   <h4><b></b></h4>
-                    <div id="brands2"></div>
-                </div>
+                    <div id="brands2" style="float:bottom;"></div>
+                </div><br>
                  <div class="col-md-2">
                    <h4><b></b></h4>
                      <div id="sub2"></div>
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                   <center> <h4><b>Report</b></h4></center><br>
+                      <table border="1" class="table">
+                        <thead>
+                          <th>Total Projects</th>
+                          <th>Updated Projects</th>
+                          <th>Remaining Projects</th>
+                          <th>Enquiry Added</th>
+                        </thead>
+                        <tbody>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate">{{ $projects}}</a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update=updateproject">{{$updateprojects}}</a></td>
+                          <?php 
+                          $x = $projects - $updateprojects;
+                          ?>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?unupdate=unupdate">{{ $x }}</a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/enquirywise?salesenq=enq">{{ $enq }}</a></td>
+
+                        </tbody>
+                        
+                      </table>
+
                 </div>
                 <script type="text/javascript">
   var category;

@@ -1176,6 +1176,8 @@ function myTimer() {
     <div id="so" class="collapse">
        <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
+        <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
+
     </div>
        <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
     <div id="add" class="collapse">
@@ -1257,7 +1259,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
     <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
-    <a href="{{ URL::to('/') }}/orders" >Orders</a>   
+    <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)

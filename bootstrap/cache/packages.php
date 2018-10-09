@@ -27,6 +27,13 @@
       0 => 'Carbon\\Laravel\\ServiceProvider',
     ),
   ),
+  'renatomarinho/laravel-page-speed' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
+    ),
+  ),
   'spatie/laravel-activitylog' => 
   array (
     'providers' => 
