@@ -18,6 +18,9 @@ class Order extends Model
     function check(){
     	return $this->hasOne(Check::class,'id','orderId');
     }
+    function paymentDetails(){
+        return $this->hasMany(PaymentDetails::class);
+    }
     protected $fillable = [
             'project_id',
             'req_id',

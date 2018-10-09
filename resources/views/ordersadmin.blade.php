@@ -63,22 +63,22 @@
                             {{ csrf_field() }}
                             <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 
-                    @if($rec->payment_mode != NULL && $rec->payment_mode != "Check" && $rec->order_status == "Order Confirmed")
-                              @if($rec->delivery_boy != NULL)
+                        @if($rec->clear_for_delivery == "Yes")
+                            @if($rec->delivery_boy != NULL)
                                  @foreach($users as $user)
                                    @if($rec->delivery_boy == $user->id)
                                         {{ $user->name }}
                                  @endif
-                             @endforeach
-                                @else
+                                @endforeach
+                            @else
                                 <select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
-                                        <option value="">--Select--</option>
+                                    <option value="">--Select--</option>
                                     @foreach($users as $user)
                                         <option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
-                                    @endif
+                            @endif
                                 </select>
-                                @endif
+                        @endif
                             </form>
                             @endif
                         </td>
