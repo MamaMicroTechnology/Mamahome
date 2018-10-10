@@ -3095,6 +3095,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->moq = $request->moq;
         $manufacturer->total_area = $request->total_area;
         $manufacturer->production_type = $pro;
+        $manufacturer->updated_by = Auth::user()->id;
+
 
         $manufacturer->save();
        
