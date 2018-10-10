@@ -54,6 +54,7 @@
 @if($storoads == null && $projects == null)
 <script type="text/javascript">
     window.onload = function() {
+     
     var locations = new Array();
     var created = new Array();
     var updated = new Array();
@@ -66,6 +67,7 @@
     var latlng = "";
     var col = "456369"
     @endif
+
     var places = latlng.split(",");
     for(var i=0;i<places.length;i+=2){
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
@@ -102,7 +104,7 @@
     var status = new Array();
     var newpath = [];
     var snaproad = [];
-    var apiKey = "AIzaSyDUmSbzCrMt37QdavPl00t_Bx9jkL04w0Y";
+    var apiKey = "AIzaSyDCg8dn05JGK3ZSiy3Mx7kEOMeoWMQLYaE";
     @if($subwardMap != "None")
     var latlng = "{{ $subwardMap->lat }}";
     var col = "{{ $subwardMap->color }}";
@@ -135,7 +137,6 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     @endif
-   
     @if($subwardMap != "None")
     var lat = newpath[0].lat;
     var lon = newpath[1].lng;
@@ -400,4 +401,5 @@ function drawSnappedPolyline() {
 
   setInterval(doDate, 1000);
 </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=map"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCg8dn05JGK3ZSiy3Mx7kEOMeoWMQLYaE
+&callback=map"></script>

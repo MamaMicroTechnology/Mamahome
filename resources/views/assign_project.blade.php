@@ -118,17 +118,17 @@
     <div class="modal-content">
       <div class="modal-header" style="background-color: rgb(244, 129, 31);padding:5px;color:white;">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Choose Wards</h4>
+            <h4 class="modal-title" style="text-align: center;">Assign Project</h4>
       </div>
       <div class="modal-body">
         <div id="first">
         <div id="wards">  
+        <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;margin-left: 20px;">Choose Ward</h4>
         <div class="row">
         @foreach($wards as $ward)
         <div class="col-sm-2">
-          <label>
-            <input  onclick="hide('{{ $ward->id }}')"  style=" padding: 5px;" data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
-          </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input id="wardid{{ $ward->id }}" onclick="hide('{{ $ward->id }}')"  style=" padding: 5px;" data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
         @endforeach
         </div>
@@ -136,8 +136,8 @@
         </div>
          @foreach($wardsAndSub as $ward)
           <div id="subwards{{ $ward['ward'] }}" class="hidden">
-            <h4 class="modal-title">Choose SubWard </h4>
-            <label class="checkbox-inline"><input id="check{{ $ward['ward'] }}" type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward['ward']}}');">All</label>
+           <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;margin-left:20px;">Choose Subward</h4>
+            <label style="margin-right: 100px;" class="checkbox-inline"><input id="check{{ $ward['ward'] }}" type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward['ward']}}');">All</label>
           <br><br>    
           <div id="ward{{ $ward['ward'] }}">
           <div class="row"> 
@@ -151,49 +151,48 @@
                     </div>
               @endforeach
           </div>
+          </div>   
           </div>
-              
-          </div>
-          <button id="back{{ $ward['ward'] }}" onclick="back('{{$ward['ward'] }}')" type="button" class="hidden">Back</button>
+          <!-- <button id="back{{ $ward['ward'] }}" onclick="back('{{$ward['ward'] }}')" type="button" class="hidden">Back</button> -->
           @endforeach
           <div class="page">
             <!-- Assign stages  -->
-            <div id="second" class="hidden">
+            <div id="second">
                  <div class="container">
-                     <div class="row">
-                       <div class="col-sm-12"> 
-                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;">Assign Stage</h4><br>&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;      <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="font-size:15px">&nbsp;&nbsp; ALL</span><br><br>
+                     <div class="row">      
+                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;margin-left: 20px;">Assign Stage</h4>
                           <table>
                              <tr id="sp">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL">&nbsp;&nbsp;ALL
+                    </tr>
+                             <tr id="sp">
                              <div class="checkbox">
-                            <lable><td style=" padding:0px 40px 0px 40px;" ><input type="checkbox" name="stage[]" value="Planning">&nbsp;&nbsp;Planning</td>
-                                 <td  style=" padding:0px 40px 0px 40px;"><input type="checkbox" name="stage[]" value="Digging">&nbsp;&nbsp;Digging</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Foundation">&nbsp;&nbsp;Foundation</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Pillars">&nbsp;&nbsp;Pillars</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Walls">&nbsp;&nbsp;Walls</td></lable>
+                            <lable><td style=" padding:0px 30px 0px 20px;" ><input type="checkbox" name="stage[]" value="Planning">&nbsp;&nbsp;Planning</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Digging">&nbsp;&nbsp;Digging</td>
+                                 <td  style=" padding:0 30px 0 20px;"><input type="checkbox" name="stage[]" value="Foundation">&nbsp;&nbsp;Foundation</td>
+                                 <td  style=" padding:0 30px 0 20px;"><input type="checkbox" name="stage[]" value="Pillars">&nbsp;&nbsp;Pillars</td>
+                                 <td  style=" padding:0 30px 0 20px;"><input type="checkbox" name="stage[]" value="Walls">&nbsp;&nbsp;Walls</td></lable>
                                  </div>
-                             </tr>    
-                               <tr id="sp">
+                             </tr>   
+                               <tr id="sp" >
                              <div class="checkbox">
-                            <lable>     <td  style=" padding:20px 40px 20px 40px;"><input type="checkbox" name="stage[]" value="Roofing">&nbsp;&nbsp;Roofing</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Electrical">&nbsp;&nbsp;Electrical</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Plumbing">&nbsp;&nbsp;Plumbing</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Plastering">&nbsp;&nbsp;Plastering</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Flooring">&nbsp;&nbsp;Flooring</td></lable>
+                            <lable>     <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Roofing">&nbsp;&nbsp;Roofing</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Electrical">&nbsp;&nbsp;Electrical</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Plumbing">&nbsp;&nbsp;Plumbing</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Plastering">&nbsp;&nbsp;Plastering</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Flooring">&nbsp;&nbsp;Flooring</td></lable>
                                  </div>
                              </tr>  
                               <tr id="sp">
                              <div class="checkbox">
-                            <lable>     <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Carpentry">&nbsp;&nbsp;Carpentry</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Paintings">&nbsp;&nbsp;Paintings</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Fixtures">&nbsp;&nbsp;Fixtures</td>
-                                <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Completion">&nbsp;&nbsp;Completion</td>
-                                 <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Closed">&nbsp;&nbsp;Closed</td></lable>
+                            <lable>     <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Carpentry">&nbsp;&nbsp;Carpentry</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Paintings">&nbsp;&nbsp;Paintings</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Fixtures">&nbsp;&nbsp;Fixtures</td>
+                                <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Completion">&nbsp;&nbsp;Completion</td>
+                                 <td  style=" padding:0px 30px 0px 20px;"><input type="checkbox" name="stage[]" value="Closed">&nbsp;&nbsp;Closed</td></lable>
                                  </div>
                              </tr>    
                             </table>
-                          </div>
                     </div><br>
 
             <div class="row">
@@ -338,8 +337,8 @@
             </div>
           </div>
             <ul class="pager">
-                <li id="prev" class="previous hidden"><a onclick="pagePrevious()" href="#">Previous</a></li>
-                <li id="next" class="next"><a href="#" onclick="pageNext()">Next</a></li>
+                <!-- <li id="prev" class="previous hidden"><a onclick="pagePrevious()" href="#">Previous</a></li>
+                <li id="next" class="next"><a href="#" onclick="pageNext()">Next</a></li> -->
              </ul>
       <!-- <div class="modal-footer" style="background-color: rgb(21, 137, 66);">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -453,9 +452,14 @@ function check(arg){
 <script type="text/javascript">
 
 function hide(arg){
-  document.getElementById('wards').className = "hidden";
+  // document.getElementById('wards').className = "hidden";
+  if(document.getElementById('wardid'+arg).checked == true){
   document.getElementById('subwards'+arg).className = "";
-  document.getElementById('back'+arg).className = "btn btn-primary pull-left";
+  document.getElementById('back'+arg).className = "btn btn-primary pull-left";  
+  }
+  else{
+     document.getElementById('subwards'+arg).className = "hidden";
+  }
 }
 function back(arg){
   document.getElementById('wards').className = "";
@@ -477,6 +481,7 @@ function back(arg){
 <script>
 function checkall(arg){
 var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
+  alert();
 if(document.getElementById('check'+arg).checked == true){
   for (var i = 0; i < clist.length; ++i) 
     clist[i].checked = true; 

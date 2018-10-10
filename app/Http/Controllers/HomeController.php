@@ -3958,6 +3958,7 @@ date_default_timezone_set("Asia/Kolkata");
                         ->where('created_at','like',$date.'%')->get();
                  }
               }
+        
    foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -6746,7 +6747,7 @@ function enquirystore(request $request){
             // $check->sub=$sub;
             $check->save();
         }
-        return redirect()->back()->with('success','Enquiry Assigned Successfully');
+        return redirect()->back()->with('message','Enquiry Assigned Successfully');
     }
     public function enqwise(Request $request){
         $date=date('Y-m-d');
