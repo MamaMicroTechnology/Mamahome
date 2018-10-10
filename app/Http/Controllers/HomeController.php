@@ -3858,57 +3858,96 @@ date_default_timezone_set("Asia/Kolkata");
         $projects = ProjectDetails::where('created_at','like',$date.'%')->get();
         $groupid = [6,11];
         $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
+        
         if(Auth::user()->group_id != 22){
-        $projects = DB::table('project_details')
-            ->leftJoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-            ->leftJoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-            ->leftJoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-            ->leftJoin('users','users.id','=','project_details.listing_engineer_id')
-            ->leftJoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-            ->leftJoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
-            ->leftJoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
-            ->where('project_details.created_at','like',$date.'%')
-            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
-            ->get();
-            // $ward = Tlwards::where('user_id',Auth::user()->id)->first();
-            // if($ward != null){
-            //     $tlSubward = SubWard::where('ward_id',$ward->id)->pluck('id');
-            // }else{
-            //     $tlSubward = new Collection;            
-            // }
-                // ->join('sub_wards', 'tlwards.ward_id', '=', 'sub_wards.ward_id')->get();
-            
-        // $teamward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-        // $subwards = Subward::where('ward_id',$teamward)->pluck('id');
-        // if(Auth::user()->group_id == 22){
-        //     $teamprojects = DB::table('project_details')->whereIn('sub_ward_id',$subwards)
-        //         ->leftjoin('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-        //         ->leftjoin('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-        //         ->leftjoin('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-        //         ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
-        //         ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-        //         ->leftjoin('contractor_details','contractor_details.project_id','=','project_details.project_id')
-        //         ->leftjoin('consultant_details','consultant_details.project_id','=','project_details.project_id')
-        //         ->where('project_details.created_at','like',$date.'%')
-        //         ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
-        //         ->get();
+              if($request->list =="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = ProjectDetails::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->get();
+                       
+                                    }
+                  else{
+                  $projects = ProjectDetails::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->get(); 
+                  }
+              }elseif($request->list !="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = ProjectDetails::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->where('listing_engineer_id',$request->list)
+                             ->get();
+                       
+                                      }
+                  else{
+                      $projects = ProjectDetails::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->where('listing_engineer_id',$request->list)
+                             ->get();     
+                  }
+              }else{
+
+                   $projects =ProjectDetails::where('created_at','like',$date.'%')
+                  ->get();
+              }
+
+
+
+
+          
 }else{
             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
             $ward = Ward::where('id',$tl)->pluck('id')->first();
             $sub  = Subward::where('ward_id',$ward)->pluck('id');
-            $projects = DB::table('project_details')->whereIn('project_details.sub_ward_id',$sub)
-                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-                ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-                ->join('users','users.id','=','project_details.listing_engineer_id')
-                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-                ->where('project_details.created_at','like',$date.'%')
-                ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','sub_wards.sub_ward_name')
-                ->get();
-      }
-            foreach($users as $user){
+
+
+               if($request->list =="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = ProjectDetails::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get();
+                       
+                                    }
+                  else{
+                  $projects = ProjectDetails::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get(); 
+                      }
+                  }elseif($request->list !="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = ProjectDetails::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->where('listing_engineer_id',$request->list)
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get();
+                       
+                                      }
+                  else{
+                      $projects = ProjectDetails::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->where('listing_engineer_id',$request->list)
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get();     
+                  }
+                 }
+                 else{
+
+                     $projects =ProjectDetails::whereIn('sub_ward_id',$sub)
+                        ->where('created_at','like',$date.'%')->get();
+                 }
+              }
+   foreach($users as $user){
                 $totalListing[$user->id] = ProjectDetails::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
                                                 ->count();
@@ -4003,171 +4042,100 @@ date_default_timezone_set("Asia/Kolkata");
 
 
 
-    public function getleinfo(Request $request)
-    {
-        $records = array();
-        $id = $request->id;
-        $from = $request->from;
-        $to = $request->to;
-        if($from == $to){
-            return redirect('/gettodayleinfo?from='.$from.'&id='.$id.'&to='.$to);
-        }
-        if($id !== 'ALL')
-        {
-               if(Auth::user()->group_id != 22){
-                $records[0] =  DB::table('project_details')
-                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-                ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-                ->join('users','users.id','=','project_details.listing_engineer_id')
-                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-                ->where('project_details.created_at','>',$from)
-                ->where('project_details.created_at','<',$to)
-                ->where('users.id',$id)
-                ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-                ->get();
-        $records[1] = count($records[0]);
-      }else{
-        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-        $ward = Ward::where('id',$tl)->pluck('id')->first();
-        $sub  = Subward::where('ward_id',$ward)->pluck('id');
-        $records[0] =  DB::table('project_details')->whereIn('sub_ward_id',$sub)
-        ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-        ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-        ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-        ->join('users','users.id','=','project_details.listing_engineer_id')
-        ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-        ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-        ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-        ->where('project_details.created_at','>',$from)
-        ->where('project_details.created_at','<',$to)
-        ->where('users.id',$id)
-        ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-        ->get();
-      $records[1] = count($records[0]);
-      }
+    // public function getleinfo(Request $request)
+    // {
+    //     $records = array();
+    //     $id = $request->id;
+    //     $from = $request->from;
+    //     $to = $request->to;
+    //     if($from == $to){
+    //         return redirect('/gettodayleinfo?from='.$from.'&id='.$id.'&to='.$to);
+    //     }
+    //     if($id !== 'ALL')
+    //     {
+    //            if(Auth::user()->group_id != 22){
+    //             $records[0] =ProjectDetails::where('project_details.created_at','>',$from)
+    //             ->where('project_details.created_at','<',$to)
+    //             ->where('listing_engineer_id',$id)
+                
+    //             ->get();
+    //     $records[1] = count($records[0]);
+    //   }else{
+    //     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+    //     $ward = Ward::where('id',$tl)->pluck('id')->first();
+    //     $sub  = Subward::where('ward_id',$ward)->pluck('id');
+    //     $records[0] =ProjectDetails::where('created_at','>',$from)
+    //     ->where('created_at','<',$to)
+    //     ->where('listing_engineer_id',$id)
+    //     ->get();
+    //   $records[1] = count($records[0]);
+    //   }
 
-        }
-        else
-        {
-           if(Auth::user()->group_id != 22){
-            $records[0] =  DB::table('project_details')
-            ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-            ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-            ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-            ->join('users','users.id','=','project_details.listing_engineer_id')
-            ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-            ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-            ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-            ->where('project_details.created_at','>',$from)
-            ->where('project_details.created_at','<',$to)
-            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-            ->get();
-            $records[1] = count($records[0]);
-          }else{
-            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tl)->pluck('id')->first();
-            $sub  = Subward::where('ward_id',$ward)->pluck('id');
-            $records[0] =  DB::table('project_details')->whereIn('sub_ward_id',$sub)
-            ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-            ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-            ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-            ->join('users','users.id','=','project_details.listing_engineer_id')
-            ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-            ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-            ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-            ->where('project_details.created_at','>',$from)
-            ->where('project_details.created_at','<',$to)
-            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-            ->get();
-            $records[1] = count($records[0]);
-          }
-        }
-        return response()->json($records);
-    }
-    public function gettodayleinfo(Request $request)
-    {
-        $records = array();
-        $id = $request->id;
-        $from = $request->from_date;
-        $to = date('Y-m-d', strtotime($request->to));
-        if($id !== 'ALL')
-        {
-                if(Auth::user()->group_id != 22){
-        $records[0] =  DB::table('project_details')
-                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-                ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-                ->join('users','users.id','=','project_details.listing_engineer_id')
-                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-                ->where('project_details.created_at','LIKE',$from."%")
-                ->where('project_details.created_at','LIKE',$to."%")
-                ->where('users.id',$id)
-                ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-                ->get();
-        $records[1] = count($records[0]);
-      }else{
-        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-        $ward = Ward::where('id',$tl)->pluck('id')->first();
-        $sub  = Subward::where('ward_id',$ward)->pluck('id');
+    //     }
+    //     else
+    //     {
+    //        if(Auth::user()->group_id != 22){
+    //         $records[0] =ProjectDetails::where('created_at','>',$from)
+    //         ->where('created_at','<',$to)
+    //         ->get();
+    //         $records[1] = count($records[0]);
+    //       }else{
+    //         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+    //         $ward = Ward::where('id',$tl)->pluck('id')->first();
+    //         $sub  = Subward::where('ward_id',$ward)->pluck('id');
+    //         $records[0] =ProjectDetails::where('created_at','>',$from)
+    //                      ->where('created_at','<',$to)
+    //                     ->get();
+    //         $records[1] = count($records[0]);
+    //       }
+    //     }
+    //     return response()->json($records);
+    // }
+    // public function gettodayleinfo(Request $request)
+    // {
+    //     $records = array();
+    //     $id = $request->id;
+    //     $from = $request->from_date;
+    //     $to = date('Y-m-d', strtotime($request->to));
+    //     if($id !== 'ALL')
+    //     {
+    //             if(Auth::user()->group_id != 22){
+    //     $records[0] = ProjectDetails::where('created_at','LIKE',$from."%")
+    //             ->where('created_at','LIKE',$to."%")
+    //             ->where('listing_engineer_id',$id)
+    //             ->get();
+    //     $records[1] = count($records[0]);
+    //   }else{
+    //     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+    //     $ward = Ward::where('id',$tl)->pluck('id')->first();
+    //     $sub  = Subward::where('ward_id',$ward)->pluck('id');
 
-        $records[0] =  DB::table('project_details')->whereIn('sub_ward_id',$sub)
-                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-                ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-                ->join('users','users.id','=','project_details.listing_engineer_id')
-                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-                ->where('project_details.created_at','LIKE',$from."%")
-                ->where('project_details.created_at','LIKE',$to."%")
-                ->where('users.id',$id)
-                ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-                ->get();
-        $records[1] = count($records[0]);
-      }
-        }
-        else
-        {
-             if(Auth::user()->group_id != 22){
-            $records[0] =  DB::table('project_details')
-                ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-                ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-                ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-                ->join('users','users.id','=','project_details.listing_engineer_id')
-                ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-                ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-                ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-                ->where('project_details.created_at','like',$from.'%')
-                ->where('project_details.created_at','LIKE',$to."%")
-                ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-                ->get();
-        $records[1] = count($records[0]);
-      }else{
-        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-        $ward = Ward::where('id',$tl)->pluck('id')->first();
-        $sub  = Subward::where('ward_id',$ward)->pluck('id');
-        $records[0] =  DB::table('project_details')->whereIn('sub_ward_id',$sub)
-            ->join('owner_details', 'project_details.project_id', '=', 'owner_details.project_id')
-            ->join('sub_wards', 'project_details.sub_ward_id', '=', 'sub_wards.id')
-            ->join('procurement_details', 'procurement_details.project_id', '=', 'project_details.project_id')
-            ->join('users','users.id','=','project_details.listing_engineer_id')
-            ->join('site_engineer_details','site_engineer_details.project_id','=','project_details.project_id')
-            ->join('contractor_details','contractor_details.project_id','=','project_details.project_id')
-            ->join('consultant_details','consultant_details.project_id','=','project_details.project_id')
-            ->where('project_details.created_at','like',$from.'%')
-            ->where('project_details.created_at','LIKE',$to."%")
-            ->select('project_details.*', 'procurement_details.procurement_contact_no','contractor_details.contractor_contact_no','consultant_details.consultant_contact_no','site_engineer_details.site_engineer_contact_no', 'owner_details.owner_contact_no','users.name','users.id','sub_wards.sub_ward_name')
-            ->get();
-    $records[1] = count($records[0]);
-      }
-        }
-        return response()->json($records);
-    }
+    //     $records[0] =ProjectDetails::where('created_at','LIKE',$from."%")
+    //             ->where('created_at','LIKE',$to."%")
+    //             ->where('listing_engineer_id',$id)
+    //             ->get();
+    //     $records[1] = count($records[0]);
+    //   }
+    //     }
+    //     else
+    //     {
+    //          if(Auth::user()->group_id != 22){
+    //         $records[0] =ProjectDetails::where('created_at','like',$from.'%')
+    //             ->where('created_at','LIKE',$to."%")
+    //             ->get();
+    //     $records[1] = count($records[0]);
+    //   }else{
+    //     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+    //     $ward = Ward::where('id',$tl)->pluck('id')->first();
+    //     $sub  = Subward::where('ward_id',$ward)->pluck('id');
+    //     $records[0] =ProjectDetails::where('created_at','like',$from.'%')
+    //         ->where('created_at','LIKE',$to."%")
+    //         ->get();
+    // $records[1] = count($records[0]);
+    //   }
+    //     }
+    //     return response()->json($records);
+    // }
     public function regReq()
     {
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();

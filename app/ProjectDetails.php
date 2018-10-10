@@ -53,5 +53,12 @@ protected static $logFillable = true;
     {
     	return $this->hasOne('App\Requirement','project_id','project_id');
     }
-     
+     public function subward()
+    {
+      return $this->hasOne('App\SubWard','id','sub_ward_id');
+    
+    } 
+    public function user(){
+        return $this->belongsTo('App\User','listing_engineer_id','id');
+    }
 }
