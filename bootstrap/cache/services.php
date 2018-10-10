@@ -24,10 +24,10 @@
     20 => 'Illuminate\\Validation\\ValidationServiceProvider',
     21 => 'Illuminate\\View\\ViewServiceProvider',
     22 => 'Barryvdh\\Cors\\ServiceProvider',
-    23 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    24 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    25 => 'Carbon\\Laravel\\ServiceProvider',
-    26 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
+    23 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    24 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
+    25 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    26 => 'Carbon\\Laravel\\ServiceProvider',
     27 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
     28 => 'App\\Providers\\AppServiceProvider',
     29 => 'App\\Providers\\AuthServiceProvider',
@@ -35,6 +35,7 @@
     31 => 'App\\Providers\\RouteServiceProvider',
     32 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
     33 => 'Barryvdh\\Cors\\ServiceProvider',
+    34 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -49,9 +50,9 @@
     8 => 'Illuminate\\Session\\SessionServiceProvider',
     9 => 'Illuminate\\View\\ViewServiceProvider',
     10 => 'Barryvdh\\Cors\\ServiceProvider',
-    11 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    12 => 'Carbon\\Laravel\\ServiceProvider',
-    13 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
+    11 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    12 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
+    13 => 'Carbon\\Laravel\\ServiceProvider',
     14 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
     15 => 'App\\Providers\\AppServiceProvider',
     16 => 'App\\Providers\\AuthServiceProvider',
@@ -59,6 +60,7 @@
     18 => 'App\\Providers\\RouteServiceProvider',
     19 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
     20 => 'Barryvdh\\Cors\\ServiceProvider',
+    21 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'deferred' => 
   array (

@@ -6,6 +6,17 @@
       0 => 'Barryvdh\\Cors\\ServiceProvider',
     ),
   ),
+  'barryvdh/laravel-dompdf' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'PDF' => 'Barryvdh\\DomPDF\\Facade',
+    ),
+  ),
   'fideloper/proxy' => 
   array (
     'providers' => 
@@ -25,13 +36,6 @@
     'providers' => 
     array (
       0 => 'Carbon\\Laravel\\ServiceProvider',
-    ),
-  ),
-  'renatomarinho/laravel-page-speed' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
     ),
   ),
   'spatie/laravel-activitylog' => 

@@ -676,3 +676,6 @@ Route::get('/fiveyearsWithZones','ProjectionController@fiveyearsWithZones');
 
 // Finance
 Route::get('/financeDashboard','FinanceDashboard@getFinanceDashboard');
+Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
+Route::get('/downloadProformaInvoice','FinanceDashboard@downloadProformaInvoice')->name('downloadProformaInvoice');
+Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
