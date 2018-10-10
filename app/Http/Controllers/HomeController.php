@@ -89,6 +89,8 @@ use App\Manufacturer;
 use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
+use Spatie\Activitylog\Models\Activity;
+
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -3867,7 +3869,6 @@ date_default_timezone_set("Asia/Kolkata");
                        $projects = ProjectDetails::where('created_at','like',$from.'%')
                              ->where('created_at','LIKE',$to."%")
                              ->get();
-                       
                                     }
                   else{
                   $projects = ProjectDetails::where('created_at','>',$request->fromdate)
@@ -8462,26 +8463,16 @@ public function viewManufacturer1(Request $request)
 
   public function getNewActivityLog()
   {
-        $activities = Activity::where('causer_id','7')->get();
-        echo("<table border=1><thead><th>User Name</th><th>Time</th><th>Type</th><th>Activity</th>");
-        foreach($activities as $activity){
-            $actions = array();
-            echo("<tr><td>");
-            echo($activity->causer->name);
-            echo("</td><td>");
-            echo(date('d-m-Y h:i:s a',strtotime($activity->created_at)));
-            echo("</td><td>");
-            echo($activity->description);
-            echo("</td><td>");
-            $something = $activity->changes();
-            foreach($something["attributes"] as $key=>$value){
-                $actions[] = "$key : $value";
-            }
-            $realValues = implode('<br>',$actions);
-            echo($realValues);
-            echo("</td></tr>");
-        }
-        // return $activity;
+    $userid =[6,17];
+    $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
+   
+
+     foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+
+    }
+
+        return view('/newActivityLog',['noOfCalls'=>$noOfCalls,'users'=>$user]);
   }
 
 }
