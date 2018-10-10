@@ -40,6 +40,17 @@
 								<label>To (Enquiry Date)</label>
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
+							@if(Auth::user()->group_id != 22)
+							<div class="col-md-2">
+								<label>Ward</label>
+								<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control ">
+									<option value="">--Select--</option>
+									@foreach($wardwise as $wards2)
+		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+									@endforeach
+								</select>
+							</div>
+							@endif
 							<div class="col-md-2">
 								<label>Sub Wards</label>
 								<select class="form-control" name="ward">
@@ -61,17 +72,6 @@
 							</select>
 						</div>
 						<div class="col-md-2">
-							<label>Category:</label>
-							<select id="categ" class="form-control" name="category">
-								<option value="">--Select--</option>
-								<option value="">All</option>
-								@foreach($category as $category)
-								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-								@endforeach
-							</select>
-						</div>
-						
-						<div class="col-md-2">
 							<label></label>
 							<input type="submit" value="Fetch" class="form-control btn btn-primary">
 						</div>
@@ -81,7 +81,7 @@
 				<br><br><br><br>
 				<div class="col-md-3">
 					<div class="col-md-2">
-						Status:
+						<label>Status: </label>
 					</div>
 					<div class="col-md-6">
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
@@ -92,34 +92,39 @@
 						</select>
 					</div>
                   </div>
-                    <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
-					@if(Auth::user()->group_id != 22)
+                  <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
+					
                   <div class="col-md-3">
-					<div class="col-md-2">
-						Ward:
+						<div class="col-md-3">
+								<label>Category: </label>
+						</div>
+						<div class="col-md-6">
+								<select id="categ" class="form-control" name="category">
+									<option value="">--Select--</option>
+									<option value="">All</option>
+									@foreach($category as $category)
+									<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+									@endforeach
+								</select>
+						</div>
 					</div>
-					<div class="col-md-6">
-						<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control input-sm">
-							<option value="">--Select--</option>
-							@foreach($wardwise as $wards2)
-                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
-							@endforeach
-						</select>
+					
+					<div class="col-md-4">
+						<div class="col-md-3">
+							<label> Manufacturer: </label>
+						</div>
+					
+						<div class="col-md-6">
+							<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
+									<option value="">--Select--</option>
+									<option value="manu">All</option>
+									<option value="Enquiry On Process">Enquiry On Process</option>
+									<option value="Enquiry Confirmed">Enquiry Confirmed</option>
+								</select>
+						</div>
 					</div>
-                  </div>
-					@endif
-                   <div class="col-md-4">
-					<div class="col-md-3">
-						 Manufacturer :
-					</div>
-					<div class="col-md-6">
-						<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
-								<option value="">--Select--</option>
-								<option value="manu">All</option>
-							</select>
-					</div>
-                  </div>
                 </form>
+                <br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>

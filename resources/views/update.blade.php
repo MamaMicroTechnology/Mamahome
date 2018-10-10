@@ -32,7 +32,7 @@
                       @endif
                       @endif
                     </center>
-                    @if($projectdetails->quality == NULL)
+                    <!-- @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
                         {{ csrf_field() }}
                         <input type="hidden" name="id" value="{{ $id }}">
@@ -41,7 +41,7 @@
                       <label style="font-size: 14px">Quality:</label>
                       {{ $projectdetails->quality }}
                       @endif
-                    </center>
+                    </center> -->
                       
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
@@ -258,7 +258,7 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-      
+                              
                                <tr>
                                 <?php
                                   $statuses = explode(", ", $projectdetails->project_status);

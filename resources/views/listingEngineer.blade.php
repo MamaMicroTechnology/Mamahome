@@ -31,7 +31,7 @@
                  <!--  @if(session('Error'))
                     <div class="alert-danger pull-right">{{ session('Error')}} </div>
                   @endif -->
-                  <div id="currentTime" class="pull-right" style="margin-top:-15px;"></div>
+                  <div id="currentTime" class="pull-right" style="margin-top:-5px;"></div>
                 </div>
                 <?php 
                   if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){
@@ -1055,6 +1055,12 @@ function openCity(evt, cityName) {
            swal("You have Not Entered Budget");
           }else if (document.getElementById("pImage").value == ""){
            swal("You Have Not Chosen a File To Upload");
+          }else if(document.getElementById('floorNo').value == ''){
+             swal("Please Select Base/Floor");
+          }else if(document.getElementById('rt').value == ''){
+            swal("Please Select Room Type");
+          }else if(document.getElementById('fsize').value == ''){
+            swal("Please Select No.of Houses/No. of Flats");
           }else if(document.getElementById('prName').value == ''){
                     alert('Please Enter a Procurement Details');
                     document.getElementById('prName').focus();
@@ -1154,7 +1160,7 @@ function openCity(evt, cityName) {
  function checkmail(arg){
     var mail = document.getElementById(arg);
     if(mail.value.length > 0 ){
-      if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(mail.value))  {  
+      if (/[a-z0-9._%+-]+@[a-zA-Z]+\.[a-z]{2,3}$/.test(mail.value))  {  
         return true;  
       }  
       else{
@@ -1210,9 +1216,10 @@ function openCity(evt, cityName) {
           var ctype2 = document.getElementById('constructionType2');
           if(ctype1.checked == true && ctype2.checked == true){
             // both residential and commercial
+            
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><select name=\"roomType[]\" value='Commercial Floor'  class=\"form-control\" >"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"rt\" class=\"form-control\" >"+
                       "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
@@ -1221,14 +1228,15 @@ function openCity(evt, cityName) {
                       "<option value='4BHK'>4BHK</option>"+
                       "<option value='5BHK'>5BHK</option></select>"+
                       "</td><td>"+
-                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses\"></td>";
+                      "<input type=\"text\" name=\"number[]\" id=\"fsize\" class=\"form-control\" placeholder=\"Floor Size / No. of Houses\"></td>";
             document.getElementById('selection').innerHTML = sel;
            
           }else if(ctype1.checked == true && ctype2.checked == false){
             // residential only
+
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><select name=\"roomType[]\" value='Commercial Floor'  class=\"form-control\" onchange =\"load();\">"+
+                      "<td><select name=\"roomType[]\" value='Commercial Floor' id=\"rt\" class=\"form-control\" onchange =\"load();\">"+
                       "<option value=''>--Select--</option>"+
                       "<option value='1RK'>1RK</option>"+
                       "<option value='1BHK'>1BHK</option>"+
@@ -1237,15 +1245,15 @@ function openCity(evt, cityName) {
                       "<option value='4BHK'>4BHK</option>"+
                       "<option value='5BHK'>5BHK</option></select>"+
                       "</td><td>"+
-                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"No. of Houses/No. of Flats\"></td>";
+                      "<input type=\"text\" name=\"number[]\"  id=\"fsize\" class=\"form-control\" placeholder=\"No. of Houses/No. of Flats\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }else if(ctype1.checked == false && ctype2.checked == true){
             // commercial only
             var sel = "<td><select class=\"form-control\" name=\"floorNo[]\" id=\"floorNo\">"+
                       "</select></td>"+
-                      "<td><input name=\"roomType[]\" readonly value='Commercial Floor' id=\"\" class=\"form-control\">"+
+                      "<td><input name=\"roomType[]\" readonly value='Commercial Floor' id=\"rt\" class=\"form-control\">"+
                       "</td><td>"+
-                      "<input type=\"text\" name=\"number[]\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
+                      "<input type=\"text\" name=\"number[]\" id=\"fsize\" class=\"form-control\" placeholder=\"Floor Size\"></td>";
             document.getElementById('selection').innerHTML = sel;
           }
           for(var i = base; i>0; i--){

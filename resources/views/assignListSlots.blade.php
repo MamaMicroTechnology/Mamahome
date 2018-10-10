@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="panel panel-primary">
             <div class="panel-heading" style="color:white;font-size: 15px;"> 
-                 @if(Auth::user()->group_id != 22)
+                @if(Auth::user()->group_id != 22)
                 Total Listing Engineers : {{ $totalcount }}
                 @else
                 Listing Engineers
@@ -13,11 +13,9 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                    <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>     
-
+                    <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>    
                 </div>
-                <div class="panel-body">
-                  
+                <div class="panel-body">  
                         <div class="col-md-12">
                             <div class="col-md-8">
                             </div>

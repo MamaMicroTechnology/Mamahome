@@ -116,7 +116,7 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header" style="background-color: rgb(244, 129, 31);padding:5px;">
+      <div class="modal-header" style="background-color: rgb(244, 129, 31);padding:5px;color:white;">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Choose Wards</h4>
       </div>
@@ -387,6 +387,7 @@ function makeUserId(arg){
  
  function pagePrevious()
  {
+  
         document.getElementById("next").className = "next";
         document.getElementById("prev").className = "previous";
          if(current == 'third'){

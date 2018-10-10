@@ -18,7 +18,7 @@
     
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header" style="background-color:#f4811f;color:white; ">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add KRA</h4>
           </div>
@@ -78,8 +78,9 @@
 
 <div class="col-md-10 col-md-offset-1">
     <div class="panel panel-default" style="border-color:#f4811f">
-        <div class="panel-heading" style="background-color:#f4811f"><b style="color:white;font-size:1.3em">KRA List</b> <button class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#addKRA">Add</button>
-        <a href="javascript:history.back()" class="btn btn-sm btn-danger" style="margin-left:40%;">Back</a>
+        <div class="panel-heading" style="background-color:#f4811f;"><b style="color:white;font-size:1.3em">KRA List</b> 
+        <a href="{{ URL::to('/') }}/home" class="btn btn-default pull-right" style="margin-top:-3px;" > <i class="fa fa-arrow-circle-left" style="width:30px;"></i></a>
+            <button class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#addKRA">Add</button><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
