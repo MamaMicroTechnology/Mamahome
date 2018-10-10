@@ -16,7 +16,7 @@
                         <option>--Select Category--</option>
                         @foreach($categories as $category)
 
-                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                        <option value="{{ $category->id }}">{{ $category->category_name }}&nbsp;[&nbsp;&nbsp;Projects : &nbsp;{{$nofprojects[$category->id] }}&nbsp;&nbsp;Enquiries:&nbsp;&nbsp;{{$nofenquirys[$category->id]}}]</option>
                         @endforeach
                     </select>
                 </div>
@@ -45,16 +45,21 @@
                     <input type="text" name="asstl" class="form-control" required> <br>
                  </div> --> 
                   <div class="col-md-2">
-                   <h4><b>Select User</b></h4>
+                   <h4><b>Category Officers</b></h4>
                     <select class="form-control" name="user_id">
-                      <option value="">--Select User--</option>
+                      <option value="">-- Category Officers--</option>
                       @foreach($users as $user)
                       <option value="{{$user->id}}">{{$user->name}}</option>
                       @endforeach
                     </select>
                  </div> 
 
-
+               <div class="col-md-4">
+                   <h4><b>Set Intractions</b></h4>
+                   <textarea type="text" name="ins" style="width:100%;">
+                     
+                   </textarea>
+                 </div> 
   
                   <div class="col-md-2">
                    
@@ -67,12 +72,13 @@
                 <thead>
                     <tr>
                         <th>SLNO</th>
-                        <th>User Name</th>
+                        <th>Category Officer Name</th>
                         <th>Category</th>
+                        <th>Previous Category</th>
                         <th>Created On</th>
-                        <!-- <th>Designation</th> -->
                         <th>Updated On</th>
-                      
+                        <th>Instractions</th>
+
                     </tr>
                 </thead>
 
@@ -84,9 +90,12 @@
                   <td>{{$i++}}</td>
                   <td>{{ $cate->user != null ? $cate->user->name :''  }}</td>
                   <td>{{ $cate->category != null ? $cate->category->category_name :''  }}</td>
-                  <td>{{$cate->created_at}}</td>
-                  <td>{{$cate->updated_at}}</td>
-
+                  <td>{{ $cate->prev }}</td>
+                  <td>{{$cate->created_at->format('d-m-Y') }}</td>
+                  <td>{{$cate->updated_at->format('d-m-y')}}</td>
+                  <td>{{$cate->instraction}}</td>
+                  
+                    
                    </tbody>
                    @endforeach
                    </table>

@@ -349,17 +349,22 @@ class marketingController extends Controller
  }
  public function postcat(request $request){
       $check = AssignCategory::where('user_id',$request->user_id)->first();
+      $catid = AssignCategory::where('user_id',$request->user_id)->pluck('cat_id')->first();
+      $cateids = Category::where('id',$catid)->pluck('category_name')->first();
+
           if($check == null){
            $price = new AssignCategory;
            $price->cat_id = $request->cat;
            $price->user_id = $request->user_id;
-          
-          $price->save();
+            $price->instraction = $request->ins;
+            $price->save();
       
             
           }else{
            $check->cat_id = $request->cat;
            $check->user_id = $request->user_id;
+           $check->instraction = $request->ins;
+            $check->prev =  $cateids;
            $check->save();
       
           }

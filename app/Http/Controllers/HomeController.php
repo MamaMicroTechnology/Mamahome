@@ -3699,10 +3699,12 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
+         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
           if(Auth::user()->group_id == 23){
              if($request->update){
-                $spro = ProjectUpdate::where('user_id',Auth::user()->id)->pluck('project_id');
+
+                $spro = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->pluck('project_id');
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -3712,7 +3714,7 @@ date_default_timezone_set("Asia/Kolkata");
                $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                $catsub = Category::where('id',$ac)->pluck('category_name')->first();
                $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
-              $spro = ProjectUpdate::where('user_id',Auth::user()->id)->pluck('project_id');
+              $spro = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->pluck('project_id');
                      
             $projects = ProjectDetails::whereIn('project_id',$sprojectids)
                          ->whereNotIn('project_id',$spro)
@@ -3723,7 +3725,7 @@ date_default_timezone_set("Asia/Kolkata");
             }elseif($request->interested){
                   $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $catsub = Category::where('id',$ac)->pluck('category_name')->first(); 
-                  $cate = Salesofficer::where('category',$catsub)->pluck('project_id');
+                  $cate = Salesofficer::where('category',$catsub)->where('cat_id',$cat)->pluck('project_id');
                    $projects = ProjectDetails::whereIn('project_id',$cate)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -3800,7 +3802,7 @@ date_default_timezone_set("Asia/Kolkata");
     {
 
 
-       $totalListing = array();
+        $totalListing = array();
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
@@ -8382,19 +8384,20 @@ public function viewManufacturer1(Request $request)
          $catname = Category::where('id',$cat)->pluck('category_name')->first();
          $categories = Category::where('id',$cat)->get();
          $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-          $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+         $catsub = Category::where('id',$ac)->pluck('category_name')->first();
           $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
 
           $projects = ProjectDetails::whereIn('project_id',$sprojectids)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->count();
+         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
             $enq = Requirement::where('generated_by',Auth::user()->id)->where('main_category',$catsub)->count();        
-          $updateprojects = ProjectUpdate::where('user_id',Auth::user()->id)->count();
-                  
+          $updateprojects = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->count();
+           $ins = AssignCategory::where('user_id',Auth::user()->id)->pluck('instraction')->first();      
                   
     
-        return view('Salesofficer.dashboard',['catname'=>$catname,'categories'=>$categories,'projects'=>$projects,'updateprojects'=>$updateprojects,'enq'=>$enq]);
+        return view('Salesofficer.dashboard',['catname'=>$catname,'categories'=>$categories,'projects'=>$projects,'updateprojects'=>$updateprojects,'enq'=>$enq,'ins'=>$ins]);
   }
   public function postdashboard(Request $request){
     
@@ -8472,9 +8475,19 @@ public function viewManufacturer1(Request $request)
 
   public function Assigncat(request $request){
         $categories = Category::all();
+        $nofprojects=array();
+        $nofenquirys=array();
+        foreach($categories as $cat){
+            $nofproject = Requirement::where('main_category',$cat->category_name)->pluck('project_id');
+            $project = ProjectDetails::whereIn('project_id',$nofproject)->count();
+            $nofprojects[$cat->id] = $project;
+            $nofenquiry = Requirement::where('main_category',$cat->category_name)->pluck('id')->count();
+            $nofenquirys[$cat->id] = $nofenquiry;
+
+        }
         $users = User::where('group_id',23)->get();
         $cat = AssignCategory::all();
-      return view('/cat',['categories'=>$categories,'users'=>$users,'cat'=>$cat]);
+      return view('/cat',['categories'=>$categories,'users'=>$users,'cat'=>$cat,'nofprojects'=>$nofprojects,'nofenquirys'=>$nofenquirys]);
 
   }
 

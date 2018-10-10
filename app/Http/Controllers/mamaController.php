@@ -16,6 +16,7 @@ use Session;
 use App\Group;
 use App\Builder;
 use App\ProjectUpdate;
+use App\AssignCategory;
 use App\Ward;
 use App\SubWard;
 use App\Country;
@@ -1097,6 +1098,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         if(Auth::user()->group_id != 6 && Auth::user()->group_id != 17){
         $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
         $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
         $projectupdate = new ProjectUpdate;
         $projectupdate->project_id = $id;
         $projectupdate->user_id = Auth::user()->id;
@@ -1105,6 +1107,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $projectupdate->location = $request->address1;
         $projectupdate->sub_ward_id = $project;
         $projectupdate->quality=$qproject;
+        $projectupdate->cat_id=$cat;
         $projectupdate->save();
             
         }

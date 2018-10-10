@@ -413,13 +413,14 @@ public function addcat(request $request){
 }
  public function catsalesreports(Request $request)
        {
+
             if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
-                  $str = ActivityLog::where('created_at','LIKE',$date.'%')->get();
+                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->get();
               }
               elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
-                  $str = ActivityLog::where('created_at','LIKE',$request->fromdate.'%')
+                  $str = ProjectUpdate::where('created_at','LIKE',$request->fromdate.'%')
                           ->where('user_id',$request->se)
                           ->get();
                           
@@ -461,19 +462,44 @@ public function addcat(request $request){
                            ->get();
                   }
               }else{
+                  $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $date = date('Y-m-d');
-                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->get();
+                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->where('cat_id',$cat)->get();
               }
                 
            $users = User::where('group_id',23)
                        ->get();
-            $sales_officers = User::where('group_id',23)->pluck('id');
-          $date = date('Y-m-d');
-         $ac = AssignCategory::whereIn('user_id',$sales_officers)->pluck('cat_id')->first();
+             
+          foreach($users as $user){
+
+           $today = date('Y-m-d');
+           $ac = AssignCategory::where('user_id',$user->id)->pluck('cat_id')->first();
           $catsub = Category::where('id',$ac)->pluck('category_name')->first();
-           $enq = Requirement::whereIn('generated_by',$sales_officers)->where('main_category',$catsub)->where('created_at','LIKE',$date.'%')->count();        
-          $updateprojects = ProjectUpdate::whereIn('user_id',$sales_officers)->where('created_at','LIKE',$date.'%')->get();
-           return view('catofficer',['users'=>$users,'str'=>$str,'updateprojects'=>$updateprojects,'enq'=>$enq
+         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+
+               $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
+                                           ->count();
+               $noOfCalls[$user->id]['projectupdate'] = ProjectUpdate::where('created_at','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
+                                           ->where('cat_id',$cat)
+                                           ->count();
+
+               $noOfCalls[$user->id]['Enquiry'] = Requirement::where('created_at','LIKE',$today.'%')
+                                           ->where('generated_by',$user->id)
+                                           ->where('main_category',$catsub)
+                                           ->count();
+               $noOfCalls[$user->id]['Genuine'] = ProjectUpdate::where('created_at','LIKE',$today.'%')
+                                                       ->where('user_id',$user->id)
+                                                        ->where('cat_id',$cat)
+                                                        ->where('quality','Genuine')
+                                                       ->count();
+
+           }
+
+           return view('catofficer',['users'=>$users,'str'=>$str,
+                   'noOfCalls'=>$noOfCalls
+
                ]);
        }
 }

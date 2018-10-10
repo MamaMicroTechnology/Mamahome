@@ -4,7 +4,7 @@
 <div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
-                <b style="color:white">Sales Report</b>
+                <b style="color:white">Category Officer Report</b>
             </div>
             <div class="panel-body">
 				@if(Auth::user()->department_id != 1)
@@ -15,7 +15,7 @@
                     <table class="table table-responsive">
 	                    <tbody>
 	                        <tr>
-	                            <td>Select Sales Employee</td>
+	                            <td>Select Category Sales Employee</td>
 	                        </tr>
                             <tr>
                                 <td>
@@ -73,15 +73,16 @@
                 		<th>Genuine</th>
                 		<th>call</th>
                 	</tr>
+                    @foreach($users as $user)
                     <tr>
-                     @foreach($users as $user)
+ 
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
-                        <td style="font-size: 10px; text-align: center;">{{$updateprojects}}</td>
-                        <td style="font-size: 10px; text-align: center;">{{$enq}}</td>
-                        <td style="font-size: 10px; text-align: center;"></td>
-                        <td style="font-size: 10px; text-align: center;"></td>
-                    @endforeach                   
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['projectupdate'] }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['Enquiry'] }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['Genuine'] }}</td>
+                        <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
                     </tr>
+                    @endforeach                   
                 </table>
             </div>
         </div>
@@ -94,7 +95,7 @@
             <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
         <div class="panel-body" style="overflow-y:scroll; height:500px; max-height:500px">
-            <table class='table table-responsive table-striped' style="color:black" border="1">
+            <table class='table pull-right' border="1" style="width:100%;margin-left:50%;">
                 <thead>
                     <tr>
                         <th style="text-align:center">Subward Number</th>
@@ -108,8 +109,8 @@
                     </tr>
                 </thead>
                 <tbody id="mainPanel">
-                       <tr>
                         @foreach($str as $sales)
+                       <tr>
                         <td style="text-align:center">
                         <a href="{{ URL::to('/')}}/viewsubward" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $sales->subward != null ? $sales->subward->sub_ward_name :''  }}
                                     </a></td>
@@ -120,8 +121,8 @@
                         <td style="text-align:center">{{$sales->quality}}</td>
                         <td style="text-align:center">{{$sales->location}}</td>
                         <td style="text-align:center">{{ $sales->siteaddress != null ? $sales->siteaddress->address :''  }}</td>
-                        @endforeach
                     </tr>
+                        @endforeach
                 </tbody>
             </table>
         </div>
