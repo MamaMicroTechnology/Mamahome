@@ -3705,7 +3705,7 @@ date_default_timezone_set("Asia/Kolkata");
        
           if(Auth::user()->group_id == 23){
              if($request->update){
-
+              $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                 $spro = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->pluck('project_id');
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
@@ -3713,6 +3713,7 @@ date_default_timezone_set("Asia/Kolkata");
                     ->paginate(15);
                     
             }elseif($request->unupdate){
+              $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                $catsub = Category::where('id',$ac)->pluck('category_name')->first();
                $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
@@ -3725,15 +3726,15 @@ date_default_timezone_set("Asia/Kolkata");
                          ->paginate(15);
 
             }elseif($request->interested){
+                 $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $catsub = Category::where('id',$ac)->pluck('category_name')->first(); 
-                  $cate = Salesofficer::where('category',$catsub)->where('cat_id',$cat)->pluck('project_id');
+                  $cate = Salesofficer::where('category',$catsub)->pluck('project_id');
                    $projects = ProjectDetails::whereIn('project_id',$cate)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                                 
-                 
 
             }else{
           $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
@@ -8193,9 +8194,6 @@ public function viewManufacturer1(Request $request)
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
     }
 
-
-
-
     public function lebrands(){
 
         $date=date('Y-m-d');
@@ -8210,6 +8208,7 @@ public function viewManufacturer1(Request $request)
         $hist = History::where('id',$id)->first();
         $hist->question=$request->qstn;
         $hist->remarks=$request->remarks;
+        $hist->save();
         return redirect()->back();
     }
 
@@ -8461,18 +8460,79 @@ public function viewManufacturer1(Request $request)
   }
 
 
-  public function getNewActivityLog()
+  public function getNewActivityLog(request $request)
   {
-    $userid =[6,17];
-    $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
+    $userid =[6,17,22,23,7];
    
+    $date = date('Y-m-d');
+     
+if($request->list !="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+    $user = User::where('id',$request->list)->get();
+                      if($from == $to){
+           foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->where('causer_id',$request->list)->get();
+                                   }
+    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+     foreach ($date as $dump) {
+        $dd = date('Y-m-d',strtotime($dump->created_at));
+        $date = date('Y-m-d');
+         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")
+                             ->where('called_Time','like',$from.'%')
+                             ->where('called_Time','LIKE',$to."%")
+                             ->where('user_id',$request->list)->count();
+        
+     }
+  }
+else{
+    
+          foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$request->fromdate)->where('created_at','<=',$request->todate)->where('causer_id',$request->list)->get();
+                                   }
+    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+     foreach ($date as $dump) {
+        $dd = date('Y-m-d',strtotime($dump->created_at));
+        $date = date('Y-m-d');
+         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")
+                               ->where('called_Time','>',$request->fromdate)
+                              ->where('called_Time','<=',$request->todate)
+                             ->where('user_id',$request->list)->count();
+        
+     }
+}
+                 
+
+}
+
+else{
+
+ $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
+     foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->get();
+       
+    }
+    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+     foreach ($date as $dump) {
+        $dd = date('Y-m-d',strtotime($dump->created_at));
+        $date = date('Y-m-d');
+         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")->count();
+        
+     }
+}
 
      foreach ($user as $users) {
-        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+        $noOfCall[$users->id]['count'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
+       
+                               }
+
+foreach ($user as $users) {
+        $noOf[$users->id]['history'] = History::where('user_id',$users->id)->where('called_Time','like',$date.'%')->count();
 
     }
 
-        return view('/newActivityLog',['noOfCalls'=>$noOfCalls,'users'=>$user]);
+       $sub = Subward::all();    
+        return view('/newActivityLog',['noOfCalls'=>$noOfCalls,'users'=>$user,'noOfCall'=>$noOfCall,'noOf'=>$noOf,'sub'=>$sub,'called'=>$called]);
   }
 
 }

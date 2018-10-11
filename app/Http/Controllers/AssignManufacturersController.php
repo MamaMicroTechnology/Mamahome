@@ -462,9 +462,11 @@ public function addcat(request $request){
                            ->get();
                   }
               }else{
-                  $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+                 $users = User::where('group_id',23)
+                       ->pluck('id');
+                  $cat = AssignCategory::whereIn('user_id',$users)->pluck('cat_id');
                   $date = date('Y-m-d');
-                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->where('cat_id',$cat)->get();
+                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->whereIn('cat_id',$cat)->get();
               }
                 
            $users = User::where('group_id',23)
@@ -475,7 +477,7 @@ public function addcat(request $request){
            $today = date('Y-m-d');
            $ac = AssignCategory::where('user_id',$user->id)->pluck('cat_id')->first();
           $catsub = Category::where('id',$ac)->pluck('category_name')->first();
-         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+         $cat = AssignCategory::where('user_id',$user->id)->pluck('cat_id')->first();
 
                $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
                                            ->where('user_id',$user->id)
@@ -487,8 +489,9 @@ public function addcat(request $request){
 
                $noOfCalls[$user->id]['Enquiry'] = Requirement::where('created_at','LIKE',$today.'%')
                                            ->where('generated_by',$user->id)
-                                           ->where('main_category',$catsub)
+                                           
                                            ->count();
+
                $noOfCalls[$user->id]['Genuine'] = ProjectUpdate::where('created_at','LIKE',$today.'%')
                                                        ->where('user_id',$user->id)
                                                         ->where('cat_id',$cat)

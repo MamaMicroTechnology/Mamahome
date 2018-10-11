@@ -55,7 +55,7 @@
                  </div> 
 
                <div class="col-md-4">
-                   <h4><b>Set Intractions</b></h4>
+                   <h4><b>Set Instructions</b></h4>
                    <textarea type="text" name="ins" style="width:100%;">
                      
                    </textarea>
