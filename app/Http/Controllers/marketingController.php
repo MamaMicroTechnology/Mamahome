@@ -67,7 +67,7 @@ class marketingController extends Controller
     }
     public function getHome(){
         $sub = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-        $subcat = Brand::where('category_id',$sub)->pluck('id')->first();
+        $subcat = Brand::where('category_id',$sub)->pluck('id');
         $categories = Category::all();
         if(Auth::user()->group_id != 23){
         $subcategories = SubCategory::leftjoin('brands','category_sub.brand_id','=','brands.id')->select('brands.brand','category_sub.*')->get();
@@ -75,9 +75,9 @@ class marketingController extends Controller
           $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
         }
         else{
-               $subcategories = SubCategory::where('brand_id',$subcat)->select('category_sub.*')->get();
+               $subcategories = SubCategory::whereIn('brand_id',$subcat)->get();
                
-               $brands = brand::where('category_id',$sub)->select('brands.*')->get();
+               $brands = brand::where('category_id',$sub)->get();
         }
            
         
