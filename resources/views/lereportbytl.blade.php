@@ -499,5 +499,9 @@
         }
     }
 </script>
-
+@if(session('success'))
+<script>
+    swal("success","{{ session('success') }}","success");
+</script>
+@endif
 @endsection

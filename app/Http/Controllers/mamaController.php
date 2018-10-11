@@ -1011,6 +1011,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         ]);
         $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $first = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->first();
+        dd($first->firstUpdateTime);
         $assigned = subWard::where('id',$ward)->pluck('sub_ward_name')->first();
         if($assigned != null){
         if($first->firstUpdateTime == NULL){
@@ -1190,14 +1191,14 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         loginTime::where('id',$id)->update([
             'morningRemarks' => $request->mRemark
         ]);
-        return back();
+       return back()->with('success','Report Submitted');
     }
     public function afternoonRemark($id, Request $request)
     {
         loginTime::where('id',$id)->update([
             'afternoonRemarks' => $request->aRemark
         ]);
-        return back();
+       return back()->with('success','Report Submitted');
     }
     public function eveningRemark($id, Request $request)
     {
@@ -1205,7 +1206,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'total_kilometers' => $request->totalKm,
             'eveningRemarks' => $request->eRemark
         ]);
-        return back()->with('message',"successfully Save");
+       return back()->with('success','Report Submitted');
     }
     public function addRequirement(Request $request)
     {
@@ -1487,11 +1488,11 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editMorninRemarks($id, Request $request){
         loginTime::where('id',$id)->update(['morningRemarks'=>$request->remark]);
-        return back();
+         return back()->with('success','Report Submitted');
     }
     public function editEveningRemarks($id, Request $request){
         loginTime::where('id',$id)->update(['eveningRemarks'=>$request->remark]);
-        return back();
+        return back()->with('success','Report Submitted');
     }
     public function salesUpdateProject($id, Request $request){
         $point = 0;

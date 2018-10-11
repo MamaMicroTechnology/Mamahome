@@ -243,7 +243,7 @@
           <tr>
             <td> Follow Up Date</td>
             <td>:</td>
-            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" data-provide="datepicker" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" class="form-control" /></td>
 
 
           </tr>

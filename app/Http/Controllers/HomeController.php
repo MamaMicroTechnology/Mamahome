@@ -731,6 +731,7 @@ class HomeController extends Controller
             $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")
                        ->orderby('created_at','DESC')
                         ->get();
+                      
             $converter = user::get();
             $totalenq = count($enquiries);
 
@@ -6212,7 +6213,7 @@ public function savenumber(request $request){
         $check->user_id = Auth::user()->id;
         $check->totalnumber = 100;
         $check->save();
-        return back()->with('Success',"successfully Added Your Phone Number");
+        return back()->with('success',"Phone Number Added Successfully");
 
 }
 public function storenumber(request $request){
@@ -6926,7 +6927,7 @@ function enquirystore(request $request){
     $numberexist = numbercount::where('num',$request->num)->first();
     if($numberexist != null){
         $userName = User::where('id',$numberexist->user_id)->pluck('name')->first();
-        $text = "These numbers are already assigned to ".$userName;
+        $text = "These numbers are Already Assigned to ".$userName;
         return back()->with('NotAdded',$text);
     }
             if($check == null){
@@ -6938,7 +6939,7 @@ function enquirystore(request $request){
                 $check->num=$request->num;
                 $check->save();
             }
-            return redirect()->back()->with('Assig   successfully');
+            return redirect()->back()->with('success','Phone Numbers Assigned');
     }
 
     public function sms(request $request){

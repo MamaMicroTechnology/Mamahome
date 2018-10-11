@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -14,9 +13,7 @@
                     
                 </div>
                 <div class="panel-body">  
-                     @if (session()->has('success'))
-                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
-                    @endif
+                     
                  
              <div class="panel-body">
              <table class="table table-responsive table-striped table-hover" class="table">
@@ -74,9 +71,9 @@
       <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header" style="background-color:#f4811f;padding:2px" >
+        <div class="modal-header" style="background-color:#f4811f;padding:2px;color:white;" >
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title"> Instructions</h4>
-          
         </div>
         
         <!-- Modal body -->
@@ -88,7 +85,7 @@
            <div class="row">
              <div class="col-sm-6">
              <!--  <a href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary btn-sm ">Click Here To get Projects Count </a><br><br> -->
-           <b>Instructions</b> <textarea type="text" name="inc" cols="5" rows="7" class="form-control"   style="width:90%;resize:none;"></textarea>
+           <b>Instructions</b> <textarea required type="text" name="inc" cols="5" rows="7" class="form-control"   style="width:90%;resize:none;"></textarea>
              </div>
            </div><br>
            <button type="submit" value="submit" id="time" onclick="submit()" class="btn btn-primary">Submit</button>
@@ -355,6 +352,11 @@
 </div>
 </div>
 </div>   
+@if(session('success'))
+<script>
+    swal("success","{{ session('success') }}","success");
+</script>
+@endif
 @endsection
 
 <script>
@@ -481,7 +483,6 @@ function back(arg){
 <script>
 function checkall(arg){
 var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
-  alert();
 if(document.getElementById('check'+arg).checked == true){
   for (var i = 0; i < clist.length; ++i) 
     clist[i].checked = true; 
@@ -495,3 +496,5 @@ function submit(){
   document.getElementById('time').submit();
 }
 </script>
+
+

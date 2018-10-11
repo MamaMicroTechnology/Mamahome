@@ -8,7 +8,10 @@
     <div class="col-md-12" >
 
     <div class="panel panel-default" style="overflow: scroll;">
-            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp; {{ $projects->total() }} </p></div>  
+            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Total Project Count :  {{ $projects->total() }}
+         <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-7px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
+              
+            </div>  
          <div class="panel-body" id="page">
        <table class="table table-hover table-striped">
                 <thead>

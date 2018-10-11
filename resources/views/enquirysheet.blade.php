@@ -198,8 +198,17 @@
 
                                @foreach($wards as $ward)
                                  @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : $enquiry->sub_ward_id) )
+					        @if($enquiry->manu_id == NULL)
                                 <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
-                                    {{$ward->sub_ward_name}}</a></td>
+                                    {{$ward->sub_ward_name}}
+
+                                </a>
+                                @else
+                                 <a href="{{ URL::to('/')}}/manufacturemap?id={{$enquiry->manu_id}} && subwardid={{$enquiry->sub_ward_id}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$ward->sub_ward_name}}
+                                    </a>
+                           @endif
+                            </td>
+
                                   @endif
                                @endforeach
 

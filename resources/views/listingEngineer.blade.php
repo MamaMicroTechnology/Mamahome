@@ -915,10 +915,14 @@ function openCity(evt, cityName) {
               }
             if(!isNaN(breadth) && !isNaN(length)){
               
+              var t1 = parseInt(document.getElementById("basement").value);
+              var t2 = parseInt(document.getElementById("ground").value);
+              sumup  = t1+t2+1;
+
               var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
               sum1   = length*breadth;
               Size    += sum1;
-              var total = sum * sum1;
+              var total = sumup * sum1;
               if(document.getElementById("totalsize").innerHTML != null)
                 document.getElementById("totalsize").innerHTML = Size;
               else
