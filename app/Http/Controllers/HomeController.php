@@ -866,7 +866,7 @@ class HomeController extends Controller
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('project_details.sub_ward_id',$request->ward)
                         ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('project_details.created_at','DESC')
 
                         ->get();
             $totalenq = count($enquiries);
@@ -3417,7 +3417,9 @@ date_default_timezone_set("Asia/Kolkata");
          $bank = AssignStage::where('user_id',Auth::user()->id)->pluck('bank')->first();
          $Premium = AssignStage::where('user_id',Auth::user()->id)->pluck('Premium')->first();
          $door = AssignStage::where('user_id',Auth::user()->id)->pluck('door')->first();
-
+         $upvc = AssignStage::where('user_id',Auth::user()->id)->pluck('upvc')->first();
+         $brila = AssignStage::where('user_id',Auth::user()->id)->pluck('brila')->first();
+         
 
          $project_type = AssignStage::where('user_id',Auth::user()->id)->pluck('project_type')->first();
 
@@ -3611,15 +3613,38 @@ date_default_timezone_set("Asia/Kolkata");
          $doorInt = explode(",", $door);
             if($doorInt[0] != "null"){
                 if(count($projectids) != 0){
-                    $doors = ProjectDetails::whereIn('project_id',$projectids)->whereIn('interested_in_doorsandwindows',$doorInt)->pluck('project_id');
+                    $doors = ProjectDetails::whereIn('project_id',$projectids)->whereIn('   Kitchen_Cabinates',$doorInt)->pluck('project_id');
                 }else{
-                    $doors = ProjectDetails::whereIn('interested_in_doorsandwindows',$doorInt)->pluck('project_id');
+                    $doors = ProjectDetails::whereIn('  Kitchen_Cabinates',$doorInt)->pluck('project_id');
                 }
                 if(count($doors) != 0){
                     $projectids = $doors;
                 }
             }
 
+$upvcInt = explode(",", $upvc);
+            if($upvcInt[0] != "null"){
+                if(count($projectids) != 0){
+                    $upvcs = ProjectDetails::whereIn('project_id',$projectids)->whereIn('interested_in_doorsandwindows',$upvcInt)->pluck('project_id');
+                }else{
+                    $upvcs = ProjectDetails::whereIn('interested_in_doorsandwindows',$upvcInt)->pluck('project_id');
+                }
+                if(count($upvcs) != 0){
+                    $projectids = $upvcs;
+                }
+            }
+
+        $brilaInt = explode(",", $brila);
+            if($brilaInt[0] != "null"){
+                if(count($projectids) != 0){
+                    $brilas = ProjectDetails::whereIn('project_id',$projectids)->whereIn('brilaultra',$brilaInt)->pluck('project_id');
+                }else{
+                    $brilas = ProjectDetails::whereIn('brilaultra',$brilaInt)->pluck('project_id');
+                }
+                if(count($brilas) != 0){
+                    $projectids = $brilas;
+                }
+            }
 
  $bankInt = explode(",", $bank);
             if($bankInt[0] != "null"){
@@ -6460,7 +6485,16 @@ public function projectstore(request $request)
   }else{
     $door = "null";
   }
-
+if($request->upvc){
+    $upvc = implode(",", $request->upvc);
+  }else{
+    $upvc = "null";
+  }
+  if($request->brila){
+    $brila = implode(",", $request->brila);
+  }else{
+    $brila = "null";
+  }
  if($request->bank){
     $bank = implode(",", $request->bank);
   }else{
@@ -6472,9 +6506,6 @@ public function projectstore(request $request)
   }else{
     $Premium = "null";
   }
-
-
-
 
     if($request->rmc)
     {
@@ -6548,6 +6579,9 @@ if($check == null){
         $projectassign->Premium = $Premium;
         $projectassign->door = $door;
         $projectassign->undate = $request->undate;
+        $projectassign->upvc = $upvc;
+        $projectassign->brila = $brila;
+
 
 
         $projectassign->save();
@@ -6586,7 +6620,8 @@ if($check == null){
         $check->Premium = $Premium;
         $check->door = $door;
         $check->undate = $request->undate;
-
+        $check->upvc = $upvc;
+        $check->brila = $brila;
 
         $check->save();
 }
