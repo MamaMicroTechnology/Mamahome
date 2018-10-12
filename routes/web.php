@@ -31,7 +31,7 @@ Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
 Route::post('/addcat','AssignManufacturersController@addcat');
 Route::get('/catofficer','AssignManufacturersController@catsalesreports');
-Route::get('/manudailyslot','AssignManufacturersController@dailyslots');
+Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 
 
 

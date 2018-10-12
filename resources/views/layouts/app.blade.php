@@ -1245,6 +1245,8 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
+     <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
+
 
 </div>  
 
@@ -1320,7 +1322,8 @@ function myTimer() {
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
     <a href="{{ URL::to('/') }}/followupproject" >Follow Up projects</a>
     <a href="{{ URL::to('/') }}/myreport" >My Report</a>
-    <a href="{{ URL::to('/') }}/kra" >KRA</a>           
+    <a href="{{ URL::to('/') }}/kra" >KRA</a>
+
   </div>
    @elseif(Auth::user()->group_id == 14)
    <div id="mySidenav" class="sidenav">

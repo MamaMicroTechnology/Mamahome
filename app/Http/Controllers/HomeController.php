@@ -2520,7 +2520,7 @@ date_default_timezone_set("Asia/Kolkata");
     public function projectRequirement(Request $request)
     {
 
-    
+
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();

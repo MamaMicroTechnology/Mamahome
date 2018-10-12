@@ -505,7 +505,7 @@ public function addcat(request $request){
 
                ]);
        }
-        public function dailyslots(Request $request)
+        public function manudailyslots(Request $request)
     {
 
 

@@ -6,7 +6,7 @@
                 <b style="color:white">Custom Daily Slot</b>
             </div>
             <div class="panel-body">
-                <form action="{{ URL::to('/') }}/dailyslots" method="GET">
+                <form action="{{ URL::to('/') }}/manudailyslot" method="GET">
                      {{ csrf_field() }}
                 <table class="table table-responsive">
                     <tbody >

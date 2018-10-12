@@ -168,7 +168,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>Interested In Birla Super / Ultratech Products?</td>
                                  <td>:</td>
                                  <td>
                                     
