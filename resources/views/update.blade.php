@@ -1108,9 +1108,7 @@ function sum(){
        
                           document.getElementById("sub").submit();
                         }
-        else{
-               alert("Geocode was not successful for the following reason: " + status);
-            }
+       
        }
     }
 </script>
