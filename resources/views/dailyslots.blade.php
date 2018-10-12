@@ -244,7 +244,7 @@
                                 @endif
                             @endif
                             <?php array_push($users, $project->listing_engineer_id); ?>
-                            <td style="text-align:center" >
+                           <td style="text-align:center" >
                                 <a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->subward->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}
                              </a></td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
