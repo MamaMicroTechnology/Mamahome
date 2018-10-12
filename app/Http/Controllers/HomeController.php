@@ -8445,7 +8445,7 @@ public function viewManufacturer1(Request $request)
   }
   public function sbreaktime(Request $request)
   {
-    $x = BreakTime::where('user_id',Auth::user()->id)->pluck('user_id')->orderBy('user_id','ASC')->first();
+    $x = BreakTime::where('user_id',Auth::user()->id)->orderBy('user_id','ASC')->pluck('user_id')->first();
     BreakTime::where('user_id',$x)->update([
             'stop_time' => date('h:i A')
         ]);
