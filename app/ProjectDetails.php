@@ -55,7 +55,7 @@ protected static $logFillable = true;
     }
      public function subward()
     {
-      return $this->hasOne('App\SubWard','id','sub_ward_id');
+      return $this->hasOne('App\SubWard','sub_ward_id','id');
     
     } 
     public function user(){
