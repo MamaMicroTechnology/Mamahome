@@ -12,7 +12,7 @@
                     {{ csrf_field() }}
                 <div class="col-md-2">
                  <h4><b>Select Category</b></h4>
-                    <select id="category2" onchange="brands()" class="form-control" name="cat">
+                    <select required id="category2" onchange="brands()" class="form-control" name="cat">
                         <option>--Select Category--</option>
                         @foreach($categories as $category)
 
@@ -46,7 +46,7 @@
                  </div> --> 
                   <div class="col-md-2">
                    <h4><b>Category Officers</b></h4>
-                    <select class="form-control" name="user_id">
+                    <select required class="form-control" name="user_id">
                       <option value="">-- Category Officers--</option>
                       @foreach($users as $user)
                       <option value="{{$user->id}}">{{$user->name}}</option>
@@ -77,7 +77,7 @@
                         <th>Previous Category</th>
                         <th>Created On</th>
                         <th>Updated On</th>
-                        <th>Instractions</th>
+                        <th>Instructions</th>
 
                     </tr>
                 </thead>
