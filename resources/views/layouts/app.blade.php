@@ -1080,9 +1080,11 @@ function myTimer() {
             <a href="{{ URL::to('/expenditure') }}">&nbsp;&nbsp;&nbsp; - Expenditure</a>
             <a href="{{ URL::to('/five_years_expenditure') }}">&nbsp;&nbsp;&nbsp; - Five Years Expenditure</a>
         </div>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-    <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
-
+         <a href="#" data-toggle="collapse" data-target="#dailyslot">&nbsp;&nbsp;&nbsp;Daily Slots &#x21F2;</a>
+          <div id="dailyslot" class="collapse">
+                <a href="{{ URL::to('/dailyslots') }}">Projects Daily Slots</a>
+                <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
+          </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
@@ -1216,9 +1218,11 @@ function myTimer() {
                <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
                <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
                <a href="{{ URL::to('/') }}/projectWithNotes">&nbsp;&nbsp;&nbsp; -Projects With Notes</a>
-              <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
-              <a href="{{ URL::to('/manudailyslot') }}">&nbsp;&nbsp;&nbsp; -Manufacturer Daily Slots</a>
-
+               <a href="#" data-toggle="collapse" data-target="#dailyslot">&nbsp;&nbsp;&nbsp;Daily Slots &#x21F2;</a>
+              <div id="dailyslot" class="collapse">
+                    <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Projects Daily Slots</a>
+                    <a href="{{ URL::to('/manudailyslot') }}">&nbsp;&nbsp;&nbsp; -Manufacturer Daily Slots</a>
+              </div>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
               <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
@@ -1293,7 +1297,7 @@ function myTimer() {
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
      @if(isset($stages))
        @if($stages->project_ids == null)
-       <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
+       <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
        @else
 
         <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
