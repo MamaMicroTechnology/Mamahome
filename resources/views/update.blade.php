@@ -165,15 +165,27 @@
                                  </td>
                                </tr>
                               <tr>
+                                 <td>Interested In UPVC doors and windows? </td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="upvc">Yes</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="upvc">No</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="upvc">None</label>
+                                 </td>
+                               </tr>
+                                <tr>
                                  <td>Interested In Kitchen Cabinates and Wardrobes ?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_Yes" ? 'checked' : '' }} required value="Kitchen_Yes" type="radio" name="dandwinterest">Yes</label>
+                                      <label><input id="dandw1" {{ $projectdetails->Kitchen_Cabinates == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_No" ? 'checked' : '' }} required value="Kitchen_No" type="radio" name="dandwinterest">No</label>
+                                      <label><input id="dandw2" {{ $projectdetails->Kitchen_Cabinates == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_None" ? 'checked' : '' }} required value="Kitchen_None" type="radio" name="dandwinterest">None</label>
+                                      <label><input id="dandw3" {{ $projectdetails->Kitchen_Cabinates == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
                                  </td>
                                </tr>
                                <tr>
