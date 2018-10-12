@@ -2,7 +2,10 @@
 @section('content')
 
    @if($ldate < $lodate)
- 
+  <div>You are ahead of time.</div>
+  @elseif($ldate > $outtime)
+  <div>You are done for today. Take a rest.</div>
+  @else
   
 <div class="container">
     <div class="row">
