@@ -8445,8 +8445,8 @@ public function viewManufacturer1(Request $request)
   }
   public function sbreaktime(Request $request)
   {
-
-    BreakTime::where('user_id',Auth::user()->id)->update([
+    $x = BreakTime::where('user_id',Auth::user()->id)->pluck('user_id')->first();
+    BreakTime::where('user_id',$x)->update([
             'stop_time' => date('h:i A')
         ]);
         return back()->with('Success','Your Break Time has been Ended');
