@@ -1104,13 +1104,12 @@ function sum(){
                     alert('Please Enter Procurement Phone Number');
                     document.getElementById('prPhone').focus();
           }else{
-    
+
+       
                           document.getElementById("sub").submit();
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
+                        }
+        else{
+               alert("Geocode was not successful for the following reason: " + status);
             }
        }
     }
