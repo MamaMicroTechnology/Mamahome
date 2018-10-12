@@ -14,18 +14,6 @@
           <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-60px;margin-left:10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
         <div class="panel-body">
-           @if (session('Success'))
-                        <div class="alert alert-success">
-                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            {{ session('Success') }}
-                        </div>
-               @endif
-               @if(session('NotAdded'))
-                          <div class="alert alert-danger alert-dismissable">
-                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                          {{ session('NotAdded') }}
-                          </div>
-                @endif
               <form method="POST" id="saveNumber" name="myform" action="{{ URL::to('/') }}/storecount" enctype="multipart/form-data">
                 {{ csrf_field() }}    
 <!--                 <input type="hidden" id="userId" name="user_id">
@@ -38,8 +26,6 @@
                               <?php
                                   $s=  $count;
                                 ?> 
-
-                              
                 <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
                           <option value="">--Select--</option>
                           
@@ -87,7 +73,7 @@
                    </tr>
                 </table>  
               </form> 
-		{{ $number->links()  }}
+    {{ $number->links()  }}
       <form method="POST" name="myform" action="{{ URL::to('/') }}/sms" enctype="multipart/form-data">
      {{ csrf_field() }}
      <input type="hidden" id="userId" name="user_id">
@@ -151,7 +137,7 @@
               </div>
             </form>
            </div>
-		</div>
+    </div>
 </div>
 <script type="text/javascript">
   function makeUserId(arg){
@@ -165,4 +151,14 @@ function submitMyNumber(arg){
   form.submit();
 }
 </script>
+ @if(session('success'))
+          <script>
+            swal("Success","{{ session('success')}}","success");
+          </script>
+ @endif
+ @if(session('NotAdded'))
+          <script>
+            swal("Error","{{ session('NotAdded')}}","error");
+          </script>
+  @endif
 @endsection
