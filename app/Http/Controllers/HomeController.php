@@ -761,6 +761,7 @@ class HomeController extends Controller
         $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
          $totalofenquiry = "";
         $totalenq = "";
+        $converter = user::get();
         $ward = Ward::get();
         $wards = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->get();
         $sub = SubWard::where('ward_id',$tlward)->pluck('id');
@@ -2798,6 +2799,7 @@ date_default_timezone_set("Asia/Kolkata");
         $points_indetail = Point::where('user_id',Auth::user()->id)->where('created_at','LIKE',date('Y-m-d')."%")->get();
         $total = $points_earned_so_far - $points_subtracted;
         $stages = AssignStage::where('user_id',Auth::user()->id)->first();
+
         return view('sedashboard',[
             'projects'=>$projects,
             'reqcount'=>$reqcount,
@@ -5781,9 +5783,10 @@ date_default_timezone_set("Asia/Kolkata");
                 $found1 = $searchWard->ward_id;
             }
         }
-    
+        $stages = AssignStage::where('user_id',Auth::user()->id)->first();
+
        $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
-        return view('scdashboard',['ward'=>$ward]);
+        return view('scdashboard',['ward'=>$ward,'stages'=>$stages]);
     }
  public function getChat()
     {
@@ -6652,7 +6655,7 @@ public function enquirywise(request $request){
                     ->where('department_id','!=',10)
                       ->leftjoin('departments','departments.id','users.department_id')
                       ->leftjoin('groups','groups.id','users.group_id')
-                      ->select('users.*','departments.dept_name','groups.group_name')->get();
+                      ->select('users.*','departments.dept_name','groups.group_name')->paginate(20);
            $tlUsers = User::whereIn('users.id',$userIds)
                       ->leftjoin('departments','departments.id','users.department_id')
                       ->leftjoin('groups','groups.id','users.group_id')
@@ -8221,6 +8224,7 @@ public function viewManufacturer1(Request $request)
         $hist = History::where('id',$id)->first();
         $hist->question=$request->qstn;
         $hist->remarks=$request->remarks;
+        $hist->save();
         return redirect()->back();
     }
 

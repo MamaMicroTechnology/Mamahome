@@ -229,9 +229,9 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
-							<td style="text-align: center">{{$enquiry->name}}</td>
+							<td style="text-align: center">{{ $enquiry->user != null ? $enquiry->user->name : '' }}</td>
 							<td style="text-align: center">
-							{{ $enquiry->user != null ? $enquiry->user->name : '' }}
+							{{ $enquiry->conuser != null ? $enquiry->conuser->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
