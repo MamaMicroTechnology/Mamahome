@@ -21,7 +21,9 @@
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
                  <th>Action</th>
+                 @if(Auth::user()->group_id == 23)
                 <th>Customers Interested Categories</th>
+                @endif
                  <th> Customer History</th>
                </thead>
                 <tbody>

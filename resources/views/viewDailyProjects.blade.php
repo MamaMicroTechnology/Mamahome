@@ -70,8 +70,12 @@
                             <td>{{ $details->interested_in_loan }}</td>
                         </tr>
                           <tr>
-                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
+                            <td><b>Interested In UPVC Doors And Windows ? : </b></td>
                             <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
+                            <td>{{ $details->Kitchen_Cabinates  }}</td>
                         </tr>
                         <tr>
                             <td><b>Interested In Brila Super / Ultratech Products? : </b></td>

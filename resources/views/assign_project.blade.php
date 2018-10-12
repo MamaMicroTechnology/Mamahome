@@ -323,8 +323,22 @@
                     <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
                      <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
                   </div> 
-                </div>
                 </div><br><br>
+                <div class="row">
+                    <div class="col-sm-3">
+                      <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">UPVC doors and windows  </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="upvc[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="upvc[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="upvc[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                    </div> 
+                     <div class="col-sm-3">
+                      <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Brila Super / Ultratech Products </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="brila[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="brila[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="brila[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                    </div> 
+                </div><br><br>
+   </div>
                  
                 <center>
                   <button type="submit" id="submit" class="btn btn-success">Submit Data</button>

@@ -89,6 +89,8 @@ use App\Manufacturer;
 use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
+use Spatie\Activitylog\Models\Activity;
+
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -865,7 +867,7 @@ class HomeController extends Controller
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->where('project_details.sub_ward_id',$request->ward)
                         ->where('requirements.status','!=',"Enquiry Cancelled")
-                 ->orderby('created_at','DESC')
+                 ->orderby('project_details.created_at','DESC')
 
                         ->get();
             $totalenq = count($enquiries);
@@ -3417,7 +3419,9 @@ date_default_timezone_set("Asia/Kolkata");
          $bank = AssignStage::where('user_id',Auth::user()->id)->pluck('bank')->first();
          $Premium = AssignStage::where('user_id',Auth::user()->id)->pluck('Premium')->first();
          $door = AssignStage::where('user_id',Auth::user()->id)->pluck('door')->first();
-
+         $upvc = AssignStage::where('user_id',Auth::user()->id)->pluck('upvc')->first();
+         $brila = AssignStage::where('user_id',Auth::user()->id)->pluck('brila')->first();
+         
 
          $project_type = AssignStage::where('user_id',Auth::user()->id)->pluck('project_type')->first();
 
@@ -3611,15 +3615,38 @@ date_default_timezone_set("Asia/Kolkata");
          $doorInt = explode(",", $door);
             if($doorInt[0] != "null"){
                 if(count($projectids) != 0){
-                    $doors = ProjectDetails::whereIn('project_id',$projectids)->whereIn('interested_in_doorsandwindows',$doorInt)->pluck('project_id');
+                    $doors = ProjectDetails::whereIn('project_id',$projectids)->whereIn('   Kitchen_Cabinates',$doorInt)->pluck('project_id');
                 }else{
-                    $doors = ProjectDetails::whereIn('interested_in_doorsandwindows',$doorInt)->pluck('project_id');
+                    $doors = ProjectDetails::whereIn('  Kitchen_Cabinates',$doorInt)->pluck('project_id');
                 }
                 if(count($doors) != 0){
                     $projectids = $doors;
                 }
             }
 
+$upvcInt = explode(",", $upvc);
+            if($upvcInt[0] != "null"){
+                if(count($projectids) != 0){
+                    $upvcs = ProjectDetails::whereIn('project_id',$projectids)->whereIn('interested_in_doorsandwindows',$upvcInt)->pluck('project_id');
+                }else{
+                    $upvcs = ProjectDetails::whereIn('interested_in_doorsandwindows',$upvcInt)->pluck('project_id');
+                }
+                if(count($upvcs) != 0){
+                    $projectids = $upvcs;
+                }
+            }
+
+        $brilaInt = explode(",", $brila);
+            if($brilaInt[0] != "null"){
+                if(count($projectids) != 0){
+                    $brilas = ProjectDetails::whereIn('project_id',$projectids)->whereIn('brilaultra',$brilaInt)->pluck('project_id');
+                }else{
+                    $brilas = ProjectDetails::whereIn('brilaultra',$brilaInt)->pluck('project_id');
+                }
+                if(count($brilas) != 0){
+                    $projectids = $brilas;
+                }
+            }
 
  $bankInt = explode(",", $bank);
             if($bankInt[0] != "null"){
@@ -3717,7 +3744,7 @@ date_default_timezone_set("Asia/Kolkata");
        
           if(Auth::user()->group_id == 23){
              if($request->update){
-
+              $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                 $spro = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->pluck('project_id');
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
@@ -3725,6 +3752,7 @@ date_default_timezone_set("Asia/Kolkata");
                     ->paginate(15);
                     
             }elseif($request->unupdate){
+              $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                $catsub = Category::where('id',$ac)->pluck('category_name')->first();
                $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
@@ -3737,15 +3765,15 @@ date_default_timezone_set("Asia/Kolkata");
                          ->paginate(15);
 
             }elseif($request->interested){
+                 $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $catsub = Category::where('id',$ac)->pluck('category_name')->first(); 
-                  $cate = Salesofficer::where('category',$catsub)->where('cat_id',$cat)->pluck('project_id');
+                  $cate = Salesofficer::where('category',$catsub)->pluck('project_id');
                    $projects = ProjectDetails::whereIn('project_id',$cate)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                                 
-                 
 
             }else{
           $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
@@ -3881,7 +3909,6 @@ date_default_timezone_set("Asia/Kolkata");
                        $projects = ProjectDetails::where('created_at','like',$from.'%')
                              ->where('created_at','LIKE',$to."%")
                              ->get();
-                       
                                     }
                   else{
                   $projects = ProjectDetails::where('created_at','>',$request->fromdate)
@@ -6461,7 +6488,16 @@ public function projectstore(request $request)
   }else{
     $door = "null";
   }
-
+if($request->upvc){
+    $upvc = implode(",", $request->upvc);
+  }else{
+    $upvc = "null";
+  }
+  if($request->brila){
+    $brila = implode(",", $request->brila);
+  }else{
+    $brila = "null";
+  }
  if($request->bank){
     $bank = implode(",", $request->bank);
   }else{
@@ -6473,9 +6509,6 @@ public function projectstore(request $request)
   }else{
     $Premium = "null";
   }
-
-
-
 
     if($request->rmc)
     {
@@ -6549,6 +6582,9 @@ if($check == null){
         $projectassign->Premium = $Premium;
         $projectassign->door = $door;
         $projectassign->undate = $request->undate;
+        $projectassign->upvc = $upvc;
+        $projectassign->brila = $brila;
+
 
 
         $projectassign->save();
@@ -6587,7 +6623,8 @@ if($check == null){
         $check->Premium = $Premium;
         $check->door = $door;
         $check->undate = $request->undate;
-
+        $check->upvc = $upvc;
+        $check->brila = $brila;
 
         $check->save();
 }
@@ -8207,9 +8244,6 @@ public function viewManufacturer1(Request $request)
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
     }
 
-
-
-
     public function lebrands(){
 
         $date=date('Y-m-d');
@@ -8476,28 +8510,79 @@ public function viewManufacturer1(Request $request)
   }
 
 
-  public function getNewActivityLog()
+  public function getNewActivityLog(request $request)
   {
-        $activities = Activity::where('causer_id','7')->get();
-        echo("<table border=1><thead><th>User Name</th><th>Time</th><th>Type</th><th>Activity</th>");
-        foreach($activities as $activity){
-            $actions = array();
-            echo("<tr><td>");
-            echo($activity->causer->name);
-            echo("</td><td>");
-            echo(date('d-m-Y h:i:s a',strtotime($activity->created_at)));
-            echo("</td><td>");
-            echo($activity->description);
-            echo("</td><td>");
-            $something = $activity->changes();
-            foreach($something["attributes"] as $key=>$value){
-                $actions[] = "$key : $value";
-            }
-            $realValues = implode('<br>',$actions);
-            echo($realValues);
-            echo("</td></tr>");
-        }
-        // return $activity;
+    $userid =[6,17,22,23,7];
+   
+    $date = date('Y-m-d');
+     
+if($request->list !="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+    $user = User::where('id',$request->list)->get();
+                      if($from == $to){
+           foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->where('causer_id',$request->list)->get();
+                                   }
+    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+     foreach ($date as $dump) {
+        $dd = date('Y-m-d',strtotime($dump->created_at));
+        $date = date('Y-m-d');
+         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")
+                             ->where('called_Time','like',$from.'%')
+                             ->where('called_Time','LIKE',$to."%")
+                             ->where('user_id',$request->list)->count();
+        
+     }
+  }
+else{
+    
+          foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$request->fromdate)->where('created_at','<=',$request->todate)->where('causer_id',$request->list)->get();
+                                   }
+    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+     foreach ($date as $dump) {
+        $dd = date('Y-m-d',strtotime($dump->created_at));
+        $date = date('Y-m-d');
+         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")
+                               ->where('called_Time','>',$request->fromdate)
+                              ->where('called_Time','<=',$request->todate)
+                             ->where('user_id',$request->list)->count();
+        
+     }
+}
+                 
+
+}
+
+else{
+
+ $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
+     foreach ($user as $users) {
+        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->get();
+       
+    }
+    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
+     foreach ($date as $dump) {
+        $dd = date('Y-m-d',strtotime($dump->created_at));
+        $date = date('Y-m-d');
+         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")->count();
+        
+     }
+}
+
+     foreach ($user as $users) {
+        $noOfCall[$users->id]['count'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
+       
+                               }
+
+foreach ($user as $users) {
+        $noOf[$users->id]['history'] = History::where('user_id',$users->id)->where('called_Time','like',$date.'%')->count();
+
+    }
+
+       $sub = Subward::all();    
+        return view('/newActivityLog',['noOfCalls'=>$noOfCalls,'users'=>$user,'noOfCall'=>$noOfCall,'noOf'=>$noOf,'sub'=>$sub,'called'=>$called]);
   }
   public function breaks(Request $request){
        $date = date('Y-m');
