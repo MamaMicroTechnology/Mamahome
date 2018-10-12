@@ -1871,7 +1871,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                if($request->manu_id){
+                if($requirement->manu_id){
                 $subward = SubWard::where('id',$project1->sub_ward_id)->first();
                         
                 }else{
@@ -1909,30 +1909,30 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order->save();
             }
         }
-        $activity = new ActivityLog;
-        $activity->time = date('Y-m-d H:i A');
-        $activity->employee_id = Auth::user()->employeeId;
-        $activity->req_id = $request->id;
-        $activity->project_id = $requirement->project_id;
-        $project = ProjectDetails::where('project_id',$requirement->project_id)->pluck('sub_ward_id')->first();
-        $activity->sub_ward_id = $project;
-         $uproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('updated_by')->first();
-        $qproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('quality')->first();
-        $fproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('followup')->first();
-        $eproject = Requirement::where('project_id',$requirement->project_id)->pluck('generated_by')->first();
+        //$activity = new ActivityLog;
+        //$activity->time = date('Y-m-d H:i A');
+        //$activity->employee_id = Auth::user()->employeeId;
+        //$activity->req_id = $request->id;
+        //$activity->project_id = $requirement->project_id;
+        //$project = ProjectDetails::where('project_id',$requirement->project_id)->pluck('sub_ward_id')->first();
+        //$activity->sub_ward_id = $project;
+        //$uproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('updated_by')->first();
+        //$qproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('quality')->first();
+        //$fproject = ProjectDetails::where('project_id',$requirement->project_id)->pluck('followup')->first();
+        //$eproject = Requirement::where('project_id',$requirement->project_id)->pluck('generated_by')->first();
        
-       $activity->updater = $uproject;
-       $activity->quality = $qproject;
-       $activity->followup = $fproject;
-       if($eproject != null){
-        $activity->enquiry = $eproject;
-       }
-        else{
-           $activity->enquiry ="null";
-          }
-         $activity->typeofactivity = "Enquiry Updated";
-        $activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note.$request->status;
-        $activity->save();
+       //$activity->updater = $uproject;
+       //$activity->quality = $qproject;
+       //$activity->followup = $fproject;
+       //if($eproject != null){
+        //$activity->enquiry = $eproject;
+       //}
+        //else{
+          // $activity->enquiry ="null";
+         // }
+         //$activity->typeofactivity = "Enquiry Updated";
+        //$activity->activity = Auth::user()->name." has updated requirement id: ".$request->id." as ".$request->note.$request->status;
+        //$activity->save();
         return back();
         }
     public function editManualEnquiry(Request $request)
