@@ -37,9 +37,10 @@ tr:nth-child(even) {
            <thead class="thead-dark">
         <tr>
             <th>Manufacturer Id</th>
-            <th>SubWard Number</th>
+            <th>SubWard Name</th>
             <th>listing Engineer Name</th> 
             <th>Plant Name</th>
+            <th>Contact No.</th>
             <th>Manufacturer Image</th>
             <th>Cement Requirement</th>
             <th>Sand Requirement</th>
@@ -60,6 +61,7 @@ tr:nth-child(even) {
                
                 <td> {{$manufacturer->user != null ? $manufacturer->user->name :'' }}</td>
                 <td>{{ $manufacturer->plant_name }}</td>
+                <td>{{ $manufacturer->proc != null ? $manufacturer->proc->contact :$manufacturer->contact_no }}</td>
                <!--  <td> <a href="#" class="btn btn-primary btn-xm" >View Image</a></td> -->
                             <td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $manufacturer->id }}">View Image</button>
                 <div id="viewimage{{$manufacturer->id}}" class="modal fade" role="dialog">
@@ -174,7 +176,6 @@ tr:nth-child(even) {
 </td>  
 
                 <!-- <td>{{ $manufacturer->proc != null ? $manufacturer->proc->name :$manufacturer->name }}</td>
-                <td>{{ $manufacturer->proc != null ? $manufacturer->proc->contact :$manufacturer->contact_no }}</td>
                 <td>{{ $manufacturer->proc != null ? $manufacturer->proc->contact1 :''}}</td>
                 <td>{{ $manufacturer->address }}</td>
                 <td>{{ $manufacturer->total_area }}</td>

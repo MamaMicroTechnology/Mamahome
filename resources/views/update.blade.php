@@ -32,7 +32,7 @@
                       @endif
                       @endif
                     </center>
-                    @if($projectdetails->quality == NULL)
+                    <!-- @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
                         {{ csrf_field() }}
                         <input type="hidden" name="id" value="{{ $id }}">
@@ -41,12 +41,16 @@
                       <label style="font-size: 14px">Quality:</label>
                       {{ $projectdetails->quality }}
                       @endif
-                    </center>
+                    </center> -->
                       
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
                     <div id="first">
                     {{ csrf_field() }}
+                    <input  class="hidden" type="text" name="longitude1" value="{{ old('longitude') }}" id="longitude1">
+                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1">  
+                    <input  class="hidden" type="text" name="address1" value="{{ old('address1') }}" id="address1"> 
+                                   
                            <table class="table">
                            @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                             <tr>
@@ -161,19 +165,31 @@
                                  </td>
                                </tr>
                               <tr>
+                                 <td>Interested In UPVC Doors and Windows? </td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="upvc">Yes</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="upvc">No</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="upvc">None</label>
+                                 </td>
+                               </tr>
+                                <tr>
                                  <td>Interested In Kitchen Cabinates and Wardrobes ?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_Yes" ? 'checked' : '' }} required value="Kitchen_Yes" type="radio" name="dandwinterest">Yes</label>
+                                      <label><input id="dandw1" {{ $projectdetails->Kitchen_Cabinates == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_No" ? 'checked' : '' }} required value="Kitchen_No" type="radio" name="dandwinterest">No</label>
+                                      <label><input id="dandw2" {{ $projectdetails->Kitchen_Cabinates == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_None" ? 'checked' : '' }} required value="Kitchen_None" type="radio" name="dandwinterest">None</label>
+                                      <label><input id="dandw3" {{ $projectdetails->Kitchen_Cabinates == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>Interested In Birla Super / Ultratech Products?</td>
                                  <td>:</td>
                                  <td>
                                     
@@ -239,7 +255,7 @@
           <tr>
             <td> Follow Up Date</td>
             <td>:</td>
-            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" data-provide="datepicker" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" class="form-control" /></td>
 
 
           </tr>
@@ -254,17 +270,7 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-<<<<<<< HEAD
-                               <!-- <tr>
-                                   <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
-                                   <td>:</td>
-                                   <td>
-                                    <input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]">
-                                  </td>
-                               </tr> -->
-=======
                               
->>>>>>> eb326b0d735aeee2d8f92bba2ca711fc36d86e25
                                <tr>
                                 <?php
                                   $statuses = explode(", ", $projectdetails->project_status);
@@ -1099,7 +1105,70 @@ function sum(){
                     document.getElementById('prPhone').focus();
           }else{
 
+        console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocationforupdate,
+        displayError,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+      //console.log("Exiting getLocation()");
+  }
+    
+    function displayCurrentLocationforupdate(position){
+      //console.log("Entering displayCurrentLocation");
+
+      var latitude1  = position.coords.latitude;
+      var longitude1 = position.coords.longitude;
+      document.getElementById("longitude1").value = longitude1;
+      document.getElementById("latitude1").value  = latitude1;
+      //console.log("Latitude " + latitude +" Longitude " + longitude);
+
+      getAddressFromLatLangforupdate(latitude1,longitude1);
+      //console.log("Exiting displayCurrentLocation");
+    }
+   
+  function  displayError(error){
+    console.log("Entering ConsultantLocator.displayError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLangforupdate(lat,lng){
+    //console.log("Entering getAddressFromLatLang()");
+   
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+        // console.log("After getting address");
+        // console.log(results);
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        // console.log(results);
+        document.getElementById("address1").value = results[0].formatted_address;
+        var x = results[0].formatted_address;
+       
                           document.getElementById("sub").submit();
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
             }
        }
     }

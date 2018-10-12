@@ -6,6 +6,8 @@
                 <b style="color:white">Custom Daily Slot</b>
             </div>
             <div class="panel-body">
+                <form action="{{ URL::to('/') }}/dailyslots" method="GET">
+                     {{ csrf_field() }}
                 <table class="table table-responsive">
                     <tbody >
                         <tr>
@@ -13,9 +15,9 @@
                         </tr>
                         <tr>
                             <td>
-                                <select class="form-control" id="selectle">
+                                <select class="form-control" name="list" required>
                                     <option disabled selected value="">(-- SELECT LE --)</option>
-
+                                    
                                     <option value="ALL">All Listing Engineers</option>
                                     @if(Auth::user()->group_id != 22)
                                     @foreach($le as $list)
@@ -34,7 +36,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="date" placeholder= "From Date" class="form-control" id="fromdate" name="fromdate" />
+                                <input type="date" placeholder= "From Date" class="form-control" id="fromdate" name="fromdate" required />
                             </td>
                         </tr>
                         <tr>
@@ -42,12 +44,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="date"  placeholder= "To Date" class="form-control" id="todate" name="todate" />
+                                <input type="date"  placeholder= "To Date" class="form-control" id="todate" name="todate" required />
                             </td>
                         </tr>
                         <tr class="text-center">
                             <td>
-                                <a class="btn bn-md btn-success" style="width:100%" onclick="displayGif()">Get Date Range Details</a>
+                                <button type="submit" class="btn bn-md btn-success" style="width:100">Get Date Range Details</button>
                             </td>
                         </tr>
                         <!--<tr class="text-center">-->
@@ -57,6 +59,7 @@
                         <!--</tr>-->
                     </tbody>
                 </table>
+            </form>
             </div>
         </div>
         <div class="panel panel-default" styke="border-color:green">
@@ -205,14 +208,19 @@
     <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>{{$projcount}}</b></label>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>@if( $projcount  == 0)
+                  No Projects Found
+                @else
+                  {{$projcount}}
+                @endif
+                </b></label>
                  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button> 
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">
                     <thead>
                         <tr>
-                            <th style="text-align:center">Subward Ward No.</th>
+                            <th style="text-align:center">Subward Ward Name</th>
                             <th style="text-align:center">Project-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Site Engineer Contact Number</th>
@@ -236,17 +244,17 @@
                                 @endif
                             @endif
                             <?php array_push($users, $project->listing_engineer_id); ?>
-                            <td style="text-align:center" >
-                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->sub_ward_name }}
+                           <td style="text-align:center" >
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->subward != null ? $project->subward->sub_ward_name : '' }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}
                              </a></td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
-                            <td style="text-align:center">{{$project->owner_contact_no}}</td>
-                            <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
-                            <td style="text-align:center">{{$project->procurement_contact_no}}</td>
-                            <td style="text-align:center">{{$project->consultant_contact_no}}</td>
-                            <td style="text-align:center">{{$project->contractor_contact_no}}</td>
+                            <td style="text-align:center">{{$project->ownerdetails !=null ?$project->ownerdetails->owner_contact_no :''}}</td>
+                            <td style="text-align:center">{{$project->siteengineerdetails != null?$project->siteengineerdetails->site_engineer_contact_no:''}}</td>
+                            <td style="text-align:center">{{$project->procurementdetails !=null?$project->procurementdetails->procurement_contact_no :''}}</td>
+                            <td style="text-align:center">{{$project->consultantdetails !=null ?$project->consultantdetails->consultant_contact_no :''}}</td>
+                            <td style="text-align:center">{{$project->contractordetails !=null ?$project->contractordetails->contractor_contact_no:''}}</td>
                             <td style="text-align:center" id="listname-{{$project->project_id}}">
-                                {{$project->name}}
+                                {{$project->user !=null ?$project->user->name:''}}
                                 <input type="hidden" id="hiddeninp-{{$project->project_id}}" value="{{$project->listing_engineer_id}}" />
                             </td>
                             <!--<td style="text-align:center"><a onclick="" class="btn btn-sm btn-danger">Verify</a></td>-->
@@ -291,163 +299,6 @@
 
 
         });
-        function displayGif(){
-            document.getElementById('wait').style.display = "block";
-            showrecordsle();
-        }
-        function showrecordsle()
-        {
-            var e = document.getElementById("selectle");
-            var le_id = e.options[e.selectedIndex].value;
-            var from_date = document.getElementById('fromdate').value;
-            var to_date = document.getElementById('todate').value;
-            if(to_date==""){
-                showtodayrecordsle();
-            }else if(!le_id || !from_date){
-                alert('Incomplete Details ! Please Select All Three Fields !!');
-                return false;
-            }
-            else
-            {
-                var mydate = new Date(from_date);
-                var todate = new Date(to_date);
-                var month = mydate .getMonth() + 1;
-                var day = mydate .getDate();
-                var year = mydate .getFullYear();
-                var tomonth = todate .getMonth() + 1;
-                var today = todate .getDate();
-                var toyear = todate .getFullYear();
-                if(day < 10){
-                    day = "0" + day;
-                }
-                if(month < 10){
-                    month = "0" + month;
-                }
-                if(today < 10){
-                    today = "0" + today;
-                }
-                if(tomonth < 10){
-                    tomonth = "0" + tomonth;
-                }
-                orig_from_date = day + "-" + month + "-" + year;
-                orig_to_date = today + "-" + tomonth + "-" + toyear;
-                from_date += ' 00:00:00';
-                to_date += ' 00:00:00';
-                document.getElementById('mainPanel').innerHTML = '';
-                document.getElementById('panelhead').innerHTML = '';
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ URL::to('/') }}/getleinfo",
-                    data: { id: le_id, from: from_date, to: to_date },
-                    async: true,
-                    success: function(response)
-                    {
-                        document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b> To "+orig_to_date+"  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-                        document.getElementById('mainPanel').innerHTML = '';
-                        for(var i=0; i<response[0].length;i++)
-                        {
-                            if(response[0][i].quality == 'Fake'){
-                                var head = "<tr style='background-color:#d2d5db'><td>";
-                            }else{
-                                var head = "<tr><td>";
-                            }
-                            document.getElementById('mainPanel').innerHTML +=
-                            head + "<a href='{{URL::to('/')}}/viewsubward?projectid="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"
-                                +response[0][i].sub_ward_name+
-                            "</a>"+
-                            "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
-                                +response[0][i].project_id+
-                            "</a></td><td>"
-                                +(response[0][i].owner_contact_no != null ? response[0][i].owner_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].site_engineer_contact_no !=null ? response[0][i].site_engineer_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].procurement_contact_no != null ? response[0][i].procurement_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '') +
-                            "</td><td>"
-                                +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
-                            "</td><td>"
-                                +response[0][i].name+
-                            "</td></tr>";
-                            document.getElementById('wait').style.display = "none";
-                        }
-                        console.log(response);
-                    }
-                });
-            }
-            return false;
-        }
-        function showtodayrecordsle()
-        {
-            var e = document.getElementById("selectle");
-            var le_id = e.options[e.selectedIndex].value;
-            var from_date = document.getElementById('fromdate').value;
-            var to_date =  document.getElementById('todate').value;
-            if(!le_id || !from_date || !to_date){
-                alert('Please Select all 3 fields !!');
-                document.getElementById('wait').style.display = "none";
-                return false;
-            }
-            else
-            {
-
-                var mydate = new Date(from_date);
-                var month = mydate .getMonth() + 1;
-                var day = mydate .getDate();
-                var year = mydate .getFullYear();
-                if(day < 10){
-                    day = "0" + day;
-                }
-                if(month < 10){
-                    month = "0" + month;
-                }
-                orig_from_date = day + "-" + month + "-" + year;
-
-                document.getElementById('mainPanel').innerHTML = '';
-                document.getElementById('panelhead').innerHTML = '';
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ URL::to('/') }}/gettodayleinfo",
-                    data: { id: le_id, from_date: from_date },
-                    async: false,
-                    success: function(response)
-                    {
-                        document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b>  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-
-                        document.getElementById('mainPanel').innerHTML = '';
-                        for(var i=0; i<response[0].length;i++)
-                        {
-                            if(response[0][i].quality == 'Fake'){
-                                var head = "<tr style='background-color:#d2d5db'><td>";
-                            }else{
-                                var head = "<tr><td>";
-                            }
-                            document.getElementById('mainPanel').innerHTML +=
-                            head+ "<a href='{{URL::to('/')}}/viewsubward?projectid="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"+response[0][i].sub_ward_name+
-                            "</a>"+
-                            "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
-                                +response[0][i].project_id+
-                            "</a></td><td>"
-                                +(response[0][i].owner_contact_no != null ? response[0][i].owner_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].site_engineer_contact_no != null ? response[0][i].site_engineer_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].procurement_contact_no != null ? response[0][i].procurement_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '')+
-                            "</td><td>"
-                                +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
-                            "</td><td>"
-                                +response[0][i].name+
-                            "</td></tr>";
-                        }
-                        console.log(response);
-                    }
-                });
-            }
-            return false;
-        }
     </script>
     <script>
 $(document).ready(function(){

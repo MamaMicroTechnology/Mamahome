@@ -30,7 +30,7 @@
 
                 <tbody>
                 <?php $i = 1 ?>
-   @foreach($data->order as $tickets)
+          @foreach($data->order as $tickets)
           <tr>
            <td>{{$i++}}</td>
             <td>{{$tickets->project_id}}</td>

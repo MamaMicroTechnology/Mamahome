@@ -7,9 +7,6 @@
           <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
         </div>
         <div class="panel-body"> 
-        	   @if (session()->has('success'))
-                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
-                    @endif
                 <form method="POST" name="myform" action="{{URL::to('/')}}/savenumber">
         	 				{{csrf_field()}}
 	        	 				<table class="table table-responsive table-striped table-hover" class="table">
@@ -77,5 +74,9 @@ function checklength()
   }
  
 </script>
-
+@if(session('success'))
+          <script>
+            swal("Success","{{ session('success')}}","success");
+          </script>
+ @endif
  @endsection

@@ -40,6 +40,17 @@
 								<label>To (Enquiry Date)</label>
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
+							@if(Auth::user()->group_id != 22)
+							<div class="col-md-2">
+								<label>Ward</label>
+								<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control ">
+									<option value="">--Select--</option>
+									@foreach($wardwise as $wards2)
+		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+									@endforeach
+								</select>
+							</div>
+							@endif
 							<div class="col-md-2">
 								<label>Sub Wards</label>
 								<select class="form-control" name="ward">
@@ -61,16 +72,6 @@
 							</select>
 						</div>
 						<div class="col-md-2">
-							<label>Category:</label>
-							<select id="categ" class="form-control" name="category">
-								<option value="">--Select--</option>
-								<option value="">All</option>
-								@foreach($category as $category)
-								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="col-md-2">
 							<label></label>
 							<input type="submit" value="Fetch" class="form-control btn btn-primary">
 						</div>
@@ -78,11 +79,11 @@
 				</form>
 				
 				<br><br><br><br>
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<div class="col-md-2">
-						Status:
+						<label>Status: </label>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
 							<option value="">--Select--</option>
 							<option value="all">All</option>
@@ -91,29 +92,44 @@
 						</select>
 					</div>
                   </div>
-
-                  <div class="col-md-6">
-					<div class="col-md-2">
-						Ward:
+                  <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
+					
+                  <div class="col-md-3">
+						<div class="col-md-3">
+								<label>Category: </label>
+						</div>
+						<div class="col-md-6">
+								<select id="categ" class="form-control" name="category">
+									<option value="">--Select--</option>
+									<option value="">All</option>
+									@foreach($category as $category)
+									<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+									@endforeach
+								</select>
+						</div>
 					</div>
+					
 					<div class="col-md-4">
-						<select id="myInput" required name="status" onchange="myFunction1()" class="form-control input-sm">
-							<option value="">--Select--</option>
-							@if(Auth::user()->group_id != 22)
-							<option value="all">All</option>
-							@endif
-							@foreach($mainward as $wards2)
-                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
-							@endforeach
-						</select>
+						<div class="col-md-3">
+							<label> Manufacturer: </label>
+						</div>
+					
+						<div class="col-md-6">
+							<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
+									<option value="">--Select--</option>
+									<option value="manu">All</option>
+									<option value="Enquiry On Process">Enquiry On Process</option>
+									<option value="Enquiry Confirmed">Enquiry Confirmed</option>
+								</select>
+						</div>
 					</div>
-                  </div>
-                
+                </form>
+                <br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">SubWard Number</th>
+							<th style="text-align: center">SubWard Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
@@ -182,8 +198,17 @@
 
                                @foreach($wards as $ward)
                                  @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : $enquiry->sub_ward_id) )
+					        @if($enquiry->manu_id == NULL)
                                 <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
-                                    {{$ward->sub_ward_name}}</a></td>
+                                    {{$ward->sub_ward_name}}
+
+                                </a>
+                                @else
+                                 <a href="{{ URL::to('/')}}/manufacturemap?id={{$enquiry->manu_id}} && subwardid={{$enquiry->sub_ward_id}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$ward->sub_ward_name}}
+                                    </a>
+                           @endif
+                            </td>
+
                                   @endif
                                @endforeach
 
@@ -204,9 +229,9 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
-							<td style="text-align: center">{{$enquiry->name}}</td>
+							<td style="text-align: center">{{ $enquiry->user != null ? $enquiry->user->name : '' }}</td>
 							<td style="text-align: center">
-							{{ $enquiry->user != null ? $enquiry->user->name : '' }}
+							{{ $enquiry->conuser != null ? $enquiry->conuser->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
@@ -228,7 +253,7 @@
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
 									<input type="hidden" value="{{$enquiry->id}}" name="eid">
-									<input type="hidden" value="{{$enquiry->manu_id}}" name="id">
+									<input type="hidden" value="{{$enquiry->manu_id}}" name="manu_id">
 
 									
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">

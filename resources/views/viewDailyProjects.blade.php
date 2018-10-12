@@ -7,7 +7,6 @@
                <div class="col-md-4">Project Details</div>
                <div class="pull-center col-md-4"><center>Project Id {{ $details->project_id }}</center></div>
                <div class="pull-right col-md-4">
-                 <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
                 <a href="{{ URL::to('/') }}/ameditProject?projectId={{ $details->project_id }}" class="btn btn-warning btn-sm pull-right">Edit</a>
                </div>
               <br>
@@ -71,8 +70,12 @@
                             <td>{{ $details->interested_in_loan }}</td>
                         </tr>
                           <tr>
-                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
+                            <td><b>Interested In UPVC Doors And Windows ? : </b></td>
                             <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
+                            <td>{{ $details->Kitchen_Cabinates  }}</td>
                         </tr>
                         <tr>
                             <td><b>Interested In Brila Super / Ultratech Products? : </b></td>
@@ -100,7 +103,8 @@
                         </tr>
                         <tr>
                             <td style="width:40%"><b>Sub-ward : </b></td>
-                            <td>{{ $subward }}</td>
+                            <td><a href="{{ URL::to('/')}}/viewsubward?projectid={{$details->project_id}} && subward={{ $subward }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $subward }}
+                                    </a></td>
                         </tr>
                         <tr>
                             @if($details->municipality_approval == "N/A")
@@ -375,7 +379,13 @@
         </div>
     </div>
 </div>
- 
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+</script>
 
       
 @endsection

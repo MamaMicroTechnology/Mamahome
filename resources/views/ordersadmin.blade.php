@@ -6,7 +6,9 @@
     <div class="panel panel-primary" style="overflow-x: scroll;">
         <div class="panel-heading text-center">
             <b style="color:white;font-size:1.4em">Orders</b>
-            <a class="pull-left btn btn-sm btn-danger" href="{{URL::to('/')}}/home" id="btn1" style="color:white;"><b>Back</b></a>
+           <button type="button" onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-3px;" > <i class="fa fa-arrow-circle-left" style="width:30px;"></i></button>
+            <h4 class="pull-left" style="margin-top: -0.5px;">Total Count : {{ $view->total() }}</h4>
+
         </div>
         <div id="myordertable" class="panel-body">
         <form action="orders" method="get">
@@ -47,7 +49,7 @@
                         </td>
                      
                         <td>{{ $rec->orderid }}  </td>
-                        <td>{{$rec->name }}</td>
+                        <td>{{$rec->name}}</td>
                         <td>
                             {{$rec -> main_category}}<br>
                             {{$rec -> sub_category}}<br>
@@ -62,22 +64,22 @@
                             {{ csrf_field() }}
                             <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 
-                    @if($rec->payment_mode != NULL && $rec->payment_mode != "Check" && $rec->order_status == "Order Confirmed")
-                              @if($rec->delivery_boy != NULL)
+                        @if($rec->clear_for_delivery == "Yes")
+                            @if($rec->delivery_boy != NULL)
                                  @foreach($users as $user)
                                    @if($rec->delivery_boy == $user->id)
                                         {{ $user->name }}
                                  @endif
-                             @endforeach
-                                @else
+                                @endforeach
+                            @else
                                 <select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
-                                        <option value="">--Select--</option>
+                                    <option value="">--Select--</option>
                                     @foreach($users as $user)
                                         <option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
-                                    @endif
+                            @endif
                                 </select>
-                                @endif
+                        @endif
                             </form>
                             @endif
                         </td>

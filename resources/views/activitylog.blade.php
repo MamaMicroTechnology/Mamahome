@@ -14,6 +14,7 @@
 				<tr>
 					<?php
 						$newdate = substr($activity->time,0,15);
+						echo $newdate;
 					?>
 					<td>{{ date('d-m-Y h:i A', strtotime($newdate)) }}</td>
 					<td>{{ $activity->employee_id }}</td>
@@ -24,8 +25,6 @@
 		</table>
 	</div>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>

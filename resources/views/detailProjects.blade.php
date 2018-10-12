@@ -12,7 +12,7 @@
 			</table>
 			<table  class="{{ $projects[0]['detailed_mcal'] != null ? 'hidden' : 'table table-responsive' }}" >
 			<tr>
-
+				
 				@if(isset($_GET['id']))
 				<td style="text-align: center;">Do You Require Detail Material Calculation?</td>
 					<td >

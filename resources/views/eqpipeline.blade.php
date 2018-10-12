@@ -95,19 +95,12 @@
 									@endforeach
 								</td>
 								@endif
-								@if($enquiry->manu_id == null)
+								
 								<td style="text-align: center">
-									{{$enquiry -> procurement_name}}
+									{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name :''  }}
+                                   {{ $enquiry->proc != null ? $enquiry->proc->name :''  }}
 								</td>
-								@else
-								<td style="text-align: center">
-									@foreach($manu as $man)
-									@if($enquiry->manu_id == $man->id)
-									{{$man->name}}
-									@endif
-									@endforeach
-								</td>
-								@endif
+								
 								@if($enquiry->manu_id == null)
 
 								<td style="text-align: center" >
@@ -122,19 +115,8 @@
 								<td style="text-align: center">
 									{{ date('d/m/Y', strtotime($enquiry->created_at)) }}
 								</td>
-								@if($enquiry->manu_id == null)
-								<td style="text-align: center">
-									{{$enquiry -> procurement_contact_no }}
-								</td>
-								@else
-								<td style="text-align: center">
-									@foreach($manu as $man)
-									@if($enquiry->manu_id == $man->id)
-									{{$man->contact_no}}
-									@endif
-									@endforeach
-								</td>
-								@endif
+								<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
+							 {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
                                @if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}
@@ -162,6 +144,7 @@
 									{{ date('d-m-Y H:i A', strtotime("$enquiry->updated_at"))}}
 									
 								</td>
+					
 								<td>
 									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 										{{ csrf_field() }}

@@ -59,7 +59,7 @@
 			    <option value="">-----Select----</option>
 				<option value="Genuine">Genuine</option>
 					<option value="Unverified">Unverified</option>
-						<!-- <option value="Fake">Fake</option> -->
+						<!-- <option value="Unupdate">Unupdated</option> -->
 			</select> 
 			</form>
 		</div>
