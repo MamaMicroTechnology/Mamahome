@@ -2868,7 +2868,7 @@ date_default_timezone_set("Asia/Kolkata");
     {
          $id = $request->projectId;
         if($request->projectId){
-            $view = Order::orderby('created_at','DESC')
+            $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                      ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','orders.id as orderid','users.name','users.group_id',
@@ -2878,7 +2878,7 @@ date_default_timezone_set("Asia/Kolkata");
                     ->paginate(25);
 
         }else{
-            $view = Order::orderby('created_at','DESC')
+            $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
@@ -2892,7 +2892,7 @@ date_default_timezone_set("Asia/Kolkata");
          $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
              $catsub = Category::where('id',$ac)->pluck('category_name')->first();
 
-             $view = Order::orderby('created_at','DESC')
+             $view = Order::orderby('orders.created_at','DESC')
                      ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
@@ -2920,7 +2920,7 @@ date_default_timezone_set("Asia/Kolkata");
              }
 
            if($request->projectId){
-               $view = Order::orderby('created_at','DESC')
+               $view = Order::orderby('orders.created_at','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
                        ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                        ->leftjoin('project_details','project_details.project_id','orders.project_id')
@@ -2933,7 +2933,7 @@ date_default_timezone_set("Asia/Kolkata");
                       ->paginate(25);
                   
            }else{
-               $view = Order::orderby('created_at','DESC')
+               $view = Order::orderby('orders.created_at','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
                        ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                        ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
