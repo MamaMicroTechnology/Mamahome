@@ -2500,7 +2500,6 @@ date_default_timezone_set("Asia/Kolkata");
        $gc = $genuine1 + $null1 + $fake1;
          $bal = $totalprojects  -  $update;                                             
 
-
         }
         return view('requirementsroad',['todays'=>$todays,'roads'=>$roads,'projectcount'=>$projectcount,'roadname'=>$roadname,'subwards'=>$subwards,
              'projects'=>$projects,
@@ -2520,6 +2519,7 @@ date_default_timezone_set("Asia/Kolkata");
     public function projectRequirement(Request $request)
     {
 
+       $value = $request->quality;
 
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
@@ -2547,6 +2547,17 @@ date_default_timezone_set("Asia/Kolkata");
             $projectlist1 = ProjectDetails::where('quality',$request->quality)
             ->where('sub_ward_id',$assignment)
                 ->count();
+
+        }
+        if($value = "UnUpdate"){
+            $previous = date('Y-m-d',strtotime('-30 days'));
+            $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+             $projectlist = ProjectDetails::where( 'updated_at', '<=', $previous)
+                    ->where('sub_ward_id',$assignment)
+                    ->where('quality','!=',"Fake")
+                    ->where('project_status','!=',"Closed")
+                    ->paginate(10);
+                 $projectlist1 = count( $projectlist);
         }
          $details = array();
          $ids = array();
@@ -7705,12 +7716,14 @@ public function display(request $request){
             }else{
                 $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
             }
-            $projectid = ProjectDetails::where( 'updated_at', '<=', $previous)
+            $projectid = ProjectDetails::where('quality','!=',"Fake")
+                    ->where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->paginate('20');
 
-            $totalproject =ProjectDetails::where( 'updated_at', '<=', $previous)
+            $totalproject =ProjectDetails::where('quality','!=',"Fake")
+                    ->where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->count();
@@ -7724,11 +7737,15 @@ public function display(request $request){
             }else{
                 $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
             }
-            $projectid = ProjectDetails::where( 'updated_at', '<=', $previous)
+            $projectid = ProjectDetails::where('quality','!=',"Fake")
+                    ->where('project_status','!=',"Closed")
+                    ->where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)
                     ->paginate('20');
 
-            $totalproject =ProjectDetails::where( 'updated_at', '<=', $previous)
+            $totalproject =ProjectDetails::where('quality','!=',"Fake")
+                    ->where('project_status','!=',"Closed")
+                    ->where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)->count();
 
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
@@ -7739,10 +7756,12 @@ public function display(request $request){
 
         $projectid = ProjectDetails::whereIn('project_id',$projectsat)
                         ->where('sub_ward_id',$request->subward)
+                         ->where('quality','!=',"Fake")
                         ->where('updated_at','<=',$previous)
                         ->paginate('20');
         $totalproject = ProjectDetails::where('updated_at','<=',$previous)
                         ->where('sub_ward_id',$request->subward)
+                         ->where('quality','!=',"Fake")
                         ->whereIn('project_id',$projectsat)
                         ->count();
         }
@@ -7751,9 +7770,14 @@ public function display(request $request){
             $to=$request->to;
             $projectid = ProjectDetails::where('updated_at','<=',$previous)
                         ->where('sub_ward_id',$request->subward)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
                         ->paginate('20');
             $totalproject = ProjectDetails::where('updated_at','<=',$previous)
-                            ->where('sub_ward_id',$request->subward)->count();
+                            ->where('sub_ward_id',$request->subward)
+                            ->where('quality','!=',"Fake")
+                            ->where('project_status','!=',"Closed")
+                            ->count();
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }
 
@@ -7773,9 +7797,7 @@ public function display(request $request){
 
      public function Unupdated1(Request $request){
 
-      $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-
-
+        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
         $wards = Ward::orderby('ward_name','ASC')->where('id',$tlward)->get();
         $wardid = $request->subward;
         $previous = date('Y-m-d',strtotime('-30 days'));
@@ -7848,7 +7870,8 @@ public function display(request $request){
                         ->where('sub_ward_id',$request->subward)
                         ->paginate('20');
             $totalproject = ProjectDetails::where('updated_at','<=',$previous)
-                            ->where('sub_ward_id',$request->subward)->count();
+                            ->where('sub_ward_id',$request->subward)
+                            ->count();
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }
 
@@ -8604,5 +8627,33 @@ foreach ($user as $users) {
         ->orderBy('created_at','desc')->
         select('breaktime.*','users.name')->get();
         return view('breaks',['breaks'=>$breaks]);
+    }
+    public function loginhistory(Request $request){
+            $from = $request->from;
+            $to = $request->to;
+            if(Auth::user()->group_id == 1){
+                    $depts = [1,2,3,4,5,6,8];
+            }
+            else{
+                    $depts = [1,2,3,4,6,8];
+            }
+            $userIds = User::whereIn('department_id',$depts)->pluck('id');
+            if($from == $to){
+                $users = fieldLogin::orderBy('field_login.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('field_login.created_at','LIKE',$from."%")
+                            ->leftjoin('users','field_login.user_id','users.id')
+                            ->select('field_login.*','users.name')  
+                            ->get();
+            }else{
+                $users = fieldLogin::orderBy('field_login.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('field_login.created_at','>',$from)
+                            ->where('field_login.created_at','<',$to)
+                            ->leftjoin('users','field_login.user_id','users.id')
+                            ->select('field_login.*','users.name')
+                            ->get();
+            }
+            return view('hrlatelogins',['users'=>$users]);
     }
 }

@@ -2635,6 +2635,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         ->where('remark','!='," ")
         ->distinct()
         ->pluck('logindate')->toarray();
+
+
         return view('hrlatelogins',['users'=>$users,'dates'=>$dates]);
     }
     public function logouttime(Request $request){
@@ -2815,11 +2817,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $address = $request->address; 
        if(Auth::user()->department_id == 4){
                 $start = "07:10 AM";
-                $now = date('h:i A');
+                $now = date('H:i A');
         }
         else{
              $start = "08:00 AM";
-             $now = date('h:i A');
+             $now = date('H:i A');
         }
         if( $now > $start && count($check)== 0 && $remark == null){
             

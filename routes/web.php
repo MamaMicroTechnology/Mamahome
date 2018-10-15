@@ -145,6 +145,7 @@ Route::post('/hrreject','mamaController@hrreject');
 Route::post('/logintime','mamaController@logintime');
 Route::Post('/emplate','mamaController@logintime');
 Route::Post('/earlyremark','mamaController@empreports');
+Route::get('/loginhistory','HomeController@loginhistory');
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');
 Route::post('/teamlogin','mamaController@teamlogin');
