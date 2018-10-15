@@ -1413,11 +1413,11 @@ function myTimer() {
                       <td>{{ $stages->assigndate }} </td>
                   
                 </tr>
-                    </tbody>
-                    </table>
                     <label>Instructions : {{ $stages->instruction}}</label>
                   <br><br>
                       @endif
+                    </tbody>
+                    </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
          <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
         </div>

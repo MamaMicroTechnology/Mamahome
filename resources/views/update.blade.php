@@ -1108,7 +1108,6 @@ function sum(){
        
                           document.getElementById("sub").submit();
                         }
-       
        }
     }
 </script>
