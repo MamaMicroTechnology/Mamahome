@@ -32,7 +32,7 @@
                       @endif
                       @endif
                     </center>
-                    @if($projectdetails->quality == NULL)
+                    <!-- @if($projectdetails->quality == NULL)
                       <form method="POST" action="{{ URL::to('/') }}/markProject">
                         {{ csrf_field() }}
                         <input type="hidden" name="id" value="{{ $id }}">
@@ -41,12 +41,16 @@
                       <label style="font-size: 14px">Quality:</label>
                       {{ $projectdetails->quality }}
                       @endif
-                    </center>
+                    </center> -->
                       
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
                     <div id="first">
                     {{ csrf_field() }}
+                    <input  class="hidden" type="text" name="longitude1" value="{{ old('longitude') }}" id="longitude1">
+                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1">  
+                    <input  class="hidden" type="text" name="address1" value="{{ old('address1') }}" id="address1"> 
+                                   
                            <table class="table">
                            @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                             <tr>
@@ -161,19 +165,31 @@
                                  </td>
                                </tr>
                               <tr>
+                                 <td>Interested In UPVC Doors and Windows? </td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="upvc">Yes</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="upvc">No</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="upvc">None</label>
+                                 </td>
+                               </tr>
+                                <tr>
                                  <td>Interested In Kitchen Cabinates and Wardrobes ?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_Yes" ? 'checked' : '' }} required value="Kitchen_Yes" type="radio" name="dandwinterest">Yes</label>
+                                      <label><input id="dandw1" {{ $projectdetails->Kitchen_Cabinates == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_No" ? 'checked' : '' }} required value="Kitchen_No" type="radio" name="dandwinterest">No</label>
+                                      <label><input id="dandw2" {{ $projectdetails->Kitchen_Cabinates == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_None" ? 'checked' : '' }} required value="Kitchen_None" type="radio" name="dandwinterest">None</label>
+                                      <label><input id="dandw3" {{ $projectdetails->Kitchen_Cabinates == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>Interested In Birla Super / Ultratech Products?</td>
                                  <td>:</td>
                                  <td>
                                     
@@ -239,7 +255,7 @@
           <tr>
             <td> Follow Up Date</td>
             <td>:</td>
-            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" data-provide="datepicker" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" class="form-control" /></td>
 
 
           </tr>
@@ -254,7 +270,7 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-      
+                              
                                <tr>
                                 <?php
                                   $statuses = explode(", ", $projectdetails->project_status);
@@ -1089,8 +1105,9 @@ function sum(){
                     document.getElementById('prPhone').focus();
           }else{
 
+       
                           document.getElementById("sub").submit();
-            }
+                        }
        }
     }
 </script>

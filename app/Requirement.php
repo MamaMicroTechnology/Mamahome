@@ -19,6 +19,9 @@ class Requirement extends Model
     public function user(){
         return $this->belongsTo('App\User','generated_by','id');
     }
+     public function conuser(){
+        return $this->belongsTo('App\User','converted_by','id');
+    }
     public function project(){
         return $this->belongsTo('App\ProjectDetails','project_id','project_id');
     }

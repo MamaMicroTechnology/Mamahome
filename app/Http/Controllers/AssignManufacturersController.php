@@ -16,7 +16,14 @@ use App\Point;
 use App\Requirement;
 use App\ActivityLog;
 use DB;
+use App\ProjectUpdate;
+use App\AssignCategory;
+use App\Category;
+use App\Salesofficer;
 use Illuminate\Support\Collection;
+use Spatie\Activitylog\Models\Activity;
+use  App\Order;
+
 
 class AssignManufacturersController extends Controller
 {
@@ -383,6 +390,478 @@ public function inputdata(Request $request)
 
          return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
     }
+public function addcat(request $request){
+         
+         if($request->cat){
+            $category = implode(",", $request->cat);
+         }
+                
+
+                 $check = new Salesofficer;
+                 $check->category = $category;
+                 $check->user_id = $request->user_id;
+                 $check->location = $request->location;
+                 $check->project_id = $request->project_id;
+                
+
+    if($check->save())
+        {
+            return back()->with('success','category Added Successfully !!!');
+        }
+        else
+        {
+            return back()->with('success','Error Occurred !!!');
+        }
+
+}
+ public function catsalesreports(Request $request)
+       {
+
+            if($request->se == "ALL" && $request->fromdate && !$request->todate){
+                  $date = $request->fromdate;
+                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->get();
+              }
+              elseif($request->se != "ALL" && $request->fromdate && !$request->todate){
+                  $date = $request->fromdate;
+                  $str = ProjectUpdate::where('created_at','LIKE',$request->fromdate.'%')
+                          ->where('user_id',$request->se)
+                          ->get();
+                          
+              }elseif($request->se == "ALL" && $request->fromdate && $request->todate){
+                  $date = $request->fromdate;
+                  $from= $request->fromdate;
+                  $to= $request->todate;
+                  
+                  if($from == $to){
+                       $str = ProjectUpdate::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->get();
+                       
+                  }
+                  else{
+                  $str = ProjectUpdate::where('created_at','>',$request->fromdate)
+                          ->where('created_at','<=',$request->todate)
+                             ->get();
+                            
+                        
+                  }
+              }elseif($request->se != "ALL" && $request->fromdate && $request->todate){
+
+                  $date = $request->fromdate;
+                  $from= $request->fromdate;
+                  $to= $request->todate;
+                  if($from == $to){
+
+                  $str = ProjectUpdate::where('created_at','like',$from.'%')
+                      ->where('created_at','LIKE',$to."%")
+                      ->where('user_id',$request->se)
+                        ->get();
+                            
+                  }
+                  else{
+                  $str = ProjectUpdate::where('created_at','>',$request->fromdate)
+                          ->where('created_at','<=',$request->todate)
+                          ->where('user_id',$request->se)
+                           ->get();
+                  }
+              }else{
+                 $users = User::where('group_id',23)
+                       ->pluck('id');
+                  $cat = AssignCategory::whereIn('user_id',$users)->pluck('cat_id');
+                  $date = date('Y-m-d');
+                  $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->whereIn('cat_id',$cat)->get();
+              }
+                
+           $users = User::where('group_id',23)
+                       ->get();
+             
+          foreach($users as $user){
+
+           $today = date('Y-m-d');
+           $ac = AssignCategory::where('user_id',$user->id)->pluck('cat_id')->first();
+          $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+         $cat = AssignCategory::where('user_id',$user->id)->pluck('cat_id')->first();
+
+               $noOfCalls[$user->id]['calls'] = History::where('called_Time','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
+                                           ->count();
+               $noOfCalls[$user->id]['projectupdate'] = ProjectUpdate::where('created_at','LIKE',$today.'%')
+                                           ->where('user_id',$user->id)
+                                           ->where('cat_id',$cat)
+                                           ->count();
+
+               $noOfCalls[$user->id]['Enquiry'] = Requirement::where('created_at','LIKE',$today.'%')
+                                           ->where('generated_by',$user->id)
+                                           
+                                           ->count();
+
+               $noOfCalls[$user->id]['Genuine'] = ProjectUpdate::where('created_at','LIKE',$today.'%')
+                                                       ->where('user_id',$user->id)
+                                                        ->where('cat_id',$cat)
+                                                        ->where('quality','Genuine')
+                                                       ->count();
+
+           }
+
+           return view('catofficer',['users'=>$users,'str'=>$str,
+                   'noOfCalls'=>$noOfCalls
+
+               ]);
+       }
+        public function manudailyslots(Request $request)
+    {
+
+        $totalListing = array();
+        $totalRMCListing = array();
+        $totalBlocksListing = array();
+        $date = date('Y-m-d');
+        $grpid = [6,7,22,23,17.11];
+        $users = User::whereIn('group_id',$grpid)
+                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
+                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
+
+         $accusers = User::where('department_id','2')->where('group_id','11')
+                    ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
+                    ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
+                    ->select('users.*','sub_wards.sub_ward_name')
+                    ->get();
+
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        $userIds = explode(",", $tl);
+        // total project of list in stl
+        $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
+        ->pluck('id');
+        $tlcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
+        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
+        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
+
+        $tlupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
+
+        // total project of list in tl
+        $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
+        ->pluck('id');
+        $tlacount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->count();
+        $tlAcRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->where('manufacturer_type',"RMC")->count();
+        $tlAcBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tlaccuser)->where('manufacturer_type',"Blocks")->count();
+        $tlaupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$tlaccuser)->count();
 
 
+        $tlUsers = User::whereIn('id',$userIds)
+            ->where('group_id',6)->simplePaginate();
+
+         $tlUsers1 = User::whereIn('id',$userIds)
+           ->where('group_id',11)->simplePaginate();
+        // total project of list in st
+        $list = DB::table('users')->where('group_id',6)->where('department_id','!=',10)->pluck('id');
+        $lcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->count();
+        $lupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$list)->count();
+        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"RMC")->count();
+        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"Blocks")->count();
+            // total prolect of account in st
+        $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
+        $acount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
+        $aRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"RMC")->count();
+        $aBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"Blocks")->count();
+        $aupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
+        $projects = Manufacturer::where('created_at','like',$date.'%')->get();
+        $groupid = [6,11];
+        $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
+        
+        if(Auth::user()->group_id != 22){
+              if($request->list =="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = Manufacturer::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->get();
+                       
+                                    }
+                  else{
+                  $projects = Manufacturer::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->get(); 
+                  }
+              }elseif($request->list !="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = Manufacturer::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->where('listing_engineer_id',$request->list)
+                             ->get();
+                       
+                                      }
+                  else{
+                      $projects = Manufacturer::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->where('listing_engineer_id',$request->list)
+                             ->get();     
+                  }
+              }else{
+
+                   $projects =Manufacturer::where('created_at','like',$date.'%')
+                  ->get();
+              }
+
+
+
+
+          
+}else{
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $ward = Ward::where('id',$tl)->pluck('id')->first();
+            $sub  = Subward::where('ward_id',$ward)->pluck('id');
+
+
+               if($request->list =="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = Manufacturer::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get();
+                       
+                                    }
+                  else{
+                  $projects = Manufacturer::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get(); 
+                      }
+                  }elseif($request->list !="ALL" && $request->fromdate && $request->todate){
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+                       $projects = Manufacturer::where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")
+                             ->where('listing_engineer_id',$request->list)
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get();
+                       
+                                      }
+                  else{
+                      $projects = Manufacturer::where('created_at','>',$request->fromdate)
+                              ->where('created_at','<=',$request->todate)
+                             ->where('listing_engineer_id',$request->list)
+                             ->whereIn('sub_ward_id',$sub)
+                             ->get();     
+                  }
+                 }
+                 else{
+
+                     $projects =Manufacturer::whereIn('sub_ward_id',$sub)
+                        ->where('created_at','like',$date.'%')->get();
+                 }
+              }
+   foreach($users as $user){
+                $totalListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
+            }
+            foreach($tlUsers as $user){
+                $totalListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
+            }
+            foreach($accusers as $user){
+                $totalaccountlist[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalAccountRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalAccountBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
+            }
+             foreach($tlUsers1 as $user){
+                $totalaccountlist[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+                $totalAccountRMCListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"RMC")
+                                                ->count();
+                $totalAccountBlocksListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->where('manufacturer_type',"Blocks")
+                                                ->count();
+            }
+            foreach($users as $user){
+                $totalupdates[$user->id] = Manufacturer::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
+            foreach($tlUsers as $user){
+                $totalupdates[$user->id] = Manufacturer::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
+
+            foreach($accusers as $user){
+                $totalaccupdates[$user->id] = Manufacturer::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
+            foreach($tlUsers1 as $user){
+                $totalaccupdates[$user->id] = Manufacturer::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
+            
+        $projcount = count($projects); 
+        return view('manudailyslot', ['date' => $date,'users'=>$users,'accusers'=>$accusers, 'projcount' => $projcount, 'projects' => $projects, 'le' => $le, 'totalListing'=>$totalListing,'totalaccountlist'=>$totalaccountlist,'tlUsers'=>$tlUsers,'tlUsers1'=>$tlUsers1,'totalupdates'=>$totalupdates,'totalaccupdates'=>$totalaccupdates,'lcount'=>$lcount,'acount'=>$acount,'lupcount'=>$lupcount,'aupcount'=>$aupcount,'tlcount'=>$tlcount,'tlupcount'=>$tlupcount,'tlacount'=>$tlacount,'tlaupcount'=>$tlaupcount,
+            'totalRMCListing'=>$totalRMCListing,'totalBlocksListing'=>$totalBlocksListing,'lRMCCount'=>$lRMCcount,'lBlocksCount'=>$lBlocksCount,'aRMCcount'=>$aRMCcount,'aBlocksCount'=>$aBlocksCount,
+            'totalAccountRMCListing'=>$totalAccountRMCListing,'totalAccountBlocksListing'=>$totalAccountBlocksListing,'tlRMCcount'=>$tlRMCcount,'tlBlocksCount'=>$tlBlocksCount,
+            'tlAcBlocksCount'=>$tlAcBlocksCount,'tlAcRMCcount'=>$tlAcRMCcount
+        ]);
+    }
+    public function getreport(request $request){
+
+
+        $groupid = [6,11,7,22,23,17];
+        $users = User::whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
+        $previous = date('Y-m-d',strtotime('-30 days'));
+        $today = date('Y-m-d');
+    
+
+    if($request->user_id !="ALL" && $request->fromdate && $request->todate){
+        $users = User::where('id',$request->user_id)->get();
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+
+        foreach($users as $user){
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count();
+                 
+
+
+                 $total[$user->id]['addproject'] = Activity::where('causer_id',$user->id)->where('description','created')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count(); 
+
+                
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
+
+                
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count(); 
+
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count();
+
+               
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count();
+               
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','like',$from.'%')
+                             ->where('called_Time','LIKE',$to."%")->count();
+            
+                }
+            }else{
+                     foreach($users as $user){
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count();
+                 
+
+
+                 $total[$user->id]['addproject'] = Activity::where('causer_id',$user->id)->where('description','created')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count(); 
+
+                
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+
+                
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count(); 
+
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count();
+
+               
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count();
+               
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>',$from)
+                             ->where('called_Time','<=',$to)->count();
+            
+                }
+ }
+}else{
+        foreach($users as $user){
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
+                 $total[$user->id]['addproject'] = Activity::where('causer_id',$user->id)->where('description','created')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count(); 
+
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous)->count(); 
+
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count(); 
+
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count();
+
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>=', $previous)->count();
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous)->count();
+                }
+
+}
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+
+
+        return view('/monthlyreport',['users' =>$users,'total'=>$total]);
+    }
 }

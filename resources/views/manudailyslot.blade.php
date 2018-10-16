@@ -6,7 +6,7 @@
                 <b style="color:white">Custom Daily Slot</b>
             </div>
             <div class="panel-body">
-                <form action="{{ URL::to('/') }}/dailyslots" method="GET">
+                <form action="{{ URL::to('/') }}/manudailyslot" method="GET">
                      {{ csrf_field() }}
                 <table class="table table-responsive">
                     <tbody >
@@ -208,12 +208,7 @@
     <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>@if( $projcount  == 0)
-                  No Projects Found
-                @else
-                  {{$projcount}}
-                @endif
-                </b></label>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>{{$projcount}}</b></label>
                  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button> 
             </div>
             <div class="panel-body">
@@ -221,12 +216,11 @@
                     <thead>
                         <tr>
                             <th style="text-align:center">Subward Ward Name</th>
-                            <th style="text-align:center">Project-ID</th>
+                            <th style="text-align:center">Manufacturer-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
-                            <th style="text-align:center">Site Engineer Contact Number</th>
+                            <th style="text-align:center">Manager Contact Number</th>
                             <th style="text-align:center">Procurement Contact Number</th>
-                            <th style="text-align:center">Consultant Contact Number</th>
-                            <th style="text-align:center">Contractor Contact Number</th>
+                            <th style="text-align:center">Sales Manager Contact Number</th>
                             <th style="text-align:center">Listing Engineer</th>
                             <!--<th style="text-align:center">Verification</th>-->
                         </tr>
@@ -244,18 +238,19 @@
                                 @endif
                             @endif
                             <?php array_push($users, $project->listing_engineer_id); ?>
-                           <td style="text-align:center" >
-                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->subward != null ? $project->subward->sub_ward_name : '' }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}
+                            <td style="text-align:center" >
+                                <a href="{{ URL::to('/')}}/manufacturemap?id={{ $project->id }} && subwardid={{ $project->sub_ward_id }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}
                              </a></td>
-                            <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
-                            <td style="text-align:center">{{$project->ownerdetails !=null ?$project->ownerdetails->owner_contact_no :''}}</td>
-                            <td style="text-align:center">{{$project->siteengineerdetails != null?$project->siteengineerdetails->site_engineer_contact_no:''}}</td>
-                            <td style="text-align:center">{{$project->procurementdetails !=null?$project->procurementdetails->procurement_contact_no :''}}</td>
-                            <td style="text-align:center">{{$project->consultantdetails !=null ?$project->consultantdetails->consultant_contact_no :''}}</td>
-                            <td style="text-align:center">{{$project->contractordetails !=null ?$project->contractordetails->contractor_contact_no:''}}</td>
-                            <td style="text-align:center" id="listname-{{$project->project_id}}">
+
+                            <td style="text-align:center"><a  href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $project->id }}"  target="_blank">{{ $project->id }}</a></td>
+                            
+                            <td style="text-align:center">{{$project->owner !=null ?$project->owner->contact :''}}</td>
+                            <td style="text-align:center">{{$project->Manager != null?$project->Manager->contact:''}}</td>
+                            <td style="text-align:center">{{$project->proc !=null?$project->proc->contact :''}}</td>
+                            <td style="text-align:center">{{$project->sales !=null ?$project->sales->contact :''}}</td>
+                            <td style="text-align:center" id="listname-{{$project->id}}">
                                 {{$project->user !=null ?$project->user->name:''}}
-                                <input type="hidden" id="hiddeninp-{{$project->project_id}}" value="{{$project->listing_engineer_id}}" />
+                                <input type="hidden" id="hiddeninp-{{$project->id}}" value="{{$project->listing_engineer_id}}" />
                             </td>
                             <!--<td style="text-align:center"><a onclick="" class="btn btn-sm btn-danger">Verify</a></td>-->
                         </tr>

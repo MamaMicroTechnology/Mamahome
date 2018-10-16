@@ -15,6 +15,7 @@
           <th>Status</th>
           <th>Procurement Name</th>
           <th>Procurement Contact No.</th>
+          <th>Material Calculation</th>
           <th>Action</th>
           
 
@@ -27,21 +28,20 @@
               <td>
                 <a target="_none" href="{{ URL::to('/') }}/ameditProject?projectId={{ $project->project_id }}">{{ $project->project_id }}</a>
               </td>
-              <td>
+              <td style="width:40%;">
                 <a href="https://www.google.com/maps/place/{{ $project->siteaddress != null ? $project->siteaddress->address  : ''}}/@{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }},{{ $project->siteaddress != null ? $project->siteaddress->longitude : '' }}">{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}</a>
               </td>
               <td>{{ $project->project_status }}</td>
               <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_name : '' }}</td>
               <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : '' }}</td>
-              <td>{{ $project->room_types }}</td>
               <td>
-              @if($pageName == "Update")
-                <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-success input-sm">Edit</a>
-
-              @else
+                <a style="background-color:#9e9e9e;color:white;" href="{{ URL::to('/') }}/viewProjects?id={{ $project->project_id }} && no={{$project->procurementdetails->procurement_contact_no}}" class="btn btn-success btn-xs" >View</a>
+              </td>
+              <td>
+                <table class="table-group">
                <a href="{{ URL::to('/') }}/edit?projectId={{ $project->project_id }}" class="btn btn-primary btn-xs">Edit</a>
-               <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-success btn-xs" style="margin-top:-42%;margin-left:40%;" >Add Enquiry</a>
-             @endif
+               <a href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" class="btn btn-success btn-xs" style="margin-top:-49%;margin-left:50%;" >Add Enquiry</a>
+             </table>
               </td>
             </tr>
             @endif

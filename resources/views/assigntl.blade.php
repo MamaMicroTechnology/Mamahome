@@ -109,10 +109,9 @@ margin-left: 0;
                 <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
                 </div>
                 <div class="panel-body">
-                    @if (session()->has('success'))
+                   @if (session()->has('success'))
                     <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
                   @endif
-            
                     
     <form method="POST" id="assign" action="{{ url('/tlward')}}" >
     {{ csrf_field() }}

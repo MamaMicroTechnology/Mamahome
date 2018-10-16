@@ -101,7 +101,7 @@
     var status = new Array();
     var newpath = [];
     var snaproad = [];
-    var apiKey = "AIzaSyDUmSbzCrMt37QdavPl00t_Bx9jkL04w0Y";
+    var apiKey = "AIzaSyDCg8dn05JGK3ZSiy3Mx7kEOMeoWMQLYaE";
     @if($subwardMap != "None")
     var latlng = "{{ $subwardMap->lat }}";
     var col = "{{ $subwardMap->color }}";
@@ -378,4 +378,4 @@ function drawSnappedPolyline() {
 
   setInterval(doDate, 1000);
 </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&callback=map"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCg8dn05JGK3ZSiy3Mx7kEOMeoWMQLYaE&callback=map"></script>

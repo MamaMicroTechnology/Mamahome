@@ -67,7 +67,7 @@ class marketingController extends Controller
     }
     public function getHome(){
         $sub = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-        $subcat = Brand::where('category_id',$sub)->pluck('id')->first();
+        $subcat = Brand::where('category_id',$sub)->pluck('id');
         $categories = Category::all();
         if(Auth::user()->group_id != 23){
         $subcategories = SubCategory::leftjoin('brands','category_sub.brand_id','=','brands.id')->select('brands.brand','category_sub.*')->get();
@@ -75,9 +75,9 @@ class marketingController extends Controller
           $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
         }
         else{
-               $subcategories = SubCategory::where('brand_id',$subcat)->select('category_sub.*')->get();
+               $subcategories = SubCategory::whereIn('brand_id',$subcat)->get();
                
-               $brands = brand::where('category_id',$sub)->select('brands.*')->get();
+               $brands = brand::where('category_id',$sub)->get();
         }
            
         
@@ -349,17 +349,22 @@ class marketingController extends Controller
  }
  public function postcat(request $request){
       $check = AssignCategory::where('user_id',$request->user_id)->first();
+      $catid = AssignCategory::where('user_id',$request->user_id)->pluck('cat_id')->first();
+      $cateids = Category::where('id',$catid)->pluck('category_name')->first();
+
           if($check == null){
            $price = new AssignCategory;
            $price->cat_id = $request->cat;
            $price->user_id = $request->user_id;
-          
-          $price->save();
+            $price->instraction = $request->ins;
+            $price->save();
       
             
           }else{
            $check->cat_id = $request->cat;
            $check->user_id = $request->user_id;
+           $check->instraction = $request->ins;
+            $check->prev =  $cateids;
            $check->save();
       
           }

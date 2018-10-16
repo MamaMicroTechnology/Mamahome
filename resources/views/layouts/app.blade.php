@@ -1080,7 +1080,11 @@ function myTimer() {
             <a href="{{ URL::to('/expenditure') }}">&nbsp;&nbsp;&nbsp; - Expenditure</a>
             <a href="{{ URL::to('/five_years_expenditure') }}">&nbsp;&nbsp;&nbsp; - Five Years Expenditure</a>
         </div>
-    <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+         <a href="#" data-toggle="collapse" data-target="#dailyslot">&nbsp;&nbsp;&nbsp;Daily Slots &#x21F2;</a>
+          <div id="dailyslot" class="collapse">
+                <a href="{{ URL::to('/dailyslots') }}">Projects Daily Slots</a>
+                <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
+          </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
@@ -1103,6 +1107,8 @@ function myTimer() {
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
     <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+    <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
+
        <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
         <div id="agent" class="collapse">
             <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
@@ -1129,6 +1135,8 @@ function myTimer() {
         <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
         <a href="{{ URL::to('/') }}/adminlatelogin">&nbsp;&nbsp;&nbsp; - Late Logins</a>
+        <a href="{{ URL::to('/') }}/breaks">&nbsp;&nbsp;&nbsp; - BreakTime</a>
+
         
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
@@ -1176,6 +1184,8 @@ function myTimer() {
     <div id="so" class="collapse">
        <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
+        <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
+
     </div>
        <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
     <div id="add" class="collapse">
@@ -1184,7 +1194,11 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
-            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacturer Details</a>
+    <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+    <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
+    <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
+
+
       
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
@@ -1197,7 +1211,7 @@ function myTimer() {
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
               <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
-              <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone numbers</a>
+              <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone Numbers</a>
               <a href="{{ URL::to('/assign_enquiry') }}">&nbsp;&nbsp;&nbsp; -Assign Enquiry</a>
               <a href="{{ URL::to('/assign_manufacturer') }}">&nbsp;&nbsp;&nbsp; -Assign Manufacturers</a>
         </div>
@@ -1208,7 +1222,11 @@ function myTimer() {
                <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
                <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
                <a href="{{ URL::to('/') }}/projectWithNotes">&nbsp;&nbsp;&nbsp; -Projects With Notes</a>
-              <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
+               <a href="#" data-toggle="collapse" data-target="#dailyslot">&nbsp;&nbsp;&nbsp;Daily Slots &#x21F2;</a>
+              <div id="dailyslot" class="collapse">
+                    <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Projects Daily Slots</a>
+                    <a href="{{ URL::to('/manudailyslot') }}">&nbsp;&nbsp;&nbsp; -Manufacturer Daily Slots</a>
+              </div>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
               <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
@@ -1231,20 +1249,24 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
+     <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
+
+
 </div>  
 
 
 @elseif(Auth::user()->group_id == 17 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+    <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
-    <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
+    <a  id="updates" data-toggle="modal" data-target="#mytask"  >Assigned Task</a>
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
     <a href="{{ URL::to('/') }}/kra">KRA</a>
@@ -1257,7 +1279,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
     <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
-    <a href="{{ URL::to('/') }}/orders" >Orders</a>   
+    <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
@@ -1281,14 +1303,15 @@ function myTimer() {
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
      @if(isset($stages))
        @if($stages->project_ids == null)
-       <a href="#" data-toggle="modal" data-target="#myModal" >Assigned Task</a>
+       <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
        @else
-        <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+
+        <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
        @endif
      @else
-     <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+     <ahref="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
      @endif
-    <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
+    <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
      
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
@@ -1303,7 +1326,8 @@ function myTimer() {
      <a  href="{{ URL::to('/') }}/date_wise_project" >Datewise Projects</a> -->
     <a href="{{ URL::to('/') }}/followupproject" >Follow Up projects</a>
     <a href="{{ URL::to('/') }}/myreport" >My Report</a>
-    <a href="{{ URL::to('/') }}/kra" >KRA</a>           
+    <a href="{{ URL::to('/') }}/kra" >KRA</a>
+
   </div>
    @elseif(Auth::user()->group_id == 14)
    <div id="mySidenav" class="sidenav">
@@ -1337,7 +1361,8 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
         </div> 
          <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
-         <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+         <a href="{{ URL::to('/') }}/holidays">Holiday List</a>
+         <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
        <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
     </div>
         @endif
@@ -1358,12 +1383,12 @@ function myTimer() {
     </div>
 
  <!-- The Modal -->
-  <div class="modal" id="myModal">
+  <div class="modal" id="mytask">
     <div class="modal-dialog">
       <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header"  style="background-color:#f4811f;padding:2px">
+        <div class="modal-header"  style="background-color:#f4811f;padding:2px;color:white;">
           <h4 class="modal-title">Instructions</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
@@ -1371,22 +1396,19 @@ function myTimer() {
         <!-- Modal body -->
         <div class="modal-body">
          @if(isset($stages))
-        <center> <b> Instructions </b> </center>
-          <p>{{ $stages->instruction }}</p>
+          
         @endif
        <table class="table table-hover ">
                 <thead>
-                  <th>Time To Complete</th>
+                
                   <th>Assign Ward</th>
                   <th>Assiged Stage</th>
-                 <th> Assign Date</th>
+                 <th> Assigned Date</th>
                </thead>
                 <tbody>
                  @if(isset($stages))
                 <tr>
-                    <td>
-                      {{ date('h:i:s A', strtotime($stages->time )) }}
-                    </td>
+                    
                     
                    
                     <td>{{ $stages->ward }}</td>
@@ -1395,13 +1417,14 @@ function myTimer() {
                       <td>{{ $stages->assigndate }} </td>
                   
                 </tr>
+                    <label>Instructions : {{ $stages->instruction}}</label>
+                  <br><br>
                       @endif
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
          <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
         </div>
-        
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

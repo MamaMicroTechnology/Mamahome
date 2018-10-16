@@ -29,6 +29,13 @@ Route::get('/ticketchat','HomeController@chat');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
 Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
+Route::post('/addcat','AssignManufacturersController@addcat');
+Route::get('/catofficer','AssignManufacturersController@catsalesreports');
+Route::get('/manudailyslot','AssignManufacturersController@dailyslots');
+Route::get('/monthlyreport','AssignManufacturersController@getreport');
+
+Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
+
 
 
 // chatting
@@ -141,6 +148,7 @@ Route::post('/hrreject','mamaController@hrreject');
 Route::post('/logintime','mamaController@logintime');
 Route::Post('/emplate','mamaController@logintime');
 Route::Post('/earlyremark','mamaController@empreports');
+Route::get('/loginhistory','HomeController@loginhistory');
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');
 Route::post('/teamlogin','mamaController@teamlogin');
@@ -198,6 +206,7 @@ Route::get('/getmaphistory1','mamaController@getaccmap');
 Route::get('/starttimer','HomeController@starttimer');
 Route::post('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
+Route::get('/breaks','HomeController@breaks');
 
 
 
@@ -670,3 +679,9 @@ Route::get('/bulkBusiness','ProjectionController@getBulkBusiness');
 Route::post('/saveBulk','ProjectionController@saveProjection');
 Route::get('/bulkView','ProjectionController@viewBulk');
 Route::get('/fiveyearsWithZones','ProjectionController@fiveyearsWithZones');
+
+// Finance
+Route::get('/financeDashboard','FinanceDashboard@getFinanceDashboard');
+Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
+Route::get('/downloadProformaInvoice','FinanceDashboard@downloadProformaInvoice')->name('downloadProformaInvoice');
+Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
