@@ -4563,82 +4563,6 @@ $upvcInt = explode(",", $upvc);
             'total'=>$total
         ]);
     }
-    // public function followup_projects(Request $request){
-
-
-    //     $today = date('Y-m-d');
-    //     $projects = Requirement::where('follow_up',$today)
-    //     ->leftjoin('users','users.id','=','requirements.generated_by')
-    //                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('owner_details','owner_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('consultant_details','consultant_details.project_id','=','requirements.project_id')
-    //      ->get( );
-    //      $from = $request->from;
-    //     $to = $request->to;
-    //   if($request->from && $request->to){
-    //      $projects = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-    //                 ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-    //                  ->where('requirements.created_at','>',$from)
-    //                  ->where('requirements.created_at','<=',$to)
-    //                  ->where('follow_up', '!=', null)
-    //                 ->leftjoin('owner_details','owner_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('site_engineer_details','site_engineer_details.project_id','=','requirements.project_id')
-    //                 ->leftjoin('consultant_details','consultant_details.project_id','=','requirements.project_id')
-    //                 ->get();
-
-    //   }
-    //     return view('followupproject',['projects'=>$projects]);
-    // }
-
-    // public function followup(Request $request){
-    //     $today = date('Y-m-d');
-    //     $from = $request->from;
-    //     $to = $request->to;
-
-
-
-
-
-    //                   if($request->from && $request->to)
-    //                   {
-    //                         $from = $request->from;
-    //                         $to = $request->to;
-    //                         if($from == $to)
-    //                          {
-    //                                 $projects = ProjectDetails::
-    //                                 where('follow_up_by',Auth::user()->id)
-    //                                 ->where('follow_up_date','>=',$from)
-    //                                 ->where('follow_up_date','<=',$to)
-    //                                  ->paginate(10);
-    //                          }
-    //                          else{
-
-    //                                 $projects = ProjectDetails::
-    //                                 where('follow_up_by',Auth::user()->id)
-    //                                 ->where('follow_up_date','>=',$from)
-    //                                 ->where('follow_up_date','<=',$to)
-    //                                  ->paginate(10);
-
-
-    //                          }
-
-
-    //                   }
-
-    //                   else
-    //                   {
-    //                             $projects = ProjectDetails::where('follow_up_date','LIKE',$today."%")
-    //                             ->where('follow_up_by',Auth::user()->id)
-
-    //                             ->paginate(10);
-
-    //                   }
-
-    // return view('followup',['projects'=>$projects]);
-    // }
     public function followup(Request $request){
         $today = date('Y-m-d');
         $from = $request->from;
@@ -4675,21 +4599,15 @@ $upvcInt = explode(",", $upvc);
     }
     public function confirmedProject(Request $request){
 
-           $check = ProjectDetails::where('project_id',$request->id)->first();
+           $call  = date('Y-m-d');
+           $check = Activity::where('subject_id',$request->id)->where('created_at','like',$call."%")->where('subject_type','App\ProjectDetails')->where('description','updated')->first();
            $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $username = User::where('name',Auth::user()->name)->pluck('name')->first();
-           $call  = date('Y-m-d H:i:s');
 
     DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
-
-
-        if($check->confirmed == null || $check->confirmed == "true" || $check->confirmed == "false"){
-            ProjectDetails::where('project_id',$request->id)->update(['confirmed'=>1]);
-        }else{
-            projectDetails::where('project_id',$request->id)
-
-           ->increment('confirmed');
+       if($check->called == null ){
+            Activity::where('subject_id',$request->id)->where('causer_id',Auth::user()->id)->update(['called'=>1]);
         }
 
         return redirect()->back();
@@ -8512,41 +8430,22 @@ public function viewManufacturer1(Request $request)
     $userid =[6,17,22,23,7];
    
     $date = date('Y-m-d');
-     
+     $userChecks = User::all();
 if($request->list !="ALL" && $request->fromdate && $request->todate){
                       $from =$request->fromdate;
                       $to = $request->todate;
     $user = User::where('id',$request->list)->get();
                       if($from == $to){
-           foreach ($user as $users) {
-        $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->where('causer_id',$request->list)->get();
-                                   }
-    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
-     foreach ($date as $dump) {
-        $dd = date('Y-m-d',strtotime($dump->created_at));
-        $date = date('Y-m-d');
-         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")
-                             ->where('called_Time','like',$from.'%')
-                             ->where('called_Time','LIKE',$to."%")
-                             ->where('user_id',$request->list)->count();
-        
-     }
+                                   foreach ($user as $users) {
+                                $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->where('causer_id',$request->list)->get();
+                                                           }
   }
 else{
     
           foreach ($user as $users) {
         $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$request->fromdate)->where('created_at','<=',$request->todate)->where('causer_id',$request->list)->get();
                                    }
-    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
-     foreach ($date as $dump) {
-        $dd = date('Y-m-d',strtotime($dump->created_at));
-        $date = date('Y-m-d');
-         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")
-                               ->where('called_Time','>',$request->fromdate)
-                              ->where('called_Time','<=',$request->todate)
-                             ->where('user_id',$request->list)->count();
-        
-     }
+    
 }
                  
 
@@ -8559,14 +8458,9 @@ else{
         $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->get();
        
     }
-    $date = Activity::where('description','updated')->where('subject_type','App\ProjectDetails')->get();
-     foreach ($date as $dump) {
-        $dd = date('Y-m-d',strtotime($dump->created_at));
-        $date = date('Y-m-d');
-         $called[$dump->causer_id] = History::where('called_Time','LIKE',$dd."%")->count();
-        
-     }
+    
 }
+    
 
      foreach ($user as $users) {
         $noOfCall[$users->id]['count'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
@@ -8574,13 +8468,15 @@ else{
                                }
 
 foreach ($user as $users) {
-        $noOf[$users->id]['history'] = History::where('user_id',$users->id)->where('called_Time','like',$date.'%')->count();
+        $noOf[$users->id]['history'] = Activity::where('causer_id',$users->id)->where('created_at','like',$date.'%')->where('called',1)->count();
 
     }
 
        $sub = Subward::all();    
-        return view('/newActivityLog',['noOfCalls'=>$noOfCalls,'users'=>$user,'noOfCall'=>$noOfCall,'noOf'=>$noOf,'sub'=>$sub,'called'=>$called]);
+        return view('/newActivityLog',['userChecks'=>$userChecks,'noOfCalls'=>$noOfCalls,'users'=>$user,'noOfCall'=>$noOfCall,'noOf'=>$noOf,'sub'=>$sub]);
   }
+
+
   public function breaks(Request $request){
        $date = date('Y-m');
        if(Auth::user()->group_id == 2){
