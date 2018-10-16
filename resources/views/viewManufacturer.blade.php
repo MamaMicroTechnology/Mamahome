@@ -83,6 +83,7 @@ tr:nth-child(even) {
                          @for($i = 0; $i < count($images); $i++)
                                                
                             <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/Manufacturerimage/{{ $images[$i] }}" ><br>
+                          
                           @endfor
                       </div>
                       <div class="modal-footer">
