@@ -8,10 +8,30 @@
             <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
             </div>
             <div class ="panel-body">
+              @if(Auth::user()->group_id != 2)
+              <form method="GET" action="{{ URL::to('/') }}/breakhistory">
+                {{ csrf_field() }}
+                <div class="col-md-12">
+                            <div class="col-md-3">
+                                <label>From Date</label>
+                                <input required value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
+                            </div>
+                            <div class="col-md-3">
+                                <label>To   Date</label>
+                                <input required value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
+                            </div>
+                           
+                        <div class="col-md-3">
+                            <label></label>
+                            <input type="submit" value="Fetch" class="form-control btn btn-primary">
+                        </div>
+                    </div> 
+                </form>
+                @endif
                        <table class="table table-hover">
                            <thead>
-                               <th>Name</th>
                                <th>Date</th>
+                               <th>Name</th>
                                <th>Start Time</th>
                                <th>Stop Time</th>
                                <th>Time Taken</th>
@@ -19,8 +39,8 @@
                             <tbody>
                             @foreach($breaks as $break)
                                    <tr>
-                                    <td>{{ $break->name}}</td>
                                     <td>{{ date('d-m-Y',strtotime($break->date))}}</td>
+                                    <td>{{ $break->name}}</td>
                                     <td>{{ $break->start_time}}</td>
                                     <td>{{ $break->stop_time}}</td>
 

@@ -6,6 +6,7 @@
             <div class="panel-heading text-center" ><b>Late Logins</b></div>
             <div class ="panel-body"> 
                <form method="GET" action="{{ URL::to('/') }}/loginhistory">
+                {{ csrf_field() }}
                 <div class="col-md-12">
                             <div class="col-md-2">
                                 <label>From Date</label>

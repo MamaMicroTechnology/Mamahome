@@ -2682,7 +2682,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         }
             if( $now < $start && $remark == null){
                 $text = " <form action='earlyremark' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For early Logout..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
-                for($i = 0; $i < 1; $i++){
+               
+                for($i = 0; $i < count($request->report); $i++){
                     $report = new Report;
                     $report->empId = Auth::user()->employeeId;
                     $report->report = $request->report[$i];
@@ -2694,7 +2695,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
             else{
                 if($logout == null){
-                    for($i = 0; $i < 1; $i++){
+                  
+                    for($i = 0; $i < count($request->report); $i++){
                         $report = new Report;
                         $report->empId = Auth::user()->employeeId;
                         $report->report = $request->report[$i];

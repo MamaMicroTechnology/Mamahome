@@ -7,6 +7,7 @@
             <div class ="panel-body">
               <form method="GET" action="{{ URL::to('/') }}/loginhistory">
                 <div class="col-md-12">
+                    {{ csrf_field() }}
                             <div class="col-md-2">
                                 <label>From Date</label>
                                 <input required value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
