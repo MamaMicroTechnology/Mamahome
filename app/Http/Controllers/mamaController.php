@@ -1013,7 +1013,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         ]);
         $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $first = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->first();
-            $assigned = subWard::where('id',$ward)->pluck('sub_ward_name')->first();
+        $assigned = subWard::where('id',$ward)->pluck('sub_ward_name')->first();
         if($assigned != null){
         if($first->firstUpdateTime == NULL){
             loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([

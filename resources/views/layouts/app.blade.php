@@ -1195,6 +1195,10 @@ function myTimer() {
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+    <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
+    <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
+
+
       
 <!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
