@@ -34,6 +34,7 @@ Route::get('/catofficer','AssignManufacturersController@catsalesreports');
 Route::get('/manudailyslot','AssignManufacturersController@dailyslots');
 Route::get('/monthlyreport','AssignManufacturersController@getreport');
 
+Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 
 
 
@@ -147,6 +148,7 @@ Route::post('/hrreject','mamaController@hrreject');
 Route::post('/logintime','mamaController@logintime');
 Route::Post('/emplate','mamaController@logintime');
 Route::Post('/earlyremark','mamaController@empreports');
+Route::get('/loginhistory','HomeController@loginhistory');
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');
 Route::post('/teamlogin','mamaController@teamlogin');

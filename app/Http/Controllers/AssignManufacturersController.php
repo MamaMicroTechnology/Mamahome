@@ -508,15 +508,15 @@ public function addcat(request $request){
 
                ]);
        }
-        public function dailyslots(Request $request)
+        public function manudailyslots(Request $request)
     {
-
 
         $totalListing = array();
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
-        $users = User::where('department_id','1')->where('group_id','6')
+        $grpid = [6,7,22,23,17.11];
+        $users = User::whereIn('group_id',$grpid)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')

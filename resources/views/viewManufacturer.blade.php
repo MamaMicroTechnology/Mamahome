@@ -40,6 +40,7 @@ tr:nth-child(even) {
             <th>SubWard Name</th>
             <th>listing Engineer Name</th> 
             <th>Plant Name</th>
+            <th>Phone No.</th>
             <th>Manufacturer Image</th>
             <th>Cement Requirement</th>
             <th>Sand Requirement</th>
@@ -62,6 +63,7 @@ tr:nth-child(even) {
                
                 <td> {{$manufacturer->user != null ? $manufacturer->user->name :'' }}</td>
                 <td>{{ $manufacturer->plant_name }}</td>
+                 <td> {{$manufacturer->proc != null ? $manufacturer->proc->contact : $manufacturer->contact_no  }}</td>
                <!--  <td> <a href="#" class="btn btn-primary btn-xm" >View Image</a></td> -->
                 <td>
                   <button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $manufacturer->id }}">View Image</button>

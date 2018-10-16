@@ -103,16 +103,15 @@
                         <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center">Updated Location</th>
-                        <th style="text-align:center">Project Location</th>
-
-                       
+                        <th style="text-align:center">Project Location</th> 
                     </tr>
                 </thead>
                 <tbody id="mainPanel">
                         @foreach($str as $sales)
                        <tr>
                         <td style="text-align:center">
-                        <a href="{{ URL::to('/')}}/viewsubward" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $sales->subward != null ? $sales->subward->sub_ward_name :''  }}
+                       <a href="{{ URL::to('/')}}/viewsubward?projectid={{$sales->project_id}} && subward={{ $sales->subward->sub_ward_name }}" target="_blank">
+                                {{ $sales->subward != null ? $sales->subward->sub_ward_name :''  }}
                                     </a></td>
                         <td style="text-align:center">
                         	<a href="{{URL::to('/')}}/showThisProject?id={{$sales->project_id}}">{{$sales->project_id}}</a>

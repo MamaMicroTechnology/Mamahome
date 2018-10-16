@@ -46,9 +46,9 @@
                              <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Instructions</button></td>
                          
                           </tr>
-@endforeach
-@else
- @foreach($tlUsers as $user)  
+            @endforeach
+            @else
+             @foreach($tlUsers as $user)  
                             <td>{{$user->name}}</td>
                             <td>{{ $user->group_name }}</td>
                            
@@ -61,8 +61,8 @@
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
                          <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Instructions</button></td>
                           </tr>
-@endforeach
- @endif  
+              @endforeach
+               @endif  
  </table>
     
     @foreach($users as $user)
@@ -75,7 +75,6 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title"> Instructions</h4>
         </div>
-        
         <!-- Modal body -->
         <div class="modal-body">
          <form action="{{ URL::to('/') }}/projectstore1" id="time" enctype="multipart/form-data" method="post" >
@@ -121,7 +120,7 @@
         <div id="first">
         <div id="wards">  
         <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;margin-left: 20px;">Choose Ward</h4>
-        <div class="row">
+        <div class="row" style="margin-left: 8px;">
         @foreach($wards as $ward)
         <div class="col-sm-2">
             <input id="wardid{{ $ward->id }}" onclick="hide('{{ $ward->id }}')"  style=" padding: 5px;" data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
@@ -134,10 +133,10 @@
          @foreach($wardsAndSub as $ward)
           <div id="subwards{{ $ward['ward'] }}" class="hidden">
            <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;margin-left:20px;">Choose Subward</h4>
-            <label style="margin-right: 100px;" class="checkbox-inline"><input id="check{{ $ward['ward'] }}" type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward['ward']}}');">All</label>
+            <label style="margin-left: 23px;" class="checkbox-inline"><input id="check{{ $ward['ward'] }}" type="checkbox" name="sub" value="submit" onclick="checkall('{{$ward['ward']}}');">All</label>
           <br><br>    
           <div id="ward{{ $ward['ward'] }}">
-          <div class="row"> 
+          <div class="row" style="margin-left: 8px;"> 
               @foreach($ward['subWards'] as $subward)
               <div class="col-sm-2" >
                     <label class="checkbox-inline">

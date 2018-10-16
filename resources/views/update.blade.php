@@ -165,7 +165,7 @@
                                  </td>
                                </tr>
                               <tr>
-                                 <td>Interested In UPVC doors and windows? </td>
+                                 <td>Interested In UPVC Doors and Windows? </td>
                                  <td>:</td>
                                  <td>
                                     
@@ -189,7 +189,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>Interested In Birla Super / Ultratech Products?</td>
                                  <td>:</td>
                                  <td>
                                     
@@ -1105,71 +1105,9 @@ function sum(){
                     document.getElementById('prPhone').focus();
           }else{
 
-        console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayCurrentLocationforupdate,
-        displayError,
-        { 
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-      //console.log("Exiting getLocation()");
-  }
-    
-    function displayCurrentLocationforupdate(position){
-      //console.log("Entering displayCurrentLocation");
-
-      var latitude1  = position.coords.latitude;
-      var longitude1 = position.coords.longitude;
-      document.getElementById("longitude1").value = longitude1;
-      document.getElementById("latitude1").value  = latitude1;
-      //console.log("Latitude " + latitude +" Longitude " + longitude);
-
-      getAddressFromLatLangforupdate(latitude1,longitude1);
-      //console.log("Exiting displayCurrentLocation");
-    }
-   
-  function  displayError(error){
-    console.log("Entering ConsultantLocator.displayError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLangforupdate(lat,lng){
-    //console.log("Entering getAddressFromLatLang()");
-   
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
-        // console.log(results);
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        // console.log(results);
-        document.getElementById("address1").value = results[0].formatted_address;
-        var x = results[0].formatted_address;
        
                           document.getElementById("sub").submit();
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-            }
+                        }
        }
     }
 </script>
