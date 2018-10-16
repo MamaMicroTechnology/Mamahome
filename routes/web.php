@@ -32,7 +32,7 @@ Route::get('/menqedit','AssignManufacturersController@editEnq');
 Route::post('/addcat','AssignManufacturersController@addcat');
 Route::get('/catofficer','AssignManufacturersController@catsalesreports');
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
-
+Route::get('/getprojectsize','HomeController@getProjectSize');
 
 
 // chatting
@@ -328,7 +328,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/humanresources/{dept}','HomeController@getHRDept');
     Route::get('/finance','HomeController@getFinance');
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
-    Route::get('/getprojectsize','HomeController@getProjectSize');
+    
     Route::get('/ampricing','HomeController@ampricing');
     Route::get('/setprice','HomeController@setprice');
 
