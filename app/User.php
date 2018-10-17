@@ -39,6 +39,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Group');
     }
+    
     public function requirement(){
         return $this->hasOne('App\Requirement','id','generated_by');
     }
