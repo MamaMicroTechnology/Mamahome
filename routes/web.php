@@ -17,6 +17,10 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/photos', 'PhotosController@store')
+    ->middleware('optimizeImages');
+Route::get('/photos', 'PhotosController@get')
+    ->middleware('optimizeImages');
 Route::get('/getid','HomeController@getid');
 
 Route::get('/simple','HomeController@simple');

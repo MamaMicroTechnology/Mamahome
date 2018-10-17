@@ -180,6 +180,7 @@ return [
         Barryvdh\Cors\ServiceProvider::class,
         RenatoMarinho\LaravelPageSpeed\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Spatie\LaravelImageOptimizer\ImageOptimizerServiceProvider::class,
      
     ],
 
@@ -229,6 +230,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'ImageOptimizer' => Spatie\LaravelImageOptimizer\ImageOptimizerFacade::class,
 
     ],
 
