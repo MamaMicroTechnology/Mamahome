@@ -70,7 +70,7 @@ input:checked + .slider:before {
 }
 </style>
 <div class="panel panel-default" style="border-color:green">
-<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees on {{ $dept }} Team
+<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white"> {{ $grp }}
  <a class="pull-right btn btn-xs btn-danger" href="{{url()->previous()}}">Back</a>
 
 </div>
@@ -80,7 +80,7 @@ input:checked + .slider:before {
 <div class="col-md-12">  
   <div class="col-md-6">
    
-    @if($dept == "IT")
+    @if($grp == "IT")
     <img src="http://mamahome360.com/public/android-icon-36x36.png" >
      MAMA HOME PVT LTD &nbsp;&nbsp;&nbsp;
     <span class="dot"></span>&nbsp;&nbsp;{{ $count }} employees
@@ -157,4 +157,4 @@ input:checked + .slider:before {
     }
 }
 </script>
-<!-- src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" -->
+

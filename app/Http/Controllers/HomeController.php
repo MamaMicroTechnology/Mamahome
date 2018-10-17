@@ -8552,4 +8552,32 @@ foreach ($user as $users) {
             }
             return view('hrlatelogins',['users'=>$users]);
     }
+    public function breakhistory(Request $request){
+            $from = $request->from;
+            $to = $request->to;
+            if(Auth::user()->group_id == 1){
+                    $depts = [1,2,3,4,5,6,8];
+            }
+            else{
+                    $depts = [1,2,3,4,6,8];
+            }
+            $userIds = User::whereIn('department_id',$depts)->pluck('id');
+            if($from == $to){
+                $breaks = BreakTime::orderBy('breaktime.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('breaktime.created_at','LIKE',$from."%")
+                            ->leftjoin('users','breaktime.user_id','users.id')
+                            ->select('breaktime.*','users.name')  
+                            ->get();
+            }else{
+                $breaks = BreakTime::orderBy('breaktime.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('breaktime.created_at','>',$from)
+                            ->where('breaktime.created_at','<',$to)
+                            ->leftjoin('users','breaktime.user_id','users.id')
+                            ->select('breaktime.*','users.name')
+                            ->get();
+            }
+            return view('breaks',['breaks'=>$breaks]);
+    }
 }
