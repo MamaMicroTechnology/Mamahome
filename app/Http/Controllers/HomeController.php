@@ -4539,10 +4539,7 @@ $upvcInt = explode(",", $upvc);
             $today = date('Y-m');
         }
         $user = User::where('employeeId',$id)->first();
-        // $attendances = attendance::where('empId',$id)
-        //             ->where('created_at','LIKE',$today.'%')
-        //             ->orderby('date')
-        //             ->get();   
+          
         $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
@@ -4559,9 +4556,10 @@ $upvcInt = explode(",", $upvc);
         return redirect('/leDashboard');
     }
     public function viewDailyReport($uId, $date){
+
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
-        $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
+        $attendance = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
         $points_earned_so_far = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->get();

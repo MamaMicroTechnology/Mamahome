@@ -10,7 +10,8 @@
 @endforeach
 @foreach($attendances as $attendance)
 <?php
-    $text = "In: ".$attendance->logintime."<br>Out: ".$attendance->logout."<br><a href=\"".$attendance->logindate."\">Report</a>";
+    $text = "In: ".$attendance->logintime."<br>Out: ".$attendance->logout."<br><a href=\"viewdailyreport?date=".$attendance->logindate."&&userId=".$attendance->employeeId."\">Report</a>";
+    array_push($logintimes,$text);
     array_push($logintimes,$text);
 ?>
 @endforeach
