@@ -43,8 +43,9 @@
 <table  class="table" border="1">
                 <thead>
                     <tr>
-                        <th>SLNO</th>
+                        
                         <th>Employee Name</th>
+                        <th>Date Of Join</th>
                         <th>Added Projects</th>
                         <th>Updated Projects</th>
                         <th>Eqnueries</th>
@@ -58,8 +59,8 @@
           <?php $i=1; ?>
                   @foreach($users as $user)
                 <tbody>
-                   <td>{{$i++}}</td>
                    <td>{{$user->name}}</td>
+                   <td>{{$user->created_at->format('d-m-y')}}</td>
                    <td>{{ $total[$user->id]['addproject']}}</td>
                    <td>{{$total[$user->id]['updateproject'] }}</td>
                    <td>{{$total[$user->id]['addenquiry'] }}</td>

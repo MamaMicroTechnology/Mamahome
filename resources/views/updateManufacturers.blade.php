@@ -34,6 +34,8 @@
                                             <option {{ $manufacturer->manufacturer_type == "Blocks" ? 'selected' : ''}} value="Blocks">Blocks</option>
                                              <option {{ $manufacturer->manufacturer_type == "M-SAND" ? 'selected' : ''}} value="M-SAND">M-SAND</option>
                                             <option {{ $manufacturer->manufacturer_type == "AGGREGATES" ? 'selected' : ''}} value="AGGREGATES">AGGREGATES</option>
+                                            <option {{ $manufacturer->manufacturer_type == "Fabricators" ? 'selected' : ''}}  value="Fabricators">Fabricators</option>
+
                                             <!-- <option value="Crusher">Crusher</option> -->
                                         </select>
                                     </td>
@@ -61,6 +63,7 @@
                                     <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "BLOCKS" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
                                   <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "M-SAND" ? 'checked' : ''}}  id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
                                       <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "AGGREGATES" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                      <label required class="checkbox-inline"><input  {{ $manufacturer->manufacturer_type == "Fabricators" ? 'checked' : ''}} id="constructionType2" name="production[]" type="checkbox" value="Fabricators">Fabricators</label> 
                                     </td>
                                 </tr>
                                <!--  <tr>
@@ -210,6 +213,58 @@
                                             </div>
                                     </td>
                                 </tr>
+
+
+
+                           <tr id="fab1" class="{{ $manufacturer->manufacturer_type == 'Fabricators' ? '': 'hidden' }}">
+                                    <td style="background-color:#cfedaa; text-align:center" colspan=3> Fabricators Manufactured</td>
+                                </tr>
+                                <tr id="fab2" class="{{ $manufacturer->manufacturer_type == 'Fabricators' ? '': 'hidden' }}">
+                                    <td colspan=3>
+                                        <table class="table table-hover" id="fabc">
+                                            <tr>
+                                                <th style="text-align:center"> Fabricators Type</th>
+                                                <!-- <th style="text-align:center">Grade Size</th> -->
+                                                <th style="text-align:center">Price</th>
+                                            </tr>
+                                              @foreach($manufacturer->manufacturerProduct as $products)
+                                            <input type="hidden" name="product_id3[]" value="{{ $products->id }}">
+
+                                            <tr>
+                                                <td>
+                                                    <select title='Please Select Appropriate Type' name="fab[]" id="gt" class="form-control">
+                                                        <option value="">--Select--</option>
+                                                        <option {{ $products->block_type == "metal" ? 'selected' : '' }} value="metal">Metal</option>
+                                                        <option {{ $products->block_type == "wood" ? 'selected' : '' }} value="wood">Wood</option>
+                                                        <option {{ $products->block_type == "steel" ? 'selected' : '' }} value="upvc">UPVC</option>
+                                                      
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input min="1" type="number" name="fabprice[]" id="gp" placeholder="Price" class="form-control" value="{{ $products->price }}">
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                            
+                                        </table>
+                                            <div class="btn-group">
+                                                <button type="button" onclick="addfab()" class="btn btn-warning btn-sm">
+                                                    &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                </button>
+                                                <button type="button" onclick="fab()" class="btn btn-danger btn-sm">
+                                                    &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                </button>
+                                            </div>
+                                    </td>
+                                </tr>
+
+
+
+
+
+
+
+
                                 <tr id="grades1" class="{{ $manufacturer->manufacturer_type == 'RMC' ? '': 'hidden' }}">
                                     <td style="background-color:#cfedaa; text-align:center" colspan=3>Grades Manufactured</td>
                                 </tr>
@@ -537,6 +592,25 @@ function openCity(evt, cityName) {
                     document.getElementById("types1").deleteRow(-1);
                 }
             }
+            function addfab() {
+                var table = document.getElementById("fabc");
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='fab[]' id='' class='form-control'>" +
+                                "<option value=''>--Select--</option>" +
+                                "<option value='metal'>Metal</option>" +
+                                "<option value='wood'>Wood</option>" +
+                                "<option value='steel'>Steel</option> </select>";
+                cell2.innerHTML = "<input type='number' min='1' required name='fabprice[]' id='' placeholder='Price' class='form-control'>";
+            }
+            function fab() {
+                var table = document.getElementById("types1");
+                if(table.rows.length >= 3){
+                    document.getElementById("types1").deleteRow(-1);
+                }
+            }
+
 
           function hideordisplay(arg){
               if(arg == "Blocks"){
@@ -547,6 +621,8 @@ function openCity(evt, cityName) {
                 document.getElementById('grades1').className = "hidden";
                 document.getElementById('grades2').className = "hidden";
                 document.getElementById('moq').className = "hidden";
+                document.getElementById('fab1').className = "hidden";
+                document.getElementById('fab2').className = "hidden"
               }else if(arg=="RMC"){
                
                 document.getElementById('blockTypes1').className = "hidden";
@@ -555,6 +631,15 @@ function openCity(evt, cityName) {
                 document.getElementById('grades1').className = "";
                 document.getElementById('grades2').className = "";
                 document.getElementById('moq').className = "";
+                document.getElementById('fab1').className = "hidden";
+                document.getElementById('fab2').className = "hidden"
+              }else if(arg=="Fabricators"){
+                    document.getElementById('blockTypes1').className = "hidden";
+                document.getElementById('blockTypes2').className = "hidden";
+                document.getElementById('mfType').className = "hidden";
+                document.getElementById('grades1').className = "hidden";
+                document.getElementById('fab1').className = "";
+                document.getElementById('fab2').className = ""
               }else{
                
                 document.getElementById('blockTypes1').className = "hidden";
@@ -562,6 +647,8 @@ function openCity(evt, cityName) {
                 document.getElementById('mfType').className = "hidden";
                 document.getElementById('grades1').className = "hidden";
                 document.getElementById('grades2').className = "hidden";
+                 document.getElementById('fab1').className = "hidden";
+                document.getElementById('fab2').className = "hidden"
                   // console.log(arg);
               }
           }

@@ -2299,6 +2299,15 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $products->price = $request->gradeprice[$i];
                 $products->save();
             }
+        }elseif($request->type == "Fabricators"){
+            // saving product details
+            for($i = 0; $i < count($request->fab); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$i];
+                $products->price = $request->fabprice[$i];
+                $products->save();
+            }
         }
         return back()->with('Success','Manufacturer Saved Successfully');
     }
@@ -3186,6 +3195,22 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
                 $products->manufacturer_id = $manufacturer->id;
                 $products->block_type = $request->grade[$j];
                 $products->price = $request->gradeprice[$j];
+                $products->save();
+            }
+        }elseif($request->type == "Fabricators"){
+            // saving product details
+            for($i = 0; $i < count($request->product_id3); $i++){
+                $products = ManufacturerProduce::find($request->product_id3[$i]);
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$i];
+                $products->price = $request->fabprice[$i];
+                $products->save();
+            }
+            for($j = $i; $j < count($request->fab); $j++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$j];
+                $products->price = $request->fabprice[$j];
                 $products->save();
             }
         }

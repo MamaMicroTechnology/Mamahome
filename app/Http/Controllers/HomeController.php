@@ -3861,12 +3861,14 @@ $upvcInt = explode(",", $upvc);
         $date = date('Y-m-d');
         $groupid = [6,7,22,23,17,11];
         $users = User::whereIn('group_id',$groupid)
+                    ->where('department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
 
          $accusers = User::where('department_id','2')->where('group_id','11')
+                    ->where('department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
@@ -8030,11 +8032,11 @@ public function display(request $request){
     // }
     public function assigntl(request $request){
 
-          $users = User::where('group_id',22)
+          $users = User::where('group_id',22)->where('department_id','!=',10)
             ->paginate(10);
             $def =[1,2];
             $user1 = User::whereIn('department_id',$def)
-            ->where('users.group_id','!=',2)
+            ->where('users.group_id','!=',2)->where('department_id','!=',10)
             ->get();
             $newUsers = [];
             $user1 = User::leftjoin('departments','departments.id','users.department_id')

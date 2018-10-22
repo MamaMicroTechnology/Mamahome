@@ -517,12 +517,14 @@ public function addcat(request $request){
         $date = date('Y-m-d');
         $grpid = [6,7,22,23,17.11];
         $users = User::whereIn('group_id',$grpid)
+                    ->where('users.department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
 
          $accusers = User::where('department_id','2')->where('group_id','11')
+                    ->where('users.department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
@@ -763,8 +765,7 @@ public function addcat(request $request){
                  
 
 
-                 $total[$user->id]['addproject'] = Activity::where('causer_id',$user->id)->where('description','created')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')
-                             ->where('created_at','LIKE',$to."%")->count(); 
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
 
                 
                 $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
@@ -791,8 +792,7 @@ public function addcat(request $request){
                  
 
 
-                 $total[$user->id]['addproject'] = Activity::where('causer_id',$user->id)->where('description','created')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count(); 
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
 
                 
                 $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
@@ -816,7 +816,7 @@ public function addcat(request $request){
 }else{
         foreach($users as $user){
                  $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
-                 $total[$user->id]['addproject'] = Activity::where('causer_id',$user->id)->where('description','created')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count(); 
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
 
                 $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous)->count(); 
 
@@ -830,38 +830,6 @@ public function addcat(request $request){
 
 }
 
-
-
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         
-
-
-        return view('/monthlyreport',['users' =>$users,'total'=>$total]);
+return view('/monthlyreport',['users' =>$users,'total'=>$total]);
     }
 }

@@ -44,8 +44,7 @@
                                             <option value="Blocks">BLOCKS</option>
                                             <option value="M-Sand">M-SAND</option>
                                             <option value="AGGRGATES">AGGREGATES</option>
-
-                                            <!-- <option value="Crusher">Crusher</option> -->
+                                            <option value="Fabricators">Fabricators</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -57,6 +56,7 @@
                                     <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
                                   <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
                                       <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                        <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="Fabricators">FABRICATORS</label> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -80,20 +80,6 @@
                                     </div>
                                    </td>
                                </tr>
-                               <!-- <tr>
-                                    <td>Owner Name</td>
-                                    <td>:</td>
-                                    <td>
-                                        <input required placeholder="Manufacturer Name" type="text" name="name" id="name" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Contact No</td>
-                                    <td>:</td>
-                                    <td>
-                                        <input required placeholder="Contact No" onblur="checkPhNo(this.value)" type="text" name="phNo" id="phNo" class="form-control">
-                                    </td>
-                                </tr> -->
                 
                                    <tr>
                                    <td>Manufacturer Images</td>
@@ -243,7 +229,49 @@
                                             </div>
                                     </td>
                                 </tr>
-                                <tr id="mfType" class="hidden">
+
+
+
+
+                             <tr id="fab1" class="hidden">
+                                    <td style="background-color:#cfedaa; text-align:center" colspan=3> Fabricators Manufactured</td>
+                                </tr>
+                                <tr id="fab2" class="hidden">
+                                    <td colspan=3>
+                                        <table class="table table-hover" id="fabc">
+                                            <tr>
+                                                <th style="text-align:center"> Fabricators Type</th>
+                                                <!-- <th style="text-align:center">Grade Size</th> -->
+                                                <th style="text-align:center">Price</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <select title='Please Select Appropriate Type' name="fab[]" id="gt" class="form-control">
+                                                        <option value="">--Select--</option>
+                                                        <option value="metal">Metal</option>
+                                                        <option value="wood">Wood</option>
+                                                        <option value="upvc">UPVC</option>
+                                                      
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input min="1" type="number" name="fabprice[]" id="gp" placeholder="Price" class="form-control">
+                                                </td>
+                                            </tr>
+                                            
+                                        </table>
+                                            <div class="btn-group">
+                                                <button type="button" onclick="addfab()" class="btn btn-warning btn-sm">
+                                                    &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                </button>
+                                                <button type="button" onclick="fab()" class="btn btn-danger btn-sm">
+                                                    &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                </button>
+                                            </div>
+                                    </td>
+                                </tr>
+
+ <tr id="mfType" class="hidden">
                                     <td>Blocks Manufacturing Type</td>
                                     <td>:</td>
                                     <td>
@@ -552,12 +580,37 @@ function openCity(evt, cityName) {
                 }
             }
 
+ function addfab() {
+                var table = document.getElementById("fabc");
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='fab[]' id='' class='form-control'>" +
+                                "<option value=''>--Select--</option>" +
+                                "<option value='metal'>Metal</option>" +
+                                "<option value='wood'>Wood</option>" +
+                                "<option value='steel'>Steel</option> </select>";
+                cell2.innerHTML = "<input type='number' min='1' required name='fabprice[]' id='' placeholder='Price' class='form-control'>";
+            }
+            function fab() {
+                var table = document.getElementById("types1");
+                if(table.rows.length >= 3){
+                    document.getElementById("types1").deleteRow(-1);
+                }
+            }
+
+
+
+
           function hideordisplay(arg){
               if(arg == "Blocks"){
                 document.getElementById('blockTypes1').className = "";
                 document.getElementById('blockTypes2').className = "";
                 document.getElementById('mfType').className = "";
                 document.getElementById('grades1').className = "hidden";
+                document.getElementById('fab1').className = "hidden";
+                document.getElementById('fab2').className = "hidden";
+
                 document.getElementById('grades2').className = "hidden";
                 document.getElementById('moq').className = "hidden";
               }else if(arg=="RMC"){
@@ -566,13 +619,24 @@ function openCity(evt, cityName) {
                 document.getElementById('mfType').className = "hidden";
                 document.getElementById('grades1').className = "";
                 document.getElementById('grades2').className = "";
+                    document.getElementById('fab1').className = "hidden";
+                document.getElementById('fab2').className = "hidden";
                 document.getElementById('moq').className = "";
+              }else if(arg=="Fabricators"){
+                    document.getElementById('blockTypes1').className = "hidden";
+                document.getElementById('blockTypes2').className = "hidden";
+                document.getElementById('mfType').className = "hidden";
+                document.getElementById('grades1').className = "hidden";
+                document.getElementById('fab1').className = "";
+                document.getElementById('fab2').className = ""
               }else{
                 document.getElementById('blockTypes1').className = "hidden";
                 document.getElementById('blockTypes2').className = "hidden";
                 document.getElementById('mfType').className = "hidden";
                 document.getElementById('grades1').className = "hidden";
                 document.getElementById('grades2').className = "hidden";
+                document.getElementById('fab1').className = "hidden";
+                document.getElementById('fab2').className = "hidden"
                   console.log(arg);
               }
           }
