@@ -4541,10 +4541,7 @@ $upvcInt = explode(",", $upvc);
             $today = date('Y-m');
         }
         $user = User::where('employeeId',$id)->first();
-        // $attendances = attendance::where('empId',$id)
-        //             ->where('created_at','LIKE',$today.'%')
-        //             ->orderby('date')
-        //             ->get();   
+          
         $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
@@ -4561,9 +4558,10 @@ $upvcInt = explode(",", $upvc);
         return redirect('/leDashboard');
     }
     public function viewDailyReport($uId, $date){
+
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
-        $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
+        $attendance = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
         $points_earned_so_far = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->get();
@@ -8553,5 +8551,33 @@ foreach ($user as $users) {
                             ->get();
             }
             return view('hrlatelogins',['users'=>$users]);
+    }
+    public function breakhistory(Request $request){
+            $from = $request->from;
+            $to = $request->to;
+            if(Auth::user()->group_id == 1){
+                    $depts = [1,2,3,4,5,6,8];
+            }
+            else{
+                    $depts = [1,2,3,4,6,8];
+            }
+            $userIds = User::whereIn('department_id',$depts)->pluck('id');
+            if($from == $to){
+                $breaks = BreakTime::orderBy('breaktime.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('breaktime.created_at','LIKE',$from."%")
+                            ->leftjoin('users','breaktime.user_id','users.id')
+                            ->select('breaktime.*','users.name')  
+                            ->get();
+            }else{
+                $breaks = BreakTime::orderBy('breaktime.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('breaktime.created_at','>',$from)
+                            ->where('breaktime.created_at','<',$to)
+                            ->leftjoin('users','breaktime.user_id','users.id')
+                            ->select('breaktime.*','users.name')
+                            ->get();
+            }
+            return view('breaks',['breaks'=>$breaks]);
     }
 }

@@ -621,6 +621,7 @@ class mamaController extends Controller
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
             $projectdetails->automation=$request->automation;
+            $projectdetails->Kitchen_cabinets=$request->kcw;
             $projectdetails->brilaultra=$request->brila;
             $projectdetails->res = $btype;
 
@@ -2691,7 +2692,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         }
             if( $now < $start && $remark == null){
                 $text = " <form action='earlyremark' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For early Logout..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
-                for($i = 0; $i < 1; $i++){
+               
+                for($i = 0; $i < count($request->report); $i++){
                     $report = new Report;
                     $report->empId = Auth::user()->employeeId;
                     $report->report = $request->report[$i];
@@ -2703,7 +2705,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
             else{
                 if($logout == null){
-                    for($i = 0; $i < 1; $i++){
+                  
+                    for($i = 0; $i < count($request->report); $i++){
                         $report = new Report;
                         $report->empId = Auth::user()->employeeId;
                         $report->report = $request->report[$i];
@@ -3278,10 +3281,8 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
         ]);
         return response()->json(['message'=>'Approved']);
     }
-    public function breakreport(){
-        $date= date('Y-m-d');
-       $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
-        dd($time);
-    }
+   public function holidays(){
+    return view('holidays');
+   }
 
 }
