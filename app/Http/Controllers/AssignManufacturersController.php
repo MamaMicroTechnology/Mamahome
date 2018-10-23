@@ -21,6 +21,9 @@ use App\AssignCategory;
 use App\Category;
 use App\Salesofficer;
 use Illuminate\Support\Collection;
+use Spatie\Activitylog\Models\Activity;
+use  App\Order;
+
 
 class AssignManufacturersController extends Controller
 {
