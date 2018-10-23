@@ -234,9 +234,9 @@
                                                 <td>
                                                     <select title='Please Select Appropriate Type' name="fab[]" id="gt" class="form-control">
                                                         <option value="">--Select--</option>
-                                                        <option {{ $products->block_type == "metal" ? 'selected' : '' }} value="metal">Metal</option>
-                                                        <option {{ $products->block_type == "wood" ? 'selected' : '' }} value="wood">Wood</option>
-                                                        <option {{ $products->block_type == "steel" ? 'selected' : '' }} value="upvc">UPVC</option>
+                                                        <option {{ $products->Fabricators_type == "metal" ? 'selected' : '' }} value="metal">Metal</option>
+                                                        <option {{ $products->Fabricators_type == "wood" ? 'selected' : '' }} value="wood">Wood</option>
+                                                        <option {{ $products->Fabricators_type == "steel" ? 'selected' : '' }} value="upvc">UPVC</option>
                                                       
                                                     </select>
                                                 </td>
