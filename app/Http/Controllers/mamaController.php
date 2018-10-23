@@ -621,12 +621,12 @@ class mamaController extends Controller
             $projectdetails->contract = $request->contract;
             $projectdetails->budgetType = $type2;
             $projectdetails->automation=$request->automation;
-            $projectdetails->Kitchen_cabinets=$request->kcw;
             $projectdetails->brilaultra=$request->brila;
             $projectdetails->res = $btype;
 
 
           $projectdetails->save();
+
        // $activity = new ActivityLog;
        //  $activity->time = date('Y-m-d H:i A');
        //  $activity->employee_id = Auth::user()->employeeId;
