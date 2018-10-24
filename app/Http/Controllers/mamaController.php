@@ -3078,31 +3078,27 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
            }else{
             $pro = "null";
            }
-              $projectimage = "";
            
-                    if($request->pImage){
-                        if($request->pImage != null){
-                                   $i = 0;
-                                    $projectimage = ""; 
-
-                                    foreach($request->pImage as $pimage){
-                                         $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
-                                         $pimage->move(public_path('Manufacturerimage'),$imageName3);
-                                    
-                                           if($i == 0){
-                                                $projectimage .= $imageName3;
-                                           }
-                                           else{
-                                                $projectimage .= ",".$imageName3;
-                                           }
-                                   $i++;
-                                  }
-                             }
-                         }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
-        $manufacturer->image = $projectimage;
-       
+        if($request->pImage){
+            if($request->pImage != null){
+                       $i = 0;
+                       foreach($request->pImage as $pimage){
+                             $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                             $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                        
+                               if($i == 0){
+                                    $projectimage .= $imageName3;
+                               }
+                               else{
+                                    $projectimage .= ",".$imageName3;
+                               }
+                       $i++;
+                      }
+                 }
+                $manufacturer->image = $projectimage;
+             }
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;

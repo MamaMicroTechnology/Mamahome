@@ -1305,11 +1305,10 @@ function myTimer() {
        @if($stages->project_ids == null)
        <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
        @else
-
         <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
        @endif
      @else
-     <ahref="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+     <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
      @endif
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   

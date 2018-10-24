@@ -49,8 +49,8 @@
                         <th>Added Projects</th>
                         <th>Updated Projects</th>
                         <th>Eqnueries</th>
-                        <th>Confirm Enquiry's</th>
-                        <th>Converted Enquiry's</th>
+                        <th>Confirm Enquiries</th>
+                        <th>Converted Enquiries</th>
                         <th>Confirm Orders</th>
                         <th>No Of Calls</th>
 

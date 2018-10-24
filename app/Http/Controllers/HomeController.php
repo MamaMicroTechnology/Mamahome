@@ -2078,7 +2078,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $fake = ProjectDetails::where('quality','Fake')
                                                     ->where('sub_ward_id',$assignment)
                                                     ->paginate(10);
-$fake1 = ProjectDetails::where('quality','Fake')
+            $fake1 = ProjectDetails::where('quality','Fake')
         ->where('sub_ward_id',$assignment)
         ->count();
 
@@ -2179,7 +2179,9 @@ $fake1 = ProjectDetails::where('quality','Fake')
             $projectlist = ProjectDetails::where('quality',$request->quality)
             ->where('sub_ward_id',$assignment)
             ->get();
+            dd();
         }
+
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
     }
 
@@ -2519,14 +2521,14 @@ date_default_timezone_set("Asia/Kolkata");
     public function projectRequirement(Request $request)
     {
 
-       $value = $request->quality;
 
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         if($request->today){
             $projectlist = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->get();
-        }
+
+        } 
         if($request->today){
             $projectlist1 = ProjectDetails::where('created_at','LIKE',date('Y-m-d')."%")->where('listing_engineer_id',Auth::user()->id)->count();
         }
@@ -2549,7 +2551,7 @@ date_default_timezone_set("Asia/Kolkata");
                 ->count();
 
         }
-        if($value = "UnUpdate"){
+        if($request->quality == "UnUpdate"){
             $previous = date('Y-m-d',strtotime('-30 days'));
             $assignment = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
              $projectlist = ProjectDetails::where( 'updated_at', '<=', $previous)
@@ -2583,7 +2585,7 @@ date_default_timezone_set("Asia/Kolkata");
                 $projectlist1 = count( $projectlist);    
         }
 
-        return view('projectlist',['projectlist'=>$projectlist,'projectlist1'=>$projectlist1,'pageName'=>"Requirements",'log'=>$log,'log1'=>$log1]);
+        return view('projectlist',['projectlist'=>$projectlist,'projectlist1'=>$projectlist1,'pageName'=>"Requirements",'log'=>$log,'log1'=>$log1,'date'=>$date]);
         
     }
     public function getRequirements(Request $request)
@@ -4615,17 +4617,20 @@ $upvcInt = explode(",", $upvc);
     }
     public function confirmedProject(Request $request){
 
+              ProjectDetails::where('project_id',$request->id)->increment('confirmed');
            $call  = date('Y-m-d');
-           $check = Activity::where('subject_id',$request->id)->where('created_at','like',$call."%")->where('subject_type','App\ProjectDetails')->where('description','updated')->first();
+           $check = Activity::where('subject_id',$request->id)->where('created_at','like',$call."%")->where('subject_type','App\ProjectDetails')->where('description','updated')->where('called',"null")->first();
            $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $username = User::where('name',Auth::user()->name)->pluck('name')->first();
+         
 
-    DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
-       if($check->called == null ){
+   $x= DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
+
+       if($check == null ){
+      
             Activity::where('subject_id',$request->id)->where('causer_id',Auth::user()->id)->update(['called'=>1]);
         }
-
         return redirect()->back();
     }
 
