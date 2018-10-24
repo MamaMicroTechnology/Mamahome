@@ -400,8 +400,9 @@ class TokenController extends Controller
             $projectdetails = New ProjectDetails;
            
             $projectdetails->project_name = $request->project_name;
+            $projectdetails->sub_ward_id = $request->sub_ward_id;
             $projectdetails->road_width = $request->road_width;
-            $projectdetails->construction_type =$request->construction_type;
+            $projectdetails->construction_type =$type;
             $projectdetails->interested_in_rmc = $request->interested_in_rmc;
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
