@@ -1,36 +1,77 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Collection;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use App\Mail\registration;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use App\User;
-use Illuminate\Database\Eloquent\Collection;
-use App\Message;
 use App\Department;
-use Validator;
-use App\UserLocation;
-use App\Aregister;
+use App\User;
+use Session;
+use App\Group;
+use App\Builder;
+use App\ProjectUpdate;
+use App\AssignCategory;
+use App\Ward;
+use App\SubWard;
+use App\Country;
+use App\Territory;
+use App\WardAssignment;
 use App\ProjectDetails;
-use App\SiteAddress;  
-use DB;  
+use App\ConsultantDetails;
+use App\ContractorDetails;
+use App\ProcurementDetails;
+use App\OwnerDetails;
+use App\SiteAddress;
+use App\SiteEngineerDetails;
+use App\EmployeeDetails;
+use App\State;
+use App\Zone;
 use App\loginTime;
 use App\Requirement;
-use App\RoomType;
+use Auth;
+use App\attendance;
+use Validator;
+use Hash;
+use App\salesassignment;
+use App\BankDetails;
+use App\AssetInfo;
+use App\Certificate;
 use App\Category;
 use App\SubCategory;
-use App\brand;
-use App\WardAssignment;
-use App\SubWard;
-use App\SubWardMap;
-use App\TrackLocation;
+use App\CategoryPrice;
+use App\ManufacturerDetail;
+use App\RoomType;
+use App\ActivityLog;
+use App\RecordData;
 use App\Order;
+use App\Map;
+use App\brand;
+use App\WardMap;
+use App\Point;
+use App\ZoneMap;
+use App\SubWardMap;
+use App\Asset;
+use App\Check;
+use App\Manufacturer;
+use App\ManufacturerProduce;
+use App\MamahomeAsset;
+use App\ProjectImage;
+use App\Tlwards;
 use App\FieldLogin;
-use App\FakeGPS;
-use App\Reactuser;
-use App\Banner;
-use App\TrackHistory;
+use Carbon\Carbon;
+use App\TrackLocation;
+use App\Report;
+use App\Salescontact_Details;
+use App\Manager_Deatils;
+use App\Mprocurement_Details;
+use App\Mowner_Deatils;
+use Spatie\Activitylog\Models\Activity;
 
 use App\Http\Resources\Message as MessageResource;
 date_default_timezone_set("Asia/Kolkata");
@@ -373,7 +414,12 @@ class TokenController extends Controller
             $projectdetails->budget = $request->budget;
             $projectdetails->image = $png_project;
             $projectdetails->user_id = $request->userid;
-            
+            $projectdetails->automation=$request->automation;
+            $projectdetails->brilaultra=$request->brila;
+            $projectdetails->Kitchen_Cabinates = $request->kitchen_cabinets;
+            $projectdetails->interested_in_premium = $request->premium;
+            $projectdetails->contract = $request->contract;
+            $projectdetails->remarks = $request->remarks;
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
             $projectdetails->project_type = $floor;
@@ -411,6 +457,49 @@ class TokenController extends Controller
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
+            
+            $ownerDetails = New OwnerDetails;
+            $ownerDetails->project_id = $projectdetails->project_id;
+            $ownerDetails->owner_name = $request->oName;
+            $ownerDetails->owner_email = $request->oEmail;
+            $ownerDetails->owner_contact_no = $request->oContact;
+            $ownerDetails->save();
+        
+            $contractorDetails = New ContractorDetails;
+            $contractorDetails->project_id = $projectdetails->project_id;
+            $contractorDetails->contractor_name = $request->cName;
+            $contractorDetails->contractor_email = $request->cEmail;
+            $contractorDetails->contractor_contact_no = $request->cContact;
+            $contractorDetails->save();
+        
+            $consultantDetails = New ConsultantDetails;
+            $consultantDetails->project_id = $projectdetails->project_id;
+            $consultantDetails->consultant_name = $request->coName;
+            $consultantDetails->consultant_email = $request->coEmail;
+            $consultantDetails->consultant_contact_no = $request->coContact;
+            $consultantDetails->save();
+        
+            $siteEngineerDetails = New SiteEngineerDetails;
+            $siteEngineerDetails->project_id = $projectdetails->project_id;
+            $siteEngineerDetails->site_engineer_name = $request->eName;
+            $siteEngineerDetails->site_engineer_email = $request->eEmail;
+            $siteEngineerDetails->site_engineer_contact_no = $request->eContact;
+            $siteEngineerDetails->save();
+        
+            $procurementDetails = New ProcurementDetails;
+            $procurementDetails->project_id = $projectdetails->project_id;
+            $procurementDetails->procurement_name = $request->prName;
+            $procurementDetails->procurement_email = $request->pEmail;
+            $procurementDetails->procurement_contact_no = $request->prPhone;
+            $procurementDetails->save();
+
+            $procurementDetails = New Builder;
+            $procurementDetails->project_id = $projectdetails->project_id;
+            $procurementDetails->builder_name = $request->bName;
+            $procurementDetails->builder_email = $request->bEmail;
+            $procurementDetails->builder_contact_no = $request->bPhone;
+            $procurementDetails->save();
+        
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->project_status]);
         }else{
