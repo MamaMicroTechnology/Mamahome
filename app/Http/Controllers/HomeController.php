@@ -4561,10 +4561,7 @@ $upvcInt = explode(",", $upvc);
 
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
-<<<<<<< HEAD
-=======
         // $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
->>>>>>> chaithra
         $attendance = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
         $points_earned_so_far = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Subtract')->sum('point');
