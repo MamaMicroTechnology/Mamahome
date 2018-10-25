@@ -402,6 +402,8 @@ public function addcat(request $request){
                  $check->user_id = $request->user_id;
                  $check->location = $request->location;
                  $check->project_id = $request->project_id;
+                 $check->remark = $request->remark;
+
                 
 
     if($check->save())
