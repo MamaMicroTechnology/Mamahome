@@ -837,7 +837,7 @@ public function getproject(request $request){
             }
         }
          public function bannerdata(Request $request){
-        $banner = Banner::all();
+           $banner = Banner::get();
          return response()->json(['banner'=>$banner,'message'=>"Banner data"]);
        }
        public function addleProject(Request $request)
