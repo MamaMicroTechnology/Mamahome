@@ -178,7 +178,7 @@ tr:nth-child(even) {
  @endforeach
 </table>
 @foreach($manufacturers as $project)
-<div class="modal fade" id="myModal1{{ $project->project_id }}" role="dialog">
+<div class="modal fade" id="myModal1{{$project->id}}" role="dialog">
     <div class="modal-dialog">
   <!-- Modal content-->
       <div class="modal-content">
@@ -257,12 +257,12 @@ tr:nth-child(even) {
     </div>
 </div>
 </div>
-<script>
+<!-- <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
      background-color: #00acd6 
 
 });
 
-</script>
+</script> -->
 @endsection
