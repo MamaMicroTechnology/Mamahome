@@ -3,7 +3,7 @@
 @section('content')<br><br><br><br>
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2" >
+        <div class="col-md-8 col-md-offset-2  w3-container w3-center w3-animate-bottom" style="animation-duration: 1s;">
             <div class="panel panel-warning">
                 <div class="panel-heading text-center" style="background-color: #00aeefbd; color:white;padding:0.2%;"><b style="font-size:1.4em;">Log On </b></div>
                 
