@@ -47,6 +47,7 @@
                         <th>Employee Name</th>
                         <th>Date Of Join</th>
                         <th>Added Projects</th>
+                        <th>Added manufactures</th>
                         <th>Updated Projects</th>
                         <th>Eqnueries</th>
                         <th>Confirm Enquiries</th>
@@ -62,6 +63,7 @@
                    <td>{{$user->name}}</td>
                    <td>{{$user->created_at->format('d-m-y')}}</td>
                    <td>{{ $total[$user->id]['addproject']}}</td>
+                   <td>{{ $total[$user->id]['addmanu']}}</td>
                    <td>{{$total[$user->id]['updateproject'] }}</td>
                    <td>{{$total[$user->id]['addenquiry'] }}</td>
                    <td>{{$total[$user->id]['confirm'] }}</td>

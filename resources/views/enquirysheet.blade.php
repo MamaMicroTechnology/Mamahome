@@ -43,7 +43,7 @@
 							@if(Auth::user()->group_id != 22)
 							<div class="col-md-2">
 								<label>Ward</label>
-								<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control ">
+								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
 									@foreach($wardwise as $wards2)
 		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
@@ -53,12 +53,12 @@
 							@endif
 							<div class="col-md-2">
 								<label>Sub Wards</label>
-								<select class="form-control" name="ward">
-									<option value="">--Select--</option>
-									<option value="">All</option>
-									@foreach($wards as $ward)
+								<select class="form-control" name="ward" id="subward">
+									<!-- <option value="">--Select--</option>
+									<option value="">All</option> -->
+									<!-- @foreach($wards as $ward)
 									<option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
-									@endforeach
+									@endforeach -->
 								</select>
 							</div>
 						<div class="col-md-2">
@@ -401,5 +401,39 @@ $(document).ready(function(){
      background-color: #00acd6 
 
 });
+</script>
+<script type="text/javascript">
+    function loadsubwards()
+    {
+        var x = document.getElementById('ward');
+        var sel = x.options[x.selectedIndex].value;
+        if(sel)
+        {
+            $.ajax({
+                type: "GET",
+                url: "{{URL::to('/')}}/loadsubwards",
+                data: { ward_id: sel },
+                async: false,
+                success: function(response)
+                {
+                    if(response == 'No Sub Wards Found !!!')
+                    {
+                        document.getElementById('error').innerHTML = '<h4>No Sub Wards Found !!!</h4>';
+                        document.getElementById('error').style,display = 'initial';
+                    }
+                    else
+                    {
+                        var html = "<option value='' disabled selected>---Select---</option>"+"<option value='All'>ALL</option>";
+                        for(var i=0; i< response.length; i++)
+                        {
+                            html += "<option value='"+response[i].id+"'>"+response[i].sub_ward_name+"</option>";
+                        }
+                        document.getElementById('subward').innerHTML = html;
+                    }
+                    
+                }
+            });
+        }
+    }
 </script>
 @endsection

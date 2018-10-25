@@ -59,7 +59,9 @@
                    <h4><b></b></h4>
                      <div id="sub2"></div>
                 </div> -->
-            <center>    <div class="col-md-6 col-md-offset-4">
+                
+            <center>    <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-left">
+                  <h2> INSTRACTIONS</h2>
                       <table border="1" class="table">
                         <thead>
                           <th>Total Projects</th>
@@ -81,7 +83,36 @@
                         
                       </table>
 
-                </div></center>
+                </div>
+
+  <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-bottom">
+           <h2>MONTHLY REPORT</h2>
+                      <table border="1" class="table">
+                        <thead>
+                          <th>Total Projects</th>
+                          <th>Updated Projects</th>
+                          <th>Remaining Projects</th>
+                          <th>Enquiry Added</th>
+                        </thead>
+                        <tbody>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate">{{ $projects}}</a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update1=updateproject1">{{$updateprojects1}}</a></td>
+                          <?php 
+                          $x = $projects - $updateprojects1;
+                          ?>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?unupdate1=unupdate1">{{ $x }}</a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/enquirywise?salesenq1=enq1">{{ $enq1 }}</a></td>
+                        </tbody>
+                        
+                      </table>
+
+                </div>
+
+
+
+
+
+              </center>
                 <script type="text/javascript">
   var category;
 function brands(arg){
