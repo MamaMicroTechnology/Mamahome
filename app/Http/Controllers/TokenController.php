@@ -71,6 +71,7 @@ use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
+use App\Banner;
 use Spatie\Activitylog\Models\Activity;
 
 use App\Http\Resources\Message as MessageResource;
