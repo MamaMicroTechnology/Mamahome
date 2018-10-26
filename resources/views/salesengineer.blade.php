@@ -271,7 +271,7 @@ enctype="multipart/form-data" >
                         </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        </div><br>
                         @endforeach
-                        <textarea class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea><br>
+                        <textarea style="width:80%;" class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea><br>
                      <center>   <button type="submit" class="btn btn-primary btn-sm">submit Data</button></center>
                         </div>  
                         <table class="table table-responsive table-hover">
