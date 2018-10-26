@@ -9,6 +9,9 @@
 @extends($content)
 @section('content')
 <br>
+@if($dates == null)
+    <p style="text-align: center;font-size: 20px;">First You Have To Lock The Target With Monthly Sales Projection.</p>
+@else
 <div class="container">
     <div class="row">
     <div class="col-md-6">
@@ -200,5 +203,5 @@
     @endif
     </div>
     </div>
-</div>
+@endif
 @endsection

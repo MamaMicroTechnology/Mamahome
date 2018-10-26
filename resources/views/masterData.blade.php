@@ -12,11 +12,11 @@
                         <table class="table">
                             <tr>
                                 <td>
-                                    <select onchange="countryCode();" name="name" id="country" class="form-control input-sm">
+                                    <select required onchange="countryCode();" name="name" id="country" class="form-control input-sm">
 
                                     </select>
                                 </td>
-                                <td><input id="code" readonly required type="text" class="form-control input-sm" name="code" placeholder="Code"></td>
+                                <td><input required id="code" readonly required type="text" class="form-control input-sm" name="code" placeholder="Code"></td>
                                 <td><input type="submit" class="btn btn-primary btn-sm" value="Add"></td>
                             </tr>
                         </table>
@@ -61,7 +61,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="zone_name" id="zoneName" class="form-control input-sm">
+                                        <select required name="zone_name" id="zoneName" class="form-control input-sm">
                                             <option value="">--Select--</option>
                                         </select>
                                     </td>
