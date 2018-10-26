@@ -1062,12 +1062,12 @@ public function getproject(request $request){
 public function postSaveManufacturer(Request $request)
     {
         
-
-             if(Auth::user()->group_id == 22){
+            $userGroup = User::where('id',$request->user_id)->first();
+             if($userGroup->group_id == 22){
                   $wardsAssigned = $request->tlward;
              }else{
                 
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $wardsAssigned = WardAssignment::where('user_id',$request->user_d)->where('status','Not Completed')->pluck('subward_id')->first();
              }
 
 
@@ -1094,7 +1094,7 @@ public function postSaveManufacturer(Request $request)
             }
 
         $manufacturer = new Manufacturer;
-        $manufacturer->listing_engineer_id = Auth::user()->id;
+        $manufacturer->listing_engineer_id = $request->user_id;
         $manufacturer->name = $request->name;
         $manufacturer->image = $projectimage;
 
