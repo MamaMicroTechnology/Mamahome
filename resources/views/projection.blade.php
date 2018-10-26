@@ -65,7 +65,7 @@
             <td style="text-align:center">1</td>
         </tr>
         <tr>
-            <td>Fooring</td>
+            <td>Flooring</td>
             <td style="text-align:center">1</td>
         </tr>
         <tr>
