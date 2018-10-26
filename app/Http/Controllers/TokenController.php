@@ -1185,7 +1185,7 @@ public function postSaveManufacturer(Request $request)
                 $products->save();
             }
         }
-        return back()->with('Success','Manufacturer Saved Successfully');
+        return response()->json(['message'=>"Manufacturer Added Successfully"]);
     }
 
 
