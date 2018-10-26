@@ -1059,7 +1059,134 @@ public function getproject(request $request){
  
 
 
+public function postSaveManufacturer(Request $request)
+    {
+        
 
+             if(Auth::user()->group_id == 22){
+                  $wardsAssigned = $request->tlward;
+             }else{
+                
+        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+             }
+
+
+           if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+        $projectimage = "";
+            $i = 0;
+            if($request->pImage){
+                foreach($request->pImage as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                     if($i == 0){
+                        $projectimage .= $imageName3;
+                     }
+                     else{
+                            $projectimage .= ",".$imageName3;
+                     }
+                     $i++;
+                }
+        
+            }
+
+        $manufacturer = new Manufacturer;
+        $manufacturer->listing_engineer_id = Auth::user()->id;
+        $manufacturer->name = $request->name;
+        $manufacturer->image = $projectimage;
+
+        $manufacturer->sub_ward_id = $wardsAssigned;
+        $manufacturer->plant_name = $request->plant_name;
+        $manufacturer->latitude = $request->latitude;
+        $manufacturer->longitude = $request->longitude;
+        $manufacturer->address = $request->address;
+        $manufacturer->contact_no = $request->phNo;
+        $manufacturer->capacity = $request->capacity;
+        $manufacturer->cement_requirement = $request->cement_requirement;
+        $manufacturer->cement_requirement_measurement = $request->cement_required;
+        $manufacturer->prefered_cement_brand = $request->brand;
+        $manufacturer->sand_requirement = $request->sand_requirement;
+        $manufacturer->aggregates_required = $request->aggregate_requirement;
+        $manufacturer->manufacturer_type = $request->type;
+        $manufacturer->type = $request->manufacturing_type;
+        $manufacturer->moq = $request->moq;
+        $manufacturer->total_area = $request->total_area;
+        $manufacturer->remarks = $request->remarks;
+        $manufacturer->production_type = $pro;
+
+
+        $manufacturer->save();
+        $sales = new Salescontact_Details;
+       $sales->manu_id =  $manufacturer->id;
+       $sales->name = $request->coName;
+       $sales->email = $request->coEmail;
+       $sales->contact = $request->coContact;
+       $sales->contact1 = $request->coContact1;
+
+       $sales->save();
+
+       $manager = new Manager_Deatils;
+       $manager->manu_id =  $manufacturer->id;
+       $manager->name = $request->cName;
+       $manager->email = $request->cEmail;
+       $manager->contact = $request->cContact;
+       $manager->contact1 = $request->cContact1;
+
+       $manager->save();
+    
+       $proc = new Mprocurement_Details;
+       $proc->manu_id =  $manufacturer->id;
+       $proc->name = $request->prName;
+       $proc->email = $request->pEmail;
+       $proc->contact = $request->prPhone;
+       $proc->contact1 = $request->prPhone1;
+
+       $proc->save();
+
+        $owner = new Mowner_Deatils;
+       $owner->manu_id =  $manufacturer->id;
+       $owner->name = $request->oName;
+       $owner->email = $request->oEmail;
+       $owner->contact = $request->oContact;
+       $owner->contact1 = $request->oContact1;
+
+       $owner->save();
+
+        
+        if($request->type == "Blocks"){
+            // saving product details
+            for($i = 0; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
+        }elseif($request->type == "RMC"){
+            // saving product details
+            for($i = 0; $i < count($request->grade); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->grade[$i];
+                $products->price = $request->gradeprice[$i];
+                $products->save();
+            }
+        }elseif($request->type == "Fabricators"){
+            // saving product details
+            for($i = 0; $i < count($request->fab); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$i];
+                $products->price = $request->fabprice[$i];
+                $products->save();
+            }
+        }
+        return back()->with('Success','Manufacturer Saved Successfully');
+    }
 
 
 }
