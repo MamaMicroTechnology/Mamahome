@@ -3861,7 +3861,7 @@ $upvcInt = explode(",", $upvc);
                  $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                   $catsub = Category::where('id',$ac)->pluck('category_name')->first(); 
-                  $cate = Salesofficer::where('category',$catsub)->pluck('project_id');
+                  $cate = Salesofficer::where('category','LIKE',"%".$catsub."%")->pluck('project_id');
                    $projects = ProjectDetails::whereIn('project_id',$cate)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
