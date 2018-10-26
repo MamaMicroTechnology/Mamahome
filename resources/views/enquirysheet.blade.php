@@ -71,15 +71,28 @@
 								@endforeach
 							</select>
 						</div>
+
 						<div class="col-md-2">
-							<label></label>
-							<input type="submit" value="Fetch" class="form-control btn btn-primary">
+							<label>Category:</label>
+							<select id="categ" class="form-control" name="category">
+								<option value="">--Select--</option>
+								<option value="">All</option>
+								@foreach($category as $category)
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								@endforeach
+							</select>
+						</div>
+				
+						<div class="col-md-12">
+						<div class="col-md-2 col-md-offset-10">
+							<input style="margin-top: 20px;margin-left:17px;" type="submit" value="Fetch" class="form-control btn btn-primary">
 						</div>
 					</div>
-				</form>
+				</div>
+			</form>
 				
-				<br><br><br><br>
-				<div class="col-md-3">
+				<br><br>
+				<div class="col-md-3" style="margin-top: -20px;">
 					<div class="col-md-2">
 						<label>Status: </label>
 					</div>
@@ -92,24 +105,8 @@
 						</select>
 					</div>
                   </div>
-                  <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
-					
-                  <div class="col-md-3">
-						<div class="col-md-3">
-								<label>Category: </label>
-						</div>
-						<div class="col-md-6">
-								<select id="categ" class="form-control" name="category">
-									<option value="">--Select--</option>
-									<option value="">All</option>
-									@foreach($category as $category)
-									<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-									@endforeach
-								</select>
-						</div>
-					</div>
-					
-					<div class="col-md-4">
+                
+					<div class="col-md-4" style="margin-top: -20px;">
 						<div class="col-md-3">
 							<label> Manufacturer: </label>
 						</div>
@@ -123,8 +120,8 @@
 								</select>
 						</div>
 					</div>
-                </form>
-                <br>
+               
+                <br><br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
