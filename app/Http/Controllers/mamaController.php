@@ -1895,12 +1895,11 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                if($request->manu_id){
-                $subward = SubWard::where('id',$project1->sub_ward_id)->first();
-                        
-                }else{
-
+                if(!$request->manu_id){
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                }else{
+                $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
+              
                 }
 
                 $ward = Ward::where('id',$subward->ward_id)->first();

@@ -44,9 +44,15 @@
                 <tbody>
                     @foreach($view as $rec)
                     <tr id="row-{{$rec->id}}">
+                          @if($rec -> project_id != null)
                         <td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}
                         </a>
                         </td>
+                        @else
+                           <td> <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $rec->manu_id }}">Manufacturer&nbsp;&nbsp;{{$rec -> manu_id}}
+                        </a>
+                        </td>
+                        @endif
                      
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
