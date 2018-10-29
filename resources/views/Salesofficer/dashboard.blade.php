@@ -71,7 +71,7 @@
                           <th>Instructions</th>
                         </thead>
                         <tbody>
-                          <td style="font-size:40px;width:50%;"><a href="{{ URL::to('/') }}/projectsUpdate"><img src="http://www.animatedgif.net/sitemessages/clickhere/shclikhere_e0.gif" style="width:50%;text-align:left;height:30px;">{{ $projects}}</img></a></td>
+                          <td style="font-size:40px;width:50%;"><a href="{{ URL::to('/') }}/projectsUpdate"></a></td>
                           <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update=updateproject">{{$updateprojects}}</a></td>
                           <?php 
                           $x = $projects - $updateprojects;
@@ -95,7 +95,7 @@
                           <th>Enquiry Added</th>
                         </thead>
                         <tbody>
-                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate"><img src="http://www.animatedgif.net/sitemessages/clickhere/shclikhere_e0.gif" style="width:50%; height:30px;">{{ $projects}}</img></a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate"></a></td>
                           <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update1=updateproject1">{{$updateprojects1}}</a></td>
                           <?php 
                           $x = $projects - $updateprojects1;
