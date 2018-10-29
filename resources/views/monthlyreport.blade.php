@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-10 col-md-offset-2">
-    <div class="col-md-10">
+<div class="col-md-12">
+    <div class="col-md-12">
         <div class="panel panel-default" style="border-color:#337ab7">
             <div class="panel-heading text-center" style="background-color:#337ab7">
                 <b style="color:white">Get Report</b>
@@ -34,7 +34,7 @@
   
                   <div class="col-md-2">
                    
-                    <button type="submit"  class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Fecth Report</button> 
+                    <button type="submit"  class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Fetch Report</button> 
                  </div> 
 
             </div>
@@ -43,13 +43,15 @@
 <table  class="table" border="1">
                 <thead>
                     <tr>
-                        <th>SLNO</th>
+                        
                         <th>Employee Name</th>
+                        <th>Date of Joining</th>
                         <th>Added Projects</th>
+                        <th>Added manufactures</th>
                         <th>Updated Projects</th>
-                        <th>Eqnueries</th>
-                        <th>Confirm Enquiries</th>
-                        <th>Converted Enquiries</th>
+                        <th>Enquiries</th> 
+                        <th>Confirm  Enquiries</th>
+                        <th>Converted  Enquiries</th>
                         <th>Confirm Orders</th>
                         <th>No Of Calls</th>
 
@@ -58,9 +60,10 @@
           <?php $i=1; ?>
                   @foreach($users as $user)
                 <tbody>
-                   <td>{{$i++}}</td>
                    <td>{{$user->name}}</td>
+                   <td>{{$user->created_at->format('d-m-y')}}</td>
                    <td>{{ $total[$user->id]['addproject']}}</td>
+                   <td>{{ $total[$user->id]['addmanu']}}</td>
                    <td>{{$total[$user->id]['updateproject'] }}</td>
                    <td>{{$total[$user->id]['addenquiry'] }}</td>
                    <td>{{$total[$user->id]['confirm'] }}</td>

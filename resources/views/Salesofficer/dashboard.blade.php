@@ -8,7 +8,7 @@
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
     </SMALL>
-    <h3>Your Assigned Category  : {{$catname}}
+    <h3 class="w3-container w3-center w3-animate-bottom" style="animation-duration: 2s;">Your Assigned Category  : {{$catname}}
 </center></h2></div><br><br>
 @if(session('Success'))
 <script>
@@ -59,7 +59,9 @@
                    <h4><b></b></h4>
                      <div id="sub2"></div>
                 </div> -->
-            <center>    <div class="col-md-6 col-md-offset-4">
+                
+            <center>    <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-left" style="animation-duration: 2s;">
+                  <h2> INSTRACTIONS</h2>
                       <table border="1" class="table">
                         <thead>
                           <th>Total Projects</th>
@@ -69,7 +71,7 @@
                           <th>Instructions</th>
                         </thead>
                         <tbody>
-                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate">{{ $projects}}</a></td>
+                          <td style="font-size:40px;width:50%;"><a href="{{ URL::to('/') }}/projectsUpdate"><img src="http://www.animatedgif.net/sitemessages/clickhere/shclikhere_e0.gif" style="width:50%;text-align:left;height:30px;">{{ $projects}}</img></a></td>
                           <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update=updateproject">{{$updateprojects}}</a></td>
                           <?php 
                           $x = $projects - $updateprojects;
@@ -81,7 +83,36 @@
                         
                       </table>
 
-                </div></center>
+                </div>
+
+  <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-right" style="animation-duration: 2s;">
+           <h2>MONTHLY REPORT</h2>
+                      <table border="1" class="table">
+                        <thead>
+                          <th>Total Projects</th>
+                          <th>Updated Projects</th>
+                          <th>Remaining Projects</th>
+                          <th>Enquiry Added</th>
+                        </thead>
+                        <tbody>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate"><img src="http://www.animatedgif.net/sitemessages/clickhere/shclikhere_e0.gif" style="width:50%; height:30px;">{{ $projects}}</img></a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update1=updateproject1">{{$updateprojects1}}</a></td>
+                          <?php 
+                          $x = $projects - $updateprojects1;
+                          ?>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?unupdate1=unupdate1">{{ $x }}</a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/enquirywise?salesenq1=enq1">{{ $enq1 }}</a></td>
+                        </tbody>
+                        
+                      </table>
+
+                </div>
+
+
+
+
+
+              </center>
                 <script type="text/javascript">
   var category;
 function brands(arg){

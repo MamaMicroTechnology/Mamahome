@@ -1894,12 +1894,11 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                if($request->manu_id){
-                $subward = SubWard::where('id',$project1->sub_ward_id)->first();
-                        
-                }else{
-
+                if(!$request->manu_id){
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                }else{
+                $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
+              
                 }
 
                 $ward = Ward::where('id',$subward->ward_id)->first();
@@ -2297,6 +2296,15 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $products->manufacturer_id = $manufacturer->id;
                 $products->block_type = $request->grade[$i];
                 $products->price = $request->gradeprice[$i];
+                $products->save();
+            }
+        }elseif($request->type == "Fabricators"){
+            // saving product details
+            for($i = 0; $i < count($request->fab); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$i];
+                $products->price = $request->fabprice[$i];
                 $products->save();
             }
         }
@@ -3069,31 +3077,28 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
            }else{
             $pro = "null";
            }
-              $projectimage = "";
            
-                    if($request->pImage){
-                        if($request->pImage != null){
-                                   $i = 0;
-                                    $projectimage = ""; 
-
-                                    foreach($request->pImage as $pimage){
-                                         $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
-                                         $pimage->move(public_path('Manufacturerimage'),$imageName3);
-                                    
-                                           if($i == 0){
-                                                $projectimage .= $imageName3;
-                                           }
-                                           else{
-                                                $projectimage .= ",".$imageName3;
-                                           }
-                                   $i++;
-                                  }
-                             }
-                         }
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
-        $manufacturer->image = $projectimage;
-       
+          $projectimage = "";
+        if($request->pImage){
+            if($request->pImage != null){
+                       $i = 0;
+                       foreach($request->pImage as $pimage){
+                             $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                             $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                        
+                               if($i == 0){
+                                    $projectimage .= $imageName3;
+                               }
+                               else{
+                                    $projectimage .= ",".$imageName3;
+                               }
+                       $i++;
+                      }
+                 }
+                $manufacturer->image = $projectimage;
+             }
         $manufacturer->sub_ward_id = $wardsAssigned;
         $manufacturer->plant_name = $request->plant_name;
         $manufacturer->latitude = $request->latitude;
@@ -3186,6 +3191,22 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
                 $products->manufacturer_id = $manufacturer->id;
                 $products->block_type = $request->grade[$j];
                 $products->price = $request->gradeprice[$j];
+                $products->save();
+            }
+        }elseif($request->type == "Fabricators"){
+            // saving product details
+            for($i = 0; $i < count($request->product_id3); $i++){
+                $products = ManufacturerProduce::find($request->product_id3[$i]);
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$i];
+                $products->price = $request->fabprice[$i];
+                $products->save();
+            }
+            for($j = $i; $j < count($request->fab); $j++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$j];
+                $products->price = $request->fabprice[$j];
                 $products->save();
             }
         }

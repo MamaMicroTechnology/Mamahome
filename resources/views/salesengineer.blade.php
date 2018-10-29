@@ -269,8 +269,9 @@ enctype="multipart/form-data" >
                          <label>
                        <input type="checkbox" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
                         </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                       </div>
+                       </div><br>
                         @endforeach
+                        <textarea class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea><br>
                      <center>   <button type="submit" class="btn btn-primary btn-sm">submit Data</button></center>
                         </div>  
                         <table class="table table-responsive table-hover">
@@ -280,6 +281,7 @@ enctype="multipart/form-data" >
                                           <th>Date</th>
                                           <th style="width:160px;">Category Added By</th>
                                           <th>Interested Category</th>
+                                          <th>Category Information</th>
                                           
                                        </thead>
                                        <tbody>
@@ -300,6 +302,9 @@ enctype="multipart/form-data" >
                                             </td>
                                             <td>
                                               {{ $call->category }}
+                                            </td>
+                                            <td>
+                                              {{ $call->remark }}
                                             </td>
                                           </tr>
                                       @endif

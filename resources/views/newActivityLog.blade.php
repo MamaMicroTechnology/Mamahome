@@ -95,9 +95,9 @@
                         <tr>
                             <!-- <th style="text-align:center">Activity Id</th>  -->
                             <th style="text-align:center">Name</th> 
-                            <th style="text-align:center">Subward Ward Name</th>
+                            <th style="text-align:center">SubWard Name</th>
                             <th style="text-align:center">Project-ID</th>
-                            <th style="text-align:center">Old Values</th>
+                            <th style="text-align:center">Previous Values </th>
                             <th style="text-align:center">Updated Values</th>
                             <th style="text-align:center">Called Status</th>
                         </tr>
