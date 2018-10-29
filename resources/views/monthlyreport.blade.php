@@ -49,7 +49,7 @@
                         <th>Added Projects</th>
                         <th>Added manufactures</th>
                         <th>Updated Projects</th>
-                        <th>Eqnueries</th>
+                        <th>Enquiries</th> 
                         <th>Confirm  Enquiries</th>
                         <th>Converted  Enquiries</th>
                         <th>Confirm Orders</th>

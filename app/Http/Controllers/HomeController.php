@@ -5902,9 +5902,11 @@ public function myreport()
         $ordersinitiate = Requirement::where('generated_by',Auth::user()->id)
                             ->where('status','Order Initiated')
                             ->count();
-        $ordersConfirmed = Requirement::where('generated_by',Auth::user()->id)
+
+        $ordersConfirmed = Order::where('generated_by',Auth::user()->id)
                             ->where('status','Order Confirmed')
                             ->count();
+           
         $fakeProjects = ProjectDetails::where('quality','Fake')
                                 ->where('call_attended_by',Auth::user()->id)
                                 ->count();

@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
      
-      <table class="table" style="width:100%;"><center><span style="background-color:#9e9e9e;width:60%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">No Of project :&nbsp;&nbsp;{{ $projectlist->total() }}</span></center>
+      <table class="table" style="width:100%;"><center><span style="background-color:#9e9e9e;width:60%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">No Of project :&nbsp;&nbsp;{{ $projectlist1 }}</span></center>
         <thead>
           <th>Project Name</th>
           <th>Project Id</th>
