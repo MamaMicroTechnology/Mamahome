@@ -1973,6 +1973,34 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     {
         $project = ProjectDetails::find($request->projectId);
         $project->delete();
+
+        $project = OwnerDetails::where('project_id',$request->projectId)->first();
+        if($project != null){   
+        $project->delete();
+        }
+
+        $project = ContractorDetails::where('project_id',$request->projectId)->first();
+        if($project != null){
+            $project->delete();
+        }
+        $project = SiteEngineerDetails::where('project_id',$request->projectId)->first();
+        if($project != null){
+            $project->delete();
+        }
+        $project = ProcurementDetails::where('project_id',$request->projectId)->first();
+        if($project != null){
+            $project->delete();
+        }
+        $project = Builder::where('project_id',$request->projectId)->first();
+        if($project != null){
+            $project->delete();
+        }
+        $project = ConsultantDetails::where('project_id',$request->projectId)->first();
+        if($project != null){
+            $project->delete();
+        }
+
+
         return back();
     }
     public function editinputdata(Request $request)
