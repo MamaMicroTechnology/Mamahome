@@ -483,7 +483,6 @@ class HomeController extends Controller
             $to = $request->to;
             if($from == $to){
                 $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                ->orderBy('requirements.created_at','DESC')
                 ->whereIn('project_details.sub_ward_id',$subwardid)
                 ->where('requirements.generated_by',$request->initiator)
                 ->where('requirements.created_at','LIKE',$from."%")
@@ -497,16 +496,15 @@ class HomeController extends Controller
                
             }else{
             $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');
-
+               
                 $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                            ->orderBy('requirements.created_at','DESC')
                             ->whereIn('project_details.sub_ward_id',$subwardid)
                             ->where('requirements.generated_by',$request->initiator)
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                 ->orderby('requirements.created_at','DESC')
+                            ->orderby('requirements.created_at','DESC')
 
                             ->get();
                 $converter = user::get();
@@ -952,7 +950,6 @@ class HomeController extends Controller
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->where('requirements.main_category','LIKE',"%".$request->category."%")
-              
                 ->get();
             $totalenq = count($enquiries);
           
