@@ -61,7 +61,7 @@
                 </div> -->
                 
             <center>    <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-left" style="animation-duration: 2s;">
-                  <h2> INSTRACTIONS</h2>
+                  <h3> INSTRUCTION</h3>
                       <table border="1" class="table">
                         <thead>
                           <th>Total Projects</th>
@@ -86,7 +86,7 @@
                 </div>
 
   <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-right" style="animation-duration: 2s;">
-           <h2>MONTHLY REPORT</h2>
+           <h3>MONTHLY REPORT</h3>
                       <table border="1" class="table">
                         <thead>
                           <th>Total Projects</th>

@@ -267,7 +267,7 @@ enctype="multipart/form-data" >
                        @foreach($category as $cat)
                          <div class="col-sm-4">
                          <label>
-                       <input type="checkbox" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
+                       <input type="radio" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
                         </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        </div><br>
                         @endforeach
