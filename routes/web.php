@@ -313,7 +313,7 @@ Route::post('/confirmedProject','HomeController@confirmedProject');
 Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
-
+Route::get('/lcoorders','logisticsController@orders');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');
@@ -622,7 +622,7 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/lcodashboard','logisticsController@dashboard');
-    Route::get('/lcoorders','logisticsController@orders');
+   
     Route::get('/lcoreport','logisticsController@report');
     Route::get('/showProjectDetails','logisticsController@showProjectDetails');
     Route::get('/confirmDelivery','logisticsController@confirmDelivery');

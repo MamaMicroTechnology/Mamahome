@@ -375,9 +375,7 @@ class marketingController extends Controller
  {
      $cash = Deposit::all();
      $dep = User::all();
-
-$countrec = count($cash);
-
+    $countrec = count($cash);
      return view('/cashdeposit',['cash'=>$cash,'dep'=>$dep,'countrec'=>$countrec]);
  }
 }

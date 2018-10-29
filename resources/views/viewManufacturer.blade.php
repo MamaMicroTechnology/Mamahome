@@ -1,4 +1,9 @@
-@extends('layouts.app')
+
+<?php
+    $use = Auth::user()->group_id;
+    $ext = ($use == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
     <div class="col-md-12">
         <div class="panel panel-primary">
@@ -7,7 +12,7 @@
                  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-35px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
                  <form action="{{ URL::to('/') }}/viewManufacturer" method="GET">
                  <select class="form-control pull-left" style="width:12%;margin-top:-40px;" onchange="this.form.submit()" name="type">
-                     <option>--Manufacutur Type--</option>
+                     <option>--Manufacuturer Type--</option>
                      <option value="RMC">RMC</option>
                      <option value="BLOCKS">BLOCKS</option>
                      <option value="M-SAND">M-SAND</option>
