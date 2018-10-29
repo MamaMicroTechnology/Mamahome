@@ -836,7 +836,6 @@ class amController extends Controller
             $age = 0;
             $i = 0;
             $depts[$department->dept_name] = User::where('department_id',$department->id)
-               
                 ->where('id','!=',27)
                 ->where('id','!=',28) 
                 ->where('id','!=',101)
@@ -909,7 +908,6 @@ class amController extends Controller
 
         $users = User::where('group_id',$request->group)
                 ->where('department_id','!=',10)
-                ->where('users.id','!=',7)
                 ->where('users.id','!=',27)
                 ->where('users.id','!=',28)
                 ->where('users.id','!=',101)
