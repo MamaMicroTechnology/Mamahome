@@ -193,7 +193,7 @@
                             @foreach($subcategories as $subcategory)
                             <tr id="currentsub{{ $subcategory->id }}">
                                 <td>{{ $subcategory->category->category_name }}</td>
-                                 <td>{{ $subcategory->brand->brand }}</td>
+                                 <td>{{ $subcategory->brand }}</td>
                                  <td>{{ $subcategory->sub_cat_name }}</td>
                                 <td>
                                     <form method="POST" action="{{ URL::to('/') }}/deleteSubCategory">

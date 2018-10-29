@@ -5,14 +5,14 @@
 ?>
 @extends($ext)
 @section('content')
-@if(Auth::user()->group_id != 2)
+@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
 <br><br>
-<h2><center>WELCOME TO <b>TEAM LEADER </b>
+<h2><center>WELCOME TO <b>SENIOR TEAM LEADER </b>
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
 @else
 <br><br>
-<h2><center>WELCOME TO <b>SENIOR TEAM LEADER </b>
+<h2><center>WELCOME TO <b>TEAM LEADER </b>
 <br>ZONE 1, BANGALORE'S DASHBOARD
 <BR><br>
 @endif

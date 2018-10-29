@@ -200,7 +200,7 @@ class mamaController extends Controller
         $zone = New Zone;
         $zone->country_id = $request->sId;
         $zone->zone_name = $request->zone_name;
-        $zone->zone_number = $request->zone_no;
+        $zone->zone_number = "Z".$request->zone_no;
         $zone->zone_image = $imageName1;
         $zone->save();
         return back();
@@ -2589,7 +2589,12 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
     }
     public function latelogin(Request $request){
-        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        if(Auth::user()->group_id == 1){
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        }
+        else{  
+             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        }
         $userIds = explode(",", $tl);
         $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
         ->where('remark','!='," ")

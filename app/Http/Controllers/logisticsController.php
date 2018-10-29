@@ -620,10 +620,8 @@ class logisticsController extends Controller
                return back();
            }
  public function close(request $request){
-
-             //dd($request->orderid);            
-
-         Order::where('id',$request->orderid)->update(['payment_status'=>"Closed"]);
+ 
+         Order::where('id',$request->orderid)->update(['payment_status'=>"Processing"]);
             return back();
 
 
