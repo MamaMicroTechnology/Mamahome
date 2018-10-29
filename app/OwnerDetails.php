@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OwnerDetails extends Model
 {
+    use SoftDeletes;
     use LogsActivity;
     protected $table = 'owner_details';
     public function projectdetails()

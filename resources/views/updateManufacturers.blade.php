@@ -280,7 +280,7 @@
                                             <input type="hidden" name="product_id2[]" value="{{ $products->id }}">
                                             <tr>
                                                 <td>
-                                                    <select title='Please Select Appropriate Type' name="grade[]" id="gt" class="form-control">
+                                                    <select title='Please Select Appropriate Type' name="grade[]" class="form-control" >
                                                         <option value="">--Select--</option>
                                                         <option {{ $products->block_type == "M10" ? 'selected' : '' }} value="M10">M10</option>
                                                         <option {{ $products->block_type == "M15" ? 'selected' : '' }} value="M15">M15</option>
@@ -576,7 +576,7 @@ function openCity(evt, cityName) {
                 var row = table.insertRow(-1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
-                cell1.innerHTML = "<select title='Please Select Appropriate Type' required name='grade[]' id='' class='form-control'>" +
+                cell1.innerHTML = "<select title='Please Select Appropriate Type' name='grade[]' class='form-control'>" +
                                 "<option value=''>--Select--</option>" +
                                 "<option value='M10'>M10</option>" +
                                 "<option value='M15'>M15</option>" +
@@ -584,7 +584,7 @@ function openCity(evt, cityName) {
                                 "<option value='M25'>M25</option>" +
                                 "<option value='M30'>M30</option>" +
                                 "<option value='M35'>M35</option> </select>";
-                cell2.innerHTML = "<input type='number' min='0' required name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
+                cell2.innerHTML = "<input type='number' min='0'  name='gradeprice[]' id='' placeholder='Price' class='form-control'>";
             }
             function RMC() {
                 var table = document.getElementById("types1");
@@ -664,7 +664,7 @@ function openCity(evt, cityName) {
           }
             function validate(){
                 var type = document.getElementById('type').value;
-                if(type=="RMC"){
+                if(type==""){
                     if(document.getElementById('gt').value == ''){
                         swal("Error",'Please Select Grade Type','error');
                         return false;

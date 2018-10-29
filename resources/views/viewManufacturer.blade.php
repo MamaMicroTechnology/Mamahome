@@ -41,7 +41,7 @@ tr:nth-child(even) {
             <th>listing Engineer Name</th> 
             <th>Plant Name</th>
             <th>Phone No.</th>
-            <th>Manufacturer Image</th>
+           <!--  <th>Manufacturer Image</th> -->
             <th>Cement Requirement</th>
             <th>Sand Requirement</th>
             <th>Aggregates Requirement</th>
@@ -64,36 +64,7 @@ tr:nth-child(even) {
                 <td> {{$manufacturer->user != null ? $manufacturer->user->name :'' }}</td>
                 <td>{{ $manufacturer->plant_name }}</td>
                  <td> {{$manufacturer->proc != null ? $manufacturer->proc->contact : $manufacturer->contact_no  }}</td>
-               <!--  <td> <a href="#" class="btn btn-primary btn-xm" >View Image</a></td> -->
-                <td>
-                  <button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $manufacturer->id }}">View Image</button>
-                  <div id="viewimage{{$manufacturer->id}}" class="modal fade" role="dialog">
-                    <div class="modal-dialog" style="width: 40%;height: 30%">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <div class="modal-header" style="background-color: green;color:white;">
-                        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-                        <h4 class="modal-title">Image</h4>
-                      </div>
-                      <div class="modal-body">
-                         <?php
-                         $images = explode(",", $manufacturer->image);
-                         ?>
-                         @for($i = 0; $i < count($images); $i++)
-                                               
-                            <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/Manufacturerimage/{{ $images[$i] }}" ><br>
-                          
-                          @endfor
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      </div>
-                    </div>
-
-                  </div>
-              </div>
-              </td>
+              
                 <td>{{ $manufacturer->cement_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->sand_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer-> aggregates_required }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>

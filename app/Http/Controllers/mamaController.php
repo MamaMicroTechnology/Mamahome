@@ -3080,6 +3080,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
            
         $manufacturer = Manufacturer::findOrFail($request->id);
         $manufacturer->name = $request->name;
+          $projectimage = "";
         if($request->pImage){
             if($request->pImage != null){
                        $i = 0;
