@@ -31,6 +31,9 @@ Route::post('/manuinputdata','AssignManufacturersController@inputdata');
 Route::get('/menqedit','AssignManufacturersController@editEnq');
 Route::post('/addcat','AssignManufacturersController@addcat');
 Route::get('/catofficer','AssignManufacturersController@catsalesreports');
+Route::get('/manudailyslot','AssignManufacturersController@dailyslots');
+Route::get('/monthlyreport','AssignManufacturersController@getreport');
+
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 Route::get('/getprojectsize','HomeController@getProjectSize');
 
@@ -145,6 +148,9 @@ Route::post('/hrreject','mamaController@hrreject');
 Route::post('/logintime','mamaController@logintime');
 Route::Post('/emplate','mamaController@logintime');
 Route::Post('/earlyremark','mamaController@empreports');
+Route::get('/loginhistory','HomeController@loginhistory');
+Route::get('/breakhistory','HomeController@breakhistory');
+
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');
 Route::post('/teamlogin','mamaController@teamlogin');
@@ -307,7 +313,7 @@ Route::post('/confirmedProject','HomeController@confirmedProject');
 Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
-
+Route::get('/lcoorders','logisticsController@orders');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');
@@ -616,7 +622,7 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/lcodashboard','logisticsController@dashboard');
-    Route::get('/lcoorders','logisticsController@orders');
+   
     Route::get('/lcoreport','logisticsController@report');
     Route::get('/showProjectDetails','logisticsController@showProjectDetails');
     Route::get('/confirmDelivery','logisticsController@confirmDelivery');

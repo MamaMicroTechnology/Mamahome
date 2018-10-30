@@ -5,8 +5,24 @@
         <div class="panel panel-primary">
             <div class="panel-heading text-center" ><b>Late Logins</b></div>
             <div class ="panel-body">
-
-                       
+              <form method="GET" action="{{ URL::to('/') }}/loginhistory">
+                <div class="col-md-12">
+                    {{ csrf_field() }}
+                            <div class="col-md-2">
+                                <label>From Date</label>
+                                <input required value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
+                            </div>
+                            <div class="col-md-2">
+                                <label>To   Date</label>
+                                <input required value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
+                            </div>
+                           
+                        <div class="col-md-2">
+                            <label></label>
+                            <input type="submit" value="Fetch" class="form-control btn btn-primary">
+                        </div>
+                    </div> 
+                </form>     
                        <table class="table table-hover">
                            <thead>
                                <th>Date</th> 

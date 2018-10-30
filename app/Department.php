@@ -30,4 +30,8 @@ protected $fillable = ['dept_name',
     {
     	return $this->hasOne('App\User');
     }
+     public function department()
+    {
+        return $this->belongsTo('App\User','id','department_id');
+    }
 }

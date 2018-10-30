@@ -2,7 +2,8 @@
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects : {{ count($projects) }}</p>
+			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects :{{$projects == "None" ?  0 : count($projects)}}
+                 </p>
 				  <a href="{{ URL::to('/') }}/home" class="btn btn-default pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></a>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">

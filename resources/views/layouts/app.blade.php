@@ -9,12 +9,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MamaHome</title>
     <!-- Styles -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
     <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
 
     <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/some.css" />
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -1183,7 +1186,6 @@ function myTimer() {
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
-       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
         <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
 
@@ -1196,8 +1198,8 @@ function myTimer() {
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
-      
-<!--    </div> -->
+    <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
+    <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
         <div id="sales" class="collapse">
@@ -1247,8 +1249,6 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
      <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
-
-
 </div>  
 
 
@@ -1302,11 +1302,10 @@ function myTimer() {
        @if($stages->project_ids == null)
        <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
        @else
-
         <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
        @endif
      @else
-     <ahref="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
+     <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
      @endif
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   

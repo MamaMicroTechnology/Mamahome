@@ -21,6 +21,12 @@
             </form>
             <br>
                 @if(isset($_GET['number']))
+                @if($dates == null)
+                
+                        <script>
+                            swal("error","First You Have To Lock The Target With Monthly Sales Projection.","error");
+                        </script>
+                @else
                 <form action="{{ URL::to('/') }}/save" method="POST">
                     {{ csrf_field() }}
                     <table class="table table-hover" border=1>
@@ -64,6 +70,7 @@
                     </table>
                     <input type="submit" value="Save" class="form-control btn btn-primary">
                 </form>
+                @endif
                 @endif
             </div>
         </div>

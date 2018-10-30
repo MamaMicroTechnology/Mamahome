@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
      
-      <table class="table" style="width:100%;"><center><span style="background-color:#9e9e9e;width:60%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">No Of project :&nbsp;&nbsp;{{$projectlist1}}</span></center>
+      <table class="table" style="width:100%;"><center><span style="background-color:#9e9e9e;width:60%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">No Of project :&nbsp;&nbsp;{{ $projectlist1 }}</span></center>
         <thead>
           <th>Project Name</th>
           <th>Project Id</th>
@@ -21,8 +21,9 @@
 
         </thead>
         <tbody>
+
           @foreach($projectlist as $project)
-          @if($project->quality == 'Unverified' || $project->quality == 'Genuine' || $project->quality == 'Fake')
+          @if($project->quality == 'Unverified' || $project->quality == 'Genuine' || $project->quality == 'Fake' || $project->created_at >= $today )
             <tr>
               <td>{{ $project->project_name }}</td>
               <td>
@@ -35,7 +36,7 @@
               <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_name : '' }}</td>
               <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : '' }}</td>
               <td>
-                <a style="background-color:#9e9e9e;color:white;" href="{{ URL::to('/') }}/viewProjects?id={{ $project->project_id }} && no={{$project->procurementdetails->procurement_contact_no}}" class="btn btn-success btn-xs" >View</a>
+                <a style="background-color:#9e9e9e;color:white;" href="{{ URL::to('/') }}/viewProjects?id={{ $project->project_id }} && no={{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : '' }}" class="btn btn-success btn-xs" >View</a>
               </td>
               <td>
                 <table class="table-group">

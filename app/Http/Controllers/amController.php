@@ -221,7 +221,7 @@ class amController extends Controller
                     "<div class='col-md-4'>To :<input id='to' type='date' class='form-control'></div><br>".
                     "<div class='col-md-4'><button type='button' id='date' class='form-control btn-default' style='background-color:green;color:white'>Fetch</button></div></div>".
                     "<br><br>";
-            echo $disp;
+            
         }else{
             $expenses = "Null";
         }
@@ -391,24 +391,23 @@ class amController extends Controller
       
         if($request->month){
             $date = $request->year.'-'.$request->month;
-            // $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
-             $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$date.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();
 
         }else{
             $date = date('Y-m');
-            // $attendances = attendance::where('empId',$request->userId)->where('date','like',$date.'%')->orderby('date')->get();
+        }
             $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$date.'%')->orderby('logindate')
             ->leftjoin('users','field_login.user_id','users.id')->get();
-        }
         return view('assistantmanager.empattendance',['attendances'=>$attendances,'userid'=>$request->userId,'user'=>$user,'pageName'=>'HR']);
     }
     public function viewDailyReport(Request $request){
+        
         $uId = $request->userId;
         $date = $request->date;
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
-        // $attendance = attendance::where('empId',$user->id)->where('date',$date)->first();
+      
         $attendance = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
+
         return view('assistantmanager.viewdailyreport',['reports'=>$reports,'date'=>$date,'user'=>$user,'attendance'=>$attendance,'pageName'=>'HR']);
     }
     public function addvendortype()
@@ -819,11 +818,11 @@ class amController extends Controller
         $today = date('Y-m-d');
         $avgAge = array();
         $test = array();
-        foreach($departments as $department){
-            $age = 0;
-            $i = 0;
-            $depts[$department->dept_name] = User::where('department_id',$department->id)
-                ->where('id','!=',7)
+        $group = array();
+        foreach($groups as $group){
+                $grp[$group->id] = User::where('group_id',$group->id)
+                ->where('department_id','!=',10)
+               
                 ->where('id','!=',27)
                 ->where('id','!=',28) 
                 ->where('id','!=',101)
@@ -832,8 +831,23 @@ class amController extends Controller
                 ->where('id','!=',108) 
                 ->where('id','!=',112) 
                 ->count();
+            }
+        foreach($departments as $department){
+            $age = 0;
+            $i = 0;
+            $depts[$department->dept_name] = User::where('department_id',$department->id)
+                ->where('id','!=',27)
+                ->where('id','!=',28) 
+                ->where('id','!=',101)
+                ->where('id','!=',105) 
+                ->where('id','!=',107) 
+                ->where('id','!=',108) 
+                ->where('id','!=',112) 
+                ->count();
+            $groupname[$department->dept_name] = User::where('department_id',$department->id)
+             ->leftjoin('groups','users.group_id','=','groups.id')->select('groups.group_name','users.group_id','users.department_id')->distinct()->get();
                $deptsUsers[$department->dept_name] = User::where('department_id',$department->id)
-                                                        ->where('id','!=',7)
+                                                       
                                                         ->where('id','!=',27)
                                                         ->where('id','!=',28) 
                                                         ->where('id','!=',101)
@@ -854,8 +868,9 @@ class amController extends Controller
                 else
                 $avgAge[$department->dept_name] = 0;
         }
+           
+       // dd($groupname[$department->dept_name]);
          $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
-             ->where('id','!=',7)
             ->where('id','!=',27)
             ->where('id','!=',28)
             ->where('id','!=',101)
@@ -866,7 +881,7 @@ class amController extends Controller
         ->count();
          $dept = [1,2,3,4,5,6,8];
         $users = User::whereIn('department_id',$dept)
-                ->where('users.id','!=',7)
+                ->where('department_id','!=',10)       
                 ->where('users.id','!=',27)
                 ->where('users.id','!=',28)
                 ->where('users.id','!=',101)
@@ -877,19 +892,22 @@ class amController extends Controller
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
+               
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
-        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users,'avgAge'=>$avgAge]);
+        return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users,'avgAge'=>$avgAge,'groupname'=>$groupname,'grp'=>$grp]);
     }
      public function viewmhemployee(Request $request){
+        
         if($request->dept == "FormerEmployees"){
             $users = User::where('department_id',10)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->get();
         return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
         }
-        $deptId = Department::where('dept_name',$request->dept)->pluck('id')->first();
-        $users = User::where('department_id',$deptId)
-                ->where('users.id','!=',7)
+        $grp = Group::where('id',$request->group)->pluck('group_name')->first();
+
+        $users = User::where('group_id',$request->group)
+                ->where('department_id','!=',10)
                 ->where('users.id','!=',27)
                 ->where('users.id','!=',28)
                 ->where('users.id','!=',101)
@@ -900,6 +918,7 @@ class amController extends Controller
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
                 ->select('users.*','employee_details.verification_status','employee_details.office_phone')
                 ->get();
-        return view('mhemp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
+            $count = count($users);
+        return view('mhemp',['users'=>$users,'grp'=>$grp,'pageName'=>'HR','count'=>$count]);
     }
 }

@@ -12,11 +12,11 @@
                         <table class="table">
                             <tr>
                                 <td>
-                                    <select onchange="countryCode();" name="name" id="country" class="form-control input-sm">
+                                    <select required onchange="countryCode();" name="name" id="country" class="form-control input-sm">
 
                                     </select>
                                 </td>
-                                <td><input id="code" readonly required type="text" class="form-control input-sm" name="code" placeholder="Code"></td>
+                                <td><input required id="code" readonly required type="text" class="form-control input-sm" name="code" placeholder="Code"></td>
                                 <td><input type="submit" class="btn btn-primary btn-sm" value="Add"></td>
                             </tr>
                         </table>
@@ -61,11 +61,12 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="zone_name" id="zoneName" class="form-control input-sm">
+                                        <select required name="zone_name" id="zoneName" class="form-control input-sm">
                                             <option value="">--Select--</option>
                                         </select>
                                     </td>
-                                    <td><input type="text" name="zone_no" required class="form-control input-sm" placeholder="Zone No."></td>
+                                    <td><input type="text" name="zone_no" id="zno" onkeyup="checkthis('zno')" required class="form-control input-sm" placeholder="Zone No."></td>
+
                                     <td><input type="file" name="image" required class="form-control input-sm" accept="image/*"></td>
                                     <td><button type="submit" class="btn btn-success input-sm">Add</button></td>
                                 </tr>
@@ -255,5 +256,15 @@
     };
     xmlhttp2.open("GET", "https://mamahome360.com/webapp/countriesAndStates.json", true);
     xmlhttp2.send();
+
+</script>
+<script>
+    function checkthis(arg){
+        var input = document.getElementById(arg).value;
+         if(isNaN(input)){
+        
+               document.getElementById(arg).value = "";
+        }
+    }
 </script>
 @endsection

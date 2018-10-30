@@ -1,36 +1,78 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Collection;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use App\Mail\registration;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use App\User;
-use Illuminate\Database\Eloquent\Collection;
-use App\Message;
 use App\Department;
-use Validator;
-use App\UserLocation;
-use App\Aregister;
+use App\User;
+use Session;
+use App\Group;
+use App\Builder;
+use App\ProjectUpdate;
+use App\AssignCategory;
+use App\Ward;
+use App\SubWard;
+use App\Country;
+use App\Territory;
+use App\WardAssignment;
 use App\ProjectDetails;
-use App\SiteAddress;  
-use DB;  
+use App\ConsultantDetails;
+use App\ContractorDetails;
+use App\ProcurementDetails;
+use App\OwnerDetails;
+use App\SiteAddress;
+use App\SiteEngineerDetails;
+use App\EmployeeDetails;
+use App\State;
+use App\Zone;
 use App\loginTime;
 use App\Requirement;
-use App\RoomType;
+use Auth;
+use App\attendance;
+use Validator;
+use Hash;
+use App\salesassignment;
+use App\BankDetails;
+use App\AssetInfo;
+use App\Certificate;
 use App\Category;
 use App\SubCategory;
-use App\brand;
-use App\WardAssignment;
-use App\SubWard;
-use App\SubWardMap;
-use App\TrackLocation;
+use App\CategoryPrice;
+use App\ManufacturerDetail;
+use App\RoomType;
+use App\ActivityLog;
+use App\RecordData;
 use App\Order;
+use App\Map;
+use App\brand;
+use App\WardMap;
+use App\Point;
+use App\ZoneMap;
+use App\SubWardMap;
+use App\Asset;
+use App\Check;
+use App\Manufacturer;
+use App\ManufacturerProduce;
+use App\MamahomeAsset;
+use App\ProjectImage;
+use App\Tlwards;
 use App\FieldLogin;
-use App\FakeGPS;
-use App\Reactuser;
+use Carbon\Carbon;
+use App\TrackLocation;
+use App\Report;
+use App\Salescontact_Details;
+use App\Manager_Deatils;
+use App\Mprocurement_Details;
+use App\Mowner_Deatils;
 use App\Banner;
-use App\TrackHistory;
+use Spatie\Activitylog\Models\Activity;
 
 use App\Http\Resources\Message as MessageResource;
 date_default_timezone_set("Asia/Kolkata");
@@ -359,8 +401,9 @@ class TokenController extends Controller
             $projectdetails = New ProjectDetails;
            
             $projectdetails->project_name = $request->project_name;
+            $projectdetails->sub_ward_id = $request->sub_ward_id;
             $projectdetails->road_width = $request->road_width;
-            $projectdetails->construction_type =$request->construction_type;
+            $projectdetails->construction_type =$type;
             $projectdetails->interested_in_rmc = $request->interested_in_rmc;
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
@@ -373,7 +416,12 @@ class TokenController extends Controller
             $projectdetails->budget = $request->budget;
             $projectdetails->image = $png_project;
             $projectdetails->user_id = $request->userid;
-            
+            $projectdetails->automation=$request->automation;
+            $projectdetails->brilaultra=$request->brila;
+            $projectdetails->Kitchen_Cabinates = $request->kitchen_cabinets;
+            $projectdetails->interested_in_premium = $request->premium;
+            $projectdetails->contract = $request->contract;
+            $projectdetails->remarks = $request->remarks;
             $projectdetails->basement = $basement;
             $projectdetails->ground = $ground;
             $projectdetails->project_type = $floor;
@@ -411,6 +459,49 @@ class TokenController extends Controller
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
+            
+            $ownerDetails = New OwnerDetails;
+            $ownerDetails->project_id = $projectdetails->project_id;
+            $ownerDetails->owner_name = $request->oName;
+            $ownerDetails->owner_email = $request->oEmail;
+            $ownerDetails->owner_contact_no = $request->oContact;
+            $ownerDetails->save();
+        
+            $contractorDetails = New ContractorDetails;
+            $contractorDetails->project_id = $projectdetails->project_id;
+            $contractorDetails->contractor_name = $request->cName;
+            $contractorDetails->contractor_email = $request->cEmail;
+            $contractorDetails->contractor_contact_no = $request->cContact;
+            $contractorDetails->save();
+        
+            $consultantDetails = New ConsultantDetails;
+            $consultantDetails->project_id = $projectdetails->project_id;
+            $consultantDetails->consultant_name = $request->coName;
+            $consultantDetails->consultant_email = $request->coEmail;
+            $consultantDetails->consultant_contact_no = $request->coContact;
+            $consultantDetails->save();
+        
+            $siteEngineerDetails = New SiteEngineerDetails;
+            $siteEngineerDetails->project_id = $projectdetails->project_id;
+            $siteEngineerDetails->site_engineer_name = $request->eName;
+            $siteEngineerDetails->site_engineer_email = $request->eEmail;
+            $siteEngineerDetails->site_engineer_contact_no = $request->eContact;
+            $siteEngineerDetails->save();
+        
+            $procurementDetails = New ProcurementDetails;
+            $procurementDetails->project_id = $projectdetails->project_id;
+            $procurementDetails->procurement_name = $request->prName;
+            $procurementDetails->procurement_email = $request->pEmail;
+            $procurementDetails->procurement_contact_no = $request->prPhone;
+            $procurementDetails->save();
+
+            $procurementDetails = New Builder;
+            $procurementDetails->project_id = $projectdetails->project_id;
+            $procurementDetails->builder_name = $request->bName;
+            $procurementDetails->builder_email = $request->bEmail;
+            $procurementDetails->builder_contact_no = $request->bPhone;
+            $procurementDetails->save();
+        
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->project_status]);
         }else{
@@ -622,10 +713,6 @@ public function getproject(request $request){
                 $roomtype->save();
             }
           
-                                                 
-                
-                
-           
         if( $projectdetails->save() || $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'project Updated sucussfully']);
         }else{
@@ -647,7 +734,6 @@ public function getproject(request $request){
 		return $this->updateLocation($request);
 	}
 
-        
         if($data->save()){
             $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
             $userResponse = json_encode($responseData);
@@ -752,7 +838,7 @@ public function getproject(request $request){
             }
         }
          public function bannerdata(Request $request){
-        $banner = Banner::all();
+           $banner = Banner::get();
          return response()->json(['banner'=>$banner,'message'=>"Banner data"]);
        }
        public function addleProject(Request $request)
@@ -973,7 +1059,134 @@ public function getproject(request $request){
  
 
 
+public function postSaveManufacturer(Request $request)
+    {
+        
+            $userGroup = User::where('id',$request->user_id)->first();
+             if($userGroup->group_id == 22){
+                  $wardsAssigned = $request->tlward;
+             }else{
+                
+        $wardsAssigned = WardAssignment::where('user_id',$request->user_d)->where('status','Not Completed')->pluck('subward_id')->first();
+             }
 
+
+           if($request->production){
+            $pro = implode(",",$request->production);
+           }else{
+            $pro = "null";
+           }
+        $projectimage = "";
+            $i = 0;
+            if($request->pImage){
+                foreach($request->pImage as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('Manufacturerimage'),$imageName3);
+                     if($i == 0){
+                        $projectimage .= $imageName3;
+                     }
+                     else{
+                            $projectimage .= ",".$imageName3;
+                     }
+                     $i++;
+                }
+        
+            }
+
+        $manufacturer = new Manufacturer;
+        $manufacturer->listing_engineer_id = $request->user_id;
+        $manufacturer->name = $request->name;
+        $manufacturer->image = $projectimage;
+
+        $manufacturer->sub_ward_id = $wardsAssigned;
+        $manufacturer->plant_name = $request->plant_name;
+        $manufacturer->latitude = $request->latitude;
+        $manufacturer->longitude = $request->longitude;
+        $manufacturer->address = $request->address;
+        $manufacturer->contact_no = $request->phNo;
+        $manufacturer->capacity = $request->capacity;
+        $manufacturer->cement_requirement = $request->cement_requirement;
+        $manufacturer->cement_requirement_measurement = $request->cement_required;
+        $manufacturer->prefered_cement_brand = $request->brand;
+        $manufacturer->sand_requirement = $request->sand_requirement;
+        $manufacturer->aggregates_required = $request->aggregate_requirement;
+        $manufacturer->manufacturer_type = $request->type;
+        $manufacturer->type = $request->manufacturing_type;
+        $manufacturer->moq = $request->moq;
+        $manufacturer->total_area = $request->total_area;
+        $manufacturer->remarks = $request->remarks;
+        $manufacturer->production_type = $pro;
+
+
+        $manufacturer->save();
+        $sales = new Salescontact_Details;
+       $sales->manu_id =  $manufacturer->id;
+       $sales->name = $request->coName;
+       $sales->email = $request->coEmail;
+       $sales->contact = $request->coContact;
+       $sales->contact1 = $request->coContact1;
+
+       $sales->save();
+
+       $manager = new Manager_Deatils;
+       $manager->manu_id =  $manufacturer->id;
+       $manager->name = $request->cName;
+       $manager->email = $request->cEmail;
+       $manager->contact = $request->cContact;
+       $manager->contact1 = $request->cContact1;
+
+       $manager->save();
+    
+       $proc = new Mprocurement_Details;
+       $proc->manu_id =  $manufacturer->id;
+       $proc->name = $request->prName;
+       $proc->email = $request->pEmail;
+       $proc->contact = $request->prPhone;
+       $proc->contact1 = $request->prPhone1;
+
+       $proc->save();
+
+        $owner = new Mowner_Deatils;
+       $owner->manu_id =  $manufacturer->id;
+       $owner->name = $request->oName;
+       $owner->email = $request->oEmail;
+       $owner->contact = $request->oContact;
+       $owner->contact1 = $request->oContact1;
+
+       $owner->save();
+
+        
+        if($request->type == "Blocks"){
+            // saving product details
+            for($i = 0; $i < count($request->blockType); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->blockType[$i];
+                $products->block_size = $request->blockSize[$i];
+                $products->price = $request->price[$i];
+                $products->save();
+            }
+        }elseif($request->type == "RMC"){
+            // saving product details
+            for($i = 0; $i < count($request->grade); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->block_type = $request->grade[$i];
+                $products->price = $request->gradeprice[$i];
+                $products->save();
+            }
+        }elseif($request->type == "Fabricators"){
+            // saving product details
+            for($i = 0; $i < count($request->fab); $i++){
+                $products = new ManufacturerProduce;
+                $products->manufacturer_id = $manufacturer->id;
+                $products->Fabricators_type = $request->fab[$i];
+                $products->price = $request->fabprice[$i];
+                $products->save();
+            }
+        }
+        return response()->json(['message'=>"Manufacturer Added Successfully"]);
+    }
 
 
 }

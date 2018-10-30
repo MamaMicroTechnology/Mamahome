@@ -21,6 +21,9 @@ use App\AssignCategory;
 use App\Category;
 use App\Salesofficer;
 use Illuminate\Support\Collection;
+use Spatie\Activitylog\Models\Activity;
+use  App\Order;
+
 
 class AssignManufacturersController extends Controller
 {
@@ -399,6 +402,8 @@ public function addcat(request $request){
                  $check->user_id = $request->user_id;
                  $check->location = $request->location;
                  $check->project_id = $request->project_id;
+                 $check->remark = $request->remark;
+
                 
 
     if($check->save())
@@ -514,12 +519,14 @@ public function addcat(request $request){
         $date = date('Y-m-d');
         $grpid = [6,7,22,23,17.11];
         $users = User::whereIn('group_id',$grpid)
+                    ->where('users.department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
 
          $accusers = User::where('department_id','2')->where('group_id','11')
+                    ->where('users.department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
@@ -738,5 +745,97 @@ public function addcat(request $request){
             'totalAccountRMCListing'=>$totalAccountRMCListing,'totalAccountBlocksListing'=>$totalAccountBlocksListing,'tlRMCcount'=>$tlRMCcount,'tlBlocksCount'=>$tlBlocksCount,
             'tlAcBlocksCount'=>$tlAcBlocksCount,'tlAcRMCcount'=>$tlAcRMCcount
         ]);
+    }
+    public function getreport(request $request){
+
+
+        $groupid = [6,11,7,22,23,17];
+        $users = User::whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
+        $previous = date('Y-m-d',strtotime('-30 days'));
+        $today = date('Y-m-d');
+    
+
+    if($request->user_id !="ALL" && $request->fromdate && $request->todate){
+        $users = User::where('id',$request->user_id)->get();
+                      $from =$request->fromdate;
+                      $to = $request->todate;
+                      if($from == $to){
+
+        foreach($users as $user){
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count();
+                 
+
+
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
+
+                  $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count();
+                
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
+
+                
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count(); 
+
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count();
+
+               
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','like',$from.'%')
+                             ->where('created_at','LIKE',$to."%")->count();
+           
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','like',$from.'%')
+                             ->where('called_Time','LIKE',$to."%")->count();
+            
+                }
+            }else{
+                     foreach($users as $user){
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count();
+                 
+
+
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+
+                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+                
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+
+                
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count(); 
+
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count();
+
+               
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>',$from)
+                             ->where('created_at','<=',$to)->count();
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>',$from)
+                             ->where('called_Time','<=',$to)->count();
+            
+                }
+ }
+}else{
+        foreach($users as $user){
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
+                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
+
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous)->count(); 
+
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count(); 
+
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count();
+
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>=', $previous)->count();
+                 
+
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous)->count();
+                }
+
+}
+
+return view('/monthlyreport',['users' =>$users,'total'=>$total]);
     }
 }

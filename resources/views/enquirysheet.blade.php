@@ -43,7 +43,7 @@
 							@if(Auth::user()->group_id != 22)
 							<div class="col-md-2">
 								<label>Ward</label>
-								<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control ">
+								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
 									@foreach($wardwise as $wards2)
 		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
@@ -53,12 +53,12 @@
 							@endif
 							<div class="col-md-2">
 								<label>Sub Wards</label>
-								<select class="form-control" name="ward">
-									<option value="">--Select--</option>
-									<option value="">All</option>
-									@foreach($wards as $ward)
+								<select class="form-control" name="ward" id="subward">
+									<!-- <option value="">--Select--</option>
+									<option value="">All</option> -->
+									<!-- @foreach($wards as $ward)
 									<option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->sub_ward_name }}</option>
-									@endforeach
+									@endforeach -->
 								</select>
 							</div>
 						<div class="col-md-2">
@@ -71,15 +71,28 @@
 								@endforeach
 							</select>
 						</div>
+
 						<div class="col-md-2">
-							<label></label>
-							<input type="submit" value="Fetch" class="form-control btn btn-primary">
+							<label>Category:</label>
+							<select id="categ" class="form-control" name="category">
+								<option value="">--Select--</option>
+								<option value="">All</option>
+								@foreach($category as $category)
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								@endforeach
+							</select>
+						</div>
+				
+						<div class="col-md-12">
+						<div class="col-md-2 col-md-offset-10">
+							<input style="margin-top: 20px;margin-left:17px;" type="submit" value="Fetch" class="form-control btn btn-primary">
 						</div>
 					</div>
-				</form>
+				</div>
+			</form>
 				
-				<br><br><br><br>
-				<div class="col-md-3">
+				<br><br>
+				<div class="col-md-3" style="margin-top: -20px;">
 					<div class="col-md-2">
 						<label>Status: </label>
 					</div>
@@ -92,24 +105,8 @@
 						</select>
 					</div>
                   </div>
-                  <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
-					
-                  <div class="col-md-3">
-						<div class="col-md-3">
-								<label>Category: </label>
-						</div>
-						<div class="col-md-6">
-								<select id="categ" class="form-control" name="category">
-									<option value="">--Select--</option>
-									<option value="">All</option>
-									@foreach($category as $category)
-									<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-									@endforeach
-								</select>
-						</div>
-					</div>
-					
-					<div class="col-md-4">
+                
+					<div class="col-md-4" style="margin-top: -20px;">
 						<div class="col-md-3">
 							<label> Manufacturer: </label>
 						</div>
@@ -123,8 +120,8 @@
 								</select>
 						</div>
 					</div>
-                </form>
-                <br>
+               
+                <br><br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
@@ -401,5 +398,39 @@ $(document).ready(function(){
      background-color: #00acd6 
 
 });
+</script>
+<script type="text/javascript">
+    function loadsubwards()
+    {
+        var x = document.getElementById('ward');
+        var sel = x.options[x.selectedIndex].value;
+        if(sel)
+        {
+            $.ajax({
+                type: "GET",
+                url: "{{URL::to('/')}}/loadsubwards",
+                data: { ward_id: sel },
+                async: false,
+                success: function(response)
+                {
+                    if(response == 'No Sub Wards Found !!!')
+                    {
+                        document.getElementById('error').innerHTML = '<h4>No Sub Wards Found !!!</h4>';
+                        document.getElementById('error').style,display = 'initial';
+                    }
+                    else
+                    {
+                        var html = "<option value='' disabled selected>---Select---</option>"+"<option value='All'>ALL</option>";
+                        for(var i=0; i< response.length; i++)
+                        {
+                            html += "<option value='"+response[i].id+"'>"+response[i].sub_ward_name+"</option>";
+                        }
+                        document.getElementById('subward').innerHTML = html;
+                    }
+                    
+                }
+            });
+        }
+    }
 </script>
 @endsection

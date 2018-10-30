@@ -4,12 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConsultantDetails extends Model
 {
     protected $table = 'consultant_details';
 
     use LogsActivity;
+        use SoftDeletes;
 
 
 
