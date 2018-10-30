@@ -124,8 +124,8 @@
                     <tr>
                         <th style="text-align:center">Subward Number</th>
                         <th style="text-align:center">Project-ID</th>
-                        <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
+                        <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Followup</th>
                        
                     </tr>
