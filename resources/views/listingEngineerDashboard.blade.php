@@ -1,4 +1,4 @@
-<!-- @extends('layouts.leheader') -->
+
 <?php
     $use = Auth::user()->group_id;
     $ext = ($use == 1? "layouts.app":"layouts.leheader");
