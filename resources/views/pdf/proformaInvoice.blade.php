@@ -27,10 +27,10 @@
     $normal_address = explode(", ", $data['address']->address);
     $items = explode(", ",$data['products']->sub_category);
 @endphp
-<header class="text-right">Original For Buyer</header>
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h4 style="background-color:#99ddff;padding:10px;" class="text-center">TAX INVOICE</h4>
+            <h4 style="background-color:#99ddff;padding:10px;" class="text-center">PROFORMA INVOICE</h4>
             <br>
             <div class="pull-left">
                 <b>MamaHome Pvt. Ltd.</b>

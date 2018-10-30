@@ -2787,23 +2787,22 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function logintime(Request $request)
     {
         if($request->remark != null){
-                $remark = $request->remark;
-        }
-        else{
+            $remark = $request->remark;
+        }else{
             $remark = null;
         }
         $id = user::where('id',Auth::user()->id)->pluck('id')->first();
-       $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get(); 
-       $lat = $request->latitude;
-       $lon = $request->longitude;
-       $address = $request->address; 
-       if(Auth::user()->department_id == 4){
-                $start = "07:10 AM";
-                $now = date('h:i A');
+        $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get(); 
+        $lat = $request->latitude;
+        $lon = $request->longitude;
+        $address = $request->address; 
+        if(Auth::user()->department_id == 4){
+            $start = "07:10 AM";
+            $now = date('h:i A');
         }
         else{
-             $start = "08:00 AM";
-             $now = date('h:i A');
+            $start = "08:00 AM";
+            $now = date('h:i A');
         }
         if( $now > $start && count($check)== 0 && $remark == null){
             

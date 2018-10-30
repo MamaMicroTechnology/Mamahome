@@ -12,6 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/signature-pad.css">
+    
 </head>
 <body>
 <!-- @if(SESSION('Success'))
@@ -125,6 +127,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/signature_pad.umd.js"></script>
+    <script src="{{ URL::to('/') }}/js/app2.js"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";

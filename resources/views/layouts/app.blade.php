@@ -1462,7 +1462,7 @@ function myTimer() {
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-        </script>
+      </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
