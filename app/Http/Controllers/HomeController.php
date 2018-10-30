@@ -8219,13 +8219,13 @@ public function display(request $request){
         $dd= $request->type;
         if($request->type){
             $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
-                    ->get();
-           $count = count($manufacturers);
+                    ->paginate(20);
+           $count = Manufacturer::where('manufacturer_type',$request->type)->count();
                     
          }else{
 
-        $manufacturers = Manufacturer::get();
-          $count = count($manufacturers);
+        $manufacturers = Manufacturer::paginate(20);
+          $count = Manufacturer::count();
          }
 
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
@@ -8239,14 +8239,14 @@ public function viewManufacturer1(Request $request)
           $his = History::get();
          if($request->type){
             $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)
-                    ->get();
-    $count = count($manufacturers);
+                    ->paginate(20);
+    $count = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)->count();
 
          }else{
 
         $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)
-                    ->get();
-    $count = count($manufacturers);
+                    ->paginate(20);
+    $count = Manufacturer::whereIn('sub_ward_id',$ward)->count();
          }
                    
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);

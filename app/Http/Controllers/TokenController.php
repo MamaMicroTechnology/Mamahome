@@ -633,7 +633,8 @@ public function getproject(request $request){
         }
     } 
     public function addLocation(Request $request){
-
+         $check = TrackLocation::where('user_id',$request->user_id)->where('date',$request->date)->first();
+	if(count($check) == 0){
        
         $data = new TrackLocation;
         $data->user_id = $request->user_id;
@@ -641,7 +642,11 @@ public function getproject(request $request){
         $data->time = $request->time;
         $data->date = $request->date;
         $data->kms = $request->kms;
-       
+       }
+	else{
+		return $this->updateLocation($request);
+	}
+
         
         if($data->save()){
             $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
