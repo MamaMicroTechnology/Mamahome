@@ -3677,7 +3677,7 @@ date_default_timezone_set("Asia/Kolkata");
                     $projectids = $datec;
                 }
             }
-    dd($projectids);
+    
 
             $rmcInt = explode(",", $rmc);
             if($rmcInt[0] != "null"){
@@ -3811,7 +3811,7 @@ $upvcInt = explode(",", $upvc);
                 }
             }
              
-
+dd($projectids);
 
         $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
         if($checking != null){
