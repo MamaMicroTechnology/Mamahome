@@ -200,7 +200,7 @@ class mamaController extends Controller
         $zone = New Zone;
         $zone->country_id = $request->sId;
         $zone->zone_name = $request->zone_name;
-        $zone->zone_number = $request->zone_no;
+        $zone->zone_number = "Z".$request->zone_no;
         $zone->zone_image = $imageName1;
         $zone->save();
         return back();
@@ -1895,12 +1895,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                if(!$request->manu_id){
-                $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                if($requirement->manu_id){
+        	        $subward = SubWard::where('id',$project1->sub_ward_id)->first();
                 }else{
-                $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
+	                if(!$request->manu_id){
+		                $subward = SubWard::where('id',$project->sub_ward_id)->first();
+               		 }else{
+               			 $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
               
-                }
+                	}
 
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1956,6 +1959,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
          $activity->typeofactivity = "Enquiry Updated";
         $activity->activity = Auth::user()->name." has updated requirement id: ".$request->eid." as ".$request->note.$request->status;
         $activity->save();
+
         return back();
         }
     
@@ -2617,7 +2621,12 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
     }
     public function latelogin(Request $request){
-        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        if(Auth::user()->group_id == 1){
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        }
+        else{  
+             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        }
         $userIds = explode(",", $tl);
         $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
         ->where('remark','!='," ")
@@ -2731,7 +2740,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             return back()->with('earlylogout',$text); 
             }
             else{
-                if($logout == null){
+                if($logout != null){
                   
                     for($i = 0; $i < count($request->report); $i++){
                         $report = new Report;

@@ -1182,10 +1182,10 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+       <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
-       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
         <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
 
@@ -1200,10 +1200,6 @@ function myTimer() {
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
     <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
     <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
-
-
-      
-<!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
         <div id="sales" class="collapse">
@@ -1253,8 +1249,6 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
      <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
-
-
 </div>  
 
 

@@ -75,3 +75,8 @@ Route::get('/fakegps','TokenController@fakegps');
 Route::post('/addleProject','TokenController@addleProject');
 Route::post('/saveManufacturer','TokenController@postSaveManufacturer');
 Route::get('/wardandsubward','TokenController@wardandsubward');
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 7f741711920b2ee9ec241f7301200b7da57fc26f

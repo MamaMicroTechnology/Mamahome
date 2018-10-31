@@ -35,7 +35,7 @@ Route::get('/manudailyslot','AssignManufacturersController@dailyslots');
 Route::get('/monthlyreport','AssignManufacturersController@getreport');
 
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
-
+Route::get('/getprojectsize','HomeController@getProjectSize');
 
 
 // chatting
@@ -313,7 +313,7 @@ Route::post('/confirmedProject','HomeController@confirmedProject');
 Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
-
+Route::get('/lcoorders','logisticsController@orders');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');
@@ -334,7 +334,7 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/humanresources/{dept}','HomeController@getHRDept');
     Route::get('/finance','HomeController@getFinance');
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
-    Route::get('/getprojectsize','HomeController@getProjectSize');
+    
     Route::get('/ampricing','HomeController@ampricing');
     Route::get('/setprice','HomeController@setprice');
 
@@ -622,7 +622,7 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
 //Logistics
 Route::group(['middleware'=>['Logistics']],function(){
     Route::get('/lcodashboard','logisticsController@dashboard');
-    Route::get('/lcoorders','logisticsController@orders');
+   
     Route::get('/lcoreport','logisticsController@report');
     Route::get('/showProjectDetails','logisticsController@showProjectDetails');
     Route::get('/confirmDelivery','logisticsController@confirmDelivery');

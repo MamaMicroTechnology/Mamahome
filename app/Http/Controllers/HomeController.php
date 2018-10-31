@@ -433,7 +433,7 @@ class HomeController extends Controller
             }
 
         }elseif(!$request->from && !$request->to && !$request->initiator && !$request->category && $request->ward && $request->enqward){
-
+          
            if($request->ward == "All"){
             $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
             }else{
@@ -449,8 +449,9 @@ class HomeController extends Controller
             $converter = user::get();
             $totalenq = count($enquiries);
             
-        }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward){
+        }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward && !$request->enqward){
             // only category
+
             $enquiries = Requirement::where('main_category',$request->category)
                         ->where('status','!=',"Enquiry Cancelled")
                  ->orderby('created_at','DESC')
@@ -474,6 +475,7 @@ class HomeController extends Controller
 
         }elseif($request->from && $request->to && $request->initiator && $request->category && $request->ward && $request->enqward){
             // everything
+        
             if($request->ward == "All"){
             $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
             }else{
@@ -529,8 +531,6 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 
                 ->get();
-
-           dd($enquiries);
                 $converter = user::get();
             $totalenq = count($enquiries);
 
@@ -742,8 +742,8 @@ class HomeController extends Controller
 
                             }
                         }
-          elseif($request->enqward){
-
+          elseif($request->enqward && !$request->category  && !$request->from && !$request->to && !$request->initiator && !$request->ward){
+           // only ward
           $wardtotal = Subward::where('ward_id',$request->enqward)->pluck('id');
           $pro = ProjectDetails::whereIn('sub_ward_id',$wardtotal )->pluck('project_id');
 
@@ -754,6 +754,22 @@ class HomeController extends Controller
                        
             $converter = user::get();
             $totalenq = count($enquiries);
+        }
+        elseif($request->category && $request->enqward && !$request->from && !$request->to && !$request->initiator && !$request->ward){
+          
+            // ward and category
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');
+            $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                        ->whereIn('project_details.sub_ward_id',$subwardid)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
+                        ->where('main_category',$request->category)
+                        ->where('status','!=',"Enquiry Cancelled")
+                        ->orderby('requirements.created_at','DESC')
+                        ->get();
+                        
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
         }
         else{
             // no selection
@@ -1539,7 +1555,14 @@ class HomeController extends Controller
         $fake = ProjectDetails::where('quality',"FAKE")->count();
         $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
         $le = User::where('group_id','6')->get();
-        $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
+        $notes = ProjectDetails::groupBy('with_cont')
+                    ->where('with_cont','!=',"DUPLICATE NUMBER")
+                    ->where('with_cont','!=',"FINISHING")
+                    ->where('with_cont','!=',"NOT INTERESTED")
+                    ->where('with_cont','!=',"PROJECT CLOSED")
+                    ->where('with_cont','!=',"THEY HAVE REGULAR SUPPLIERS")
+                    ->where('with_cont','!=',"WRONG NO")
+                    ->pluck('with_cont');
         $count = array();
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
@@ -2231,7 +2254,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $projectlist = ProjectDetails::where('quality',$request->quality)
             ->where('sub_ward_id',$assignment)
             ->get();
-            dd();
+          
         }
 
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
@@ -4636,6 +4659,7 @@ $upvcInt = explode(",", $upvc);
     }
     public function viewDailyReport($uId, $date){
 
+        
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
         // $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
@@ -5269,6 +5293,7 @@ $upvcInt = explode(",", $upvc);
         }
         else{
             $projects = "None";
+                       
         }
          $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users,'projectimages'=>$projectimages]);
@@ -8251,13 +8276,13 @@ public function display(request $request){
         $dd= $request->type;
         if($request->type){
             $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
-                    ->get();
-           $count = count($manufacturers);
+                    ->paginate(20);
+           $count = Manufacturer::where('manufacturer_type',$request->type)->count();
                     
          }else{
 
-        $manufacturers = Manufacturer::get();
-          $count = count($manufacturers);
+        $manufacturers = Manufacturer::paginate(20);
+          $count = Manufacturer::count();
          }
 
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
@@ -8271,14 +8296,14 @@ public function viewManufacturer1(Request $request)
           $his = History::get();
          if($request->type){
             $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)
-                    ->get();
-    $count = count($manufacturers);
+                    ->paginate(20);
+    $count = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)->count();
 
          }else{
 
         $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)
-                    ->get();
-    $count = count($manufacturers);
+                    ->paginate(20);
+    $count = Manufacturer::whereIn('sub_ward_id',$ward)->count();
          }
                    
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);

@@ -722,19 +722,20 @@ public function getproject(request $request){
         }
     } 
     public function addLocation(Request $request){
-        $check = TrackLocation::where('user_id',$request->user_id)
-                        ->where('date',$request->date)->first();
-        if(count($check)==0){
-                $data = new TrackLocation;
-                $data->user_id = $request->user_id;
-                $data->lat_long = $request->lat_long;
-                $data->time = $request->time;
-                $data->date = $request->date;
-                $data->kms = $request->kms;
-       }else{
-
-                return $this->updateLocation($request);
+         $check = TrackLocation::where('user_id',$request->user_id)->where('date',$request->date)->first();
+	if(count($check) == 0){
+       
+        $data = new TrackLocation;
+        $data->user_id = $request->user_id;
+        $data->lat_long = $request->lat_long;
+        $data->time = $request->time;
+        $data->date = $request->date;
+        $data->kms = $request->kms;
        }
+	else{
+		return $this->updateLocation($request);
+	}
+
         if($data->save()){
             $responseData = array('success'=>'1', 'data'=>$data, 'message'=>"Location added to table");
             $userResponse = json_encode($responseData);
@@ -1194,6 +1195,6 @@ public function wardandsubward(request $request){
     $subwards = SubWard::all();
     $wardmap = WardMap::all();
     $subwardmap = SubWardMap::all();
-    return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards.'wardmap'=>$wardmap,'suwardmap'=>$subwardmap]);
+    return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards,'wardmap'=>$wardmap,'suwardmap'=>$subwardmap]);
 }
 }
