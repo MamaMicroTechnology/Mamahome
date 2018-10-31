@@ -4715,7 +4715,8 @@ $upvcInt = explode(",", $upvc);
     }
     public function confirmedProject(Request $request){
 
-              ProjectDetails::where('project_id',$request->id)->increment('confirmed');
+           ProjectDetails::where('project_id',$request->id)->increment('confirmed');
+
            $call  = date('Y-m-d');
            $check = Activity::where('subject_id',$request->id)->where('created_at','like',$call."%")->where('subject_type','App\ProjectDetails')->where('description','updated')->where('called',"null")->first();
            $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
@@ -4731,7 +4732,27 @@ $upvcInt = explode(",", $upvc);
         }
         return redirect()->back();
     }
-
+public function confirmedvisit(Request $request){
+          dd($request->id);
+        ProjectDetails::where('project_id',$request->id)->increment('visit');
+          
+           $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
+           $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
+           $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
+           $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
+           $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+            $projectvisit = new ProjectUpdate;
+            $projectvisit->project_id =$project_id;
+            $projectvisit->user_id =$user_id;
+            $projectvisit->location =$request->address;
+            $projectvisit->lat =$request->latitude;
+            $projectvisit->lag =$request->longitude;
+            $projectvisit->sub_ward_id =$subward;
+            $projectvisit->quality =$quality;
+            $projectvisit->cat_id =$cat;
+            $projectvisit->save();
+  return redirect()->back();
+    }
  public function confirmedmanufacture(Request $request){
 
            $check = Manufacturer::where('id',$request->id)->first();

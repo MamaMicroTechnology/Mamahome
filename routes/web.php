@@ -310,6 +310,7 @@ Route::post('/confirmUser','mamaController@confirmUser');
 Route::post('/addProject','mamaController@addProject');
 Route::post('/{id}/salesUpdateProject','mamaController@salesUpdateProject');
 Route::post('/confirmedProject','HomeController@confirmedProject');
+Route::post('/confirmedvisit','HomeController@confirmedvisit');
 Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');

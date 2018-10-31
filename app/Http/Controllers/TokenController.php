@@ -72,8 +72,6 @@ use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
 use App\Banner;
-use App\WardMap;
-use App\SubWardMap;
 use Spatie\Activitylog\Models\Activity;
 
 use App\Http\Resources\Message as MessageResource;

@@ -23,8 +23,10 @@
                  <th>Action</th>
                  @if(Auth::user()->group_id == 23)
                 <th>Customers Interested Categories</th>
+                 <th>Project Visit</th>
                 @endif
                  <th> Customer History</th>
+
                </thead>
                 <tbody>
              <?php $ii=0; ?>
@@ -129,8 +131,21 @@
                                    Customers Interested Categories </button>
 
                     </td>
-                    @endif
                     <td>
+                    <form method="post"  action="{{ URL::to('/') }}/confirmedvisit" >
+                                      {{ csrf_field() }}
+                       <input type="hidden" name="id" value="{{$project->project_id}}">  
+                       <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
+                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                    <input class="hidden" id="address" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">             
+                    <button  type="button" id="myform"  style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" name="visit" onclick="getvisitLocation()">Visited
+                                   <span class="badge">&nbsp;{{  $project->visit }}&nbsp;</span>
+                                   </button>
+                    @endif
+                  </form>
+                </td>
+                    <td>
+
                       <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
                                    History </button>
 
@@ -799,8 +814,8 @@ function updatemat(arg)
 <!-- get location -->
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
-  function getLocation(){
-      document.getElementById("getBtn").className = "hidden";
+  function getvisitLocation(){
+      // document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(
@@ -821,9 +836,11 @@ function updatemat(arg)
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
+    
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);
+
       getAddressFromLatLang(latitude,longitude);
       //console.log("Exiting displayCurrentLocation");
     }
@@ -845,15 +862,20 @@ function updatemat(arg)
   }
   function getAddressFromLatLang(lat,lng){
     //console.log("Entering getAddressFromLatLang()");
+   
     var geocoder = new google.maps.Geocoder();
     var latLng = new google.maps.LatLng(lat, lng);
+    
     geocoder.geocode( { 'latLng': latLng}, function(results, status) {
         // console.log("After getting address");
         // console.log(results);
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[0]) {
         // console.log(results);
+
         document.getElementById("address").value = results[0].formatted_address;
+        document.getElementById("myform").form.submit();
+
       }
     }else{
         alert("Geocode was not successful for the following reason: " + status);
@@ -972,8 +994,8 @@ function dis(){
 
     if (document.getElementById("a").checked){
         document.getElementById('b').disabled=true;
-}
 
+}
 
 </script>
 

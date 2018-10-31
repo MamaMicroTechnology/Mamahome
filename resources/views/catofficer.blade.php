@@ -68,7 +68,7 @@
                 <table class="table table-striped" border="1">
                 	<tr>
                 		<th>Name</th>
-                		<th>Projects Updated</th>
+                		<th>Projects Visited</th>
                 		<th>Enquiry Added</th> 
                 		<th>Genuine</th>
                 		<th>call</th>
@@ -98,8 +98,8 @@
             <table class='table pull-right' border="1" style="width:100%;margin-left:50%;">
                 <thead>
                     <tr>
-                        <th style="text-align:center">Subward Number</th>
                         <th style="text-align:center">Project-ID</th>
+                        <th style="text-align:center">Subward Name</th>
                         <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center">Updated Location</th>
@@ -108,13 +108,16 @@
                 </thead>
                 <tbody id="mainPanel">
                         @foreach($str as $sales)
+{{$sales->subwardids != null ? $sales->subwardids->sub_ward_name : ''}}
+
                        <tr>
                         <td style="text-align:center">
-                       <a href="{{ URL::to('/')}}/viewsubward?projectid={{$sales->project_id}} && subward={{ $sales->subward->sub_ward_name }}" target="_blank">
-                                {{ $sales->subward != null ? $sales->subward->sub_ward_name :''  }}
-                                    </a></td>
-                        <td style="text-align:center">
                         	<a href="{{URL::to('/')}}/showThisProject?id={{$sales->project_id}}">{{$sales->project_id}}</a>
+                        </td>
+                        <td style="text-align:center">
+                       <a href="{{ URL::to('/')}}/viewsubward?projectid={{$sales->project_id}} && subward={{$sales->sub_ward_id}}" target="_blank">
+                                {{$sales->sub_ward_id}}
+                                    </a>
                         </td>
                         <td style="text-align:center">{{ $sales->user != null ? $sales->user->name :''  }}</td>
                         <td style="text-align:center">{{$sales->quality}}</td>
