@@ -3677,7 +3677,7 @@ date_default_timezone_set("Asia/Kolkata");
                     $projectids = $datec;
                 }
             }
-
+    dd($projectids);
 
             $rmcInt = explode(",", $rmc);
             if($rmcInt[0] != "null"){
