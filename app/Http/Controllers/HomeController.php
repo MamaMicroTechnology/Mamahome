@@ -3821,7 +3821,7 @@ $upvcInt = explode(",", $upvc);
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->get();
-         dd($projects);
+        
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
           if(Auth::user()->group_id == 23){
