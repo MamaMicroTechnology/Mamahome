@@ -2740,7 +2740,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             return back()->with('earlylogout',$text); 
             }
             else{
-                if($logout == null){
+                if($logout != null){
                   
                     for($i = 0; $i < count($request->report); $i++){
                         $report = new Report;
