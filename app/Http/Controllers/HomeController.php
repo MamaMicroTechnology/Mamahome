@@ -3817,7 +3817,7 @@ $upvcInt = explode(",", $upvc);
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
        
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                    ->whereNotIn('project_id',$projectOrdersReceived)
+ 
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->get();
