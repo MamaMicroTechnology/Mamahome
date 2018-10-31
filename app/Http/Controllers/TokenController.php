@@ -72,6 +72,8 @@ use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
 use App\Banner;
+use App\WardMap;
+use App\SubWardMap;
 use Spatie\Activitylog\Models\Activity;
 
 use App\Http\Resources\Message as MessageResource;
@@ -1190,6 +1192,8 @@ public function postSaveManufacturer(Request $request)
 public function wardandsubward(request $request){
     $wards = Ward::all();
     $subwards = SubWard::all();
-    return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards]);
+    $wardmap = WardMap::all();
+    $subwardmap = SubWardMap::all();
+    return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards.'wardmap'=>$wardmap,'suwardmap'=>$subwardmap]);
 }
 }
