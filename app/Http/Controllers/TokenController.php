@@ -1187,6 +1187,10 @@ public function postSaveManufacturer(Request $request)
         }
         return response()->json(['message'=>"Manufacturer Added Successfully"]);
     }
-
+   public function wardandsubward(request,$request){
+    $wards = Ward::all();
+    $subwards = SubWard::all();
+    return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards]);
+     }
 
 }
