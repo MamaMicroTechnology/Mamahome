@@ -3619,7 +3619,7 @@ date_default_timezone_set("Asia/Kolkata");
                 }
             }
    
-         dd( $projectids );
+         
             if($basement != null){
                 if(count($projectids) != 0){
                     $base = ProjectDetails::whereIn('project_id',$projectids)->where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
@@ -3678,7 +3678,7 @@ date_default_timezone_set("Asia/Kolkata");
                 }
             }
 
-
+dd( $projectids );
             $rmcInt = explode(",", $rmc);
             if($rmcInt[0] != "null"){
                 if(count($projectids) != 0){
