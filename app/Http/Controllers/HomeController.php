@@ -3813,16 +3813,7 @@ $upvcInt = explode(",", $upvc);
              
 
 
-        $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
-        if($checking != null){
-            $projectids = explode(", ",$checking);
-        }else{
-            if(is_array($projectids)){
-                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids)]);
-            }else{
-                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
-            }
-        }
+       
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
         dd($projectids);
         $projects = ProjectDetails::whereIn('project_id',$projectids)
