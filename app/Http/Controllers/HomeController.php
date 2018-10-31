@@ -3526,7 +3526,7 @@ date_default_timezone_set("Asia/Kolkata");
          // dd($ward."<br>".$assignedSubWards);
 
         $subwards = AssignStage::where('user_id',Auth::user()->id)->pluck('subward')->first();
-
+        dd( $subwards);
         $subwardNames = explode(", ", $subwards);
 
          if($subwards != "null"){
