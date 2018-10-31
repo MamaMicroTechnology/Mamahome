@@ -3820,7 +3820,7 @@ $upvcInt = explode(",", $upvc);
  
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
-                    ->get();
+                    ->paginate(20);
         
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
