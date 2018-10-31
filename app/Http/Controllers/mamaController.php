@@ -1882,7 +1882,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->save();
         return back();
     }
-    public function editEnquiry(Request $request)
+    
+     public function editEnquiry(Request $request)
     {
             if($request->note != null){
             Requirement::where('id',$request->eid)->update(['notes'=>$request->note]);
@@ -1895,15 +1896,12 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
-                if($requirement->manu_id){
-        	        $subward = SubWard::where('id',$project1->sub_ward_id)->first();
+                if(!$request->manu_id){
+                $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 }else{
-	                if(!$request->manu_id){
-		                $subward = SubWard::where('id',$project->sub_ward_id)->first();
-               		 }else{
-               			 $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
+                $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
               
-                	}
+                }
 
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
@@ -1959,10 +1957,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
          $activity->typeofactivity = "Enquiry Updated";
         $activity->activity = Auth::user()->name." has updated requirement id: ".$request->eid." as ".$request->note.$request->status;
         $activity->save();
-
         return back();
         }
-    
     public function editManualEnquiry(Request $request)
     {
         RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
