@@ -3811,7 +3811,7 @@ $upvcInt = explode(",", $upvc);
                 }
             }
              
-dd( $projectids );
+
 
         $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
         if($checking != null){
@@ -3824,6 +3824,7 @@ dd( $projectids );
             }
         }
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
+         dd( $projectids );
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     ->whereNotIn('project_id',$projectOrdersReceived)
                     // ->where('quality',"Unverified")
