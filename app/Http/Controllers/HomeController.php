@@ -3827,7 +3827,8 @@ $upvcInt = explode(",", $upvc);
                     // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
-                    ->paginate(15);
+                    ->get();
+         dd($projects);
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
           if(Auth::user()->group_id == 23){
@@ -3860,8 +3861,8 @@ $upvcInt = explode(",", $upvc);
                          ->whereNotIn('project_id',$spro)
                          ->select('project_details.*','project_id')
                          ->orderBy('project_id','ASC')
-                         ->get();
-    dd($projects);
+                         ->paginate(15);
+   
             }elseif($request->unupdate1){
                 $date = date('Y-m-d', strtotime('-30 days'));
               $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
