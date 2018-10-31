@@ -3860,8 +3860,8 @@ $upvcInt = explode(",", $upvc);
                          ->whereNotIn('project_id',$spro)
                          ->select('project_details.*','project_id')
                          ->orderBy('project_id','ASC')
-                         ->paginate(15);
-
+                         ->get();
+    dd($projects);
             }elseif($request->unupdate1){
                 $date = date('Y-m-d', strtotime('-30 days'));
               $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
