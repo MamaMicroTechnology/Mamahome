@@ -3815,7 +3815,7 @@ $upvcInt = explode(",", $upvc);
 
        
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
-        dd($projectids);
+       
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     ->whereNotIn('project_id',$projectOrdersReceived)
                     // ->where('quality',"Unverified")
