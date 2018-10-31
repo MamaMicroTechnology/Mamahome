@@ -3563,7 +3563,7 @@ date_default_timezone_set("Asia/Kolkata");
         $roomtypes = RoomType::all();
         $projectids = new Collection();
         $projects = ProjectDetails::whereIn('sub_ward_id',$subwardid)->pluck('project_id');
-        dd($projects);
+        
          if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
