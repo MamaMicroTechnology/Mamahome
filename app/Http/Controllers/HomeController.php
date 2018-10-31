@@ -3818,11 +3818,10 @@ $upvcInt = explode(",", $upvc);
        
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                     ->whereNotIn('project_id',$projectOrdersReceived)
-                    // ->where('quality',"Unverified")
-                    // ->Where('updated_at','LIKE',date('Y-m-d')."%")
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
-                    ->paginate(15);
+                    ->get();
+         dd($projects);
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
           if(Auth::user()->group_id == 23){
