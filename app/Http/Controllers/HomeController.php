@@ -3526,7 +3526,7 @@ date_default_timezone_set("Asia/Kolkata");
          // dd($ward."<br>".$assignedSubWards);
 
         $subwards = AssignStage::where('user_id',Auth::user()->id)->pluck('subward')->first();
-        dd( $subwards);
+        
         $subwardNames = explode(", ", $subwards);
 
          if($subwards != "null"){
@@ -3563,7 +3563,8 @@ date_default_timezone_set("Asia/Kolkata");
         $roomtypes = RoomType::all();
         $projectids = new Collection();
         $projects = ProjectDetails::whereIn('sub_ward_id',$subwardid)->pluck('project_id');
-        if(count($projects) > 0){
+        dd($projects);
+         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
         if(count($projectids) != 0){
