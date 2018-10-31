@@ -89,7 +89,7 @@
 						</div>
 					</div>
 				</div>
-			</form>
+			
 				
 				<br><br>
 				<div class="col-md-3" style="margin-top: -20px;">
@@ -120,7 +120,7 @@
 								</select>
 						</div>
 					</div>
-               
+               </form>
                 <br><br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
