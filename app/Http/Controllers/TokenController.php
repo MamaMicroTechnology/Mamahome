@@ -876,6 +876,14 @@ public function getproject(request $request){
                 return response()->json(['message'=>'Something went wrong']);
         }
     }
+  public function tracklogout(request $request){
+            $check = TrackLocation::where('user_id',$request->user_id)->where('date',date('Y-m-d'))->update(['tracklogout'=>$request->tracklogout]);
+        if($check->save()){
+                return response()->json(['message'=>'logout successfull']);
+        }else{
+                return response()->json(['message'=>'Something went wrong']);
+        }
+    }
     public function gettime(){
             $logintime = date('H:i:s');
             return response()->json(['message'=>$logintime]);
