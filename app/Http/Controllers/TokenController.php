@@ -310,6 +310,7 @@ class TokenController extends Controller
             $loginTime->logindate = date('Y-m-d');
             $loginTime->loginTime = date('H:i A');
             $loginTime->tracktime = date('H:i A');
+	    $loginTime->applogintime = $request->applogintime;
             $loginTime->save();
             //    DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
         }else{
