@@ -11,11 +11,11 @@ class ProjectUpdate extends Model
     public function user(){
         return $this->belongsTo('App\User','user_id','id');
     }
- public function subward()
+   public function subwardids()
     {
       return $this->hasOne('App\SubWard','id','sub_ward_id');
     
-    }
+    } 
     public function siteaddress()
     {
     	return $this->hasOne("App\SiteAddress",'project_id','project_id');

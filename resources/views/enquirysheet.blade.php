@@ -89,7 +89,6 @@
 						</div>
 					</div>
 				</div>
-			</form>
 				
 				<br><br>
 				<div class="col-md-3" style="margin-top: -20px;">
@@ -112,7 +111,7 @@
 						</div>
 					
 						<div class="col-md-6">
-							<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
+							<select id="categ" class="form-control" name="manu" onclick ="this.form.submit()">
 									<option value="">--Select--</option>
 									<option value="manu">All</option>
 									<option value="Enquiry On Process">Enquiry On Process</option>
@@ -120,6 +119,7 @@
 								</select>
 						</div>
 					</div>
+			</form>
                
                 <br><br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">

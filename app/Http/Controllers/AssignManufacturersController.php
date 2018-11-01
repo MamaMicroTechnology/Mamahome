@@ -418,7 +418,7 @@ public function addcat(request $request){
 }
  public function catsalesreports(Request $request)
        {
-
+                 $subward = Subward::all();
             if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
                   $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->get();
@@ -506,7 +506,7 @@ public function addcat(request $request){
            }
 
            return view('catofficer',['users'=>$users,'str'=>$str,
-                   'noOfCalls'=>$noOfCalls
+                   'noOfCalls'=>$noOfCalls,'subward'=>$subward
 
                ]);
        }

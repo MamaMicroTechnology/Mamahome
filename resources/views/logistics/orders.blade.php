@@ -1,5 +1,8 @@
-
-@extends('layouts.leheader')
+<?php
+    $use = Auth::user()->group_id;
+    $ext = ($use == 1? "layouts.app":"layouts.leheader");
+?>
+@extends($ext)
 @section('content')
 
 <div class="col-md-12 col-sm-12">

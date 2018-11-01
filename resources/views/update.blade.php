@@ -976,7 +976,7 @@ function check(arg){
 </script>
 <!--This line by Siddharth -->
 
-<script type="teinputt/javascript">
+<script type="text/javascript">
   $(document).ready(function(){
       count();
   });

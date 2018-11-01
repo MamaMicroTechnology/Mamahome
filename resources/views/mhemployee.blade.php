@@ -76,7 +76,7 @@
                           <br>
                           <br>
 
-                          <div id="name" class="hidden">
+                          <div id="name">
                           @foreach($users as $user)
                           <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >
                           <div id="" style="overflow: hidden;" class="col-md-3 col-md-offset-1">
@@ -278,7 +278,7 @@ $(document).ready(function () {
         a = p[i].getElementsByTagName("p")[0];
         b = p[i].getElementsByTagName("p")[1];
         if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            document.getElementById("name").className = "show";
+             p[i].style.display = "";
         } else {
             p[i].style.display = "none";
         }

@@ -1182,10 +1182,10 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+       <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
-       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
         <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
 
@@ -1200,10 +1200,6 @@ function myTimer() {
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
     <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
     <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
-
-
-      
-<!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
         <div id="sales" class="collapse">
@@ -1253,8 +1249,6 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
      <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
-
-
 </div>  
 
 
@@ -1263,7 +1257,7 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
-    <a  id="updates" data-toggle="modal" data-target="#mytask"  >Assigned Task</a>
+   <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
@@ -1304,15 +1298,9 @@ function myTimer() {
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     @if(isset($stages))
-       @if($stages->project_ids == null)
-       <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
-       @else
-        <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
-       @endif
-     @else
+     
      <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
-     @endif
+    
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
      

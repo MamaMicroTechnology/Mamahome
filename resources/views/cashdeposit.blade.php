@@ -85,12 +85,12 @@
                             {{ csrf_field() }}
                                 <input type="hidden" name="orderid" value="{{ $view->orderId }}">
 
-                               <select class="form-control" name="satus" style="width:50%;" onchange="this.form.submit()">
+                               <select class="form-control" name="status" style="width:50%;" onchange="this.form.submit()">
 
-                                  <option value="">----Select----</option>
+                                  <option  value="">----Select----</option>
                                  
-                                  <option {{ $view->order->payment_status == "Closed" ? 'selected' : '' }} value="Closed" >Closed</option>
-                                  <option {{ $view->order->payment_status == "processing" ? 'selected' : '' }} value=" processing"> Processing</option>
+                                  <option  {{ $view->order->payment_status == "Closed" ? 'selected' : '' }} value="Closed" >Closed</option>
+                                  <option  {{ $view->order->payment_status == "Processing" ? 'selected' : '' }} value=" Processing"> Processing</option>
 
                                 </select>
 

@@ -200,7 +200,7 @@ class mamaController extends Controller
         $zone = New Zone;
         $zone->country_id = $request->sId;
         $zone->zone_name = $request->zone_name;
-        $zone->zone_number = $request->zone_no;
+        $zone->zone_number = "Z".$request->zone_no;
         $zone->zone_image = $imageName1;
         $zone->save();
         return back();
@@ -1095,25 +1095,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->sub_ward_id = $project;
         $activity->typeofactivity = "Updated Project" ;
         $activity->save();
-       
-        if(Auth::user()->group_id != 6 && Auth::user()->group_id != 17){
-        $qproject = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
-        $project = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
-         $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-        $projectupdate = new ProjectUpdate;
-        $projectupdate->project_id = $id;
-        $projectupdate->user_id = Auth::user()->id;
-        $projectupdate->lat = " ";
-        $projectupdate->lag = " ";
-        $projectupdate->location = "";
-        $projectupdate->sub_ward_id = $project;
-        $projectupdate->quality=$qproject;
-        $projectupdate->cat_id=$cat;
-        $projectupdate->save();
-            
-        }
-
-
         return back()->with('Success','Updated Successfully');
     }
     // uses gtracing column to store morning meter reading
@@ -1882,7 +1863,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->save();
         return back();
     }
-    public function editEnquiry(Request $request)
+    
+     public function editEnquiry(Request $request)
     {
             if($request->note != null){
             Requirement::where('id',$request->eid)->update(['notes'=>$request->note]);
@@ -1958,7 +1940,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $activity->save();
         return back();
         }
-    
     public function editManualEnquiry(Request $request)
     {
         RecordData::where('id',$request->id)->update(['rec_remarks'=>$request->note]);
@@ -2617,7 +2598,12 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
     }
     public function latelogin(Request $request){
-        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        if(Auth::user()->group_id == 1){
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        }
+        else{  
+             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
+        }
         $userIds = explode(",", $tl);
         $users = FieldLogin::whereIn('user_id',$userIds)->where('logindate',date('Y-m-d'))
         ->where('remark','!='," ")
@@ -2731,7 +2717,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             return back()->with('earlylogout',$text); 
             }
             else{
-                if($logout == null){
+                if($logout != null){
                   
                     for($i = 0; $i < count($request->report); $i++){
                         $report = new Report;
