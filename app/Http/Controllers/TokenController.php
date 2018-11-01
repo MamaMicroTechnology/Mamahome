@@ -879,7 +879,7 @@ public function getproject(request $request){
     }
   public function tracklogout(request $request){
             $check = TrackLocation::where('user_id',$request->user_id)->where('date',date('Y-m-d'))->update(['tracklogout'=>$request->tracklogout]);
-        if($check->save()){
+        if($check){
                 return response()->json(['message'=>'logout successfull']);
         }else{
                 return response()->json(['message'=>'Something went wrong']);
