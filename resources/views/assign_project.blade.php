@@ -12,9 +12,7 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-            
                      <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
-                    
                 </div>
                 <div class="panel-body">  
                      
@@ -90,17 +88,15 @@
              <!--  <a href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary btn-sm ">Click Here To get Projects Count </a><br><br> -->
            <b>Instructions</b> <textarea required type="text" name="inc" cols="5" rows="7" class="form-control"   style="width:90%;resize:none;"></textarea>
              </div>
-           </div><br>
-           <button type="submit" value="submit" id="time" onclick="submit()" class="btn btn-primary">Submit</button>
+           </div>
          </div>  
-
-
          </form>
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+           <button type="submit" value="submit" id="time" onclick="submit()" class="btn btn-primary">Submit</button>
+          <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
         </div>
         
       </div>

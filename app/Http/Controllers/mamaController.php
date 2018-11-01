@@ -974,7 +974,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             $projectdetails->call_attended_by = Auth::user()->id;
             $projectdetails->save();
        
-
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
             'owner_email' => $request->oEmail,

@@ -3,9 +3,7 @@
 	$ext = ($user == 4? "layouts.amheader":"layouts.app");
 ?>
 @extends($ext)
-
 @section('content')
-
 <div class="">
 	<div class="col-md-12">
 		<div class="panel panel-primary">

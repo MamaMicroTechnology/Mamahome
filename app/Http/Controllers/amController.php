@@ -821,8 +821,7 @@ class amController extends Controller
         $group = array();
         foreach($groups as $group){
                 $grp[$group->id] = User::where('group_id',$group->id)
-                ->where('department_id','!=',10)
-               
+                ->where('department_id','!=',10)    
                 ->where('id','!=',27)
                 ->where('id','!=',28) 
                 ->where('id','!=',101)

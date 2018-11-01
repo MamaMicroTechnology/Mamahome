@@ -11,12 +11,13 @@
   
   <link rel="stylesheet" href="alert/dist/sweetalert.css">
  <script src="alert/dist/sweetalert-dev.js"></script>
-
-  <title></title>
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+<title></title>
 </head>
 <body>
 <div class="topnav">
-  <a class="active"  href="javascript:history.back()" style="font-size:1.1em;font-family:Times New Roman;margin-left:15%;">Home</a>
+  <a class="active" href="{{ URL::to('/') }}/home" style="font-size:1.1em;font-family:Times New Roman;margin-left:15%;">Home</a>
 </div><br><br>
 <style>
 * {box-sizing: border-box;}
@@ -108,11 +109,7 @@ margin-left: 0;
 
                 <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
                 </div>
-                <div class="panel-body">
-                   @if (session()->has('success'))
-                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
-                  @endif
-                    
+                <div class="panel-body">  
     <form method="POST" id="assign" action="{{ url('/tlward')}}" >
     {{ csrf_field() }}
     <input type="hidden" id="username" name="user_id">
@@ -331,7 +328,11 @@ var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
   }
 }
 </script>  
-
+@if(session('success'))
+<script>
+    swal("Success","{{ session('success') }}","success");
+</script>
+@endif
 </body>
 </html>
 

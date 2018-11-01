@@ -1,7 +1,7 @@
 
 <?php
-    $use = Auth::user()->group_id;
-    $ext = ($use == 1? "layouts.app":"layouts.leheader");
+    $grp = Auth::user()->group_id;
+    $ext = ($grp == 1? "layouts.app":"layouts.leheader");
 ?>
 @extends($ext)
 @section('content')
