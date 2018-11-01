@@ -3912,6 +3912,7 @@ $upvcInt = explode(",", $upvc);
         $category = Category::all();
         $sales = Salesofficer::all();
         $orders = Order::all();
+        $projectupdat=ProjectUpdate::all(); 
        return view('salesengineer',[
                 'projects'=>$projects,
                 'roomtypes'=>$roomtypes,
@@ -3922,7 +3923,8 @@ $upvcInt = explode(",", $upvc);
                 'log'=>$log,
                 'log1'=>$log1,
                 'category'=>$category,
-                'sales'=>$sales
+                'sales'=>$sales,
+                'projectupdat'=>$projectupdat
 
 
             ]);

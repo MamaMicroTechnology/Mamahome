@@ -228,8 +228,44 @@
                                       @endif
                                        @endforeach
                                     </tbody>
+                        </table><br>
+                        @if(Auth::user()->group_id == 23)
+                        <table class="table table-responsive table-hover">
+                                       <thead>
+                                          <!-- <th>User_id</th> -->
+                                          <th>No</th>
+                                          <th>Visit Date</th>
+                                          <th>Visit Time</th>
+                                          <th>Name</th>
+                                       </thead>
+                                       <tbody>
+                                     <label>Project Visit History</label>
+
+                                         <?php $i=1 ?>
+                                          @foreach($projectupdat as $yadav)
+                                          @if($yadav->project_id == $project->project_id)
+                                          <tr>
+                                           <!--  <td>
+                                              {{ $call->user_id }}
+                                            </td> -->
+                                           
+                                            <td>{{ $i++ }}</td>
+                                            <td>
+                                              {{ date('d-m-Y', strtotime($yadav->created_at)) }}
+                                            </td>
+                                            <td>
+                                              {{ date('h:i:s A', strtotime($yadav->created_at)) }}
+                                            </td>
+                                            <td>
+                                             {{$yadav->user != null ? $yadav->user->name :'' }}
+                                            </td>
+                              
+                                          </tr>
+                                      @endif
+                                       @endforeach
+                                    </tbody>
                         </table>
-                                      
+                      @endif                
         </div>
         <div class="modal-footer" style="padding:1px;">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -835,7 +871,6 @@ function updatemat(arg)
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
-    alert(longitude);
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);
