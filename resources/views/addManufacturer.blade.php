@@ -25,7 +25,7 @@
                        @endforeach
                      </select>
                  @else 
-                 Senior TL
+                 <div style="color:white;">Senior TL</div>
                   @endif
                             <div id="currentTime" class="pull-right" style="color:#ffffffe3;margin-top:-25px;"></div>
                             

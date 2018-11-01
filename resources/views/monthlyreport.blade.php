@@ -4,7 +4,8 @@
     <div class="col-md-12">
         <div class="panel panel-default" style="border-color:#337ab7">
             <div class="panel-heading text-center" style="background-color:#337ab7">
-                <b style="color:white">Get Report</b>
+                <b style="color:white">Sales Mini Report (30 Days)
+               </b>
             </div>
             <div class="panel-body">
              <form action="{{ URL::to('/') }}/monthlyreport" method="GET" enctype="multipart/form-data"> 
@@ -20,13 +21,13 @@
                  </div>
                 <div class="col-md-2">
                  <h4><b>Select From Date</b></h4>
-                    <input value="{{ isset($_GET['fromdate']) ? $_GET['fromdate'] : '' }}" type="date" name="fromdate"  style="width:100%;" required>
+                    <input class="form-control" value="{{ isset($_GET['fromdate']) ? $_GET['fromdate'] : '' }}" type="date" name="fromdate"  style="width:100%;" required>
                 </div>
                    
 
                <div class="col-md-2">
                    <h4><b>Select To Date</b></h4>
-                   <input value="{{ isset($_GET['todate']) ? $_GET['todate'] : '' }}" type="date" name="todate" style="width:100%;" required>
+                   <input class="form-control" value="{{ isset($_GET['todate']) ? $_GET['todate'] : '' }}" type="date" name="todate" style="width:100%;" required>
                      
                    </textarea>
                  </div> 
@@ -38,7 +39,7 @@
 
             </div>
             </form>
-            <center><h2 style="color:green;">30 Days Mini Report</h2></center>
+            
 <table  class="table" border="1">
                 <thead>
                     <tr>
