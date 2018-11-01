@@ -33,6 +33,8 @@ Route::get('buyerlogin','TokenController@buyerLogin');
 
 Route::get('/login','TokenController@getLogin');
 Route::get('/tracklogin','TokenController@tracklogin');
+Route::get('/tracklogout','TokenController@tracklogout');
+
 
 
 Route::get('logout','TokenController@logout');
