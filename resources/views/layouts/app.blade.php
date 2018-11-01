@@ -1257,7 +1257,7 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
-    <a  id="updates" data-toggle="modal" data-target="#mytask"  >Assigned Task</a>
+   <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
@@ -1298,15 +1298,9 @@ function myTimer() {
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     @if(isset($stages))
-       @if($stages->project_ids == null)
-       <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
-       @else
-        <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
-       @endif
-     @else
+     
      <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
-     @endif
+    
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
      

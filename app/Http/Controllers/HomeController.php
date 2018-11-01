@@ -3486,7 +3486,7 @@ date_default_timezone_set("Asia/Kolkata");
        return back();
     }
 
-    public function projectsUpdate(Request $request)
+     public function projectsUpdate(Request $request)
     {   
         
         $date=date('Y-m-d');
@@ -3527,7 +3527,6 @@ date_default_timezone_set("Asia/Kolkata");
 
         $subwards = AssignStage::where('user_id',Auth::user()->id)->pluck('subward')->first();
         
-
         $subwardNames = explode(", ", $subwards);
 
          if($subwards != "null"){
@@ -3564,7 +3563,8 @@ date_default_timezone_set("Asia/Kolkata");
         $roomtypes = RoomType::all();
         $projectids = new Collection();
         $projects = ProjectDetails::whereIn('sub_ward_id',$subwardid)->pluck('project_id');
-        if(count($projects) > 0){
+        
+         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
         if(count($projectids) != 0){
@@ -3618,6 +3618,8 @@ date_default_timezone_set("Asia/Kolkata");
                     $projectids = $grd;
                 }
             }
+   
+         
             if($basement != null){
                 if(count($projectids) != 0){
                     $base = ProjectDetails::whereIn('project_id',$projectids)->where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
@@ -3675,7 +3677,7 @@ date_default_timezone_set("Asia/Kolkata");
                     $projectids = $datec;
                 }
             }
-
+    
 
             $rmcInt = explode(",", $rmc);
             if($rmcInt[0] != "null"){
@@ -3811,24 +3813,15 @@ $upvcInt = explode(",", $upvc);
              
 
 
-        $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
-        if($checking != null){
-            $projectids = explode(", ",$checking);
-        }else{
-            if(is_array($projectids)){
-                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids)]);
-            }else{
-                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
-            }
-        }
+       
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
+       
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                    ->whereNotIn('project_id',$projectOrdersReceived)
-                    // ->where('quality',"Unverified")
-                    // ->Where('updated_at','LIKE',date('Y-m-d')."%")
+ 
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
-                    ->paginate(15);
+                    ->paginate(20);
+        
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
           if(Auth::user()->group_id == 23){
@@ -3934,7 +3927,6 @@ $upvcInt = explode(",", $upvc);
 
             ]);
     }
-
  public function dailywiseProjects(Request $request){
         $today = date('Y-m-d');
         $date = date('Y-m-d',strtotime('-1 day',strtotime($today)));
