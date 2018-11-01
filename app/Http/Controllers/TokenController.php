@@ -292,11 +292,11 @@ class TokenController extends Controller
         $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         if($subwards == null){
-            $subwards = null;
+            $subward = null;
         }else{
-            $subwards = $subwards->sub_ward_name;
+            $subward = $subwards->sub_ward_name;
         }
-        dd($subwards->id);
+  
         $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
 	if($subwardMap == null){
 	$latlon = null;
@@ -326,7 +326,7 @@ class TokenController extends Controller
                 ->json(['message' => 'true',
                     'userid'=>$userdetails->id,
                     'userName'=>$userdetails->name,
-                    'wardAssigned'=>$subwards,
+                    'wardAssigned'=>$subward,
          	    'latlon'=>$latlon,
 		    'mode'=>$mode
                 ]);
