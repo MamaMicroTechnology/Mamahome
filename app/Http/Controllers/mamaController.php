@@ -974,7 +974,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             $projectdetails->call_attended_by = Auth::user()->id;
             $projectdetails->save();
        
-
         OwnerDetails::where('project_id',$id)->update([
             'owner_name' => $request->oName,
             'owner_email' => $request->oEmail,
@@ -2736,7 +2735,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             return back()->with('earlylogout',$text); 
             }
             else{
-                if($logout == null){
+                if($logout != null){
                   
                     for($i = 0; $i < count($request->report); $i++){
                         $report = new Report;
