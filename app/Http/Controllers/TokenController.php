@@ -281,7 +281,7 @@ class TokenController extends Controller
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
-	$modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id');
+	$modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id')->first();
 		dd($modes);
 		if($modes == "6" || $modes == "11"){
 			$mode = 0;
