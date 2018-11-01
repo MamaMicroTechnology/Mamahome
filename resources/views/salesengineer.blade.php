@@ -135,11 +135,11 @@
                     <form method="post"  action="{{ URL::to('/') }}/confirmedvisit" >
                                       {{ csrf_field() }}
                        <input type="hidden" name="id" value="{{$project->project_id}}">  
-                       <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
-                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
-                                    <input class="hidden" id="address" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">             
-                    <button  type="button" id="myform"  style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" name="visit" onclick="getvisitLocation()">Visited
-                                   <span class="badge">&nbsp;{{  $project->visit }}&nbsp;</span>
+                       <input  type="hidden" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
+                                    <input  type="hidden" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                    <input id="address" type="hidden" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">             
+                    <button id="myform" style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" name="visit" onclick="getvisitLocation()">Visited
+                                   <span class="badge">&nbsp;{{  $project->deleted }}&nbsp;</span>
                                    </button>
                     @endif
                   </form>
@@ -822,6 +822,7 @@ function updatemat(arg)
         displayCurrentLocation,
         displayError,
         { 
+      
           maximumAge: 3000, 
           timeout: 5000, 
           enableHighAccuracy: true 
@@ -830,13 +831,14 @@ function updatemat(arg)
       alert("Oops.. No Geo-Location Support !");
     } 
       //console.log("Exiting getLocation()");
-  }
+  
     
     function displayCurrentLocation(position){
+
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
-    
+    alert(longitude);
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);
@@ -867,12 +869,11 @@ function updatemat(arg)
     var latLng = new google.maps.LatLng(lat, lng);
     
     geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
+        console.log("After getting address");
         // console.log(results);
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[0]) {
-        // console.log(results);
-
+        console.log(results);
         document.getElementById("address").value = results[0].formatted_address;
         document.getElementById("myform").form.submit();
 
@@ -883,6 +884,7 @@ function updatemat(arg)
     });
     //console.log("Entering getAddressFromLatLang()");
   }
+}
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>

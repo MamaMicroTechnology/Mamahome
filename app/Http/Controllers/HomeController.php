@@ -3526,6 +3526,7 @@ date_default_timezone_set("Asia/Kolkata");
          // dd($ward."<br>".$assignedSubWards);
 
         $subwards = AssignStage::where('user_id',Auth::user()->id)->pluck('subward')->first();
+        
 
         $subwardNames = explode(", ", $subwards);
 
@@ -4733,16 +4734,14 @@ $upvcInt = explode(",", $upvc);
         return redirect()->back();
     }
 public function confirmedvisit(Request $request){
-          dd($request->id);
-        ProjectDetails::where('project_id',$request->id)->increment('visit');
-          
-           $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
+    
+       ProjectDetails::where('project_id',$request->id)->increment('deleted');
            $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
            $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
             $projectvisit = new ProjectUpdate;
-            $projectvisit->project_id =$project_id;
+            $projectvisit->project_id =$request->id;
             $projectvisit->user_id =$user_id;
             $projectvisit->location =$request->address;
             $projectvisit->lat =$request->latitude;
