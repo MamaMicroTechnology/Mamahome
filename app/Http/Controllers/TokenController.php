@@ -296,7 +296,7 @@ class TokenController extends Controller
         }else{
             $subwards = $subwards->sub_ward_name;
         }
-        
+        dd($subwards);
         $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
 	if($subwardMap == null){
 	$latlon = null;
