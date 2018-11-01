@@ -32,7 +32,7 @@ Route::post('tlMessage','TokenController@tlMessage');
 Route::get('buyerlogin','TokenController@buyerLogin');
 
 Route::get('/login','TokenController@getLogin');
-Route:get('/tracklogin','TokenController@tracklogin');
+Route::get('/tracklogin','TokenController@tracklogin');
 
 
 Route::get('logout','TokenController@logout');
