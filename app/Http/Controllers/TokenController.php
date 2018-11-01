@@ -282,7 +282,7 @@ class TokenController extends Controller
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
 	$modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id');
-		if($modes == "6"){
+		if($modes == "6" || $modes == "11"){
 			$mode = 0;
 		}
 		else{
@@ -327,8 +327,9 @@ class TokenController extends Controller
                     'userid'=>$userdetails->id,
                     'userName'=>$userdetails->name,
                     'wardAssigned'=>$subward,
-         	    'latlon'=>$latlon,
-		    'mode'=>$mode
+		    'mode'=>$mode,
+         	    'latlon'=>$latlon
+		   
                 ]);
         }
         else{
