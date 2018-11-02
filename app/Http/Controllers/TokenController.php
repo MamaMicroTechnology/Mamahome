@@ -275,6 +275,68 @@ class TokenController extends Controller
             return response()->json(['message' => 'false']);
         }
     }
+	public function tracklogin(Request $request)
+    {
+         date_default_timezone_set("Asia/Kolkata");
+        $messages = new Collection;
+        if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
+            $userdetails = User::where('id',Auth::user()->id)->first();
+	$modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id')->first();
+		if($modes == "6" || $modes == "11"){
+			$mode = 0;
+		}
+		else{
+			$mode = 1;
+		}
+		
+        $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $subwards = SubWard::where('id',$wardsAssigned)->first();
+        if($subwards == null){
+            $subward = null;
+        }else{
+            $subward = $subwards->sub_ward_name;
+        }
+  
+        $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
+	if($subwardMap == null){
+	$latlon = null;
+	}else{
+	$latlon = $subwardMap->lat;
+	}
+        $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
+        if(count($check)==0){
+            $loginTime = new loginTime;
+            $loginTime->user_id = $userdetails->id;
+            $loginTime->logindate = date('Y-m-d');
+            $loginTime->loginTime = date('H:i A');
+            $loginTime->tracktime = date('H:i A');
+	    $loginTime->applogintime = $request->applogintime;
+            $loginTime->save();
+            //    DB::table('login_times')->where('user_id',$userdetails)->insert(['tracktime'=>date('H:i A')]);
+        }else{
+            loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update(['tracktime'=>date('H:i A')]);
+        }
+        $logistics_order = Order::where('delivery_boy',$userdetails->id)->first();
+        $logistics = Order::where('delivery_boy',$userdetails->id)->pluck('orders.id')->first();
+        if($logistics_order != null){
+            $logistic_sub_ward = ProjectDetails::where('project_id',$logistics_order->project_id)->pluck('sub_ward_id')->first();
+        }else{
+            $logistic_sub_ward = null;
+        }
+        return response()
+                ->json(['message' => 'true',
+                    'userid'=>$userdetails->id,
+                    'userName'=>$userdetails->name,
+                    'wardAssigned'=>$subward,
+		    'mode'=>$mode,
+         	    'latlon'=>$latlon
+		   
+                ]);
+        }
+        else{
+            return response()->json(['message' => 'false']);
+        }
+    }
   public function buyerLogin(Request $request)
     {
         $messages = new Collection;
@@ -770,6 +832,14 @@ public function getproject(request $request){
             $x->logout = $request->logouttime;
             $x->save();
         if($x->save()){
+                return response()->json(['message'=>'logout successfull']);
+        }else{
+                return response()->json(['message'=>'Something went wrong']);
+        }
+    }
+  public function tracklogout(request $request){
+            $check = TrackLocation::where('user_id',$request->user_id)->where('date',date('Y-m-d'))->update(['tracklogout'=>$request->tracklogout]);
+        if($check){
                 return response()->json(['message'=>'logout successfull']);
         }else{
                 return response()->json(['message'=>'Something went wrong']);
