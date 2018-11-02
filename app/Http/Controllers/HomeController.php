@@ -3909,7 +3909,7 @@ $upvcInt = explode(",", $upvc);
           $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
           $catsub = Category::where('id',$ac)->pluck('category_name')->first();
           $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
-
+        
           $projects = ProjectDetails::whereIn('project_id',$sprojectids)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -4746,15 +4746,12 @@ $upvcInt = explode(",", $upvc);
          
 
    $x= DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
-
        if($check == null ){
-      
             Activity::where('subject_id',$request->id)->where('causer_id',Auth::user()->id)->update(['called'=>1]);
         }
         return redirect()->back();
     }
 public function confirmedvisit(Request $request){
-    
        ProjectDetails::where('project_id',$request->id)->increment('deleted');
            $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
            $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();

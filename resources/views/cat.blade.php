@@ -10,36 +10,34 @@
             <div class="panel-body">
              <form action="{{ URL::to('/') }}/postcat" method="POST" enctype="multipart/form-data"> 
                     {{ csrf_field() }}
+                
                 <div class="col-md-2">
-                 <h4><b>Select Category</b></h4>
-                    <select  class="form-control" name="cat"  required>
-                        <option>--Select Category--</option>
-                        @foreach($categories as $category)
-
-                        <option value="{{ $category->id }}">{{ $category->category_name }}&nbsp;[&nbsp;&nbsp;Projects : &nbsp;{{$nofprojects[$category->id] }}&nbsp;&nbsp;Enquiries:&nbsp;&nbsp;{{$nofenquirys[$category->id]}}]</option>
-                        @endforeach
+                   <label>Select Category</label>
+                    <select id="sc" class="form-control" name="cat" required>
+                      <option value="">--Select Category--</option>
+                      @foreach($categories as $category)
+                      <option value="{{$category->id}}">{{ $category->category_name }}&nbsp;[&nbsp;&nbsp;Projects : &nbsp;{{$nofprojects[$category->id] }}&nbsp;&nbsp;Enquiries:&nbsp;&nbsp;{{$nofenquirys[$category->id]}}]</option>
+                      @endforeach
                     </select>
-                </div>
+                 </div>
                   <div class="col-md-2">
-                   <h4><b>Category Officers</b></h4>
-                    <select required class="form-control" name="user_id" required>
+                   <label>Category Officers</label>
+                    <select id="co" class="form-control" name="user_id" required>
                       <option value="">-- Category Officers--</option>
                       @foreach($users as $user)
-                      <option value="{{$user->id}}">{{$user->name}}</option>
+                      <option  value="{{$user->id}}">{{$user->name}}</option>
                       @endforeach
                     </select>
                  </div> 
 
                <div class="col-md-4">
-                   <h4><b>Set Instructions</b></h4>
-                   <textarea type="text" name="ins" style="width:100%;">
-                     
+                   <label>Set Instructions</label>
+                   <textarea class="form-control" type="text" name="ins" style="width:100%;">
                    </textarea>
                  </div> 
   
                   <div class="col-md-2">
-                   
-                    <button type="submit"  class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Assign</button> 
+                    <button id="this" onclick="selectcat()" class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Assign</button>
                  </div> 
 
             </div>
@@ -109,6 +107,18 @@
 	    document.getElementById('measure').value = measure;
 	    document.getElementById('id').value = arg;
 	}
-
+function selectcat(){
+  var input = document.getElementById('sc').value;
+  var value = document.getElementById('co').value;
+  if(input == ""){
+    alert("You Have Not Selected Category");
+  }
+  else if(value == ""){
+     alert("You Have Not Selected Sales Officer");
+  }
+  else{
+    document.getElementById('this').form.submit();
+  }
+}
 </script>
 @endsection
