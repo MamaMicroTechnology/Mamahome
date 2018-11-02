@@ -3008,6 +3008,8 @@ date_default_timezone_set("Asia/Kolkata");
              if(Auth::user()->group_id != 22 || Auth::user()->group_id != 23){
                return $this->amorders1($request);
              }
+        dd();
+
              $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
              dd($tlward);
 
@@ -8377,9 +8379,6 @@ public function viewManufacturer1(Request $request)
 
          return redirect()->back();
     }
-
-
-
 
     public function auto(request $requests){
      $projects = ProjectDetails::where('automation',"Yes")->where('quality','!=','Fake')->paginate(10); 
