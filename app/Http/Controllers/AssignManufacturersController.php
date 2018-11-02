@@ -27,7 +27,7 @@ use App\Mowner_Deatils;
 use App\Mprocurement_Details;
 use App\Salescontact_Details;
 use App\Manager_Deatils;
-
+use App\SubWardMap;
 
 class AssignManufacturersController extends Controller
 {
@@ -1351,7 +1351,23 @@ public function manuenquirysheet(Request $request)
             'projectOrdersReceived'=>$projectOrdersReceived
         ]);
     }
+public function getsubwards(request $request){
 
+         
+$sub = SubWard::where('ward_id',9)->get();
+
+
+$subwardlat = [];
+foreach ($sub as  $users) {
+           
+       $nosubwards =SubWardMap::where('sub_ward_id',$users->id)->get()->toArray();
+                array_push($subwardlat,['nosubwards'=>$nosubwards,'wardname'=>$users->sub_ward_name]);
+      }
+    
+
+            
+ return response()->json(['newUsers'=>$subwardlat]);
+}
 
 
 }

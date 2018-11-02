@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/getid','HomeController@getid');
+Route::get('/getsubwards','AssignManufacturersController@getsubwards');
 Route::get('/manuenquirysheet','AssignManufacturersController@manuenquirysheet');
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');

@@ -1195,4 +1195,9 @@ public function wardandsubward(request $request){
     $subwardmap = SubWardMap::all();
     return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards,'wardmap'=>$wardmap,'suwardmap'=>$subwardmap]);
 }
+
+
+
+
+
 }
