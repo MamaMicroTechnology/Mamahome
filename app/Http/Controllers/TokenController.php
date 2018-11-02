@@ -1268,7 +1268,7 @@ public function getwards(request $request){
 foreach($wards as $user){
             
                 $noOfwards = WardMap::where('ward_id',$user->id)->get()->toArray();
-                array_push($newUsers,['wardlat'=>$nofwards]);
+                array_push($newUsers,['noOfwards'=>$noOfwards]);
             }
  return response()->json(['newUsers'=>$newUsers]);
 }
