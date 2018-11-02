@@ -40,14 +40,33 @@
 								<label>To (Enquiry Date)</label>
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
-							@if(Auth::user()->group_id != 22)
+							 @if(Auth::user()->group_id == 22)
 							<div class="col-md-2">
 								<label>Ward</label>
 								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
-									@foreach($wardwise as $wards2)
-		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
-									@endforeach
+
+									@foreach($mainward as $wards2)
+									           @foreach($wardwise as $yadav)
+									             @if($wards2->id == $yadav->id)
+		                                 <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+		                                         @endif
+		                                 @endforeach
+		                            @endforeach
+								</select>
+							</div>
+                            @else
+
+							<div class="col-md-2">
+								<label>Ward</label>
+								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
+									<option value="">--Select--</option>
+
+									@foreach($mainward as $wards2)
+									          
+		                                 <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+		                                        
+		                            @endforeach
 								</select>
 							</div>
 							@endif

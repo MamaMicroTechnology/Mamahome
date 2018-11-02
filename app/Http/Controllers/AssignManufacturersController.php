@@ -41,8 +41,9 @@ class AssignManufacturersController extends Controller
     $wards = implode(", ", $request->ward);
     }else{
         if(Auth::user()->group_id == 22){
-            $tlWard = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tlWard)->pluck('ward_name')->first();
+            $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $tlWard = explode(",",$tl); 
+            $ward = Ward::whereIn('id',$tlWard)->pluck('ward_name');
             $wards = $ward;
         }else{
             $wards = "null";
@@ -620,8 +621,9 @@ public function addcat(request $request){
           
 }else{
             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tl)->pluck('id')->first();
-            $sub  = Subward::where('ward_id',$ward)->pluck('id');
+              $tll = explode(",",$tl);
+            $ward = Ward::whereIn('id',$tl)->pluck('id');
+            $sub  = Subward::whereIn('ward_id',$ward)->pluck('id');
 
 
                if($request->list =="ALL" && $request->fromdate && $request->todate){
