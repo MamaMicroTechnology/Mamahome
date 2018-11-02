@@ -1271,6 +1271,23 @@ foreach($wards as $user){
  return response()->json(['newUsers'=>$newUsers]);
 }
 
+public function getsubwards(request $request){
+
+         
+$sub = SubWard::where('ward_id',$request->ward_id)->get();
+
+
+$subwardlat = [];
+foreach ($sub as  $users) {
+           
+       $nosubwards =SubWardMap::where('sub_ward_id',$users->id)->get()->toArray();
+                array_push($subwardlat,['nosubwards'=>$nosubwards,'wardname'=>$users->sub_ward_name]);
+      }
+    
+
+            
+ return response()->json(['newUsers'=>$subwardlat]);
+}
 
 
 
