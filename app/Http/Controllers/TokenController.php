@@ -283,10 +283,10 @@ class TokenController extends Controller
             $userdetails = User::where('id',Auth::user()->id)->first();
 	$modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id')->first();
 		if($modes == "6" || $modes == "11"){
-			$mode = 0;
+			$mode = "0";
 		}
 		else{
-			$mode = 1;
+			$mode = "1";
 		}
 		
         $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
