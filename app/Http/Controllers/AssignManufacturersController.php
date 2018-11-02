@@ -838,4 +838,8 @@ public function addcat(request $request){
 
 return view('/monthlyreport',['users' =>$users,'total'=>$total]);
     }
+
+
+
+
 }

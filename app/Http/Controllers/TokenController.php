@@ -1271,17 +1271,7 @@ foreach($wards as $user){
  return response()->json(['newUsers'=>$newUsers]);
 }
 
-public function getsubwards(request $request){
-  $newUsers = [];
-  $wards = SubWard::all();
-foreach($wards as $user){
-            if($user->ward_id == $request->ward_id){
-                $noOfwards = SubWardMap::where('sub_ward_id',$user->id)->get()->toArray();
-                array_push($newUsers,['noOfwards'=>$noOfwards,'wardname'=>$user->ward_name]);
-              }  
-            }
- return response()->json(['newUsers'=>$newUsers]);
-}
+
 
 
 
