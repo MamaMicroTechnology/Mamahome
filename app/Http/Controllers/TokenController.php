@@ -460,47 +460,7 @@ class TokenController extends Controller
             $siteaddress->address = $request->address;
             $siteaddress->save();
             
-            $ownerDetails = New OwnerDetails;
-            $ownerDetails->project_id = $projectdetails->project_id;
-            $ownerDetails->owner_name = $request->oName;
-            $ownerDetails->owner_email = $request->oEmail;
-            $ownerDetails->owner_contact_no = $request->oContact;
-            $ownerDetails->save();
-        
-            $contractorDetails = New ContractorDetails;
-            $contractorDetails->project_id = $projectdetails->project_id;
-            $contractorDetails->contractor_name = $request->cName;
-            $contractorDetails->contractor_email = $request->cEmail;
-            $contractorDetails->contractor_contact_no = $request->cContact;
-            $contractorDetails->save();
-        
-            $consultantDetails = New ConsultantDetails;
-            $consultantDetails->project_id = $projectdetails->project_id;
-            $consultantDetails->consultant_name = $request->coName;
-            $consultantDetails->consultant_email = $request->coEmail;
-            $consultantDetails->consultant_contact_no = $request->coContact;
-            $consultantDetails->save();
-        
-            $siteEngineerDetails = New SiteEngineerDetails;
-            $siteEngineerDetails->project_id = $projectdetails->project_id;
-            $siteEngineerDetails->site_engineer_name = $request->eName;
-            $siteEngineerDetails->site_engineer_email = $request->eEmail;
-            $siteEngineerDetails->site_engineer_contact_no = $request->eContact;
-            $siteEngineerDetails->save();
-        
-            $procurementDetails = New ProcurementDetails;
-            $procurementDetails->project_id = $projectdetails->project_id;
-            $procurementDetails->procurement_name = $request->prName;
-            $procurementDetails->procurement_email = $request->pEmail;
-            $procurementDetails->procurement_contact_no = $request->prPhone;
-            $procurementDetails->save();
 
-            $procurementDetails = New Builder;
-            $procurementDetails->project_id = $projectdetails->project_id;
-            $procurementDetails->builder_name = $request->bName;
-            $procurementDetails->builder_email = $request->bEmail;
-            $procurementDetails->builder_contact_no = $request->bPhone;
-            $procurementDetails->save();
         
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'Add project sucuss','status'=>$request->project_status]);
@@ -1034,6 +994,47 @@ public function getproject(request $request){
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
             $siteaddress->save();
+                        $ownerDetails = New OwnerDetails;
+            $ownerDetails->project_id = $projectdetails->project_id;
+            $ownerDetails->owner_name = $request->oName;
+            $ownerDetails->owner_email = $request->oEmail;
+            $ownerDetails->owner_contact_no = $request->oContact;
+            $ownerDetails->save();
+        
+            $contractorDetails = New ContractorDetails;
+            $contractorDetails->project_id = $projectdetails->project_id;
+            $contractorDetails->contractor_name = $request->cName;
+            $contractorDetails->contractor_email = $request->cEmail;
+            $contractorDetails->contractor_contact_no = $request->cContact;
+            $contractorDetails->save();
+        
+            $consultantDetails = New ConsultantDetails;
+            $consultantDetails->project_id = $projectdetails->project_id;
+            $consultantDetails->consultant_name = $request->coName;
+            $consultantDetails->consultant_email = $request->coEmail;
+            $consultantDetails->consultant_contact_no = $request->coContact;
+            $consultantDetails->save();
+        
+            $siteEngineerDetails = New SiteEngineerDetails;
+            $siteEngineerDetails->project_id = $projectdetails->project_id;
+            $siteEngineerDetails->site_engineer_name = $request->eName;
+            $siteEngineerDetails->site_engineer_email = $request->eEmail;
+            $siteEngineerDetails->site_engineer_contact_no = $request->eContact;
+            $siteEngineerDetails->save();
+        
+            $procurementDetails = New ProcurementDetails;
+            $procurementDetails->project_id = $projectdetails->project_id;
+            $procurementDetails->procurement_name = $request->prName;
+            $procurementDetails->procurement_email = $request->pEmail;
+            $procurementDetails->procurement_contact_no = $request->prPhone;
+            $procurementDetails->save();
+
+            $procurementDetails = New Builder;
+            $procurementDetails->project_id = $projectdetails->project_id;
+            $procurementDetails->builder_name = $request->bName;
+            $procurementDetails->builder_email = $request->bEmail;
+            $procurementDetails->builder_contact_no = $request->bPhone;
+            $procurementDetails->save();
         if($projectdetails->save() ||  $siteaddress->save() ||  $roomtype->save() ){
             return response()->json(['success'=>'1','message'=>'Add project successfully','status'=>$request->project_status]);
         }else{
