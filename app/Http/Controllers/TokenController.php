@@ -1261,14 +1261,14 @@ public function postSaveManufacturer(Request $request)
 
 
 public function getwards(request $request){
-  $newUsers = [];
+  $Wards = [];
   $wards = Ward::all();
 foreach($wards as $user){
             
                 $noOfwards = WardMap::where('ward_id',$user->id)->get()->toArray();
-                array_push($newUsers,['noOfwards'=>$noOfwards,'wardname'=>$user->ward_name]);
+                array_push($Wards,['ward'=>$noOfwards,'wardname'=>$user->ward_name]);
             }
- return response()->json(['newUsers'=>$newUsers]);
+ return response()->json(['Wards'=>$Wards]);
 }
 
 public function getsubwards(request $request){
@@ -1281,12 +1281,12 @@ $subwardlat = [];
 foreach ($sub as  $users) {
            
        $nosubwards =SubWardMap::where('sub_ward_id',$users->id)->get()->toArray();
-                array_push($subwardlat,['nosubwards'=>$nosubwards,'wardname'=>$users->sub_ward_name]);
+                array_push($subwardlat,['subward'=>$nosubwards,'wardname'=>$users->sub_ward_name]);
       }
     
 
             
- return response()->json(['newUsers'=>$subwardlat]);
+ return response()->json(['subwards'=>$subwardlat]);
 }
 
 
