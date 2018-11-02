@@ -2882,8 +2882,8 @@ date_default_timezone_set("Asia/Kolkata");
                 $found1 = $searchWard->ward_id;
             }
         }
-    
-     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+        $found = explode(",",$found1);
+        $ward =Ward::whereIn('id',$found)->get();
         $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
@@ -5890,8 +5890,8 @@ public function confirmedvisit(Request $request){
             }
         }
         $stages = AssignStage::where('user_id',Auth::user()->id)->first();
-
-       $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+           $found = explode(",", $found1);
+       $ward =Ward::whereIn('id',$found)->get();
         return view('scdashboard',['ward'=>$ward,'stages'=>$stages]);
     }
  public function getChat()
