@@ -363,7 +363,6 @@ class HomeController extends Controller
                 $enquiries = Requirement::where('status','like','%'.$request->status)
                             ->where('status','!=',"Enquiry Cancelled")
                  ->orderby('created_at','DESC')
-
                             ->select('requirements.*')
                             ->get();
                $converter = user::get();
@@ -1724,10 +1723,21 @@ class HomeController extends Controller
                         ->leftjoin('departments','users.department_id','departments.id')
                         ->select('users.name','users.employeeId','login_times.*','departments.id')
                         ->get();
-         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-         $x = Ward::where('id',$tl)->pluck('ward_name')->first();
+          $newwards = [];
+         foreach($users as $user){
+                $tlwards = Tlwards::where('user_id',$user->id)->first();
+                if($tlwards == null){   
+                }
+                else{
+                $wardids = explode(",",$tlwards->ward_id);
+                $noofwardids = Ward::whereIn('id',$wardids)->get()->toArray();
+                $userIds = explode(",",$tlwards->users);
+                $noOfUsers = User::whereIn('id',$userIds)->get()->toArray();
+                array_push($newwards,['tl_id'=>$user->id,'wardtl'=>$noofwardids,'tlusers'=>$noOfUsers]);
+            }
+        }
 
-         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x,'usersId'=>$usersId]);
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'usersId'=>$usersId,'newwards'=>$newwards]);
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
@@ -2995,10 +3005,11 @@ date_default_timezone_set("Asia/Kolkata");
     }
   public function amorders(Request $request)
        {
-             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
              if(Auth::user()->group_id != 22 || Auth::user()->group_id != 23){
                return $this->amorders1($request);
              }
+             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+             dd($tlward);
 
            if($request->projectId){
                $view = Order::orderby('orders.created_at','DESC')
@@ -8178,12 +8189,23 @@ public function display(request $request){
             ->whereIn('department_id',$def)
             ->where('department_id','!=', 10)
             ->select('departments.*','departments.dept_name','users.name','users.id')->get();
-            
-             
-          $ward = Ward::all();
-          $w = Ward::pluck('id');
-         $u = User::pluck('id');
-          $tlward =Tlwards::leftjoin('wards','wards.id','tlwards.ward_id')->whereIn('tlwards.ward_id',$w)->whereIn('tlwards.user_id',$u)->select('wards.ward_name','tlwards.user_id')->get();
+              $ward = Ward::all();
+             $tluserids = Tlwards::where('group_id',22)->get();
+
+               $newwards = [];
+         foreach($users as $user){
+                $tlwards = Tlwards::where('user_id',$user->id)->first();
+                if($tlwards == null){   
+                }
+                else{
+                $wardids = explode(",",$tlwards->ward_id);
+                $noofwardids = Ward::whereIn('id',$wardids)->get()->toArray();
+                $userIds = explode(",",$tlwards->users);
+                $noOfUsers = User::whereIn('id',$userIds)->get()->toArray();
+                array_push($newwards,['tl_id'=>$user->id,'wardtl'=>$noofwardids,'tlusers'=>$noOfUsers]);
+            }
+        }
+
             $tl = Tlwards::leftjoin('users','users.id','tlwards.user_id')
                  ->pluck('tlwards.users');
                $tt = explode(",", $tl) ;
@@ -8199,13 +8221,17 @@ public function display(request $request){
                 array_push($newUsers,['tl_id'=>$user->id,'employees'=>$noOfUsers]);
             }
         }
-        return view('/assigntl',['newUsers' =>$newUsers,'users'=>$users,'ward'=>$ward,'user1'=>$user1,'tlward'=>$tlward]);
+        return view('/assigntl',['newUsers' =>$newUsers,'users'=>$users,'ward'=>$ward,'user1'=>$user1,'newwards'=>$newwards,'tluserids'=>$tluserids]);
     }
 
     public function tlward(request $request){
         $check = Tlwards::where('user_id',$request->user_id)->first();
-
-        if($request->framework){
+        if($request->ward_id){
+        $ward = implode(",", $request->ward_id);
+        }else{
+            $ward="null";
+        }
+         if($request->framework){
 
         $users = implode(",", $request->framework);
         }else{
@@ -8217,12 +8243,12 @@ public function display(request $request){
             $tlward->user_id = $request->user_id;
              $tlward->group_id = $request->group_id;
              $tlward->users = $users;
-              $tlward->ward_id = $request->ward_id;
+              $tlward->ward_id = $ward;
               $tlward->save();
         }else{
              $check->user_id = $request->user_id;
              $check->group_id = $request->group_id;
-              $check->ward_id = $request->ward_id;
+              $check->ward_id = $ward;
               $check->users = $users;
               $check->save();
         }

@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/getid','HomeController@getid');
-
+Route::get('/manuenquirysheet','AssignManufacturersController@manuenquirysheet');
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
 Route::get('/enq','HomeController@enqticket');
@@ -315,6 +315,7 @@ Route::post('/confirmedmanufacture','HomeController@confirmedmanufacture');
 Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 Route::get('/lcoorders','logisticsController@orders');
+Route::get('/manusearch','AssignManufacturersController@manusearch');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');

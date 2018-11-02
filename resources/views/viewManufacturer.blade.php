@@ -8,8 +8,17 @@
     <div class="col-md-12">
         <div class="panel panel-primary">
         <div class="panel-heading text-center" style="padding:-20px;">
+          <form method="GET" action="{{ URL::to('/') }}/manusearch" style="margin-top:10px;">
+                  <div class="col-md-4 pull-right">
+                    <div class="input-group">
+                      <input type="text" name="phNo" class="form-control" placeholder="Phone number and Manufacturer Id search">
+                      <div class="input-group-btn">
+                        <input type="submit" class="form-control" value="Search">
+                      </div>
+                    </div>
+                  </div>
+        </form>
                         <center ><h5>{{$dd}} Manufacturer Details: &nbsp;&nbsp;&nbsp;{{$count}}</h5></center>
-                 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-35px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
                  <form action="{{ URL::to('/') }}/viewManufacturer" method="GET">
                  <select class="form-control pull-left" style="width:12%;margin-top:-40px;" onchange="this.form.submit()" name="type">
                      <option>--Manufacuturer Type--</option>

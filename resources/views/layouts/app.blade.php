@@ -1087,6 +1087,8 @@ function myTimer() {
           <div id="dailyslot" class="collapse">
                 <a href="{{ URL::to('/dailyslots') }}">Projects Daily Slots</a>
                 <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
+                <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
+                <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
           </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
@@ -1208,6 +1210,7 @@ function myTimer() {
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
+              <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
               <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
               <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone Numbers</a>
