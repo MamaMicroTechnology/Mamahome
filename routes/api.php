@@ -76,4 +76,4 @@ Route::get('/fakegps','TokenController@fakegps');
 //listing engineers
 Route::post('/addleProject','TokenController@addleProject');
 Route::post('/saveManufacturer','TokenController@postSaveManufacturer');
-Route::get('/wardandsubward','TokenController@wardandsubward');
+Route::get('/getward','TokenController@getwards');

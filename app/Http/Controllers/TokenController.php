@@ -1259,11 +1259,23 @@ public function postSaveManufacturer(Request $request)
         return response()->json(['message'=>"Manufacturer Added Successfully"]);
     }
 
-public function wardandsubward(request $request){
-    $wards = Ward::all();
-    $subwards = SubWard::all();
-    $wardmap = WardMap::all();
-    $subwardmap = SubWardMap::all();
-    return response()->json(['sucuss'=>1, 'wards'=>$wards,'subwards' =>$subwards,'wardmap'=>$wardmap,'suwardmap'=>$subwardmap]);
+
+public function getwards(request $request){
+
+
+  $newUsers = [];
+  $wards = Ward::all();
+foreach($wards as $user){
+            
+                $noOfwards = WardMap::where('ward_id',$user->id)->get()->toArray();
+                array_push($newUsers,['wardlat'=>$nofwards]);
+            }
+ return response()->json(['newUsers'=>$newUsers]);
 }
+
+
+
+
+
+
 }
