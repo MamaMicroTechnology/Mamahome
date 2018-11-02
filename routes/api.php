@@ -77,3 +77,4 @@ Route::get('/fakegps','TokenController@fakegps');
 Route::post('/addleProject','TokenController@addleProject');
 Route::post('/saveManufacturer','TokenController@postSaveManufacturer');
 Route::get('/getward','TokenController@getwards');
+Route::where('/getsubwards','TokenController@getsubwards');
