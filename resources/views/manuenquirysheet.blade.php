@@ -3,7 +3,9 @@
 	$ext = ($user == 4? "layouts.amheader":"layouts.app");
 ?>
 @extends($ext)
+
 @section('content')
+
 <div class="">
 	<div class="col-md-12">
 		<div class="panel panel-primary">
@@ -23,11 +25,11 @@
 			
 					
 			@if(Auth::user()->group_id == 1)
-				<form method="GET" action="{{ URL::to('/') }}/adenquirysheet">
+				<form method="GET" action="{{ URL::to('/') }}/manuenquirysheet">
 			@elseif(Auth::user()->group_id == 17)
-				<form method="GET" action="{{ URL::to('/') }}/scenquirysheet">
+				<form method="GET" action="{{ URL::to('/') }}/manuenquirysheet">
 			@else
-				<form method="GET" action="{{ URL::to('/') }}/tlenquirysheet">
+				<form method="GET" action="{{ URL::to('/') }}/manuenquirysheet">
 			@endif
 					<div class="col-md-12">
 							<div class="col-md-2">
@@ -38,33 +40,14 @@
 								<label>To (Enquiry Date)</label>
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
-							 @if(Auth::user()->group_id == 22)
+							@if(Auth::user()->group_id != 22)
 							<div class="col-md-2">
 								<label>Ward</label>
 								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
-
-									@foreach($mainward as $wards2)
-									           @foreach($wardwise as $yadav)
-									             @if($wards2->id == $yadav->id)
-		                                 <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
-		                                         @endif
-		                                 @endforeach
-		                            @endforeach
-								</select>
-							</div>
-                            @else
-
-							<div class="col-md-2">
-								<label>Ward</label>
-								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
-									<option value="">--Select--</option>
-
-									@foreach($mainward as $wards2)
-									          
-		                                 <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
-		                                        
-		                            @endforeach
+									@foreach($wardwise as $wards2)
+		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+									@endforeach
 								</select>
 							</div>
 							@endif
@@ -106,9 +89,9 @@
 						</div>
 					</div>
 				</div>
+			</form>
 				
 				<br><br>
-			</form>
 				<div class="col-md-3" style="margin-top: -20px;">
 					<div class="col-md-2">
 						<label>Status: </label>
@@ -127,7 +110,7 @@
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
-							<th style="text-align: center">Project_Id</th>
+							<th style="text-align: center">manufacturer Id</th>
 							<th style="text-align: center">SubWard Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
@@ -180,14 +163,14 @@
                         
 						@foreach($enquiries as $enquiry)
                         @if($enquiry->status != "Not Processed")
-                            @if($enquiry->project_id != NULL)
-							<td style="text-align: center">
-								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
-									<b>{{$enquiry->project_id }}</b>
+							<td style="text-align:center;">
+								<a target="_blank" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">
+									 {{$enquiry->manu_id}}
 								</a> 
 							</td>
 							
 							<td style="text-align: center">
+
                                @foreach($wards as $ward)
                                  @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : $enquiry->sub_ward_id) )
 					        @if($enquiry->manu_id == NULL)
@@ -262,7 +245,7 @@
 							</td>
 							
 						</tr>
-                       @endif
+
 						@endif
 						@endforeach   
 						

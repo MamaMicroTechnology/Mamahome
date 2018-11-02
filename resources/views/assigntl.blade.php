@@ -115,7 +115,7 @@ margin-left: 0;
     <input type="hidden" id="username" name="user_id">
     <input type="hidden" id="username1" name="group_id">
 
-    <select  name="ward_id" id="dateassigned" class="hidden" required >
+    <select  name="ward_id[]" id="dateassigned" class="hidden" required >
                               <option value="select">----------Select Ward------</option>
                             @foreach($ward as $wards)
                               <option {{ $wards->id  ? 'selected' : '' }} value="{{$wards->id}}">      {{ $wards->ward_name }}</option>
@@ -150,14 +150,18 @@ margin-left: 0;
                             <td >
                                 <input type="hidden" id= "user{{ $user->id }}" name="user_id" value="{{$user->id}}">
                                 <input type="hidden" id= "user1{{ $user->id }}" name="group_id" value="{{$user->group_id}}">
-                                @foreach($tlward as $tlwards)
-                                @if($user->id == $tlwards->user_id )
-                                  {{ $tlwards->ward_name != null ? $tlwards->ward_name :'' }}
-                                @endif
-                              @endforeach
+                                  @foreach($newwards as $newward)
+                                     @if($newward['tl_id'] == $user->id)
+                                            @foreach($newward['wardtl'] as $wardstl)
+                                              {{$wardstl['ward_name']}}<br>
+                                            @endforeach
+                                          
+                                       @endif
+                                       
+                                @endforeach
                           </td>
                             <td>
-                            <select name="ward_id" id="date{{ $user->id }}" class="form-control">
+                            <select name="ward_id[]" id="date{{ $user->id }}" class="form-control" multiple>
                               <option value="select">----Select Ward----</option>
                             @foreach($ward as $wards)
                               <option value="{{$wards->id}}"> {{ $wards->ward_name }}</option>

@@ -22,7 +22,18 @@
     <th>Team Members</th>
     <th>Designation</th>
   </tr>
- <h2>Assigned Ward : {{$x}}</h2>
+
+ <h2>Assigned Wards<br>
+  @foreach($newwards as $newward)
+                                     @if($newward['tl_id'] == Auth::user()->id)
+                                            @foreach($newward['wardtl'] as $wardstl)
+                                              {{$wardstl['ward_name']}}<br>
+                                            @endforeach
+                                          
+                                       @endif
+                                       
+                                @endforeach
+</h2>
        
 </table>
 @endif
