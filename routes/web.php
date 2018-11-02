@@ -18,9 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/getid','HomeController@getid');
-Route::where('/getsubwards','AssignManufacturersController@getsubwards');
-
-
 Route::get('/simple','HomeController@simple');
 Route::get('/ticket','HomeController@tickets');
 Route::get('/enq','HomeController@enqticket');
