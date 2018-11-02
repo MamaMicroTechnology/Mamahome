@@ -36,7 +36,7 @@
 
                         ?>
                         <a href="#" class="list-group-item" data-toggle="collapse" data-target="#add{{$depts[$department->dept_name]}}">{{ $department->dept_name }}({{ $depts[$department->dept_name] }})</a>
-                        <div id="add{{ $depts[$department->dept_name]}}"  class="collapse">
+                        <div id="add{{ $depts[$department->dept_name]}}" class="collapse">
                         @foreach($groupname[$department->dept_name]  as $name)
                           <?php 
                             $grp = explode(" ",$name->group->id);
@@ -44,7 +44,11 @@
                           ?>
                             <a href="#" id="{{ $group }}" class="list-group-item" style="color:green">
                             @if($name->group_id == $name->group->id )
-                            {{$name->group->group_name}}
+                            @if($name->group->group_name == "Team Lead")
+                              Senior Team Leader
+                            @else
+                              {{$name->group->group_name}}
+                            @endif
                             @endif
                             </a>
 
