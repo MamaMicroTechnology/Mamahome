@@ -351,6 +351,9 @@ class HomeController extends Controller
           
         $totalofenquiry = "";
         $totalenq = "";
+        $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $etl = explode(",",$s);
+        $wardwise = Ward::whereIn('id',$etl)->get();
         
         $ward = ward::orderby('ward_name','ASC')->get();
         $category = Category::all();
