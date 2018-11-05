@@ -162,10 +162,9 @@ margin-left: 0;
                           </td>
                             <td>
                             <select name="ward_id[]" id="date{{ $user->id }}" class="form-control" multiple>
-                              <option value="select">----Select Ward----</option>
+                              <option value="">----Select Ward----</option>
                             @foreach($ward as $wards)
                               <option value="{{$wards->id}}"> {{ $wards->ward_name }}</option>
-
                              @endforeach
                             </select> 
                              
@@ -184,7 +183,7 @@ margin-left: 0;
                                        Assigned Users
                             </button></td>
                             <td>
-                              <button class="btn btn-success pull-left" onclick="return confirm('Are You Sure You Have Selected The Ward ?');">Assign</button>
+                              <button id="this" class="btn btn-success pull-left" onclick="assigntl('{{$user->id}}')">Assign</button>
                               
                             </td>
                           </tr>         
@@ -279,6 +278,19 @@ margin-left: 0;
                     window.location.reload()
                 }
             })
+        }
+    }
+    function assigntl(arg){
+        var input = document.getElementById('date'+arg).value;
+        var input1 = document.getElementById('menu'+arg).value;
+        if(input == ""){
+          alert("You Have Not Selected Ward");
+        }
+        else if(input1 == ""){
+          alert("You Have Not Selected Users");
+        }
+        else{
+          document.getElementById('this').form.submit();
         }
     }
 </script>
