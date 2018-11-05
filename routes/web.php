@@ -320,6 +320,8 @@ Route::get('/manusearch','AssignManufacturersController@manusearch');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');
+Route::get('/deletemanu','mamaController@deletemanuProject');
+
 Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
