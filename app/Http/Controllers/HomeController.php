@@ -89,8 +89,7 @@ use App\Manufacturer;
 use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
-use Spatie\Activitylog\Models\Activity;
-
+use App\PaymentDetails;
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -1539,7 +1538,7 @@ class HomeController extends Controller
         }else if($group == 'Sales Officer'){
              return redirect('salesofficer');
         }else if($group == 'Finance'){
-            return redirect('financeDashboard');
+            return redirect('financeIndex');
         }else{
             return redirect('chat');
         }
@@ -2983,19 +2982,18 @@ date_default_timezone_set("Asia/Kolkata");
             $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                    ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->leftjoin('requirements','orders.req_id','requirements.id')
+                    ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
-
-
         }
         if(Auth::user()->group_id == 23){
-         $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+            $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+            $catsub = Category::where('id',$ac)->pluck('category_name')->first();
 
-             $view = Order::orderby('orders.created_at','DESC')
-                     ->where('orders.main_category',$catsub)
+             $view = Order::orderby('orders.id','DESC')
+                    ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
@@ -3003,16 +3001,28 @@ date_default_timezone_set("Asia/Kolkata");
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
                     
-
             
         }
 
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
-
-
-        return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
+        $paymentDetails = PaymentDetails::all();
+        $message = Message::all();
+        $chatUsers = User::all();
+        $counts = array();
+        foreach($view as $order){
+            $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
+        }
+        return view('ordersadmin',[
+            'view' => $view,
+            'users'=>$users,
+            'req'=>$req,
+            'paymentDetails'=>$paymentDetails,
+            'messages'=>$message,
+            'chatUsers'=>$chatUsers,
+            'counts'=>$counts
+        ]);
     }
   public function amorders(Request $request)
        {
@@ -3050,11 +3060,18 @@ date_default_timezone_set("Asia/Kolkata");
                        'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
                        ->paginate(25);
            }
-
            $depts = [1,2];
            $users = User::whereIn('department_id',$depts)->get();
            $req = Requirement::pluck('project_id');
-            return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
+           $message = Message::all();
+           $chatUsers = User::all();
+            return view('ordersadmin',[
+                'view' => $view,
+                'users'=>$users,
+                'req'=>$req,
+                'messages'=>$message,
+                'chatUsers'=>$chatUsers
+            ]);
        }
     public function getSubCat(Request $request)
     {
@@ -3086,7 +3103,7 @@ date_default_timezone_set("Asia/Kolkata");
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
-        $x->payment_status = 'Payment Pending';
+        // $x->payment_status = 'Payment Pending';
         $x->save();
         return back();
 

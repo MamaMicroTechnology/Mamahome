@@ -2844,9 +2844,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function logintime(Request $request)
     {
         if($request->remark != null){
-                $remark = $request->remark;
-        }
-        else{
+            $remark = $request->remark;
+        }else{
             $remark = null;
         }
         $id = user::where('id',Auth::user()->id)->pluck('id')->first();

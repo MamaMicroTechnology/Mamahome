@@ -11,7 +11,7 @@
 
         </div>
         <div id="myordertable" class="panel-body">
-        <form action="orders" method="get">
+            <form action="orders" method="get">
                 <div class="input-group col-md-3 pull-right">
                     <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
                     
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </form>
-                
+             
             <br><br>
             <table class="table table-responsive table-striped" border="1">
                 <thead>
@@ -43,17 +43,10 @@
                 </thead>
                 <tbody>
                     @foreach($view as $rec)
-                    <tr id="row-{{$rec->id}}">
-                          @if($rec -> project_id != null)
-                        <td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}
-                        </a>
+                    <tr style="{{ $rec->order_status == 'Order Cancelled' ? 'background-color: #ffbaba;' : '' }}" id="row-{{$rec->id}}">
+                        <td>
+                            <a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}</a>
                         </td>
-                        @else
-                           <td> <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $rec->manu_id }}">Manufacturer&nbsp;&nbsp;{{$rec -> manu_id}}
-                        </a>
-                        </td>
-                        @endif
-                     
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
                         <td>
@@ -67,80 +60,45 @@
                                 {{ $rec->name }}
                             @else
                             <form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 
-                        @if($rec->clear_for_delivery == "Yes")
-                            @if($rec->delivery_boy != NULL)
-                                 @foreach($users as $user)
-                                   @if($rec->delivery_boy == $user->id)
-                                        {{ $user->name }}
-                                 @endif
-                                @endforeach
-                            @else
-                                <select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
-                                    <option value="">--Select--</option>
-                                    @foreach($users as $user)
-                                        <option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endforeach
-                            @endif
-                                </select>
-                        @endif
+                                @if($rec->clear_for_delivery == "Yes")
+                                    @if($rec->delivery_boy != NULL)
+                                        @foreach($users as $user)
+                                        @if($rec->delivery_boy == $user->id)
+                                                {{ $user->name }}
+                                        @endif
+                                        @endforeach
+                                    @else
+                                        <select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
+                                            <option value="">--Select--</option>
+                                            @foreach($users as $user)
+                                                <option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                @endif
                             </form>
                             @endif
                         </td>
                         <td>{{ date('d-m-Y',strtotime($rec -> requirement_date)) }}</td>
                         <td class="text-center" id="paymenttd-{{$rec->orderid}}">
-                            @if($rec->payment_status == "Payment Received")
-                                ₹ {{ $rec->total }} <br>Received<br>
-                                <a data-toggle="modal" data-target="#signatureImage{{ $rec->orderid }}" href="#">View Signature</a>
-                                <!-- Modal -->
-                                <div id="signatureImage{{ $rec->orderid }}" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Signature</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="{{ URL::to('/') }}/signatures/{{ $rec->signature }}" alt="Sign" title="Sign" class="img img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                    </div>
-
-                                </div>
-                                </div>
+                            @if($rec->ostatus == "Payment Received")
+                                {{ $rec->ostatus }}
                             @else
                                 {{ $rec->ostatus }}
                             @endif
                         </td>
-
                         <td>
-                       
-                            @if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
-                                {{ $rec->payment_mode }} 
-                            @elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
-
-                            <form method="POST" id="payment" action="{{ URL::to('/') }}/paymentmode">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-                                <select name="payment" id="pay" class="form-control">
-                                        <option value="">--Select--</option>
-                                        <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
-                                        <option value="CASH" id="cash" onclick="cash()">Cash</option>
-                                        <option value="check" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}" >Cheque</option>
-                                </select>
-                            </form>
-                             
-                        @elseif($rec->payment_mode == "Cheq Clear")
-                            <button class="btn btn-success btn-sm disabled">Cheque Cleared</button>
-                        @else
-                            <button class="btn btn-success btn-sm disabled">Cheq Processing</button>
-                        @endif
+                            @if($rec->ostatus == "Payment Received")
+                                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#paymentModal{{ $rec->orderid }}">
+                                    {{ $rec->payment_mode }}
+                                    <span class="badge">{{ $counts[$rec->orderid] }}</span>
+                                </button>
+                            @elseif($rec->order_status != "Order Cancelled")
+                                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}">Payment Details</button>
+                            @endif
 
                             
                              
@@ -157,40 +115,31 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-        <form action="{{ URL::to('/') }}/check?id={{ $rec->orderid }}" method="POST" enctype="multipart/form-data"> 
-        {{ csrf_field() }}
-        <table class="table">
-        <input type="hidden" name="project_id" value="{{$rec->project_id}}">
-        <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-       <tr>
-                <th>Cheque Number</th>
-                <td>:</td>
-                <td><input type="text" name="checkno" class="form-control" required></td>
-            </tr>
-            <tr>
-                <th>Cheque Amount</th>
-                <td>:</td>
-                <td><input type="text" name="amount" class="form-control"  required></td>
-            </tr>
-            <tr>
-                <th>Cheque Date</th>
-                <td>:</td>
-                <td><input type="date" name="date" class="form-control" required></td>
-            </tr>
-            <tr>
-                <th>Bank Name</th>
-                <td>:</td>
-                <td><input type="text" name="bank" class="form-control" required></td>
-            </tr>
-            <tr>
-                <th>Cheque Picture</th>
-                <td>:</td>
-                <td><input type="file" name="image" class="form-control" required></td>
-            </tr>
-        </table> 
-        <center><button type="submit" value="submit" class="btn btn-primary ">Submit</button> 
-        </form>    
-         </div>
+            <form action="{{ URL::to('/') }}/savePaymentDetails" method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input type="hidden" name="order_id" value="{{ $rec->orderid }}">
+                <label for="payment_mode">Payment Mode</label>
+                    <select name="payment_mode" id="payment_mode" class="form-control">
+                        <option value="">--Select--</option>
+                        <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
+                        <option value="CASH" id="cash" onclick="cash()">Cash</option>
+                        <option value="check">Cheque</option>
+                    </select>
+                <br>
+                <label for="payment_slip">Payment Slip</label>
+                <input required multiple type="file" name="payment_slip[]" id="payment_slip" accept="image/*" class="form-control input-sm" >
+                <br>
+                <label for="notes">Notes</label>
+                <textarea name="notes" id="notes" cols="2" rows="2" placeholder="Notes" class="form-control"></textarea>
+                <br>
+                <button type="submit" class="form-control btn btn-success">Save</button>
+            </form>
+            @foreach($paymentDetails as $payment)
+            @if($payment->order_id == $rec->orderid)
+            sd
+            @endif
+            @endforeach
+        </div>
         
         <!-- Modal footer -->
         <div class="modal-footer" style="padding:2px">
@@ -203,13 +152,81 @@
   
 </div>
 
-                        </td>
 
-
-
-
-
-
+<!-- payment details modal -->
+                             <!-- The Modal -->
+                             <div class="modal" id="paymentModal{{ $rec->orderid }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="width:100%;padding:2px;background-color:green;">
+        <center>  <h4 class="modal-title" style="color: white;">Payment Details</h4></center>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            @foreach($paymentDetails as $payment)
+            @if($payment->order_id == $rec->orderid)
+            <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"><br>
+            @endif
+            @endforeach
+            <b>Note:</b>
+            {{ $rec->payment_note }}
+            <br>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    Messages: <br>
+                    @foreach($messages as $message)
+                        @if($message->to_user == $rec->orderid)
+                            <p
+                                style="width:70%;
+                                    border-style:ridge;
+                                    padding:10px;
+                                    border-width:2px;
+                                    border-radius:10px;
+                                    {{ $message->from_user == Auth::user()->id ? 'border-bottom-left-radius:0px;' : 'border-bottom-right-radius:0px;' }}
+                                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);"
+                                    class="text-justify {{ $message->from_user == Auth::user()->id ? 'pull-right' : 'pull-left' }}">
+                                @foreach($chatUsers as $user)
+                                    @if($user->id == $message->from_user)
+                                        <b>- {{ $user->name }} : </b><br>
+                                    @endif
+                                @endforeach
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $message->body }}
+                                <br>
+                                <span class="pull-right"><i>{{ $message->created_at->diffforHumans() }}</i></span>
+                            </p>
+                        @endif
+                    @endforeach
+                </div>
+                <div class="col-md-12">
+                    <form action="{{ URL::to('/') }}/sendMessage" method="post">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="orderId" value="{{ $rec->orderid }}">    
+                        <div class="input-group">
+                            <input type="text" name="message" id="message" placeholder="Type Your Message Here" class="form-control">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-success">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>        
+        <!-- Modal footer -->
+        <div class="modal-footer" style="padding:2px">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+</td>
 
                         <td>
                             @if($rec->dispatch_status)
@@ -263,7 +280,7 @@
                             <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Invoice</a>
                         </td> -->
                         <td>
-                            @if($rec->order_status == "Enquiry Confirmed")
+                            @if($rec->order_status == "Enquiry Confirmed" && ($rec->ostatus == "Payment Received"))
                             <div class="btn-group">
                                 <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
                                 <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
@@ -273,7 +290,13 @@
                             @endif
                           </td>
                        <td>
-                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
+                        @if($rec->order_status == "Enquiry Confirmed")
+                            <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
+                        @endif
+                           @if($rec->clear_for_delivery == "Yes")
+                            <a href="{{ URL::to('/') }}/viewProformaInvoice?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Proforma Invoice</a>
+                            <a href="{{ URL::to('/') }}/viewPurchaseOrder?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Purchase Order</a>
+                            @endif
                        </td>
                     </tr>
                     @endforeach

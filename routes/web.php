@@ -686,7 +686,13 @@ Route::get('/bulkView','ProjectionController@viewBulk');
 Route::get('/fiveyearsWithZones','ProjectionController@fiveyearsWithZones');
 
 // Finance
+Route::get('/financeIndex','FinanceDashboard@financeIndex');
 Route::get('/financeDashboard','FinanceDashboard@getFinanceDashboard');
 Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
 Route::get('/downloadProformaInvoice','FinanceDashboard@downloadProformaInvoice')->name('downloadProformaInvoice');
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
+Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
+Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');
+Route::get('/viewPurchaseOrder','FinanceDashboard@getViewPurchaseOrder');
+
+Route::post('/sendMessage','FinanceDashboard@sendMessage');
