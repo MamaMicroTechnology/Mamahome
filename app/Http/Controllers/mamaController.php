@@ -1998,6 +1998,16 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
 
         return back();
     }
+
+ public function deletemanuProject(Request $request)
+    {
+        $project = Manufacturer::find($request->projectId);
+        $project->delete();
+
+        return back()->with('sucess','Deleted successfully');
+
+     }
+
     public function editinputdata(Request $request)
     {
        

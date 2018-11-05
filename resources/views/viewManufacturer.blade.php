@@ -158,6 +158,27 @@ tr:nth-child(even) {
 <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{$manufacturer->id}}"   type="button" class="btn  btn-sm "  >
              History </button>
 </td> 
+<td>
+                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $manufacturer->id }}" style="padding: 5.5px;">Delete</button>
+                <!-- Modal -->
+                <div class="modal fade" id="delete{{ $manufacturer->id }}" role="dialog">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete this project?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a class="btn btn-danger pull-left" href="{{ URL::to('/') }}/deletemanu?projectId={{ $manufacturer->id }}">Yes</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
 </tr> 
  @endforeach
 </table>
