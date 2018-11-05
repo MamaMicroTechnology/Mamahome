@@ -134,12 +134,12 @@
                        <input  type="hidden" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
                                     <input  type="hidden" name="latitude" value="{{ old('latitude') }}" id="latitude">
                                     <input id="address" type="hidden" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">             
-                    <button id="myform" style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" name="visit" onclick="getvisitLocation()">Visited
+                    <input type="button" name="Visited" id="myform" style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" value="visit" onclick="getvisitLocation()" >
                                    <span class="badge">&nbsp;{{  $project->deleted }}&nbsp;</span>
-                                   </button>
-                    @endif
+                                   
                   </form>
                 </td>
+                    @endif
                     <td>
 
                       <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
@@ -579,7 +579,7 @@ function updatemat(arg)
             var name = document.getElementById('consultantname-'+arg).value;
             var phone = document.getElementById('consultantphone-'+arg).value;
             var email = document.getElementById('consultantemail-'+arg).value;
-            alert(id);
+           
             $.ajax({
                type: 'GET',
                url: "{{URL::to('/')}}/updateConsultant",
@@ -863,7 +863,7 @@ function updatemat(arg)
       alert("Oops.. No Geo-Location Support !");
     } 
       //console.log("Exiting getLocation()");
-  
+  }
     
     function displayCurrentLocation(position){
 
@@ -915,7 +915,7 @@ function updatemat(arg)
     });
     //console.log("Entering getAddressFromLatLang()");
   }
-}
+
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>

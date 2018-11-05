@@ -867,8 +867,6 @@ class amController extends Controller
                 else
                 $avgAge[$department->dept_name] = 0;
         }
-           
-       // dd($groupname[$department->dept_name]);
          $totalcount = User::where('department_id','!=',10)->where('department_id','!=',100)
             ->where('id','!=',27)
             ->where('id','!=',28)
@@ -904,7 +902,6 @@ class amController extends Controller
         return view('formeremp',['users'=>$users,'dept'=>$request->dept,'pageName'=>'HR','count'=>$request->count]);
         }
         $grp = Group::where('id',$request->group)->pluck('group_name')->first();
-
         $users = User::where('group_id',$request->group)
                 ->where('department_id','!=',10)
                 ->where('users.id','!=',27)

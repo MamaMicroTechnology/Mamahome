@@ -351,11 +351,9 @@ class HomeController extends Controller
           
         $totalofenquiry = "";
         $totalenq = "";
-        
-         $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-       $etl = explode(",",$s);
-       $wardwise =Ward::whereIn('id',$etl)->get();
-
+        $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $etl = explode(",",$s);
+        $wardwise = Ward::whereIn('id',$etl)->get();
         $wardss = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
          $tlward = explode(",",$wardss);
          $totalofenquiry = "";
@@ -365,7 +363,6 @@ class HomeController extends Controller
         $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
         $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
         $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
-
 
         $ward = ward::orderby('ward_name','ASC')->get();
         $category = Category::all();
@@ -3512,6 +3509,7 @@ date_default_timezone_set("Asia/Kolkata");
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
            $filtered = array_unique($merge);
+        dd(count($filtered));
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
 
            for($ss=1;$ss<count($unique);$ss++){
@@ -3924,7 +3922,7 @@ $upvcInt = explode(",", $upvc);
           $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
           $catsub = Category::where('id',$ac)->pluck('category_name')->first();
           $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
-
+        
           $projects = ProjectDetails::whereIn('project_id',$sprojectids)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -4761,15 +4759,12 @@ $upvcInt = explode(",", $upvc);
          
 
    $x= DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
-
        if($check == null ){
-      
             Activity::where('subject_id',$request->id)->where('causer_id',Auth::user()->id)->update(['called'=>1]);
         }
         return redirect()->back();
     }
 public function confirmedvisit(Request $request){
-    
        ProjectDetails::where('project_id',$request->id)->increment('deleted');
            $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
            $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();

@@ -1006,7 +1006,22 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'builder_contact_no' => $request->bPhone
         ]);
 
+          $subward = ProjectDetails::where('project_id',$id)->pluck('sub_ward_id')->first();
+           $quality = ProjectDetails::where('project_id',$id)->pluck('quality')->first();
+           $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+           if($request->latitude1 != null && $request->longitude1 && $request->address1){
 
+            $projectvisit = new ProjectUpdate;
+            $projectvisit->project_id =$id;
+            $projectvisit->user_id =Auth::user()->id;
+            $projectvisit->location =$request->address1;
+            $projectvisit->lat =$request->latitude1;
+            $projectvisit->lag =$request->longitude1;
+            $projectvisit->sub_ward_id =$subward;
+            $projectvisit->quality =$quality;
+            $projectvisit->cat_id =$cat;
+            $projectvisit->save();
+        }
         date_default_timezone_set("Asia/Kolkata");
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
             'lastUpdateTime' => date('H:i A')
@@ -2893,7 +2908,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
-                        $start = "07:30 AM";
+                        $start = "08:00 AM";
                         $now = date('H:i A');
         if( $now > $start && count($check)== 0 && $remark == null){
            
