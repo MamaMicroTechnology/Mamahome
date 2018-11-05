@@ -3509,6 +3509,7 @@ date_default_timezone_set("Asia/Kolkata");
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
            $filtered = array_unique($merge);
+        dd(count($filtered));
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
 
            for($ss=1;$ss<count($unique);$ss++){
