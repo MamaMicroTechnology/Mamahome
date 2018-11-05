@@ -1,9 +1,20 @@
-@extends('layouts.app')
+<?php
+  $user = Auth::user()->group_id;
+  if(Auth::user()->group_id != 11){
+  $ext = ($user == 6? "layouts.leheader":"layouts.app");
+    }
+    else{
+         $ext = "layouts.leheader";
+    }
+?>
+@extends($ext)
 @section('content')
 
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: green;color:white;">KRA List</div>
+        <div class="panel-heading" style="background-color: green;color:white;">KRA List
+        <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
+        </div>
         <div class="panel-body">
             <table class="table table-hover" border=1>
                 <thead>

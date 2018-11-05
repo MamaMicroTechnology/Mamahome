@@ -40,19 +40,100 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-10" id="disp">
-             <br><br><br><br>
-                           <img src="http://mamahome360.com/public/android-icon-36x36.png">
-                           MAMA HOME PVT LTD&nbsp;&nbsp;
-                           Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
-    width: 9px;
-    background-color:green;
-    border-radius: 50%;
-    display: inline-block;"></span> {{ $totalcount }}
+   <div class="col-md-10" id="disp">
+      <div class="panel panel-default" style="border-color:green">
+        <div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees
+          </div>
+
+        <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
+                      
+                                     <img src="http://mamahome360.com/public/android-icon-36x36.png">
+                                     MAMA HOME PVT LTD&nbsp;&nbsp;
+                                     Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
+                          width: 9px;
+                          background-color:green;
+                          border-radius: 50%;
+                          display: inline-block;"></span> {{ $totalcount }}
+                          <div class="col-md-4 pull-right">
+                                    <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names and Phone Number" >
+                          </div>
+                          <br>
+                          <br>
+                          <br>
+
+                          <div id="name" class="hidden">
+                          @foreach($users as $user)
+                          <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >
+                          <div id="" style="overflow: hidden;" class="col-md-3 col-md-offset-1">
+                          <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
+                           <p style="text-align: center;">{{ $user->name }}</p>
+                            <p style="text-align: center;">{{  $user->office_phone }}</p>
+                          
+                          </center>
+                          @if($loop->iteration % 3==0)
+                              </div>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <div class="row">
+                              @endif
+                         </div>
+                        </a>
+                          @endforeach
+                        </div>
+                </div>
+              </div>
+                <table  class="table table-hover table-responsive" style="border: 2px solid gray;">
+                  <thead>
+                    <th style="border: 1px solid gray;">Department</th>
+                    <th style="border: 1px solid gray;">Number of Employees</th>
+                    <th style="border: 1px solid gray;">Average Age</th>
+                  </thead>
+                  <tbody>
+                  @php $totalEmp=0; $totalAvg = 0; $i = 0; @endphp
+                      @foreach($departments as $department)
+                      <tr> 
+                          <td style="border: 1px solid gray;">{{ $department->dept_name }}</td>
+                          <td style="border: 1px solid gray;">{{ $depts[$department->dept_name] }}</td>
+                          @php $totalEmp += $depts[$department->dept_name]; @endphp
+                          <td style="border: 1px solid gray;">{{ round($avgAge[$department->dept_name]) }}</td>
+                          @php $totalAvg += round($avgAge[$department->dept_name]); @endphp
+                          @if($avgAge[$department->dept_name] != 0)
+                            @php $i++ @endphp
+                          @endif
+                      </tr>
+                      @endforeach
+                      <tr> 
+                          <th style="border: 1px solid gray; text-align:right;"></th>
+                          <th style="border: 1px solid gray;">{{ $totalEmp }}</th>
+                          <th style="border: 1px solid gray;">{{ round($totalAvg / $i) }} </th>
+                      </tr>
+                    </tbody>
+                     </table>
+                      <table  class="table table-hover table-responsive" style="border: 2px solid gray;">
+                          <thead>
+                            <th style="border: 1px solid gray;">Qualification</th>
+                            <th style="border: 1px solid gray;">Count</th>
+                          </thead>
+                          <tbody>
+                            <tr> 
+                                            <td style="border: 1px solid gray;">MBA & MCA</td>
+                                            <td style="border: 1px solid gray;">6</td>
+                                           
+                            </tr>
+                             <tr> 
+                                            <td style="border: 1px solid gray;">Engineering</td>
+                                            <td style="border: 1px solid gray;">37</td>
+                                           
+                            </tr>
+                            <tr> 
+                                            <td style="border: 1px solid gray;">Degree</td>
+                                            <td style="border: 1px solid gray;">7</td>
+                                           
+                            </tr>
+                          </tbody>
+                        </table>   
         </div>
     </div>
 </div>
-
                  
  
 <!--Modal-->
@@ -110,20 +191,6 @@
   </div>
 
 </form>
-<!-- <div class="col-md-10">
-        <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: green;color: white;padding-bottom: 20px;">Edit Asset Details
-        <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
-        </div>
-        <div class="panel-body">
-             @if (session('Success'))
-                        <div class="alert alert-success">
-                            {{ session('Success') }}
-                        </div>
-               @endif
-        </div>
-    </div>
-</div> -->
 
 <div class='b'></div>
 <div class='bb'></div>
@@ -173,8 +240,27 @@ $(document).ready(function () {
         $(document.body).css({'cursor' : 'default'});
     });
 });
+ 
 </script>
 
 @endforeach
-
+<script type="text/javascript">
+  function myFunction()
+     {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("name");
+    p = ul.getElementsByTagName("a");
+    for (i = 0; i < p.length; i++) {
+        a = p[i].getElementsByTagName("p")[0];
+        b = p[i].getElementsByTagName("p")[1];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            document.getElementById("name").className = "show";
+        } else {
+            p[i].style.display = "none";
+        }
+    }
+}
+</script>
 @endsection

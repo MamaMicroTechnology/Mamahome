@@ -9,6 +9,7 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 <div class="panel panel-default" style="border-color: #f4811f">
 <div class="panel-heading" style="background-color: #f4811f;text-align:center">
 <b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
 <br><br>
 <p>(Add Only One Category With One Enquiry,<br>
 Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
@@ -101,8 +102,8 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                             <label class="checkbox-inline">
                             
                                
-                                <input type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"  name="quan[]" class="form-control">
+                                <input type="checkbox"  name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="" >{{ $subcategory->sub_cat_name}}
+                                <input type="text" placeholder="Quantity"  id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"   name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -128,7 +129,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 </div>
 </div>
 <!-- model end -->
-@if(Auth::user()->group_id == 6 || Auth::user()->group_id == 7 ||  Auth::user()->group_id == 11 || Auth::user()->group_id == 17)
+@if(Auth::user()->group_id == 6 || Auth::user()->group_id == 7 ||  Auth::user()->group_id == 11 || Auth::user()->group_id == 17 || Auth::user()->group_id == 23)
 <tr>
     <td><label>Initiator* : </label></td>
     <td>
@@ -154,17 +155,17 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     <td><label>Location* : </label></td>
     <td>
     @if(isset($_GET['projectId']))
-    <input type="text" value="{{ $projects->siteaddress != Null ?
+    <input disabled type="text" value="{{ $projects->siteaddress != Null ?
     $projects->siteaddress->address : '' }}" name="elocation"
-    id="elocation" class="form-control" />
+    id="elocation" class="form-control disabled" />
     @else
-    <input type="text" name="elocation" id="elocation" class="form-control" />
+    <input disabled type="text" name="elocation" id="elocation" class="form-control disabled" required />
     @endif
     </td>
 </tr>
 <tr>
     <td><label>Billing And Shipping Address : </label></td>
-    <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
+    <td><button required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
  Address
 </button>
 <!-- The Modal -->
@@ -173,37 +174,40 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Billing And Shipping Address </h4>
+      <div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" >Billing And Shipping Address </h4>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-       
-        <label>Blling Adderss</label>
-            <textarea class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;">
-        </textarea>
-            
+        <label>Billing Address</label>
+            <textarea required id="val"  class="form-control" type="text" name="billadress" cols="50" rows="5" style="resize:none;">
+        </textarea>  
        <br>
-        <label>Shipping Adderss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br><br>
+
         <div class="col-md-12">
             <div class="col-md-9">
-               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;&nbsp;same Address</label><br><br>
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;same as above</label><br><br>
             </div>
             
         </div>
-        <label id="sp1">Shipping Adderss</label>
-            <textarea class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;">
+        <label id="sp1">Shipping Address</label>
+            <textarea  required class="form-control" id="sp" type="text" name="ship" cols="50" rows="5" style="resize:none;">
         </textarea>
            <script type="text/javascript">
                function myfunction(){
-          
+                var ans = document.getElementById('val').value;
+               
+                if(ans){
                 document.getElementById('sp').style.display = "none";
                 document.getElementById('sp1').style.display = "none";
+                }
+                else{
+                    alert("You Have Not Entered Billing Address");
+                    document.getElementById('ss').checked = false;
+                }
                }
-
-
            </script> 
        <br>
         </div>
@@ -224,7 +228,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 <tr>
 <tr>
             <td><label>Total Quantity : </label></td>
-            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity" title="Three letter country code" class="form-control" /></td>
+            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
 
 </tr>
 <td><label>Remarks :</label></td>
@@ -238,7 +242,7 @@ id="eremarks" class="form-control" /></textarea>
 <input type="hidden" id="measure" name="measure">
 <div class="text-center">
 <button type="button" name="" id="" class="btn btn-md btn-success"
-style="width:40%" onclick="submithere()"  >Submit</button>
+style="width:40%" onclick="submitinputview()"  >Submit</button>
 <input type="reset" name="" class="btn btn-md btn-warning" style="width:40%" />
 </div>
 </form>
@@ -448,7 +452,7 @@ function checkthis(arg){
     }
 
 }
-function submithere(){
+function submitinputview(){
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
           }
@@ -456,7 +460,11 @@ function submithere(){
             document.getElementById("sub").submit();
         }
 }
+// function countthis(arg){
+
+//     return arg.
+    
+// }
 </script>
 
 @endsection
-

@@ -7,7 +7,7 @@
             <div class="panel panel-default" style="border-color: green;">
                 <div class="panel-heading"  style="background-color: green;color:white;padding-bottom: 20px;">
                     {{ $user->employeeId }} : {{ $user->name }}
-            <a href="{{ URL::to('/') }}/humanresources" class="btn btn-danger input-sm pull-right">Back</a>
+            <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
                 </div>
                 <div class="panel-body">
                     <center>
@@ -58,7 +58,11 @@
                             <td>: {{ $user->department->dept_name }}</td>
                             <td>Designation</td>
                             <td>
+                                @if($user->group->group_name == "Team Lead" )
+                                : Senior {{ $user->group->group_name }}
+                                @else
                                 : {{ $user->group->group_name }}
+                                @endif
                             </td>
                         </tr>
                         @if($details != NULL)
@@ -87,7 +91,7 @@
                             <td>: {{ $details->office_phone }}</td>
                         </tr>
                         <tr>
-                            <td>Phone No.</td>
+                            <td>Personal Phone No.</td>
                             <td>: {{ $user->contactNo }}</td>
                             <td>Alternative Phone No.</td>
                             <td>: {{ $details->alt_phone }}</td>

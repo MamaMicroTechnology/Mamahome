@@ -7,7 +7,7 @@
                 @if($totalproject != 0)
                  <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
                Count : <b>{{ $totalproject }}</b>
-                <p class="pull-right"> Projects Not Been Updated In 45 Days.</p>
+                <p class="pull-right"> Projects Not Been Updated In 30 Days.</p>
                 @endif
 
                     @if(session('ErrorFile'))
@@ -34,7 +34,7 @@
               </div>
               <div class="col-md-2">
                 <label></label>
-                <input type="button" value="Select Status" style="background-color:#444743;color:white;"  class="form-control btn btn-primary" data-toggle="modal" data-target="#myModal">
+                <input type="button" value="Select Status" style="background-color:#444743;color:white;"  class="form-control btn btn-primary" data-toggle="modal" data-target="#unupdate">
               </div>
               <div class="col-md-2">
                 <label></label>
@@ -42,7 +42,7 @@
               </div>
 
                   <!-- Modal -->
-                  <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal fade" id="unupdate" role="dialog">
                     <div class="modal-dialog">
                     
                       <!-- Modal content-->

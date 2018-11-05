@@ -3,15 +3,15 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 ">
              
             <div class="panel panel-default" style="border-color:#0e877f">
-                <div class="panel-heading" style="background-color:#0e877f">List Engineer</div>
+                <div class="panel-heading" style="background-color:#0e877f;color:white;">Listing Engineer</div>
                 <div class="panel-body">
                     
                      @foreach($listengs as $listeng)
                        <?php 
-                            $content = explode(" ",$listeng->name);
+                            $content = explode(" ",$listeng->id);
                           
                             $con = implode("",$content);
                         ?>
@@ -20,29 +20,33 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-10" id="disp">
+        <iframe class="col-md-9 img img-thumbnail" style="height: 1000px;border-color: #0e877f" id="disp">
+            
+        </iframe>
+        <!-- <div class="col-md-10" id="disp">
 
-        </div>
+        </div> -->
     </div>
 </div>
-
 <script src="phoneno-all-numeric-validation.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @foreach($listengs as $listeng)
                        <?php 
-                            $content = explode(" ",$listeng->name);
+                            $content = explode(" ",$listeng->id);
                             $con = implode("",$content);
                         ?>
 <script type="text/javascript">            
 $(document).ready(function () {
 	
     $("#{{ $con }}").on('click',function(){
-        $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"), function(responseTxt, statusTxt, xhr){
+        // $(document.body).css({'cursor' : 'wait'});
+        var url = 
+        $('#disp').attr('src',"{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"));
+        $("#disp2").load("{{ URL::to('/') }}/listeng/"+encodeURIComponent("{{ $listeng->name }}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
-        $(document.body).css({'cursor' : 'default'});
+        // $(document.body).css({'cursor' : 'default'});
     });
 });
 

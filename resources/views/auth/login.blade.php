@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content')<br><br><br><br>
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2" >
             <div class="panel panel-warning">
-                <div class="panel-heading text-center" style="background-color: #f68121; color:white;"><b style="font-size:1.4em">MAMA MICRO TECHNOLOGY (MMT) LOGIN</b></div>
-
+                <div class="panel-heading text-center" style="background-color: #00aeefbd; color:white;padding:0.2%;"><b style="font-size:1.4em;">Log On </b></div>
+                
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
                         <input type="hidden" id="loc" name="location">
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">User-ID Of MMT</label>
-                            <div class="col-md-6">
-                                <input id="email" type="text" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                            <label for="email" class="col-md-4 control-label">User-ID</label>
+                            <div class="col-md-4">
+                                <input id="email" type="text" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter User ID" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -27,8 +27,8 @@
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                            <div class="col-md-4">
+                                <input id="password" type="password" class="form-control" name="password" placeholder="Enter Password" required>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -37,14 +37,13 @@
                                 @endif
                             </div>
                         </div>
-                        <br><br>
+                        <br>
                         <div class="text-center">
-                                <button style="width:30%" type="submit" class="btn btn-success">
+                             <center >   <button type="submit" style="background-color:#939598;color:white;" id="test1" class="btn btn-defualt btn-sm fa fa-sign-in">
                                     Login
-                                </button>
-                                <button style="width:30%" type="reset" class="btn btn-danger">
-                                    Reset
-                                </button>
+                                </button></center>
+                                                            
+                                
                         </div>
                     </form>
                 </div>
@@ -116,4 +115,5 @@
 </script>
 
  -->
+ 
 @endsection

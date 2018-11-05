@@ -16,6 +16,8 @@ use DB;
 use Auth;
 use App\training;
 use App\Message;
+use App\Ward;
+use App\SubWard;
 
 date_default_timezone_set("Asia/Kolkata");
 class ContractorController extends Controller
@@ -115,6 +117,48 @@ class ContractorController extends Controller
       }
    		return view('contractorProjects',['projects'=>$projects,'conName'=>$conName]);
    	}
+
+public function getNoOfProjects1(Request $request)
+    {
+  $wards = Ward::orderby('ward_name','ASC')->get();
+     if($request->subward){
+        if($request->ward == "All"){
+                $subwards = SubWard::pluck('id');
+            }else{
+                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
+            }
+
+        $contractors = ContractorDetails::groupby('contractor_contact_no')->pluck('contractor_contact_no');
+        $conName = ContractorDetails::whereIn('contractor_contact_no',$contractors)->paginate(20);
+        $projects = array();  
+  
+        foreach($conName as $contractor){
+          $projectIds = ContractorDetails::where('contractor_contact_no',$contractor->contractor_contact_no)->pluck('project_id');
+          $sub = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('sub_ward_id',$subwards)->pluck('sub_ward_id');
+         
+          $projects[$contractor->contractor_contact_no] = ProjectDetails::whereIn('project_id',$projectIds)->whereIn('sub_ward_id',$sub)->pluck('project_id');
+        }
+       
+      }
+        else{
+        $contractors = ContractorDetails::groupby('contractor_contact_no')->pluck('contractor_contact_no');
+        $conName = ContractorDetails::whereIn('contractor_contact_no',$contractors)->paginate(20);
+        $projects = array();
+
+        foreach($conName as $contractor){
+          $projectIds = ContractorDetails::where('contractor_contact_no',$contractor->contractor_contact_no)->pluck('project_id');
+          $projects[$contractor->contractor_contact_no] = ProjectDetails::whereIn('project_id',$projectIds)->pluck('project_id');
+          
+        }
+      }
+      return view('underperson',['projects'=>$projects,'conName'=>$conName,'wards'=>$wards]);
+    }
+
+
+
+
+
+
   public function viewProjects(Request $request)
     {
      

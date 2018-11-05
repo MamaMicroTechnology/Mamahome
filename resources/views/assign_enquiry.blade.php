@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -9,7 +8,7 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                     <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
+                       <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>   
                 </div>
                 <div class="panel-body">
                  
@@ -18,6 +17,7 @@
 
   {{ csrf_field() }}
              <table class="table table-responsive table-striped table-hover" class="table">
+              
                         <thead>
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Designation</th>
@@ -53,9 +53,9 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header" style="background-color: rgb(244, 129, 31);padding:5px;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Select Wards and category's</h4>
+      <div class="modal-header" style="background-color:#f4811f;color:white;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select Ward and Category</h4>
       </div>
       <div class="modal-body" >
         <div id="first">
@@ -96,7 +96,6 @@
   <div class="row">
         <h4>&nbsp;&nbsp; Select Category</h4>
        @foreach($category as $cat)
-      
          <div class="col-sm-4">
          <label>
        <input type="checkbox" id="cat{{ $cat->id }}" onclick = "displaybrand( {{ $cat->id }})"; style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
@@ -105,7 +104,7 @@
         @endforeach
         </div>
 </div>
-<p class="text-center"><button type="submit" class="btn btn-primary">Submit Data</button></p>                                        
+<p class="text-center"><button onclick="return confirm('Are you sure you Select The Category');" type="submit" class="btn btn-primary">Submit Data</button></p>                                        
 @foreach($category as $cat)
 <div class="hidden" id="brand{{ $cat->id }}">
   @foreach($brands as $brand)
@@ -131,8 +130,13 @@
 </div> 
    <!-- model -->
   
- @endsection          
+@if(session('message'))
+<script>
+    swal("success","{{ session('message') }}","success");
+</script>
+@endif
 
+ @endsection          
  <script type="text/javascript">
 
 function hide(arg){
@@ -175,10 +179,20 @@ var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
 </script>   
 <script>
 function displaybrand(arg){
+
     if(document.getElementById('cat'+arg).checked == true){
         document.getElementById('brand'+arg).className="";
     }else{
         document.getElementById('brand'+arg).className = "hidden";
+    }
+}
+function submitassign(){
+  alert();
+    if(document.getElementById('cat').checked == true){
+      alert("1");
+       
+    }else{
+       alert("2");
     }
 }
 </script>  

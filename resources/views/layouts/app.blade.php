@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Creative Button Styles  - Modern and subtle styles &amp; effects for buttons" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MamaHome</title>
@@ -19,6 +20,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -349,8 +353,488 @@ div#calendar{
   top: 150px;
   opacity: 1;
 }
-
+/* // multiple date selector */
+      /*!
+ * Datepicker for Bootstrap v1.5.0 (https://github.com/eternicode/bootstrap-datepicker)
+ *
+ * Copyright 2012 Stefan Petre
+ * Improvements by Andrew Rowls
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */
+.datepicker {
+  padding: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  direction: ltr;
+}
+.datepicker-inline {
+  width: 220px;
+}
+.datepicker.datepicker-rtl {
+  direction: rtl;
+}
+.datepicker.datepicker-rtl table tr td span {
+  float: right;
+}
+.datepicker-dropdown {
+  top: 0;
+  left: 0;
+}
+.datepicker-dropdown:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #999999;
+  border-top: 0;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+}
+.datepicker-dropdown:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
+  border-top: 0;
+  position: absolute;
+}
+.datepicker-dropdown.datepicker-orient-left:before {
+  left: 6px;
+}
+.datepicker-dropdown.datepicker-orient-left:after {
+  left: 7px;
+}
+.datepicker-dropdown.datepicker-orient-right:before {
+  right: 6px;
+}
+.datepicker-dropdown.datepicker-orient-right:after {
+  right: 7px;
+}
+.datepicker-dropdown.datepicker-orient-bottom:before {
+  top: -7px;
+}
+.datepicker-dropdown.datepicker-orient-bottom:after {
+  top: -6px;
+}
+.datepicker-dropdown.datepicker-orient-top:before {
+  bottom: -7px;
+  border-bottom: 0;
+  border-top: 7px solid #999999;
+}
+.datepicker-dropdown.datepicker-orient-top:after {
+  bottom: -6px;
+  border-bottom: 0;
+  border-top: 6px solid #ffffff;
+}
+.datepicker > div {
+  display: none;
+}
+.datepicker table {
+  margin: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.datepicker td,
+.datepicker th {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: none;
+}
+.table-striped .datepicker table tr td,
+.table-striped .datepicker table tr th {
+  background-color: transparent;
+}
+.datepicker table tr td.day:hover,
+.datepicker table tr td.day.focused {
+  background: #eeeeee;
+  cursor: pointer;
+}
+.datepicker table tr td.old,
+.datepicker table tr td.new {
+  color: #999999;
+}
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  background: none;
+  color: #999999;
+  cursor: default;
+}
+.datepicker table tr td.highlighted {
+  background: #d9edf7;
+  border-radius: 0;
+}
+.datepicker table tr td.today,
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled:hover {
+  background-color: #fde19a;
+  background-image: -moz-linear-gradient(to bottom, #fdd49a, #fdf59a);
+  background-image: -ms-linear-gradient(to bottom, #fdd49a, #fdf59a);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fdd49a), to(#fdf59a));
+  background-image: -webkit-linear-gradient(to bottom, #fdd49a, #fdf59a);
+  background-image: -o-linear-gradient(to bottom, #fdd49a, #fdf59a);
+  background-image: linear-gradient(to bottom, #fdd49a, #fdf59a);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdd49a', endColorstr='#fdf59a', GradientType=0);
+  border-color: #fdf59a #fdf59a #fbed50;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  color: #000;
+}
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today:hover:hover,
+.datepicker table tr td.today.disabled:hover,
+.datepicker table tr td.today.disabled:hover:hover,
+.datepicker table tr td.today:active,
+.datepicker table tr td.today:hover:active,
+.datepicker table tr td.today.disabled:active,
+.datepicker table tr td.today.disabled:hover:active,
+.datepicker table tr td.today.active,
+.datepicker table tr td.today:hover.active,
+.datepicker table tr td.today.disabled.active,
+.datepicker table tr td.today.disabled:hover.active,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today:hover.disabled,
+.datepicker table tr td.today.disabled.disabled,
+.datepicker table tr td.today.disabled:hover.disabled,
+.datepicker table tr td.today[disabled],
+.datepicker table tr td.today:hover[disabled],
+.datepicker table tr td.today.disabled[disabled],
+.datepicker table tr td.today.disabled:hover[disabled] {
+  background-color: #fdf59a;
+}
+.datepicker table tr td.today:active,
+.datepicker table tr td.today:hover:active,
+.datepicker table tr td.today.disabled:active,
+.datepicker table tr td.today.disabled:hover:active,
+.datepicker table tr td.today.active,
+.datepicker table tr td.today:hover.active,
+.datepicker table tr td.today.disabled.active,
+.datepicker table tr td.today.disabled:hover.active {
+  background-color: #fbf069 \9;
+}
+.datepicker table tr td.today:hover:hover {
+  color: #000;
+}
+.datepicker table tr td.today.active:hover {
+  color: #fff;
+}
+.datepicker table tr td.range,
+.datepicker table tr td.range:hover,
+.datepicker table tr td.range.disabled,
+.datepicker table tr td.range.disabled:hover {
+  background: #eeeeee;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.datepicker table tr td.range.today,
+.datepicker table tr td.range.today:hover,
+.datepicker table tr td.range.today.disabled,
+.datepicker table tr td.range.today.disabled:hover {
+  background-color: #f3d17a;
+  background-image: -moz-linear-gradient(to bottom, #f3c17a, #f3e97a);
+  background-image: -ms-linear-gradient(to bottom, #f3c17a, #f3e97a);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f3c17a), to(#f3e97a));
+  background-image: -webkit-linear-gradient(to bottom, #f3c17a, #f3e97a);
+  background-image: -o-linear-gradient(to bottom, #f3c17a, #f3e97a);
+  background-image: linear-gradient(to bottom, #f3c17a, #f3e97a);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3c17a', endColorstr='#f3e97a', GradientType=0);
+  border-color: #f3e97a #f3e97a #edde34;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.datepicker table tr td.range.today:hover,
+.datepicker table tr td.range.today:hover:hover,
+.datepicker table tr td.range.today.disabled:hover,
+.datepicker table tr td.range.today.disabled:hover:hover,
+.datepicker table tr td.range.today:active,
+.datepicker table tr td.range.today:hover:active,
+.datepicker table tr td.range.today.disabled:active,
+.datepicker table tr td.range.today.disabled:hover:active,
+.datepicker table tr td.range.today.active,
+.datepicker table tr td.range.today:hover.active,
+.datepicker table tr td.range.today.disabled.active,
+.datepicker table tr td.range.today.disabled:hover.active,
+.datepicker table tr td.range.today.disabled,
+.datepicker table tr td.range.today:hover.disabled,
+.datepicker table tr td.range.today.disabled.disabled,
+.datepicker table tr td.range.today.disabled:hover.disabled,
+.datepicker table tr td.range.today[disabled],
+.datepicker table tr td.range.today:hover[disabled],
+.datepicker table tr td.range.today.disabled[disabled],
+.datepicker table tr td.range.today.disabled:hover[disabled] {
+  background-color: #f3e97a;
+}
+.datepicker table tr td.range.today:active,
+.datepicker table tr td.range.today:hover:active,
+.datepicker table tr td.range.today.disabled:active,
+.datepicker table tr td.range.today.disabled:hover:active,
+.datepicker table tr td.range.today.active,
+.datepicker table tr td.range.today:hover.active,
+.datepicker table tr td.range.today.disabled.active,
+.datepicker table tr td.range.today.disabled:hover.active {
+  background-color: #efe24b \9;
+}
+.datepicker table tr td.selected,
+.datepicker table tr td.selected:hover,
+.datepicker table tr td.selected.disabled,
+.datepicker table tr td.selected.disabled:hover {
+  background-color: #9e9e9e;
+  background-image: -moz-linear-gradient(to bottom, #b3b3b3, #808080);
+  background-image: -ms-linear-gradient(to bottom, #b3b3b3, #808080);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b3b3b3), to(#808080));
+  background-image: -webkit-linear-gradient(to bottom, #b3b3b3, #808080);
+  background-image: -o-linear-gradient(to bottom, #b3b3b3, #808080);
+  background-image: linear-gradient(to bottom, #b3b3b3, #808080);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b3b3b3', endColorstr='#808080', GradientType=0);
+  border-color: #808080 #808080 #595959;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.datepicker table tr td.selected:hover,
+.datepicker table tr td.selected:hover:hover,
+.datepicker table tr td.selected.disabled:hover,
+.datepicker table tr td.selected.disabled:hover:hover,
+.datepicker table tr td.selected:active,
+.datepicker table tr td.selected:hover:active,
+.datepicker table tr td.selected.disabled:active,
+.datepicker table tr td.selected.disabled:hover:active,
+.datepicker table tr td.selected.active,
+.datepicker table tr td.selected:hover.active,
+.datepicker table tr td.selected.disabled.active,
+.datepicker table tr td.selected.disabled:hover.active,
+.datepicker table tr td.selected.disabled,
+.datepicker table tr td.selected:hover.disabled,
+.datepicker table tr td.selected.disabled.disabled,
+.datepicker table tr td.selected.disabled:hover.disabled,
+.datepicker table tr td.selected[disabled],
+.datepicker table tr td.selected:hover[disabled],
+.datepicker table tr td.selected.disabled[disabled],
+.datepicker table tr td.selected.disabled:hover[disabled] {
+  background-color: #808080;
+}
+.datepicker table tr td.selected:active,
+.datepicker table tr td.selected:hover:active,
+.datepicker table tr td.selected.disabled:active,
+.datepicker table tr td.selected.disabled:hover:active,
+.datepicker table tr td.selected.active,
+.datepicker table tr td.selected:hover.active,
+.datepicker table tr td.selected.disabled.active,
+.datepicker table tr td.selected.disabled:hover.active {
+  background-color: #666666 \9;
+}
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active.disabled:hover {
+  background-color: #006dcc;
+  background-image: -moz-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -ms-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
+  background-image: -webkit-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -o-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
+  border-color: #0044cc #0044cc #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active:hover:hover,
+.datepicker table tr td.active.disabled:hover,
+.datepicker table tr td.active.disabled:hover:hover,
+.datepicker table tr td.active:active,
+.datepicker table tr td.active:hover:active,
+.datepicker table tr td.active.disabled:active,
+.datepicker table tr td.active.disabled:hover:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active:hover.active,
+.datepicker table tr td.active.disabled.active,
+.datepicker table tr td.active.disabled:hover.active,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active:hover.disabled,
+.datepicker table tr td.active.disabled.disabled,
+.datepicker table tr td.active.disabled:hover.disabled,
+.datepicker table tr td.active[disabled],
+.datepicker table tr td.active:hover[disabled],
+.datepicker table tr td.active.disabled[disabled],
+.datepicker table tr td.active.disabled:hover[disabled] {
+  background-color: #0044cc;
+}
+.datepicker table tr td.active:active,
+.datepicker table tr td.active:hover:active,
+.datepicker table tr td.active.disabled:active,
+.datepicker table tr td.active.disabled:hover:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active:hover.active,
+.datepicker table tr td.active.disabled.active,
+.datepicker table tr td.active.disabled:hover.active {
+  background-color: #003399 \9;
+}
+.datepicker table tr td span {
+  display: block;
+  width: 23%;
+  height: 54px;
+  line-height: 54px;
+  float: left;
+  margin: 1%;
+  cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.datepicker table tr td span:hover {
+  background: #eeeeee;
+}
+.datepicker table tr td span.disabled,
+.datepicker table tr td span.disabled:hover {
+  background: none;
+  color: #999999;
+  cursor: default;
+}
+.datepicker table tr td span.active,
+.datepicker table tr td span.active:hover,
+.datepicker table tr td span.active.disabled,
+.datepicker table tr td span.active.disabled:hover {
+  background-color: #006dcc;
+  background-image: -moz-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -ms-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
+  background-image: -webkit-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -o-linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
+  border-color: #0044cc #0044cc #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.datepicker table tr td span.active:hover,
+.datepicker table tr td span.active:hover:hover,
+.datepicker table tr td span.active.disabled:hover,
+.datepicker table tr td span.active.disabled:hover:hover,
+.datepicker table tr td span.active:active,
+.datepicker table tr td span.active:hover:active,
+.datepicker table tr td span.active.disabled:active,
+.datepicker table tr td span.active.disabled:hover:active,
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active:hover.active,
+.datepicker table tr td span.active.disabled.active,
+.datepicker table tr td span.active.disabled:hover.active,
+.datepicker table tr td span.active.disabled,
+.datepicker table tr td span.active:hover.disabled,
+.datepicker table tr td span.active.disabled.disabled,
+.datepicker table tr td span.active.disabled:hover.disabled,
+.datepicker table tr td span.active[disabled],
+.datepicker table tr td span.active:hover[disabled],
+.datepicker table tr td span.active.disabled[disabled],
+.datepicker table tr td span.active.disabled:hover[disabled] {
+  background-color: #0044cc;
+}
+.datepicker table tr td span.active:active,
+.datepicker table tr td span.active:hover:active,
+.datepicker table tr td span.active.disabled:active,
+.datepicker table tr td span.active.disabled:hover:active,
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active:hover.active,
+.datepicker table tr td span.active.disabled.active,
+.datepicker table tr td span.active.disabled:hover.active {
+  background-color: #003399 \9;
+}
+.datepicker table tr td span.old,
+.datepicker table tr td span.new {
+  color: #999999;
+}
+.datepicker .datepicker-switch {
+  width: 145px;
+}
+.datepicker .datepicker-switch,
+.datepicker .prev,
+.datepicker .next,
+.datepicker tfoot tr th {
+  cursor: pointer;
+}
+.datepicker .datepicker-switch:hover,
+.datepicker .prev:hover,
+.datepicker .next:hover,
+.datepicker tfoot tr th:hover {
+  background: #eeeeee;
+}
+.datepicker .cw {
+  font-size: 10px;
+  width: 12px;
+  padding: 0 2px 0 5px;
+  vertical-align: middle;
+}
+.input-append.date .add-on,
+.input-prepend.date .add-on {
+  cursor: pointer;
+}
+.input-append.date .add-on i,
+.input-prepend.date .add-on i {
+  margin-top: 3px;
+}
+.input-daterange input {
+  text-align: center;
+}
+.input-daterange input:first-child {
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+.input-daterange input:last-child {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+}
+.input-daterange .add-on {
+  display: inline-block;
+  width: auto;
+  min-width: 16px;
+  height: 18px;
+  padding: 4px 5px;
+  font-weight: normal;
+  line-height: 18px;
+  text-align: center;
+  text-shadow: 0 1px 0 #ffffff;
+  vertical-align: middle;
+  background-color: #eeeeee;
+  border: 1px solid #ccc;
+  margin-left: -5px;
+  margin-right: -5px;
+}
 </style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
 </head>
 <body>
     <div id="app">
@@ -380,6 +864,8 @@ div#calendar{
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                      @elseif(Auth::user()->group_id == 14)
                         <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
+                     @elseif(Auth::user()->group_id == 23)
+                        <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
                     @endif
                     @endif
                 </div>
@@ -389,6 +875,14 @@ div#calendar{
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
                         <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
+                        <!--  <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/simple') }}">Raise Ticket</a>
+                      
+                    </li>
+                      <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/ticket') }}">Tickets</a>
+                      
+                    </li>  -->
                         <!--  -->
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
@@ -402,25 +896,36 @@ div#calendar{
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
                         @endif
-                        @if(Auth::user()->group_id == 14)
-                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        <?php $d =0 ?>
+                         @if(Auth::user()->group_id == 14)
+                        <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;&nbsp;</span></b></a></li>
                         @endif
                         @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 7)
-                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/setraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                        
                         @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 2)
-                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 17)
-                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/asttraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
-                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
-                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                          <li><a href="{{ URL::to('/') }}/sctraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $d }}&nbsp;</span></b></a></li>
                         @endif
+                        
+                        <li style="padding-top: 10px;padding-left: 10px;">
+                          <button id="appblade" class="btn btn-success btn-sm" onclick="submitapp()">Login</button>
+                        </li>
+                       <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
+                       </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="confirmthis()">Logout</button>
+                       </li>
                         @endif
                     </ul>
                 
@@ -428,7 +933,7 @@ div#calendar{
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <!-- <li><a href="{{ route('login') }}">Login</a></li> -->
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -464,6 +969,94 @@ div#calendar{
                 </div>
             </div>
         </nav>
+                                    <!-- Modal -->
+                            <div id="break" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:50%;" >
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Break Time</h4>
+                                  </div>
+                                  <div class="modal-body">
+
+                                    <p>Click On Start To Take a Break?</p>
+                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-success btn-sm">START</button>
+                                  </form>
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                   
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+                            <!-- Modal -->
+                            <div id="report" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                  <div class="modal-header" style="background-color:rgb(244, 129, 31);color:white;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">MAMAHOME EMPLOYEE ATTENDANCE</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                  <form action="{{ URL::to('/') }}/empreports" method="POST">
+                                      {{ csrf_field() }}
+                                      
+                                                  <table class="table table-hover" id="reports">
+                                                      <thead>
+                                                          <th>Report</th>
+                                                          <th>From</th>
+                                                          <th>To</th>
+                                                      </thead>
+                                                      <tbody>
+                                                          
+                                                          <tr>
+                                                              <td><input required type="text" name="report[]" id="report" class="form-control" placeholder="Report"></td>
+                                                              <td><input required type="time" name="from[]" id="from" class="form-control"></td>
+                                                              <td><input required type="time" name="to[]" id="to" class="form-control"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                  </table>
+                                                  <div class="btn-group">
+                                                      <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                      </button>
+                                                      <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                      </button>
+                                                  </div>
+                                             
+                                              <div class="panel-footer">
+                                                  <input type="submit" value="Submit" class="form-control btn btn-success">
+                                              </div>
+                                  </form>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+<script>
+function myTimer() {
+  var myVar = setInterval(myTimer ,1000);
+    var d = new Date();
+    document.getElementById("time").innerHTML = d.toLocaleTimeString();
+    document.getElementById("timer").form.submit();
+
+}
+</script>
 @if(Auth::check())
 @if(Auth::user()->group_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -476,20 +1069,22 @@ div#calendar{
             <a href="{{ URL::to('/stage') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Target</a>
             <a href="{{ URL::to('/yearly') }}">&nbsp;&nbsp;&nbsp; - Yearly Sales Projection</a>
             <a href="{{ URL::to('/fiveyears') }}">&nbsp;&nbsp;&nbsp; - Five Years Sales Projection</a>
-            <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - One Year Country Projection</a>
+            <a href="{{ URL::to('/fiveyearsWithZones') }}">&nbsp;&nbsp;&nbsp; - Five Years Sales Projection With Zone</a>
+            <a href="{{ URL::to('/countryProjection') }}">&nbsp;&nbsp;&nbsp; - One Year India Country Projection</a>
             <a href="{{ URL::to('/daily') }}">&nbsp;&nbsp;&nbsp; - Daily Sales Target</a>
             <a href="{{ URL::to('/extensionPlanner') }}">&nbsp;&nbsp;&nbsp; - Extension Planner</a>
+            <!-- <a href="{{ URL::to('/bulkBusiness') }}">&nbsp;&nbsp;&nbsp; - Bulk Business</a> -->
         </div>
         <a href="#" data-toggle="collapse" data-target="#Expenditure">Expenditure &#x21F2;</a>
         <div id="Expenditure" class="collapse">
             <a href="{{ URL::to('/expenditure') }}">&nbsp;&nbsp;&nbsp; - Expenditure</a>
             <a href="{{ URL::to('/five_years_expenditure') }}">&nbsp;&nbsp;&nbsp; - Five Years Expenditure</a>
         </div>
-    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
+    <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
         <div id="projects" class="collapse">
-            <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
+             <a href="{{ URL::to('/quality') }}">&nbsp;&nbsp;&nbsp; - Quality of Projects</a>
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
@@ -507,6 +1102,25 @@ div#calendar{
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
+    <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+       <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
+        <div id="agent" class="collapse">
+            <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
+            <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+            <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+            <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+           
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
+            <a href="{{ URL::to('/') }}/hr"> &nbsp;&nbsp;&nbsp; -Human Resourse</a>
+        </div>
+         <a href="#" data-toggle="collapse" data-target="#foffice">Field and Office Logins &#x21F2;</a>
+        <div id="foffice" class="collapse">
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a>  
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
+        </div> 
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
@@ -514,6 +1128,8 @@ div#calendar{
         <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
         <a href="{{ URL::to('/') }}/assignassets">&nbsp;&nbsp;&nbsp; - Assign Assets to Department</a>
         <a href="{{ URL::to('/video') }}">&nbsp;&nbsp;&nbsp; - Training Video</a>
+        <a href="{{ URL::to('/') }}/adminlatelogin">&nbsp;&nbsp;&nbsp; - Late Logins</a>
+        
     </div>
     <a href="#" data-toggle="collapse" data-target="#ap">All Departments &#x21F2;</a>
     <div id="ap" class="collapse">
@@ -524,28 +1140,55 @@ div#calendar{
         <a href="{{ URL::to('/marketing') }}">&nbsp;&nbsp;&nbsp; - Marketing</a>
         <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Asst. Manager of sales</a>
     </div>
-    <a href="{{ URL::to('/employeereports') }}">Attendance</a>
+    <!-- <a href="{{ URL::to('/employeereports') }}">Attendance</a> -->
     <a href="{{ URL::to('/amdept') }}">Add Authorities</a>
    <!--  <a href="{{ URL::to('/finance') }}">Finance</a> -->
-   <a href="{{ URL::to('/letracking') }}">Tracking</a>
-    <a href="{{ URL::to('/manufacturerdetails') }}">Manufacturer Details</a>
+  <!--  <a href="{{ URL::to('/letracking') }}">Tracking</a> -->
+    <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
+    <div id="manufacturer_details" class="collapse">
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        <a href="{{ URL::to('/viewManufacturer?type=Blocks') }}">&nbsp;&nbsp;&nbsp; - Blocks</a>
+        <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a>
+    </div>
+    <a href="#" data-toggle="collapse" data-target="#manufacturer_details1">Direct Aligned Partners &#x21F2;</a>
+    <div id="manufacturer_details1" class="collapse">
+    <a href="{{ URL::to('/manufacturerdetails') }}">Suppliers</a>
+    <a href="{{ URL::to('/lebrands') }}">Brands</a>
+</div>
     <a href="{{ URL::to('/activitylog') }}">Activity Log</a>
     <a href="{{ URL::to('/assignadmin') }}">Assign wards to Admin</a>
-    <a href="{{ URL::to('/confidential') }}">Confidential</a>
+    <!-- <a href="{{ URL::to('/confidential') }}">Confidential</a> -->
     <a href="{{ URL::to('/allProjectsWithWards') }}">Data Quality of Projects</a>
     <a href="{{ URL::to('payment') }}">Delivery order Details</a>
      <a href="{{ URL::to('/') }}/viewInvoices">Invoices</a>
-  <a href="{{ URL::to('/setprice') }}">Set Products Prices</a>
+  <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
+  
 
 </div>
 @elseif(Auth::user()->group_id == 2 && Auth::user()->department_id == 1)  
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
-   
-   
+      <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
+      <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
+    <div id="so" class="collapse">
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
+        <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
+
+    </div>
+       <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
+    <div id="add" class="collapse">
+      <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; - Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; - Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
+    </div>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacturer Details</a>
+      
+<!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
         <div id="sales" class="collapse">
@@ -558,23 +1201,38 @@ div#calendar{
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
               <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone numbers</a>
               <a href="{{ URL::to('/assign_enquiry') }}">&nbsp;&nbsp;&nbsp; -Assign Enquiry</a>
+              <a href="{{ URL::to('/assign_manufacturer') }}">&nbsp;&nbsp;&nbsp; -Assign Manufacturers</a>
         </div>
      <a href="#" data-toggle="collapse" data-target="#operation">Operation &#x21F2;</a>
         <div id="operation" class="collapse">
               <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
-              <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a>
+             <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
                <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
+               <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
+               <a href="{{ URL::to('/') }}/projectWithNotes">&nbsp;&nbsp;&nbsp; -Projects With Notes</a>
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
-        </div>   
+              <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
+        </div>  
+       
      <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
           <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
       </div> -->
+      <a href="#" data-toggle="collapse" data-target="#agent">Field and Office logins&#x21F2;</a>
+      <div id="agent" class="collapse">
+          <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+          <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
+          <!-- <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>  -->
+          <!-- <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> --> 
+      </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
+     <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
 </div>  
 
 
@@ -584,12 +1242,24 @@ div#calendar{
     <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
 
     <a href="{{ URL::to('/') }}/projectsUpdate" id="updates"  >Assigned Task</a>
+    <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
     <a href="{{ URL::to('/') }}/scmaps">Maps</a>
+    <a href="{{ URL::to('/') }}/kra">KRA</a>
+</div>
+
+@elseif(Auth::user()->group_id == 23 && Auth::user()->department_id == 2)
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+     <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+    <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
+    <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
+    <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
+    <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
 @elseif(Auth::user()->group_id == 8 && Auth::user()->department_id == 3)
@@ -619,13 +1289,15 @@ div#calendar{
        @endif
      @else
      <a href="{{ URL::to('/') }}/projectsUpdate">Assigned Task</a>
-
      @endif
+    <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
+    <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
+     
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-      <a href="{{ URL::to('/') }}/inputview">Add Enquirys</a>
+      <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
      
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
@@ -641,15 +1313,49 @@ div#calendar{
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/mhemployee">MAMAHOME Employee</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
+            <a href="{{ URL::to('/') }}/newamviewattendance">New Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>
             <a href="{{ URL::to('/') }}/assets">Add Assets</a>
             <a href="{{ URL::to('/') }}/assignassets">Assign Assets to Department</a>
             <a href="{{ URL::to('/') }}/video"> Add Training Video</a>
-        </div>
+       <!--  <a href="#" data-toggle="collapse" data-target="#agent">Employee Attendance &#x21F2;</a> -->
+        <div id="agent" class="collapse">
+            <a href="{{ URL::to('/') }}/seniorteam">&nbsp;&nbsp;&nbsp; -Senior Team Leader</a> 
+            <!-- <a href="{{ URL::to('/') }}/seniorteam1">&nbsp;&nbsp;&nbsp; -Senior Team Leader1</a> -->
+            <a href="{{ URL::to('/') }}/teamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+            <!-- <a href="{{ URL::to('/') }}/teamleader1">&nbsp;&nbsp;&nbsp; -Team Leaders1</a> -->
+            <a href="{{ URL::to('/') }}/saleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> 
+            <a href="{{ URL::to('/') }}/marketexe"> &nbsp;&nbsp;&nbsp; -Marketing </a>
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+             <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a> 
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/market"> &nbsp;&nbsp;&nbsp; -Market Researcher</a>
+
+        </div> 
+        <a href="#" data-toggle="collapse" data-target="#foffice">Field and Office Logins &#x21F2;</a>
+        <div id="foffice" class="collapse">
+            <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a>  
+            <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+            <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Office Employees</a>
+        </div> 
+         <a href="{{ URL::to('/') }}/hrlatelogins">Late Logins</a>
+         <a href="{{ URL::to('/') }}/holidays">Holiday List</a> 
+       <!--  <a href="{{ URL::to('/') }}/breaktimes">Break Times</a> -->
+    </div>
         @endif
         @endif
-        
-        
+                
+                <form method="POST"  action="{{ URL::to('/') }}/logintime" >
+                  {{ csrf_field() }}
+                                   <!--  <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
+                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeapp">
+                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
+                        <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form> 
+                 <!-- <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
+                  {{ csrf_field() }}
+                    <button id="logout" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form> -->
         @yield('content')
     </div>
 
@@ -695,7 +1401,7 @@ div#calendar{
                     </tbody>
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
-         <a  href="{{ URL::to('/') }}/reject" class="btn btn-danger" data-toggle="modal" data-target="#myModal10">Reject</a></center>
+         <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
         </div>
         
         <!-- Modal footer -->
@@ -713,7 +1419,7 @@ div#calendar{
       
         <!-- Modal Header -->
         <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
-          <h4 class="modal-title">Reason For Rejecting?</h4>
+          <h4 class="modal-title">Time Need To Complete?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -724,15 +1430,20 @@ div#calendar{
         @if(isset($stages))
          <input type="hidden" name="user_id" value="{{ $stages->user_id }}">
          @endif
-         <label>Reason : </label>
+         <label>Date :</label>
+         <input type="date" name="date" class="form-control" style="width:50%;">
+
+         <label>Time :</label>
+         <input type="time" name="time" class="form-control" style="width:50%;">
+         <label>Reason : </label> <br>
          <textarea type="text" name="remark" style="width:400px;" ></textarea>
         </div>
-       <center> <button type="sunmit" value="submit" class="btn btn-primary">Submit</button></center> 
+       <center> <button type="submit" value="submit" class="btn btn-primary">Submit</button></center> 
         </form>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <div class="modal-footer" style="padding:2px;"> 
+          <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
         </div>
         
       </div>
@@ -740,10 +1451,6 @@ div#calendar{
   </div>
   
 </div>
-
-
-
-    
     <!-- Scripts -->
     <script>
         function openNav() {
@@ -755,7 +1462,7 @@ div#calendar{
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-        </script>
+      </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -782,5 +1489,142 @@ div#calendar{
         </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ URL::to('/') }}/js/countdown.js"></script>
-</body>
-</html>
+<!-- <script>
+
+  function submitlogout(){
+    document.getElementById("logout").form.submit();
+  }
+</script> -->
+ <!-- get location -->
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" charset="utf-8">
+  function submitapp(){
+        document.getElementById("login").form.submit();
+  }
+  // function lll(){
+    
+  // }
+   function confirmthis()
+    {
+        var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
+            $(document).ready(function(){
+              $("#report").modal('show');
+          });
+        }
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
+@if(session('empSuccess'))
+  <div class="modal fade" id="empSuccess" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #5cb85c;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Success</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('empSuccess') !!}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#empSuccess").modal('show');
+  });
+</script>
+@endif
+@if(session('Latelogin'))
+  <div class="modal fade" id="emplate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Late Login</h4>
+        </div>
+        <div class="modal-body">
+       
+          <p style="text-align:center;">{!! session('Latelogin') !!}</p>
+             
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#emplate").modal('show');
+  });
+</script>
+@endif
+<script>
+    function myFunction1() {
+        var table = document.getElementById("reports");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = "<input required type='text' name='report[]' id='report' class='form-control' placeholder='Report'>";
+        cell2.innerHTML = "<input required type='time' name='from[]' id='from' class='form-control'>";
+        cell3.innerHTML = "<input required type='time' name='to[]' id='to' class='form-control'>";
+    }
+    function myDelete1() {
+        var table = document.getElementById("reports");
+        if(table.rows.length >= {{ 3 }}){
+            document.getElementById("reports").deleteRow(-1);
+        }
+    }
+ </script>
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('error'))
+<script>
+    swal("error","{{ session('error') }}","error");
+</script>
+@endif
+@if(session('earlylogout'))
+  <div class="modal fade" id="emplate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Early logout</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('earlylogout') !!}</p>  
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+      $("#emplate").modal('show');
+  });
+
+
+</script>
+@endif
+
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>
+<!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js'></script>
+<script>
+  $('.date').datepicker({
+  	multidate: true,
+  	format: 'dd-mm-yyyy' });
+      //# sourceURL=pen.js
+</script>

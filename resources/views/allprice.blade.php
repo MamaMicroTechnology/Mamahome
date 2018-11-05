@@ -5,7 +5,9 @@
     <div class="col-md-8 col-md-offset-4">
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading text-center" style="background-color:green">
-                <b style="color:white">pricess</b>
+                <b style="color:white">Products Prices </b>
+              <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></button>
+             
             </div>
         <table  class="table table-responsive table-striped" border="1">
                 <thead>

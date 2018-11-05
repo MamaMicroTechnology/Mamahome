@@ -12,7 +12,9 @@
     <div class="panel panel-success">
         <div class="panel-heading">Yearly Planning For MH_91_Z1</div>
         <div class="panel-body">
-            <?php $time = strtotime($projection); ?>
+            <?php
+                $proj = explode(",",$projection);
+                $time = strtotime($proj[0]); ?>
             <?php
                 $transactionalProfit = $percent = isset($_GET['percent']) ? $_GET['percent'] : '';
                 $total = 0;
@@ -20,16 +22,6 @@
             ?>
             <form action="">
             <div class="form-group">
-            <!-- <label style="text-align:left;" for="from" class="control-label col-sm-2">Category :</label> -->
-                <!-- <div class="col-md-2">
-                    <select name="category" id="category" class="form-control input-sm">
-                        <option value="">--Select Categories--</option>
-                        <option value="all">All</option>
-                        @foreach($categories as $category)
-                        <option value="{{ $category->category }}">{{ ucwords($category->category) }}</option>
-                        @endforeach
-                    </select>
-                </div> -->
                 <label style="text-align:left;" for="from" class="control-label col-sm-5">Input Monthly Incremental Target Percentage :</label>
                 <div class="col-md-4">
                     <input required value="{{ isset($_GET['percent']) ? $_GET['percent'] : '' }}" required type="text" name="percent" id="percent" placeholder="Monthly Incremental Target Percentage" class="form-control">
@@ -47,27 +39,27 @@
                     <th style="text-align:center">Monthly Transactional Profit</th>
                 </tr>
                 <tr>
-                    <td  style="text-align:center;">{{ date('d-M-Y',strtotime($projection)) }}</td>
+                    <td  style="text-align:center;">{{ date('d-M-Y',strtotime($proj[0])) }}</td>
                     <td  style='text-align:center'>{{ number_format($totalTarget) }}</td>
                     <td  style='text-align:center'>{{ number_format($totalTP) }}</td>
                 </tr>
                 @if(isset($_GET['percent']))
-                @for($i = 1; $i < 12; $i++)
-                <tr>
-                    <td style="text-align:center">{{ date('d-M-Y',strtotime('+'.$i.' months',$time)) }}</td>
-                    <td style='text-align:center'>{{ number_format($totalTarget = $totalTarget + $totalTarget * ($percent/100)) }}</td>
-                    <td style='text-align:center'>{{ number_format($totalTP = $totalTP + $totalTP * ($transactionalProfit/100)) }}</td>
-                </tr>
-                <?php
-                    $total += $totalTarget;
-                    $totalTransaction += $totalTP;
-                ?>
-                @endfor
-                <tr>
-                    <th style="text-align:center">Total</th>
-                    <th style='text-align:center'>{{ number_format($total) }}</th>
-                    <th style='text-align:center'>{{ number_format($totalTransaction) }}</th>
-                </tr>
+                    @for($i = 1; $i < 12; $i++)
+                    <tr>
+                        <td style="text-align:center">{{ date('d-M-Y',strtotime('+'.$i.' months',$time)) }}</td>
+                        <td style='text-align:center'>{{ number_format($totalTarget = $totalTarget + $totalTarget * ($percent/100)) }}</td>
+                        <td style='text-align:center'>{{ number_format($totalTP = $totalTP + $totalTP * ($transactionalProfit/100)) }}</td>
+                    </tr>
+                    <?php
+                        $total += $totalTarget;
+                        $totalTransaction += $totalTP;
+                    ?>
+                    @endfor
+                    <tr>
+                        <th style="text-align:center">Total</th>
+                        <th style='text-align:center'>{{ number_format($total) }}</th>
+                        <th style='text-align:center'>{{ number_format($totalTransaction) }}</th>
+                    </tr>
                 @endif
             </table>
         </div>
@@ -82,4 +74,10 @@
         <br>
     </div>
 </div>
+
+@if(session('Success'))
+<script>
+    swal("{{ session('Success') }}");
+</script>
+@endif
 @endsection

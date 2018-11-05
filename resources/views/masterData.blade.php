@@ -183,7 +183,7 @@
                                     @foreach($subwards as $ward)
                                         <tr>
                                             <td style="width:20%">{{ $ward->sub_ward_name }}</td>
-                                            <td style="width:33%"><center><a href="{{ URL::to('/')}}/public/subWardImages/{{ $ward->sub_ward_image}}" class="btn btn-sm btn-primary" target="_blank">View image</a></center></td>
+                                            <td style="width:33%"><center><a href="{{ URL::to('/')}}/viewMap?subWardId={{ $ward->id}}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
                                             <td><a href="{{ URL::to('/') }}/wardmaping?subWardId={{ $ward->id }}" class="btn btn-success btn-sm form-control">Edit</a></td>
                                         </tr>
                                     @endforeach

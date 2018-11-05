@@ -62,7 +62,7 @@
 							<br><br><br><br>
 							<tr>
 								
-								<th style="text-align: center">Ward Name</th>
+								<th style="text-align: center">SubWard Number</th>
 								<th style="text-align: center">Name</th>
 								<th style="text-align: center">Action</th>
 								<th style="text-align: center">Enquiry Date</th>
@@ -79,27 +79,53 @@
 						</thead>
 						<tbody>
 							@foreach($pipelines as $enquiry)
-							<tr>
+							<tr>	
+								 @if($enquiry->manu_id == null)
+								<td style="text-align: center">
+									<a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry->project_id}} && subward={{$subwards2[$enquiry->project_id]}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$subwards2[$enquiry->project_id]}}
+                                    </a>
+								</td>
+								@else
+								<td style="text-align: center">
+									@foreach($sub as $su)
+									@if($enquiry->sub_ward_id ==$su->id)
+									<a href="{{ URL::to('/')}}/manufacturemap?id={{$enquiry->manu_id}} && subwardid={{$enquiry->sub_ward_id}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$su->sub_ward_name}}
+                                    </a>
+									@endif
+									@endforeach
+								</td>
+								@endif
 								
 								<td style="text-align: center">
-									{{$subwards2[$enquiry->project_id]}}
+									{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name :''  }}
+                                   {{ $enquiry->proc != null ? $enquiry->proc->name :''  }}
 								</td>
-								<td style="text-align: center">
-									{{$enquiry -> procurement_name}}
-								</td>
+								
+								@if($enquiry->manu_id == null)
+
 								<td style="text-align: center" >
 								<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-success btn-sm pull-right">Edit</a>
 								</td>
+								@else
+								<td style="text-align: center" >
+								<a href="{{ URL::to('/') }}/menqedit?reqId={{$enquiry->id}}" class="btn btn-primary btn-sm pull-right">Edit</a>
+								</td>
+								@endif
 								
 								<td style="text-align: center">
 									{{ date('d/m/Y', strtotime($enquiry->created_at)) }}
 								</td>
-								<td style="text-align: center">
-									{{$enquiry -> procurement_contact_no }}
-								</td>
+								<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
+							 {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
+                               @if($enquiry->manu_id == null)
 								<td style="text-align: center">
 									{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}
 								</td>
+								@else
+								<td style="text-align: center">
+									{{$enquiry->product}}
+								</td>
+								@endif
 								<td style="text-align: center">
 									{{$enquiry -> quantity}}
 								</td>
@@ -118,10 +144,13 @@
 									{{ date('d-m-Y H:i A', strtotime("$enquiry->updated_at"))}}
 									
 								</td>
+					
 								<td>
 									<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 										{{ csrf_field() }}
-										<input type="hidden" value="{{$enquiry->id}}" name="id">
+										<input type="hidden" value="{{$enquiry->id}}" name="eid">
+										<input type="hidden" value="{{$enquiry->manu_id}}" name="manu_id">
+
 										<select required name="status" onchange="this.form.submit();" style="width:100px;">
 											<option value="">--Select--</option>
 											<option>Enquiry On Process</option>
@@ -208,5 +237,20 @@ function searchphone(){
 	  }
 	}
 }
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
 </script>
 @endsection

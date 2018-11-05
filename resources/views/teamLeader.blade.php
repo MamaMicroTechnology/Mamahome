@@ -1,7 +1,7 @@
 
 <?php
-	$user = Auth::user()->group_id;
-	$ext = ($user == 2? "layouts.app":"layouts.teamheader");
+        $user = Auth::user()->group_id;
+        $ext = ($user == 2? "layouts.app":"layouts.teamheader");
 ?>
 @extends($ext)
 @section('content')
@@ -17,8 +17,16 @@
 <BR><br>
 @endif
 @if(Auth::user()->group_id == 22)
-<h2>Assigned Ward : {{$x}}</h2>
+<table class="table" style="width:50%;">
+  <tr>
+    <th>Team Members</th>
+    <th>Designation</th>
+  </tr>
+ <h2>Assigned Ward : {{$x}}</h2>
+       
+</table>
 @endif
+</table>
     <SMALL>You must know your responsibilities and carry out your tasks responsibly.<br>
     We appreciate you services.
     </SMALL>
@@ -45,35 +53,34 @@
         </div>
     </div>
 </center>
-<div class="col-md-4 col-md-offset-4">
+@if(Auth::user()->group_id != 22)
+<div class="col-md-5 col-md-offset-3">
     <div class="panel panel-default">
-        <div class="panel-heading">MINI ATTENDANCE ({{ date('d-m-Y') }})</div>
+        <div class="panel-heading"><center><b>MINI ATTENDANCE ({{ date('d-m-Y') }})</b></center></div>
         <div class="panel-body">
         <table class="table table-hover">
-        
-        
+        <thead>
+            <tr>
+                <th>Employee-Id</th>
+                <th>Name</th>
+                <th>Login Time</th>
+                <th>Logout Time</th>
+            </tr>
+           </thead>
             @foreach($loggedInUsers as $loggedInUser)
             @if($loggedInUser->id = 1|| $loggedInUser->id = 2)
                 <tr>
-                    <td>{{ $loggedInUser->empId }}</td>
+                    <td>{{ $loggedInUser->employeeId }}</td>
                     <td>{{ $loggedInUser->name }}</td>
-                    <td>{{ $loggedInUser->inTIme }}</td>
-                    <td>{{ $loggedInUser->outTime }}</td>
+                    <td>{{ $loggedInUser->logintime }}</td>
+                    <td>{{ $loggedInUser->logout }}</td>
                </tr>
                 @endif
-                
             @endforeach
-            @foreach($leLogins as $leLogin)
-            @if($leLogin->id ==1 || $leLogin->id == 2)
-                <tr>
-                    <td>{{ $leLogin->employeeId }}</td>
-                    <td>{{ $leLogin->name }}</td>
-                    <td>{{ $leLogin->loginTime }}</td>
-                </tr>
-                @endif
-            @endforeach
+            
         </table>
         </div>
     </div>
 </div>
+@endif
 @endsection

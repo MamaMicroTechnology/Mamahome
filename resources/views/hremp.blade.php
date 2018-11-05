@@ -1,5 +1,5 @@
 <div class="panel panel-default" style="border-color:green">
-<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">Employees On {{ $dept }}</div>
+<div class="panel-heading" style="background-color:green;font-weight:bold;font-size:1.3em;color:white">{{ $dept }} Team</div>
 <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
 <table class="table table-hover">
 <thead>
@@ -34,11 +34,8 @@
         @if($page == "anr")
         <td>
         @if($user->department_id != 10)
-            @if($user->id == 85)
-            <a href="{{ URL::to('/') }}/{{ $user->employeeId }}/attendance">
-                Attendance
-            </a>
-            @elseif($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
+            
+            @if($user->department->dept_name == "Operation" && $user->group->group_name == "Listing Engineer")
             <a href="{{ URL::to('/') }}/{{ $user->id }}/date">
                 Report
             </a>

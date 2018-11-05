@@ -9,10 +9,14 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-                     <a href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>
+            
+                     <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
                     
                 </div>
                 <div class="panel-body">  
+                     @if (session()->has('success'))
+                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
+                    @endif
                  
              <div class="panel-body">
              <table class="table table-responsive table-striped table-hover" class="table">
@@ -23,15 +27,15 @@
                             <th style="width:15%">Previously Assigned Sub Ward </th>
                             <th style="width:15%">Previously Assigned Date </th>
                             <th style="width:15%">Previously Assigned Stage </th>
-                            <th style="width:15%">Count Of Projects</th>
                            <th style="width:15%">Action </th>
                            <th></th>
 
-                           <th style="width:15%">Status </th>
+                           <!-- <th style="width:15%">Status </th> -->
                             
                           </thead>
-                          @foreach($users as $user)  
                            <tr>
+                          @if(Auth::user()->group_id != 22)
+                          @foreach($users as $user)  
                             <td>{{$user->name}}</td>
                             <td>{{ $user->group_name }}</td>
                            
@@ -40,75 +44,28 @@
                              <td>{{ $user->prv_subward }}</td>
                              <td>{{ $user->prv_date }}</td>
                              <td>{{ $user->prv_stage }}</td>
-                             <td>
-                              @foreach($assignstage as $qq)
-                              @if($user->id == $qq->user_id)
-                                  {{ $qq->count }}
-                             @endif
-                             @endforeach
-                             </td>
+                            
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
-                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Time</button></td>
-                              @foreach($assignstage as $qq)
-                              @if($user->id == $qq->user_id)
-                              @if($qq->remark != NULL)
-                             <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$user->id }}">Reject</button></td>
-                             @else
-                             <td><button class="btn btn-primary btn-sm">Accept</button></td>
-                             @endif
-                             @endif
-                            @endforeach
-                          </tr> 
- 
-
-
-
-
-<!-- The Modal -->
-<div class="modal" id="myModal{{$user->id}}">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header"  style="background-color:#f4811f;padding:2px">
-        <h4 class="modal-title">Task Reject Message</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-         @foreach($assignstage as $qq)
-         @if($user->id == $qq->user_id)
-          
-          <b style="font-size:20px;">Message:</b><br> <br>
-          <span style="font-size:15px;text-align:left; font-style: bold;" > {{ $qq->remark }} </span>
-         @endif
-         @endforeach
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer" style="padding: 1px;">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                          <!-- The Modal -->  
-  @endforeach
+                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Instructions</button></td>
+                         
+                          </tr>
+@endforeach
+@else
+ @foreach($tlUsers as $user)  
+                            <td>{{$user->name}}</td>
+                            <td>{{ $user->group_name }}</td>
+                           
+                            <input type="hidden"  name="user_id" value="{{ $user->id }}">
+                             <td>{{ $user->prv_ward }}</td>
+                             <td>{{ $user->prv_subward }}</td>
+                             <td>{{ $user->prv_date }}</td>
+                             <td>{{ $user->prv_stage }}</td>
+                             
+                             <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
+                         <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Instructions</button></td>
+                          </tr>
+@endforeach
+ @endif  
  </table>
     
     @foreach($users as $user)
@@ -118,8 +75,8 @@
       
         <!-- Modal Header -->
         <div class="modal-header" style="background-color:#f4811f;padding:2px" >
-          <h4 class="modal-title">Set Time And Instructions</h4>
-          <button type="button" class="close" data-dismiss="modal" style="width:50%">&times;</button>
+          <h4 class="modal-title"> Instructions</h4>
+          
         </div>
         
         <!-- Modal body -->
@@ -130,7 +87,7 @@
          <div class="container">
            <div class="row">
              <div class="col-sm-6">
-             <b> Set Time  </b> <input type="time" name="settime" class="form-control" required style="width:50%"><br><br>
+             <!--  <a href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary btn-sm ">Click Here To get Projects Count </a><br><br> -->
            <b>Instructions</b> <textarea type="text" name="inc" cols="5" rows="7" class="form-control"   style="width:90%;resize:none;"></textarea>
              </div>
            </div><br>
@@ -205,13 +162,13 @@
                  <div class="container">
                      <div class="row">
                        <div class="col-sm-12"> 
-                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;">Assign Stage</h4>&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;     <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="color:orange;font-size:15px">&nbsp;&nbsp; ALL</span>
+                       <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;width:25%;font-family: Times;padding:5px;border-radius: 5px;">Assign Stage</h4><br>&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;      <input id="selectall" onClick="selectAll(this)" type="checkbox" value="ALL"><span style="font-size:15px">&nbsp;&nbsp; ALL</span><br><br>
                           <table>
                              <tr id="sp">
                              <div class="checkbox">
-                            <lable><td style=" padding:20px 40px 20px 40px;" ><input type="checkbox" name="stage[]" value="Planning">&nbsp;&nbsp;Planning</td>
-                                 <td  style=" padding:20px 40px 20px 40px;"><input type="checkbox" name="stage[]" value="Digging">&nbsp;&nbsp;Digging</td>
+                            <lable><td style=" padding:0px 40px 0px 40px;" ><input type="checkbox" name="stage[]" value="Planning">&nbsp;&nbsp;Planning</td>
+                                 <td  style=" padding:0px 40px 0px 40px;"><input type="checkbox" name="stage[]" value="Digging">&nbsp;&nbsp;Digging</td>
                                  <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Foundation">&nbsp;&nbsp;Foundation</td>
                                  <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Pillars">&nbsp;&nbsp;Pillars</td>
                                  <td  style=" padding:0 40px 0 40px;"><input type="checkbox" name="stage[]" value="Walls">&nbsp;&nbsp;Walls</td></lable>
@@ -237,14 +194,14 @@
                              </tr>    
                             </table>
                           </div>
-                    </div>
+                    </div><br>
 
             <div class="row">
               <div class="col-sm-6">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Listed date</h4>
               <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
               </div>
-              <div class="col-sm-4">
+         <div class="col-sm-6">
                <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Quality</h4>
               <select style="width:40%;" class="form-control" name="quality">
                 <option value="">--Select--</option>
@@ -253,34 +210,41 @@
                 <option value="Fake">Fake</option>
               </select>  
               </div>
-            </div> <br>                                                      
-            <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
+            </div> <br> 
 
-            <div class="row">
+          <div class="row">
+              <div class="col-sm-5">  
+              <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;"> Assign UnUpdated Projects</h4>
+              <h5 style="color:green;">It is Fectch Last 30days Projects From Your Selected Date</h5>
+              <input style="width:40%;" type="date" name="undate" class="form-control input-sm" id="datepicker">
+              </div>
+            </div> <br>  
+          <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
+          <div class="row">
             <div class="col-md-2">
-            <h5 style="color:#2962ff;">Basement From</h5>
+            <h5 style="color:black;">Basement From</h5>
                  <input  name="basement"  pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
             </div>
                   <div class="col-md-2">
-                   <h5 style="color:#2962ff;">Basement To</h5>
+                   <h5 style="color:black;">Basement To</h5>
                  <input  name="base" pattern="[0-9]+" title="Enter the number only" type="text"  class="form-control input-sm" placeholder="Basement" id="email">
                  </div>
                 <div class="col-md-2">
-                <h5 style="color:#2962ff;">Floor From</h5>
+                <h5 style="color:black;">Floor From</h5>
                 <input name="Floor"  type="text" pattern="[0-9]+" title="Enter the number only" class="form-control" placeholder="Floor">
                </div>
                <div class="col-md-2">
-                <h5 style="color:#2962ff;">Floor To</h5>
+                <h5 style="color:black;">Floor To</h5>
                 <input name="Floor2"  type="text" pattern="[0-9]+" title="Enter the number only" class="form-control" placeholder="Floor">
                </div>
               </div>
               <div class="row">
                <div class="col-md-2">
-               <h5 style="color:#2962ff;">Total From</h5>
+               <h5 style="color:black;">Total From</h5>
                <input  name="project_type" pattern="[0-9]+" title="Enter the number only"   type="text" class="form-control" placeholder="total">
               </div>
                <div class="col-md-2">
-               <h5 style="color:#2962ff;">Total To</h5>
+               <h5 style="color:black;">Total To</h5>
                <input  name="total" pattern="[0-9]+" title="Enter the number only"   type="text" class="form-control" placeholder="total">
               </div>
               </div>
@@ -288,22 +252,22 @@
               <div class="col-sm-4">
               <h4 style="background-color:#9e9e9e; width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Size</h4>
               <div class="col-sm-6">
-              <h5  style="color:#2962ff;">From</h5>
+              <h5  style="color:black;">From</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="project_size" placeholder="Project Size in sq ft">
               </div>
               <div class="col-sm-6">
-              <h5 style="color:#2962ff;">To</h5>
+              <h5 style="color:black;">To</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="projectsize" placeholder="Project Size in sq ft">
               </div>
               </div>
               <div class="col-sm-4">
               <h4 style="background-color:#9e9e9e;width: 50%;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget </h4>
               <div class="col-sm-6">
-              <h5 style="color:#2962ff;">From</h5>
+              <h5 style="color:black;">To</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budget" placeholder="Budget Min 10lac">
               </div>
               <div class="col-sm-6">
-              <h5 style="color:#2962ff;">To</h5>
+              <h5 style="color:black;">From</h5>
               <input type="text" class="form-control" pattern="[0-9]+" title="Enter the number only" name="budgetto" placeholder="Budget Min 10lac">
               </div>
               </div>
@@ -324,8 +288,8 @@
                     </div> 
                   <div class="col-sm-2">
                     <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">RMC </h4>      
-                    <label><input id="rmc" type="checkbox" name="rmc[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
-                    <label><input id="rmc2" type="checkbox" name="rmc[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label>
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="rmc[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="rmc[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label>
                   </div>
                   <div class="col-sm-2">
                     <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Budget Type </h4>
@@ -336,9 +300,37 @@
                     <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Contract</h4>
                     <label required class="checkbox-inline"><input id="constructionType3" name="contract_type[]" type="checkbox" value="Labour Contract">&nbsp;&nbsp;Labour Contract</label><br>
                     <label required class="checkbox-inline"><input id="constructionType4" name="contract_type[]" type="checkbox" value="Material Contract">&nbsp;&nbsp;Material Contract </label>     
-                  </div>    
+                  </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-sm-2">
+                      <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Home Automation </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="auto[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="auto[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="auto[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                    </div> 
+                  <div class="col-sm-2">
+                    <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Bank Loans </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="bank[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="bank[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="bank[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                  </div>
+                  <div class="col-sm-2">
+                   <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Premium Customer </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="pre[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="pre[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                     <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="pre[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                  </div> 
+                  <div class="col-sm-3">
+                   <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Kitchen Cabinates and Wardrobes </h4>      
+                    <label required class="checkbox-inline"><input id="rmc" type="checkbox" name="door[]" value="Yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes</label><br>
+                    <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="No">&nbsp;&nbsp;&nbsp;&nbsp;No</label><br>
+                     <label required class="checkbox-inline"><input id="rmc2" type="checkbox" name="door[]" value="None">&nbsp;&nbsp;&nbsp;&nbsp;None</label>
+                  </div> 
                 </div>
                 </div><br><br>
+                 
                 <center>
                   <button type="submit" id="submit" class="btn btn-success">Submit Data</button>
                 </center>

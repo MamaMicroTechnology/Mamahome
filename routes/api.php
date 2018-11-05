@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('messages','TokenController@index');
 Route::post('message','TokenController@store');
 Route::get('privatemessage','TokenController@pms');
+Route::get('/banner','TokenController@bannerdata');
 // invoices
 Route::get('ManagementMessages','TokenController@ManagementMessages');
 Route::post('ManagementMessage','TokenController@ManagementMessage');
@@ -28,11 +29,15 @@ Route::post('itMessage','TokenController@itMessage');
 // tl
 Route::get('tlMessages','TokenController@tlMessages');
 Route::post('tlMessage','TokenController@tlMessage');
-Route::get('login','TokenController@buyerLogin');
-Route::get('login/{username}/{password}','TokenController@getLogin');
+Route::get('buyerlogin','TokenController@buyerLogin');
+
+Route::get('/login','TokenController@getLogin');
+
+
+
 Route::get('logout','TokenController@logout');
 Route::get('saveLocation/{userid}/{latitude}/{longitude}','TokenController@saveLocation');
-//Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']);
+//Route::post('getregister',['middleware'=>'auth:api','uses'=> 'TokenController@getregister']); 
 Route::post('getregister', 'TokenController@getregister');
 //user register
 Route::post('/register','mamaController@postRegistration');
@@ -48,3 +53,24 @@ Route::get('/getproject','TokenController@getproject');
 Route::get('/getsingleproject','TokenController@getsingleProject');
 Route::get('/getenq','TokenController@getenq');
 Route::get('/brand','TokenController@getbrands');
+// Route::get('/updateProject','TokenController@getUpdateProject');
+Route::post('/updateProject','TokenController@postUpdateProject');
+Route::post('/updateEnquiry','TokenController@updateEnquiry');
+
+Route::post('/addLocation','TokenController@addLocation');
+Route::post('/updateLocation','TokenController@updateLocation');
+
+Route::get('pending','TokenController@pending');
+Route::get('/confirmorders','TokenController@confirm');
+Route::post('/recordtime','TokenController@recordtime');
+Route::post('/flogout','TokenController@fieldlogout');
+Route::get('/gettime','TokenController@gettime');
+Route::get('/req','TokenController@getreq');
+Route::get('/req1','TokenController@getreq1');
+
+Route::post('/react','TokenController@data');
+Route::get('/fakegps','TokenController@fakegps');
+
+//listing engineers
+Route::post('/addleProject','TokenController@addleProject');
+Route::post('/saveManufacturer','mamaController@postSaveManufacturer');

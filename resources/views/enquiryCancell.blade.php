@@ -14,7 +14,7 @@
                     @if(session('ErrorFile'))
                         <div class="alert-danger pull-right">{{ session('ErrorFile' )}}</div>
                     @endif 
-                    <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+                    <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
               </div>
 			<div class="panel-body" style="overflow-x:scroll;overflow-y:scroll;height:1000px">
 
@@ -22,7 +22,7 @@
 					<thead>
 						<tr>
 							<th style="text-align: center">Project</th>
-							<th style="text-align: center">Ward Name</th>
+							<th style="text-align: center">Subward Number</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
@@ -45,7 +45,9 @@
 									<b>{{$enquiry -> project_id }}</b>
 								</a> 
 							</td>
-							<td style="text-align: center">{{$subwards2[$enquiry->project_id]}}</td>
+							<td style="text-align: center">
+							<a  href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id }} && subward={{$subwards2[$enquiry->project_id]}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$subwards2[$enquiry->project_id]}}
+                                    </a></td>
 							<td style="text-align: center">{{$enquiry -> procurement_name}}</td>
 							<td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
@@ -76,4 +78,12 @@
 			</div>
 		</div>
 	</div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
+
+</script>
 @endsection

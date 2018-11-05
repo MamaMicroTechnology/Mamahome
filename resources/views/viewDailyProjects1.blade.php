@@ -67,9 +67,13 @@
                             <td><b>Interested In Bank Loans ? :</b></td>
                             <td>{{ $details->interested_in_loan }}</td>
                         </tr>
-                         <tr>
-                            <td><b>Interested in UPVC Doors and Windows ? : </b></td>
+                          <tr>
+                            <td><b>Interested In Kitchen Cabinates and Wardrobes ? : </b></td>
                             <td>{{ $details->interested_in_doorsandwindows }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Are You Interested In Brila Super / Ultratech Products? : </b></td>
+                            <td>{{ $details->brilaultra }}</td>
                         </tr>
                          <tr>
                             <td><b>Interested in Home Automation ? : </b></td>
@@ -156,6 +160,14 @@
                         <tr>
                             <td style="width:40%"><b>Followup Started : </b></td>
                             <td>{{ $details->followup }} @if($followupby) (marked by {{ $followupby->name }}) @endif</td>
+                        </tr>
+                        <tr>
+                            <td><b>Questions :</b></td>
+                            <td>{{ $details->with_cont}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Quality :</b></td>
+                            <td>{{ $details->quality}}</td>
                         </tr>
                         <tr>
                             <td><b>Remarks : </b></td>

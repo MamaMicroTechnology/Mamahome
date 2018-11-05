@@ -15,8 +15,9 @@
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
 					
-				Enquiry Data
-					<a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+				Enquiry Data : {{count($enquiries)}}
+				 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
+				
 					
 				
 			</div>
@@ -40,7 +41,7 @@
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
 							<div class="col-md-2">
-								<label>Wards</label>
+								<label>Sub Wards</label>
 								<select class="form-control" name="ward">
 									<option value="">--Select--</option>
 									<option value="">All</option>
@@ -69,6 +70,7 @@
 								@endforeach
 							</select>
 						</div>
+						
 						<div class="col-md-2">
 							<label></label>
 							<input type="submit" value="Fetch" class="form-control btn btn-primary">
@@ -77,11 +79,11 @@
 				</form>
 				
 				<br><br><br><br>
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<div class="col-md-2">
 						Status:
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<select id="myInput" required name="status" onchange="myFunction()" class="form-control input-sm">
 							<option value="">--Select--</option>
 							<option value="all">All</option>
@@ -89,12 +91,40 @@
 							<option value="Enquiry Confirmed">Enquiry Confirmed</option>
 						</select>
 					</div>
-				</div>
+                  </div>
+                    <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
+					@if(Auth::user()->group_id != 22)
+                  <div class="col-md-3">
+					<div class="col-md-2">
+						Ward:
+					</div>
+					<div class="col-md-6">
+						<select id="myInput" required name="enqward" onchange="this.form.submit()" class="form-control input-sm">
+							<option value="">--Select--</option>
+							@foreach($wardwise as $wards2)
+                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+							@endforeach
+						</select>
+					</div>
+                  </div>
+					@endif
+                   <div class="col-md-4">
+					<div class="col-md-3">
+						 Manufacturer :
+					</div>
+					<div class="col-md-6">
+						<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
+								<option value="">--Select--</option>
+								<option value="manu">All</option>
+							</select>
+					</div>
+                  </div>
+                </form>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="text-align: center">Project_Id</th>
-							<th style="text-align: center">Ward Name</th>
+							<th style="text-align: center">SubWard Name</th>
 							<th style="text-align: center">Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
@@ -145,19 +175,38 @@
                         @endforeach
                         
 						@foreach($enquiries as $enquiry)
-						@if($enquiry->status != "Not Processed")
-					
+                        @if($enquiry->status != "Not Processed")
+					        @if($enquiry->manu_id == NULL)
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
-									<b>{{$enquiry -> project_id }}</b>
+									<b>{{$enquiry->project_id }}</b>
 								</a> 
 							</td>
-							<td style="text-align: center">{{$subwards2[$enquiry->project_id]}}</td>
-							<td style="text-align: center">{{$enquiry -> procurement_name}}</td>
+							@else
+							<td style="text-align:center;background-color:rgb(21, 137, 66);color:black;">
+								<a target="_blank" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">
+									<b style="color:white;"> {{$enquiry->manu_id}}</b>
+								</a> 
+							</td>
+							@endif
+							<td style="text-align: center">
+
+                               @foreach($wards as $ward)
+                                 @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : $enquiry->sub_ward_id) )
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
+                                    {{$ward->sub_ward_name}}</a></td>
+                                  @endif
+                               @endforeach
+
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name :''  }}
+                       {{ $enquiry->proc != null ? $enquiry->proc->name :''  }}
+							</td>
 							<td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
-							<td style="text-align: center">{{$enquiry -> procurement_contact_no }}</td>
-							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}</td>
+							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
+							 {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
+							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }} {{ $enquiry->product }} 
+							</td>
 							<td style="text-align: center">
 								<?php $quantity = explode(", ",$enquiry->quantity); ?>
 								@for($i = 0; $i<count($quantity); $i++)
@@ -166,21 +215,13 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
-							<td style="text-align: center">{{$enquiry -> name}}</td>
+							<td style="text-align: center">{{$enquiry->name}}</td>
 							<td style="text-align: center">
-							@foreach($converter as $convert)
-								@if($enquiry->converted_by == $convert->id)
-								{{ $convert->name}}
-								@endif
-							@endforeach
+							{{ $enquiry->user != null ? $enquiry->user->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ date('d/m/Y', strtotime($enquiry->updated_at)) }}
-								@foreach($converter as $convert)
-								@if($enquiry->updated_by == $convert->id)
-								 {{ $convert->name}} 
-								@endif
-							@endforeach
+								{{ $enquiry->user != null ? $enquiry->user->name : '' }}
 							</td>
 							<td style="text-align: center">
 								{{ $enquiry->status}}
@@ -197,13 +238,17 @@
 							<td>
 								<form method="POST" action="{{ URL::to('/') }}/editEnquiry">
 									{{ csrf_field() }}
-									<input type="hidden" value="{{$enquiry->id}}" name="id">
+									<input type="hidden" value="{{$enquiry->id}}" name="eid">
+									<input type="hidden" value="{{$enquiry->manu_id}}" name="manu_id">
+
+									
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>
 										<option>Enquiry On Process</option>
 										<option>Enquiry Confirmed</option>
 										<option>Enquiry Cancelled</option>
 									</select>
+									
 								</form>
 							</td>
 							<td>
@@ -335,5 +380,12 @@ function myFunction() {
 	// }
 	// }
 }
+</script>
+ <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
+
+});
 </script>
 @endsection

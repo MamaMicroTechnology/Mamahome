@@ -1,7 +1,19 @@
 @extends('layouts.app')
 @section('content')
 <div class="col-md-4">
-    <div class="panel panel-primary">
+     <div class="panel panel-primary">
+            <div class="panel-heading">Quality Of Projects</div>
+            <div id="piechart">
+                
+            </div>
+        </div>
+    <!-- <div class="panel panel-primary">
+            <div class="panel-heading">Call Records</div>
+            <div id="piechart2">
+                
+            </div>
+    </div> -->
+    <!-- <div class="panel panel-primary">
         <div class="panel-heading">Call Records</div>
         <div class="panel-body">
             @foreach($notes as $note)
@@ -12,13 +24,8 @@
             @endif
             @endforeach
         </div>
-    </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">Quality Of Projects</div>
-            <div id="piechart2">
-                
-            </div>
-        </div>
+    </div> -->
+       
 </div>
 <div class="col-md-8">
     <div class='col-md-12'>
@@ -86,12 +93,14 @@ function drawChart() {
   var data = google.visualization.arrayToDataTable([
   ['Quality', 'In percentage'],
   ['Unverified :{{ $notConfirmed }} ', {{ $notConfirmed }}],
-  ['Fake : {{ $fake }}', {{ $fake }}],
   ['Genuine : {{ $genuine }}', {{ $genuine }}]
 ]);
 
   // Optional; add a title and set the width and height of the chart
-  var options = {'title':'Quality In Percentage', 'width':550, 'height':350};
+  var options = {
+      title:'Quality In Percentage',
+      colors: ['#f9ff5e', '#5ee547', '#ec8f6e', '#f3b49f', '#f6c7b6']
+      };
 
   // Display the chart inside the <div> element with id="piechart"
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -197,18 +206,23 @@ google.charts.setOnLoadCallback(drawChart);
 // Draw the chart and set the chart values
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
-  ['Quality', 'In percentage'],
-  ['Unverified:{{$notConfirmed }} ', {{ $notConfirmed }}],
-  ['Fake : {{ $fake }}', {{ $fake }}],
-  ['Genuine : {{ $genuine }}', {{ $genuine }}]
+    ['Call Notes', 'In percentage'],
+    @foreach($notes as $note)
+    @if($note == null)
+    ['WITHOUT NOTE : {{ $count[$note] }}', {{ $count[$note] }}],
+    @else
+    ['{{ $note }} : {{ $count[$note] }}', {{ $count[$note] }}],
+    @endif
+    @endforeach
 ]);
 
   // Optional; add a title and set the width and height of the chart
-  var options = {'title':'Quality In Percentage','height':450};
+  var options = {'title':'Call Records'};
 
   // Display the chart inside the <div> element with id="piechart"
   var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
   chart.draw(data, options);
 }
 </script>
+
 @endsection

@@ -47,6 +47,7 @@ use App\Message;
 use App\training;
 use App\Pricing;
 use App\Deposit;
+use App\AssignCategory;
 
 class marketingController extends Controller
 {
@@ -65,29 +66,59 @@ class marketingController extends Controller
         });
     }
     public function getHome(){
+        $sub = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+        $subcat = Brand::where('category_id',$sub)->pluck('id')->first();
         $categories = Category::all();
+        if(Auth::user()->group_id != 23){
         $subcategories = SubCategory::leftjoin('brands','category_sub.brand_id','=','brands.id')->select('brands.brand','category_sub.*')->get();
-        $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
-        return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands]);
+          
+          $brands = brand::leftjoin('category','brands.category_id','=','category.id')->select('brands.*','category.category_name')->get();
+        }
+        else{
+               $subcategories = SubCategory::where('brand_id',$subcat)->select('category_sub.*')->get();
+               
+               $brands = brand::where('category_id',$sub)->select('brands.*')->get();
+        }
+           
+        
+        return view('marketing.marketinghome',['categories'=>$categories,'subcategories'=>$subcategories,'brands'=>$brands,'sub'=>$sub]);
     }
     public function addCategory(Request $request){
+       
+            if($request->catimage){
+               
+        $cat = $request->category.time().'.'.request()->catimage->getClientOriginalExtension();
+        $request->catimage->move(public_path('category'),$cat);
+            }
+
+
         $category = new Category;
         $category->category_name = $request->category;
         $category->measurement_unit = $request->measurement;
+        $category->catimage = $cat;
         $category->save();
         return back()->with('Success','Category added successfully');
     }
     public function addSubCategory(Request $request){
+
+
+       if($request->subimage){
+            $sub = $request->category.time().'.'.request()->subimage->getClientOriginalExtension();
+            $request->subimage->move(public_path('subcat'),$sub);
+        }
+
         $subcat = new SubCategory;
         $subcat->category_id = $request->category;
         $subcat->brand_id = $request->brand;
         $subcat->sub_cat_name = $request->subcategory;
         $subcat->Quantity = $request->Quantity;
+        $subcat->subimage = $sub;
         $subcat->save();
         $cprice = new CategoryPrice;
         $cprice->category_id = $request->category;
         $cprice->category_sub_id = $subcat->id;
         $cprice->price = 0;
+
         $cprice->save();
         return back()->with('Success','Sub Category added successfully');
     }
@@ -105,28 +136,51 @@ class marketingController extends Controller
         return back()->with('Success','Sub-Category has been deleted');
     }
     public function updateCategory(Request $request){
+
+            if($request->catimage){
+               
+        $cat = $request->category.time().'.'.request()->catimage->getClientOriginalExtension();
+        $request->catimage->move(public_path('category'),$cat);
+            } 
         Category::where('id',$request->id)
-            ->update(['category_name'=>$request->name]);
+            ->update(['category_name'=>$request->name,'catimage'=>$cat]);
         return back()->with('Success','Category has been updated');
     }
     public function updateBrand(Request $request){
+        if($request->brandimage){
+            $brandimg = $request->brand.time().'.'.request()->brandimage->getClientOriginalExtension();
+            $request->brandimage->move(public_path('brands'),$brandimg);
+        }
         brand::where('id',$request->id)
-            ->update(['brand'=>$request->name]);
+            ->update(['brand'=>$request->name,'brandimage'=>$brandimg]);
         return back()->with('Success','Brand has been updated');
     }
     public function updateSubCategory(Request $request){
+       if($request->subimage){
+            $sub = $request->category.time().'.'.request()->subimage->getClientOriginalExtension();
+            $request->subimage->move(public_path('subcat'),$sub);
+        }
+           
         SubCategory::where('id',$request->id)
         ->update(['sub_cat_name'=>$request->name,   
-                'Quantity'=>$request->Quantity
+                'Quantity'=>$request->Quantity,
+                'subimage'=>$sub
 
             ]);
         return back()->with('Success','Sub-Category has been updated');
     }
     public function addBrand(Request $request)
     {
+        if($request->brandimage){
+            $brandimg = $request->brand.time().'.'.request()->brandimage->getClientOriginalExtension();
+            $request->brandimage->move(public_path('brands'),$brandimg);
+        }
+        
+
         $brand = new brand;
         $brand->category_id = $request->cat;
         $brand->brand = $request->brand;
+        $brand->brandimage = $brandimg;
         $brand->save();
         return back()->with('Success','Brand added');
     }
@@ -145,6 +199,8 @@ class marketingController extends Controller
         return view('marketing.orders',['rec'=>$rec,'countrec'=>$countrec,'invoice' => $invoice]);
     }
     public function saveinvoice(Request $request){
+
+
         if($request->invoicePic != NULL){
             $imageName1 = "invoice".time().'.'.request()->invoicePic->getClientOriginalExtension();
             $request->invoicePic->move(public_path('invoiceImages'),$imageName1);
@@ -203,13 +259,25 @@ class marketingController extends Controller
             $price = implode(" , ", $request->price);
         }else{
            $price = "null"; 
-        }
+        }        
+           
 
-
+                $requirement = Requirement::where('id',$request->id)->first();
+                $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
+                $subward = SubWard::where('id',$project->sub_ward_id)->first();
+                $ward = Ward::where('id',$subward->ward_id)->first();
+                $zone = Zone::where('id',$ward->zone_id)->first();
+                $country = Country::where('id',$ward->country_id)->first();
+                $year = date('Y');
+                $country_initial = strtoupper(substr($country->country_name,0,2));
+                $count = count(MhInvoice::all())+1;
+                $number = sprintf("%03d", $count);
+                $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
+      
         $mhinvoice = new MhInvoice;
         $mhinvoice->project_id = $request->project_id;
         $mhinvoice->requirement_id = $request->invoice_no;
-        $mhinvoice->invoice_id = $request->invoice_id;
+        $mhinvoice->invoice_id = $orderNo;
         $mhinvoice->customer_name = $request->customer_name;
         $mhinvoice->deliver_location = $request->address;
         $mhinvoice->delivery_date = $request->delivery_date;
@@ -278,6 +346,24 @@ class marketingController extends Controller
           $price->save();
       
         return back();
+ }
+ public function postcat(request $request){
+      $check = AssignCategory::where('user_id',$request->user_id)->first();
+          if($check == null){
+           $price = new AssignCategory;
+           $price->cat_id = $request->cat;
+           $price->user_id = $request->user_id;
+          
+          $price->save();
+      
+            
+          }else{
+           $check->cat_id = $request->cat;
+           $check->user_id = $request->user_id;
+           $check->save();
+      
+          }
+               return back()->with('Success','successfully Assigned Category');
  }
 
  public function cashdeposit(request $request)

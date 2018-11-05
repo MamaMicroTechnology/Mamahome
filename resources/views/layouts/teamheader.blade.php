@@ -10,6 +10,9 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <style>
     body{
         font-family: "Times New Roman";
@@ -359,15 +362,33 @@ div#calendar{
 
                     <!-- Branding Image -->
                     <a href="#" class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</a>
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <img style="height: 25px; width: 170px;" src="{{ URL::to('/') }}/logo.png">
-                    </a>
+                    
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        
+                        @if(Auth::check())
+                        <li><a href="{{ URL::to('/') }}/home" style="font-size:1.1em"><b>Home</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em;font-family:Times New Roman"><b>Enquiry Pipelined</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/tltraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;{{ $trainingCount }}&nbsp;</span></b></a></li>
+                        <li style="padding-top: 10px;">
+                        <button id="getBtn"  class="btn btn-success btn-sm" onclick="teamlogin()">Login</button></li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#break">Break</button>
+                       </li>
+                        <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" onclick="confirmit()">Logout</button>
+                       </li>
+                        @endif
+                   <!--  <li>
+                    <a style="font-size:20px;cursor:pointer;"  href="{{ url('/simple') }}">Raise Ticket</a>
+                      
+                    </li>
+                      <li>
+                    <a style="font-size:20px;cursor:pointer;" href="{{ url('/ticket') }}">Tickets</a>
+                      
+                    </li>  -->  
                     </ul>
                 
                     <!-- Right Side Of Navbar -->
@@ -396,11 +417,92 @@ div#calendar{
                                     </li>
                                 </ul>
                             </li>
+
                         @endguest
                     </ul>
                 </div>
             </div>
         </nav>
+            <!-- Modal -->
+                            <div id="break" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:50%;" >
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Break Time</h4>
+                                  </div>
+                                  <div class="modal-body">
+
+                                    <p>Click On Start To Take a Break?</p>
+                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-success btn-sm">START</button>
+                                  </form>
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                   
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+                            <!-- Modal -->
+                            <div id="report" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                  <div class="modal-header" style="background-color:rgb(244, 129, 31);color:white;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">MAMAHOME EMPLOYEE ATTENDANCE</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                  <form action="{{ URL::to('/') }}/empreports" method="POST">
+                                      {{ csrf_field() }}
+                                      
+                                                  <table class="table table-hover" id="reports">
+                                                      <thead>
+                                                          <th>Report</th>
+                                                          <th>From</th>
+                                                          <th>To</th>
+                                                      </thead>
+                                                      <tbody>
+                                                          
+                                                          <tr>
+                                                              <td><input required type="text" name="report[]" id="report" class="form-control" placeholder="Report"></td>
+                                                              <td><input required type="time" name="from[]" id="from" class="form-control"></td>
+                                                              <td><input required type="time" name="to[]" id="to" class="form-control"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                  </table>
+                                                  <div class="btn-group">
+                                                      <button type="button" onclick="myFunction1()" class="btn btn-warning btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                                      </button>
+                                                      <button type="button" onclick="myDelete1()" class="btn btn-danger btn-sm">
+                                                          &nbsp; <span class="glyphicon glyphicon-minus"></span>&nbsp;
+                                                      </button>
+                                                  </div>
+                                             
+                                              <div class="panel-footer">
+                                                  <input type="submit" value="Submit" class="form-control btn btn-success">
+                                              </div>
+                                  </form>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- mpdal end -->
+
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
           @if(Auth::check() && Auth::user()->group_id == 22 || Auth::check() && Auth::user()->group_id == 1)
@@ -418,6 +520,15 @@ div#calendar{
           <a href="{{ URL::to('/orders') }}">Orders</a>
           <a href="{{ URL::to('/tltraining') }}">Training Video</a>
           <a href="{{ URL::to('/') }}/kra">KRA</a> -->
+          <!--   <a href="#" data-toggle="collapse" data-target="#sales">Add &#x21F2;</a>
+         <div id="sales" class="collapse"> -->
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+  <!--  </div> -->
+            <a href="{{ URL::to('/viewManufacturer') }}"> Manufacturer Details</a>
+       
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
@@ -428,33 +539,60 @@ div#calendar{
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
               <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone numbers</a>
               <a href="{{ URL::to('/assign_enquiry') }}">&nbsp;&nbsp;&nbsp; -Assign Enquiry</a>
+              <a href="{{ URL::to('/assign_manufacturer') }}">&nbsp;&nbsp;&nbsp; -Assign Manufacturers</a>
         </div>
      <a href="#" data-toggle="collapse" data-target="#operation">Operation &#x21F2;</a>
         <div id="operation" class="collapse">
               <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
-              <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a>
+             <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
               <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
+              <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
+            
               <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Daily Slots</a>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
               <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
         </div>  
-        <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+       <!--  <a href="#" data-toggle="collapse" data-target="#manufacturer_details">View Manufacturer &#x21F2;</a>
+    <div id="manufacturer_details" class="collapse"> -->
+       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
+        
+        <!-- <a href="{{ URL::to('/viewManufacturer?type=RMC') }}">&nbsp;&nbsp;&nbsp; - RMC</a> -->
+    <!-- </div> -->
+        <a href="#" data-toggle="collapse" data-target="#agent">Field and Office Logins &#x21F2;</a>
       <div id="agent" class="collapse">
           <a href="{{ URL::to('/') }}/listeng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
-          <a href="{{ URL::to('/acc') }}"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/acceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
       </div> 
      <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
+     <a href="{{ URL::to('/') }}/latelogin">Late Logins</a>
 
           
         
         @endif
         </div>
+                <!-- <form method="POST"  action="{{ URL::to('/') }}/teamlogin" >
+                  {{ csrf_field() }}
+                    <button id="team" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form> -->
+                <form method="POST"  action="{{ URL::to('/') }}/teamlogin" >
+                  {{ csrf_field() }}
+                                    <!-- <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeteam"> 
+                                    <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeteam">
+                                    <input class="hidden" id="addressteam" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
+                        <button id="team" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
+                 <form method="POST"  action="{{ URL::to('/') }}/teamlogout" >
+                  {{ csrf_field() }}
+                    <button id="lteam" class="hidden" onsubmit="show()" type="submit" >Submit</button>
+                </form>
         @yield('content')
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ URL::to('/') }}/js/countdown.js"></script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
@@ -516,5 +654,131 @@ div#calendar{
             document.getElementById("main").style.marginLeft= "0";
         }
     </script>
+<script>
+
+  function teamlogin(){
+    document.getElementById("team").form.submit();
+  }
+  function teamlogout(){
+    document.getElementById("lteam").form.submit();
+  }
+
+  function confirmit()
+    {
+     
+        var ans = confirm('Are You Sure You Want To Logout ?');
+        if(ans)
+        {
+            $(document).ready(function(){
+              $("#report").modal('show');
+          });
+        }
+    }
+
+</script>
+
+@if(session('TeamSuccess'))
+  <div class="modal fade" id="teamSuccess" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #5cb85c;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Success</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('TeamSuccess') !!}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#teamSuccess").modal('show');
+  });
+</script>
+@endif
+@if(session('TeamLate'))
+  <div class="modal fade" id="teamlate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Late Login</h4>
+        </div>
+        <div class="modal-body">
+          <!-- <form action="{{ URL::to('/') }}/teamlate" method="POST" > -->
+          <p style="text-align:center;">{!! session('TeamLate') !!}</p>
+             <!-- {{ csrf_field() }}
+          <center><button type="submit" class="btn btn-success" >Submit</button></center>
+         </form> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#teamlate").modal('show');
+  });
+
+</script>
+
+@endif
+<script>
+    function myFunction1() {
+        var table = document.getElementById("reports");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = "<input required type='text' name='report[]' id='report' class='form-control' placeholder='Report'>";
+        cell2.innerHTML = "<input required type='time' name='from[]' id='from' class='form-control'>";
+        cell3.innerHTML = "<input required type='time' name='to[]' id='to' class='form-control'>";
+    }
+    function myDelete1() {
+        var table = document.getElementById("reports");
+        if(table.rows.length >= {{ 3 }}){
+            document.getElementById("reports").deleteRow(-1);
+        }
+    }
+ </script>
+@if(session('Success'))
+<script>
+    swal("success","{{ session('Success') }}","success");
+</script>
+@endif
+@if(session('error'))
+<script>
+    swal("error","{{ session('error') }}","error");
+</script>
+@endif
 </body>
 </html>
+@if(session('earlylogout'))
+  <div class="modal fade" id="emplate" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #f27d7d;color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Early logout</h4>
+        </div>
+        <div class="modal-body">
+          <p style="text-align:center;">{!! session('earlylogout') !!}</p>  
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#emplate").modal('show');
+  });
+</script>
+@endif

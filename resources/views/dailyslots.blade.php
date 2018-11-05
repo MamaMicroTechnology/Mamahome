@@ -15,8 +15,9 @@
                             <td>
                                 <select class="form-control" id="selectle">
                                     <option disabled selected value="">(-- SELECT LE --)</option>
-                                    @if(Auth::user()->group_id != 22)
+
                                     <option value="ALL">All Listing Engineers</option>
+                                    @if(Auth::user()->group_id != 22)
                                     @foreach($le as $list)
                                     <option value="{{$list->id}}">{{$list->name}}</option>
                                     @endforeach
@@ -62,14 +63,24 @@
             <div class="panel-heading text-center" style="background-color:green">
                 <b style="color:white">Mini Report of listing engineer  (Today)</b>
             </div>
-            <div class="panel-body">
-                <label style="color:black">Total Count : <b>{{$projcount}}</b></label>
+            <div class="panel-body" style="overflow-x:scroll;">
+                 @if(Auth::user()->group_id != 22)
+                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label><br>
+                <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label><br>
+                <label style="color:black">Total RMC Listed = <b>{{$lRMCCount}}</b></label><br>
+                <label style="color:black">Total Blocks Listed = <b>{{$lBlocksCount}}</b></label>
+                @else
+                 <label style="color:black">Total Projects Added = <b>{{$tlcount}}</b></label><br>
+                 <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
+                 @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
-                        <th style="font-size: 10px;">Ward Name</th>
+                        <th style="font-size: 10px;">Sub Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
                         <th style="font-size: 10px;">Updated</th>
+                        <th style="font-size: 10px;">RMC</th>
+                        <th style="font-size: 10px;">Blocks</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
                   @if(Auth::user()->group_id != 22)
@@ -79,9 +90,20 @@
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalRMCListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalBlocksListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] + $totalRMCListing[$user->id] + $totalBlocksListing[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <th style="font-size: 10px;">Total</th>
+                        <th style="font-size: 10px;"></th>
+                        <th style="font-size: 10px;">{{ $lcount}}</th>
+                        <th style="font-size: 10px;">{{ $lupcount}}</th>
+                        <th style="font-size: 10px;">{{ $lRMCCount}}</th>
+                        <th style="font-size: 10px;">{{ $lBlocksCount}}</th>
+                        <th style="font-size: 10px;"></th>
+                    </tr>
                     @else
                      @foreach($tlUsers as $user)
                     <tr>
@@ -89,25 +111,48 @@
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalRMCListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalBlocksListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] + $totalRMCListing[$user->id] + $totalBlocksListing[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <th style="font-size: 10px;">Total</th>
+                        <th style="font-size: 10px;"></th>
+                        <th style="font-size: 10px;">{{$tlcount}}</th>
+                        <th style="font-size: 10px;">{{ $tlupcount}}</th>
+                        <th style="font-size: 10px;">{{ $tlRMCcount}}</th>
+                        <th style="font-size: 10px;">{{ $tlBlocksCount}}</th>
+                        <th style="font-size: 10px;"></th>
+                    </tr>
                     @endif
                 </table>
             </div>
         </div>
-        <div class="panel panel-default" styke="border-color:green">
+        <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading text-center" style="background-color:green">
                 <b style="color:white">Mini Report of Account Executive(Today)</b>
             </div>
-            <div class="panel-body">
-              
+            <div class="panel-body" style="overflow-x:scroll;">
+                @if(Auth::user()->group_id != 22)
+              <label style="color:black">Total Projects Added = <b>{{$acount}}</b></label>
+              <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label>
+              <label style="color:black">Total RMC Listed = <b>{{ $aRMCcount }}</b></label><br>
+              <label style="color:black">Total Blocks Listed = <b>{{ $aBlocksCount }}</b></label>
+              @else
+              <label style="color:black">Total Projects Added = <b>{{$tlacount}}</b></label><br>
+              <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
+              <label style="color:black">Total RMC Listed = <b>{{ $tlAcRMCcount }}</b></label><br>
+              <label style="color:black">Total Blocks Listed = <b>{{ $tlAcBlocksCount }}</b></label>
+              @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
-                        <th style="font-size: 10px;">Ward Name</th>
+                        <th style="font-size: 10px;">Sub Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
                         <th style="font-size: 10px;">Updated</th>
+                        <th style="font-size: 10px;">RMC</th>
+                        <th style="font-size: 10px;">Blocks</th>
                         <th style="font-size: 10px;">Total</th>
                     </thead>
                 @if(Auth::user()->group_id != 22)
@@ -117,9 +162,20 @@
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalAccountRMCListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalAccountBlocksListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] + $totalAccountRMCListing[$user->id] + $totalAccountBlocksListing[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{ $acount}}</td>
+                        <td style="font-size: 10px;">{{ $aupcount}}</td>
+                        <td style="font-size: 10px;">{{ $aRMCcount}}</td>
+                        <td style="font-size: 10px;">{{ $aBlocksCount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @else
                     @foreach($tlUsers1 as $user)
                     <tr>
@@ -127,9 +183,20 @@
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccupdates[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalAccountRMCListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalAccountBlocksListing[$user->id] }}</td>
+                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] + $totalAccountRMCListing[$user->id] + $totalAccountBlocksListing[$user->id] }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td style="font-size: 10px;">Total</td>
+                        <td style="font-size: 10px;"></td>
+                        <td style="font-size: 10px;">{{$tlacount}}</td>
+                        <td style="font-size: 10px;">{{ $tlaupcount}}</td>
+                        <td style="font-size: 10px;">{{ $tlAcRMCcount}}</td>
+                        <td style="font-size: 10px;">{{ $tlAcBlocksCount}}</td>
+                        <td style="font-size: 10px;"></td>
+                    </tr>
                     @endif
                 </table>
             </div>
@@ -138,14 +205,14 @@
     <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Current Count: <b>{{$projcount}}</b></label>
-                <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>{{$projcount}}</b></label>
+                 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button> 
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">
                     <thead>
                         <tr>
-                            <th style="text-align:center">Ward No.</th>
+                            <th style="text-align:center">Subward Ward Name</th>
                             <th style="text-align:center">Project-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Site Engineer Contact Number</th>
@@ -157,13 +224,21 @@
                         </tr>
                     </thead>
                     <tbody id="mainPanel">
+                        <?php $users = []; ?>
                         @foreach($projects as $project)
-                        @if($project->quality == "Fake")
-                        <tr style='background-color:#d2d5db'>
-                        @else
-                        <tr>
-                        @endif
-                            <td style="text-align:center" >{{ $project->sub_ward_name }}</td>
+                            @if($project->quality == "Fake")
+                            <tr style='background-color:#d2d5db'>
+                            @else
+                                @if(!in_array($project->listing_engineer_id, $users))
+                                <tr style='background-color:#91dd71'>
+                                @else 
+                                    <tr>
+                                @endif
+                            @endif
+                            <?php array_push($users, $project->listing_engineer_id); ?>
+                            <td style="text-align:center" >
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$project->project_id}} && subward={{ $project->sub_ward_name }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->sub_ward_name }}
+                             </a></td>
                             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" target="_blank">{{ $project->project_id }}</a></td>
                             <td style="text-align:center">{{$project->owner_contact_no}}</td>
                             <td style="text-align:center">{{$project->site_engineer_contact_no}}</td>
@@ -213,8 +288,8 @@
                     }
                 }
             }
-           
-           
+
+
         });
         function displayGif(){
             document.getElementById('wait').style.display = "block";
@@ -277,7 +352,9 @@
                                 var head = "<tr><td>";
                             }
                             document.getElementById('mainPanel').innerHTML +=
-                            head + response[0][i].sub_ward_name+
+                            head + "<a href='{{URL::to('/')}}/viewsubward?projectid="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"
+                                +response[0][i].sub_ward_name+
+                            "</a>"+
                             "</td><td><a href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -290,13 +367,13 @@
                                 +(response[0][i].consultant_contact_no != null ? response[0][i].consultant_contact_no : '') +
                             "</td><td>"
                                 +(response[0][i].contractor_contact_no != null ? response[0][i].contractor_contact_no : '')+
-                            "</td><td>"    
+                            "</td><td>"
                                 +response[0][i].name+
                             "</td></tr>";
                             document.getElementById('wait').style.display = "none";
                         }
-                        console.log(response);  
-                    }   
+                        console.log(response);
+                    }
                 });
             }
             return false;
@@ -326,7 +403,7 @@
                     month = "0" + month;
                 }
                 orig_from_date = day + "-" + month + "-" + year;
-       
+
                 document.getElementById('mainPanel').innerHTML = '';
                 document.getElementById('panelhead').innerHTML = '';
                 $.ajax({
@@ -337,7 +414,7 @@
                     success: function(response)
                     {
                         document.getElementById('panelhead').innerHTML = "<label style='font-weight:bold;'>Listings From Date : <b> "+orig_from_date+" </b>  &nbsp;&nbsp;&nbsp;&nbsp; Total Count: <b>"+response[1]+"</b></label>";
-                       
+
                         document.getElementById('mainPanel').innerHTML = '';
                         for(var i=0; i<response[0].length;i++)
                         {
@@ -347,7 +424,8 @@
                                 var head = "<tr><td>";
                             }
                             document.getElementById('mainPanel').innerHTML +=
-                            head+response[0][i].sub_ward_name+
+                            head+ "<a href='{{URL::to('/')}}/viewsubward?projectid="+response[0][i].project_id+"&&subward="+response[0][i].sub_ward_name+"' data-toggle='tooltip' data-placement='top' title='click here to view map' class='red-tooltip' target='_blank'>"+response[0][i].sub_ward_name+
+                            "</a>"+
                             "</td><td><a  href='{{URL::to('/')}}/admindailyslots?projectId="+response[0][i].project_id+"&&lename="+response[0][i].name+"' target='_blank'>"
                                 +response[0][i].project_id+
                             "</a></td><td>"
@@ -364,13 +442,19 @@
                                 +response[0][i].name+
                             "</td></tr>";
                         }
-                        console.log(response);  
-                    }   
+                        console.log(response);
+                    }
                 });
             }
             return false;
         }
     </script>
+    <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+     background-color: #00acd6 
 
+});
+
+</script>
 @endsection
-

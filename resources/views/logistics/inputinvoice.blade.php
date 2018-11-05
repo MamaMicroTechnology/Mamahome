@@ -3,9 +3,12 @@
 <?php
     $products = explode(",",$orders->main_category);
 ?>
+
+
 @for($i = 0;$i<count($products);$i++)
 <form method="POST" action="{{ URL::to('/') }}/saveinvoice" enctype="multipart/form-data">
 {{ csrf_field() }}
+
 <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
@@ -45,16 +48,21 @@
                         <input type="hidden" name="project_id" value="{{ $orders->project_id }}">
                     </tr>
                     <tr>
+                        <td colspan="2">Requirment Id</td>
+                        <td colspan="2">{{ $orders->req_id }}</td>
+                        <input type="hidden" name="id" value="{{ $orders->req_id }}">
+                    </tr>
+                    <tr>
                         <td colspan="2">Delivery Date:</td>
                         <td colspan="2">{{ date('d/m/Y'),strtotime($orders->delivered_on )}}</td>
                         <input type="hidden" name="delivery_date" value="{{ date('Y-m-d'), strtotime($orders->delivered_on) }}">
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="2">Invoice No</td>
                         <td colspan="2"><input type="text" class="form-control" placeholder="Invoice Number" name="invoice_id"></td>
                         <input type="hidden" name="invoice_no" value="{{ $_GET['id'] }}">
                         
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td colspan="2">
                             Shipped To:<br>

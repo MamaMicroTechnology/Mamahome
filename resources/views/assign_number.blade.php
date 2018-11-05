@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-md-8 col-md-offset-2">
+  <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
 
-        <div class="panel-heading" style="background-color: green;color: white;">Select Project Status Before Assigning The Phone Numbers  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="panel-heading" style="background-color: green;color: white;">Select Project Status Before Assigning The Phone Numbers  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
            <form method="GET" action="{{ URL::to('/') }}/assign_number">
                 <input type="hidden" name="delete" value="delete">
-                <input type="submit" value="Reset" class="pull-right btn-danger btn btn-sm">
+                <input type="submit" value="Reset" class=" btn-danger btn btn-sm">
               </form>
+
        <center> <button class="btn btn-success " type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal">Select Project Status</button></center>
-        
+          <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-60px;margin-left:10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
         <div class="panel-body">
            @if (session('Success'))
@@ -34,20 +35,24 @@
                         <td>
                          <h4>TOTAL :<b>{{$count }} <br><br>
                               </b> List Of Team Members</h4><br>
-                           <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
+                              <?php
+                                  $s=  $count;
+                                ?> 
 
-
-                           <option value="">--Select--</option>
-                           @if(Auth::user()->group_id != 22)
+                              
+                <select name="user_id" onchange="this.form.submit()" class="form-control" style="width: 30%;">
+                          <option value="">--Select--</option>
+                          
                           @foreach($users as $user)  
                             <option value="{{ $user->id }}">{{$user->name}}</option>
                            @endforeach
-                           @else
+                           @if(Auth::user()->group_id == 22)
                             @foreach($tlUsers as $user)  
                             <option value="{{ $user->id }}">{{$user->name}}</option>
                            @endforeach
                            @endif
                             </select>
+                         
                           <center>  <h4>Phone Numbers</h4></center>
 
                         </td>
@@ -136,7 +141,7 @@
 
 
                                <div class="modal-footer">
-                                 <button type="submit" class="btn btn-success">Submit</button>
+                                 <button type="submit"  class="btn btn-success">Submit</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                               </div>
 

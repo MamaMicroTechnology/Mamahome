@@ -1,9 +1,9 @@
 <?php
   $user = Auth::user()->group_id;
   $ext = ($user == 4? "layouts.amheader":"layouts.app");
+  
 ?>
 @extends($ext)
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -12,16 +12,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                   @if($subwards)
-                 
                   @else
-                  Update Project
+                  Update Project&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   @endif
+                   <a href="javascript:history.back()" class="btn btn-sm btn-danger btn-sm pull-right">Back</a>
                   @if(session('Success'))
                     <p class="alert-success pull-right">{{ session('Success') }}</p>
                   @endif
-                  <small id="currentTime" class="pull-right">
+                 <small id="currentTime">
                     Listed On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
-                  </small><br>
+                  </small>
                 </div>
                 <div class="panel-body">
                     <center>
@@ -44,8 +44,13 @@
                     </center>
                       
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
+                    <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
                     <div id="first">
                     {{ csrf_field() }}
+                    <input  class="hidden" type="text" name="longitude1" value="{{ old('longitude') }}" id="longitude1">
+                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1">  
+                    <input  class="hidden" type="text" name="address1" value="{{ old('address1') }}" id="address1"> 
+                                   
                            <table class="table">
                            @if(Auth::user()->group_id != 7 && Auth::user()->group_id != 6)
                             <tr>
@@ -85,15 +90,15 @@
                                <tr>
                                    <td>Road Width</td>
                                    <td>:</td>
-                                   <td><input id="rWidth" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth"></td>
+                                   <td><input id="rWidth" onkeyup="check('rWidth')" value="{{ $projectdetails->road_width }}"  type="text" placeholder="Road Width" class="form-control input-sm" name="rWidth" pattern="^[0-9]*$"></td>
                                </tr>
                                  <tr>
                                    <td>Full Address</td>
                                    <td>:</td>
                                    @if($projectdetails->siteaddress ==null)
-                                   <td style="color:red;">This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+                                   <td style="color:red;" >This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input  disabled id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm disable" name="address" ></td>
                                    @else
-                                   <td><input id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm" name="address"></td>
+                                   <td><input  disabled id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm disable" name="address"></td>
                                    @endif
                                </tr>
                                <tr>
@@ -108,7 +113,28 @@
                                     </label>
                                     <label required class="checkbox-inline">
                                       <input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial
-                                    </label>
+                                    </label><br>
+                                  <div id="autoUpdate" class="autoUpdate" style="display:none;">
+                                 <label required class="checkbox-inline" style="color:#42c3f3;"><input  id="constructionType1" name="apart[]" type="checkbox" value="Apartments">Apartments </label>
+
+                                    <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2" name="apart[]" type="checkbox" value="Duplex">Duplex</label> 
+
+                                     <label required class="checkbox-inline" style="color:#42c3f3;"><input id="constructionType2"  name="apart[]" type="checkbox" value="villas">Indepnedent villas</label> 
+                        </div>
+                                 </td>
+                               </tr>
+                               <script type="text/javascript">
+                                 $(document).ready(function(){
+                                      $('#constructionType1').change(function(){
+                                      if(this.checked)
+                                      $('#autoUpdate').fadeIn('slow');
+                                      else
+                                      $('#autoUpdate').fadeOut('slow');
+
+                                      });
+                                      });
+                               </script>
+                               <tr>
                                  </td>
                                </tr>
                                <tr>
@@ -138,16 +164,28 @@
                                    
                                  </td>
                                </tr>
-                               <tr>
-                                 <td>Interested In UPVC Doors And Windows ?</td>
+                              <tr>
+                                 <td>Interested In Kitchen Cabinates and Wardrobes ?</td>
                                  <td>:</td>
                                  <td>
                                     
-                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
+                                      <label><input id="dandw1" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_Yes" ? 'checked' : '' }} required value="Kitchen_Yes" type="radio" name="dandwinterest">Yes</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
+                                      <label><input id="dandw2" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_No" ? 'checked' : '' }} required value="Kitchen_No" type="radio" name="dandwinterest">No</label>
                                    <span>&nbsp;&nbsp;&nbsp;  </span>
-                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
+                                      <label><input id="dandw3" {{ $projectdetails->interested_in_doorsandwindows == "Kitchen_None" ? 'checked' : '' }} required value="Kitchen_None" type="radio" name="dandwinterest">None</label>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td>Interested In Brila Super / Ultratech Products?</td>
+                                 <td>:</td>
+                                 <td>
+                                    
+                                      <label><input id="bs1" {{ $projectdetails->brilaultra == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="brila">Yes</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="bs2" {{ $projectdetails->brilaultra == "No" ? 'checked' : '' }} required value="No" type="radio" name="brila">No</label>
+                                   <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input id="bs3" {{ $projectdetails->brilaultra == "None" ? 'checked' : '' }} required value="None" type="radio" name="brila">None</label>
                                  </td>
                                </tr>
                                <tr>
@@ -177,7 +215,7 @@
                                  </td>
                                </tr>
                                <tr>
-                                 <td>Type Of &nbsp; &nbsp;
+                                 <td>Type Of &nbsp;
                                   Contract ? </td>
                                   <td>:</td>
                                   <td>
@@ -194,10 +232,10 @@
               <td>:</td>
               <td>
                   <div class="radio">
-                                <label><input {{ $projectdetails->followup == 'No'?'checked':'' }} type="radio" name="follow" value="No">No</label>
+                                <label><input id="f1" {{ $projectdetails->followup == 'No'?'checked':'' }} type="radio"  name="follow" value="No">No</label>
                               </div>
                               <div class="radio">
-                                <label><input {{ $projectdetails->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
+                                <label><input  {{ $projectdetails->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
                               </div>
              </td>
 
@@ -205,11 +243,10 @@
           <tr>
             <td> Follow Up Date</td>
             <td>:</td>
-            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
+            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="date" data-provide="datepicker" class="form-control" /></td>
 
 
           </tr>
-
 
                                <tr>
                                  <td>Sub Ward</td>
@@ -221,13 +258,7 @@
                                    <td>:</td>
                                    <td><input type="file" accept="image/*" class="form-control input-sm" name="mApprove"></td>
                                </tr> -->
-                               <tr>
-                                   <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
-                                   <td>:</td>
-                                   <td>
-                                    <input oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control input-sm" name="oApprove[]">
-                                  </td>
-                               </tr>
+      
                                <tr>
                                 <?php
                                   $statuses = explode(", ", $projectdetails->project_status);
@@ -359,7 +390,7 @@
                                      <div class="col-md-4 pull-left">
                                     <input id="pSize" value="{{ $projectdetails->project_size }}"  placeholder="Project Size" type="text" onkeyup="check('pSize')" class="form-control input-sm" name="pSize">
                                   </div>
-                                  <div class="col-md-8 alert-success pull-right" id="pSizeTag"></div>
+                                  <div class="col-md-8 alert-success pull-right" id="pSizeTag" style="font-size:12px;"></div>
                                   </td>
                                </tr>
                                 <tr>
@@ -393,7 +424,7 @@
                               <tr>
                                    <td>Project Image</td>
                                    <td>:</td>
-                                    <td> <input id="img" type="file" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
+                                    <td> <input id="pImage" type="file" oninput="fileuploadimage()" onchange="validateFileType()" accept="image/*" class="form-control input-sm" name="pImage[]" multiple><br>
                                        
                                           @if($projectdetails->updated_by == Null || $projectdetails->updated_by != Null)
                                           <?php
@@ -430,9 +461,16 @@
                                    </td>
                                </tr>
                                <tr>
-                                 <td>Updated On</td>
+                                 <td>Image Updated On</td>
                                  <td>:</td>
-                                 <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
+                                 
+                                  @if($projectupdate == null)
+                                  <td>{{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at))}}</td>
+                                  @else
+                                      <td>{{ date('d-m-Y h:i:s A', strtotime($projectupdate))}}</td>
+                                  @endif
+                                 
+                                 
                                </tr>
                                <tr>
                                     <td>Room Types</td>
@@ -576,7 +614,17 @@
     padding: 12px 16px;
     transition: 0.3s;
     font-size: 17px;
-     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button>
+     color:white;" class="tablinks" onclick="openCity(event, 'procurement')">Procurement Details</button><br>
+
+     <button type="button" style="background-color: inherit;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     color:white;" class="tablinks" onclick="openCity(event, 'builder')">Builder Details</button>
 </div>
 
 <div id="owner" class="tabcontent" style="display: none;padding: 6px 12px;
@@ -693,6 +741,33 @@
                                </tr>
                            </table>
                       </div><br>
+
+
+   <div id="builder" class="tabcontent" style="display: none;padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;"><br>
+   <center><label>Builder Details</label></center><br>
+                          <table class="table">
+                               <tr>
+                                   <td>Builder Name</td>
+                                   <td>:</td>
+                                   <td><input id="bName" value="{{ $projectdetails->builders != null ? $projectdetails->builders->builder_name: '' }}"  type="text" placeholder="Builder Name" class="form-control input-sm" id="pName" name="bName"></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Email</td>
+                                   <td>:</td>
+                                   <td><input id="pEmail" value="{{ $projectdetails->builders != null ? $projectdetails->builders->builder_email: '' }}" placeholder="Builder Email" type="Email" class="form-control input-sm" id="pEmail" name="bEmail"></td>
+                               </tr>
+                               <tr>
+                                   <td>Builder Contact No.</td>
+                                   <td>: <p class="pull-right">+91</p></td>
+                                   <td><input id="prPhone" value="{{ $projectdetails->builders != null ? $projectdetails->builders->builder_contact_no: '' }}"  placeholder="Builder Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="bPhone" id="pContact"></td>
+                               </tr>
+                           </table>
+                      </div><br>
+
+
+
                       <tr id="quepanelright-{{$projectdetails->project_id}}">
                                     <td>Questions</td><br>
                                     <td>
@@ -797,6 +872,7 @@ function openCity(evt, cityName) {
   }
 
 function check(arg){
+  alert();
     var input = document.getElementById(arg).value;
     if(isNaN(input)){
       while(isNaN(document.getElementById(arg).value)){
@@ -862,17 +938,26 @@ function check(arg){
                 breadth = 0;
               }
       if(!isNaN(breadth) && !isNaN(length)){
-        var sum          = basement+ground+1;
-        var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
-        sum1          = length*breadth;
-        Size    += sum1;
-        var total = sum * sum1;
-        if(document.getElementById("totalsize").innerHTML != null)
-          document.getElementById("totalsize").innerHTML = Size;
-        else
-          document.getElementById("totalsize").innerHTML = '';
-        
-      }
+              
+              var t1 = parseInt(document.getElementById("basement").value);
+              var t2 = parseInt(document.getElementById("ground").value);
+              sumup  = t1+t2+1;
+             
+              var Size    = 'L('+length+')' + '*' + 'B('+breadth+') = ';
+              sum1   = length*breadth;
+              Size    += sum1;
+              var total = sumup* sum1;
+            
+              if(document.getElementById("totalsize").innerHTML != null)
+                document.getElementById("totalsize").innerHTML = Size;
+              else
+                document.getElementById("totalsize").innerHTML = '';
+               if(document.getElementById("pSize").value != null){
+                var text = 'This Is Recommended Project Size : '+total+' <br> You Can Change If Required!!'
+                 document.getElementById("pSizeTag").innerHTML = text;
+               }else
+                document.getElementById("pSize").value = '';
+            }
     }
     return false;
   }
@@ -950,10 +1035,6 @@ function sum(){
         { 
           if(document.getElementById("pName").value == ""){
             window.alert("You Have Not Entered Project Name");
-          }else if(document.getElementById("longitude").value == ""){
-            window.alert("Please click on Get Location button");
-          }else if(document.getElementById("latitude").value == ""){
-            window.alert("Kindly click on Get location button");
           }else if(document.getElementById("road").value == ""){
             window.alert("You have not entered Road Name");
           } else if(document.getElementById('rWidth').value == ""){
@@ -962,6 +1043,10 @@ function sum(){
             window.alert("Please choose the construction type");
           }else if(rmc.checked == false && rmc2.checked == false && rmc3.checked == false){
             window.alert("Please tell us whether the customer is interested in RMC or not");
+          }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false){
+            window.alert("Please tell us whether the customer is Interested In Kitchen Cabinates and Wardrobes ?");
+          }else if(bs1.checked == false && bs2.checked == false && bs3.checked == false ){
+            window.alert("Please tell us whether the customer is Interested In Brila Super / Ultratech Products?");
           }else if(loan1.checked == false && loan2.checked == false && loan3.checked == false ){
             window.alert("Please tell us whether the customer is interested in taking loan or not");
           }else if(dandw1.checked == false && dandw2.checked == false && dandw3.checked == false ){
@@ -970,6 +1055,8 @@ function sum(){
             window.alert("Please tell us whether the customer is interested in Home Automation");
           }else if(premium1.checked == false && premium2.checked == false && premium3.checked == false ){
             window.alert("Please tell us whether the customer is interested in premium product");
+          }else if(document.getElementById("contract").value == ""){
+
           }else if(document.getElementById("contract").value == ""){
             alert("Please select contract type");
           }else if(ctype1.checked == true && ctype2.checked == true){
@@ -1006,7 +1093,70 @@ function sum(){
                     document.getElementById('prPhone').focus();
           }else{
 
+        console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocationforupdate,
+        displayError,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+      //console.log("Exiting getLocation()");
+  }
+    
+    function displayCurrentLocationforupdate(position){
+      //console.log("Entering displayCurrentLocation");
+
+      var latitude1  = position.coords.latitude;
+      var longitude1 = position.coords.longitude;
+      document.getElementById("longitude1").value = longitude1;
+      document.getElementById("latitude1").value  = latitude1;
+      //console.log("Latitude " + latitude +" Longitude " + longitude);
+
+      getAddressFromLatLangforupdate(latitude1,longitude1);
+      //console.log("Exiting displayCurrentLocation");
+    }
+   
+  function  displayError(error){
+    console.log("Entering ConsultantLocator.displayError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLangforupdate(lat,lng){
+    //console.log("Entering getAddressFromLatLang()");
+   
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+        // console.log("After getting address");
+        // console.log(results);
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        // console.log(results);
+        document.getElementById("address1").value = results[0].formatted_address;
+        var x = results[0].formatted_address;
+       
                           document.getElementById("sub").submit();
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
             }
        }
     }
@@ -1157,7 +1307,35 @@ function sum(){
           cell2.innerHTML = "<input name=\"number[]\" type=\"text\" class=\"form-control\" placeholder=\"No. of houses\">";
         }
     }
-   
+    function checkinput(arg){
+      var floorNo = document.getElementsByName('floorNo[]');
+      var roomType = document.getElementsByName('roomType[]');
+      var floors = [];
+      var rooms = [];
+      var myIndex = roomType[0].selectedIndex;
+      for(var i = 0; i < floorNo.length; i++){
+        floors.push(floorNo[i].value);
+        rooms.push(roomType[i].value);
+      }
+      for(var j = 0; j < floors.length; j++){
+        if(floors[j] == floors[j + 1]){
+          for(i = j+1; i < rooms.length; i++){
+            if(rooms[j] == rooms[i]){
+              alert("This room type has been already selected");
+              roomType[0].options[myIndex].disabled = true;
+              roomType[0].selectedIndex = 0;
+              break;
+            }
+          }
+        }
+      }
+    }
+    function enableoption(){
+      var roomType = document.getElementsByName('roomType[]');
+      for(var i = 1; i < 6; i++){
+        roomType[0].options[i].disabled = false;
+      }
+    }
       // var ctype1 = document.getElementById('constructionType1');
       // var ctype2 = document.getElementById('constructionType2');
       // var ctype3 = document.getElementById('constructionType3');
@@ -1370,7 +1548,26 @@ function sum(){
         alert('You are allowed to upload a maximum of 5 files');
       }
     }
-
+     function fileuploadimage(){ 
+      var count = document.getElementById('pImage').files.length;
+      if(count > 4){
+        document.getElementById('pImage').value="";
+        alert('You are allowed to upload a maximum of 4 files');
+      }
+    }
+    function validateFileType(){
+    var fileName = document.getElementById("pImage").value;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+          document.getElementById('errormsg').innerHTML = "";
+    }else{
+          document.getElementById('errormsg').innerHTML = "Only <b>'.JPG'</b> , <b>'.JPEG'</b> and <b>'.PNG'</b> files are allowed!";
+          document.getElementById("pImage").value = '';
+          return false;
+         }   
+  }
 </script> 
+
 @endsection
 

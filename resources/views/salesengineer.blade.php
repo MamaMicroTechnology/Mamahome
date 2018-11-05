@@ -1,10 +1,14 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 11? "layouts.leheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')   
     <div class="col-md-12">     
     <div class="col-md-12" >
 
     <div class="panel panel-default" style="overflow: scroll;">
-            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp; {{ $projectcount }} </p></div>  
+            <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Project List  <p class="pull-right">Count&nbsp;:&nbsp; {{ $projects->total() }} </p></div>  
          <div class="panel-body" id="page">
        <table class="table table-hover table-striped">
                 <thead>
@@ -13,10 +17,9 @@
                   <th style="width:15%">Address</th>
                  <th>Procurement Name</th>
                   <th>Contact No.</th>
-                 
                  <th>Action</th>
+                <th>Customers Interested Categories</th>
                  <th> Customer History</th>
-                
                </thead>
                 <tbody>
              <?php $ii=0; ?>
@@ -39,7 +42,7 @@
                      <td><form method="post" action="{{ URL::to('/') }}/confirmedProject" >
                                       {{ csrf_field() }}
                                       <input type="hidden" value="{{ $project->project_id }}" name="id">
-                                      <div class="btn-group">
+                                      <div >
                                       <!-- <button  type="button" data-toggle="modal" data-target="#myModal{{ $project->project_id }}" class="btn btn-sm btn-warning " style="color:white;font-weight:bold;padding: 6px;width:80px;" id="viewdet({{$project->project_id}})">Edit</button> -->
                                       <a class="btn btn-sm btn-success " name="addenquiry" href="{{ URL::to('/') }}/requirements?projectId={{ $project->project_id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
@@ -115,674 +118,25 @@
                      
 
                     </td>
+                    @if(Auth::user()->group_id == 23)
+                   <td>
+                      <button style="padding: 5.5px;background-color: #42c3f3 ;color: white" data-toggle="modal" data-target="#Customer{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
+                                   Customers Interested Categories </button>
+
+                    </td>
+                    @endif
                     <td>
                       <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
                                    History </button>
 
                     </td>   
-                   
                   </tr>
 @endforeach
 
 </tbody>
 </table>
 @foreach($projects as $project)
-   <form method="POST" action="{{ URL::to('/') }}/{{ $project->project_id }}/updateProject" enctype="multipart/form-data" id="sub" >
-    {{ csrf_field() }}
-<!-- The Modal -->
- <div class="modal fade" id="myModal{{ $project->project_id }}">
-  <div class="modal-dialog modal-lg"  style="width:60%">
-   <div class="modal-content">
-
-<!-- Modal Header -->
-    <div class="modal-header" style="background-color:rgb(245, 127, 27);padding:0px;">
-        <button type="button" class="close" data-dismiss="modal">×</button>      
-      <ul class="nav nav-tabs">
-        <li class="nav-item nav-link active">
-           <a class="nav-link active" data-toggle="tab" href="#home{{ $project->project_id }}" style="color:green;font-size: 20px;">Project Details</a>
-        </li>
-         <li class="nav-item">
-           <a class="nav-link" data-toggle="tab" href="#menu1{{ $project->project_id }}" style="color:green;font-size: 20px;">Customer Details </a>
-        </li>
-         
-                </ul>
-    </div>
-                                  
-    <!-- Modal body -->
-    <div class="modal-body">
-      <div class="container mt-3">
-                                <!-- Tab panes -->
-        <div class="tab-content">
-          <div id="home{{ $project->project_id }}" class="container tab-pane active"><br>
-          <table class="table" style="width: 55%;">
-               <tr>
-                   <td>Project Name</td>
-                   <td>:</td>
-                   <td style=" padding: 10px;" ><input style="width: 50%;" id="pName"  class=" form-control" required type="text" placeholder="Project Name" name="pName" value="{{ $project->project_name }}" ></td>
-               </tr>
-               <tr>
-                   <td>Location</td>
-                   <td>:</td>
-                   <td  id="x">
-                    <div class="col-sm-6">
-                      <label>Longitude:</label>
-                        <input style="width: 70%;"  placeholder="Longitude" class="form-control " required readonly type="text" name="longitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="longitude">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Latitude:</label>
-                        <input style="width: 70%;"  placeholder="Latitude" class="form-control " required readonly type="text" name="latitude" value="{{ $project->siteaddress != null ? $project->siteaddress->latitude : '' }}" id="latitude">
-                    </div>
-                   </td>
-               </tr>  
-               <tr>
-                   <td>Road Name/Road No.</td>
-                   <td>:</td>
-                   <td style=" padding: 10px;" ><input id="road" style="width: 50%;"  required type="text" placeholder="Road Name / Road No." class=" form-control " name="rName" value="{{ $project->road_name }}"></td>
-               </tr>
-               <tr>
-                   <td>Road Width</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  id="rWidth"  required type="text" placeholder="Road Width"  class="form-control " name="rWidth" value="{{ $project->road_width }}" required></td>
-               </tr>
-               <tr class="{{ $errors->has('address') ? ' has-error' : '' }}">
-                   <td>Full Address</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  readonly id="address" required type="text" placeholder="Full Address" class="form-control " name="address" value="{{ $project->siteaddress != null ? $project->siteaddress->address : '' }}"></td>
-               </tr>
-               <?php
-                  $type = explode(", ",$project->construction_type);
-                ?>
-               <tr>
-                 <td>Construction Type</td>
-                 <td>:</td>
-                 <td style="padding: 20px;">
-                    <label required class="checkbox-inline"><input {{ in_array('Residential', $type) ? 'checked': ''}}  id="constructionType1" name="constructionType[]" type="checkbox" value="Residential">Residential</label>
-                    <label required class="checkbox-inline"><input {{ in_array('Commercial', $type) ? 'checked': ''}} id="constructionType2" name="constructionType[]" type="checkbox" value="Commercial">Commercial</label> 
-                 </td>
-               </tr>
-              <tr>
-                                 <td>Interested In RMC</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input id="rmc" {{ $project->interested_in_rmc == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="rmcinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="rmc2" {{ $project->interested_in_rmc == "No" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="rmc2" {{ $project->interested_in_rmc == "none" ? 'checked' : '' }} required value="No" type="radio" name="rmcinterest">None</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                               <tr>
-                                 <td>Interested In Bank loans?</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input id="loan1" {{ $project->interested_in_loan == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="loaninterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="loan2" {{ $project->interested_in_loan == "No" ? 'checked' : '' }} required value="No" type="radio" name="loaninterest">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="loan3" {{ $project->interested_in_loan == "None" ? 'checked' : '' }} required value="None" type="radio" name="loaninterest">None</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                               <tr>
-                                 <td>Interested In UPVC Doors and Windows?</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input id="dandw1" {{ $project->interested_in_doorsandwindows == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="dandwinterest">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="dandw2" {{ $project->interested_in_doorsandwindows == "No" ? 'checked' : '' }} required value="No" type="radio" name="dandwinterest">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="dandw3" {{ $project->interested_in_doorsandwindows == "None" ? 'checked' : '' }} required value="None" type="radio" name="dandwinterest">None</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                                <tr>
-                                 <td>Interested In Home Automation?</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input id="loan1" {{ $project->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="loan2" {{ $project->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="loan3" {{ $project->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                               <tr>
-                                 <td>Interested In Home automation?</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input id="home1" {{ $project->automation == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="automation">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="home2" {{ $project->automation == "No" ? 'checked' : '' }} required value="No" type="radio" name="automation">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="home3" {{ $project->automation == "None" ? 'checked' : '' }} required value="None" type="radio" name="automation">None</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                               <tr>
-                                 <td>Interested In Premium Products?</td>
-                                 <td>:</td>
-                                 <td>
-                                     <div class="radio">
-                                      <label><input id="premium1" {{ $project->interested_in_premium == "Yes" ? 'checked' : '' }} required value="Yes" type="radio" name="premium">Yes</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="premium2" {{ $project->interested_in_premium == "No" ? 'checked' : '' }} required value="No" type="radio" name="premium">No</label>
-                                    </div>
-                                    <div class="radio">
-                                      <label><input id="premium3" {{ $project->interested_in_premium == "None" ? 'checked' : '' }} required value="None" type="radio" name="premium">None</label>
-                                    </div>
-                                 </td>
-                               </tr>
-                               <tr>
-        
-               <tr>
-                <td>Type of Contract ? </td>
-                <td>:</td>
-                <td style="padding: 10px;">
-                  <select style="width: 50%;"  class="form-control" name="contract" id="contract" required>
-                      <option value="" disabled selected>--- Select ---</option>
-                      <option {{ $project->contract == "Labour Contract" ? 'selected' : ''}} value="Labour Contract">Labour Contract</option> 
-                      <option {{ $project->contract == "Material Contract" ? 'selected' : ''}} value="Material Contract">Material Contract</option>
-                      <option {{ $project->contract == "None" ? 'selected' : ''}} value="None">None</option>
-                  </select>                              </td>
-
-               </tr>
-              <tr>
-              <td><b>Follow Up?</b></td>
-              <td>:</td>
-              <td>
-                  <div class="radio">
-                                <label><input {{ $project->followup == 'No'?'checked':'' }} type="radio" name="follow" value="No">No</label>
-                              </div>
-                              <div class="radio">
-                                <label><input {{ $project->followup == 'Yes'?'checked':'' }} type="radio" name="follow" value="Yes">Yes</label>
-                              </div>
-             </td>
-
-          </tr>
-          <tr>
-            <td><b> Follow up date</b></td>
-            <td>:</td>
-            <td ><input style="width:50%;"  type="date" name="follow_up_date" id="fdate" class="form-control" /></td>
-
-
-          </tr>
-
-
-               <tr>
-                   <td>Govt. Approvals<br>(Municipal, BBMP, etc)</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  oninput="fileUpload()" id="oApprove" multiple type="file" accept="image/*" class="form-control" name="oApprove[]"></td>
-               </tr>
-               
-               <tr>
-                <?php
-                  $statuses = explode(", ", $project->project_status);
-                ?>
-                   <td>Project Status</td>
-                   <td>:</td>
-                   <td style="padding: 10px;">
-                       <table class="table table-responsive" style="width: 90%;" >
-                        <tr>
-                          <td>
-                            <label class="checkbox-inline">
-                              <input {{ in_array('Planning', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Planning">Planning
-                            </label>
-                          </td>
-                          <td>
-                             <label class="checkbox-inline">
-                              <input {{ in_array('Digging', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Digging">Digging
-                            </label>
-                          </td>
-                          <td>
-                             <label class="checkbox-inline">
-                              <input {{ in_array('Foundation', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Foundation">Foundation
-                            </label>
-                          </td>
-                          <td>
-                             <label class="checkbox-inline">
-                              <input {{ in_array('Pillars', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Pillars">Pillars
-                            </label>
-                          </td>
-                          <td>
-                             <label class="checkbox-inline">
-                              <input {{ in_array('Walls', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Walls">Walls
-                            </label>
-                          </td>
-                        </tr>
-                        <tr>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Roofing', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Roofing">Roofing
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Electrical', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Electrical">Electrical
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Plumbing', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Plumbing">Plumbing
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Plastering', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Plastering">Plastering
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Flooring', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Flooring">Flooring
-                        </label>
-                        </td>
-                        </tr>
-                        <tr>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Carpentry', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Carpentry">Carpentry
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Paintings', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Paintings">Paintings
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Fixtures', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Fixtures">Fixtures
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Completion', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Completion">Completion
-                        </label>
-                        </td>
-                         <td>
-                          <label class="checkbox-inline">
-                          <input {{ in_array('Closed', $statuses) ? 'checked': ''}} type="checkbox"  name="status[]" value="Closed">Closed
-                        </label>
-                        </td>
-        
-                        </tr>
-                      </table>
-                   </td>
-               </tr>
-               <tr>
-                   <td>Project Type</td>
-                   <td style="padding:10px;" >:</td>
-                   <td>
-                    <div class="row">
-                        <div class="col-md-3">
-                          <label>Basement</label>
-                          <input value="{{ $project->basement }}" onkeyup="check('basement')" id="basement" name="basement" type="number" autocomplete="off" class="form-control " placeholder="Basement">
-                        </div>
-                        <div class="col-md-2">
-                          <br>
-                          <b style="font-size: 20px; text-align: center">+</b>
-                        </div>
-                      <div class="col-md-3">
-                        <label>Floor</label>
-                        <input value="{{ $project->ground }}" oninput="check('ground')" autocomplete="off" name="ground" id="ground" type="number" class="form-control " placeholder="Floor">
-                      </div>
-                      <div class="col-md-3">
-                        <br>
-                        <p id="total">
-                          B({{ $project->basement }}) + G + {{ $project->ground }} = {{ $project->basement + $project->ground + 1 }}
-                        </p>
-                      </div>
-                    </div>
-                    </td>
-               </tr>
-                 <tr>
-               
-                 <td>Budget Type</td>
-                 <td style="padding:10px">:</td>
-                 <td style="padding: 10px;">
-                    <label required class="checkbox-inline">
-                      <input onclick="dis()" {{ $project->budgetType =="Structural" ? 'checked': ''}}  id="constructionType3" name="budgetType" type="radio" value="{{ $project->budgetType }}" id="a">Structural Budget
-                    </label>
-                    <label required class="checkbox-inline">
-                      <input id="b" {{ $project->budgetType == "Finishing" ? 'checked': ''}}  id="constructionType4" name="budgetType" type="radio" value="{{ $project->budgetType }}">Finishing Budget
-                    </label>
-                 </td>
-               </tr>
-               <tr>
-                   <td>Project Size (Approx.)</td>
-                   <td style="padding:10px">:</td>
-                   <td style="padding: 10px;"><input style="width: 50%;"  value="{{ $project->project_size }}" id="pSize" required placeholder="Project Size in Sq. Ft." type="text" class=" form-control" name="pSize" onkeyup="check('pSize')"></td>
-               </tr>
-               <tr>
-                   <td>Total Budget (in Cr.)</td>
-                   <td style="padding:10px">:</td>
-                   <td >
-                    <div class="col-md-4">
-                      <input id="budget" style="width: 70%;"  value="{{ $project->budget }}"  placeholder="Budget" type="text"
-                       class="form-control" onkeyup="check('budget')" name="budget">
-                    </div>
-                    <div class="col-md-8">
-                      Budget (per sq.ft) :
-                      @if($project->project_size != 0)
-                       {{ round((10000000 * $project->budget)/$project->project_size,3) }}
-                      @endif
-                    </div>
-                  </td>
-               </tr>
-               <tr>
-                   <td>Project Image</td>
-                   <td>:</td>
-                   <td style="padding: 10px;">
-                    <input id="img" type="file"  style="width: 50%;"  accept="image/*" class=" form-control" name="pImage" multiple><br>
-                    <div id="imagediv">
-                      <img height="250" width="250" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $project->image }}" class="img img-thumbnail">
-                    </div>
-                   </td></tr>
-                   <tr>
-                 <td>Updated On</td>
-                 <td>:</td>
-                 <td style="padding: 10px;">{{ date('d-m-Y h:i:s A', strtotime($project->created_at))}}</td>
-               </tr>
-              <tr>
-                  <td>Room Types</td>
-                  <td>:</td>
-                  <td>
-                      <table id=" " class="table table-responsive">
-                          <tr>
-                            <td>
-                              <select id="floorNo" name="floorNo[]" class="form-control">
-                                <option value="">--Floor--</option>
-                                  <option value="Ground">Ground</option>
-                                @for($i = 1;$i<=$project->project_type;$i++)
-                                  <option value="{{ $i }}">Floor {{ $i }}</option>
-                                @endfor
-                              </select>
-                            </td>
-                              <td>
-                                  @if($project->construction_type == "Commercial")
-                                  <input type="text" name="roomType[]" readonly value="Commercial Floor" class="form-control">
-                                  @elseif($project->construction_type == "Residential")
-                                  <select name="roomType[]" id="" class="form-control">
-                                      <option value="1RK">1RK</option>
-                                      <option value="1BHK">1BHK</option>
-                                      <option value="2BHK">2BHK</option>
-                                      <option value="3BHK">3BHK</option>
-                                  </select>
-                                  @else
-                                  <select name="roomType[]" id="" class="form-control ">
-                                      <option value="">--Select--</option>
-                                      <option value="Commercial Floor">Commercial Floor</option>
-                                      <option value="1RK">1RK</option>
-                                      <option value="1BHK">1BHK</option>
-                                      <option value="2BHK">2BHK</option>
-                                      <option value="3BHK">3BHK</option>
-                                  </select>
-                                  @endif
-                              </td>
-                              <td>
-                                  <input type="text" style="width: 50%;"  name="number[]" class="form-control input-sm" placeholder="{{ $project->construction_type == 'Commercial'? "Floor Size" : "No. of House" }}" >
-                              </td>
-                              </tr>
-                          <tr>
-                              <td colspan=3>
-                                  <button onclick="addRow('{{ $project->project_id }}');" type="button" class="btn btn-primary form-control">Add more</button>
-                              </td>
-                          </tr>
-                          @foreach($roomtypes as $roomtype)
-                          @if($roomtype->project_id == $project->project_id)
-                          <tr>
-                            <td>Floor {{ $roomtype->floor_no }}</td>
-                            <td>{{ $roomtype->room_type }}</td>
-                            <td>{{ $roomtype->no_of_rooms }}</td>
-                            
-                            <td>
-                              <button type="button" data-toggle="modal" data-target="#delete{{ $roomtype->id }}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button><br><br>
-                        
-                              <!-- Modal -->
-                              <div id="delete{{ $roomtype->id }}" class="modal fade" role="dialog">
-                                <div class="modal-dialog modal-sm">
-
-                                  <!-- Modal content-->
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                      <h4 class="modal-title">Confirm delete</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <p>Are you sure you want to delete?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <a class="pull-left btn btn-danger" href="{{ URL::to('/') }}/deleteRoomType?roomId={{ $roomtype->id }}">Yes</a>
-                                      <button type="button" class="btn btn-default pull-right" data-dismiss="modal">No</button>
-                                    </div>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                          @endif
-                          @endforeach
-                      </table>
-                  </td>
-               </tr>
-              
-           </table>
-     </div>
-    
-    <div id="menu1{{ $project->project_id }}" class="container tab-pane fade"><br>
-    <label>Owner Details</label>
-           <table class="table" border="" style="width:40%;">
-              <tr>
-                   <td>Owner Name</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input value="{{ $project->ownerdetails != null ? $project->ownerdetails->owner_name : '' }}" type="text" placeholder="Owner Name" class="form-control input-sm" id="oName" name="oName"></td>
-               </tr>
-               <tr>
-                   <td>Owner Email</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input value="{{ $project->ownerdetails != null ? $project->ownerdetails->owner_email : '' }}" placeholder="Owner Email" type="email" class="form-control input-sm" onblur="checkmail('oEmail')" id="oEmail" name="oEmail"></td>
-               </tr>
-               <tr>
-                   <td>Owner Contact No.</td>
-                   <td>: <p class="pull-right">+91</p></td>
-                   <td style="padding: 10px;"><input value="{{ $project->ownerdetails != null ? $project->ownerdetails->owner_contact_no : '' }}" onkeyup="check('oContact')" placeholder="Owner Contact No." type="text" class="form-control input-sm" maxlength="10" minlength="10" name="oContact" id="oContact"></td>
-               </tr>
-              </table>
-             <label>Contractor Details</label>
-           <table class="table"  border=""  style="width:40%;">
-               <tr>
-                   <td>Contractor Name</td>
-                   <td >:</td>
-                   <td style="padding:10px;"><input value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_name :'' }}"  id="cName" type="text" placeholder="Contractor Name" class="form-control input-sm" name="cName"></td>
-               </tr>
-               <tr>
-                   <td>Contractor Email</td>
-                   <td>:</td>
-                   <td style="padding: 10px; "><input value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_email :'' }}"  placeholder="Contractor Email" type="email" onblur="checkmail('cEmail')" class="form-control input-sm" name="cEmail" id="cEmail"></td>
-               </tr>
-               <tr>
-                   <td>Contractor Contact No.</td>
-                   <td>: <p class="pull-right">+91</p></td>
-                   <td style="padding: 10px;"><input  value="{{ $project->contractordetails!= null ? $project->contractordetails->contractor_contact_no  :'' }}" placeholder="Contractor Contact No." onkeyup="check('cContact')" maxlength="10" minlength="10" type="text" class="form-control input-sm" id="cContact" name="cContact"></td>
-               </tr>
-           </table>
-           <label>Consultant Details</label>
-           <table  border=""  class="table" style="width: 40%;">
-               <tr>
-                   <td>Consultant Name</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input value="{{ $project->consultantdetails!= null ? $project->consultantdetails->consultant_name :'' }}"  type="text" placeholder="Consultant Name" class="form-control input-sm" id="coName" name="coName"></td>
-               </tr>
-               <tr>
-                   <td>Consultant Email</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input value="{{ $project->consultantdetails!= null ? $project->consultantdetails->consultant_email :'' }}"  placeholder="Consultant Email" onblur="checkmail('coEmail')" type="email" class="form-control input-sm" id="coEmail" name="coEmail"></td>
-               </tr>
-               <tr>
-                   <td>Consultant Contact No.</td>
-                   <td>: <p class="pull-right">+91</p></td>
-                   <td style="padding: 10px;"><input value="{{ $project->consultantdetails!= null ? $project->consultantdetails->consultant_contact_no:'' }}"  placeholder="Consultant Contact No." maxlength="10" minlength="10" onkeyup="check('coContact')" type="text" class="form-control input-sm" id="coContact" name="coContact"></td>
-               </tr>
-           </table>
-
-                                  <label>Site Engineer Details</label>
-                                 <table  border=""  class="table" style="width: 40%;">
-                                     <tr>
-                                         <td>Site Engineer Name</td>
-                                         <td>:</td>
-                                         <td style="padding: 10px;"><input value="{{ $project->siteengineerdetails != null ? $project->siteengineerdetails->site_engineer_name:'' }}"  type="text" placeholder="Site Engineer Name" class="form-control input-sm" name="eName" id="eName"></td>
-                                     </tr>
-                                     <tr>
-                                         <td>Site Engineer Email</td>
-                                         <td>:</td>
-                                         <td style="padding: 10px;"><input value="{{ $project->siteengineerdetails != null ? $project->siteengineerdetails->site_engineer_email : '' }}"  placeholder="Site Engineer Email" type="email" class="form-control input-sm" name="eEmail" id="eEmail" onblur="checkmail('eEmail')"></td>
-                                     </tr>
-                                     <tr>
-                                         <td>Site Engineer Contact No.</td>
-                                         <td>: <p class="pull-right">+91</p></td>
-                                         <td style="padding: 10px;"><input value="{{ $project->siteengineerdetails != null ? $project->siteengineerdetails->site_engineer_contact_no : '' }}"onblur="checklength('eContact');"  placeholder="Site Engineer Contact No." type="text" class="form-control input-sm" name="eContact" id="eContact" maxlength="10" onkeyup="check('eContact')"></td>
-                                     </tr>
-                                 </table>
-                                  <label>Procurement Details</label>
-           <table  border="" class="table" style="width: 40%;">
-               <tr>
-                   <td>Procurement Name</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input id="prName" value="{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_name : '' }}"  type="text" placeholder="Procurement Name" class="form-control input-sm" id="pName" name="pName"></td>
-               </tr>
-               <tr>
-                   <td>Procurement Email</td>
-                   <td>:</td>
-                   <td style="padding: 10px;"><input id="pEmail" value="{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_email : '' }}"  placeholder="Procurement Email" type="email" class="form-control input-sm" id="pEmail" name="pEmail"></td>
-               </tr>
-               <tr>
-                   <td>Procurement Contact No.</td>
-                   <td>: <p class="pull-right">+91</p></td>
-                   <td style="padding: 10px;"><input id="prPhone" procurement_email value="{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no: '' }}"    placeholder="Procurement Contact No." maxlength="10" minlength="10" type="text" class="form-control input-sm" name="pContact" id="pContact"></td>
-               </tr>
-           </table>
-            <table class="table" style="width: 40%;">
-        
-           
-            <tr id="quepanelright-{{$project->project_id}}">
-                                    <td><label>Questions</label></td>
-                                    <td>
-                                        <select style="width: 100%" class="form-control" id="select-{{$project->project_id}}" name="qstn">-->
-                                    <option disabled selected>--- Select ---</option>
-                                    <option {{ $project->with_cont == 'NOT INTERESTED'? 'selected':'' }} value="NOT INTERESTED">NOT INTERESTED</option>
-                                    <option {{ $project->with_cont == 'BUSY'? 'selected':'' }} value="BUSY">BUSY</option>
-                                    <option {{ $project->with_cont == 'WRONG NO'? 'selected':'' }} value="WRONG NO">WRONG NO</option>
-                                    <option {{ $project->with_cont == 'PROJECT CLOSED'? 'selected':'' }} value="PROJECT CLOSED">PROJECT CLOSED</option>
-                                    <option {{ $project->with_cont == 'CALL BACK LATER'? 'selected':'' }} value="CALL BACK LATER">CALL BACK LATER</option>
-                                    <option {{ $project->with_cont == 'THEY WILL CALL BACK WHEN REQUIRED'? 'selected':'' }} value="THEY WILL CALL BACK WHEN REQUIRED">THEY WILL CALL BACK WHEN REQUIRED</option>
-                                    <option {{ $project->with_cont == 'CALL NOT ANSWERED'? 'selected':'' }} value="CALL NOT ANSWERED">CALL NOT ANSWERED</option>
-                                    <option {{ $project->with_cont == 'FINISHING'? 'selected':'' }} value="FINISHING">FINISHING</option>
-                                    <option {{ $project->with_cont == 'SWITCHED OFF'? 'selected':'' }} value="SWITCHED OFF">SWITCHED OFF</option>
-                                    <option {{ $project->with_cont == 'SAMPLE REQUEST'? 'selected':'' }} value="SAMPLE REQUEST">SAMPLE REQUEST</option>
-                                    <option {{ $project->with_cont == 'MATERIAL QUOTATION'? 'selected':'' }} value="MATERIAL QUOTATION">MATERIAL QUOTATION</option>
-                                    <option {{ $project->with_cont == 'WILL FOLLOW UP AFTER DISCUSSION WITH OWNER'? 'selected':'' }} value="WILL FOLLOW UP AFTER DISCUSSION WITH OWNER">WILL FOLLOW UP AFTER DISCUSSION WITH OWNER</option>
-                                    <option {{ $project->with_cont == 'DUPLICATE NUMBER'? 'selected':'' }} value="DUPLICATE NUMBER">DUPLICATE NUMBER</option>
-                                    <option {{ $project->with_cont == 'NOT REACHABLE'? 'selected':'' }} value="NOT REACHABLE">NOT REACHABLE</option>
-                                    <option {{ $project->with_cont == 'THEY HAVE REGULAR SUPPLIERS'? 'selected':'' }} value="THEY HAVE REGULAR SUPPLIERS">THEY HAVE REGULAR SUPPLIERS</option>
-                                    <option {{ $project->with_cont == 'CREDIT FACILITY'? 'selected':'' }} value="CREDIT FACILITY">CREDIT FACILITY</option>
-                                  </select>
-                                    </td>
-            <tr >                        <td style="padding: 10px;"><b>Quality</b></td>
-            <td >
-                <select  id="quality" onchange="fake()" class="form-control" name="quality">
-                    <option value="null" disabled selected>--- Select ---</option>
-                    <option {{ $project->quality == "Genuine" ? 'selected':''}} value="Genuine">Genuine</option>
-                    <option {{ $project->quality == "Fake" ? 'selected':''}} value="Fake">Fake</option>
-                        <option {{ $project->quality == "Unverified" ? 'selected':''}} value="Unverified">Unverified</option>
-                </select>
-            </td>
-            </tr>
-    </tr>
-        
-        
-        </table>
-
-            <textarea style="width: 40%;" class="form-control" placeholder="Remarks (Optional)" name="remarks" >{{$project->remarks }}</textarea><br>
- 
-        <button style="width:10%;" type="submit" id="subid" class=" form-control btn btn-primary">Submit Data</button>
-</div>
-
-
-
-
-
-
-                       <!-- <div id="menu2{{ $project->project_id }}" class="container tab-pane fade"><br>
-                                     <table class="">
-                                       <tr>
-                                       <td style="padding: 10px;">No Of Times Called</td>
-                                       <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->confirmed }}</td>
-                                       </tr>
-                                        <tr>
-                                       <td style="padding: 10px;" > Project Updated by</td>
-                                       <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->updated_at }}</td>
-                                       </tr>
-                                        <tr>
-                                       <td> Enquirys</td>
-                                       <td>:</td>
-                                        <td >
-                                               <div style="width:80%; max-height:70px; overflow:auto">
-                                        @if($project->project_id == $requirements[$ii][0])
-                                          @for($j = 0; $j < count($requirements[$ii][1]); $j++)
-                                         
-                                          <a href="{{ URL::to('/') }}/editenq?reqId={{ $requirements[$ii][1][$j] }}">  {{ $requirements[$ii][1][$j] }}<br></a>
-                                            
-                                          @endfor
-                                          <?php $ii++ ?>
-                                          @endif  
-                                          </div>
-                                          </td>
-                                        </tr>
-                                         <tr>
-                                       <td style="padding: 10px;" > Last Called By</td>
-                                       <td>:</td>
-                                       <td style="padding: 10px;">{{ $project->updated_at }}</td>
-                                       </tr>
-                                      
-                                     </table>
-                                    </div>
- -->
-                    </div>
-                </div>
-            </div>
-
-
-        <!-- Modal footer -->
-        <div class="modal-footer" style="background-color: green;padding:5px;">
-          <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-secondary"  data-toggle="tab" href="#menu1{{ $project->project_id }}">NEXT</button>
-          <button type="button" class="btn btn-secondary pull-left" data-toggle="tab" href="#home{{ $project->project_id }}" >Privious</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-</form>
-<!-- Modal -->
+ <!-- Modal -->
   <div class="modal fade" id="myModal1{{ $project->project_id }}" role="dialog">
     <div class="modal-dialog">
     
@@ -820,10 +174,10 @@
                               <table class="table table-responsive table-hover">
                                        <thead>
                                           <!-- <th>User_id</th> -->
-                                          <th>Serial No</th>
+                                          <th>No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
-                                          <th> Name </th>
+                                          <th>Name</th>
                                           <th>Question</th>
                                           <th>Call Remark</th>
                                        </thead>
@@ -867,22 +221,97 @@
       
     </div>
     </div>
+
 @endforeach
-                                </div>
-                                        <div class="panel-footer">
-                                                  @if(Auth::user()->group_id == 7)
-                                        <center>{{ $projects->links() }}</center>
-                                                  @else
-                                                  <center>
-                                                       <ul class="pagination">
-                                                          {{ $projects->links() }}
-                                                      </ul> 
-                                                  </center>
-                                                  @endif
-                                         </div>
+
+</div>
+        <div class="panel-footer">
+                  @if(Auth::user()->group_id == 7)
+        <center>{{ $projects->links() }}</center>
+                  @else
+                  <center>
+                       <ul class="pagination">
+                          {{ $projects->links() }}
+                      </ul> 
+                  </center>
+                  @endif
+         </div>
   </div>
  </div>
   </div>
+@foreach($projects as $project)
+
+  <div>
+<form action="{{ URL::to('/') }}/addcat" method="POST"
+enctype="multipart/form-data" >
+        {{ csrf_field() }}
+     <div class="modal fade" id="Customer{{ $project->project_id }}" role="dialog">
+    <div class="modal-dialog">
+      <input type="hidden" name="project_id" value="{{$project->project_id}}">
+      <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header  " style="background-color:#42c3f3;padding:5px; " >
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">  Customers Interested Categories </h4>
+        </div>
+        <div class="modal-body">
+                  <div class="row">
+                        <h4>&nbsp;&nbsp; Select Category</h4>
+                       @foreach($category as $cat)
+                         <div class="col-sm-4">
+                         <label>
+                       <input type="checkbox" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       </div>
+                        @endforeach
+                     <center>   <button type="submit" class="btn btn-primary btn-sm">submit Data</button></center>
+                        </div>  
+                        <table class="table table-responsive table-hover">
+                                       <thead>
+                                          <!-- <th>User_id</th> -->
+                                          <th>No</th>
+                                          <th>Date</th>
+                                          <th style="width:160px;">Category Added By</th>
+                                          <th>Interested Category</th>
+                                          
+                                       </thead>
+                                       <tbody>
+                                         <?php $i=1 ?>
+                                          @foreach($sales as $call)
+                                          @if($call->project_id == $project->project_id)
+                                          <tr>
+                                           <!--  <td>
+                                              {{ $call->user_id }}
+                                            </td> -->
+                                           
+                                            <td>{{ $i++ }}</td>
+                                            <td>
+                                              {{ date('d-m-Y', strtotime($call->created_at)) }}
+                                            </td>
+                                            <td>
+                                            {{ $call->user != null ? $call->user->name :''  }}
+                                            </td>
+                                            <td>
+                                              {{ $call->category }}
+                                            </td>
+                                          </tr>
+                                      @endif
+                                       @endforeach
+                                    </tbody>
+                        </table>      
+        </div>
+        <div class="modal-footer" style="padding:1px;">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+    </div>
+</form>
+</div>
+@endforeach
     </div>  
 <script type="text/javascript">
 
