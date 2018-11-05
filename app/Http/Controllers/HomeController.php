@@ -352,6 +352,21 @@ class HomeController extends Controller
         $totalofenquiry = "";
         $totalenq = "";
         
+         $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $etl = explode(",",$s);
+       $wardwise =Ward::whereIn('id',$etl)->get();
+
+        $wardss = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+         $tlward = explode(",",$wardss);
+         $totalofenquiry = "";
+        $totalenq = "";
+        $converter = user::get();
+        $ward = Ward::get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
+        $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
+        $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
+
+
         $ward = ward::orderby('ward_name','ASC')->get();
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];

@@ -1273,10 +1273,12 @@ foreach($wards as $user){
 
 public function getsubwards(request $request){
 
-         
-$sub = SubWard::where('ward_id',$request->ward_id)->get();
-
-
+  if(!$request->ward_id){
+    $sub = SubWard::get();
+  }  else{
+    
+    $sub = SubWard::where('ward_id',$request->ward_id)->get();
+  }     
 $subwardlat = [];
 foreach ($sub as  $users) {
            
