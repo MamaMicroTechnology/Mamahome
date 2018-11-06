@@ -158,12 +158,58 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Prefered Cement Brands</td>
+                                    <td>Intrested Cement Brands</td>
                                     <td>:</td>
                                     <td>
                                         <input value="{{ $manufacturer->prefered_cement_brand }}" placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Existing Brand and Quanty  <br>(Per Week)</td>
+                                    <td>:</td>
+                                    <td>
+                                        <div class="col-md-6 ">
+                                            <input type="text"  checked="true" name="exbrand" id="tons" class="form-control" placeholder="Existing Brands" value="{{ $manufacturer->exbrand }}" >
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input placeholder="Brand Quantity" min="0" type="number" name="brandquantity" id="cement_requirement" class="form-control" value="{{ $manufacturer->brandquantity }}" >
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                 <tr>
+                                 <td>Sample Requrest ?</td>
+                                 <td>:</td>
+                                 <td>
+                                     
+                                      <label ><input {{ $manufacturer->sample == "Yes" ? 'checked' : '' }} required value="Yes" id="rmc" type="radio" name="sample" ><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input {{ $manufacturer->sample == "No" ? 'checked' : '' }} required value="No" id="rmc2" type="radio" name="sample" ><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input {{ $manufacturer->sample == "None" ? 'checked' : '' }} checked="checked" value="None" id="rmc3" type="radio" name="sample" ><span>&nbsp;</span>None</label>
+                                 </td>
+                               </tr>
+                                <tr>
+                            <td>Other Materials</td>
+                            <td>:</td>
+                            <td>
+                          <textarea  style="resize: none;" class="form-control" placeholder="Remarks (Optional)"  name="other">{{$manufacturer->other}}</textarea>
+                          </td>
+                        </tr>
+                               <tr>
+                                 <td>Add mixtures and GGBS ?</td>
+                                 <td>:</td>
+                                 <td>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="ggbs"  {{ $manufacturer->ggbs == "Yes" ? 'checked' : '' }}><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="ggbs" {{ $manufacturer->ggbs == "No" ? 'checked' : '' }}><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input checked="checked" value="None" id="rmc3" type="radio" name="ggbs" {{ $manufacturer->ggbs == "None" ? 'checked' : '' }}><span>&nbsp;</span>None</label>
+                                 </td>
+                               </tr>
+                               
                                 <tr id="blockTypes1" class="{{ $manufacturer->manufacturer_type == 'Blocks' ? '' : 'hidden' }}">
                                     <td style="background-color:#cfedaa; text-align:center" colspan=3>Block Types</td>
                                 </tr>
@@ -487,6 +533,18 @@
                 </div>
 
                         <table class="table table-responsive" >
+                            <tr>
+                            <td>Quality</td>
+                            <td>:</td>
+                            <td>
+                                <select  class="form-control" name="quality">
+                                    <option value="null" disabled selected>--- Select ---</option>
+                                    <option {{ $manufacturer->quality == "Genuine" ? 'selected':''}} value="Genuine">Genuine</option>
+                                    <option {{ $manufacturer->quality == "Fake" ? 'selected':''}} value="Fake">Fake</option>
+                                </select>
+                            </td>
+                        </tr>
+
                           <tr>
 
                             <td>Remarks</td>

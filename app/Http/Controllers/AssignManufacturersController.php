@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\assign_manufacturers;
 use Auth;
+use Validator;
 use App\Ward;
 use App\Tlwards;
 use App\SubWard;
@@ -28,7 +29,8 @@ use App\Mprocurement_Details;
 use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\SubWardMap;
-
+use App\brand;
+use App\SubCategory;
 class AssignManufacturersController extends Controller
 {
  
@@ -276,8 +278,11 @@ if($aggregates_required != null){
 
  public function manuenquiry(Request $request)
     {
-        $category = Manufacturer::all();
-       
+        $category1 = Manufacturer::all();
+        $category = Category::all();
+        $brand = brand::leftjoin('category','category.id','=','brands.category_id')
+                ->select('brand')->get();
+
 
         $depart1 = [6];
         $depart2 = [7];
@@ -286,7 +291,7 @@ if($aggregates_required != null){
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('manuenquiry',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects]);
+        return view('manuenquiry',['category1'=>$category1,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
     }
 
 public function inputdata(Request $request)
@@ -294,24 +299,72 @@ public function inputdata(Request $request)
 
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
 
+           $cat = category::where('id',$request->cat)->pluck('id')->first();
+
          if($request->name){
 
               $shipadress = $request->billadress;
          }
            $shipadress = $request->billadress;
 
-         $points = new Point;
+   // for fetching sub categories
+        $get = implode(", ",array_filter($request->quan));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quan);
+        $qu = implode(", ", $quantity);
+
+
+
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub.":".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$another[$i];
+
+            }
+        }
+        $validator = Validator::make($request->all(), [
+            'subcat' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return back()
+                ->with('NotAdded','Select Category Before Submit')
+                ->withErrors($validator)
+                ->withInput();
+            }
+            $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
+            $subcategories = implode(", ", $sub_cat_name);
+            // fetching brands
+            $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
+            $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
+            $brandnames = implode(", ", $brand);
+
+            $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
+            $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
+            $categoryNames = implode(", ", $category);
+
+            $points = new Point;
             $points->user_id = $request->initiator;
             $points->point = 100;
             $points->type = "Add";
             $points->reason = "Generating an enquiry";
             $points->save();
+            $var = count($request->subcat);
+            $var1 = count($brand);
+
+
+            // $qnty = implode(", ", $request->quan);
+
+        $var2 = count($category);
+        $storesubcat =$request->subcat[0]; 
             
         $ward = $request->sub_ward_id;
         $x = DB::table('requirements')->insert(['project_id'    =>'',
-                                                'main_category' => '',
-                                                'brand' => '',
-                                                'sub_category'  =>'',
+                                                'main_category' => $categoryNames,
+                                                'brand' => $brandnames,
+                                                'sub_category'  =>$subcategories,
                                                 'follow_up' =>'',
                                                 'follow_up_by' =>'',
                                                 'material_spec' =>'',
@@ -320,7 +373,7 @@ public function inputdata(Request $request)
                                                 'requirement_date'  =>$request->edate,
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
                                                 'unit_price'   => '',
-                                                 'quantity'     =>'',
+                                                 'quantity'     =>$qnty,
                                                  'total'   =>0,
                                                 'notes'  =>$request->eremarks,
                                                 'created_at' => date('Y-m-d H:i:s'),
@@ -330,7 +383,7 @@ public function inputdata(Request $request)
                                                 'generated_by' => $request->initiator,
                                                 'billadress'=>$request->billadress,
                                                 'total_quantity'=>$request->totalquantity,
-                                                'product'=>$request->product,
+                                               
                                                 'manu_id'=>$request->manu_id,
                                                 'sub_ward_id'=>$ward, 
                                                 'ship' =>$shipadress
@@ -852,12 +905,22 @@ return view('/monthlyreport',['users' =>$users,'total'=>$total]);
        $ward = Subward::where('ward_id',$tl)->pluck('id');
          $dd= $request->type;
           $his = History::get();
-        if($request->phNo )
+        if($request->phNo)
         {
-            $details[0] = Mowner_Deatils::where('contact',$request->phNo)->orwhere('manu_id',$request->phNo)->pluck('manu_id');
-            $details[1] = Mprocurement_Details::where('contact',$request->phNo)->orwhere('manu_id',$request->phNo)->pluck('manu_id');
-            $details[2] = Manager_Deatils::where('contact',$request->phNo)->orwhere('manu_id',$request->phNo)->pluck('manu_id');
-            $details[3] = Salescontact_Details::where('contact',$request->phNo)->orwhere('manu_id',$request->phNo)->pluck('manu_id');
+             $details[0] = Mowner_Deatils::leftjoin('manufacturers','manufacturers.id','mowner_details.manu_id')->where('mowner_details.contact',$request->phNo)->orwhere('mowner_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+                  ->pluck('manufacturers.id');
+            
+            $details[1] = Mprocurement_Details::leftjoin('manufacturers','manufacturers.id','mprocurement_details.manu_id')->where('mprocurement_details.contact',$request->phNo)->orwhere('mprocurement_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+            ->pluck('manufacturers.id');
+
+
+            $details[2] = Manager_Deatils::leftjoin('manufacturers','manufacturers.id','manager_details.manu_id')->where('manager_details.contact',$request->phNo)->orwhere('manager_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+                  ->pluck('manufacturers.id');
+
+            $details[3] = Salescontact_Details::leftjoin('manufacturers','manufacturers.id','salescontact_details.manu_id')->where('salescontact_details.contact',$request->phNo)->orwhere('salescontact_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+            ->pluck('manufacturers.id');
+
+
             for($i = 0; $i < count($details); $i++){
                 for($j = 0; $j<count($details[$i]); $j++){
                     array_push($ids, $details[$i][$j]);

@@ -11,7 +11,7 @@
           <form method="GET" action="{{ URL::to('/') }}/manusearch" style="margin-top:10px;">
                   <div class="col-md-4 pull-right">
                     <div class="input-group">
-                      <input type="text" name="phNo" class="form-control" placeholder="Phone number and Manufacturer Id search">
+                      <input type="text" name="phNo" class="form-control" placeholder="Phone number,Manufacturer Id  and Plant Name Search">
                       <div class="input-group-btn">
                         <input type="submit" class="form-control" value="Search">
                       </div>
@@ -55,6 +55,7 @@ tr:nth-child(even) {
             <th>listing Engineer Name</th> 
             <th>Plant Name</th>
             <th>Phone No.</th>
+            <th>Quality</th>
            <!--  <th>Manufacturer Image</th> -->
             <th>Cement Requirement</th>
             <th>Sand Requirement</th>
@@ -78,6 +79,7 @@ tr:nth-child(even) {
                 <td> {{$manufacturer->user != null ? $manufacturer->user->name :'' }}</td>
                 <td>{{ $manufacturer->plant_name }}</td>
                  <td> {{$manufacturer->proc != null ? $manufacturer->proc->contact : $manufacturer->contact_no  }}</td>
+                 <td>{{$manufacturer->quality != null ? $manufacturer->quality :''}}
                 <td>{{ $manufacturer->cement_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->sand_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer-> aggregates_required }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>

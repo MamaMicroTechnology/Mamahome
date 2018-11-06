@@ -137,12 +137,56 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Prefered Cement Brands</td>
+                                    <td>Intrested Cement Brands</td>
                                     <td>:</td>
                                     <td>
-                                        <input placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
+                                        <input placeholder="Intrested Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Existing Brand and Quanty  <br>(Per Week)</td>
+                                    <td>:</td>
+                                    <td>
+                                        <div class="col-md-6 ">
+                                            <input type="text"  checked="true" name="exbrand" id="tons" class="form-control" placeholder="Existing Brands">
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input placeholder="Brand Quantity" min="0" type="number" name="brandquantity" id="cement_requirement" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                 <td>Sample Requrest ?</td>
+                                 <td>:</td>
+                                 <td>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="sample"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="sample"><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input checked="checked" value="None" id="rmc3" type="radio" name="sample"><span>&nbsp;</span>None</label>
+                                 </td>
+                               </tr>
+                                <tr>
+                            <td>Other Materials</td>
+                            <td>:</td>
+                            <td>
+                          <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)"  name="other"></textarea>
+                          </td>
+                        </tr>
+                               <tr>
+                                 <td>Add mixtures and GGBS ?</td>
+                                 <td>:</td>
+                                 <td>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="ggbs"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="ggbs"><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input checked="checked" value="None" id="rmc3" type="radio" name="ggbs"><span>&nbsp;</span>None</label>
+                                 </td>
+                               </tr>
                                 <tr id="blockTypes1" class="hidden">
                                     <td style="background-color:#cfedaa; text-align:center" colspan=3>Block Types</td>
                                 </tr>

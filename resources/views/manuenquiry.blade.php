@@ -97,17 +97,66 @@ name="selectprojects" onchange="getAddress()">
     @endif
     </td>
 </tr>
-
 <tr>
-    <td><label>Select Products* : </label></td>
-    <td>
-    <select  class="form-control" name="product"  id="product">
-    <option value="">--Select--</option>
-    <option value="CEMENT">CEMENT</option>
-    <option value="SAND">SAND</option>
-    <option value="AGGREGATES">AGGREGATES</option>
-</select>
-    </td>
+<td><label>Select Category:</label></td>
+<td><button required type="button" class="btn btn-success"
+data-toggle="modal" data-target="#myModal">Product</button></td>
+<!-- model -->
+<div class="modal fade" id="myModal" role="dialog">
+<div class="modal-dialog" style="width:80%">
+<!-- Modal content-->
+<div class="modal-content">
+<div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;" >
+<button type="button" class="close" data-dismiss="modal">&times;</button>
+<h4 class="modal-title"><center>CATEGORY</center></h4>
+</div>
+<div class="modal-body" style="height:500px;overflow-y:scroll;">
+    <br><br>
+    <div class="row">
+        @foreach($category as $cat)
+        <div class="col-md-4">
+            <div class="panel panel-success">
+            <input type="hidden" name="cat[]" value="{{$cat->id}}">
+                <div class="panel-heading">{{$cat->category_name}}</div>
+                <div class="panel-body" style="height:300px; max-height:300; overflow-y: scroll;">
+                @foreach($cat->brand as $brand)
+                <div class="row">
+                
+                    <b class="btn btn-sm btn-warning form-control" style="border-radius: 0px;" data-toggle="collapse" data-target="#demo{{ $brand->id }}"><u>{{$brand->brand}}</u></b>
+                    <br>
+                    <div id="demo{{ $brand->id }}" class="collapse">
+                        @foreach($brand->subcategory as $subcategory)
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label class="checkbox-inline">
+                            
+                               
+                                <input type="checkbox"  name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="" >{{ $subcategory->sub_cat_name}}
+                                <input type="text" placeholder="Quantity"  id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"   name="quan[]" class="form-control">
+                            </label>
+                            <br><br>
+                        @endforeach
+                        <center><span id="total" >total:</span></center>
+                    </div>
+                    <br>
+                </div><br>
+                @endforeach
+                </div>
+            </div>
+        </div>
+        @if($loop->iteration % 3==0)
+        </div>
+        <div class="row">
+        @endif
+        @endforeach
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+</div>
+</div>
+</div>
+</div>
+<!-- model end -->
 </tr>
 
 <tr>
@@ -251,6 +300,125 @@ function submitinputview(){
             document.getElementById("sub").submit();
         }
 }
+function getBrands(id,category_name){
+  
+    var e = id;
+    var category = document.getElementById("mCategory"+id);
+    if(category.checked == true){
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : e},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = document.getElementById('brands').innerHTML;
+                var name = category_name;
+                var n = ans.search(category_name);
+                if(n != -1){
+                    document.getElementById(category_name).style.display = "";
+                }else{
+                    ans += "<div id = '"+name+"' class='col-md-4'>"+"*"+name+"<br>";
+                    count++;
+                    for(var i=0;i<response[0].length;i++)
+                    {
+                        ans += "<label class='checkbox-inline'>"+"<input name='bnd[]' id='brand"+response[0][i].id+"' type='checkbox' onchange=\"getSubCat('"+response[0][i].id+"','"+response[0][i].brand+"')\" value='"+response[0][i].id+"' >"+response[0][i].brand+"</label>"+"<br>";
+                    }
+                    ans += "</div>";
+                    document.getElementById('brands').innerHTML = ans;
+                }
+            }
+        });
+    }else{
+        var check = document.getElementById("brands").innerHTML;
+        var n = check.search(category_name);
+        if(n != -1){
+            document.getElementById(category_name).style.display = "none";
+        }
+    }
+}
+function getSubCat(id,brandname)
+{
+    var brand = id;
+    var subcategory =document.getElementById("brand"+id);
+    if(subcategory.checked == true){
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getSubCat",
+            async:false,
+            data:{brand: brand},
+            success: function(response)
+            {
+                console.log(response);
+                var name =brandname;
+                var text = document.getElementById('sCategory').innerHTML;
+                var n = text.search(brandname);
+                if(n != -1){
+                  
+                    document.getElementById(brandname).style.display = "";
+                }else{
+                    text += "<div id = '"+name+"' class='col-md-4'>"+"*"+name+"<br>";
+                    for(var i=0; i < response[1].length; i++){
+                        text += "<label class='checkbox-inline'>"+"<input name='subcat[]' type='checkbox' value="+response[1][i].id+">"+response[1][i].sub_cat_name+"</label>"+"<br>";
+                    }
+                    text += "<div>";
+                    document.getElementById('sCategory').innerHTML = text;
+                }
+            }
+        });
+    }else{
+        var check = document.getElementById("sCategory").innerHTML;
+        var n = check.search(brandname);
+        if(n != -1){
+            document.getElementById(brandname).style.display = "none";
+        }
+    }
+}
+</script>
+<script>
+function quan(arg){
+    if(parseInt(document.getElementById('quan'+arg).value) < parseInt(document.getElementById('quantity'+arg).value)){
+        alert("Minimum"+ document.getElementById('quantity'+arg).value + "quantity");
+        document.getElementById('quan'+arg).value ="";
+    }
+}
+</script>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+}
+function checkthis(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+        
+               document.getElementById(arg).value = "";
+    }
+
+}
+function submitinputview(){
+     if(document.getElementById("totalquantity").value == ""){
+            window.alert("You Have Not Entered Total Quantity");
+          }
+        else{
+            document.getElementById("sub").submit();
+        }
+}
+// function countthis(arg){
+
+//     return arg.
+    
+// }
 </script>
 
 @endsection

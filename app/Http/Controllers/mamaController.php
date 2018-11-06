@@ -2273,6 +2273,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->total_area = $request->total_area;
         $manufacturer->remarks = $request->remarks;
         $manufacturer->production_type = $pro;
+        $manufacturer->sample = $request->sample;
+        $manufacturer->ggbs = $request->ggbs;
+        $manufacturer->exbrand = $request->exbrand;
+        $manufacturer->brandquantity = $request->brandquantity;
+        $manufacturer->other = $request->other;
 
 
         $manufacturer->save();
@@ -3159,7 +3164,12 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->total_area = $request->total_area;
         $manufacturer->production_type = $pro;
         $manufacturer->updated_by = Auth::user()->id;
-
+        $manufacturer->quality = $request->quality;
+        $manufacturer->sample = $request->sample;
+        $manufacturer->ggbs = $request->ggbs;
+        $manufacturer->exbrand = $request->exbrand;
+        $manufacturer->brandquantity = $request->brandquantity;
+        $manufacturer->other = $request->other;
 
         $manufacturer->save();
        
