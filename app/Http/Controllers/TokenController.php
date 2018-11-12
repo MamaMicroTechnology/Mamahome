@@ -297,14 +297,14 @@ class TokenController extends Controller
         }else{
             $subward = $subwards->sub_ward_name;
         }
-         }
   
         $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
-	if($subwardMap == null){
-	$latlon = null;
-	}else{
-	$latlon = $subwardMap->lat;
-	}
+    if($subwardMap == null){
+    $latlon = null;
+    }else{
+    $latlon = $subwardMap->lat;
+    }
+         }
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
         if(count($check)==0){
             $loginTime = new loginTime;
