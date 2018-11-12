@@ -116,11 +116,7 @@
   </div>
 </div>
 
-<!-- modal end -->
-                            
-                     
-
-                    </td>
+</td>
                     @if(Auth::user()->group_id == 23)
                    <td>
                       <button style="padding: 5.5px;background-color: #42c3f3 ;color: white" data-toggle="modal" data-target="#Customer{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
@@ -130,11 +126,9 @@
                     <td>
                     <form method="post"  action="{{ URL::to('/') }}/confirmedvisit" >
                                       {{ csrf_field() }}
-                       <input type="hidden" name="id" value="{{$project->project_id}}">  
-                       <input  type="hidden" name="longitude" value="{{ old('longitude') }}" id="longitude"> 
-                                    <input  type="hidden" name="latitude" value="{{ old('latitude') }}" id="latitude">
-                                    <input id="address" type="hidden" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}">             
-                    <input type="button" name="Visited" id="myform" style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" value="visit" onclick="getvisitLocation()" >
+                       <input type="hidden" name="id" value="{{$project->project_id}}">              
+                    
+                    <button type="submit"  style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" value="visit" >Visited
                                    <span class="badge">&nbsp;{{  $project->deleted }}&nbsp;</span>
                                    
                   </form>

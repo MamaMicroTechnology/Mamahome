@@ -4765,6 +4765,8 @@ $upvcInt = explode(",", $upvc);
         return redirect()->back();
     }
 public function confirmedvisit(Request $request){
+       
+
        ProjectDetails::where('project_id',$request->id)->increment('deleted');
            $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
            $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
