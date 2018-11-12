@@ -30,6 +30,7 @@ use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\SubWardMap;
 use App\brand;
+use App\Noneed;
 use App\SubCategory;
 class AssignManufacturersController extends Controller
 {
@@ -673,8 +674,8 @@ public function addcat(request $request){
 
           
 }else{
-            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-              $tll = explode(",",$tl);
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+            $tll = explode(",",$tl);
             $ward = Ward::whereIn('id',$tl)->pluck('id');
             $sub  = Subward::whereIn('ward_id',$ward)->pluck('id');
 
@@ -720,6 +721,7 @@ public function addcat(request $request){
                         ->where('created_at','like',$date.'%')->get();
                  }
               }
+   
    foreach($users as $user){
                 $totalListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -1433,6 +1435,18 @@ foreach ($sub as  $users) {
             
  return response()->json(['newUsers'=>$subwardlat]);
 }
+public function indexnumber(){
+
+    $number  = Noneed::get();
+    return view('/noneed',['number'=>$number]);
+}
+public function noneed(request $request ){
 
 
+       $check = New Noneed;
+       $check->number = $request->number;
+       $check->save();
+
+    return back();
+}
 }

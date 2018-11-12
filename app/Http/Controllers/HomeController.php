@@ -12,6 +12,7 @@ use App\Department;
 use App\AssignCategory;
 use App\assign_manufacturers;
 use App\User;
+use App\Noneed;
 use App\Builder;
 use App\Group;
 use App\Salesofficer;
@@ -3506,10 +3507,11 @@ date_default_timezone_set("Asia/Kolkata");
 
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
-           $filtered = array_unique($merge);
-        dd(count($filtered));
-           $unique = array_combine(range(1,count($filtered)), array_values($filtered));
 
+           $filtered = array_unique($merge);
+            $uniquenumber = Noneed::pluck('number')->toArray();
+           $without = array_diff($filtered, $uniquenumber);
+           $unique = array_combine(range(1,count($without)), array_values($without));
            for($ss=1;$ss<count($unique);$ss++){
              DB::insert('insert into numbers (number) values(?)',[$unique[$ss] ]);
 

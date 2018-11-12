@@ -196,6 +196,7 @@
     </div>
     </div>
     @endforeach
+<center>{{$projects->links()}}</center>
 </div>
 </div>
 </div>
