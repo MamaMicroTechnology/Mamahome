@@ -281,14 +281,15 @@ class TokenController extends Controller
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             $userdetails = User::where('id',Auth::user()->id)->first();
-	$modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id')->first();
+	   $modes = User::where('group_id',Auth::user()->group_id)->pluck('group_id')->first();
 		if($modes == "6" || $modes == "11"){
 			$mode = "0";
 		}
 		else{
 			$mode = "1";
 		}
-		
+		 if($mode == 0){
+
         $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         if($subwards == null){
@@ -296,6 +297,7 @@ class TokenController extends Controller
         }else{
             $subward = $subwards->sub_ward_name;
         }
+         }
   
         $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
 	if($subwardMap == null){
@@ -328,8 +330,8 @@ class TokenController extends Controller
                     'userid'=>$userdetails->id,
                     'userName'=>$userdetails->name,
                     'wardAssigned'=>$subward,
-		    'mode'=>$mode,
-         	    'latlon'=>$latlon
+		             'group_id'=>$mode,
+         	        'latlon'=>$latlon
 		   
                 ]);
         }
