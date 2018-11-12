@@ -325,6 +325,7 @@ class TokenController extends Controller
         }else{
             $logistic_sub_ward = null;
         }
+        if($modes == "6" || $modes == "11"){
         return response()
                 ->json(['message' => 'true',
                     'userid'=>$userdetails->id,
@@ -334,6 +335,20 @@ class TokenController extends Controller
          	        'latlon'=>$latlon
 		   
                 ]);
+    }else{
+        return response()
+                ->json(['message' => 'true',
+                    'userid'=>$userdetails->id,
+                    'userName'=>$userdetails->name,
+                    
+                     'group_id'=>$mode
+                    
+           
+                ]);
+           }
+
+
+
         }
         else{
             return response()->json(['message' => 'false']);
