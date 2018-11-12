@@ -263,7 +263,7 @@ if($aggregates_required != null){
         $projects = Manufacturer::whereIn('id',$projectids)
                     ->select('manufacturers.*','id')
                     ->orderBy('id','ASC')
-                    ->paginate(15);
+                    ->get();
 
            $projectcount=count($projects);
              
