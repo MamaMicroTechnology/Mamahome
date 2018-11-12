@@ -291,6 +291,7 @@ class TokenController extends Controller
 		 if($mode == 0){
 
         $wardsAssigned = WardAssignment::where('user_id',$userdetails->id)->where('status','Not Completed')->pluck('subward_id')->first();
+         if($wardsAssigned != null){
         $subwards = SubWard::where('id',$wardsAssigned)->first();
         if($subwards == null){
             $subward = null;
@@ -304,7 +305,10 @@ class TokenController extends Controller
     }else{
     $latlon = $subwardMap->lat;
     }
+}
          }
+
+
         $check = loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->get();
         if(count($check)==0){
             $loginTime = new loginTime;
@@ -325,7 +329,7 @@ class TokenController extends Controller
         }else{
             $logistic_sub_ward = null;
         }
-        if($modes == "6" || $modes == "11"){
+        if($modes == "6" || $modes == "11" && $wardsAssigned != null){
         return response()
                 ->json(['message' => 'true',
                     'userid'=>$userdetails->id,
@@ -335,7 +339,19 @@ class TokenController extends Controller
          	        'latlon'=>$latlon
 		   
                 ]);
-    }else{
+    }
+elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
+        return response()
+                ->json(['message' => 'true',
+                    'userid'=>$userdetails->id,
+                    'userName'=>$userdetails->name,
+                    'wardAssigned'=>"",
+                     'group_id'=>$mode,
+                    'latlon'=>""
+           
+                ]);
+    }
+    else{
         return response()
                 ->json(['message' => 'true',
                     'userid'=>$userdetails->id,
