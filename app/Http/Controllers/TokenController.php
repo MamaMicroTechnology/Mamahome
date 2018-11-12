@@ -340,7 +340,8 @@ class TokenController extends Controller
                 ->json(['message' => 'true',
                     'userid'=>$userdetails->id,
                     'userName'=>$userdetails->name,
-                    
+                    'wardAssigned'=>"",
+                    'latlon'=>"",
                      'group_id'=>$mode
                     
            
