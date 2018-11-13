@@ -1874,9 +1874,12 @@ class HomeController extends Controller
     {
          
         
-       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-       $tlwards = Subward::where('ward_id',$tl)->get();
-        $this->variable=$tlwards;
+       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+         $tl1 = explode(",", $tl);
+
+       $tlwards = Subward::whereIn('ward_id',$tl1)->get();
+      
+       
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
@@ -8333,8 +8336,10 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
-        $this->listingEngineer();
-         $tlwards=$this->variable;
+          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+         $tl1 = explode(",", $tl);
+
+       $tlwards = Subward::whereIn('ward_id',$tl1)->get();
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
