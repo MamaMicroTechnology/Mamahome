@@ -12,7 +12,6 @@
 <?php
     $text = "In: ".$attendance->logintime."<br>Out: ".$attendance->logout."<br><a href=\"".$attendance->logindate."\">Report</a>";
     array_push($logintimes,$text);
-    array_push($logintimes,$text);
 ?>
 @endforeach
 <?php
