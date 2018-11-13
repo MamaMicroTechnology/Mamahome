@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
         <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
             <div class="panel panel-default">
-                <div class="panel-heading" style="height: 50px;background-color:#42c3f3;color:#ffffffe3;">
+                <div class="panel-heading" style="background-color:#42c3f3;color:#ffffffe3;">
 
                   @if(Auth::user()->group_id == 22)
                   
@@ -35,10 +35,8 @@
                      @else
                   Seniot TL
                   @endif
-                 <!--  @if(session('Error'))
-                    <div class="alert-danger pull-right">{{ session('Error')}} </div>
-                  @endif -->
-                  <div id="currentTime" class="pull-right" style="margin-top:-5px;"></div>
+                 
+                  <div id="currentTime" class="pull-right" style="margin-top:-25px;"></div>
                 </div>
                 <?php 
                   if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){

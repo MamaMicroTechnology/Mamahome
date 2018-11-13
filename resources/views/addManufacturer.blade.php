@@ -6,7 +6,7 @@
                 {{ csrf_field() }}
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-default">
-                        <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:#939598;">
+               <div class="panel-heading" style="background-color:#42c3f3;">
                   @if(Auth::user()->group_id == 22)
                      <select class="form-control" style="width:20%" name="tlward" required>
                        <option value="">Select SubWard</option>
@@ -32,9 +32,9 @@
                        @endforeach
                      </select>
                  @else 
-                 <div style="color:white;">Senior TL</div>
+                 Senior TL
                   @endif
-                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;margin-top:-25px;"></div>
+                            <div id="currentTime" class="pull-right" style="color:white;margin-top:-25px;"></div>
                             
                         </div>
                         <div class="panel-body">

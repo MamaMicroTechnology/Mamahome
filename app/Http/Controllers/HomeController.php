@@ -1874,11 +1874,10 @@ class HomeController extends Controller
     {
          
         
-       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+       $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
          $tl1 = explode(",", $tl);
-
+        
        $tlwards = Subward::whereIn('ward_id',$tl1)->get();
-       
       
        
         $date=date('Y-m-d');
@@ -8337,7 +8336,7 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
-          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
          $tl1 = explode(",", $tl);
 
        $tlwards = Subward::whereIn('ward_id',$tl1)->get();
