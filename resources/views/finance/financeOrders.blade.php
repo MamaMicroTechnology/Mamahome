@@ -1,6 +1,11 @@
-@extends('finance.layouts.headers')
+
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 26? "finance.layouts.headers":"layouts.app");
+?>
+@extends($ext)
 @section('content')
-<div class="col-md-10 col-md-offset-1">
+<div class="col-md-12 ">
     <table class="table table-responsive" border=1>
         <!-- <th>Ward Name</th> -->
         <th>Requirement Date</th>
@@ -9,7 +14,10 @@
         <th>Category</th>
         <th>Quantity</th>
         <th>Payment Details</th>
-        <th>Action</th>
+        @if(Auth::user()->group_id != 22)
+        <th>Confirm Payment</th>
+        <th>MAMAHOME Invoice</th>
+        @endif
         @foreach($orders as $order)
         <tr style="{{ date('Y-m-d') == $order->requirement_date ? 'background-color:#ccffcc': '' }}">
             <td>{{ date('d M, y',strtotime($order->requirement_date)) }}</td>
@@ -25,6 +33,17 @@
                 </button>
                 @endif
             </td>
+              @if(Auth::user()->group_id != 22)
+            <td>
+                
+                            <div class="btn-group">
+                                <!-- <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmpayment?id={{ $order->id }}">Confirm</a> -->
+                               <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#payment"> Confirm</button>
+                                <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $order->id }}')">Cancel</button>
+                            </div>
+              
+                           
+            </td>
             <td>
                 @if($order->clear_for_delivery == "No")
                 <form id="theForm" action="{{ URL::to('/') }}/clearOrderForDelivery" method="POST">
@@ -33,11 +52,45 @@
                     <button class="btn btn-primary btn-xs">Clear For Delivery</button>
                 </form>
                 @else
-                    <a href="{{ route('downloadProformaInvoice',['download'=>'pdf','id'=>$order->id]) }}" class="btn btn-warning btn-xs">Download PDF</a>
-                    <a href="{{ route('downloadProformaInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">View Invoice</a>
+                    <!-- <a href="{{ route('downloadProformatTaxInvoice',['download'=>'pdf','id'=>$order->id]) }}" class="btn btn-warning btn-xs">Download INVOICE</a>
+                    <a href="{{ route('downloadProformatTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">Invoice</a>
+                    <br> -->
+                    <a href="{{ route('downloadProformaInvoice',['download'=>'pdf','id'=>$order->id]) }}" class="btn btn-warning btn-xs">Download TAX INVOICE</a>
+                    <a href="{{ route('downloadProformaInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">TAX Invoice</a>
                 @endif
             </td>
+            @endif
         </tr>
+                    <!-- Modal -->
+                    <div id="payment" class="modal fade" role="dialog">
+                      <div class="modal-dialog" style="width:30%">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{ $order->id }}</h4>
+                          </div>
+                          <div class="modal-body">
+                           <form action="{{ URL::to('/') }}/sendMessage" method="post">
+                            {{ csrf_field() }}
+                            <label>Quantity : </label>
+                            <input type="text" class="form-control" name="quantity" placeholder="quantity">
+                            <br>
+                            <label>Rate (Per Unit) : </label>
+                            <input type="text"  class="form-control" name="quantity" placeholder="Unit Price">
+                            <br>
+                            <button type="submit" class="btn btn-sm btn-success" type="">Save</button>
+                            <br>
+                           </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
         @endforeach
     </table>
     <center>
@@ -111,14 +164,13 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-                </div>
-
+            </div>
             </div>
         </div>
     @endforeach
 @if(session('Success'))
 <script>
-    swal('success',"{{ session('Success') }}",'Success');
+    swal('Success',"{{ session('Success') }}",'success');
 </script>
 @endif
 @endsection

@@ -2,7 +2,7 @@
 @section('content')
 
     @php
-        $d=cal_days_in_month(CAL_GREGORIAN,02,2018);
+        $d=cal_days_in_month(CAL_GREGORIAN,11,2018);
         echo($d);
     @endphp
 

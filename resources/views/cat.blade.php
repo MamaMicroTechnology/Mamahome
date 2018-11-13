@@ -32,7 +32,7 @@
 
                <div class="col-md-4">
                    <label>Set Instructions</label>
-                   <textarea class="form-control" type="text" name="ins" style="width:100%;">
+                   <textarea style="resize:none;" class="form-control" type="text" name="ins" style="width:100%;">
                    </textarea>
                  </div> 
   

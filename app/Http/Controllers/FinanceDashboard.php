@@ -9,6 +9,7 @@ use App\ProcurementDetails;
 use App\PaymentDetails;
 use App\Message;
 use App\User;
+use App\Tlwards;
 use DB;
 use Auth;
 use PDF;
@@ -21,7 +22,21 @@ class FinanceDashboard extends Controller
     }
     public function getFinanceDashboard()
     {
-        $orders = DB::table('orders')->where('status','Order Confirmed')->paginate('20');
+        if(Auth::user()->group_id == 22){
+            $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $ward = explode(",",$tlward);
+            $orders = DB::table('orders')->where('status','Order Confirmed')
+                      ->leftjoin('project_details','project_details.project_id','orders.project_id')
+                       ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
+                       ->leftJoin('wards','wards.id','sub_wards.ward_id')
+                       ->whereIn('wards.id',$ward)
+                       ->select('orders.*','project_details.sub_ward_id')
+                       ->paginate('20');
+                      
+        }
+        else{
+            $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('created_at','desc')->paginate('20');
+        }
         $payments = PaymentDetails::get();
         $messages = Message::all();
         $counts = array();
@@ -56,9 +71,27 @@ class FinanceDashboard extends Controller
             return $pdf->stream('pdf.invoice');
         }
     }
+    function downloadProformatTaxInvoice(Request $request){
+        $products = DB::table('orders')->where('id',$request->id)->first();
+        $address = SiteAddress::where('project_id',$products->project_id)->first();
+        $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
+        $data = array(
+            'products'=>$products,
+            'address'=>$address,
+            'procurement'=>$procurement
+        );
+        view()->share('data',$data);
+        $pdf = PDF::loadView('pdf.proformalInvoice')->setPaper('a4','portrait');
+        if($request->has('download')){
+            return $pdf->download(time().'.pdf');
+        }else{
+            return $pdf->stream('pdf.proformalInvoice');
+        }
+    }
     public function savePaymentDetails(Request $request)
     {
         $totalRequests = count($request->payment_slip);
+
         $order = Order::where('id',$request->order_id)->first();
         $order->payment_status = "Payment Received";
         $order->payment_mode = $request->payment_mode;
@@ -122,5 +155,13 @@ class FinanceDashboard extends Controller
         $message->body = $request->message;
         $message->save();
         return back();
+    }
+    public function confirmpayment(Request $request){
+
+        
+        Order::where('id',$request->id)->update([
+            'final_payment'=>"Received"
+        ]);
+        return back()->with('Success','Payment Received Successfully');
     }
 }

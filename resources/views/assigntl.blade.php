@@ -143,7 +143,6 @@ margin-left: 0;
                             <th>Action</th>
                         </thead>
                         <tbody>
-
                            <tr>
                            <td>{{ $i++ }}</td>
                             <td>{{ $user->name }}</td>
@@ -183,7 +182,7 @@ margin-left: 0;
                                        Assigned Users
                             </button></td>
                             <td>
-                              <button id="this" class="btn btn-success pull-left" onclick="assigntl('{{$user->id}}')">Assign</button>
+                              <input id="this" type="button" class="btn btn-success pull-left" onclick="assigntl('{{$user->id}}')" value="Assign">
                               
                             </td>
                           </tr>         
@@ -281,15 +280,19 @@ margin-left: 0;
         }
     }
     function assigntl(arg){
+
         var input = document.getElementById('date'+arg).value;
         var input1 = document.getElementById('menu'+arg).value;
+       
         if(input == ""){
+         
           alert("You Have Not Selected Ward");
         }
         else if(input1 == ""){
           alert("You Have Not Selected Users");
         }
         else{
+        
           document.getElementById('this').form.submit();
         }
     }

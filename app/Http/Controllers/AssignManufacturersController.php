@@ -154,7 +154,6 @@ if(count($check) == 0){
 
         $projectids = new Collection();
         $projects = Manufacturer::whereIn('sub_ward_id',$subwardid)->pluck('id');
-
         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
@@ -261,7 +260,7 @@ if($aggregates_required != null){
         $projects = Manufacturer::whereIn('id',$projectids)
                     ->select('manufacturers.*','id')
                     ->orderBy('id','ASC')
-                    ->paginate(15);
+                    ->paginate('15');
 
            $projectcount=count($projects);
              

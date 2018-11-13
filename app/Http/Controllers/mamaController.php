@@ -2340,7 +2340,6 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
 
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
         $userIds = explode(",", $tl);
-       
       $listengs= User::whereIn('users.id',$userIds)
                         ->where('users.group_id',6)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
@@ -2355,7 +2354,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function teamlisteng(request $request){
        
-      $listengs= User::where('users.group_id',6)
+       $group = [6,7,17,23,22,2];
+      $listengs= User::whereIn('users.group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
                         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
@@ -3095,13 +3095,14 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function saveUpdatedManufacturer(Request $request)
     {
-        if(Auth::user()->group_id == 22){
-            $wardsAssigned = $request->subward;
-        }else{
+        // if(Auth::user()->group_id == 22){
+        //     $wardsAssigned = $request->subward;
+        // }else{
             
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
-        }
-       
+        // $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        // dd( $request->subward);
+        // }
+        $wardsAssigned = $request->subward;
        if($request->production){
             $pro = implode(",",$request->production);
            }else{

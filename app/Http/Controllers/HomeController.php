@@ -90,6 +90,8 @@ use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
 use App\PaymentDetails;
+use Spatie\Activitylog\Models\Activity;
+
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -351,6 +353,23 @@ class HomeController extends Controller
         $totalofenquiry = "";
         $totalenq = "";
         
+        $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $etl = explode(",",$s);
+       $wardwise =Ward::whereIn('id',$etl)->get();
+
+        $wardss = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+         $tlward = explode(",",$wardss);
+         $totalofenquiry = "";
+        $totalenq = "";
+        $converter = user::get();
+        $ward = Ward::get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
+        $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
+        $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
+        $this->variable=$pids;
+
+
+
         $ward = ward::orderby('ward_name','ASC')->get();
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
@@ -3027,13 +3046,12 @@ date_default_timezone_set("Asia/Kolkata");
   public function amorders(Request $request)
        {
              if(Auth::user()->group_id != 22 || Auth::user()->group_id == 23){
+
                return $this->amorders1($request);
              }
 
-             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+              $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
               $ward = explode(",",$tlward);
-
-
            if($request->projectId){
                $view = Order::orderby('orders.created_at','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -3064,13 +3082,20 @@ date_default_timezone_set("Asia/Kolkata");
            $users = User::whereIn('department_id',$depts)->get();
            $req = Requirement::pluck('project_id');
            $message = Message::all();
+            $paymentDetails = PaymentDetails::all();
            $chatUsers = User::all();
+            $counts = array();
+            foreach($view as $order){
+            $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
+            }
             return view('ordersadmin',[
                 'view' => $view,
                 'users'=>$users,
                 'req'=>$req,
+                 'paymentDetails'=>$paymentDetails,
                 'messages'=>$message,
-                'chatUsers'=>$chatUsers
+                'chatUsers'=>$chatUsers,
+                'counts'=>$counts
             ]);
        }
     public function getSubCat(Request $request)
@@ -3468,8 +3493,6 @@ date_default_timezone_set("Asia/Kolkata");
 
        return back();
     }
-
-
   public function smstonumber1(Request $request)
     {
         if(!$request->stage ){
@@ -3507,10 +3530,6 @@ date_default_timezone_set("Asia/Kolkata");
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
              $builder =Builder::whereIn('project_id',$projectids)->where('builder_contact_no','!=',null)->pluck('builder_contact_no')->toarray();
             
-
-
-           
-
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
            $filtered = array_unique($merge);
@@ -4681,6 +4700,7 @@ $upvcInt = explode(",", $upvc);
         $user = User::where('employeeId',$id)->first();
           
         $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
+       
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
     public function forgotPw(){
@@ -7154,6 +7174,7 @@ public function display(request $request){
     {
         $conversions = Conversion::all();
         if($request->category){
+            
             $conversion = Conversion::where('id',$request->category)->first();
             $utilizations = Utilization::where('id',$request->category)->first();
             View::share('conversion', $conversion);
@@ -7161,6 +7182,7 @@ public function display(request $request){
         }else{
             View::share('conversion',null);
         }
+       
         $wards = Ward::all();
        $qualityCheck = ['Genuine','Fake','Unverified'];
        // getting total no of projects
@@ -7201,6 +7223,7 @@ public function display(request $request){
        $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount;
 
        if($request->ward && !$request->subward){
+
            if($request->ward == "All"){
                $planningCount      = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->count();
                $planningSize       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
@@ -7239,6 +7262,7 @@ public function display(request $request){
                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
                $planningCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->count();
                $planningSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
+              
                $foundationCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->count();
                $foundationSize     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
                $roofingCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->count();
@@ -7271,7 +7295,7 @@ public function display(request $request){
                $wardname = Ward::where('id',$request->ward)->first();
                $subwards = SubWard::where('ward_id',$request->ward)->get();
            }
-
+        
            return view('projection',[
                'planningCount'=>$planningCount,'planningSize'=>$planningSize,
                'foundationCount'=>$foundationCount,'foundationSize'=>$foundationSize,
@@ -8444,7 +8468,7 @@ public function viewManufacturer1(Request $request)
       $ward=Subward::leftjoin('manufacturers','manufacturers.sub_ward_id','sub_wards.id')
       ->where('manufacturers.id',$request->id)->pluck('sub_wards.sub_ward_name')->first();
      
-      return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
+  return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
   }
   public function getUnverifiedProjects(Request $request)
   {

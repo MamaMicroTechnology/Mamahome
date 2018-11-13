@@ -109,7 +109,7 @@
       
         <!-- Modal Header -->
         <div class="modal-header" style="width:100%;padding:2px;background-color:green;">
-        <center>  <h4 class="modal-title" style="color: white;">Cheque Details</h4></center>
+        <center>  <h4 class="modal-title" style="color: white;">Payment Details</h4></center>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -121,14 +121,17 @@
                 <label for="payment_mode">Payment Mode</label>
                     <select name="payment_mode" id="payment_mode" class="form-control">
                         <option value="">--Select--</option>
-                        <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
-                        <option value="CASH" id="cash" onclick="cash()">Cash</option>
-                        <option value="check">Cheque</option>
+                        <option value="RTGS" id="rtgs" > RTGS(online) </option>
+                        <option value="CASH" id="cash" >Cash</option>
+                        <option value="check" id="check">Cheque</option>
                     </select>
                 <br>
-                <label for="payment_slip">Payment Slip</label>
-                <input required multiple type="file" name="payment_slip[]" id="payment_slip" accept="image/*" class="form-control input-sm" >
+            
+                <label class="hidden"  id="lb1" for="payment_slip">Cash Deposit Slip</label>
+                <input class="hidden"  multiple type="file" name="payment_slip[]" id="payment_slip" accept="image/*" class="form-control input-sm" >
+                <input class="hidden" placeholder="input1" id="input1" class="form-control input-sm">
                 <br>
+             
                 <label for="notes">Notes</label>
                 <textarea name="notes" id="notes" cols="2" rows="2" placeholder="Notes" class="form-control"></textarea>
                 <br>
@@ -387,13 +390,19 @@
             });
         }
     }
-    function rtgs(){
-        
-        document.getElementById('payment').form.submit();
-    }
-    function cash(){
-        
-        document.getElementById('cash').form.submit();
+</script>
+<script type="text/javascript">
+    function paymethod(){
+        var input = document.getElementById("payment_mode").value;
+       if(input == "RTGS"){
+            document.getElementById("input1").className = "";
+       }
+       else if(input == "CASH"){
+            document.getElementById("payment_slip").className = "";
+            document.getElementById("lb1").className = "";
+            document.getElementById("input1").className = "";
+       }
+       
     }
 </script>
 @endsection

@@ -211,11 +211,6 @@ Route::post('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
 Route::get('/breaks','HomeController@breaks');
 
-
-
-
-
-
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
 Route::get('/marketingvendordetails','amController@vendorDetails');
@@ -690,9 +685,12 @@ Route::get('/financeIndex','FinanceDashboard@financeIndex');
 Route::get('/financeDashboard','FinanceDashboard@getFinanceDashboard');
 Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
 Route::get('/downloadProformaInvoice','FinanceDashboard@downloadProformaInvoice')->name('downloadProformaInvoice');
+Route::get('/downloadProformatTaxInvoice','FinanceDashboard@downloadProformatTaxInvoice')->name('downloadProformatTaxInvoice');
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
 Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
 Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');
 Route::get('/viewPurchaseOrder','FinanceDashboard@getViewPurchaseOrder');
 
 Route::post('/sendMessage','FinanceDashboard@sendMessage');
+Route::get('/confirmpayment','FinanceDashboard@confirmpayment');
+

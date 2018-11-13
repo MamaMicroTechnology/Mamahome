@@ -104,7 +104,7 @@
                     <div class="form-group">
                         <label style="text-align:left;" for="from" class="control-label col-sm-6">From</label>
                         <div class="col-md-6">
-                            <input type="text" name="from" id="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" required class="form-control date" placeholder="Pick dates">
+                            <input type="date" name="from" id="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" required class="form-control date" placeholder="Pick dates">
                             <!-- <input type="date" required name="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" id="from" class="form-control input-sm"> -->
                         </div>
                     </div>
