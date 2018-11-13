@@ -16,8 +16,15 @@
                        <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
                        @endforeach
                      </select>
-                  @elseif(Auth::user()->group_id == 6)
+                  @elseif(Auth::user()->group_id == 6 )
                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                     @elseif(Auth::user()->group_id == 23)
+                           @if(count($subwards) != 0)
+                           Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                             @else
+                               Ward is Not Assigned
+                           @endif    
+
                   @elseif(Auth::user()->group_id == 11)
                    <select class="form-control" style="width:20%" name="tlward">
                        <option value="">Select SubWard</option>

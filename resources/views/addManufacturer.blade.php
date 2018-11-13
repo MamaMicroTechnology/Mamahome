@@ -7,8 +7,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-default">
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:#939598;">
-                             @if(Auth::user()->group_id == 22)
-                  
+                  @if(Auth::user()->group_id == 22)
                      <select class="form-control" style="width:20%" name="tlward" required>
                        <option value="">Select SubWard</option>
                        @foreach($tlwards as $wa)
@@ -17,6 +16,14 @@
                      </select>
                   @elseif(Auth::user()->group_id == 6)
                  <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
+                  @elseif(Auth::user()->group_id == 6 )
+                 Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                     @elseif(Auth::user()->group_id == 23)
+                           @if(count($subwards) != 0)
+                           Your Assigned Ward Is  {{$subwards->sub_ward_name}}
+                             @else
+                               Ward is Not Assigned
+                           @endif  
                   @elseif(Auth::user()->group_id == 11)
                    <select class="form-control" style="width:20%" name="tlward">
                        <option value="">Select SubWard</option>
