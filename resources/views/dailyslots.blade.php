@@ -68,7 +68,7 @@
             </div>
             <div class="panel-body" style="overflow-x:scroll;">
                  @if(Auth::user()->group_id != 22)
-                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label><br>
+                <label style="color:black">Total Projects Added = <b>{{$projcount}}</b></label><br>
                 <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label><br>
                 <label style="color:black">Total RMC Listed = <b>{{$lRMCCount}}</b></label><br>
                 <label style="color:black">Total Blocks Listed = <b>{{$lBlocksCount}}</b></label>
@@ -95,13 +95,14 @@
                         <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalRMCListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalBlocksListing[$user->id] }}</td>
+                        
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] + $totalRMCListing[$user->id] + $totalBlocksListing[$user->id] }}</td>
                     </tr>
                     @endforeach
                     <tr>
                         <th style="font-size: 10px;">Total</th>
                         <th style="font-size: 10px;"></th>
-                        <th style="font-size: 10px;">{{ $lcount}}</th>
+                        <th style="font-size: 10px;">{{ $projcount}}</th>
                         <th style="font-size: 10px;">{{ $lupcount}}</th>
                         <th style="font-size: 10px;">{{ $lRMCCount}}</th>
                         <th style="font-size: 10px;">{{ $lBlocksCount}}</th>

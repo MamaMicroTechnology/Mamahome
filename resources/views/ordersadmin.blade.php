@@ -1,7 +1,92 @@
-@extends('layouts.app')
-@section('title','Orders')
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
+    <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+* {box-sizing: border-box}
 
-@section('content')
+
+/* Style the tab */
+.tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 30%;
+    height: 300px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+    display: none;
+}
+
+/* Clear floats after the tab */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+</style>
+<script>
+function openCitytest(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+</head>
+<body>
+
 <div class="col-md-12">
     <div class="panel panel-primary" style="overflow-x: scroll;">
         <div class="panel-heading text-center">
@@ -100,6 +185,7 @@
                                 <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}">Payment Details</button>
                             @endif
 
+</div>
                             
                              
                              <!-- The Modal -->
@@ -115,33 +201,31 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-            <form action="{{ URL::to('/') }}/savePaymentDetails" method="post" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <input type="hidden" name="order_id" value="{{ $rec->orderid }}">
-                <label for="payment_mode">Payment Mode</label>
-                    <select name="payment_mode" id="payment_mode" class="form-control">
-                        <option value="">--Select--</option>
-                        <option value="RTGS" id="rtgs" > RTGS(online) </option>
-                        <option value="CASH" id="cash" >Cash</option>
-                        <option value="check" id="check">Cheque</option>
-                    </select>
-                <br>
-            
-                <label class="hidden"  id="lb1" for="payment_slip">Cash Deposit Slip</label>
-                <input class="hidden"  multiple type="file" name="payment_slip[]" id="payment_slip" accept="image/*" class="form-control input-sm" >
-                <input class="hidden" placeholder="input1" id="input1" class="form-control input-sm">
-                <br>
-             
-                <label for="notes">Notes</label>
-                <textarea name="notes" id="notes" cols="2" rows="2" placeholder="Notes" class="form-control"></textarea>
-                <br>
-                <button type="submit" class="form-control btn btn-success">Save</button>
-            </form>
-            @foreach($paymentDetails as $payment)
-            @if($payment->order_id == $rec->orderid)
-            sd
-            @endif
-            @endforeach
+          <h2>Hover Tabs</h2>
+<p>Move the mouse over a button inside the tabbed menu:</p>
+
+<div class="tab">
+  <button class="tablinks" onmouseover="openCitytest(event, 'London')">London</button>
+  <button class="tablinks" onmouseover="openCitytest(event, 'Paris')">Paris</button>
+  <button class="tablinks" onmouseover="openCitytest(event, 'Tokyo')">Tokyo</button>
+</div>
+
+<div id="London" class="tabcontent">
+  <h3>London</h3>
+  <p>London is the capital city of England.</p>
+</div>
+
+<div id="Paris" class="tabcontent">
+  <h3>Paris</h3>
+  <p>Paris is the capital of France.</p> 
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <h3>Tokyo</h3>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
+<div class="clearfix"></div>
         </div>
         
         <!-- Modal footer -->
@@ -153,7 +237,6 @@
     </div>
   </div>
   
-</div>
 
 
 <!-- payment details modal -->
@@ -405,4 +488,5 @@
        
     }
 </script>
-@endsection
+</body>
+</html>
