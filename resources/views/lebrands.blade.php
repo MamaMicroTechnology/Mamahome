@@ -7,7 +7,7 @@
     display: inline-block;
 }
 </style>
-@extends('layouts.leheader')
+@extends('layouts.app')
 @section('content')
 <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default" style="border-color: green;">

@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.app":"layouts.teamheader");
+?>
+@extends($ext)
 @section('content')
     <div class="col-md-3">
         <div class="panel panel-primary" style="overflow-x:scroll">

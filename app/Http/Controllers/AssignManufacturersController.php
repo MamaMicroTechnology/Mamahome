@@ -596,12 +596,11 @@ public function addcat(request $request){
         // total project of list in stl
         $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
         ->pluck('id');
-        $tlcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
-        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
-        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
+        $tlcount = Manufacturer::where('created_at','like',$date.'%')->count();
+        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"RMC")->count();
+        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"Blocks")->count();
 
-        $tlupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
-
+        $tlupcount = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\Manufacturer')->count();
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
         ->pluck('id');
@@ -775,10 +774,7 @@ public function addcat(request $request){
                                                 ->count();
             }
             foreach($users as $user){
-                $totalupdates[$user->id] = Manufacturer::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalupdates[$user->id] = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\Manufacturer')->where('causer_id',$user->id)->count();
             }
             foreach($tlUsers as $user){
                 $totalupdates[$user->id] = Manufacturer::

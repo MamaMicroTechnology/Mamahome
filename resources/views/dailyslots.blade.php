@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
     <div class="col-md-3">
         <div class="panel panel-primary" style="overflow-x:scroll">
@@ -101,7 +105,7 @@
                     <tr>
                         <th style="font-size: 10px;">Total</th>
                         <th style="font-size: 10px;"></th>
-                        <th style="font-size: 10px;">{{ $lcount}}</th>
+                        <th style="font-size: 10px;">{{ $tlcount}}</th>
                         <th style="font-size: 10px;">{{ $lupcount}}</th>
                         <th style="font-size: 10px;">{{ $lRMCCount}}</th>
                         <th style="font-size: 10px;">{{ $lBlocksCount}}</th>

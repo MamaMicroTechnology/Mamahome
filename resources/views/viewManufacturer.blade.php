@@ -1,7 +1,7 @@
 
 <?php
     $use = Auth::user()->group_id;
-    $ext = ($use == 1? "layouts.teamheader":"layouts.app");
+    $ext = ($use == 1? "layouts.app":"layouts.teamheader");
 ?>
 @extends($ext)
 @section('content')
@@ -26,6 +26,7 @@
                      <option value="BLOCKS">BLOCKS</option>
                      <option value="M-SAND">M-SAND</option>
                      <option value="AGGREGATES">AGGREGATES</option>
+                     <option value="Fabricators">FABRICATORS</option>
                  </select>
             </div>
             <div class="panel-body" style="overflow-x: auto">
@@ -184,7 +185,6 @@ tr:nth-child(even) {
 </tr> 
  @endforeach
 </table>
-<center>{{ $manufacturers->links() }} </center>
 @foreach($manufacturers as $project)
 <div class="modal fade" id="myModal1{{$project->id}}" role="dialog">
     <div class="modal-dialog">
@@ -263,6 +263,8 @@ tr:nth-child(even) {
     </div>
     @endforeach
     </div>
+    <center>{{ $manufacturers->appends(request()->query())->links()}} </center>
+
 </div>
 </div>
 <!-- <script>

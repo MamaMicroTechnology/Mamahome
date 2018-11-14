@@ -1,5 +1,5 @@
 
-@extends('layouts.leheader')
+@extends('layouts.app')
 @section('content')
 
 <!DOCTYPE html>

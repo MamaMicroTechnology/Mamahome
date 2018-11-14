@@ -4003,6 +4003,10 @@ $upvcInt = explode(",", $upvc);
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
 
+
+
+
+
          $accusers = User::where('department_id','2')->where('group_id','11')
                     ->where('department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
@@ -4015,11 +4019,14 @@ $upvcInt = explode(",", $upvc);
         // total project of list in stl
         $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
         ->pluck('id');
-        $tlcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
+        $tlcount = ProjectDetails::where('created_at','like',$date.'%')->count();
+
+
+
         $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
         $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
 
-        $tlupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
+        $tlupcount = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\ProjectDetails')->count();
 
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
@@ -4039,8 +4046,8 @@ $upvcInt = explode(",", $upvc);
         $list = DB::table('users')->where('group_id',6)->where('department_id','!=',10)->pluck('id');
         $lcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->count();
         $lupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$list)->count();
-        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"RMC")->count();
-        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"Blocks")->count();
+        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"RMC")->count();
+        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"Blocks")->count();
             // total prolect of account in st
         $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
         $acount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
@@ -4192,12 +4199,14 @@ $upvcInt = explode(",", $upvc);
                                                 ->where('manufacturer_type',"Blocks")
                                                 ->count();
             }
-            foreach($users as $user){
-                $totalupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
-            }
+            
+           
+         foreach ($users as $user) {
+                   $totalupdates[$user->id] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
+
+      }
+        
+
             foreach($tlUsers as $user){
                 $totalupdates[$user->id] = ProjectDetails::
                                                 where('updated_at','LIKE',$date.'%')
@@ -8693,7 +8702,7 @@ else{
 
 else{
 
- $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
+     $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
      foreach ($user as $users) {
         $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->get();
        

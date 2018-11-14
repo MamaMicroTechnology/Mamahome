@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
@@ -21,7 +25,7 @@
 						</div>
 						<div class="col-md-4">
 							<select name="subward" id="subward" class="form-control">
-								
+								<option value="">--SELECT--</option>
 							</select>
 						</div>
 						<div class="col-md-4">
@@ -193,6 +197,8 @@
 		function getSubwards()
 	    {
 	        var ward = document.getElementById("ward").value;
+	        if(ward != "All"){
+	        	
 	        $.ajax({
 	            type:'GET',
 	            url:"{{URL::to('/')}}/loadsubwards",
@@ -207,6 +213,7 @@
 	                }
 	            }
 	        });    
+	        }
 	    }
 	</script>
 	<script>

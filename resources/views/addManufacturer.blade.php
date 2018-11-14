@@ -16,7 +16,7 @@
                      </select>
                   @elseif(Auth::user()->group_id == 6)
                  <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
-                  @elseif(Auth::user()->group_id == 6 )
+                  @elseif(Auth::user()->group_id == 6 || Auth::user()->group_id == 1)
                  Your Assigned Ward Is  {{$subwards->sub_ward_name}}
                      @elseif(Auth::user()->group_id == 23)
                            @if(count($subwards) != 0)

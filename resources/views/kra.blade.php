@@ -1,8 +1,8 @@
 <?php
   $user = Auth::user()->group_id;
   if(Auth::user()->group_id != 11){
-  $ext = ($user == 6? "layouts.leheader":"layouts.app");
-    }
+  $ext = ($user == 6 || $user ==1 ? "layouts.leheader":"layouts.app");
+    } 
     else{
          $ext = "layouts.leheader";
     }

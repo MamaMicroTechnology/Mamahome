@@ -35,8 +35,9 @@
                             $con = implode("",$content);
 
                         ?>
-                        <a href="#" class="list-group-item" data-toggle="collapse" data-target="#add{{$depts[$department->dept_name]}}">{{ $department->dept_name }}({{ $depts[$department->dept_name] }})</a>
-                        <div id="add{{ $depts[$department->dept_name]}}" class="collapse">
+
+                        <a href="#" class="list-group-item" data-toggle="collapse" data-target="#add{{$con}}">{{ $department->dept_name }}({{ $depts[$department->dept_name] }})</a>
+                        <div id="add{{$con}}" class="collapse">
                         @foreach($groupname[$department->dept_name]  as $name)
                           <?php 
                             $grp = explode(" ",$name->group->id);

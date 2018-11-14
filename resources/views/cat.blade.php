@@ -1,5 +1,9 @@
-@extends('layouts.app')
 
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 <div class="col-md-10 col-md-offset-2">
     <div class="col-md-10">

@@ -106,7 +106,7 @@
                 <br>
                 
                 <label>Choose Subward :</label><br>
-                <select name="subward" class="form-control" id="subward{{ $user->id }}">
+                <select name="subward" class="form-control" id="subward{{ $user->id }}" required>
                 </select>
           </div>
           <div class="modal-footer">
