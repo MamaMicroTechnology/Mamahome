@@ -108,15 +108,16 @@
                 </thead>
                 <tbody id="mainPanel">
                         @foreach($str as $sales)
-{{$sales->subwardids != null ? $sales->subwardids->sub_ward_name : ''}}
+<!-- {{$sales->subwardids != null ? $sales->subwardids->sub_ward_name : ''}} -->
 
                        <tr>
                         <td style="text-align:center">
                         	<a href="{{URL::to('/')}}/showThisProject?id={{$sales->project_id}}">{{$sales->project_id}}</a>
                         </td>
                         <td style="text-align:center">
-                       <a href="{{ URL::to('/')}}/viewsubward?projectid={{$sales->project_id}} && subward={{$sales->sub_ward_id}}" target="_blank">
-                                {{$sales->sub_ward_id}}
+                       <a href="{{ URL::to('/')}}/viewsubward?projectid={{$sales->project_id}} && subward={{ $sales->subwardids != null ? $sales->subwardids->sub_ward_name : ''}}" target="_blank">
+                                {{$sales->subwardids != null ? $sales->subwardids->sub_ward_name : ''}}
+
                                     </a>
                         </td>
                         <td style="text-align:center">{{ $sales->user != null ? $sales->user->name :''  }}</td>

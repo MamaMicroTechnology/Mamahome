@@ -187,7 +187,7 @@
                                           <th>No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
-                                          <th>Name</th>
+                                          <th>Called By</th>
                                           <th>Question</th>
                                           <th>Call Remark</th>
                                        </thead>
@@ -229,7 +229,7 @@
                                           <th>No</th>
                                           <th>Visit Date</th>
                                           <th>Visit Time</th>
-                                          <th>Name</th>
+                                          <th>Visited By</th>
                                        </thead>
                                        <tbody>
                                      <label>Project Visit History</label>
@@ -312,7 +312,7 @@ enctype="multipart/form-data" >
                         </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        </div><br>
                         @endforeach
-                        <textarea style="width:80%;" class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea><br>
+                      <center>  <textarea style="width:80%;" class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea></center><br>
                      <center>   <button type="submit" class="btn btn-primary btn-sm">submit Data</button></center>
                         </div>  
                         <table class="table table-responsive table-hover">

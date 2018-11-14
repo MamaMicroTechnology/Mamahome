@@ -51,7 +51,7 @@
                     <tr>
                         <th>SLNO</th>
                         <th>Category Officer Name</th>
-                        <th>Category</th>
+                        <th>Assigned Category</th>
                         <th>Previous Category</th>
                         <th>Created On</th>
                         <th>Updated On</th>

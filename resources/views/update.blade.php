@@ -42,10 +42,10 @@
                       {{ $projectdetails->quality }}
                       @endif
                     </center> -->
-                    @if(Auth::user()->group_id == 23)
+                    <!-- @if(Auth::user()->group_id == 23)
                     <center>
                      <button id="getBtn"  class="btn btn-success btn-sm p" onclick="getupdateLocation()">Get Location</button></center><br>
-                      @endif
+                      @endif -->
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
                     <div id="first">

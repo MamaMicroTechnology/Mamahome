@@ -34,7 +34,7 @@
                  @else 
                  Senior TL
                   @endif
-                            <div id="currentTime" class="pull-right" style="color:white;margin-top:-25px;"></div>
+                            <div id="currentTime" class="pull-right" style="color:white;margin-top:-5px;"></div>
                             
                         </div>
                         <div class="panel-body">
