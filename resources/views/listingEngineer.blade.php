@@ -33,7 +33,7 @@
                        @endforeach
                      </select>
                      @else
-                  Seniot TL
+                  Senior TL
                   @endif
                  
                   <div id="currentTime" class="pull-right" style="margin-top:-5px;"></div>
