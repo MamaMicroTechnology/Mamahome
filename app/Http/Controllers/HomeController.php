@@ -3995,7 +3995,7 @@ $upvcInt = explode(",", $upvc);
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
-        $groupid = [6,7,22,23,17,11];
+        $groupid = [6,7,22,23,17,11,2];
         $users = User::whereIn('group_id',$groupid)
                     ->where('department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
@@ -4027,6 +4027,7 @@ $upvcInt = explode(",", $upvc);
         $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
 
         $tlupcount = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\ProjectDetails')->count();
+        
 
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
@@ -4208,23 +4209,14 @@ $upvcInt = explode(",", $upvc);
         
 
             foreach($tlUsers as $user){
-                $totalupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalupdates[$user->id] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
             }
 
             foreach($accusers as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalaccupdates[$user->id] =Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
             }
             foreach($tlUsers1 as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalaccupdates[$user->id] =Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
             }
             
         $projcount = count($projects); 
@@ -8332,7 +8324,7 @@ public function display(request $request){
     public function storedetails(Request $request){
          $id = $request->id;
          $value= $request->value;
-       
+
         $x = ProjectDetails::where('project_id',$id)->first();
         $x->detailed_mcal = $request->value;
         $x->save();

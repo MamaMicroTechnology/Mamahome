@@ -73,7 +73,7 @@
             <div class="panel-body" style="overflow-x:scroll;">
                  @if(Auth::user()->group_id != 22)
                 <label style="color:black">Total Projects Added = <b>{{$projcount}}</b></label><br>
-                <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label><br>
+                <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label><br>
                 <label style="color:black">Total RMC Listed = <b>{{$lRMCCount}}</b></label><br>
                 <label style="color:black">Total Blocks Listed = <b>{{$lBlocksCount}}</b></label>
                 @else
@@ -106,7 +106,7 @@
                         <th style="font-size: 10px;">Total</th>
                         <th style="font-size: 10px;"></th>
                         <th style="font-size: 10px;">{{ $tlcount}}</th>
-                        <th style="font-size: 10px;">{{ $lupcount}}</th>
+                        <th style="font-size: 10px;">{{$tlupcount}}</th>
                         <th style="font-size: 10px;">{{ $lRMCCount}}</th>
                         <th style="font-size: 10px;">{{ $lBlocksCount}}</th>
                         <th style="font-size: 10px;"></th>
