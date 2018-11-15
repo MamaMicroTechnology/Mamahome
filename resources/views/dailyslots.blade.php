@@ -73,19 +73,19 @@
             <div class="panel-body" style="overflow-x:scroll;">
                  @if(Auth::user()->group_id != 22)
                 <label style="color:black">Total Projects Added = <b>{{$projcount}}</b></label><br>
-                <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label><br>
+               <!--  <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label><br> -->
                 <label style="color:black">Total RMC Listed = <b>{{$lRMCCount}}</b></label><br>
                 <label style="color:black">Total Blocks Listed = <b>{{$lBlocksCount}}</b></label>
                 @else
                  <label style="color:black">Total Projects Added = <b>{{$tlcount}}</b></label><br>
-                 <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
+                <!--  <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label> -->
                  @endif
                 <table class="table table-striped" border="1">
                     <thead>
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Sub Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
-                        <th style="font-size: 10px;">Updated</th>
+                        <!-- <th style="font-size: 10px;">Updated</th> -->
                         <th style="font-size: 10px;">RMC</th>
                         <th style="font-size: 10px;">Blocks</th>
                         <th style="font-size: 10px;">Total</th>
@@ -96,7 +96,7 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
+                       <!--  <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td> -->
                         <td style="font-size: 10px;">{{ $totalRMCListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalBlocksListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] + $totalRMCListing[$user->id] + $totalBlocksListing[$user->id] }}</td>
@@ -106,7 +106,7 @@
                         <th style="font-size: 10px;">Total</th>
                         <th style="font-size: 10px;"></th>
                         <th style="font-size: 10px;">{{ $tlcount}}</th>
-                        <th style="font-size: 10px;">{{$tlupcount}}</th>
+                      <!--   <th style="font-size: 10px;">{{$tlupcount}}</th> -->
                         <th style="font-size: 10px;">{{ $lRMCCount}}</th>
                         <th style="font-size: 10px;">{{ $lBlocksCount}}</th>
                         <th style="font-size: 10px;"></th>
@@ -117,7 +117,7 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td>
+                       <!--  <td style="font-size: 10px;">{{ $totalupdates[$user->id] }}</td> -->
                         <td style="font-size: 10px;">{{ $totalRMCListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalBlocksListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalListing[$user->id] + $totalupdates[$user->id] + $totalRMCListing[$user->id] + $totalBlocksListing[$user->id] }}</td>
@@ -127,7 +127,7 @@
                         <th style="font-size: 10px;">Total</th>
                         <th style="font-size: 10px;"></th>
                         <th style="font-size: 10px;">{{$tlcount}}</th>
-                        <th style="font-size: 10px;">{{ $tlupcount}}</th>
+                       <!--  <th style="font-size: 10px;">{{ $tlupcount}}</th> -->
                         <th style="font-size: 10px;">{{ $tlRMCcount}}</th>
                         <th style="font-size: 10px;">{{ $tlBlocksCount}}</th>
                         <th style="font-size: 10px;"></th>
@@ -143,12 +143,12 @@
             <div class="panel-body" style="overflow-x:scroll;">
                 @if(Auth::user()->group_id != 22)
               <label style="color:black">Total Projects Added = <b>{{$acount}}</b></label>
-              <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label>
+              <!-- <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label> -->
               <label style="color:black">Total RMC Listed = <b>{{ $aRMCcount }}</b></label><br>
               <label style="color:black">Total Blocks Listed = <b>{{ $aBlocksCount }}</b></label>
               @else
               <label style="color:black">Total Projects Added = <b>{{$tlacount}}</b></label><br>
-              <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label>
+              <!-- <label style="color:black">Total Projects Updated = <b>{{$tlupcount}}</b></label> -->
               <label style="color:black">Total RMC Listed = <b>{{ $tlAcRMCcount }}</b></label><br>
               <label style="color:black">Total Blocks Listed = <b>{{ $tlAcBlocksCount }}</b></label>
               @endif
@@ -157,7 +157,7 @@
                         <th style="font-size: 10px;">Name</th>
                         <th style="font-size: 10px;">Sub Ward Name</th>
                         <th style="font-size: 10px;">Added</th>
-                        <th style="font-size: 10px;">Updated</th>
+                        <!-- <th style="font-size: 10px;">Updated</th> -->
                         <th style="font-size: 10px;">RMC</th>
                         <th style="font-size: 10px;">Blocks</th>
                         <th style="font-size: 10px;">Total</th>
@@ -168,7 +168,7 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
+                       <!--  <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td> -->
                         <td style="font-size: 10px;">{{ $totalAccountRMCListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalAccountBlocksListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] + $totalAccountRMCListing[$user->id] + $totalAccountBlocksListing[$user->id] }}</td>
@@ -178,7 +178,7 @@
                         <td style="font-size: 10px;">Total</td>
                         <td style="font-size: 10px;"></td>
                         <td style="font-size: 10px;">{{ $acount}}</td>
-                        <td style="font-size: 10px;">{{ $aupcount}}</td>
+                       <!--  <td style="font-size: 10px;">{{ $aupcount}}</td> -->
                         <td style="font-size: 10px;">{{ $aRMCcount}}</td>
                         <td style="font-size: 10px;">{{ $aBlocksCount}}</td>
                         <td style="font-size: 10px;"></td>
@@ -189,7 +189,7 @@
                         <td style="font-size: 10px;">{{ $user->name }}</td>
                         <td style="font-size: 10px;">{{ $user->sub_ward_name }}</td>
                         <td style="font-size: 10px;">{{ $totalaccountlist[$user->id] }}</td>
-                        <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td>
+                       <!--  <td style="font-size: 10px;">{{ $totalaccupdates[$user->id] }}</td> -->
                         <td style="font-size: 10px;">{{ $totalAccountRMCListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalAccountBlocksListing[$user->id] }}</td>
                         <td style="font-size: 10px;">{{ $totalaccupdates[$user->id]  +  $totalaccountlist[$user->id] + $totalAccountRMCListing[$user->id] + $totalAccountBlocksListing[$user->id] }}</td>
@@ -199,7 +199,7 @@
                         <td style="font-size: 10px;">Total</td>
                         <td style="font-size: 10px;"></td>
                         <td style="font-size: 10px;">{{$tlacount}}</td>
-                        <td style="font-size: 10px;">{{ $tlaupcount}}</td>
+                       <!--  <td style="font-size: 10px;">{{ $tlaupcount}}</td> -->
                         <td style="font-size: 10px;">{{ $tlAcRMCcount}}</td>
                         <td style="font-size: 10px;">{{ $tlAcBlocksCount}}</td>
                         <td style="font-size: 10px;"></td>
