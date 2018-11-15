@@ -3995,7 +3995,7 @@ $upvcInt = explode(",", $upvc);
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
-        $groupid = [6,7,22,23,17,11,2];
+        $groupid = [6,7,22,23,17,11,2,1];
         $users = User::whereIn('group_id',$groupid)
                     ->where('department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
