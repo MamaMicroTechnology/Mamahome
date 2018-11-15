@@ -3190,6 +3190,20 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        'contact1' => $request->cContact1
 
        ]);
+     $x = Mprocurement_Details::where("manu_id",$request->id)->count();
+
+        if($x == 0){
+               $project = new Mprocurement_Details;
+                $project->manu_id = $manufacturer->id;
+                $project->name =$request->prName;
+                $project->email = $request->pEmail;
+                $project->contact =$request->prPhone;
+                $project->contact1 = $request->prPhone1;
+                $project->save();
+
+
+
+        }else{
 
      Mprocurement_Details::where("manu_id",$request->id)->update([
 
@@ -3201,6 +3215,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
 
 
      ]);
+        }
 Mowner_Deatils::where("manu_id",$request->id)->update([
        'manu_id' =>  $manufacturer->id,
        'name' => $request->oName,
