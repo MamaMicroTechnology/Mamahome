@@ -704,8 +704,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $procurementDetails->builder_email = $request->bEmail;
         $procurementDetails->builder_contact_no = $request->bPhone;
         $procurementDetails->save();
-       $no = $request->prPhone;
-        $pid = $projectdetails->id;
        
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
@@ -750,7 +748,10 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
+       $no = $request->prPhone;
+        $pid = $projectdetails->project_id;
       $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
+    
         return back()->with('test',$text);
     }
     public function updateProject($id, Request $request)

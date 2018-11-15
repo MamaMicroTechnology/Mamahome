@@ -8332,6 +8332,7 @@ public function display(request $request){
     public function storedetails(Request $request){
          $id = $request->id;
          $value= $request->value;
+       
         $x = ProjectDetails::where('project_id',$id)->first();
         $x->detailed_mcal = $request->value;
         $x->save();
