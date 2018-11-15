@@ -6,7 +6,7 @@
                 {{ csrf_field() }}
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-default">
-               <div class="panel-heading" style="background-color:#42c3f3;">
+               <div class="panel-heading" style="background-color:#42c3f3;padding:20px;">
                   @if(Auth::user()->group_id == 22)
                      <select class="form-control" style="width:20%" name="tlward" required>
                        <option value="">Select SubWard</option>
