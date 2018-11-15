@@ -36,7 +36,7 @@
                   Seniot TL
                   @endif
                  
-                  <div id="currentTime" class="pull-right" style="margin-top:-25px;"></div>
+                  <div id="currentTime" class="pull-right" style="margin-top:-5px;"></div>
                 </div>
                 <?php 
                   if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){
