@@ -3875,14 +3875,15 @@ $upvcInt = explode(",", $upvc);
                     ->paginate(15);
                     
             }elseif($request->update1){
-                $date = date('Y-m-d', strtotime('-30 days'));
+              $date = date('Y-m-d', strtotime('-30 days'));
               $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                 $spro = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->pluck('project_id');
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
-                    ->where('created_at','>=',$date)
+                    ->where('created_at','<=',$date)
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
+                    
                     
             }elseif($request->unupdate){
               $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
