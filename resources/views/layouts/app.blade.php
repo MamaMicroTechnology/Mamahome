@@ -1191,7 +1191,7 @@ function myTimer() {
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
       <a href="{{ URL::to('/noneed') }}">Delete Numbers</a>
        <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
-       <a href="{{URL::to('/projectcount') }}">Listed Projects Count </a> 
+       <a href="{{URL::to('/projectsize') }}">Listed Projects Count </a> 
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>

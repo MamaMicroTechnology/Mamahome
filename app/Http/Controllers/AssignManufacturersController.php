@@ -1471,7 +1471,7 @@ public function noneed(request $request ){
        array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
     }
    
-     return view('/projectcount',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
+     return view('/projectsize',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
  }
  public function mini(request $request){
 

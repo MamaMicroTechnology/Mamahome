@@ -40,7 +40,7 @@ Route::get('/monthlyreport','AssignManufacturersController@getreport');
 
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 Route::get('/getprojectsize','HomeController@getProjectSize');
-Route::get('/projectcount','AssignManufacturersController@projectsize');
+Route::get('/projectsize','AssignManufacturersController@projectsize');
 
 
 // chatting
