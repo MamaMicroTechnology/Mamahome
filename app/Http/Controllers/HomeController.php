@@ -8603,8 +8603,18 @@ public function viewManufacturer1(Request $request)
 
     $x = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('id')->last();
    // dd($x);
+    $x1 = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('start_time')->last();
+   
+        
+       $A = strtotime($x1);
+       $B = strtotime(date('h:i A'));
+       $diff = $B - $A;
+
+       $y = $diff / 60; 
+
     BreakTime::where('id',$x)->update([
-            'stop_time' => date('h:i A')
+            'stop_time' => date('h:i A'),
+            'totaltime' =>$y
         ]);
         return back()->with('Success','Your Break Time has been Ended');
   }

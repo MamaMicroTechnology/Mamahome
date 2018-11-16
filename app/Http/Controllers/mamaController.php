@@ -2870,7 +2870,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lon = $request->longitude;
        $address = $request->address; 
        if(Auth::user()->department_id == 4){
-                $start = "07:10 AM";
+                $start = "08:00 AM";
                 $now = date('H:i A');
         }
         else{

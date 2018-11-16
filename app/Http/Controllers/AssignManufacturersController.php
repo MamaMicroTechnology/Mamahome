@@ -8,6 +8,7 @@ use Auth;
 use Validator;
 use App\Ward;
 use App\Tlwards;
+use App\BreakTime;
 use App\SubWard;
 use App\History;
 use App\Manufacturer;
@@ -1445,4 +1446,47 @@ public function noneed(request $request ){
 
     return back();
 }
+ 
+
+ public  function projectsize(request $request)
+ {
+
+    $wards = Ward::all();
+  
+
+    if($request->ward == "All"){
+         $subward = Subward::all();
+
+    }else{
+        
+     $subward = SubWard::where('ward_id',$request->ward)->get();
+    }
+
+    
+    $projectscount =[];
+    
+
+    foreach ($subward as $sub) {
+       $projectcount = ProjectDetails::where('sub_ward_id',$sub->id)->get()->toArray();
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+    }
+   
+     return view('/projectsize',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
+ }
+ public function mini(request $request){
+
+    $users = User::where('department_id','!=',10)->get();
+
+        $date=date('Y-m-d');
+        $breacktime = [];
+         foreach ($users as $user) {
+             $usertime = BreakTime::where('user_id',$user->id)
+                            ->where('created_at','LIKE',$date."%")
+                            ->pluck('totaltime')->toArray();
+                        array_push($breacktime,['usertime'=>$usertime,'name'=>$user->name]);      
+        }
+         $on = BreakTime::leftjoin('users','users.id','breaktime.user_id')->where('breaktime.created_at','LIKE',$date."%")->where('breaktime.stop_time','=',"")->select('users.name')->get();
+         return view('/minibreack',['breacktime'=>$breacktime,'on'=>$on]);
+
+ }
 }

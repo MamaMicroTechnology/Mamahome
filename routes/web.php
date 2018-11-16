@@ -40,6 +40,7 @@ Route::get('/monthlyreport','AssignManufacturersController@getreport');
 
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 Route::get('/getprojectsize','HomeController@getProjectSize');
+Route::get('/projectsize','AssignManufacturersController@projectsize');
 
 
 // chatting
@@ -154,6 +155,7 @@ Route::Post('/emplate','mamaController@logintime');
 Route::Post('/earlyremark','mamaController@empreports');
 Route::get('/loginhistory','HomeController@loginhistory');
 Route::get('/breakhistory','HomeController@breakhistory');
+Route::get('/minibreack','AssignManufacturersController@mini');
 
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');

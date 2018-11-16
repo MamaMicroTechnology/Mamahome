@@ -1101,6 +1101,8 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
+    <a href="{{ URL::to('/minibreack') }}">BreakTime Mini Report</a>
+
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
     <div id="enquiry" class="collapse">
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
@@ -1189,6 +1191,8 @@ function myTimer() {
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
       <a href="{{ URL::to('/noneed') }}">Delete Numbers</a>
        <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
+       <a href="{{URL::to('/projectsize') }}">Listed Projects Count </a> 
+
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
