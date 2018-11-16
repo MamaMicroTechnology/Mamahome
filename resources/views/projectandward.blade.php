@@ -10,7 +10,7 @@
     <div class="panel-body">
         <div class="col-md-6">
             <center>Select Ward</center>
-            <form method="GET" action="{{ URL::to('/') }}/projectsize">
+            <form method="GET" action="{{ URL::to('/') }}/projectandward">
                 <select required class="form-control" name="ward">
                     <option value="">--Select--</option>
                     <option value="All">All</option>
