@@ -216,7 +216,7 @@
                 <table class='table table-responsive table-striped' style="color:black" border="1">
                     <thead>
                         <tr>
-                            <th style="text-align:center">Subward Ward Name</th>
+                            <th style="text-align:center">Subward Name</th>
                             <th style="text-align:center">Manufacturer-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Manager Contact Number</th>
