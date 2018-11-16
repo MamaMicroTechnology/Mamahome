@@ -1,8 +1,4 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
-?>
-@extends($ext)
+@extends('layouts.app')
 @section('content')
 <div class="container">
 <div class="col-md-12">
@@ -30,7 +26,7 @@
                         </div>
                         <div class="col-md-2">
                             <label>Choose Ward :</label><br>
-                            <select name="ward" class="form-control" id="ward" onchange="loadsubwards()">
+                            <select name="ward" class="form-control" id="ward" onchange="loadsubwards()" required>
                                 <option value="">--Select--</option>
                                 @foreach($wards as $ward)
                                 <option {{ isset($_GET['ward']) ? $_GET['ward'] == $ward->id ? 'selected' : '' : '' }} value="{{ $ward->id }}">{{ $ward->ward_name }}</option>
@@ -39,7 +35,7 @@
                         </div>
                         <div class="col-md-2">
                             <label>Choose Subward :</label><br>
-                            <select name="subward" class="form-control" id="subward">
+                            <select name="subward" class="form-control" id="subward" >
                             @if(isset($_GET['ward']))
                             <option value="">--Select--</option>
                             @foreach($subward as $sub)

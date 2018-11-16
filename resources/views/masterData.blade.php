@@ -86,7 +86,10 @@
                                         <td>{{ $zone->country->country_name }} </td>
                                         <td>{{ $zone->zone_name }}</td>
                                         <td>{{ $zone->zone_number }}</td>
-                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/viewMap?zoneId={{ $zone->id}}" class="btn btn-sm btn-primary" target="_blank">View Map</a></center></td>
+                                        <td style="width:10%"><center><a href="{{ URL::to('/')}}/viewMap?zoneId={{ $zone->id}}" class="btn btn-sm btn-primary" target="_blank">Map With Subwards</a>
+                                        <a href="{{ URL::to('/') }}/wardmaping?zoneId={{ $zone->id }}" class="btn btn-success btn-sm">Map Without Subwards</a></center>
+                                            </td>
+                                        </td>
                                         <td>
                                             <a href="{{ URL::to('/') }}/wardmaping?zoneId={{ $zone->id }}" class="btn btn-success btn-sm">Edit</a>
                                             </td>
@@ -177,7 +180,7 @@
                         <table class="table table-responsive table-hover">
                             <thead>
                                 <th>Subward Name</th>
-                                <th><center>Ward Map</center></th>
+                                <th><center>Subward Map</center></th>
                                 <th><center>Action</center></th>
                             </thead>
                             <tbody>

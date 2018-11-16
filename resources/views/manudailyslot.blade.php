@@ -1,9 +1,6 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 1? "layouts.app":"layouts.teamheader");
-?>
-@extends($ext)
+@extends('layouts.app')
 @section('content')
+
     <div class="col-md-3">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
@@ -72,8 +69,8 @@
             </div>
             <div class="panel-body" style="overflow-x:scroll;">
                  @if(Auth::user()->group_id != 22)
-                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label><br>
-                <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label><br>
+                <label style="color:black">Total Manufacturer Projects Added = <b>{{$lcount}}</b></label><br>
+                <label style="color:black">Total Manufacturer Projects Updated = <b>{{$lupcount}}</b></label><br>
                 <label style="color:black">Total RMC Listed = <b>{{$lRMCCount}}</b></label><br>
                 <label style="color:black">Total Blocks Listed = <b>{{$lBlocksCount}}</b></label>
                 @else
@@ -142,8 +139,8 @@
             </div>
             <div class="panel-body" style="overflow-x:scroll;">
                 @if(Auth::user()->group_id != 22)
-              <label style="color:black">Total Projects Added = <b>{{$acount}}</b></label>
-              <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label>
+              <label style="color:black">Total Manufacturer Projects Added = <b>{{$acount}}</b></label>
+              <label style="color:black">Total Manufacturer Projects Updated = <b>{{$aupcount}}</b></label>
               <label style="color:black">Total RMC Listed = <b>{{ $aRMCcount }}</b></label><br>
               <label style="color:black">Total Blocks Listed = <b>{{ $aBlocksCount }}</b></label>
               @else

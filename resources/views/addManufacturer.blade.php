@@ -103,7 +103,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Total Area</td>
+                                    <td>Total Area(Sqft)</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Total Area" min="0" type="number" name="total_area" id="area" class="form-control">

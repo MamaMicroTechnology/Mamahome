@@ -5363,7 +5363,7 @@ public function confirmedvisit(Request $request){
         $wards = Ward::all();
         $users = User::all();
         $ids = array();
-        $tll= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tll= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
         $tl = explode(",",$tll);
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
@@ -5374,8 +5374,11 @@ public function confirmedvisit(Request $request){
                 $found1 = $searchWard->ward_id;
             }
         }
-   
-     $sub_ward = Subward::where('ward_id',$found1)->pluck('id');
+
+   $mamu =explode(",", $found1);
+  
+     $sub_ward = Subward::whereIn('ward_id',$mamu)->pluck('id');
+  
 
         
         if($request->phNo){
@@ -5397,7 +5400,7 @@ public function confirmedvisit(Request $request){
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$found1)
+                            ->whereIn('wards.id',$mamu)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
                         

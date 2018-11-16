@@ -1,9 +1,6 @@
 
-<?php
-    $use = Auth::user()->group_id;
-    $ext = ($use == 1? "layouts.app":"layouts.teamheader");
-?>
-@extends($ext)
+@extends('layouts.app')
+
 @section('content')
     <div class="col-md-12">
         <div class="panel panel-primary">

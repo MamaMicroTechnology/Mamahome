@@ -1390,18 +1390,18 @@ function myTimer() {
     </div>
 
  <!-- The Modal -->
-  <div class="modal" id="mytask">
+  <!-- <div class="modal" id="mytask">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content"> -->
       
         <!-- Modal Header -->
-        <div class="modal-header"  style="background-color:#f4811f;padding:2px;color:white;">
+       <!--  <div class="modal-header"  style="background-color:#f4811f;padding:2px;color:white;">
           <h4 class="modal-title">Instructions</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+        </div> -->
 
         <!-- Modal body -->
-        <div class="modal-body">
+       <!--  <div class="modal-body">
          @if(isset($stages))
           
         @endif
@@ -1431,28 +1431,28 @@ function myTimer() {
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
          <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
-        </div>
+        </div> -->
         <!-- Modal footer -->
-        <div class="modal-footer">
+      <!--   <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
         
       </div>
     </div>
-  </div>
+  </div> -->
 <!-- The Modal -->
-  <div class="modal" id="myModal10">
+  <!-- <div class="modal" id="myModal10">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content"> -->
       
         <!-- Modal Header -->
-        <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
+       <!--  <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
           <h4 class="modal-title">Time Need To Complete?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+        </div> -->
         
         <!-- Modal body -->
-        <div class="modal-body">
+       <!--  <div class="modal-body">
         <form action="{{ URL::to('/') }}/reject" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         @if(isset($stages))
@@ -1467,10 +1467,10 @@ function myTimer() {
          <textarea type="text" name="remark" style="width:400px;" ></textarea>
         </div>
        <center> <button type="submit" value="submit" class="btn btn-primary">Submit</button></center> 
-        </form>
+        </form> -->
         
         <!-- Modal footer -->
-        <div class="modal-footer" style="padding:2px;"> 
+        <!-- <div class="modal-footer" style="padding:2px;"> 
           <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
         </div>
         
@@ -1478,7 +1478,7 @@ function myTimer() {
     </div>
   </div>
   
-</div>
+</div> -->
     <!-- Scripts -->
     <script>
         function openNav() {
