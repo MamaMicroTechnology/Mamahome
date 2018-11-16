@@ -21,7 +21,7 @@
         @foreach($orders as $order)
         <tr style="{{ date('Y-m-d') == $order->requirement_date ? 'background-color:#ccffcc': '' }}">
             <td>{{ date('d M, y',strtotime($order->requirement_date)) }}</td>
-            <td>{{ $order->project_id }}</td>
+             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$order->project_id}}&&lename=" target="_blank">{{ $order->project_id }}</a></td>
             <td>{{ $order->id }}</td>
             <td>{{ $order->main_category }}</td>
             <td>{{ $order->quantity }}</td>
@@ -35,14 +35,18 @@
             </td>
               @if(Auth::user()->group_id != 22)
             <td>
-                
-                            <div class="btn-group">
+            <?php 
+                $rec =count($order->confirm_payment); 
+             ?> 
+                @if($rec == 0)
+                 <div class="btn-group">
                                 <!-- <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmpayment?id={{ $order->id }}">Confirm</a> -->
-                               <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#payment"> Confirm</button>
-                                <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $order->id }}')">Cancel</button>
-                            </div>
-              
-                           
+                               <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#payment{{$order->id}}"> Confirm</button>
+                                <button class="btn btn-xs btn-danger pull-right" data-toggle="modal" data-target="#clear{{$order->id}}">Cancel</button>
+                </div>
+                 @else
+                 Payment Confirmed
+                 @endif             
             </td>
             <td>
                 @if($order->clear_for_delivery == "No")
@@ -52,45 +56,30 @@
                     <button class="btn btn-primary btn-xs">Clear For Delivery</button>
                 </form>
                 @else
-                    <!-- <a href="{{ route('downloadProformatTaxInvoice',['download'=>'pdf','id'=>$order->id]) }}" class="btn btn-warning btn-xs">Download INVOICE</a>
-                    <a href="{{ route('downloadProformatTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">Invoice</a>
-                    <br> -->
-                    <a href="{{ route('downloadProformaInvoice',['download'=>'pdf','id'=>$order->id]) }}" class="btn btn-warning btn-xs">Download TAX INVOICE</a>
-                    <a href="{{ route('downloadProformaInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">TAX Invoice</a>
+                    
+            <?php 
+                $rec =count($order->confirm_payment); 
+             ?> 
+                @if($rec == 1)
+                    <div class="btn-group">
+    <a type="button" href="{{ route('downloadInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
+    <a type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
+    <a type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a>
+  </div>
+                    @else
+                    
+                    <div class="btn-group">
+    <a disabled type="button" href="{{ route('downloadInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
+    <a disabled type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
+    <a disabled type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a>
+  </div>
+                   
+                    @endif
                 @endif
             </td>
             @endif
         </tr>
-                    <!-- Modal -->
-                    <div id="payment" class="modal fade" role="dialog">
-                      <div class="modal-dialog" style="width:30%">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">{{ $order->id }}</h4>
-                          </div>
-                          <div class="modal-body">
-                           <form action="{{ URL::to('/') }}/sendMessage" method="post">
-                            {{ csrf_field() }}
-                            <label>Quantity : </label>
-                            <input type="text" class="form-control" name="quantity" placeholder="quantity">
-                            <br>
-                            <label>Rate (Per Unit) : </label>
-                            <input type="text"  class="form-control" name="quantity" placeholder="Unit Price">
-                            <br>
-                            <button type="submit" class="btn btn-sm btn-success" type="">Save</button>
-                            <br>
-                           </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
+                    
         @endforeach
     </table>
     <center>
@@ -99,26 +88,171 @@
 </div>
     @foreach($orders as $order)
         <!-- Modal -->
+                    <div id="payment{{$order->id}}" class="modal fade" role="dialog">
+                      <div class="modal-dialog" style="width:50%">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header" style="background-color: #5cb85c;color:white">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirm Payment</h4>
+                          </div>
+                          <div class="modal-body">
+                                <table class="table table-responsive table-striped" border="1">
+                                    <tr>
+                                        <td>Payment Mode :</td>
+                                        <td>{{ $order->payment_mode }}</td>   
+                                    </tr>
+                                    <tr>
+                                        <td>Category :</td>
+                                        <td>{{ $order->main_category }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quantity :</td>
+                                        <td>{{ $order->quantity }}</td>
+                                    </tr>
+                                </table>
+                           <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}" method="post">
+                            {{ csrf_field() }}
+                            @foreach($mamaprices as $price)
+                                @if($price->order_id == $order->id)
+                            <label> Total Quantity : </label>
+                            <input required type="text" class="form-control" name="quantity" value="{{$price->quantity}}" id="quan" onkeyup="checkthis('quan')">
+                            <br>
+                            <!-- <input type="radio" name="unit" value="tons" checked>Tons
+                            <input type="radio" name="unit" value="bags"> Bags
+                            <br></br> -->
+                            <label>Mamahome price(Per Unit) : </label>
+                            <input required type="text" id="unit"  class="form-control" name="price" value="{{$price->mamahome_price}}"  onkeyup="checkthis1('unit')">
+                            <label>Manufacturer Price(Per Unit) : </label>
+                            <input required type="text" id="unit"  class="form-control" name="price" value="{{$price->manufacturer_price}}" onkeyup="checkthis1('unit')">
+                            <br>
+                            <p class="alert-success">Total Mamahome Price :{{$price->mamatotal}}</p>
+                            <p class="alert-success">Total manufacturer Price :{{$price->manutotal}}</p>
+                            <br>
+                            <label>Enter Mamahome Price : </label>
+                              <input required id="txtNumber" type="text" name="mamatotal" maxlength="9" placeholder="Enter Mamahome Total Price" onkeyup="NumToWord(this.value,'lblWord');" class="form-control" />
+                             <label class=" alert-success pull-right" id="lblWord"></label> <br>
+                              <label>Enter Manufacturer Price : </label>
+                              <input required id="txtNumber" class="form-control" type="text" name="manutotal" maxlength="9" placeholder="Enter Manufacturer Total Price" onkeyup="NumToWord1(this.value,'lblWord1');" />
+                             <label class=" alert-success pull-right" id="lblWord1"></label> 
+                             <br>
+                              <input type="text" name="dtow1" class="hidden" value="" id="dtow1">
+                              <input type="text" name="dtow2" class="hidden" value="" id="dtow2">
+                              
+                            <button  type="submit" class="btn btn-sm btn-success" style="text-align: center;">Confirm</button>
+                            <br>
+                            @endif
+                            @endforeach
+                           </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+<!-- Modal -->
+<div id="clear{{$order->id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+       <p>Are You Sure You Want To Cancel This Payment?</p>
+
+       <a href="{{URL::to('/')}}/storedetails?value=yes" type="button" class=" btn btn-sm btn-success" >Select Other Payment Method</a>
+                    <a href="{{URL::to('/')}}/storedetails?value=no"  onclick="show()" class=" btn btn-sm btn-danger " href="{{url()->previous()}}" >Cancel the Order</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- modal end -->
         <div id="myModal{{ $order->id }}" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- Modal content-->
                 <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="background-color: #337ab7;color:white;">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{{ $order->id }} Payment Details</h4>
+                    <h4 class="modal-title">Payment Details</h4>
                 </div>
                 <div class="modal-body">
-                    
                     @foreach($payments as $payment)
-                        @if($payment->order_id == $order->id)
-                        <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="payment_slip" class="img-thumbnail">
-                        @endif
-                    @endforeach
-                    <p>
-                    <b>Note: </b><br>
-                        {{ $order->payment_note }}
-                    </p>
+            @if($payment->order_id == $order->id)
+            <table class="table table-responsive table-striped" border="1">
+              <tr>
+                <td>OrderId :</td>
+                <td>{{$payment->order_id}}</td>
+              </tr>
+              <tr>
+                <td>Payment Mode :</td>
+                <td>{{ $payment->payment_mode }}</td>
+              </tr>
+              <tr>
+                <td>Date :</td>
+                <td>{{$payment->date}}</td>
+              </tr>
+              @if($payment->payment_mode == "CASH")
+              <tr>
+                <td>Cash Deposit Slip :</td>
+
+                <td>
+                    <!-- <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"> -->
+                    <?php
+                                                     $images = explode(",", $payment->file );
+                                                    ?>
+                                                   <div class="col-md-12">
+                                                       @for($i = 0; $i < count($images); $i++)
+                                                           <div class="col-md-3">
+                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/payment_details/{{ $images[$i] }}" class="img img-thumbnail">
+                                                           </div>
+                                                       @endfor
+                                                    </div>
+                </td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "RTGS")
+              <tr>
+                <td>Reference Number :</td>
+                <td>{{$payment->account_number}}<br></td>
+              </tr>
+              <tr>
+                <td>Branch Name :</td>
+                <td>{{$payment->branch_name}}<br></td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "CHEQUE")
+              <tr>
+                <td>Cheque Number :</td>
+                <td>{{$payment->cheque_number}}
+                </td>
+              </tr>
+              @endif
+              <tr>
+                <td>Amount :</td>
+                <td>{{$payment->totalamount}}/-</td>
+              </tr>
+              <tr>
+                <td>Delivery Charges :</td>
+                <td>{{$payment->damount}}/-</td>
+              </tr>
+              <tr>
+                <td>Note :</td>
+                <td>{{$payment->payment_note}}</td>
+              </tr>
+            </table>
+            <!-- <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"> -->
+            @endif 
+            @endforeach  
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
@@ -173,4 +307,288 @@
     swal('Success',"{{ session('Success') }}",'success');
 </script>
 @endif
+<script type="text/javascript">
+    function checkthis(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+        
+               document.getElementById(arg).value = "";
+    }
+}
+ function checkthis1(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+        
+               document.getElementById(arg).value = "";
+    }
+}
+</script>
+<script type="text/javascript">
+  function onlyNumbers(evt) {
+    var e = event || evt; // For trans-browser compatibility
+    var charCode = e.which || e.keyCode;
+
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+
+function NumToWord(inputNumber, outputControl) {
+    var str = new String(inputNumber)
+    var splt = str.split("");
+    var rev = splt.reverse();
+    var once = ['Zero', ' One', ' Two', ' Three', ' Four', ' Five', ' Six', ' Seven', ' Eight', ' Nine'];
+    var twos = ['Ten', ' Eleven', ' Twelve', ' Thirteen', ' Fourteen', ' Fifteen', ' Sixteen', ' Seventeen', ' Eighteen', ' Nineteen'];
+    var tens = ['', 'Ten', ' Twenty', ' Thirty', ' Forty', ' Fifty', ' Sixty', ' Seventy', ' Eighty', ' Ninety'];
+
+    numLength = rev.length;
+    var word = new Array();
+    var j = 0;
+
+    for (i = 0; i < numLength; i++) {
+        switch (i) {
+
+            case 0:
+                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = '' + once[rev[i]];
+                }
+                word[j] = word[j];
+                break;
+
+            case 1:
+                aboveTens();
+                break;
+
+            case 2:
+                if (rev[i] == 0) {
+                    word[j] = '';
+                }
+                else if ((rev[i - 1] == 0) || (rev[i - 2] == 0)) {
+                    word[j] = once[rev[i]] + " Hundred ";
+                }
+                else {
+                    word[j] = once[rev[i]] + " Hundred and";
+                }
+                break;
+
+            case 3:
+                if (rev[i] == 0 || rev[i + 1] == 1) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = once[rev[i]];
+                }
+                if ((rev[i + 1] != 0) || (rev[i] > 0)) {
+                    word[j] = word[j] + " Thousand";
+                }
+                break;
+
+                
+            case 4:
+                aboveTens();
+                break;
+
+            case 5:
+                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = once[rev[i]];
+                }
+                if (rev[i + 1] !== '0' || rev[i] > '0') {
+                    word[j] = word[j] + " Lakh";
+                }
+                 
+                break;
+
+            case 6:
+                aboveTens();
+                break;
+
+            case 7:
+                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = once[rev[i]];
+                }
+                if (rev[i + 1] !== '0' || rev[i] > '0') {
+                    word[j] = word[j] + " Crore";
+                }                
+                break;
+
+            case 8:
+                aboveTens();
+                break;
+
+            //            This is optional. 
+
+            //            case 9:
+            //                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+            //                    word[j] = '';
+            //                }
+            //                else {
+            //                    word[j] = once[rev[i]];
+            //                }
+            //                if (rev[i + 1] !== '0' || rev[i] > '0') {
+            //                    word[j] = word[j] + " Arab";
+            //                }
+            //                break;
+
+            //            case 10:
+            //                aboveTens();
+            //                break;
+
+            default: break;
+        }
+        j++;
+    }
+
+    function aboveTens() {
+        if (rev[i] == 0) { word[j] = ''; }
+        else if (rev[i] == 1) { word[j] = twos[rev[i - 1]]; }
+        else { word[j] = tens[rev[i]]; }
+    }
+
+    word.reverse();
+    var finalOutput = '';
+    for (i = 0; i < numLength; i++) {
+        finalOutput = finalOutput + word[i];
+    }
+    document.getElementById("dtow1").value = finalOutput;
+    document.getElementById(outputControl).innerHTML = finalOutput;
+}
+function NumToWord1(inputNumber, outputControl) {
+    var str = new String(inputNumber)
+    var splt = str.split("");
+    var rev = splt.reverse();
+    var once = ['Zero', ' One', ' Two', ' Three', ' Four', ' Five', ' Six', ' Seven', ' Eight', ' Nine'];
+    var twos = ['Ten', ' Eleven', ' Twelve', ' Thirteen', ' Fourteen', ' Fifteen', ' Sixteen', ' Seventeen', ' Eighteen', ' Nineteen'];
+    var tens = ['', 'Ten', ' Twenty', ' Thirty', ' Forty', ' Fifty', ' Sixty', ' Seventy', ' Eighty', ' Ninety'];
+
+    numLength = rev.length;
+    var word = new Array();
+    var j = 0;
+
+    for (i = 0; i < numLength; i++) {
+        switch (i) {
+
+            case 0:
+                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = '' + once[rev[i]];
+                }
+                word[j] = word[j];
+                break;
+
+            case 1:
+                aboveTens();
+                break;
+
+            case 2:
+                if (rev[i] == 0) {
+                    word[j] = '';
+                }
+                else if ((rev[i - 1] == 0) || (rev[i - 2] == 0)) {
+                    word[j] = once[rev[i]] + " Hundred ";
+                }
+                else {
+                    word[j] = once[rev[i]] + " Hundred and";
+                }
+                break;
+
+            case 3:
+                if (rev[i] == 0 || rev[i + 1] == 1) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = once[rev[i]];
+                }
+                if ((rev[i + 1] != 0) || (rev[i] > 0)) {
+                    word[j] = word[j] + " Thousand";
+                }
+                break;
+
+                
+            case 4:
+                aboveTens();
+                break;
+
+            case 5:
+                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = once[rev[i]];
+                }
+                if (rev[i + 1] !== '0' || rev[i] > '0') {
+                    word[j] = word[j] + " Lakh";
+                }
+                 
+                break;
+
+            case 6:
+                aboveTens();
+                break;
+
+            case 7:
+                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                    word[j] = '';
+                }
+                else {
+                    word[j] = once[rev[i]];
+                }
+                if (rev[i + 1] !== '0' || rev[i] > '0') {
+                    word[j] = word[j] + " Crore";
+                }                
+                break;
+
+            case 8:
+                aboveTens();
+                break;
+
+            //            This is optional. 
+
+            //            case 9:
+            //                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+            //                    word[j] = '';
+            //                }
+            //                else {
+            //                    word[j] = once[rev[i]];
+            //                }
+            //                if (rev[i + 1] !== '0' || rev[i] > '0') {
+            //                    word[j] = word[j] + " Arab";
+            //                }
+            //                break;
+
+            //            case 10:
+            //                aboveTens();
+            //                break;
+
+            default: break;
+        }
+        j++;
+    }
+
+    function aboveTens() {
+        if (rev[i] == 0) { word[j] = ''; }
+        else if (rev[i] == 1) { word[j] = twos[rev[i - 1]]; }
+        else { word[j] = tens[rev[i]]; }
+    }
+
+    word.reverse();
+    var finalOutput = '';
+    for (i = 0; i < numLength; i++) {
+        finalOutput = finalOutput + word[i];
+    }
+    document.getElementById("dtow2").value = finalOutput;
+    document.getElementById(outputControl).innerHTML = finalOutput;
+}
+</script>
+<script src="http://www.ittutorials.in/js/demo/numtoword.js; type="text/javascript"></script>
 @endsection

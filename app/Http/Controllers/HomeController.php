@@ -90,6 +90,9 @@ use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
 use App\PaymentDetails;
+use App\Mamahomeprice;
+use App\Supplierdetails;
+
 use Spatie\Activitylog\Models\Activity;
 
 date_default_timezone_set("Asia/Kolkata");
@@ -2986,6 +2989,7 @@ date_default_timezone_set("Asia/Kolkata");
     }
  public function amorders1(Request $request)
     {
+            $manusuppliers = ManufacturerDetail::all();
          $id = $request->projectId;
         if($request->projectId){
             $view = Order::orderby('orders.created_at','DESC')
@@ -3033,13 +3037,16 @@ date_default_timezone_set("Asia/Kolkata");
         foreach($view as $order){
             $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
         }
+            $suppliers = SupplierDetails::get();
         return view('ordersadmin',[
             'view' => $view,
+            'suppliers'=>$suppliers,
             'users'=>$users,
             'req'=>$req,
             'paymentDetails'=>$paymentDetails,
             'messages'=>$message,
             'chatUsers'=>$chatUsers,
+            'manusuppliers'=>$manusuppliers,
             'counts'=>$counts
         ]);
     }
@@ -3125,11 +3132,27 @@ date_default_timezone_set("Asia/Kolkata");
     
     public function confirmOrder(Request $request)
     {
+
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
-        // $x->payment_status = 'Payment Pending';
         $x->save();
+        PaymentDetails::where('order_id',$id)->update([
+            'quantity'=>$request->quantity,
+            'mamahome_price'=>$request->mamaprice,
+            'manufacturer_price'=>$request->manuprice,
+            'unit'=>$request->unit
+        ]);
+        $mamatotal = $request->quantity*$request->mamaprice;
+        $manutotal =$request->quantity*$request->manuprice;
+        $price = new Mamahomeprice;
+            $price->order_id = $id;
+            $price->quantity = $request->quantity;
+            $price->mamahome_price = $request->mamaprice;
+            $price->manufacturer_price = $request->manuprice;
+            $price->mamatotal = $mamatotal;
+            $price->manutotal = $manutotal;
+            $price->save();
         return back();
 
     }
