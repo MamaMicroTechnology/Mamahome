@@ -1106,6 +1106,7 @@ function myTimer() {
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
     <div id="enquiry" class="collapse">
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
+            <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
         </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
