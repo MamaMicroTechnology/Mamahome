@@ -9,12 +9,14 @@
 		<div class="panel panel-default" style="border-color: #f4811f">
 			<div class="panel-heading" style="background-color: #f4811f;text-align:center">
 				<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
-				 @if($enq->project_id != NULL)
+				<?php $x=$enq->project_id ;
+				?>
+				 @if($x == "")   
 				<b  class="pull-right" style="text-align:right;color:white;font-size:1.1em;">Manufacturer Type:&nbsp;{{$enq->manu != NULL ? $enq->manu->manufacturer_type:''}}</b>
 				@endif
 				<br><br>
-<p>(Add Only One Category With One Enquiry,<br>
-Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
+      <p>(Add Only One Category With One Enquiry,<br>
+        Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 			</div>
 			<div class="panel-body">
 				<form method="POST" id="sub" action="{{URL::to('/')}}/editinputdata">
