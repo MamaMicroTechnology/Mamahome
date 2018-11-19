@@ -49,6 +49,9 @@
                     <tr style="{{ $rec->order_status == 'Order Cancelled' ? 'background-color: #ffbaba;' : '' }}" id="row-{{$rec->id}}">
                         <td>
                             <a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}</a>
+                             @if($rec -> project_id == null)
+                            <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $rec->manu_id }}">Manufacturer {{$rec -> manu_id}}</a>
+                            @endif
                         </td>
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
