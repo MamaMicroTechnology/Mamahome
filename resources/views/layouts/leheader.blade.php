@@ -16,6 +16,18 @@
     
 </head>
 <body>
+<!-- @if(SESSION('Success'))
+<div class="text-center alert alert-success">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+{{ session('Success') }}
+</div>
+@endif
+@if(session('Error'))
+<div class="alert text-center alert-danger alert-dismissable">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+{{ session('Error') }}
+</div>
+@endif -->
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
