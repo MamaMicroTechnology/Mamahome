@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.leheader')
 @section('content')
 
   @if($ldate < $lodate)
