@@ -7803,6 +7803,7 @@ public function display(request $request){
     if(Auth::user()->group_id == 22){
         return $this->Unupdated1($request);
     }
+
    $wards = Ward::orderby('ward_name','ASC')->get();
         $wardid = $request->subward;
         $previous = date('Y-m-d',strtotime('-30 days'));
@@ -7891,6 +7892,23 @@ public function display(request $request){
                             ->where('project_status','!=',"Closed")
                             ->count();
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+        } else if($request->subward && $request->ward && $request->status && $request->contract_type){
+            $from=$request->from;
+            $to=$request->to;
+                         $projectid = ProjectDetails::whereIn('project_id',$projectsat)
+                        ->where('sub_ward_id',$request->subward)
+                         ->where('quality','!=',"Fake")
+                        ->where('updated_at','<=',$previous)
+                        ->where('contract_type',$request->contract_type)
+                        ->paginate('20');
+
+                       $totalproject = ProjectDetails::whereIn('project_id',$projectsat)
+                        ->where('sub_ward_id',$request->subward)
+                         ->where('quality','!=',"Fake")
+                        ->where('updated_at','<=',$previous)
+                        ->where('contract_type',$request->contract_type)
+                        ->count();
+
         }
 
         else{
