@@ -1897,7 +1897,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $subward = SubWard::where('id',$project1->sub_ward_id)->first();        
               
                 }
-
+                  
                 $ward = Ward::where('id',$subward->ward_id)->first();
                 $zone = Zone::where('id',$ward->zone_id)->first();
                 $country = Country::where('id',$ward->country_id)->first();
@@ -1925,6 +1925,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order->status = $requirement->status;
                 $order->dispatch_status = $requirement->dispatch_status;
                 $order->generated_by  = $requirement->generated_by;
+                $order->manu_id  = $request->manu_id;
+
                 $order->save();
             }
         }
