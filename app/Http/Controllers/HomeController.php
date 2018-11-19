@@ -90,6 +90,10 @@ use App\Manufacturer;
 use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
+use App\PaymentDetails;
+use App\Mamahomeprice;
+use App\Supplierdetails;
+
 use Spatie\Activitylog\Models\Activity;
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1550,7 +1554,7 @@ class HomeController extends Controller
         }else if($group == 'Sales Officer'){
              return redirect('salesofficer');
         }else if($group == 'Finance'){
-            return redirect('financeDashboard');
+            return redirect('financeIndex');
         }else{
             return redirect('chat');
         }
@@ -2983,6 +2987,7 @@ date_default_timezone_set("Asia/Kolkata");
     }
  public function amorders1(Request $request)
     {
+            $manusuppliers = ManufacturerDetail::all();
          $id = $request->projectId;
         if($request->projectId){
             $view = Order::orderby('orders.created_at','DESC')
@@ -2998,47 +3003,60 @@ date_default_timezone_set("Asia/Kolkata");
             $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                    ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->leftjoin('requirements','orders.req_id','requirements.id')
+                    ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
-
-
         }
         if(Auth::user()->group_id == 23){
-         $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+            $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+            $catsub = Category::where('id',$ac)->pluck('category_name')->first();
 
-             $view = Order::orderby('orders.created_at','DESC')
-                     ->where('orders.main_category',$catsub)
+             $view = Order::orderby('orders.id','DESC')
+                    ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
                     
-
             
         }
 
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
-
-
-        return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
+        $paymentDetails = PaymentDetails::all();
+        $message = Message::all();
+        $chatUsers = User::all();
+        $counts = array();
+        foreach($view as $order){
+            $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
+        }
+            $suppliers = SupplierDetails::get();
+        return view('ordersadmin',[
+            'view' => $view,
+            'suppliers'=>$suppliers,
+            'users'=>$users,
+            'req'=>$req,
+            'paymentDetails'=>$paymentDetails,
+            'messages'=>$message,
+            'chatUsers'=>$chatUsers,
+            'manusuppliers'=>$manusuppliers,
+            'counts'=>$counts
+        ]);
     }
   public function amorders(Request $request)
        {
              if(Auth::user()->group_id != 22 || Auth::user()->group_id == 23){
+
                return $this->amorders1($request);
              }
 
-             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+              $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
               $ward = explode(",",$tlward);
-
-
            if($request->projectId){
                $view = Order::orderby('orders.created_at','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -3065,11 +3083,25 @@ date_default_timezone_set("Asia/Kolkata");
                        'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
                        ->paginate(25);
            }
-
            $depts = [1,2];
            $users = User::whereIn('department_id',$depts)->get();
            $req = Requirement::pluck('project_id');
-            return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
+           $message = Message::all();
+            $paymentDetails = PaymentDetails::all();
+           $chatUsers = User::all();
+            $counts = array();
+            foreach($view as $order){
+            $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
+            }
+            return view('ordersadmin',[
+                'view' => $view,
+                'users'=>$users,
+                'req'=>$req,
+                 'paymentDetails'=>$paymentDetails,
+                'messages'=>$message,
+                'chatUsers'=>$chatUsers,
+                'counts'=>$counts
+            ]);
        }
     public function getSubCat(Request $request)
     {
@@ -3098,11 +3130,37 @@ date_default_timezone_set("Asia/Kolkata");
     
     public function confirmOrder(Request $request)
     {
+
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
-        $x->payment_status = 'Payment Pending';
         $x->save();
+        PaymentDetails::where('order_id',$id)->update([
+            'quantity'=>$request->quantity,
+            'mamahome_price'=>$request->mamaprice,
+            // 'manufacturer_price'=>$request->manuprice,
+            'unit'=>$request->unit
+        ]);
+        $unitwithgst = ($request->mamaprice/1.28);
+        $totalamount = ($request->quantity *  $unitwithgst);
+        $x = (int)$totalamount;
+        $cgst = ($totalamount * 14)/100;
+        $sgst = ($totalamount * 14)/100;
+        $tt = $cgst + $sgst;
+        $totaltax = (int)$tt;
+        $withgst = $cgst + $sgst + $totalamount;
+        $y = (int)$withgst;
+        $price = new Mamahomeprice;
+            $price->order_id = $id;
+            $price->quantity = $request->quantity;
+            $price->mamahome_price = $request->mamaprice;
+            $price->unitwithoutgst = $unitwithgst;
+            $price->totalamount = $x;
+            $price->cgst = $cgst;
+            $price->sgst = $sgst;
+            $price->totaltax = $totaltax;
+            $price->amountwithgst = $y;     
+            $price->save();
         return back();
 
     }
@@ -3466,8 +3524,6 @@ date_default_timezone_set("Asia/Kolkata");
 
        return back();
     }
-
-
   public function smstonumber1(Request $request)
     {
         if(!$request->stage ){
@@ -3505,10 +3561,6 @@ date_default_timezone_set("Asia/Kolkata");
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
              $builder =Builder::whereIn('project_id',$projectids)->where('builder_contact_no','!=',null)->pluck('builder_contact_no')->toarray();
             
-
-
-           
-
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
 
@@ -4683,6 +4735,7 @@ $upvcInt = explode(",", $upvc);
         $user = User::where('employeeId',$id)->first();
           
         $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
+       
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
     public function forgotPw(){
@@ -7161,6 +7214,7 @@ public function display(request $request){
     {
         $conversions = Conversion::all();
         if($request->category){
+            
             $conversion = Conversion::where('id',$request->category)->first();
             $utilizations = Utilization::where('id',$request->category)->first();
             View::share('conversion', $conversion);
@@ -7168,6 +7222,7 @@ public function display(request $request){
         }else{
             View::share('conversion',null);
         }
+       
         $wards = Ward::all();
        $qualityCheck = ['Genuine','Fake','Unverified'];
        // getting total no of projects
@@ -7208,6 +7263,7 @@ public function display(request $request){
        $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount;
 
        if($request->ward && !$request->subward){
+
            if($request->ward == "All"){
                $planningCount      = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->count();
                $planningSize       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
@@ -7246,6 +7302,7 @@ public function display(request $request){
                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
                $planningCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->count();
                $planningSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
+              
                $foundationCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->count();
                $foundationSize     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
                $roofingCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->count();
@@ -7278,7 +7335,7 @@ public function display(request $request){
                $wardname = Ward::where('id',$request->ward)->first();
                $subwards = SubWard::where('ward_id',$request->ward)->get();
            }
-
+        
            return view('projection',[
                'planningCount'=>$planningCount,'planningSize'=>$planningSize,
                'foundationCount'=>$foundationCount,'foundationSize'=>$foundationSize,
@@ -8472,7 +8529,7 @@ public function viewManufacturer1(Request $request)
       $ward=Subward::leftjoin('manufacturers','manufacturers.sub_ward_id','sub_wards.id')
       ->where('manufacturers.id',$request->id)->pluck('sub_wards.sub_ward_name')->first();
      
-      return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
+  return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
   }
   public function getUnverifiedProjects(Request $request)
   {

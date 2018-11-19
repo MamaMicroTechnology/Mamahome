@@ -20,7 +20,7 @@
                         <tr>
                             <td>
                                 <select class="form-control" name="list" required>
-                                    <option disabled selected value="">(-- SELECT LE --)</option>
+                                    <option disabled selected value="">-- SELECT LE --</option>
                                     @if(Auth::user()->group_id != 22)
                                     @foreach($users as $list)
                                     <option value="{{$list->id}}">{{$list->name}}</option>

@@ -37,16 +37,109 @@
         </div>
     </div>
 </div>
+
+<div class="col-md-12">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                GSTs
+                <button type="button" class="btn btn-info btn-xs pull-right" data-toggle="modal" data-target="#myModal">Add/Edit GST</button>    
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>SGST</th>
+                            <th>CGST</th>
+                            <th>IGST</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gsts">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">GST</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{{ URL::to('/') }}/addGST" method="post">
+            {{ csrf_field() }}
+            <label for="myCategories">Categories</label>
+            <select id="myCategories" onchange="getBrands()" class="form-control">
+                <option>--Select Category--</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                @endforeach
+            </select>
+            <br>
+            <label for="brands">Brands</label>
+            <select id="brands" onchange="getSubs()" class="form-control">
+                
+            </select>
+            <br>
+            <label for="subCategories">Sub Categories</label>
+            <select id="subCategories" class="form-control">
+                
+            </select>
+            <br>
+            <div class="col-md-4">
+                <label for="CGST">CGST</label>
+                <input type="number" name="cgst" placeholder="CGST" min=1 id="CGST" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="SGST">SGST</label>
+                <input type="number" name="sgst" placeholder="SGST" min=1 id="SGST" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="IGST">IGST</label>
+                <input type="number" name="igst" placeholder="IGST" min=1 id="IGST" class="form-control">
+            </div>
+            <div class="col-md-12">
+            <br>
+                <input type="submit" value="Save" class="btn btn-success form-control btn-sm">
+            </div>
+            <br>
+            <br><br><br>
+            <br><br><br>
+        </form>
+      </div>
+      <div class="modal-footer clearfix">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
 
 <script type="text/javascript">
 	function check(arg){
 	    var input = document.getElementById(arg).value;
 	    if(isNaN(input)){
 	      	while(isNaN(document.getElementById(arg).value)){
-	      	var str = document.getElementById(arg).value;
-	      	str     = str.substring(0, str.length - 1);
-	      	document.getElementById(arg).value = str;
+                var str = document.getElementById(arg).value;
+                str     = str.substring(0, str.length - 1);
+                document.getElementById(arg).value = str;
 	      	}
 	    }
 	    else{
@@ -68,7 +161,7 @@
 	    document.getElementById('measure').value = measure;
 	    document.getElementById('id').value = arg;
 	}
-function brands(){
+    function brands(){
         var e = document.getElementById('category2');
         var cat = e.options[e.selectedIndex].value;
         $("html body").css("cursor", "progress");
@@ -90,7 +183,7 @@ function brands(){
             }
         });
     }
-function Subs()
+    function Subs()
     {
         var e = document.getElementById('category2');
         var f = document.getElementById('brands2');
@@ -110,6 +203,54 @@ function Subs()
                     ans += "<tr><td>"+response[1][i].sub_cat_name+"</td><td>"+response[0].measurement_unit+"</td><td>"+response[1][i].price+"</td></tr>";
                 }
                 document.getElementById('sub2').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+
+    
+    function getBrands(){
+        var e = document.getElementById('myCategories');
+        var cat = e.options[e.selectedIndex].value;
+        $("html body").css("cursor", "progress");
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
+                {
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                }
+                document.getElementById('brands').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+    function getSubs()
+    {
+        var e = document.getElementById('myCategories');
+        var f = document.getElementById('brands');
+        var cat = e.options[e.selectedIndex].value;
+        var brand = f.options[f.selectedIndex].value;
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getSubCatPrices",
+            async:false,
+            data:{cat : cat, brand : brand},
+            success: function(response)
+            {
+                console.log(response);1
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[1].length;i++)
+                {
+                    ans += "<option value='" + response[1][i].id + "'>"+response[1][i].sub_cat_name+"</option>";
+                }
+                document.getElementById('subCategories').innerHTML = ans;
                 $("body").css("cursor", "default");
             }
         });

@@ -216,11 +216,6 @@ Route::post('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
 Route::get('/breaks','HomeController@breaks');
 
-
-
-
-
-
 //marketing
 Route::get('/marketingdashboard','marketingController@marketingDashboard');
 Route::get('/marketingvendordetails','amController@vendorDetails');
@@ -238,7 +233,7 @@ Route::get('/orders','HomeController@amorders');
 // Route::get('/orders','HomeController@amorders1');
 
 Route::get('/updateampay','HomeController@updateampay');
-Route::get('/confirmOrder','HomeController@confirmOrder');
+Route::post('/confirmOrder','HomeController@confirmOrder');
 Route::get('/cancelOrder','HomeController@cancelOrder');
 Route::get('/updateamdispatch','HomeController@updateamdispatch');
 Route::get('/deliverOrder','HomeController@deliverOrder');
@@ -693,7 +688,25 @@ Route::get('/bulkView','ProjectionController@viewBulk');
 Route::get('/fiveyearsWithZones','ProjectionController@fiveyearsWithZones');
 
 // Finance
+Route::get('/financeIndex','FinanceDashboard@financeIndex');
 Route::get('/financeDashboard','FinanceDashboard@getFinanceDashboard');
 Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
-Route::get('/downloadProformaInvoice','FinanceDashboard@downloadProformaInvoice')->name('downloadProformaInvoice');
+Route::get('/downloadInvoice','FinanceDashboard@downloadInvoice')->name('downloadInvoice');
+Route::get('/downloadTaxInvoice','FinanceDashboard@downloadTaxInvoice')->name('downloadTaxInvoice');
+Route::get('/downloadpurchaseOrder','FinanceDashboard@downloadpurchaseOrder')->name('downloadpurchaseOrder');
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
+Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
+Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');
+Route::get('/viewPurchaseOrder','FinanceDashboard@getViewPurchaseOrder');
+Route::post('/sendMessage','FinanceDashboard@sendMessage');
+Route::get('/confirmpayment','FinanceDashboard@confirmpayment');
+Route::get('/paymentmode','FinanceDashboard@paymentmode');
+Route::post('/saveunitprice','FinanceDashboard@saveunitprice');
+Route::post('/savesupplierdetails','FinanceDashboard@savesupplierdetails');
+Route::get('/getgst','FinanceDashboard@getgst');
+
+
+
+
+
+

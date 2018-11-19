@@ -1,5 +1,10 @@
-
-@extends('layouts.app')
+@php
+	if(Auth::user()->department->dept_name == "Finance")
+		$ext = "finance.layouts.headers";
+	else
+		$ext = "layouts.app";
+@endphp
+@extends($ext)
 @section('content')
 <?php
 	if(isset($_GET['month']) && isset($_GET['year'])){

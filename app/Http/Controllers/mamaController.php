@@ -2355,7 +2355,6 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
 
          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
         $userIds = explode(",", $tl);
-       
       $listengs= User::whereIn('users.id',$userIds)
                         ->where('users.group_id',6)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
@@ -2370,7 +2369,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function teamlisteng(request $request){
        
-      $listengs= User::where('users.group_id',6)
+       $group = [6,7,17,23,22,2];
+      $listengs= User::whereIn('users.group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
                         ->leftjoin('wards','wards.id','=','sub_wards.ward_id' )
@@ -2859,9 +2859,8 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function logintime(Request $request)
     {
         if($request->remark != null){
-                $remark = $request->remark;
-        }
-        else{
+            $remark = $request->remark;
+        }else{
             $remark = null;
         }
         $id = user::where('id',Auth::user()->id)->pluck('id')->first();
