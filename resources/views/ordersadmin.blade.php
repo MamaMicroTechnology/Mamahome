@@ -133,8 +133,8 @@
                     </div>
 
 <!-- payment details modal -->
-<!-- Modal -->
-<div id="purchase{{$rec->orderid}}" class="modal fade" role="dialog">
+
+<div id="purchase{{$rec->orderid}}{{$rec->manu_id}}" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
@@ -419,10 +419,18 @@
                          
                           <td>
                      
-                            @if($rec->purchase_order == "yes")
-                            <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid]) }}" class="btn btn-sm" style="background-color: rgb(204, 102, 153);color:white;">Purchase Order</a>
+                        @if($rec->purchase_order == "yes"  )
+                            @if($rec->manu_id != null)
+                            <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid,'mid'=>$rec->manu_id]) }}" class="btn btn-sm" style="background-color: rgb(204, 102, 153);color:white;">Manufacturer Purchase Order</a>
+                            @else
+                             <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid]) }}" class="btn btn-sm" style="background-color: rgb(204, 102, 153);color:white;">Purchase Order</a>
+                              @endif
                           @else
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}">Get Purchase Order</button>
+                          @if($rec -> project_id == null)
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec -> manu_id}}">Get Manufacturer Purchase Order</button>
+                            @else
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec -> manu_id}}">Get Purchase Order</button>
+                          @endif
                          @endif
                      </td>
                         
