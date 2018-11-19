@@ -295,12 +295,8 @@ class FinanceDashboard extends Controller
         $country_initial = "O";
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
-        $count = count(Supplierdetails::all())+1;
-        
         $supply = New Supplierdetails;
-        $number = $Supply->id;
-        $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$number; 
-        $supply->lpo = $lpoNo;
+       
         $supply->address = $request->address;
         $supply->order_id = $request->id;
         $supply->supplier_name = $request->name;
@@ -315,6 +311,10 @@ class FinanceDashboard extends Controller
         $supply->tamount_words = $request->dtow1;
         $supply->unitwithoutgst =$request->unitwithoutgst;
         $supply->save();
+
+        $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$supply->id; 
+        $supply =Supplierdetails::where('id',$supply->id)->update(['lpo'=>
+            $lpoNo]);
         return back();
     }
      public function getgst(Request $request){
