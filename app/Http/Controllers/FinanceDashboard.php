@@ -318,7 +318,7 @@ class FinanceDashboard extends Controller
         return back();
     }
      public function getgst(Request $request){
-        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('factory_location')->first();
+        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('registered_office')->first();
         $gst = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('gst')->first();
         $category = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('category')->first();
         $id = $request->x;
