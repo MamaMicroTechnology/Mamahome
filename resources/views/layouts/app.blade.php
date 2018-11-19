@@ -892,6 +892,12 @@ div#calendar{
                         @endif
                         @if(Auth::user()->department_id == 1  && Auth::user()->group_id == 6)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
+                      <li><button id="getBtn" disabled  class="btn btn-success btn-sm " onclick="getLocation()">Field Login</button></li>
+                      <li style="padding-top: 10px;padding-left: 10px;"> 
+                        <button class="btn btn-danger btn-sm" onclick="submitleheader()">Field Logout</button>
+                    </li>
                         @endif
                        <!--  @if(Auth::user()->department_id == 0  && Auth::user()->group_id == 1)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
