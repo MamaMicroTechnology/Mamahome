@@ -34,7 +34,7 @@
                         <th>Requirement Date</th>
                         <th>Payment Status</th>
                         <th>Payment Mode</th>
-                        <th>Dispatch Status</th>
+                        <th>LPO</th>
                        <!--  <th>Delivery Status</th> -->
                         <!-- <th>Print Invoice</th> -->
                         <th> Confirm Order </th>
@@ -392,11 +392,11 @@
 </td>
 
                         <td>
-                            @if($rec->dispatch_status)
-                            {{$rec->dispatch_status}}
-                            @elseif(!$rec->dispatch_status)
-                            Not Yet Dispatched
+                          @foreach($suppliers as $supply)
+                            @if($supply->order_id == $rec->orderid)
+                            {{$supply->lpo}}
                             @endif
+                          @endforeach
                         </td>
                         
                         <!-- <td>
