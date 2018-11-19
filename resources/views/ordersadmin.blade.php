@@ -1,7 +1,92 @@
-@extends('layouts.app')
-@section('title','Orders')
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/gmaps.js')}}"></script>
+    <script src="{{ URL::to('/') }}/js/jscolor.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+* {box-sizing: border-box}
 
-@section('content')
+
+/* Style the tab */
+.tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 30%;
+    height: 300px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+    display: none;
+}
+
+/* Clear floats after the tab */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+</style>
+<script>
+function openCitytest(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+</head>
+<body>
+
 <div class="col-md-12">
     <div class="panel panel-primary" style="overflow-x: scroll;">
         <div class="panel-heading text-center">
@@ -11,7 +96,7 @@
 
         </div>
         <div id="myordertable" class="panel-body">
-        <form action="orders" method="get">
+            <form action="orders" method="get">
                 <div class="input-group col-md-3 pull-right">
                     <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
                     
@@ -20,7 +105,7 @@
                     </div>
                 </div>
             </form>
-                
+             
             <br><br>
             <table class="table table-responsive table-striped" border="1">
                 <thead>
@@ -43,17 +128,10 @@
                 </thead>
                 <tbody>
                     @foreach($view as $rec)
-                    <tr id="row-{{$rec->id}}">
-                          @if($rec -> project_id != null)
-                        <td><a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}
-                        </a>
+                    <tr style="{{ $rec->order_status == 'Order Cancelled' ? 'background-color: #ffbaba;' : '' }}" id="row-{{$rec->id}}">
+                        <td>
+                            <a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}</a>
                         </td>
-                        @else
-                           <td> <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $rec->manu_id }}">Manufacturer&nbsp;&nbsp;{{$rec -> manu_id}}
-                        </a>
-                        </td>
-                        @endif
-                     
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
                         <td>
@@ -67,81 +145,47 @@
                                 {{ $rec->name }}
                             @else
                             <form method="POST" action="{{ URL::to('/') }}/addDeliveryBoy">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
 
-                        @if($rec->clear_for_delivery == "Yes")
-                            @if($rec->delivery_boy != NULL)
-                                 @foreach($users as $user)
-                                   @if($rec->delivery_boy == $user->id)
-                                        {{ $user->name }}
-                                 @endif
-                                @endforeach
-                            @else
-                                <select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
-                                    <option value="">--Select--</option>
-                                    @foreach($users as $user)
-                                        <option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endforeach
-                            @endif
-                                </select>
-                        @endif
+                                @if($rec->clear_for_delivery == "Yes")
+                                    @if($rec->delivery_boy != NULL)
+                                        @foreach($users as $user)
+                                        @if($rec->delivery_boy == $user->id)
+                                                {{ $user->name }}
+                                        @endif
+                                        @endforeach
+                                    @else
+                                        <select onchange="this.form.submit()" name="delivery" id="delivery" class="form-control">
+                                            <option value="">--Select--</option>
+                                            @foreach($users as $user)
+                                                <option {{ $rec->delivery_boy == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                @endif
                             </form>
                             @endif
                         </td>
                         <td>{{ date('d-m-Y',strtotime($rec -> requirement_date)) }}</td>
                         <td class="text-center" id="paymenttd-{{$rec->orderid}}">
-                            @if($rec->payment_status == "Payment Received")
-                                ₹ {{ $rec->total }} <br>Received<br>
-                                <a data-toggle="modal" data-target="#signatureImage{{ $rec->orderid }}" href="#">View Signature</a>
-                                <!-- Modal -->
-                                <div id="signatureImage{{ $rec->orderid }}" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Signature</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="{{ URL::to('/') }}/signatures/{{ $rec->signature }}" alt="Sign" title="Sign" class="img img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                    </div>
-
-                                </div>
-                                </div>
+                            @if($rec->ostatus == "Payment Received")
+                                {{ $rec->ostatus }}
                             @else
                                 {{ $rec->ostatus }}
                             @endif
                         </td>
-
                         <td>
-                       
-                            @if($rec->payment_mode == "RTGS" || $rec->payment_mode == "CASH")
-                                {{ $rec->payment_mode }} 
-                            @elseif($rec->payment_mode != "Check" &&  $rec->payment_mode != "Cheq Clear")
+                            @if($rec->ostatus == "Payment Received")
+                                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#paymentModal{{ $rec->orderid }}">
+                                    {{ $rec->payment_mode }}
+                                    <span class="badge">{{ $counts[$rec->orderid] }}</span>
+                                </button>
+                            @elseif($rec->order_status != "Order Cancelled")
+                                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}">Payment Details</button>
+                            @endif
 
-                            <form method="POST" id="payment" action="{{ URL::to('/') }}/paymentmode">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-                                <select name="payment" id="pay" class="form-control">
-                                        <option value="">--Select--</option>
-                                        <option value="RTGS" id="rtgs" onclick="rtgs()"> RTGS(online) </option>
-                                        <option value="CASH" id="cash" onclick="cash()">Cash</option>
-                                        <option value="check" data-toggle="modal" data-target="#myModal{{ $rec->orderid }}" >Cheque</option>
-                                </select>
-                            </form>
-                             
-                        @elseif($rec->payment_mode == "Cheq Clear")
-                            <button class="btn btn-success btn-sm disabled">Cheque Cleared</button>
-                        @else
-                            <button class="btn btn-success btn-sm disabled">Cheq Processing</button>
-                        @endif
-
+</div>
                             
                              
                              <!-- The Modal -->
@@ -151,46 +195,38 @@
       
         <!-- Modal Header -->
         <div class="modal-header" style="width:100%;padding:2px;background-color:green;">
-        <center>  <h4 class="modal-title" style="color: white;">Cheque Details</h4></center>
+        <center>  <h4 class="modal-title" style="color: white;">Payment Details</h4></center>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-        <form action="{{ URL::to('/') }}/check?id={{ $rec->orderid }}" method="POST" enctype="multipart/form-data"> 
-        {{ csrf_field() }}
-        <table class="table">
-        <input type="hidden" name="project_id" value="{{$rec->project_id}}">
-        <input type="hidden" name="orderId" value="{{ $rec->orderid }}">
-       <tr>
-                <th>Cheque Number</th>
-                <td>:</td>
-                <td><input type="text" name="checkno" class="form-control" required></td>
-            </tr>
-            <tr>
-                <th>Cheque Amount</th>
-                <td>:</td>
-                <td><input type="text" name="amount" class="form-control"  required></td>
-            </tr>
-            <tr>
-                <th>Cheque Date</th>
-                <td>:</td>
-                <td><input type="date" name="date" class="form-control" required></td>
-            </tr>
-            <tr>
-                <th>Bank Name</th>
-                <td>:</td>
-                <td><input type="text" name="bank" class="form-control" required></td>
-            </tr>
-            <tr>
-                <th>Cheque Picture</th>
-                <td>:</td>
-                <td><input type="file" name="image" class="form-control" required></td>
-            </tr>
-        </table> 
-        <center><button type="submit" value="submit" class="btn btn-primary ">Submit</button> 
-        </form>    
-         </div>
+          <h2>Hover Tabs</h2>
+<p>Move the mouse over a button inside the tabbed menu:</p>
+
+<div class="tab">
+  <button class="tablinks" onmouseover="openCitytest(event, 'London')">London</button>
+  <button class="tablinks" onmouseover="openCitytest(event, 'Paris')">Paris</button>
+  <button class="tablinks" onmouseover="openCitytest(event, 'Tokyo')">Tokyo</button>
+</div>
+
+<div id="London" class="tabcontent">
+  <h3>London</h3>
+  <p>London is the capital city of England.</p>
+</div>
+
+<div id="Paris" class="tabcontent">
+  <h3>Paris</h3>
+  <p>Paris is the capital of France.</p> 
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <h3>Tokyo</h3>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
+<div class="clearfix"></div>
+        </div>
         
         <!-- Modal footer -->
         <div class="modal-footer" style="padding:2px">
@@ -201,15 +237,82 @@
     </div>
   </div>
   
+
+
+<!-- payment details modal -->
+                             <!-- The Modal -->
+                             <div class="modal" id="paymentModal{{ $rec->orderid }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="width:100%;padding:2px;background-color:green;">
+        <center>  <h4 class="modal-title" style="color: white;">Payment Details</h4></center>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            @foreach($paymentDetails as $payment)
+            @if($payment->order_id == $rec->orderid)
+            <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"><br>
+            @endif
+            @endforeach
+            <b>Note:</b>
+            {{ $rec->payment_note }}
+            <br>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    Messages: <br>
+                    @foreach($messages as $message)
+                        @if($message->to_user == $rec->orderid)
+                            <p
+                                style="width:70%;
+                                    border-style:ridge;
+                                    padding:10px;
+                                    border-width:2px;
+                                    border-radius:10px;
+                                    {{ $message->from_user == Auth::user()->id ? 'border-bottom-left-radius:0px;' : 'border-bottom-right-radius:0px;' }}
+                                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);"
+                                    class="text-justify {{ $message->from_user == Auth::user()->id ? 'pull-right' : 'pull-left' }}">
+                                @foreach($chatUsers as $user)
+                                    @if($user->id == $message->from_user)
+                                        <b>- {{ $user->name }} : </b><br>
+                                    @endif
+                                @endforeach
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $message->body }}
+                                <br>
+                                <span class="pull-right"><i>{{ $message->created_at->diffforHumans() }}</i></span>
+                            </p>
+                        @endif
+                    @endforeach
+                </div>
+                <div class="col-md-12">
+                    <form action="{{ URL::to('/') }}/sendMessage" method="post">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="orderId" value="{{ $rec->orderid }}">    
+                        <div class="input-group">
+                            <input type="text" name="message" id="message" placeholder="Type Your Message Here" class="form-control">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-success">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>        
+        <!-- Modal footer -->
+        <div class="modal-footer" style="padding:2px">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
 </div>
-
-                        </td>
-
-
-
-
-
-
+</td>
 
                         <td>
                             @if($rec->dispatch_status)
@@ -263,7 +366,7 @@
                             <a href="{{URL::to('/')}}/{{$rec->orderid}}/printLPO" target="_blank" class="btn btn-sm btn-primary" >Print Invoice</a>
                         </td> -->
                         <td>
-                            @if($rec->order_status == "Enquiry Confirmed")
+                            @if($rec->order_status == "Enquiry Confirmed" && ($rec->ostatus == "Payment Received"))
                             <div class="btn-group">
                                 <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a>
                                 <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
@@ -273,7 +376,13 @@
                             @endif
                           </td>
                        <td>
-                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
+                        @if($rec->order_status == "Enquiry Confirmed")
+                            <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
+                        @endif
+                           @if($rec->clear_for_delivery == "Yes")
+                            <a href="{{ URL::to('/') }}/viewProformaInvoice?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Proforma Invoice</a>
+                            <a href="{{ URL::to('/') }}/viewPurchaseOrder?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Purchase Order</a>
+                            @endif
                        </td>
                     </tr>
                     @endforeach
@@ -364,13 +473,20 @@
             });
         }
     }
-    function rtgs(){
-        
-        document.getElementById('payment').form.submit();
-    }
-    function cash(){
-        
-        document.getElementById('cash').form.submit();
+</script>
+<script type="text/javascript">
+    function paymethod(){
+        var input = document.getElementById("payment_mode").value;
+       if(input == "RTGS"){
+            document.getElementById("input1").className = "";
+       }
+       else if(input == "CASH"){
+            document.getElementById("payment_slip").className = "";
+            document.getElementById("lb1").className = "";
+            document.getElementById("input1").className = "";
+       }
+       
     }
 </script>
-@endsection
+</body>
+</html>

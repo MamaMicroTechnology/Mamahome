@@ -158,7 +158,6 @@ if(count($check) == 0){
 
         $projectids = new Collection();
         $projects = Manufacturer::whereIn('sub_ward_id',$subwardid)->pluck('id');
-
         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
