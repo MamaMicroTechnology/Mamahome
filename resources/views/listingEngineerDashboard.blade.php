@@ -1,9 +1,5 @@
 
-<?php
-    $grp = Auth::user()->group_id;
-    $ext = ($grp == 1? "layouts.app":"layouts.leheader");
-?>
-@extends($ext)
+@extends('layouts.leheader')
 @section('content')
 
    @if($ldate < $lodate)
