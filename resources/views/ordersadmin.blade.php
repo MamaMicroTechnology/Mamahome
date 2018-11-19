@@ -947,4 +947,4 @@ function getaddress(arg){
             }
 </script>
 <script src="http://www.ittutorials.in/js/demo/NumToWord.js; type="text/javascript"></script>
-@endsection
+
