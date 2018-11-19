@@ -182,8 +182,7 @@
                                               {{ $call->remarks }}
                                             </td>
                                           </tr>
-                                      @endif
-      <center>{{$project->links()}}</center>   
+                                      @endif 
                                        @endforeach
                                     </tbody>
                         </table>
