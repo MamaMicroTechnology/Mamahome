@@ -127,12 +127,16 @@
                                         </label>
                                        </div>
                                  </div>
-                             
+                             <div class="col-sm-5">
+                    <h4 style="background-color:#9e9e9e;color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Contract Type</h4>
+                    <label required class="checkbox-inline"><input id="constructionType3" name="contract_type" type="radio" value="Labour Contract">&nbsp;&nbsp;Labour Contract</label><br>
+                    <label required class="checkbox-inline"><input id="constructionType4" name="contract_type" type="radio" value="Material Contract">&nbsp;&nbsp;Material Contract </label>     
+                  </div>
 
+                      </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                         </div>
-                      </div>
                       
                     </div>
                   </div>
