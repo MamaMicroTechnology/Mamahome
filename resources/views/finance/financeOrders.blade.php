@@ -114,9 +114,9 @@
                                 </table>
                            <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}" method="post">
                             {{ csrf_field() }}
-                            <input type="text" name="dtow1" id="dtow1">
-                            <input type="text" name="dtow2" id="dtow2">
-                            <input type="text" name="dtow3" id="dtow3">
+                            <input type="text" name="dtow1" id="dtow1" value="">
+                            <input type="text" name="dtow2" id="dtow2" value="">
+                            <input type="text" name="dtow3" id="dtow3" value="">
                             @foreach($mamaprices as $price)
                                 @if($price->order_id == $order->id)
                                <table class="table table-responsive table-striped" border="1">
@@ -629,6 +629,7 @@ function NumToWord1(inputNumber, outputControl,arg) {
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function NumToWord2(inputNumber, outputControl,arg){
+  alert("67");
     var str = new String(inputNumber)
     var splt = str.split("");
     var rev = splt.reverse();
