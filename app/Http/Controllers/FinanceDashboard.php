@@ -297,9 +297,10 @@ class FinanceDashboard extends Controller
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
         $count = count(Supplierdetails::all())+1;
-        $number = sprintf("%03d", $count);
-        $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$number; 
+        
         $supply = New Supplierdetails;
+        $number = $Supply->id;
+        $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$number; 
         $supply->lpo = $lpoNo;
         $supply->address = $request->address;
         $supply->order_id = $request->id;
