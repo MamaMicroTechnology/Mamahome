@@ -105,7 +105,12 @@ class FinanceDashboard extends Controller
     }
     function downloadpurchaseOrder(Request $request){
         $products = DB::table('orders')->where('id',$request->id)->first();
+         if( $products->project_id != null){
         $address = SiteAddress::where('project_id',$products->project_id)->first();
+            }
+            else{
+                $address = "";
+            }
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
@@ -116,6 +121,7 @@ class FinanceDashboard extends Controller
             else{
                 $manu = "";
             }
+          
         $data = array(
             'products'=>$products,
             'address'=>$address,

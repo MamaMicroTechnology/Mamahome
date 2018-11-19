@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-    @if( $data['supplier']['manu_id'] == null)
+    @if( $data['manu'] == null)
 @php
     $normal_address = explode(", ", $data['address']->address);
     $items = explode(", ",$data['products']->sub_category);
