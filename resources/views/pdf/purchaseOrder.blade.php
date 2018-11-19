@@ -37,7 +37,7 @@
                 <br>
                 #363,19th Main Road, 1st Block<br>
                 Rajajinagar, Bangalore-560010<br>
-                GST : 29AAKCM5956G1ZX<br>
+                <b>GST : 29AAKCM5956G1ZX</b><br>
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right text-right col-md-6">
@@ -52,9 +52,9 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left" style="padding-left: 15px;">
                <b> SUPPLIER NAME : </b><br>
-                  
+                    {{ $data['supplier']['supplier_name']}}<br>
                    {{ $data['supplier']['address'] }}<br>
-                  GST : {{ $data['supplier']['gst'] }}
+                  <b>GST : {{ $data['supplier']['gst'] }}</b>
             </div>
             <div class="pull-right">
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>SHIP TO :</b><br>

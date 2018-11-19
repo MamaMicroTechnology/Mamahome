@@ -276,8 +276,6 @@ if($aggregates_required != null){
  public function manuenquiry(Request $request)
     {
         $category = Manufacturer::all();
-       
-
         $depart1 = [6];
         $depart2 = [7];
         $depart = [2,4,8,6,7,15,17,16,1,11,22];

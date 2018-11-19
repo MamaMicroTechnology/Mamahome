@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Order;
 use App\SiteAddress;
@@ -296,11 +295,11 @@ class FinanceDashboard extends Controller
         $country_initial = "O";
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
+        $name = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('company_name')->first();
         $supply = New Supplierdetails;
-       
         $supply->address = $request->address;
         $supply->order_id = $request->id;
-        $supply->supplier_name = $request->name;
+        $supply->supplier_name = $name;
         $supply->gst = $request->gst;
         $supply->description = $request->desc;
         $supply->quantity = $request->quantity;
@@ -319,7 +318,7 @@ class FinanceDashboard extends Controller
         return back();
     }
      public function getgst(Request $request){
-        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('factory_location')->first();
+        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('registered_office')->first();
         $gst = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('gst')->first();
         $category = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('category')->first();
         $id = $request->x;
