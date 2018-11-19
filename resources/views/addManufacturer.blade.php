@@ -24,7 +24,7 @@
                              @else
                                Ward is Not Assigned
                            @endif  
-                  @elseif(Auth::user()->group_id == 11)
+                  @elseif(Auth::user()->group_id == 11 || Auth::user()->group_id == 2)
                    <select class="form-control" style="width:20%" name="tlward">
                        <option value="">Select SubWard</option>
                        @foreach($acc as $w)

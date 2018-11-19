@@ -25,7 +25,7 @@
                                Ward is Not Assigned
                            @endif    
 
-                  @elseif(Auth::user()->group_id == 11)
+                  @elseif(Auth::user()->group_id == 11 || Auth::user()->group_id == 2)
                    <select class="form-control" style="width:20%" name="tlward">
                        <option value="">Select SubWard</option>
                        @foreach($acc as $w)
@@ -36,10 +36,10 @@
                   Senior TL
                   @endif
                  
-                  <div id="currentTime" class="pull-right" style="margin-top:-5px;"></div>
+                  <div id="currentTime" class="pull-right" style="margin--5px;"></div>
                 </div>
                 <?php 
-                  if(Auth::user()->group_id == 22 || Auth::user()->group_id == 2){
+                  if(Auth::user()->group_id == 22 ){
                     $subwards = "NULL";
                   }
 

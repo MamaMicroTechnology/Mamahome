@@ -1761,7 +1761,7 @@ class HomeController extends Controller
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
-    $group = [6,11,7,17,23];
+    $group = [6,11,7,17,23,2];
         $users = User::whereIn('group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
@@ -1884,6 +1884,7 @@ class HomeController extends Controller
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+       
         $a =Subward::where('id',$wardsAssigned)->pluck('ward_id')->first();
         $acc = Subward::where('ward_id',$a)->get();
         
