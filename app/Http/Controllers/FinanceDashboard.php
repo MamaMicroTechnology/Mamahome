@@ -109,7 +109,9 @@ class FinanceDashboard extends Controller
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $price = Mamahomeprice::where('order_id',$request->id)->first();
-        $supplier = Supplierdetails::where('order_id',$request->id)->first();
+        $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
+        $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
+       
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -267,6 +269,7 @@ class FinanceDashboard extends Controller
        return view('finance.payment',['id'=>$request->id,'users'=>$users]);
     }
     public function saveunitprice(Request $request){
+        dd($request->dtow1);
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
         $order->save();
@@ -298,8 +301,9 @@ class FinanceDashboard extends Controller
         $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$number; 
         $supply = New Supplierdetails;
         $supply->lpo = $lpoNo;
+        $supply->address = $request->address;
         $supply->order_id = $request->id;
-        $supply->supplier_name = $request->sname;
+        $supply->supplier_name = $request->name;
         $supply->gst = $request->gst;
         $supply->description = $request->desc;
         $supply->quantity = $request->quantity;
@@ -314,8 +318,10 @@ class FinanceDashboard extends Controller
         return back();
     }
      public function getgst(Request $request){
-        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('gst')->first();
+        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('factory_location')->first();
+        $gst = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('gst')->first();
+        $category = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('category')->first();
         $id = $request->x;
-        return response()->json(['res'=>$res,'id'=>$id]);
+        return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category]);
     }
 }

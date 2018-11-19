@@ -38,9 +38,9 @@
                        <!--  <th>Delivery Status</th> -->
                         <!-- <th>Print Invoice</th> -->
                         <th> Confirm Order </th>
-                        @if(Auth::user()->group_id == 26 || Auth::user()->group_id == 1)
+                       
                         <th>Get Purchase Order</th>
-                        @endif
+          
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -110,20 +110,20 @@
                             <label> Total Quantity : </label>
                             <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')">
                             <br>
-                            <input type="radio" name="unit" value="tons" checked>Tons
-                            <input type="radio" name="unit" value="bags"> Bags
+                            <input type="radio" name="unit" value="tons" >Tons
+                            <input type="radio" name="unit" value="bags" checked> Bags
                             <br></br>
-                            <label>Mamahome Price(Per Unit) : </label>
+                            <label>Price(Per Unit) : </label>
                             <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')">
                             <br>
-                            <label>Manufacturer Price(Per Unit) : </label>
-                            <input  required type="number" id="unit"  class="form-control" name="manuprice" placeholder="Unit Price" onkeyup="checkthis1('unit')">
-                            <button type="submit" class="btn btn-sm btn-success" type="">Confirm</button>
+                            <!-- <label>Manufacturer Price(Per Unit) : </label>
+                            <input  required type="number" id="unit"  class="form-control" name="manuprice" placeholder="Unit Price" onkeyup="checkthis1('unit')"> -->
+                            <center><button type="submit" class="btn btn-sm btn-success" type="">Confirm</button></center>
                             <br>
                            </form>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                           </div>
                         </div>
                       </div>
@@ -149,7 +149,7 @@
                                         <td>Supplier Name :</td>
                                         <!-- <td><textarea required type="text" name="sname" class="form-control" rows="5" style="resize: none;"></textarea></td> -->
                                         <td> 
-                                        <select class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getGST('{{$rec->orderid}}')">
+                                        <select class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getaddress('{{$rec->orderid}}')">
                                             <option value="">--Select--</option>
                                             @foreach($manusuppliers as $manu)
                                             <option {{ isset($_GET['manu']) ? $_GET['manu'] == $manu->company_name ? 'selected' : '' : '' }} value="{{ $manu->manufacturer_id }}">{{ $manu->company_name }}</option>
@@ -159,12 +159,17 @@
 
                                     </tr>
                                     <tr>
+                                      <td>Registered Office :
+                                      </td>
+                                      <td><input required type="text" class="form-control" name="address" id="address{{$rec->orderid}}" name="address" value=""></td>
+                                    </tr>
+                                    <tr>
                                         <td>GST :</td>
                                         <td><input required type="text" id="suppliergst{{$rec->orderid}}" name="gst" value="" class="form-control"></td>
                                     </tr>
                                     <tr>
                                         <td>Description of Goods : </td>
-                                        <td><input required type="text" name="desc" class="form-control"></td>
+                                        <td><input required type="text" name="desc" id="category{{$rec->orderid}}" class="form-control" value=""></td>
                                     </tr>
                                     <tr>
                                         <td>Quantity :</td>
@@ -172,8 +177,8 @@
                                     </tr>
                                      <tr>
                                         <td>Unit:</td>
-                                        <td><input type="radio" name="unit" value="tons" checked>Tons
-                                            <input type="radio" name="unit" value="bags"> Bags
+                                        <td><input type="radio" name="unit" value="tons" >Tons
+                                            <input type="radio" name="unit" value="bags" checked> Bags
                                         </td>
                                     </tr>
                                     <tr>
@@ -257,10 +262,6 @@
                 <td>Payment Mode :</td>
                 <td>{{ $payment->payment_mode }}</td>
               </tr>
-              <tr>
-                <td>Date :</td>
-                <td>{{$payment->date}}</td>
-              </tr>
               @if($payment->payment_mode == "CASH")
               <tr>
                 <td>Cash Deposit Slip :</td>
@@ -277,8 +278,16 @@
                                                     </div>
                 </td>
               </tr>
+               <tr>
+                <td>Cash Deposite Date :</td>
+                <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
               @endif
               @if($payment->payment_mode == "RTGS")
+               <tr>
+                <td>Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
               <tr>
                 <td>Reference Number :</td>
                 <td>{{$payment->account_number}}<br></td>
@@ -289,10 +298,24 @@
               </tr>
               @endif
               @if($payment->payment_mode == "CHEQUE")
+               <tr>
+                <td>Cheque Deposit Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
               <tr>
                 <td>Cheque Number :</td>
                 <td>{{$payment->cheque_number}}
                 </td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "CASH IN HAND")
+              <!-- <tr>
+                <td>Cash Holder Name : </td>
+                <td>{{$payment->cash_holder}}</td>
+              </tr> -->
+                 <tr>
+                <td> Cash Received Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
               </tr>
               @endif
               <tr>
@@ -390,7 +413,7 @@
                            {{ $rec->order_status }}
                             @endif
                           </td>
-                          @if(Auth::user()->group_id == 26 || Auth::user()->group_id == 1)
+                         
                           <td>
                      
                             @if($rec->purchase_order == "yes")
@@ -399,7 +422,7 @@
                             <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}">Get Purchase Order</button>
                          @endif
                      </td>
-                          @endif
+                        
                        <td>
                         @if($rec->order_status == "Enquiry Confirmed")
                             <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
@@ -775,6 +798,7 @@ function showthis(arg){
 var x =document.getElementById('unitprice'+arg).value;
 var y = document.getElementById('qu'+arg).value;
 var withoutgst = (x /1.28);
+var i = parseFloat(withoutgst).toFixed(2);
 var t = (withoutgst * y);
 var f = Math.round(t);
 var gst = (t * 14)/100;
@@ -785,8 +809,8 @@ document.getElementById('display'+arg).innerHTML = t;
 document.getElementById('cgst'+arg).innerHTML = gst;
 document.getElementById('sgst'+arg).innerHTML = sgt;
 document.getElementById('withgst'+arg).innerHTML = withgst;
-document.getElementById('withoutgst'+arg).innerHTML = withoutgst;
-document.getElementById('withoutgst1'+arg).value = withoutgst;
+document.getElementById('withoutgst'+arg).innerHTML = i;
+document.getElementById('withoutgst1'+arg).value = i;
 document.getElementById('amount'+arg).value = f;
 document.getElementById('tamount'+arg).value = final;
 // document.getElementById('display'+arg).innerHTML = gst;
@@ -797,7 +821,7 @@ function gothr(arg){
   document.getElementById('amount'+arg).addEventListener("click", NumToWord(input,'lblWord'+arg,arg));
   document.getElementById('tamount'+arg).addEventListener("click", NumToWord1(output,'lblWord1'+arg,arg));
 }
-function getGST(arg){
+function getaddress(arg){
   var x = document.getElementById('name'+arg);
   var name = x.options[x.selectedIndex].value;
   var x = arg;
@@ -816,13 +840,14 @@ function getGST(arg){
                         }
                         var id = response.id;
                         var name = response.res;
-                      
-                         console.log(document.getElementById('suppliergst'+id).value = name);   
+                        var gst = response.gst;
+                        var cat = response.category;
+                         console.log(document.getElementById('address'+id).value = name); 
+                         console.log(document.getElementById('suppliergst'+id).value = gst); 
+                         // console.log(document.getElementById('category'+id).value = cat); 
                     }
                 });
             }
-  
-
 </script>
 <script src="http://www.ittutorials.in/js/demo/NumToWord.js; type="text/javascript"></script>
 @endsection

@@ -3020,7 +3020,7 @@ date_default_timezone_set("Asia/Kolkata");
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
                     
@@ -3140,18 +3140,28 @@ date_default_timezone_set("Asia/Kolkata");
         PaymentDetails::where('order_id',$id)->update([
             'quantity'=>$request->quantity,
             'mamahome_price'=>$request->mamaprice,
-            'manufacturer_price'=>$request->manuprice,
+            // 'manufacturer_price'=>$request->manuprice,
             'unit'=>$request->unit
         ]);
-        $mamatotal = $request->quantity*$request->mamaprice;
-        $manutotal =$request->quantity*$request->manuprice;
+        $unitwithgst = ($request->mamaprice/1.28);
+        $totalamount = ($request->quantity *  $unitwithgst);
+        $x = (int)$totalamount;
+        $cgst = ($totalamount * 14)/100;
+        $sgst = ($totalamount * 14)/100;
+        $tt = $cgst + $sgst;
+        $totaltax = (int)$tt;
+        $withgst = $cgst + $sgst + $totalamount;
+        $y = (int)$withgst;
         $price = new Mamahomeprice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
             $price->mamahome_price = $request->mamaprice;
-            $price->manufacturer_price = $request->manuprice;
-            $price->mamatotal = $mamatotal;
-            $price->manutotal = $manutotal;
+            $price->unitwithoutgst = $unitwithgst;
+            $price->totalamount = $x;
+            $price->cgst = $cgst;
+            $price->sgst = $sgst;
+            $price->totaltax = $totaltax;
+            $price->amountwithgst = $y;     
             $price->save();
         return back();
 

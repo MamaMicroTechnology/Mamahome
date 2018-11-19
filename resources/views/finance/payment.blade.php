@@ -139,7 +139,7 @@
                         </td>
                   </tr>
                 <tr>
-                          <td>Date :</td>
+                          <td>Cash Recieved Date :</td>
                         <td><input required class="form-control" name="rdate" type="date"></td>
                 </tr>
                 <tr>
