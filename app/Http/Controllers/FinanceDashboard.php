@@ -108,6 +108,7 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
+        
         $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
        
@@ -295,9 +296,10 @@ class FinanceDashboard extends Controller
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
         $count = count(Supplierdetails::all())+1;
-        $number = sprintf("%03d", $count);
-        $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$number; 
+        
         $supply = New Supplierdetails;
+        $number = $Supply->id;
+        $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$number; 
         $supply->lpo = $lpoNo;
         $supply->address = $request->address;
         $supply->order_id = $request->id;
