@@ -3026,7 +3026,6 @@ date_default_timezone_set("Asia/Kolkata");
                     
             
         }
-
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
@@ -3034,6 +3033,7 @@ date_default_timezone_set("Asia/Kolkata");
         $message = Message::all();
         $chatUsers = User::all();
         $counts = array();
+        $suppliers = Supplierdetails::all();
         foreach($view as $order){
             $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
         }
@@ -3047,6 +3047,7 @@ date_default_timezone_set("Asia/Kolkata");
             'messages'=>$message,
             'chatUsers'=>$chatUsers,
             'manusuppliers'=>$manusuppliers,
+            'suppliers'=>$suppliers,
             'counts'=>$counts
         ]);
     }
