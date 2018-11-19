@@ -111,7 +111,7 @@
                             <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')">
                             <br>
                             <input type="radio" name="unit" value="tons" >Tons
-                            <input type="radio" name="unit" value="bags" checked> Bags
+                            <input type="radio" name="unit" value="Bags" checked> Bags
                             <br></br>
                             <label>Price(Per Unit) : </label>
                             <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')">
@@ -178,7 +178,7 @@
                                      <tr>
                                         <td>Unit:</td>
                                         <td><input type="radio" name="unit" value="tons" >Tons
-                                            <input type="radio" name="unit" value="bags" checked> Bags
+                                            <input type="radio" name="unit" value="Bags" checked> Bags
                                         </td>
                                     </tr>
                                     <tr>
