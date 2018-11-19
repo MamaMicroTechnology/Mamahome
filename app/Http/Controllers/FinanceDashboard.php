@@ -117,7 +117,7 @@ class FinanceDashboard extends Controller
             'address'=>$address,
             'procurement'=>$procurement,
             'payment'=>$payment,
-            'price'=>$price,
+
             'supplier'=>$supplier
 
 
