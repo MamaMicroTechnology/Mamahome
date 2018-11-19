@@ -108,7 +108,6 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first();
         $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
        
@@ -117,7 +116,6 @@ class FinanceDashboard extends Controller
             'address'=>$address,
             'procurement'=>$procurement,
             'payment'=>$payment,
-            'price'=>$price,
             'supplier'=>$supplier
 
 

@@ -12,7 +12,6 @@ use App\Department;
 use App\AssignCategory;
 use App\assign_manufacturers;
 use App\User;
-use App\Noneed;
 use App\Builder;
 use App\Group;
 use App\Salesofficer;
@@ -353,7 +352,11 @@ class HomeController extends Controller
     public function enquirysheet1(Request $request)
     {
                          // dd( $enquiries);
-          $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+          
+        $totalofenquiry = "";
+        $totalenq = "";
+        
+        $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
        $etl = explode(",",$s);
        $wardwise =Ward::whereIn('id',$etl)->get();
 
@@ -363,10 +366,13 @@ class HomeController extends Controller
         $totalenq = "";
         $converter = user::get();
         $ward = Ward::get();
-        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
         $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
         $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
         $this->variable=$pids;
+
+
+
         $ward = ward::orderby('ward_name','ASC')->get();
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
@@ -1765,7 +1771,7 @@ class HomeController extends Controller
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
-    $group = [6,11,7,17,23,2];
+    $group = [6,11,7,17];
         $users = User::whereIn('group_id',$group)
                         ->leftjoin('ward_assignments','ward_assignments.user_id','=','users.id')
                         ->leftjoin('sub_wards','sub_wards.id','=','ward_assignments.subward_id')
@@ -1879,16 +1885,12 @@ class HomeController extends Controller
          
         
        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-         $tl1 = explode(",", $tl);
-        
-       $tlwards = Subward::whereIn('ward_id',$tl1)->get();
-      
-       
+       $tlwards = Subward::where('ward_id',$tl)->get();
+        $this->variable=$tlwards;
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
-       
         $a =Subward::where('id',$wardsAssigned)->pluck('ward_id')->first();
         $acc = Subward::where('ward_id',$a)->get();
         
@@ -3131,6 +3133,7 @@ date_default_timezone_set("Asia/Kolkata");
     public function confirmOrder(Request $request)
     {
 
+        dd($request->id);
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
@@ -3150,6 +3153,7 @@ date_default_timezone_set("Asia/Kolkata");
         $totaltax = (int)$tt;
         $withgst = $cgst + $sgst + $totalamount;
         $y = (int)$withgst;
+
         $price = new Mamahomeprice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
@@ -3563,11 +3567,9 @@ date_default_timezone_set("Asia/Kolkata");
             
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
-
            $filtered = array_unique($merge);
-            $uniquenumber = Noneed::pluck('number')->toArray();
-           $without = array_diff($filtered, $uniquenumber);
-           $unique = array_combine(range(1,count($without)), array_values($without));
+           $unique = array_combine(range(1,count($filtered)), array_values($filtered));
+
            for($ss=1;$ss<count($unique);$ss++){
              DB::insert('insert into numbers (number) values(?)',[$unique[$ss] ]);
 
@@ -3928,15 +3930,14 @@ $upvcInt = explode(",", $upvc);
                     ->paginate(15);
                     
             }elseif($request->update1){
-              $date = date('Y-m-d', strtotime('-30 days'));
+                $date = date('Y-m-d', strtotime('-30 days'));
               $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
                 $spro = ProjectUpdate::where('user_id',Auth::user()->id)->where('cat_id',$cat)->pluck('project_id');
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
-                    ->where('created_at','<=',$date)
+                    ->where('created_at','>=',$date)
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
-                    
                     
             }elseif($request->unupdate){
               $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
@@ -4049,17 +4050,13 @@ $upvcInt = explode(",", $upvc);
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
-        $groupid = [6,7,22,23,17,11,2,1];
+        $groupid = [6,7,22,23,17,11];
         $users = User::whereIn('group_id',$groupid)
                     ->where('department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
                     ->leftjoin('sub_wards','ward_assignments.subward_id','sub_wards.id')
                     ->select('users.*','sub_wards.sub_ward_name')
                     ->get();
-
-
-
-
 
          $accusers = User::where('department_id','2')->where('group_id','11')
                     ->where('department_id','!=',10)
@@ -4073,15 +4070,11 @@ $upvcInt = explode(",", $upvc);
         // total project of list in stl
         $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
         ->pluck('id');
-        $tlcount = ProjectDetails::where('created_at','like',$date.'%')->count();
-
-
-
+        $tlcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
         $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
         $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
 
-        $tlupcount = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\ProjectDetails')->count();
-        
+        $tlupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
 
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
@@ -4101,8 +4094,8 @@ $upvcInt = explode(",", $upvc);
         $list = DB::table('users')->where('group_id',6)->where('department_id','!=',10)->pluck('id');
         $lcount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->count();
         $lupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$list)->count();
-        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"RMC")->count();
-        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"Blocks")->count();
+        $lRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"RMC")->count();
+        $lBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$list)->where('manufacturer_type',"Blocks")->count();
             // total prolect of account in st
         $account = DB::table('users')->where('group_id',11)->where('department_id','!=',10)->pluck('id');
         $acount = ProjectDetails::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->count();
@@ -4254,23 +4247,30 @@ $upvcInt = explode(",", $upvc);
                                                 ->where('manufacturer_type',"Blocks")
                                                 ->count();
             }
-            
-           
-         foreach ($users as $user) {
-                   $totalupdates[$user->id] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
-
-      }
-        
-
+            foreach($users as $user){
+                $totalupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
+            }
             foreach($tlUsers as $user){
-                $totalupdates[$user->id] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
+                $totalupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
             }
 
             foreach($accusers as $user){
-                $totalaccupdates[$user->id] =Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
+                $totalaccupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
             }
             foreach($tlUsers1 as $user){
-                $totalaccupdates[$user->id] =Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->count();
+                $totalaccupdates[$user->id] = ProjectDetails::
+                                                where('updated_at','LIKE',$date.'%')
+                                                ->where('updated_by','=',$user->id)
+                                                ->count();
             }
             
         $projcount = count($projects); 
@@ -4824,8 +4824,6 @@ $upvcInt = explode(",", $upvc);
         return redirect()->back();
     }
 public function confirmedvisit(Request $request){
-       
-
        ProjectDetails::where('project_id',$request->id)->increment('deleted');
            $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
            $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
@@ -5418,7 +5416,7 @@ public function confirmedvisit(Request $request){
         $wards = Ward::all();
         $users = User::all();
         $ids = array();
-        $tll= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+        $tll= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
         $tl = explode(",",$tll);
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
@@ -5429,11 +5427,8 @@ public function confirmedvisit(Request $request){
                 $found1 = $searchWard->ward_id;
             }
         }
-
-   $mamu =explode(",", $found1);
-  
-     $sub_ward = Subward::whereIn('ward_id',$mamu)->pluck('id');
-  
+   
+     $sub_ward = Subward::where('ward_id',$found1)->pluck('id');
 
         
         if($request->phNo){
@@ -5455,7 +5450,7 @@ public function confirmedvisit(Request $request){
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->whereIn('wards.id',$mamu)
+                            ->where('wards.id',$found1)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
                         
@@ -7860,7 +7855,6 @@ public function display(request $request){
     if(Auth::user()->group_id == 22){
         return $this->Unupdated1($request);
     }
-
    $wards = Ward::orderby('ward_name','ASC')->get();
         $wardid = $request->subward;
         $previous = date('Y-m-d',strtotime('-30 days'));
@@ -7949,23 +7943,6 @@ public function display(request $request){
                             ->where('project_status','!=',"Closed")
                             ->count();
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
-        } else if($request->subward && $request->ward && $request->status && $request->contract_type){
-            $from=$request->from;
-            $to=$request->to;
-                         $projectid = ProjectDetails::whereIn('project_id',$projectsat)
-                        ->where('sub_ward_id',$request->subward)
-                         ->where('quality','!=',"Fake")
-                        ->where('updated_at','<=',$previous)
-                        ->where('contract_type',$request->contract_type)
-                        ->paginate('20');
-
-                       $totalproject = ProjectDetails::whereIn('project_id',$projectsat)
-                        ->where('sub_ward_id',$request->subward)
-                         ->where('quality','!=',"Fake")
-                        ->where('updated_at','<=',$previous)
-                        ->where('contract_type',$request->contract_type)
-                        ->count();
-
         }
 
         else{
@@ -8404,7 +8381,6 @@ public function display(request $request){
     public function storedetails(Request $request){
          $id = $request->id;
          $value= $request->value;
-
         $x = ProjectDetails::where('project_id',$id)->first();
         $x->detailed_mcal = $request->value;
         $x->save();
@@ -8418,10 +8394,8 @@ public function display(request $request){
     }
     public function addManufacturer()
     {
-          $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-         $tl1 = explode(",", $tl);
-
-       $tlwards = Subward::whereIn('ward_id',$tl1)->get();
+        $this->listingEngineer();
+         $tlwards=$this->variable;
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
@@ -8683,18 +8657,8 @@ public function viewManufacturer1(Request $request)
 
     $x = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('id')->last();
    // dd($x);
-    $x1 = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('start_time')->last();
-   
-        
-       $A = strtotime($x1);
-       $B = strtotime(date('h:i A'));
-       $diff = $B - $A;
-
-       $y = $diff / 60; 
-
     BreakTime::where('id',$x)->update([
-            'stop_time' => date('h:i A'),
-            'totaltime' =>$y
+            'stop_time' => date('h:i A')
         ]);
         return back()->with('Success','Your Break Time has been Ended');
   }
@@ -8785,7 +8749,7 @@ else{
 
 else{
 
-     $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
+ $user = User::whereIn('group_id',$userid)->where('department_id','!=',10)->get();
      foreach ($user as $users) {
         $noOfCalls[$users->id]['data'] = Activity::where('causer_id',$users->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$date.'%')->get();
        
