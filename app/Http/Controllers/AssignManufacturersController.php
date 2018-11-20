@@ -1474,7 +1474,7 @@ public function noneed(request $request ){
  }
  public function mini(request $request){
 
-    $users = User::where('department_id','!=',10)->get();
+    $users = User::where('department_id','!=',10)->where('group_id','=',7)->get();
 
         $date=date('Y-m-d');
         $breacktime = [];
@@ -1484,6 +1484,7 @@ public function noneed(request $request ){
                             ->pluck('totaltime')->toArray();
                         array_push($breacktime,['usertime'=>$usertime,'name'=>$user->name]);      
         }
+        dd($breacktime);
          $on = BreakTime::leftjoin('users','users.id','breaktime.user_id')->where('breaktime.created_at','LIKE',$date."%")->where('breaktime.stop_time','=',"")->select('users.name')->get();
          return view('/minibreack',['breacktime'=>$breacktime,'on'=>$on]);
 

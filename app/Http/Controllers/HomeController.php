@@ -451,7 +451,7 @@ class HomeController extends Controller
             $totalenq = count($enquiries);
 
             }
-
+            
         }elseif(!$request->from && !$request->to && !$request->initiator && !$request->category && $request->ward && $request->enqward){
           
            if($request->ward == "All"){
