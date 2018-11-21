@@ -549,7 +549,7 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
 
@@ -1092,12 +1092,12 @@ public function getproject(request $request){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
 
             $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
+            $siteaddress->project_id = $projectdetails->project_id;
              $siteaddress->latitude = $request->latitude;
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
