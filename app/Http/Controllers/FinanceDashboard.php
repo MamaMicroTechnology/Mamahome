@@ -14,6 +14,7 @@ use App\Supplierdetails;
 use App\Country;
 use App\Zone;
 use App\ManufacturerDetail;
+use App\Manufacturer;
 use DB;
 use Auth;
 use PDF;
@@ -104,21 +105,30 @@ class FinanceDashboard extends Controller
     }
     function downloadpurchaseOrder(Request $request){
         $products = DB::table('orders')->where('id',$request->id)->first();
+         if( $products->project_id != null){
         $address = SiteAddress::where('project_id',$products->project_id)->first();
+            }
+            else{
+                $address = "";
+            }
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        
         $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
-       
+        if( $request->mid != null){
+        $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
+            }
+            else{
+                $manu = "";
+            }
+          
         $data = array(
             'products'=>$products,
             'address'=>$address,
             'procurement'=>$procurement,
             'payment'=>$payment,
+            'manu'=>$manu,
             'supplier'=>$supplier
-
-
         );
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.purchaseOrder')->setPaper('a4','portrait');
@@ -295,7 +305,9 @@ class FinanceDashboard extends Controller
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
         $name = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('company_name')->first();
+      
         $supply = New Supplierdetails;
+        $supply->manu_id = $request->mid;
         $supply->address = $request->address;
         $supply->order_id = $request->id;
         $supply->supplier_name = $name;

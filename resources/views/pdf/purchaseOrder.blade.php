@@ -23,11 +23,17 @@
     </style>
 </head>
 <body>
+    @if( $data['manu'] == null)
 @php
     $normal_address = explode(", ", $data['address']->address);
     $items = explode(", ",$data['products']->sub_category);
 @endphp
-
+@else
+@php
+    $normal_address = explode(", ", $data['manu']['address']);
+    $items = explode(", ",$data['products']->sub_category);
+@endphp
+@endif
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h4 style="background-color:#99ddff;padding:10px;" class="text-center">PURCHASE ORDER</h4>
