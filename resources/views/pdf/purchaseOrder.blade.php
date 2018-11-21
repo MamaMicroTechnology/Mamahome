@@ -109,7 +109,7 @@
                     <tbody>
                     
                         <tr>
-                            <td class="text-center">{{ $j + 1 }}</td>
+                            <td class="text-center"> 1 </td>
                             <td>{{ $data['supplier']['description']}}</td>
                             <td>{{ $data['supplier']['quantity'] }}</td>
                             <td>{{ $data['supplier']['unit'] }}</td>
