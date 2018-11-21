@@ -66,7 +66,8 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first();
+        $price = Mamahomeprice::where('order_id',$request->id)->first()->getOriginal();
+
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -87,7 +88,7 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first();
+        $price = Mamahomeprice::where('order_id',$request->id)->first()->getOriginal();
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -271,23 +272,29 @@ class FinanceDashboard extends Controller
        return view('finance.payment',['id'=>$request->id,'users'=>$users]);
     }
     public function saveunitprice(Request $request){
-        dd($request->dtow1);
+       
+       
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
         $order->save();
+
         $price = Mamahomeprice::where('order_id',$request->id)->first();
-        $price->mamatotal = $request->mamatotal;
-        $price->manutotal = $request->manutotal;
-        $price->mama_word = $request->dtow1;
-        $price->manu_word = $request->dtow2;
+        $price->unit = $request->unit;
+        $price->mamahome_price = $request->price;
+        $price->unitwithoutgst = $request->unitwithoutgst;
+        $price->totalamount = $request->tamount;
+        $price->cgst = $request->cgst;
+        $price->sgst = $request->sgst;
+        $price->totaltax = $request->totaltax;
+        $price->amountwithgst = $request->gstamount;
+        $price->amount_word = $request->dtow1;
+        $price->tax_word = $request->dtow2;
+        $price->gstamount_word =  $request->dtow3;
+        $price->quantity = $request->quantity;
         $price->save();
          PaymentDetails::where('order_id',$request->id)->update([
-            'quantity'=>$request->quantity,
-            'mamahome_price'=>$request->mamaprice,
-            'manufacturer_price'=>$request->manuprice,
             'status'=>"Received"
         ]);
-
         return back()->with('Success','Payment Confirmed');
     }
     public function savesupplierdetails(Request $request){
@@ -299,7 +306,6 @@ class FinanceDashboard extends Controller
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
         $name = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('company_name')->first();
-      
         $supply = New Supplierdetails;
         $supply->manu_id = $request->mid;
         $supply->address = $request->address;

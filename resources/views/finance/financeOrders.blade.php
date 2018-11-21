@@ -64,14 +64,14 @@
                     <div class="btn-group">
     <a type="button" href="{{ route('downloadInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
     <a type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
-    <a type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a>
+    <!-- <a type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a> -->
   </div>
                     @else
                     
                     <div class="btn-group">
     <a disabled type="button" href="{{ route('downloadInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
     <a disabled type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
-    <a disabled type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a>
+    <!-- <a disabled type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a> -->
   </div>
                    
                     @endif
@@ -114,9 +114,9 @@
                                 </table>
                            <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}" method="post">
                             {{ csrf_field() }}
-                            <input type="text" name="dtow1" id="dtow1" value="">
-                            <input type="text" name="dtow2" id="dtow2" value="">
-                            <input type="text" name="dtow3" id="dtow3" value="">
+                            <input class="hidden" type="text" name="dtow1" id="dtow1" value="">
+                            <input type="hidden" name="dtow2" id="dtow2" value="">
+                            <input type="hidden" name="dtow3" id="dtow3" value="">
                             @foreach($mamaprices as $price)
                                 @if($price->order_id == $order->id)
                                <table class="table table-responsive table-striped" border="1">
@@ -127,7 +127,7 @@
                             <tr>
                               <td>Unit : </td>
                               <td><input type="radio" name="unit" value="tons" >Tons
-                            <input type="radio" name="unit" value="bags" checked> Bags</td>
+                            <input type="radio" name="unit" value="Bags" checked> Bags</td>
                             </tr>
                             <tr>
                               <td>Price(Per Unit) : </td>
@@ -135,15 +135,15 @@
                             </tr>  
                             <tr>
                                           <td>Unit Price without GST :</td>
-                                        <td>&nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="withoutgst{{$order->id}}"></label>/-
-                                            <input  id="withoutgst1{{$order->id}}" type="text" name="unitwithoutgst" value="{{$price->unitwithoutgst}}">
+                                        <td>&nbsp;&nbsp;&nbsp;RS.<label class=" alert-success pull-left" id="withoutgst{{$order->id}}"></label>/-
+                                            <input  id="withoutgst1{{$order->id}}" type="text" name="unitwithoutgst"  value="{{$price->unitwithoutgst}}">
                                        </td>
                             </tr>
                                     <tr>
                                         <td>Total Amount : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="display{{$order->id}}"></label>/-
-                                              <input  id="amount{{$order->id}}" type="text" name="unitwithoutgst" value="{{$price->totalamount}}">
+                                              <input id="amount{{$order->id}}" type="text" name="tamount" value="{{$price->totalamount}}">
                                               <label class=" alert-success pull-right" id="lblWord{{$order->id}}"></label>
                                         </td>
                                     </tr>
@@ -151,7 +151,7 @@
                                         <td>CGST(14%) : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$order->id}}"></label>/-
-                                              <input  id="cgst1{{$order->id}}" type="text" name="unitwithoutgst" value="{{$price->cgst}}">
+                                              <input   id="cgst1{{$order->id}}" type="text" name="cgst" value="{{$price->cgst}}">
 
                                         </td>
                                     </tr>
@@ -159,13 +159,13 @@
                                         <td>SGST(14%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$order->id}}"></label>/-
-                                             <input  id="sgst1{{$order->id}}" type="text" name="unitwithoutgst" value="{{$price->sgst}}">
+                                             <input   id="sgst1{{$order->id}}" type="text" name="sgst" value="{{$price->sgst}}">
                                         </td>
                                     </tr>
                                     <tr>
                                       <td>Total Tax :</td>
-                                      <td>&nbsp;&nbsp;&nbsp;<label class=" alert-success pull-left" id="totaltax{{$order->id}}"></label>total
-                                        <input id="totaltax1{{$order->id}}" type="text" name="unitwithoutgst" value="{{$price->totaltax}}">
+                                      <td>&nbsp;&nbsp;&nbsp;<label class=" alert-success pull-left" id="totaltax{{$order->id}}"></label>Total
+                                        <input  id="totaltax1{{$order->id}}" type="text" name="totaltax" value="{{$price->totaltax}}">
                                         <label class=" alert-success pull-right" id="lblWord1{{$order->id}}"></label>
                                       </td>
                                     </tr>
@@ -173,7 +173,7 @@
                                         <td>Amount (Including GST) :</td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="withgst{{$order->id}}"></label> /-
-                                              <input id="amountwithgst{{$order->id}}" type="text" name="unitwithoutgst" value="{{$price->amountwithgst}}">
+                                              <input  id="amountwithgst{{$order->id}}" type="text" name="gstamount" value="{{$price->amountwithgst}}">
                                               <label class=" alert-success pull-right" id="lblWord2{{$order->id}}"></label>
                                         </td>
                                     </tr>
@@ -629,7 +629,6 @@ function NumToWord1(inputNumber, outputControl,arg) {
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function NumToWord2(inputNumber, outputControl,arg){
-  alert("67");
     var str = new String(inputNumber)
     var splt = str.split("");
     var rev = splt.reverse();
