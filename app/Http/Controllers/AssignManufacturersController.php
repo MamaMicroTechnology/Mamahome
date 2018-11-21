@@ -22,7 +22,7 @@ use App\ProjectUpdate;
 use App\AssignCategory;
 use App\Category;
 use App\Salesofficer;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection;      
 use Spatie\Activitylog\Models\Activity;
 use  App\Order;
 use App\Mowner_Deatils;
