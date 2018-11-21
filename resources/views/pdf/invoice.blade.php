@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Invoice</title>
+    <title> Proforma Invoice</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -27,7 +27,7 @@
     $normal_address = explode(", ", $data['address']->address);
     $items = explode(", ",$data['products']->sub_category);
 @endphp
-<header class="text-right">Original For Buyer</header>
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h4 style="background-color:#99ddff;padding:10px;" class="text-center">PROFOMA INVOICE</h4>
@@ -63,7 +63,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left">
-                BILL TO : 
+               <b> BILL TO : </b>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $data['procurement']->procurement_name }}
                     @for($i = 0;$i < count($normal_address); $i++)
                     @if($i % 3 == 0)
@@ -73,9 +73,8 @@
                     @endif
                     @endfor
             </div>
-
             <div class="pull-right">
-                SHIP TO :
+               <b> SHIP TO :</b>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $data['procurement']->procurement_name }}
                     @for($i = 0;$i < count($normal_address); $i++)
                     @if($i % 3 == 0)
@@ -86,7 +85,7 @@
                     @endfor
             </div>
         </div>
-        <br><br><br><br><br><br>
+        <br><br><br><br><br><br><br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <table class="table table-responsive" border=1>
@@ -97,7 +96,7 @@
                             <th>HSN/SAC</th>
                             <th>UNIT</th>
                             <th>QUANTITY</th>
-                            <th>RATE (PER UNIT)</th>
+                            <th>RATE/UNIT</th>
                             <th>AMOUNT</th>
                         </tr>
                     </thead>
@@ -107,16 +106,16 @@
                             <td class="text-center">{{ $j + 1 }}</td>
                             <td>{{$data['products']->main_category}}  {{ $items[$j] }}</td>
                             <td></td>
-                            <td>{{ $data['payment']->unit }}</td>
-                            <td>{{ $data['price']->quantity }}</td>
-                            <td>{{ $data['price']->mamahome_price}}</td>
-                            <td>{{ $data['price']->mamatotal}}</td>
+                           <td>{{ $data['price']['unit'] }}</td>
+                            <td >{{ $data['price']['quantity'] }}</td>
+                            <td>{{ $data['price']['unitwithoutgst'] }}</td>
+                            <td>{{ $data['price']['totalamount'] }}</td>
                         </tr>
                     @endfor
                         <tr>
                             <td colspan="4" rowspan="3"></td>
                             <td colspan="2" class="text-center"><b>GROSS AMOUNT</b></td>
-                            <td class="text-right">{{ $data['price']->mamatotal}}</td>
+                            <td class="text-right">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <tr>
                             <td colspan="2" class="text-center">Discount Amount</td>
@@ -124,7 +123,7 @@
                         </tr>
                         <tr>
                             <td  colspan="2" class="text-center"><b>TOTAL AMOUNT</b></td>
-                            <td class="text-right">{{ $data['price']->mamatotal}}</td>
+                            <td class="text-right">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <!-- <tr>
                             <td class="text-right">CGST(14%)</td>
@@ -147,11 +146,8 @@
                             <td class="text-right"></td>
                         </tr> -->
                         <tr>
-                            <td class="text-center" colspan="3">
-                                Amount In Words
-                            </td>
-                            <td class="text-center" colspan="4">
-                               Rupees &nbsp;&nbsp;{{ $data['price']->mama_word}}
+                            <td class="text-center" colspan="7">
+                               <b> Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['amount_word'] }}
                             </td>
                         </tr>
                         <!-- <tr>
@@ -193,13 +189,14 @@
                                     <br>
                                     Tax invoice will be provided once goods gets delivered<br>
                                     Reward Points are not Applicable for Offer Price<br>
+                                    <br>
                                     This is just for a reference ,which is not applicable <br>
                                     for GST climing
                                 </div>
                                 <div class="pull-right col-md- clearfix6">
                                     For  Mama Home Pvt Ltd 
                                 </div>
-                                <br><br><br>
+                                <br><br><br><br>
                                 <div class="pull-left col-md-6 clearfix">
                                     <i><b>Payment Terms:</b></i>
                                     <br>

@@ -34,6 +34,8 @@
     $items = explode(", ",$data['products']->sub_category);
 @endphp
 @endif
+
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h4 style="background-color:#99ddff;padding:10px;" class="text-center">PURCHASE ORDER</h4>
@@ -58,11 +60,21 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left" style="padding-left: 15px;">
                <b> SUPPLIER NAME : </b><br>
+               <?php
+                $address = explode(", ", $data['supplier']['address']);
+
+                ?>
                     {{ $data['supplier']['supplier_name']}}<br>
-                   {{ $data['supplier']['address'] }}<br>
-                  <b>GST : {{ $data['supplier']['gst'] }}</b>
+                    @for($i = 0;$i < count($address); $i++)
+                    @if($i % 3 == 0)
+                         {{ $address[$i] }}<br>
+                         @else
+                        , {{ $address[$i] }}<br>
+                     @endif   
+                    @endfor
+                  <b>GST : {{ $data['supplier']['gst'] }}</b><br>
             </div>
-            <div class="pull-right">
+            <div class="pull-right" style="padding-left: 15px;">
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>SHIP TO :</b><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAMAHOME PVT LTD.
                 

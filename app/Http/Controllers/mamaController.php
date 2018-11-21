@@ -913,6 +913,12 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 'remarks' => $request->remarks
             ]);
         }
+        
+        if($request->address != NULL){
+            siteAddress::where('project_id',$id)->update([
+                'address' => $request->address
+            ]);
+        }
         $cType = count($request->constructionType);
         $type = $request->constructionType[0];
         if($cType != 1){

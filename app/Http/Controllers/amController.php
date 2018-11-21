@@ -798,6 +798,7 @@ class amController extends Controller
     }
     public function signature()
     {
+         
         return view('logistics.takesignature');
     }
     public function preview(Request $request)
