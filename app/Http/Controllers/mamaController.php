@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\View;
 use App\Mail\registration;
 use Illuminate\Http\Request;
 use App\Department;
+use GuzzleHttp\Client;
 use App\User;
 use Session;
 use App\Group;
@@ -441,7 +442,11 @@ class mamaController extends Controller
     public function addProject(Request $request)
     {
              
-             $result = (new HomeController)->getid();
+       
+        
+        
+        
+        $result = (new HomeController)->getid();
              // dd($result);
 
        
@@ -704,7 +709,9 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $procurementDetails->builder_email = $request->bEmail;
         $procurementDetails->builder_contact_no = $request->bPhone;
         $procurementDetails->save();
-       
+
+   // dd($request->latitude,$request->longitude);
+   
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
