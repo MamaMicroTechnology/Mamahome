@@ -116,6 +116,7 @@ class FinanceDashboard extends Controller
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
+        dd($supplier);
         if( $request->mid != null){
         $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
             }
