@@ -1,17 +1,12 @@
-
-<?php
-    $grp = Auth::user()->group_id;
-    $ext = ($grp == 1? "layouts.app":"layouts.leheader");
-?>
-@extends($ext)
+@extends('layouts.leheader')
 @section('content')
 
-   @if($ldate < $lodate)
+  @if($ldate < $lodate)
   <div>You are ahead of time.</div>
   @elseif($ldate > $outtime)
   <div>You are done for today. Take a rest.</div>
   @else
-  
+
 <div class="container">
     <div class="row">
       
@@ -33,10 +28,8 @@
         <!-- <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br><!--  -->
          @elseif(Auth::user()->group_id == 1 && Auth::user()->department_id == 0)
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/listingEngineer">Add New Project</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Project Enquiry</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/updateManufacturer">Update Manufacturer</a><br><br>
-         <!-- <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br> -->
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/roads">Projects</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Project Enquiry</a><br><br>
         <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/reports">My Report</a><br><br> -->
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
@@ -53,7 +46,7 @@
         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>
        <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br> -->
         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/projectsUpdate" id="updates">Account Executive Projects</a><br><br>  
-         <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
+        <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/updateManufacturer">Update Manufacturer</a><br><br>
     <a class="btn btn-primary form-control" href="{{ URL::to('/') }}/scmaps">Maps</a>
 

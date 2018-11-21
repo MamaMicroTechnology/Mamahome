@@ -51,7 +51,7 @@
                     <div id="first">
                     {{ csrf_field() }}
                     <input  class="hidden" type="text" name="longitude1" value="{{ old('longitude') }}" id="longitude1">
-                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1">  
+                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1"> 
                     <input  class="hidden" type="text" name="address1" value="{{ old('address1') }}" id="address1"> 
                                    
                            <table class="table">
@@ -98,10 +98,18 @@
                                  <tr>
                                    <td>Full Address</td>
                                    <td>:</td>
+                                   @if(Auth::user()->group_id == 2)
+                                   @if($projectdetails->siteaddress ==null)
+                                   <td style="color:red;" >This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input  id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm disable" name="address" ></td>
+                                   @else
+                                   <td><input  id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm disable" name="address"></td>
+                                   @endif
+                                   @else
                                    @if($projectdetails->siteaddress ==null)
                                    <td style="color:red;" >This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input  disabled id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm disable" name="address" ></td>
                                    @else
                                    <td><input  disabled id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm disable" name="address"></td>
+                                   @endif
                                    @endif
                                </tr>
                                <tr>

@@ -135,7 +135,8 @@
 
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-    <a href="{{ URL::to('/') }}/financeDashboard">Orders</a>
+    <a href="{{ URL::to('/orders') }}">Orders</a>
+    <a href="{{ URL::to('/') }}/financeDashboard"> Confirmed Orders</a>
     <a href="{{ URL::to('/financeAttendance') }}">Attendance</a>
 </div>
 

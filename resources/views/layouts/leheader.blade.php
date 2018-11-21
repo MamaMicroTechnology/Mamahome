@@ -11,10 +11,20 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::to('/') }}/css/signature-pad.css">
-    
 </head>
 <body>
+<!-- @if(SESSION('Success'))
+<div class="text-center alert alert-success">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+{{ session('Success') }}
+</div>
+@endif
+@if(session('Error'))
+<div class="alert text-center alert-danger alert-dismissable">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+{{ session('Error') }}
+</div>
+@endif -->
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -27,7 +37,10 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    
+                    <!-- Branding Image -->
+                    <!-- <a class="navbar-brand" href="{{ url('/') }}">
+                        <img style="height: 25px; width: 170px;" src="{{ URL::to('/') }}/mhlogo.png">
+                    </a> -->
 
                 </div>
 
@@ -43,9 +56,11 @@
                        <li> <a href="{{ URL::to('/')}}/reports" style="font-size:1.1em;font-family:Times New Roman;"><b>My Report</b></a></li>
                       <li style="padding-top: 10px;padding-left:10px;"> 
                       
-                      
-                      <button id="getBtn"   class="btn btn-success btn-sm " onclick="getLocation()">Field Login</button>
-                     
+                      @if($log != 0)                    
+                      <button id="getBtn" disabled  class="btn btn-success btn-sm " onclick="getLocation()">Field Login</button>
+                      @else
+                       <button id="getBtn" class="btn btn-success btn-sm " onclick="getLocation()">Field Login</button>
+                      @endif                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                     </li>
                     <li style="padding-top: 10px;padding-left: 10px;"> 
                         <button class="btn btn-danger btn-sm" onclick="submitleheader()">Field Logout</button>
@@ -109,8 +124,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ URL::to('/') }}/js/signature_pad.umd.js"></script>
-    <script src="{{ URL::to('/') }}/js/app2.js"></script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -133,9 +146,6 @@
 <script type="text/javascript" charset="utf-8">
   function submitleheader(){
     // document.getElementById("getBtn").className = "hidden";
-    var ans = confirm('Are You Sure You Want To Logout ?');
-        if(ans)
-        {
       console.log("Entering getLocation()");
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(
@@ -207,7 +217,7 @@
     //console.log("Entering getAddressFromLatLangforlogout()");
   }
   // logout end
-}
+
   function getLocation(){
       // document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");

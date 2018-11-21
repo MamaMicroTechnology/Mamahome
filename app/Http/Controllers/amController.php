@@ -798,8 +798,8 @@ class amController extends Controller
     }
     public function signature()
     {
-        $deliveryDetails = "";
-        return view('logistics.takesignature',['deliveryDetails'=>$deliveryDetails]);
+         
+        return view('logistics.takesignature');
     }
     public function preview(Request $request)
     {

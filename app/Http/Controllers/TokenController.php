@@ -380,7 +380,7 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
         if(Auth::attempt(['contactNo'=>$request->email,'password'=>$request->password]) || Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
         {
             $userdetails = User::where('id',Auth::user()->id)->first();
-            return response()->json(['message' => 'true','success'=>1,'userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo]);
+            return response()->json(['message' => 'true','success'=>1,'userid'=>$userdetails->id,'userName'=>$userdetails->name,'phoneNumber'=>$userdetails->contactNo,'premium_user'=>$userdetails->premium_user]);
         }
         else{
             return response()->json(['message' => 'false','success'=>0]);
@@ -413,6 +413,7 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
         $user->contactNo = $request->number;
         $user->category = $request->category;
         $user->password = bcrypt($request->password);
+	$user->premium_user = $request->premium_user;
         $user->save();
         if($user->save()){
             return response()->json(['success'=>'1','message'=>'Registered']);
@@ -422,15 +423,15 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
     }
     public function addProject(Request $request)
     {
-        $cType = count($request->constructionType);
-        $type = $request->constructionType[0];
-        $otherApprovals = "";
-        $projectimage = "";
-        if($cType != 1){
-            $type .= ", ".$request->constructionType[1];
-        }else{
-             $type=null;
-        }
+        // $cType = count($request->constructionType);
+        // $type = $request->constructionType[0];
+        // $otherApprovals = "";
+        // $projectimage = "";
+        // if($cType != 1){
+        //     $type .= ", ".$request->constructionType[1];
+        // }else{
+        //      $type=null;
+        // }
 
         
         $statusCount = count($request->project_status);
@@ -502,7 +503,7 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
             $projectdetails->project_name = $request->project_name;
             $projectdetails->sub_ward_id = $request->sub_ward_id;
             $projectdetails->road_width = $request->road_width;
-            $projectdetails->construction_type =$type;
+            $projectdetails->construction_type =$request->construction_type;
             $projectdetails->interested_in_rmc = $request->interested_in_rmc;
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
@@ -548,12 +549,12 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
 
             $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
+            $siteaddress->project_id = $projectdetails->project_id;
              $siteaddress->latitude = $request->latitude;
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
@@ -1091,12 +1092,12 @@ public function getproject(request $request){
                 $roomtype->floor_no = $request->floorNo[$i];
                 $roomtype->room_type = $request->roomType[$i];
                 $roomtype->no_of_rooms = $request->number[$i];
-                $roomtype->project_id = $projectdetails->id;
+                $roomtype->project_id = $projectdetails->project_id;
                 $roomtype->save();
             }
 
             $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
+            $siteaddress->project_id = $projectdetails->project_id;
              $siteaddress->latitude = $request->latitude;
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
