@@ -3134,7 +3134,6 @@ date_default_timezone_set("Asia/Kolkata");
     public function confirmOrder(Request $request)
     {
 
-        dd($request->id);
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
@@ -3142,7 +3141,6 @@ date_default_timezone_set("Asia/Kolkata");
         PaymentDetails::where('order_id',$id)->update([
             'quantity'=>$request->quantity,
             'mamahome_price'=>$request->mamaprice,
-            // 'manufacturer_price'=>$request->manuprice,
             'unit'=>$request->unit
         ]);
         $unitwithgst = ($request->mamaprice/1.28);
@@ -4896,7 +4894,6 @@ public function confirmedvisit(Request $request){
     public function showProjectDetails(Request $request)
     {
         $id = $request->id;
-
         $rec = ProjectDetails::where('project_id',$id)->first();
          $projectupdate = ProjectImage::where('project_id',$id)->pluck('created_at')->last();
         $username = User::where('id',$rec->listing_engineer_id)->first();

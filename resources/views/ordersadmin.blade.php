@@ -229,7 +229,7 @@ function openCitytest(evt, cityName) {
         <h4 class="modal-title" style="text-align: center;">Purchase Order</h4>
       </div>
       <div class="modal-body">
-        <form action="{{ URL::to('/') }}/savesupplierdetails?id={{$rec->orderid}}" method="post">
+        <form action="{{ URL::to('/') }}/savesupplierdetails?id={{$rec->orderid}}&&mid={{$rec->manu_id}}" method="post">
             {{ csrf_field() }}
         <input type="text" class="hidden" value="" id="dtow{{$rec->orderid}}" name="dtow" >
         <input type="text" class="hidden" value="" id="dtow1{{$rec->orderid}}" name="dtow1" >
@@ -513,9 +513,9 @@ function openCitytest(evt, cityName) {
                               @endif
                           @else
                           @if($rec -> project_id == null)
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec -> manu_id}}">Get Manufacturer Purchase Order</button>
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Get Manufacturer Purchase Order</button>
                             @else
-                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec -> manu_id}}">Get Purchase Order</button>
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Get Purchase Order</button>
                           @endif
                          @endif
                      </td>

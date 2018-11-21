@@ -4,7 +4,6 @@
 
 @if($deliveryDetails == null)
 <div class="col-md-6 col-md-offset-3">
-  
   <div class="panel panel-primary">
     <div class="panel-heading">Delivery Details</div>
     <div class="panel-body">
@@ -40,10 +39,8 @@
                 <button type="button" class="button save hidden" data-action="save-svg">Save as SVG</button>
               </div>
             </div>
-        
           </div>
         </div>
-        
       </form>
     </div>
   </div>
@@ -99,8 +96,6 @@
       </div>
     </div>
   </div>
-
 </div>
 @endif
-
 @endsection
