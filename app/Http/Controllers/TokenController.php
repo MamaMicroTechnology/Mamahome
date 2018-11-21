@@ -422,15 +422,15 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
     }
     public function addProject(Request $request)
     {
-        $cType = count($request->constructionType);
-        $type = $request->constructionType[0];
-        $otherApprovals = "";
-        $projectimage = "";
-        if($cType != 1){
-            $type .= ", ".$request->constructionType[1];
-        }else{
-             $type=null;
-        }
+        // $cType = count($request->constructionType);
+        // $type = $request->constructionType[0];
+        // $otherApprovals = "";
+        // $projectimage = "";
+        // if($cType != 1){
+        //     $type .= ", ".$request->constructionType[1];
+        // }else{
+        //      $type=null;
+        // }
 
         
         $statusCount = count($request->project_status);
@@ -502,7 +502,7 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
             $projectdetails->project_name = $request->project_name;
             $projectdetails->sub_ward_id = $request->sub_ward_id;
             $projectdetails->road_width = $request->road_width;
-            $projectdetails->construction_type =$type;
+            $projectdetails->construction_type =$request->construction_type;
             $projectdetails->interested_in_rmc = $request->interested_in_rmc;
             $projectdetails->interested_in_loan = $request->interested_in_loan;
             $projectdetails->interested_in_doorsandwindows = $request->interested_in_doorsandwindows;
@@ -553,7 +553,7 @@ elseif($modes == "6" || $modes == "11" && $wardsAssigned == null){
             }
 
             $siteaddress = New SiteAddress;
-            $siteaddress->project_id = $projectdetails->id;
+            $siteaddress->project_id = $projectdetails->project_id;
              $siteaddress->latitude = $request->latitude;
             $siteaddress->longitude = $request->longitude;
             $siteaddress->address = $request->address;
