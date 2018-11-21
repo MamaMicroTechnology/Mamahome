@@ -9,7 +9,7 @@ use App\PaymentDetails;
 use App\Message;
 use App\User;
 use App\Tlwards;
-use App\Mamahomeprice;
+use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Country;
 use App\Zone;
@@ -44,7 +44,7 @@ class FinanceDashboard extends Controller
 
         }
         $payments = PaymentDetails::get();
-        $mamaprices = Mamahomeprice::get();
+        $mamaprices = MamahomePrice::get();
         $messages = Message::all();
         $counts = array();
         $users = User::all();
@@ -66,7 +66,7 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first()->getOriginal();
+        $price = MamahomePrice::where('order_id',$request->id)->first()->getOriginal();
 
         $data = array(
             'products'=>$products,
@@ -88,7 +88,7 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first()->getOriginal();
+        $price = MamahomePrice::where('order_id',$request->id)->first()->getOriginal();
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -284,7 +284,7 @@ class FinanceDashboard extends Controller
         $order->confirm_payment = " Received";
         $order->save();
 
-        $price = Mamahomeprice::where('order_id',$request->id)->first();
+        $price = MamahomePrice::where('order_id',$request->id)->first();
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
         $price->unitwithoutgst = $request->unitwithoutgst;
