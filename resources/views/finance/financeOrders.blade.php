@@ -53,13 +53,7 @@
                  @endif             
             </td>
             <td>
-                @if($order->clear_for_delivery == "No")
-                <form id="theForm" action="{{ URL::to('/') }}/clearOrderForDelivery" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="order_id" value="{{ $order->id }}">
-                    <button class="btn btn-primary btn-xs">Clear For Delivery</button>
-                </form>
-                @else
+                
                     
             <?php 
                 $rec =count($order->confirm_payment); 
@@ -77,8 +71,7 @@
     <a disabled type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
     <!-- <a disabled type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a> -->
   </div>
-                   
-                    @endif
+            
                 @endif
             </td>
             @endif
