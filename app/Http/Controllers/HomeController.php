@@ -3861,7 +3861,6 @@ $upvcInt = explode(",", $upvc);
 
 
 
-
  if(count($projectids) != 0){
                 $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
             }else{
@@ -3898,7 +3897,7 @@ $upvcInt = explode(",", $upvc);
                 if(count( $projectids) != 0){
                     $qdate = ProjectDetails::whereIn('project_id',$projectids)->where('updated_at','>=',$previous )->pluck('project_id');
                 }else{
-                    $qdate = ProjectDetails::where('updated_at', $undate )->pluck('project_id');
+                    $qdate = ProjectDetails::where('updated_at',$undate )->pluck('project_id');
                 }
 
                 if(count($qdate) > 0){
@@ -3916,6 +3915,7 @@ $upvcInt = explode(",", $upvc);
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(20);
+dd($projects);
         
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        

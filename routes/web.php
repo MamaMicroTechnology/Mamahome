@@ -25,7 +25,7 @@ Route::get('/ticket','HomeController@tickets');
 Route::get('/enq','HomeController@enqticket');
 Route::get('/noneed','AssignManufacturersController@indexnumber');
 Route::post('/noneed','AssignManufacturersController@noneed');
-
+Route::get('/subwardfind','AssignManufacturersController@find');
 
 Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');

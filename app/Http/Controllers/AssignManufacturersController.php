@@ -33,6 +33,8 @@ use App\SubWardMap;
 use App\brand;
 use App\Noneed;
 use App\SubCategory;
+
+use App\WardMap;
 class AssignManufacturersController extends Controller
 {
  
@@ -1484,9 +1486,95 @@ public function noneed(request $request ){
                             ->pluck('totaltime')->toArray();
                         array_push($breacktime,['usertime'=>$usertime,'name'=>$user->name]);      
         }
-        dd($breacktime);
+       
          $on = BreakTime::leftjoin('users','users.id','breaktime.user_id')->where('breaktime.created_at','LIKE',$date."%")->where('breaktime.stop_time','=',"")->select('users.name')->get();
          return view('/minibreack',['breacktime'=>$breacktime,'on'=>$on]);
 
+ }
+ public function find(request $request){
+     $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+              
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+  
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+ $sub = SubWard::where('ward_id',1)->get();     
+ $subwardlat = [];
+foreach ($sub as  $users) {
+           
+       $nosubwards =SubWardMap::where('sub_ward_id',$users->id)->first()->toArray();
+                array_push($subwardlat,['subward'=>$nosubwards,'subid'=>$users->id]);
+      }
+            
+      
+    
+
+
+              $allsubwardlats = [];
+              foreach ($subwardlat as $all) {
+
+                
+                  $allx = explode(",",$all['subward']['lat']);
+                
+                  $wardid = $all['subid'];
+                
+                  array_push($allsubwardlats, ['lat'=>$allx,'subid'=>$wardid]);
+               } 
+             
+    $suba = [];
+
+    for($j = 0; $j<sizeof($allsubwardlats);$j++){
+        $finalsubward = [];
+        $subwardId = $allsubwardlats[$j]['subid'];
+    for($i=0;$i<sizeof($allsubwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allsubwardlats[$j]['lat'][$i];
+         $long =  $allsubwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+        array_push($finalsubward, $latlong);   
+
+    }
+        
+       
+       array_push($suba,['lat'=>$finalsubward,'subward'=>$subwardId]);
+
+   }
+
+
+    return view('/subwardfind',['ward'=>$a,'subward'=>$suba,'allwardlats'=>$allwardlats]);
  }
 }
