@@ -525,13 +525,9 @@ function openCitytest(evt, cityName) {
                      </td>
                         
                        <td>
-                        @if($rec->order_status == "Enquiry Confirmed")
+                       
                             <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
-                        @endif
-                           @if($rec->clear_for_delivery == "Yes")
-                            <a href="{{ URL::to('/') }}/viewProformaInvoice?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Proforma Invoice</a>
-                            <a href="{{ URL::to('/') }}/viewPurchaseOrder?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Purchase Order</a>
-                            @endif
+                       
                        </td>
 
                     </tr>
