@@ -55,7 +55,7 @@
                 Invoice No :{{ $data['products']->id }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                 Date : {{ date('d F, Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
               {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>
-               Order ID : {{ $data['price']['unit'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+               Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                 Mode Of Payment : {{ $data['products']->payment_mode }}
             </div>
         </div>
