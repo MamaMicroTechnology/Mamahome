@@ -26,12 +26,12 @@
     @if( $data['manu'] == null)
 @php
     $normal_address = explode(", ", $data['address']->address);
-    $items = explode(", ",$data['products']->sub_category);
+   
 @endphp
 @else
 @php
     $normal_address = explode(", ", $data['manu']['address']);
-    $items = explode(", ",$data['products']->sub_category);
+   
 @endphp
 @endif
 
@@ -107,16 +107,26 @@
                         </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
                    <!--  @for($j = 0; $j < count($items); $j++) -->
                         <tr>
                             <td class="text-center">1 </td>
+=======
+                    
+                        <tr>
+                            <td class="text-center"> 1 </td>
+>>>>>>> 3fd3b57e3f507477a05cb8b0694a812f11bcde47
                             <td>{{ $data['supplier']['description']}}</td>
                             <td>{{ $data['supplier']['quantity'] }}</td>
                             <td>{{ $data['supplier']['unit'] }}</td>
                             <td>{{ $data['supplier']['unitwithoutgst']}}</td>
                             <td>{{ $data['supplier']['amount']}}</td>
                         </tr>
+<<<<<<< HEAD
                   <!--   @endfor -->
+=======
+                   
+>>>>>>> 3fd3b57e3f507477a05cb8b0694a812f11bcde47
                         <tr>
                             <td colspan="3" rowspan="4"></td>
                             <td class="text-left"><b>SUB TOTAL</b></td>
