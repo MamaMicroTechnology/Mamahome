@@ -16,6 +16,7 @@ use App\Zone;
 use App\ManufacturerDetail;
 use App\Manufacturer;
 use App\Mprocurement_Details;
+use App\Requirement;
 use DB;
 use Auth;
 use PDF;
@@ -44,6 +45,7 @@ class FinanceDashboard extends Controller
             $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
 
         }
+        $reqs = Requirement::all();
         $payments = PaymentDetails::get();
         $mamaprices = MamahomePrice::get();
         $messages = Message::all();
@@ -52,7 +54,7 @@ class FinanceDashboard extends Controller
         foreach($orders as $order){
             $counts[$order->id] = Message::where('to_user',$order->id)->count();
         }
-        return view('finance.financeOrders',['mamaprices'=>$mamaprices,'users'=>$users,'orders'=>$orders,'payments'=>$payments,'messages'=>$messages,'counts'=>$counts]);
+        return view('finance.financeOrders',['mamaprices'=>$mamaprices,'users'=>$users,'orders'=>$orders,'payments'=>$payments,'messages'=>$messages,'counts'=>$counts,'reqs'=>$reqs]);
     }
     public function clearOrderForDelivery(Request $request)
     {
@@ -71,11 +73,13 @@ class FinanceDashboard extends Controller
         // $manuid =  MamahomePrice::where('order_id',$request->id)->pluck('manu_id')->first();
          if( $request->manu_id != null){
         $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();
-        $procurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
+        $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
             }
             else{
+                 $mprocurement = "";
                 $manu = "";
             }
+          
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -83,7 +87,7 @@ class FinanceDashboard extends Controller
             'payment'=>$payment,
             'price'=>$price,
             'manu'=>$manu,
-            'procurement'=>$procurement
+            'mprocurement'=>$mprocurement
         );
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.invoice')->setPaper('a4','portrait');
@@ -95,16 +99,28 @@ class FinanceDashboard extends Controller
     }
     function downloadTaxInvoice(Request $request){
         $products = DB::table('orders')->where('id',$request->id)->first();
+
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $price = MamahomePrice::where('order_id',$request->id)->first()->getOriginal();
+        if( $request->manu_id != null){
+        $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();
+        $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
+            }
+            else{
+                 $mprocurement = "";
+                $manu = "";
+            }
+        
         $data = array(
             'products'=>$products,
             'address'=>$address,
             'procurement'=>$procurement,
             'payment'=>$payment,
-            'price'=>$price
+            'price'=>$price,
+             'manu'=>$manu,
+            'mprocurement'=>$mprocurement
         );
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.proformaInvoice')->setPaper('a4','portrait');
@@ -292,7 +308,7 @@ class FinanceDashboard extends Controller
        
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
-        $order->save();
+        $order->save();    
         $price = MamahomePrice::where('order_id',$request->id)->first();
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
@@ -308,6 +324,8 @@ class FinanceDashboard extends Controller
         $price->quantity = $request->quantity;
         $price->manu_id = $request->manu_id;
         $price->description = $request->desc;
+        $price->billaddress = $request->bill;
+        $price->shipaddress = $request->ship;
         $price->save();
          PaymentDetails::where('order_id',$request->id)->update([
             'status'=>"Received"

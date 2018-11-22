@@ -23,17 +23,12 @@
     </style>
 </head>
 <body>
-@if( $data['manu'] == null)
+
 @php
-    $normal_address = explode(", ", $data['address']->address);
+    $bill = explode(", ", $data['price']['billaddress']);
+    $ship = explode(", ", $data['price']['shipaddress']);
     $items = explode(", ",$data['products']->sub_category);
 @endphp
-@else
-@php
-    $normal_address = explode(", ", $data['manu']['address']);
-    $items = explode(", ",$data['products']->sub_category);
-@endphp
-@endif
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h4 style="background-color:#99ddff;padding:10px;" class="text-center">PROFORMA INVOICE</h4>
@@ -48,7 +43,7 @@
     </div><br>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="pull-left">
+            <div class="pull-left" >
           
                 #363,19th Main Road, 1st Block<br>
                 Rajajinagar, Bangalore-560010<br>
@@ -60,68 +55,43 @@
              <div class="pull-right">
                 Invoice No :  #{{ $data['products']->id }}<br>
                 Date : {{ date('d F, Y') }} <br>
-               {{ $data['products'] == null ?" Project ID" : "Manufacturer ID" }} : {{ $data['products'] == null ? $data['products']->project_id : $data['procurement']['manu_id'] }}  <br>
+               {{ $data['manu'] == null ? "project ID" : "Manufacturere ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}   <br>
                 Mode Of Payment : {{ $data['products']->payment_mode }}
             </div>
         </div>
     </div>
     <br><br>
     <div class="row">
-        @if( $data['manu'] == null)
+      
         <div class="col-md-6 col-md-offset-3">
-            <div class="pull-left" style="padding-left: 15px;">
+            <div class="pull-left">
                <b> BILL TO : </b>
-                    <br>{{ $data['procurement']->procurement_name }}
-                    @for($i = 0;$i < count($normal_address); $i++)
+               <br>
+                   {{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} 
+
+                    @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
-                        <br>{{ $normal_address[$i] }}
+                        <br>{{ $bill[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        , {{ $bill[$i] }}
                     @endif
                     @endfor
             </div>
             <div class="pull-right" style="padding-left: 15px;" >
                <b> SHIP TO :</b>
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>SHIP TO :</b><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {{ $data['procurement']->procurement_name }}
-                    @for($i = 0;$i < count($normal_address); $i++)
+              <br>
+                    
+                   {{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} 
+                    @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
-                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
+                        <br>{{ $ship[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        , {{ $ship[$i] }}
                     @endif
                     @endfor
             </div>
         </div>
-        @else
-            <div class="col-md-6 col-md-offset-3" style="padding-left: 15px;">
-            <div class="pull-left">
-               <b> BILL TO : </b>
-                    <br>
-                    {{$data['procurement']['name'] }}
-                    @for($i = 0;$i < count($normal_address); $i++)
-                    @if($i % 3 == 0)
-                        <br>{{ $normal_address[$i] }}
-                    @else
-                        , {{ $normal_address[$i] }}
-                    @endif
-                    @endfor
-            </div>
-            <div class="pull-right">
-               <b> SHIP TO :</b>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {{$data['procurement']['name'] }}
-                    @for($i = 0;$i < count($normal_address); $i++)
-                    @if($i % 3 == 0)
-                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
-                    @else
-                        , {{ $normal_address[$i] }}
-                    @endif
-                    @endfor
-            </div>
-        </div>
-        @endif
+       
         <br><br><br><br><br><br><br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -145,13 +115,13 @@
                            <td>{{ $data['price']['unit'] }}</td>
                             <td >{{ $data['price']['quantity'] }}</td>
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
-                            <td>{{ $data['price']['totalamount'] }}</td>
+                            <td>{{ $data['price']['amountwithgst']}}</td>
                         </tr>
                   
                         <tr>
                             <td colspan="4" rowspan="3"></td>
                             <td colspan="2" class="text-center"><b>GROSS AMOUNT</b></td>
-                            <td class="text-right">{{ $data['price']['totalamount'] }}</td>
+                            <td class="text-right">{{ $data['price']['amountwithgst']}}</td>
                         </tr>
                         <tr>
                             <td colspan="2" class="text-center">Discount Amount</td>
@@ -159,7 +129,7 @@
                         </tr>
                         <tr>
                             <td  colspan="2" class="text-center"><b>TOTAL AMOUNT</b></td>
-                            <td class="text-right">{{ $data['price']['totalamount'] }}</td>
+                            <td class="text-right">{{ $data['price']['amountwithgst']}}</td>
                         </tr>
                         <!-- <tr>
                             <td class="text-right">CGST(14%)</td>
@@ -183,7 +153,7 @@
                         </tr> -->
                         <tr>
                             <td class="text-center" colspan="7">
-                               <b> Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['amount_word'] }}
+                               <b> Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['gstamount_word']}}
                             </td>
                         </tr>
                         <!-- <tr>

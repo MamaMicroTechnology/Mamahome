@@ -136,6 +136,18 @@
                               <td><input type="radio" name="unit" value="tons" >Tons
                             <input type="radio" name="unit" value="Bags" checked> Bags</td>
                             </tr>
+                            @foreach($reqs as $req)
+                              @if($req->id == $order->req_id)
+                                    <tr>
+                                        <td>Billing Address : </td> 
+                                        <td><input  required type="text" name="bill" class="form-control" value="{{$req->ship}}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping Address : </td> 
+                                        <td><input required type="text" name="ship" class="form-control" value="{{$req->billadress}}"></td>
+                                    </tr>
+                                  @endif
+                                 @endforeach  
                             <tr>
                               <td>Price(Per Unit) : </td>
                               <td><input required type="number" id="unit{{$order->id}}"  class="form-control" name="price" value="{{$price->mamahome_price}}"  onkeyup="getcalculation('{{$order->id}}')"></td>

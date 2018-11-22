@@ -21,6 +21,9 @@ class Order extends Model
     function paymentDetails(){
         return $this->hasMany(PaymentDetails::class);
     }
+    function admin(){
+        return $this->hasOne('App\Requirement','project_id','project_id');
+    }
     protected $fillable = [
             'project_id',
             'req_id',

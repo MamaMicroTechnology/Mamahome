@@ -7,7 +7,6 @@
     <title>Tax Invoice</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -24,7 +23,8 @@
 </head>
 <body>
 @php
-    $normal_address = explode(", ", $data['address']->address);
+     $bill = explode(", ", $data['price']['billaddress']);
+    $ship = explode(", ", $data['price']['shipaddress']);
     $items = explode(", ",$data['products']->sub_category);
 @endphp
 
@@ -54,7 +54,7 @@
 
                 Invoice No :  #{{ $data['products']->id }}<br>
                 Date : {{ date('d F, Y') }} <br>
-                Project ID : {{ $data['products']->project_id }} <br>
+              {{ $data['manu'] == null ? "project ID" : "Manufacturere ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}    <br>
                 Mode Of Payment : {{ $data['products']->payment_mode }}
             </div>
         </div>
@@ -63,23 +63,23 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left">
                 <b>BILL TO : </b>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $data['procurement']->procurement_name }}
-                    @for($i = 0;$i < count($normal_address); $i++)
+                    <br>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} 
+                    @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
-                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
+                        <br>{{ $bill[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        , {{ $bill[$i] }}
                     @endif
                     @endfor
             </div>
             <div class="pull-right">
                 <b> SHIP TO :</b>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $data['procurement']->procurement_name }}
-                    @for($i = 0;$i < count($normal_address); $i++)
+                    <br>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} 
+                    @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
-                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
+                        <br>{{ $ship[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        , {{ $ship[$i] }}
                     @endif
                     @endfor
             </div>
