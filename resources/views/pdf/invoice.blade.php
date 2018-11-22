@@ -31,9 +31,9 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
-            <h4 style="background-color:#99ddff;padding:5px;" class="text-center">PROFORMA INVOICE</h4>
+            <h4 style="background-color:#FD871F;padding:5px;" class="text-center">PROFORMA INVOICE</h4>
             
-            <div class="pull-left">
+            <div class="pull-left" style="padding-top: 20px;">
                 <b>Mama Home Pvt. Ltd.</b>
             </div>
             <div class="pull-right text-right col-md-6">
@@ -46,15 +46,16 @@
             <div class="pull-left">
                 #363,19th Main Road, 1st Block<br>
                 Rajajinagar, Bangalore-560010<br>
-                GST : 29AAKCM5956G1ZX<br>
+                <b>GST : 29AAKCM5956G1ZX</b><br>
                 CIN : U45309KA2016PTC096188<br>
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right">
 
-                Invoice No :  #{{ $data['products']->id }}<br>
-                Date : {{ date('d F, Y') }} <br>
-              {{ $data['manu'] == null ? "project ID" : "Manufacturere ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}    <br>
+                Invoice No :{{ $data['products']->id }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                Date : {{ date('d F, Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>
+              Order ID : {{ $data['price']['unit'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                 Mode Of Payment : {{ $data['products']->payment_mode }}
             </div>
         </div>
@@ -63,7 +64,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left">
                 <b>BILL TO : </b>
-                    <br>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} 
+                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
                     @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $bill[$i] }}
@@ -74,7 +75,7 @@
             </div>
             <div class="pull-right">
                 <b> SHIP TO :</b>
-                    <br>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} 
+                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
                     @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $ship[$i] }}
@@ -90,13 +91,13 @@
                 <table class="table table-responsive" border=1>
                     <thead>
                         <tr style="background-color:#e6e6e6">
-                            <th>ITEM #</th>
+                            <th>SL.NO</th>
                             <th>DESCRIPTION OF GOODS</th>
                             <th>HSN/SAC</th>
                             <th>UNIT</th>
                             <th >QUANTITY</th>
                             <th>RATE/UNIT</th>
-                            <th>AMOUNT</th>
+                            <th>AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,16 +113,16 @@
                         </tr>
                  <!--    @endfor -->
                         <tr>
-                            <td colspan="4" rowspan="7"></td>
+                            <td colspan="4" rowspan="6"></td>
                             <td class="text-left"><b>GROSS AMOUNT</b></td>
                             <td class="text-left"></td>
                             <td class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td class="text-left">Discount Amount</td>
                             <td class="text-left"></td>
                             <td class="text-left"></td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td class="text-left"><b>TOTAL AMOUNT</b></td>
                             <td class="text-left"></td>
