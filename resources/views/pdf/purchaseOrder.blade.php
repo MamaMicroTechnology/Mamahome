@@ -107,11 +107,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                   <!--  @for($j = 0; $j < count($items); $j++) -->
+                   
                         <tr>
                             <td class="text-center">1 </td>
                             <td>{{ $data['supplier']['description']}}</td>
-                            <td>{{ $data['supplier']['quantity'] }}</td>
+                        <td>{{ $data['supplier']['quantity'] }}</td>
                             <td>{{ $data['supplier']['unit'] }}</td>
                             <td>{{ $data['supplier']['unitwithoutgst']}}</td>
                             <td>{{ $data['supplier']['amount']}}</td>
