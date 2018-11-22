@@ -100,9 +100,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @for($j = 0; $j < count($items); $j++)
+                   <!--  @for($j = 0; $j < count($items); $j++) -->
                         <tr>
-                            <td class="text-center">{{ $j + 1 }}</td>
+                            <td class="text-center">1</td>
                             <td>{{$data['products']->main_category}} {{ $items[$j] }}</td>
                             <td></td>
                             <td>{{ $data['price']['unit'] }}</td>
@@ -110,7 +110,7 @@
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
                             <td>{{ $data['price']['totalamount'] }}</td>
                         </tr>
-                    @endfor
+                 <!--    @endfor -->
                         <tr>
                             <td colspan="4" rowspan="7"></td>
                             <td class="text-left"><b>GROSS AMOUNT</b></td>

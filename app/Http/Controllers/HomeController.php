@@ -90,7 +90,7 @@ use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
 use App\PaymentDetails;
-use App\Mamahomeprice;
+use App\MamahomePrice;
 use App\Supplierdetails;
 
 use Spatie\Activitylog\Models\Activity;
@@ -263,7 +263,7 @@ class HomeController extends Controller
                                                 'ship' =>$shipadress
                                         ]);
 
-
+        // $customer = new 
 
 
 
@@ -3153,7 +3153,7 @@ date_default_timezone_set("Asia/Kolkata");
         $withgst = $cgst + $sgst + $totalamount;
         $y = (int)$withgst;
 
-        $price = new Mamahomeprice;
+        $price = new MamahomePrice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
             $price->mamahome_price = $request->mamaprice;

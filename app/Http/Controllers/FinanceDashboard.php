@@ -9,12 +9,13 @@ use App\PaymentDetails;
 use App\Message;
 use App\User;
 use App\Tlwards;
-use App\Mamahomeprice;
+use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Country;
 use App\Zone;
 use App\ManufacturerDetail;
 use App\Manufacturer;
+use App\Mprocurement_Details;
 use DB;
 use Auth;
 use PDF;
@@ -44,7 +45,7 @@ class FinanceDashboard extends Controller
 
         }
         $payments = PaymentDetails::get();
-        $mamaprices = Mamahomeprice::get();
+        $mamaprices = MamahomePrice::get();
         $messages = Message::all();
         $counts = array();
         $users = User::all();
@@ -66,14 +67,23 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first()->getOriginal();
-
+        $price = MamahomePrice::where('order_id',$request->id)->first()->getOriginal();
+        // $manuid =  MamahomePrice::where('order_id',$request->id)->pluck('manu_id')->first();
+         if( $request->manu_id != null){
+        $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();
+        $procurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
+            }
+            else{
+                $manu = "";
+            }
         $data = array(
             'products'=>$products,
             'address'=>$address,
             'procurement'=>$procurement,
             'payment'=>$payment,
-            'price'=>$price
+            'price'=>$price,
+            'manu'=>$manu,
+            'procurement'=>$procurement
         );
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.invoice')->setPaper('a4','portrait');
@@ -88,7 +98,7 @@ class FinanceDashboard extends Controller
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
-        $price = Mamahomeprice::where('order_id',$request->id)->first()->getOriginal();
+        $price = MamahomePrice::where('order_id',$request->id)->first()->getOriginal();
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -283,8 +293,7 @@ class FinanceDashboard extends Controller
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
         $order->save();
-
-        $price = Mamahomeprice::where('order_id',$request->id)->first();
+        $price = MamahomePrice::where('order_id',$request->id)->first();
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
         $price->unitwithoutgst = $request->unitwithoutgst;
@@ -297,6 +306,8 @@ class FinanceDashboard extends Controller
         $price->tax_word = $request->dtow2;
         $price->gstamount_word =  $request->dtow3;
         $price->quantity = $request->quantity;
+        $price->manu_id = $request->manu_id;
+        $price->description = $request->desc;
         $price->save();
          PaymentDetails::where('order_id',$request->id)->update([
             'status'=>"Received"

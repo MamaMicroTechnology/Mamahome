@@ -261,6 +261,14 @@ function openCitytest(evt, cityName) {
                                         <td><input required type="text" name="desc" id="category{{$rec->orderid}}" class="form-control" value=""></td>
                                     </tr>
                                     <tr>
+                                        <td>Billing Address : </td> 
+                                        <td><input required type="text" name="billaddress" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping Address : </td> 
+                                        <td><input required type="text" name="shipaddress" class="form-control"></td>
+                                    </tr>
+                                    <tr>
                                         <td>Quantity :</td>
                                         <td><input required type="number" name="quantity" class="form-control" id="qu{{$rec->orderid}}"></td>
                                     </tr>
