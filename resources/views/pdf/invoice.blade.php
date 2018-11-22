@@ -176,13 +176,10 @@
                         </tr>
 <tr class="clearfix">
                             <td colspan="7">
-                                <!-- <div class="pull-left col-md-6 clearfix">
-                                    Tax Amount In Words
-                                </div> -->
-                                <!-- <div class="pull-right col-md- clearfix6">
-                                    s
-                                </div> -->
-                               
+                                <div class="pull-left col-md-6 clearfix" style="padding-left: 150px;">
+                                    <b>Tax Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['tax_word']}} Only
+                                </div>
+                                <br><br>
                                 <div class="pull-left col-md-6 clearfix">
                                     <i><b>Terms And Conditions</b></i>
                                     <br>
