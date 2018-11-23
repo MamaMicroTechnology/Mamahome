@@ -2187,10 +2187,10 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         
 
              if(Auth::user()->group_id == 22){
-                  $wardsAssigned = $request->tlward;
+                  $wardsAssigned = $request->subward_id;
              }else{
                 
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $wardsAssigned = $request->subward_id;
              }
 
 
@@ -2308,7 +2308,9 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $products->save();
             }
         }
-        return back()->with('Success','Manufacturer Saved Successfully');
+        $ward = SubWard::where('id',$request->subward_id)->pluck('sub_ward_name')->first();
+               $text = "Manufacturer Saved Successfully in Subward is : ".$ward."";
+        return back()->with('Success',$text);
     }
     public function listeng(request $request){
        // $s = User::pluck('id');

@@ -674,7 +674,7 @@
        shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
 
                if(shouldAlert == true){
-                     alert("ward id :" +ss['original'][i]['ward']);
+                     // alert("ward id :" +ss['original'][i]['ward']);
                       getBrands(ss['original'][i]['ward']);
                           break;
 
@@ -689,7 +689,7 @@
 function getBrands(data){
     const Http = new XMLHttpRequest();
     var x = data;
-    alert(x);
+    // alert(x);
   const url='{{URL::to('/')}}/subfind?id='+x;
    Http.open("GET", url);
    Http.send();
@@ -726,7 +726,7 @@ Http.onreadystatechange=(e)=>{
 
               
                if(shouldAlert == true){
-                  alert("subward id: " +subs[i]['subward']);
+                  // alert("subward id: " +subs[i]['subward']);
                       document.getElementById('subwardid').value=subs[i]['subward'];
                        break;
                 }

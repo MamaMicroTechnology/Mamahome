@@ -7,33 +7,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-default">
                <div class="panel-heading" style="background-color:#42c3f3;padding:20px;">
-                  @if(Auth::user()->group_id == 22)
-                     <select class="form-control" style="width:20%" name="tlward" required>
-                       <option value="">Select SubWard</option>
-                       @foreach($tlwards as $wa)
-                       <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
-                       @endforeach
-                     </select>
-                  @elseif(Auth::user()->group_id == 6)
-                 <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
-                  @elseif(Auth::user()->group_id == 6 || Auth::user()->group_id == 1)
-                 Your Assigned Ward Is  {{$subwards->sub_ward_name}}
-                     @elseif(Auth::user()->group_id == 23)
-                           @if(count($subwards) != 0)
-                           Your Assigned Ward Is  {{$subwards->sub_ward_name}}
-                             @else
-                               Ward is Not Assigned
-                           @endif  
-                  @elseif(Auth::user()->group_id == 11 || Auth::user()->group_id == 2)
-                   <select class="form-control" style="width:20%" name="tlward">
-                       <option value="">Select SubWard</option>
-                       @foreach($acc as $w)
-                       <option value="{{$w->id}}">{{$w->sub_ward_name}}</option>
-                       @endforeach
-                     </select>
-                 @else 
-                 Senior TL
-                  @endif
+                 
                             <div id="currentTime" class="pull-right" style="color:white;margin-top:-5px;"></div>
                             
                         </div>
@@ -55,6 +29,7 @@
                                         </select>
                                     </td>
                                 </tr>
+                                <input type="hidden" name="subward_id" id="subwardid" >
                                 <tr>
                                     <td>Production Type</td>
                                     <td>:</td>
@@ -765,6 +740,7 @@ function openCity(evt, cityName) {
       document.getElementById('latitude').value=latitude;
       document.getElementById('longitude').value=longitude;
       getAddressFromLatLang(latitude,longitude);
+      initMap();
     }
    
     function  displayError(error){
@@ -795,6 +771,95 @@ function openCity(evt, cityName) {
             }
         });
     }
+</script>
+<script type="text/javascript">
+  function initMap() {
+       var latitude = document.getElementById("latitude").value; 
+       var longitude  = document.getElementById("longitude").value;
+       if(latitude != ""){
+      var faultyward = "{{json_encode($ward)}}";
+      var ward = faultyward.split('&quot;,&quot;').join('","');
+      ward = ward.split('&quot;').join('"');
+
+      var ss = JSON.parse(ward);
+      var shouldAlert;
+      for(var i=0; i<Object(ss['original'].length); i++){
+        
+        var finalward = [];
+        finalward = ss['original'][i]['lat'].map(s => eval('null,' +s ));
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+       shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+               if(shouldAlert == true){
+                     // alert("ward id :" +ss['original'][i]['ward']);
+                      getBrands(ss['original'][i]['ward']);
+                          break;
+
+                }
+           
+      }
+      if(shouldAlert == false){
+        alert("no ward found");
+      }
+}    
+  }
+function getBrands(data){
+    const Http = new XMLHttpRequest();
+    var x = data;
+    // alert(x);
+  const url='{{URL::to('/')}}/subfind?id='+x;
+   Http.open("GET", url);
+   Http.send();
+
+Http.onreadystatechange=(e)=>{
+              
+  
+           initsubward(Http.responseText);
+            
+            
+            }
+  
+
+  }
+
+  function initsubward(data){
+     var latitude = document.getElementById("latitude").value; 
+     var longitude  = document.getElementById("longitude").value;
+        var subfaulty = data;
+      var subs = JSON.parse(subfaulty);
+     
+
+      var shouldAlert;
+      for(var i=0; i<Object(subs.length); i++){
+        
+        var finalsubward = [];
+        finalsubward = subs[i]['lat'].map(s => eval('null,' +s ));
+
+         console.log(finalsubward);
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalsubward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+      shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+              
+               if(shouldAlert == true){
+                  // alert("subward id: " +subs[i]['subward']);
+                      document.getElementById('subwardid').value=subs[i]['subward'];
+                       break;
+                }
+           
+      }
+      if(shouldAlert== false){
+        alert("Subward Not Found");
+      }
+
+
+
+  }
+
+
 </script>
 <script type="text/javascript">
    function doDate()
@@ -840,4 +905,5 @@ function openCity(evt, cityName) {
 </script>
 
 @endif
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&libraries=geometry&callback=initMap"></script>
 @endsection
