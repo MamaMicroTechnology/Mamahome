@@ -5,45 +5,11 @@
         <div class="col-md-8 col-md-offset-2">
         <form method="POST" onsubmit="validateform()" action="{{ URL::to('/') }}/addProject" enctype="multipart/form-data">
             <div class="panel panel-default">
-                <div class="panel-heading" style="background-color:#42c3f3;color:#ffffffe3;">
-
-                  @if(Auth::user()->group_id == 22)
-                  
-                     <select class="form-control" style="width:20%" name="tlward">
-                       <option value="">Select SubWard</option>
-                       @foreach($tlwards as $wa)
-                       <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
-                       @endforeach
-                     </select>
-                  @elseif(Auth::user()->group_id == 6 || Auth::user()->group_id == 1 )
-                 Your Assigned Ward Is  {{$subwards->sub_ward_name}}
-                     @elseif(Auth::user()->group_id == 23)
-                           @if(count($subwards) != 0)
-                           Your Assigned Ward Is  {{$subwards->sub_ward_name}}
-                             @else
-                               Ward is Not Assigned
-                           @endif    
-
-                  @elseif(Auth::user()->group_id == 11 || Auth::user()->group_id == 2)
-                   <select class="form-control" style="width:20%" name="tlward">
-                       <option value="">Select SubWard</option>
-                       @foreach($acc as $w)
-                       <option value="{{$w->id}}">{{$w->sub_ward_name}}</option>
-                       @endforeach
-                     </select>
-                     @else
-                  Senior TL
-                  @endif
-                 
-                  <div id="currentTime" class="pull-right" style="margin--5px;"></div>
+                <div class="panel-heading" style="background-color:#42c3f3;color:#ffffffe3;padding:20px;">
+             <div id="currentTime" class="pull-right" style="margin--5px;"></div>
                 </div>
-                <?php 
-                  if(Auth::user()->group_id == 22 ){
-                    $subwards = "NULL";
-                  }
-
-                ?>
-                @if($subwards || $subwards == "NULL")
+               
+               
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
                    <br>              
@@ -57,6 +23,7 @@
                                    <td>:</td>
                                    <td><input id="pName" required type="text" placeholder="Project Name" class="form-control input-sm" name="pName" value="{{ old('pName') }}" ></td>
                                </tr>
+                               <input type="hidden" name="subward_id" id="subwardid" >
                                 
                                <tr>
                                    <td>Location</td>
@@ -623,11 +590,158 @@
                           <!--  <li class="next"><a id="next" href="#" onclick="pageNext()">Next</a></li> -->
                      </form>
                 </div>
-                @endif
             </div>
         </div>
     </div>
 </div>
+<!-- get location -->
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" charset="utf-8">
+  function getLocation(){
+   
+      document.getElementById("getBtn").className = "hidden";
+      console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocation,
+        displayError,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+  }
+    
+    function displayCurrentLocation(position){
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      document.getElementById("longitude").value = longitude;
+      document.getElementById("latitude").value  = latitude;
+      getAddressFromLatLang(latitude,longitude);
+            initMap();
+    }
+   
+  function  displayError(error){
+    console.log("Entering ConsultantLocator.displayError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLang(lat,lng){
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        document.getElementById("address").value = results[0].formatted_address;
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
+  }
+</script>
+<script type="text/javascript">
+  function initMap() {
+       var latitude = document.getElementById("latitude").value; 
+       var longitude  = document.getElementById("longitude").value;
+       if(latitude != ""){
+      var faultyward = "{{json_encode($ward)}}";
+      var ward = faultyward.split('&quot;,&quot;').join('","');
+      ward = ward.split('&quot;').join('"');
+
+      var ss = JSON.parse(ward);
+      var shouldAlert;
+      for(var i=0; i<Object(ss['original'].length); i++){
+        
+        var finalward = [];
+        finalward = ss['original'][i]['lat'].map(s => eval('null,' +s ));
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+       shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+               if(shouldAlert == true){
+                     alert("ward id :" +ss['original'][i]['ward']);
+                      getBrands(ss['original'][i]['ward']);
+                          break;
+
+                }
+           
+      }
+      if(shouldAlert == false){
+        alert("no ward found");
+      }
+}    
+  }
+function getBrands(data){
+    const Http = new XMLHttpRequest();
+    var x = data;
+    alert(x);
+  const url='{{URL::to('/')}}/subfind?id='+x;
+   Http.open("GET", url);
+   Http.send();
+
+Http.onreadystatechange=(e)=>{
+              
+  
+           initsubward(Http.responseText);
+            
+            
+            }
+  
+
+  }
+
+  function initsubward(data){
+     var latitude = document.getElementById("latitude").value; 
+     var longitude  = document.getElementById("longitude").value;
+        var subfaulty = data;
+      var subs = JSON.parse(subfaulty);
+     
+
+      var shouldAlert;
+      for(var i=0; i<Object(subs.length); i++){
+        
+        var finalsubward = [];
+        finalsubward = subs[i]['lat'].map(s => eval('null,' +s ));
+
+         console.log(finalsubward);
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalsubward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+      shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+              
+               if(shouldAlert == true){
+                  alert("subward id: " +subs[i]['subward']);
+                      document.getElementById('subwardid').value=subs[i]['subward'];
+                       break;
+                }
+           
+      }
+      if(shouldAlert== false){
+        alert("Subward Not Found");
+      }
+
+
+
+  }
+
+
+</script>
 <script type="text/javascript">
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
@@ -868,6 +982,7 @@ function openCity(evt, cityName) {
     }
   
   function check(arg){
+
     var input = document.getElementById(arg).value;
     if(input){
     if(isNaN(input)){
@@ -959,65 +1074,7 @@ function openCity(evt, cityName) {
 </script>
 
 
-<!-- get location -->
-<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" charset="utf-8">
-  function getLocation(){
-   
-      document.getElementById("getBtn").className = "hidden";
-      console.log("Entering getLocation()");
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-        displayCurrentLocation,
-        displayError,
-        { 
-          maximumAge: 3000, 
-          timeout: 5000, 
-          enableHighAccuracy: true 
-        });
-    }else{
-      alert("Oops.. No Geo-Location Support !");
-    } 
-  }
-    
-    function displayCurrentLocation(position){
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
-     
-      document.getElementById("longitude").value = longitude;
-      document.getElementById("latitude").value  = latitude;
-      getAddressFromLatLang(latitude,longitude);
-    }
-   
-  function  displayError(error){
-    console.log("Entering ConsultantLocator.displayError()");
-    var errorType = {
-      0: "Unknown error",
-      1: "Permission denied by user",
-      2: "Position is not available",
-      3: "Request time out"
-    };
-    var errorMessage = errorType[error.code];
-    if(error.code == 0  || error.code == 2){
-      errorMessage = errorMessage + "  " + error.message;
-    }
-    alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
-  }
-  function getAddressFromLatLang(lat,lng){
-    var geocoder = new google.maps.Geocoder();
-    var latLng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        document.getElementById("address").value = results[0].formatted_address;
-      }
-    }else{
-        alert("Geocode was not successful for the following reason: " + status);
-     }
-    });
-  }
-</script>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 
 <script type="text/javascript">
@@ -1096,87 +1153,7 @@ function openCity(evt, cityName) {
            
           
         }
-    //  else if(current == 'second'){
-    //           document.getElementById("second").className = "hidden";
-    //           document.getElementById("third").className = "";
-    //           document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-    //           current = "third";    
-    //     }else if(current == 'third'){
-    //             document.getElementById("third").className = "hidden";
-    //             document.getElementById("fourth").className = "";
-    //             document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-    //             current = "fourth";
-            
-    //     }else if(current == 'fourth'){
-    //         document.getElementById("fourth").className = "hidden";
-    //         document.getElementById("fifth").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Site Engineer Details';
-    //         current = "fifth";
-    //     }else if(current == 'fifth'){
-    //         document.getElementById("fifth").className = "hidden";
-    //         document.getElementById("sixth").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Procurement Details';
-    //         current = "sixth";
-    //     }else if(current == 'sixth'){  
-    //       if(document.getElementById('prName').value == ''){
-    //         alert('Please Enter a Procurement Name');
-    //         document.getElementById('prName').focus();
-    //       }else if(document.getElementById('prPhone').value== ''){
-    //         alert('Please Enter Phone Number');
-    //         document.getElementById('prPhone').focus();
-    //       }else if(document.getElementById("prName").value == ""){
-    //        swal("Please Enter Procurement Name");
-    //       }else if(document.getElementById("pContact") == ""){
-    //         window.alert("Please enter phone number");
-    //       }else { 
-    //         document.getElementById("sixth").className = "hidden";
-    //         document.getElementById("seventh").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Remarks';
-    //         current = "seventh";
-    //         document.getElementById("next").className = "hidden";
-    //       }
-         
-    //     } 
-    // }
-    // function pagePrevious(){
-    //     document.getElementById("next").className = "";
-    //     if(current == 'seventh'){
-    //         document.getElementById("seventh").className = "hidden";
-    //         document.getElementById("sixth").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Procurement Details';
-    //         current = "sixth"
-    //     }else if(current == 'sixth'){
-    //         document.getElementById("sixth").className = "hidden";
-    //         document.getElementById("fifth").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Site Engineer Details';
-    //         current = "fifth"
-    //     }
-    //     else if(current == 'fifth'){
-    //         document.getElementById("fifth").className = "hidden";
-    //         document.getElementById("fourth").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Consultant Details';
-    //         current = "fourth"
-    //     }
-    //     else if(current == 'fourth'){
-    //         document.getElementById("fourth").className = "hidden";
-    //         document.getElementById("third").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Contractor Details';
-    //         current = "third"
-    //     }
-    //     else if(current == 'third'){
-    //         document.getElementById("third").className = "hidden";
-    //         document.getElementById("second").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Owner Details';
-    //         current = "second"
-    //     }else if(current == 'second'){
-    //         document.getElementById("second").className = "hidden";
-    //         document.getElementById("first").className = "";
-    //         document.getElementById('headingPanel').innerHTML = 'Project Details';
-    //         current = "first";
-    //     }else{
-    //         document.getElementById("next").className = "disabled";
-    //     }
-       }
+   
 </script>
 
 <script type="text/javascript">
@@ -1597,4 +1574,7 @@ function validateForm(arg)
   });
 </script>
 @endif
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&libraries=geometry&callback=initMap"></script>
+
 @endsection

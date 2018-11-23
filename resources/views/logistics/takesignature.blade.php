@@ -61,7 +61,7 @@
       <input type="text" id="sign" name="sign">
     </form>
   </div>
-  <script src="{{ asset('js/app.js') }}"></script>
+  <script src="{{ URL::to('/')}}/js/app.js"></script>
   <script src="{{ URL::to('/') }}/js/signature_pad.umd.js"></script>
   <script src="{{ URL::to('/') }}/js/app2.js"></script>
 </body>

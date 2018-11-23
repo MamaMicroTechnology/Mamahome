@@ -1893,10 +1893,51 @@ class HomeController extends Controller
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $a =Subward::where('id',$wardsAssigned)->pluck('ward_id')->first();
         $acc = Subward::where('ward_id',$a)->get();
-        
 
-        $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc]);
+    
+
+        $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+     $subwards = SubWard::where('id',$wardsAssigned)->first();
+        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc,'ward'=>$d]);
     }
     public function leDashboard()
     {
@@ -3861,7 +3902,6 @@ $upvcInt = explode(",", $upvc);
 
 
 
-
  if(count($projectids) != 0){
                 $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
             }else{
@@ -3898,7 +3938,7 @@ $upvcInt = explode(",", $upvc);
                 if(count( $projectids) != 0){
                     $qdate = ProjectDetails::whereIn('project_id',$projectids)->where('updated_at','>=',$previous )->pluck('project_id');
                 }else{
-                    $qdate = ProjectDetails::where('updated_at', $undate )->pluck('project_id');
+                    $qdate = ProjectDetails::where('updated_at',$undate )->pluck('project_id');
                 }
 
                 if(count($qdate) > 0){
@@ -3917,7 +3957,6 @@ $upvcInt = explode(",", $upvc);
                     ->orderBy('project_id','ASC')
                     ->paginate(20);
 
-                    
         
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
@@ -8656,15 +8695,21 @@ public function viewManufacturer1(Request $request)
   {
 
     $x = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('id')->last();
-   // dd($x);
-    BreakTime::where('id',$x)->update([
-            'stop_time' => date('h:i A')
+     $y = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('start_time')->last();
+    
+   $A = strtotime($y);
+   $B = strtotime(date('h:i A'));
+   $diff = $B - $A;
+    $z =  $diff / 60 ;
+
+   BreakTime::where('id',$x)->update([
+            'stop_time' => date('h:i A'),
+            'totaltime' =>$z
+
         ]);
         return back()->with('Success','Your Break Time has been Ended');
   }
-  // public function starttimer(){
-  //   return view("timer");
-  //}
+ 
   public function getid(){
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
