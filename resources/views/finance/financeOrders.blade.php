@@ -21,7 +21,11 @@
         @foreach($orders as $order)
         <tr style="{{ date('Y-m-d') == $order->requirement_date ? 'background-color:#ccffcc': '' }}">
             <td>{{ date('d M, y',strtotime($order->requirement_date)) }}</td>
-             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$order->project_id}}&&lename=" target="_blank">{{ $order->project_id }}</a></td>
+             <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$order->project_id}}&&lename=" target="_blank">{{ $order->project_id }}</a>
+              @if($order-> project_id == null)
+                            <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $order->manu_id }}">Manufacturer{{$order -> manu_id}}</a>
+              @endif
+             </td>
             <td>{{ $order->id }}</td>
             <td>{{ $order->main_category }}</td>
             <td>{{ $order->quantity }}</td>
@@ -49,21 +53,15 @@
                  @endif             
             </td>
             <td>
-                @if($order->clear_for_delivery == "No")
-                <form id="theForm" action="{{ URL::to('/') }}/clearOrderForDelivery" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="order_id" value="{{ $order->id }}">
-                    <button class="btn btn-primary btn-xs">Clear For Delivery</button>
-                </form>
-                @else
+                
                     
             <?php 
                 $rec =count($order->confirm_payment); 
              ?> 
                 @if($rec == 1)
                     <div class="btn-group">
-    <a type="button" href="{{ route('downloadInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
-    <a type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
+    <a type="button" href="{{ route('downloadInvoice',['id'=>$order->id,'manu_id'=>$order->manu_id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
+    <a type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id,'manu_id'=>$order->manu_id]) }}" class="btn btn-success btn-xs">TAX</a>
     <!-- <a type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a> -->
   </div>
                     @else
@@ -73,8 +71,7 @@
     <a disabled type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
     <!-- <a disabled type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a> -->
   </div>
-                   
-                    @endif
+            
                 @endif
             </td>
             @endif
@@ -90,7 +87,6 @@
         <!-- Modal -->
                     <div id="payment{{$order->id}}" class="modal fade" role="dialog">
                       <div class="modal-dialog" style="width:50%">
-
                         <!-- Modal content-->
                         <div class="modal-content">
                           <div class="modal-header" style="background-color: #5cb85c;color:white">
@@ -112,7 +108,7 @@
                                         <td>{{ $order->quantity }}</td>
                                     </tr>
                                 </table>
-                           <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}" method="post">
+                           <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}&&manu_id={{$order->manu_id}}" method="post">
                             {{ csrf_field() }}
                             <input class="hidden" type="text" name="dtow1" id="dtow1" value="">
                             <input type="hidden" name="dtow2" id="dtow2" value="">
@@ -120,6 +116,10 @@
                             @foreach($mamaprices as $price)
                                 @if($price->order_id == $order->id)
                                <table class="table table-responsive table-striped" border="1">
+                           <tr>
+                                  <td>Description of Goods : </td>
+                                  <td><input required type="text" name="desc" class="form-control" value=""></td>
+                           </tr>
                            <tr>
                              <td>Total Quantity : </td>
                              <td><input required type="number" class="form-control" name="quantity" value="{{$price->quantity}}" id="quan{{$order->id}}"></td>
@@ -129,6 +129,18 @@
                               <td><input type="radio" name="unit" value="tons" >Tons
                             <input type="radio" name="unit" value="Bags" checked> Bags</td>
                             </tr>
+                            @foreach($reqs as $req)
+                              @if($req->id == $order->req_id)
+                                    <tr>
+                                        <td>Billing Address : </td> 
+                                        <td><input  required type="text" name="bill" class="form-control" value="{{$req->ship}}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping Address : </td> 
+                                        <td><input required type="text" name="ship" class="form-control" value="{{$req->billadress}}"></td>
+                                    </tr>
+                                  @endif
+                                 @endforeach  
                             <tr>
                               <td>Price(Per Unit) : </td>
                               <td><input required type="number" id="unit{{$order->id}}"  class="form-control" name="price" value="{{$price->mamahome_price}}"  onkeyup="getcalculation('{{$order->id}}')"></td>

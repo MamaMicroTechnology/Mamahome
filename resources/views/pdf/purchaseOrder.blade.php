@@ -26,12 +26,12 @@
     @if( $data['manu'] == null)
 @php
     $normal_address = explode(", ", $data['address']->address);
-    $items = explode(", ",$data['products']->sub_category);
+   
 @endphp
 @else
 @php
     $normal_address = explode(", ", $data['manu']['address']);
-    $items = explode(", ",$data['products']->sub_category);
+   
 @endphp
 @endif
 
@@ -69,14 +69,14 @@
                     @if($i % 3 == 0)
                          {{ $address[$i] }}<br>
                          @else
-                        , {{ $address[$i] }}<br>
+                        {{ $address[$i] }}<br>
                      @endif   
                     @endfor
                   <b>GST : {{ $data['supplier']['gst'] }}</b><br>
             </div>
             <div class="pull-right" style="padding-left: 15px;">
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>SHIP TO :</b><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAMAHOME PVT LTD.
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAMA HOME PVT LTD.
                 
                     @for($i = 0;$i < count($normal_address); $i++)
                     @if($i % 3 == 0)
@@ -107,16 +107,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @for($j = 0; $j < count($items); $j++)
+                   
                         <tr>
-                            <td class="text-center">{{ $j + 1 }}</td>
+                            <td class="text-center">1 </td>
                             <td>{{ $data['supplier']['description']}}</td>
-                            <td>{{ $data['supplier']['quantity'] }}</td>
+                        <td>{{ $data['supplier']['quantity'] }}</td>
                             <td>{{ $data['supplier']['unit'] }}</td>
                             <td>{{ $data['supplier']['unitwithoutgst']}}</td>
                             <td>{{ $data['supplier']['amount']}}</td>
                         </tr>
-                    @endfor
+                   
                         <tr>
                             <td colspan="3" rowspan="4"></td>
                             <td class="text-left"><b>SUB TOTAL</b></td>

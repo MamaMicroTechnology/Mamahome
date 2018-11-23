@@ -260,10 +260,13 @@ function openCitytest(evt, cityName) {
                                         <td>Description of Goods : </td>
                                         <td><input required type="text" name="desc" id="category{{$rec->orderid}}" class="form-control" value=""></td>
                                     </tr>
+                                   
+                                   
                                     <tr>
                                         <td>Quantity :</td>
                                         <td><input required type="number" name="quantity" class="form-control" id="qu{{$rec->orderid}}"></td>
                                     </tr>
+
                                      <tr>
                                         <td>Unit:</td>
                                         <td><input type="radio" name="unit" value="tons" >Tons
@@ -288,6 +291,7 @@ function openCitytest(evt, cityName) {
                                         </td>
                                     </tr>
                                     <tr>
+                                        
                                         <td>CGST(14%) : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$rec->orderid}}"></label>/-
@@ -521,13 +525,9 @@ function openCitytest(evt, cityName) {
                      </td>
                         
                        <td>
-                        @if($rec->order_status == "Enquiry Confirmed")
+                       
                             <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
-                        @endif
-                           @if($rec->clear_for_delivery == "Yes")
-                            <a href="{{ URL::to('/') }}/viewProformaInvoice?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Proforma Invoice</a>
-                            <a href="{{ URL::to('/') }}/viewPurchaseOrder?id={{ $rec->orderid }}" class="btn btn-primary btn-xs">View Purchase Order</a>
-                            @endif
+                       
                        </td>
 
                     </tr>

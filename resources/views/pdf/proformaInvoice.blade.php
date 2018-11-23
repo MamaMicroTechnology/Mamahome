@@ -7,7 +7,6 @@
     <title>Tax Invoice</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -24,16 +23,17 @@
 </head>
 <body>
 @php
-    $normal_address = explode(", ", $data['address']->address);
+     $bill = explode(", ", $data['price']['billaddress']);
+    $ship = explode(", ", $data['price']['shipaddress']);
     $items = explode(", ",$data['products']->sub_category);
 @endphp
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
-            <h4 style="background-color:#99ddff;padding:5px;" class="text-center">TAX INVOICE</h4>
+            <h4 style="background-color:#FD871F;padding:5px;" class="text-center">TAX INVOICE</h4>
             
-            <div class="pull-left">
+            <div class="pull-left" style="padding-top: 20px;">
                 <b>Mama Home Pvt. Ltd.</b>
             </div>
             <div class="pull-right text-right col-md-6">
@@ -46,15 +46,16 @@
             <div class="pull-left">
                 #363,19th Main Road, 1st Block<br>
                 Rajajinagar, Bangalore-560010<br>
-                GST : 29AAKCM5956G1ZX<br>
+                <b>GST : 29AAKCM5956G1ZX</b><br>
                 CIN : U45309KA2016PTC096188<br>
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right">
 
-                Invoice No :  #{{ $data['products']->id }}<br>
-                Date : {{ date('d F, Y') }} <br>
-                Project ID : {{ $data['products']->project_id }} <br>
+                Invoice No :{{ $data['products']->id }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                Date : {{ date('d F, Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>
+               Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                 Mode Of Payment : {{ $data['products']->payment_mode }}
             </div>
         </div>
@@ -63,23 +64,23 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left">
                 <b>BILL TO : </b>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $data['procurement']->procurement_name }}
-                    @for($i = 0;$i < count($normal_address); $i++)
+                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
+                    @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
-                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
+                        <br>{{ $bill[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        , {{ $bill[$i] }}
                     @endif
                     @endfor
             </div>
             <div class="pull-right">
                 <b> SHIP TO :</b>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $data['procurement']->procurement_name }}
-                    @for($i = 0;$i < count($normal_address); $i++)
+                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
+                    @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
-                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
+                        <br>{{ $ship[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        , {{ $ship[$i] }}
                     @endif
                     @endfor
             </div>
@@ -90,19 +91,19 @@
                 <table class="table table-responsive" border=1>
                     <thead>
                         <tr style="background-color:#e6e6e6">
-                            <th>ITEM #</th>
+                            <th>SL.NO</th>
                             <th>DESCRIPTION OF GOODS</th>
                             <th>HSN/SAC</th>
                             <th>UNIT</th>
                             <th >QUANTITY</th>
                             <th>RATE/UNIT</th>
-                            <th>AMOUNT</th>
+                            <th>AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @for($j = 0; $j < count($items); $j++)
+                   <!--  @for($j = 0; $j < count($items); $j++) -->
                         <tr>
-                            <td class="text-center">{{ $j + 1 }}</td>
+                            <td class="text-center">1</td>
                             <td>{{$data['products']->main_category}} {{ $items[$j] }}</td>
                             <td></td>
                             <td>{{ $data['price']['unit'] }}</td>
@@ -110,18 +111,18 @@
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
                             <td>{{ $data['price']['totalamount'] }}</td>
                         </tr>
-                    @endfor
+                 <!--    @endfor -->
                         <tr>
-                            <td colspan="4" rowspan="7"></td>
+                            <td colspan="4" rowspan="6"></td>
                             <td class="text-left"><b>GROSS AMOUNT</b></td>
                             <td class="text-left"></td>
                             <td class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td class="text-left">Discount Amount</td>
                             <td class="text-left"></td>
                             <td class="text-left"></td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td class="text-left"><b>TOTAL AMOUNT</b></td>
                             <td class="text-left"></td>

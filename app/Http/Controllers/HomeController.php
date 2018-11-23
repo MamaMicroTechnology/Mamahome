@@ -263,12 +263,21 @@ class HomeController extends Controller
                                                 'ship' =>$shipadress
                                         ]);
 
+        // $number = ProcurementDetails::where('project_id',$request->selectprojects)->get();
+        // $customer = new CustomerDetails;
+        // $customer->type_customer = "Project";
+        // $customer->manu_type = "";
+        // $customer->project_id = $request->selectprojects;
+        // $customer->manu_id = "";
+        // $customer->billadress = $request->billadress;
+        // $customer->shipaddress = $shipadress;
+        // $customer->contact_no = $number->procurement_contact_no;
+        // $customer->save();
 
+        // $customer =CustomerDetails::where('id',$customer->id)->update(['req_id'=>
+        // $customer->id]);
 
-
-
-
-         $activity = new ActivityLog;
+        $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->selectprojects." at ".date('H:i A');
@@ -3078,7 +3087,8 @@ date_default_timezone_set("Asia/Kolkata");
         foreach($view as $order){
             $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
         }
-            $suppliers = SupplierDetails::get();
+        $suppliers = SupplierDetails::get();
+      
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3090,6 +3100,7 @@ date_default_timezone_set("Asia/Kolkata");
             'manusuppliers'=>$manusuppliers,
             'suppliers'=>$suppliers,
             'counts'=>$counts
+           
         ]);
     }
   public function amorders(Request $request)
