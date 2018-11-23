@@ -441,6 +441,7 @@ class mamaController extends Controller
     public function addProject(Request $request)
     {
              
+
              $result = (new HomeController)->getid();
              // dd($result);
 
@@ -584,10 +585,11 @@ class mamaController extends Controller
         
             }
               if(Auth::user()->group_id == 22){
-                $ward = $request->tlward;
+                 $ward= $request->subward_id;
+             
               }else{
 
-                $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+                 $ward= $request->subward_id;
               }
 
             $projectdetails = New ProjectDetails;
@@ -746,7 +748,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-      $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
+        $subward = Subward::where('id',$request->subward_id)->pluck('sub_ward_name')->first();
+      $text = "Project Added Successfully in Subward : ".$subward.".<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('test',$text);
     }
     public function updateProject($id, Request $request)

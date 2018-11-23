@@ -1509,7 +1509,7 @@ public function noneed(request $request ){
                   array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
                }
              
-              
+         
     $a = [];
 
     for($j = 0; $j<sizeof($allwardlats);$j++){
@@ -1525,14 +1525,22 @@ public function noneed(request $request ){
          array_push($finalward,$latlong);
 
     }
-  
 
 
       
        array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
 
    }
- $sub = SubWard::where('ward_id',1)->get();     
+
+    $d = response()->json($a);
+
+    return view('/subwardfind',['ward'=>$d]);
+}
+
+function subfind(request $request){
+
+
+ $sub = SubWard::where('ward_id',$request->id)->get();     
  $subwardlat = [];
 foreach ($sub as  $users) {
            
@@ -1573,8 +1581,9 @@ foreach ($sub as  $users) {
        array_push($suba,['lat'=>$finalsubward,'subward'=>$subwardId]);
 
    }
-
-
-    return view('/subwardfind',['ward'=>$a,'subward'=>$suba,'allwardlats'=>$allwardlats]);
+  
+  return response()->json($suba);
+ 
  }
 }
+
