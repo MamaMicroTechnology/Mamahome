@@ -1,5 +1,9 @@
-@extends('layouts.app')
 
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 <div class="col-md-10 col-md-offset-2">
     <div class="col-md-10">
@@ -10,60 +14,34 @@
             <div class="panel-body">
              <form action="{{ URL::to('/') }}/postcat" method="POST" enctype="multipart/form-data"> 
                     {{ csrf_field() }}
+                
                 <div class="col-md-2">
-                 <h4><b>Select Category</b></h4>
-                    <select required id="category2" onchange="brands()" class="form-control" name="cat">
-                        <option>--Select Category--</option>
-                        @foreach($categories as $category)
-
-                        <option value="{{ $category->id }}">{{ $category->category_name }}&nbsp;[&nbsp;&nbsp;Projects : &nbsp;{{$nofprojects[$category->id] }}&nbsp;&nbsp;Enquiries:&nbsp;&nbsp;{{$nofenquirys[$category->id]}}]</option>
-                        @endforeach
+                   <label>Select Category</label>
+                    <select id="sc" class="form-control" name="cat" required>
+                      <option value="">--Select Category--</option>
+                      @foreach($categories as $category)
+                      <option value="{{$category->id}}">{{ $category->category_name }}&nbsp;[&nbsp;&nbsp;Projects : &nbsp;{{$nofprojects[$category->id] }}&nbsp;&nbsp;Enquiries:&nbsp;&nbsp;{{$nofenquirys[$category->id]}}]</option>
+                      @endforeach
                     </select>
-                </div>
-                <!-- <div class="col-md-2">
-                  <h4><b>Select Brand</b></h4>
-                    <select id="brands2" onchange="Subs()" class="form-control" name="brand">
-                        
-                    </select>
-                </div>
-                 <div class="col-md-2">
-                   <h4><b>Select Sub Category</b></h4>
-                    <select id="sub2"  class="form-control" name="subcat">
-                        
-                    </select>
-                </div>
-                <div class="col-md-1">
-                   <h4><b>Quantity</b></h4>
-                    <input type="text" name="quan" class="form-control" required> 
                  </div>
                   <div class="col-md-2">
-                   <h4><b>Team Leader Price</b></h4>
-                    <input type="text" name="stl" class="form-control" required> 
-                 </div>
-                 <!--  <div class="col-md-2">
-                   <h4><b>Asst-TLs Price</b></h4>
-                    <input type="text" name="asstl" class="form-control" required> <br>
-                 </div> --> 
-                  <div class="col-md-2">
-                   <h4><b>Category Officers</b></h4>
-                    <select required class="form-control" name="user_id">
+                   <label>Category Officers</label>
+                    <select id="co" class="form-control" name="user_id" required>
                       <option value="">-- Category Officers--</option>
                       @foreach($users as $user)
-                      <option value="{{$user->id}}">{{$user->name}}</option>
+                      <option  value="{{$user->id}}">{{$user->name}}</option>
                       @endforeach
                     </select>
                  </div> 
 
                <div class="col-md-4">
-                   <h4><b>Set Instructions</b></h4>
-                   <textarea type="text" name="ins" style="width:100%;">
-                     
+                   <label>Set Instructions</label>
+                   <textarea style="resize:none;" class="form-control" type="text" name="ins" style="width:100%;">
                    </textarea>
                  </div> 
   
                   <div class="col-md-2">
-                   
-                    <button type="submit"  class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Assign</button> 
+                    <button id="this" onclick="selectcat()" class="form-control btn btn-primary" value="submi" style="margin-top:40px;">Assign</button>
                  </div> 
 
             </div>
@@ -73,7 +51,7 @@
                     <tr>
                         <th>SLNO</th>
                         <th>Category Officer Name</th>
-                        <th>Category</th>
+                        <th>Assigned Category</th>
                         <th>Previous Category</th>
                         <th>Created On</th>
                         <th>Updated On</th>
@@ -133,54 +111,18 @@
 	    document.getElementById('measure').value = measure;
 	    document.getElementById('id').value = arg;
 	}
-function brands(){
-        var e = document.getElementById('category2');
-        var cat = e.options[e.selectedIndex].value;
-        $("html body").css("cursor", "progress");
-        $.ajax({
-            type:'GET',
-            url:"{{URL::to('/')}}/getBrands",
-            async:false,
-            data:{cat : cat},
-            success: function(response)
-            {
-                console.log(response);
-                var ans = "<option value=''>--Select--</option>";
-                for(var i=0;i<response[0].length;i++)
-                {
-                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
-                }
-                document.getElementById('brands2').innerHTML = ans;
-                $("body").css("cursor", "default");
-            }
-        });
-    }
-function Subs()
-    {
-        var e = document.getElementById('category2');
-        var f = document.getElementById('brands2');
-        var cat = e.options[e.selectedIndex].value;
-        var brand = f.options[f.selectedIndex].value;
-        $.ajax({
-            type:'GET',
-            url:"{{URL::to('/')}}/getSubCatPrices",
-            async:false,
-            data:{cat : cat, brand : brand},
-            success: function(response)
-            {
-                console.log(response);
-                var ans = "<option value=''>--Select--</option>";
-
-               
-                for(var i=0;i<response[1].length;i++)
-                {
-                     ans += "<option value='"+response[1][i].id+"'>"+response[1][i].sub_cat_name+"</option>";
-                   
-                }
-                document.getElementById('sub2').innerHTML = ans;
-                $("body").css("cursor", "default");
-            }
-        });
-    }
+function selectcat(){
+  var input = document.getElementById('sc').value;
+  var value = document.getElementById('co').value;
+  if(input == ""){
+    alert("You Have Not Selected Category");
+  }
+  else if(value == ""){
+     alert("You Have Not Selected Sales Officer");
+  }
+  else{
+    document.getElementById('this').form.submit();
+  }
+}
 </script>
 @endsection

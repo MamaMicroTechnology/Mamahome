@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
     <div class="col-md-3">
         <div class="panel panel-primary" style="overflow-x:scroll">
@@ -16,7 +20,7 @@
                         <tr>
                             <td>
                                 <select class="form-control" name="list" required>
-                                    <option disabled selected value="">(-- SELECT LE --)</option>
+                                    <option disabled selected value="">-- SELECT LE --</option>
                                     @if(Auth::user()->group_id != 22)
                                     @foreach($users as $list)
                                     <option value="{{$list->id}}">{{$list->name}}</option>

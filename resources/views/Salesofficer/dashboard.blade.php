@@ -61,7 +61,7 @@
                 </div> -->
                 
             <center>    <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-left" style="animation-duration: 2s;">
-                  <h2> INSTRACTIONS</h2>
+                  <h3> INSTRUCTION</h3>
                       <table border="1" class="table">
                         <thead>
                           <th>Total Projects</th>
@@ -71,7 +71,7 @@
                           <th>Instructions</th>
                         </thead>
                         <tbody>
-                          <td style="font-size:40px;width:50%;"><a href="{{ URL::to('/') }}/projectsUpdate"><img src="http://www.animatedgif.net/sitemessages/clickhere/shclikhere_e0.gif" style="width:50%;text-align:left;height:30px;">{{ $projects}}</img></a></td>
+                          <td style="font-size:40px;width:50%;"><a href="{{ URL::to('/') }}/projectsUpdate">{{ $projects}}</a></td>
                           <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update=updateproject">{{$updateprojects}}</a></td>
                           <?php 
                           $x = $projects - $updateprojects;
@@ -86,7 +86,7 @@
                 </div>
 
   <div class="col-md-4 col-md-offset-1 w3-container w3-center w3-animate-right" style="animation-duration: 2s;">
-           <h2>MONTHLY REPORT</h2>
+           <h3>MONTHLY REPORT</h3>
                       <table border="1" class="table">
                         <thead>
                           <th>Total Projects</th>
@@ -95,7 +95,7 @@
                           <th>Enquiry Added</th>
                         </thead>
                         <tbody>
-                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate"><img src="http://www.animatedgif.net/sitemessages/clickhere/shclikhere_e0.gif" style="width:50%; height:30px;">{{ $projects}}</img></a></td>
+                          <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate">{{ $projects}}</a></td>
                           <td style="font-size:40px;"><a href="{{ URL::to('/') }}/projectsUpdate?update1=updateproject1">{{$updateprojects1}}</a></td>
                           <?php 
                           $x = $projects - $updateprojects1;

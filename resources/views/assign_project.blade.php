@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 <div class="container">
     <div class="row">
@@ -8,9 +12,7 @@
                     @if(session('Error'))
                         <div class="alert-danger pull-right">{{ session('Error')}}</div>
                     @endif
-            
                      <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
-                    
                 </div>
                 <div class="panel-body">  
                      
@@ -43,7 +45,7 @@
                              <td>{{ $user->prv_stage }}</td>
                             
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
-                             <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Instructions</button></td>
+                             <!-- <td><button  type="button" style="background-color: #757575;color: white" data-toggle="modal" id="#myModal5"  data-target="#myModal5{{ $user->id }}"  class="btn  pull-left">Assign Instructions</button></td> -->
                          
                           </tr>
             @endforeach
@@ -86,17 +88,15 @@
              <!--  <a href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary btn-sm ">Click Here To get Projects Count </a><br><br> -->
            <b>Instructions</b> <textarea required type="text" name="inc" cols="5" rows="7" class="form-control"   style="width:90%;resize:none;"></textarea>
              </div>
-           </div><br>
-           <button type="submit" value="submit" id="time" onclick="submit()" class="btn btn-primary">Submit</button>
+           </div>
          </div>  
-
-
          </form>
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+           <button type="submit" value="submit" id="time" onclick="submit()" class="btn btn-primary">Submit</button>
+          <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
         </div>
         
       </div>

@@ -505,21 +505,8 @@ div#calendar{
 
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-          @if(Auth::check() && Auth::user()->group_id == 22 || Auth::check() && Auth::user()->group_id == 1)
-            <!-- <a href="{{ URL::to('/home') }}">Home</a>
-            <a href="{{ URL::to('/') }}/chat">Chat</a>
-          
-          <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
-          <a href="{{ URL::to('/') }}/adenquirysheet">Enquiry Sheet</a>
-          <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
-          <a href="{{ URL::to('/assignStages') }}">Assign Stages</a>
-          <a href="{{ URL::to('/') }}/assignDailySlots">Assign Sales Engineers</a>
-          <a href="{{ URL::to('/') }}/assignListSlots">Assign List Engineers and Reports</a>
-          <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
-          <a href="{{ URL::to('/tlsalesreports') }}">Sales Engineer Report</a>
-          <a href="{{ URL::to('/orders') }}">Orders</a>
-          <a href="{{ URL::to('/tltraining') }}">Training Video</a>
-          <a href="{{ URL::to('/') }}/kra">KRA</a> -->
+          @if(Auth::check() && Auth::user()->group_id == 22)
+           
             <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
          <div id="add" class="collapse">
       <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
@@ -533,9 +520,11 @@ div#calendar{
            <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
+              <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; -Confirmed Orders</a>
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
+              <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
               <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
               <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone numbers</a>
@@ -573,7 +562,73 @@ div#calendar{
      <a href="{{ URL::to('/') }}/latelogin">Late Logins</a>
 
           
-        
+         @elseif(Auth::check() && Auth::user()->group_id == 1)
+      <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+      <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
+      <div id="so" class="collapse">
+        <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
+        <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
+
+    </div>
+       <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
+    <div id="add" class="collapse">
+      <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; - Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; - Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
+    </div>
+      <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+    <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
+    <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
+    <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
+     <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
+
+        <div id="sales" class="collapse">
+
+              <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
+              <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
+              <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
+              <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
+              <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
+              <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
+              <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone Numbers</a>
+              <a href="{{ URL::to('/assign_enquiry') }}">&nbsp;&nbsp;&nbsp; -Assign Enquiry</a>
+              <a href="{{ URL::to('/assign_manufacturer') }}">&nbsp;&nbsp;&nbsp; -Assign Manufacturers</a>
+        </div>
+     <a href="#" data-toggle="collapse" data-target="#operation">Operation &#x21F2;</a>
+        <div id="operation" class="collapse">
+              <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Maps</a> 
+             <!--  <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Tracking</a> -->
+               <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
+               <a href="{{ URL::to('/') }}/unverifiedProjects">&nbsp;&nbsp;&nbsp; -Unverified Projects</a>
+               <a href="{{ URL::to('/') }}/projectWithNotes">&nbsp;&nbsp;&nbsp; -Projects With Notes</a>
+               <a href="#" data-toggle="collapse" data-target="#dailyslot">&nbsp;&nbsp;&nbsp;Daily Slots &#x21F2;</a>
+              <div id="dailyslot" class="collapse">
+                    <a href="{{ URL::to('/dailyslots') }}">&nbsp;&nbsp;&nbsp; -Projects Daily Slots</a>
+                    <a href="{{ URL::to('/manudailyslot') }}">&nbsp;&nbsp;&nbsp; -Manufacturer Daily Slots</a>
+              </div>
+              <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
+              <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
+              <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
+        </div>  
+       
+     <!-- <a href="#" data-toggle="collapse" data-target="#agent">Field Agents &#x21F2;</a>
+      <div id="agent" class="collapse">
+          <a href="{{ URL::to('/') }}/tlmaps">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+          <a href="{{ URL::to('/tltracking') }}">&nbsp;&nbsp;&nbsp; -Account Executive</a>
+      </div> -->
+      <a href="#" data-toggle="collapse" data-target="#agent">Field and Office logins&#x21F2;</a>
+      <div id="agent" class="collapse">
+          <a href="{{ URL::to('/') }}/teamlisteng">&nbsp;&nbsp;&nbsp; -Listing Engineer</a> 
+          <a href="{{ URL::to('/') }}/teamacceng"> &nbsp;&nbsp;&nbsp; -Account Executive</a>
+          <a href="{{ URL::to('/') }}/ofcemp"> &nbsp;&nbsp;&nbsp; -Sales Engineer</a>
+          <!-- <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>  -->
+          <!-- <a href="{{ URL::to('/') }}/allteamleader">&nbsp;&nbsp;&nbsp; -Team Leaders</a> 
+          <a href="{{ URL::to('/') }}/allsaleseng">&nbsp;&nbsp;&nbsp; -Sales Engineer</a> --> 
+      </div> 
+     <a href="{{ URL::to('/') }}/teamkra"> Add KRA to Operation and Sales</a>
+     <a href="{{ URL::to('/') }}/kra">KRA</a> 
+     <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
+     <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
         @endif
         </div>
                 <!-- <form method="POST"  action="{{ URL::to('/') }}/teamlogin" >

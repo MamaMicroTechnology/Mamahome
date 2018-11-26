@@ -1,4 +1,9 @@
-@extends('layouts.app')
+
+<?php
+  $use = Auth::user()->group_id;
+  $ext = ($use == 1? "layouts.salesheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 <br><br>
 <div style="background-color:white" class="container" >
@@ -9,8 +14,8 @@
     We appreciate you services.
     </SMALL>
 </center></h2></div>
-
-<center><h2>Your Ward is : {{$ward}}</h2></center>
+<center><h2>Your Ward is :@foreach($ward as $name)<br>
+                         {{$name->ward_name }}<br> @endforeach</h2></center>
 
 <div class="row hidden">
       <div class="col-md-4 col-md-offset-4">

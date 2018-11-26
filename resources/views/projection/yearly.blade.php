@@ -32,6 +32,9 @@
                 </div>
             </form>
             <br><br><br>
+                @if($projection == null)
+                <p style="text-align: center;font-size: 20px;">First You Have To Lock The Target With Monthly Sales Projection.</p>
+                @else
             <table class="table table-hover" border=1>
                 <tr style='background-color:#236281; color:white;'>
                     <th style="text-align:center">Month</th>
@@ -62,6 +65,7 @@
                     </tr>
                 @endif
             </table>
+            @endif
         </div>
         <form class="{{ isset($_GET['percent']) ? '' : 'hidden' }}" action="{{ URL::to('/') }}/lockYearly" method="post">
             {{ csrf_field() }}

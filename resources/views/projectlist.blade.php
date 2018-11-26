@@ -36,7 +36,7 @@
               <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_name : '' }}</td>
               <td>{{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : '' }}</td>
               <td>
-                <a style="background-color:#9e9e9e;color:white;" href="{{ URL::to('/') }}/viewProjects?id={{ $project->project_id }} && no={{$project->procurementdetails->procurement_contact_no}}" class="btn btn-success btn-xs" >View</a>
+                <a style="background-color:#9e9e9e;color:white;" href="{{ URL::to('/') }}/viewProjects?id={{ $project->project_id }} && no={{ $project->procurementdetails != null ? $project->procurementdetails->procurement_contact_no : '' }}" class="btn btn-success btn-xs" >View</a>
               </td>
               <td>
                 <table class="table-group">

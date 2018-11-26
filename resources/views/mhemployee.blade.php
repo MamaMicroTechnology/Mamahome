@@ -33,8 +33,28 @@
                         <?php 
                             $content = explode(" ",$department->dept_name);
                             $con = implode("",$content);
+
                         ?>
-                        <a id="{{ $con }}" class="list-group-item" href="#">{{ $department->dept_name }} ({{ $depts[$department->dept_name] }})</a>
+
+                        <a href="#" class="list-group-item" data-toggle="collapse" data-target="#add{{$con}}">{{ $department->dept_name }}({{ $depts[$department->dept_name] }})</a>
+                        <div id="add{{$con}}" class="collapse">
+                        @foreach($groupname[$department->dept_name]  as $name)
+                          <?php 
+                            $grp = explode(" ",$name->group->id);
+                            $group = implode("",$grp);
+                          ?>
+                            <a href="#" id="{{ $group }}" class="list-group-item" style="color:green">
+                            @if($name->group_id == $name->group->id )
+                            @if($name->group->group_name == "Team Lead")
+                              Senior Team Leader
+                            @else
+                              {{$name->group->group_name}}
+                            @endif
+                            @endif
+                            </a>
+
+                        @endforeach
+                        </div>
                     @endforeach
                     <a id="FormerEmployees" class="list-group-item" href="#">Former Employees ({{ $depts["FormerEmployees"] }})</a>
                 </div>
@@ -61,7 +81,7 @@
                           <br>
                           <br>
 
-                          <div id="name" class="hidden">
+                          <div id="name">
                           @foreach($users as $user)
                           <a href="{{ URL::to('/') }}/viewEmployee?UserId={{ $user->employeeId }}" >
                           <div id="" style="overflow: hidden;" class="col-md-3 col-md-offset-1">
@@ -217,11 +237,17 @@
     $content = explode(" ",$department->dept_name);
     $con = implode("",$content);
 ?>
+@foreach($groupname[$department->dept_name]  as $name)
+ <?php 
+                            $grp = explode(" ",$name->group->id);
+                            $group = implode("",$grp);                            
+ ?>
+  
 <script type="text/javascript">
 $(document).ready(function () {
-    $("#{{ $con }}").on('click',function(){
+    $("#{{ $group }}").on('click',function(){
         $(document.body).css({'cursor' : 'wait'});
-        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?count={{$depts[$department->dept_name]}}&&dept="+encodeURIComponent("{{ $department->dept_name }}"), function(responseTxt, statusTxt, xhr){
+        $("#disp").load("{{ URL::to('/') }}/viewmhemployee?count={{$depts[$department->dept_name]}}&&group="+encodeURIComponent("{{ $group}}"), function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
                 alert("Error: " + xhr.status + ": " + xhr.statusText);
         });
@@ -244,9 +270,10 @@ $(document).ready(function () {
 </script>
 
 @endforeach
+@endforeach
 <script type="text/javascript">
   function myFunction()
-     {
+{
     var input, filter, ul, li, a, i;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
@@ -256,7 +283,7 @@ $(document).ready(function () {
         a = p[i].getElementsByTagName("p")[0];
         b = p[i].getElementsByTagName("p")[1];
         if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            document.getElementById("name").className = "show";
+             p[i].style.display = "";
         } else {
             p[i].style.display = "none";
         }

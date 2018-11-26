@@ -182,36 +182,48 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
       <!-- Modal body -->
       <div class="modal-body">
         <label>Billing Address</label>
-            <textarea required id="val"  class="form-control" type="text" name="billadress" cols="50" rows="5" style="resize:none;">
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="billadress" cols="50" rows="5" style="resize:none;">
         </textarea>  
        <br>
 
         <div class="col-md-12">
             <div class="col-md-9">
-               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;same as above</label><br><br>
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;Same As Above</label><br><br>
             </div>
             
         </div>
         <label id="sp1">Shipping Address</label>
-            <textarea  required class="form-control" id="sp" type="text" name="ship" cols="50" rows="5" style="resize:none;">
+            <textarea  required placeholder="Enter Shipping Address" class="form-control" id="sp" type="text" name="ship" cols="50" rows="5" style="resize:none;">
         </textarea>
            <script type="text/javascript">
                function myfunction(){
                 var ans = document.getElementById('val').value;
-               
-                if(ans){
+                var ans1 = document.getElementById('sp').value;
+                if(ans && ans1){
+                 alert("Make sure You Have Selected Only One Address?");
+                  document.getElementById('sp').focus();
+                   document.getElementById('ss').checked =  false;
+                }
+                else if(ans){
                 document.getElementById('sp').style.display = "none";
                 document.getElementById('sp1').style.display = "none";
+                    
                 }
                 else{
                     alert("You Have Not Entered Billing Address");
                     document.getElementById('ss').checked = false;
                 }
                }
+               function clearit(){      
+                     document.getElementById('val').value = " ";
+                     document.getElementById('sp').value = " ";
+                     document.getElementById('ss').checked = false;
+               }
            </script> 
        <br>
         </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="clearit()">Reset</button>
         <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
       </div>
 </div>

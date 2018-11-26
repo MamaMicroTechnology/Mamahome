@@ -6,28 +6,9 @@
                 {{ csrf_field() }}
                 <div class="col-md-6 col-md-offset-3">
                     <div class="panel panel-default">
-                        <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:#939598;">
-                             @if(Auth::user()->group_id == 22)
-                  
-                     <select class="form-control" style="width:20%" name="tlward" required>
-                       <option value="">Select SubWard</option>
-                       @foreach($tlwards as $wa)
-                       <option value="{{$wa->id}}">{{$wa->sub_ward_name}}</option>
-                       @endforeach
-                     </select>
-                  @elseif(Auth::user()->group_id == 6)
-                 <p style="color:#ffffffe3;" class="pull-left">  Your Assigned Ward Is  {{$subwards->sub_ward_name}}</p>
-                  @elseif(Auth::user()->group_id == 11)
-                   <select class="form-control" style="width:20%" name="tlward">
-                       <option value="">Select SubWard</option>
-                       @foreach($acc as $w)
-                       <option value="{{$w->id}}">{{$w->sub_ward_name}}</option>
-                       @endforeach
-                     </select>
-                 @else 
-                 Senior TL
-                  @endif
-                            <div id="currentTime" class="pull-right" style="color:#ffffffe3;margin-top:-25px;"></div>
+               <div class="panel-heading" style="background-color:#42c3f3;padding:20px;">
+                 
+                            <div id="currentTime" class="pull-right" style="color:white;margin-top:-5px;"></div>
                             
                         </div>
                         <div class="panel-body">
@@ -48,6 +29,7 @@
                                         </select>
                                     </td>
                                 </tr>
+                                <input type="hidden" name="subward_id" id="subwardid" >
                                 <tr>
                                     <td>Production Type</td>
                                     <td>:</td>
@@ -96,7 +78,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Total Area</td>
+                                    <td>Total Area(Sqft)</td>
                                     <td>:</td>
                                     <td>
                                         <input required placeholder="Total Area" min="0" type="number" name="total_area" id="area" class="form-control">
@@ -137,12 +119,56 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Prefered Cement Brands</td>
+                                    <td>Intrested Cement Brands</td>
                                     <td>:</td>
                                     <td>
-                                        <input placeholder="Prefered Cement Brands" type="text" name="brand" id="brand" class="form-control">
+                                        <input placeholder="Intrested Cement Brands" type="text" name="brand" id="brand" class="form-control">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Existing Brand and Quanty  <br>(Per Week)</td>
+                                    <td>:</td>
+                                    <td>
+                                        <div class="col-md-6 ">
+                                            <input type="text"  checked="true" name="exbrand" id="tons" class="form-control" placeholder="Existing Brands">
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input placeholder="Brand Quantity" min="0" type="number" name="brandquantity" id="cement_requirement" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                 <td>Sample Requrest ?</td>
+                                 <td>:</td>
+                                 <td>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="sample"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="sample"><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input checked="checked" value="None" id="rmc3" type="radio" name="sample"><span>&nbsp;</span>None</label>
+                                 </td>
+                               </tr>
+                                <tr>
+                            <td>Other Materials</td>
+                            <td>:</td>
+                            <td>
+                          <textarea style="resize: none;" class="form-control" placeholder="Remarks (Optional)"  name="other"></textarea>
+                          </td>
+                        </tr>
+                               <tr>
+                                 <td>Add mixtures and GGBS ?</td>
+                                 <td>:</td>
+                                 <td>
+                                     
+                                      <label ><input required value="Yes" id="rmc" type="radio" name="ggbs"><span>&nbsp;</span>Yes</label>
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label ><input required value="No" id="rmc2" type="radio" name="ggbs"><span>&nbsp;</span>No</label> 
+                                      <span>&nbsp;&nbsp;&nbsp;  </span>
+                                      <label><input checked="checked" value="None" id="rmc3" type="radio" name="ggbs"><span>&nbsp;</span>None</label>
+                                 </td>
+                               </tr>
                                 <tr id="blockTypes1" class="hidden">
                                     <td style="background-color:#cfedaa; text-align:center" colspan=3>Block Types</td>
                                 </tr>
@@ -714,6 +740,7 @@ function openCity(evt, cityName) {
       document.getElementById('latitude').value=latitude;
       document.getElementById('longitude').value=longitude;
       getAddressFromLatLang(latitude,longitude);
+      initMap();
     }
    
     function  displayError(error){
@@ -744,6 +771,95 @@ function openCity(evt, cityName) {
             }
         });
     }
+</script>
+<script type="text/javascript">
+  function initMap() {
+       var latitude = document.getElementById("latitude").value; 
+       var longitude  = document.getElementById("longitude").value;
+       if(latitude != ""){
+      var faultyward = "{{json_encode($ward)}}";
+      var ward = faultyward.split('&quot;,&quot;').join('","');
+      ward = ward.split('&quot;').join('"');
+
+      var ss = JSON.parse(ward);
+      var shouldAlert;
+      for(var i=0; i<Object(ss['original'].length); i++){
+        
+        var finalward = [];
+        finalward = ss['original'][i]['lat'].map(s => eval('null,' +s ));
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+       shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+               if(shouldAlert == true){
+                     // alert("ward id :" +ss['original'][i]['ward']);
+                      getBrands(ss['original'][i]['ward']);
+                          break;
+
+                }
+           
+      }
+      if(shouldAlert == false){
+        alert("no ward found");
+      }
+}    
+  }
+function getBrands(data){
+    const Http = new XMLHttpRequest();
+    var x = data;
+    // alert(x);
+  const url='{{URL::to('/')}}/subfind?id='+x;
+   Http.open("GET", url);
+   Http.send();
+
+Http.onreadystatechange=(e)=>{
+              
+  
+           initsubward(Http.responseText);
+            
+            
+            }
+  
+
+  }
+
+  function initsubward(data){
+     var latitude = document.getElementById("latitude").value; 
+     var longitude  = document.getElementById("longitude").value;
+        var subfaulty = data;
+      var subs = JSON.parse(subfaulty);
+     
+
+      var shouldAlert;
+      for(var i=0; i<Object(subs.length); i++){
+        
+        var finalsubward = [];
+        finalsubward = subs[i]['lat'].map(s => eval('null,' +s ));
+
+         console.log(finalsubward);
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalsubward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+      shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+              
+               if(shouldAlert == true){
+                  // alert("subward id: " +subs[i]['subward']);
+                      document.getElementById('subwardid').value=subs[i]['subward'];
+                       break;
+                }
+           
+      }
+      if(shouldAlert== false){
+        alert("Subward Not Found");
+      }
+
+
+
+  }
+
+
 </script>
 <script type="text/javascript">
    function doDate()
@@ -789,4 +905,5 @@ function openCity(evt, cityName) {
 </script>
 
 @endif
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&libraries=geometry&callback=initMap"></script>
 @endsection

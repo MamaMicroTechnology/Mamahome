@@ -1,11 +1,9 @@
 <?php
 	$user = Auth::user()->group_id;
-	$ext = ($user == 4? "layouts.amheader":"layouts.app");
+	$ext = ($user == 4 ? "layouts.amheader":"layouts.app");
 ?>
 @extends($ext)
-
 @section('content')
-
 <div class="">
 	<div class="col-md-12">
 		<div class="panel panel-primary">
@@ -40,14 +38,33 @@
 								<label>To (Enquiry Date)</label>
 								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
 							</div>
-							@if(Auth::user()->group_id != 22)
+							 @if(Auth::user()->group_id == 22)
 							<div class="col-md-2">
 								<label>Ward</label>
 								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
-									@foreach($wardwise as $wards2)
-		                            <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
-									@endforeach
+
+									@foreach($mainward as $wards2)
+									           @foreach($wardwise as $yadav)
+									             @if($wards2->id == $yadav->id)
+		                                 <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+		                                         @endif
+		                                 @endforeach
+		                            @endforeach
+								</select>
+							</div>
+                            @else
+
+							<div class="col-md-2">
+								<label>Ward</label>
+								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
+									<option value="">--Select--</option>
+
+									@foreach($mainward as $wards2)
+									          
+		                                 <option value="{{$wards2->id}}">{{$wards2->ward_name}}</option>
+		                                        
+		                            @endforeach
 								</select>
 							</div>
 							@endif
@@ -71,15 +88,28 @@
 								@endforeach
 							</select>
 						</div>
+
 						<div class="col-md-2">
-							<label></label>
-							<input type="submit" value="Fetch" class="form-control btn btn-primary">
+							<label>Category:</label>
+							<select id="categ" class="form-control" name="category">
+								<option value="">--Select--</option>
+								<option value="">All</option>
+								@foreach($category as $category)
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								@endforeach
+							</select>
+						</div>
+				
+						<div class="col-md-12">
+						<div class="col-md-2 col-md-offset-10">
+							<input style="margin-top: 20px;margin-left:17px;" type="submit" value="Fetch" class="form-control btn btn-primary">
 						</div>
 					</div>
-				</form>
+				</div>
 				
-				<br><br><br><br>
-				<div class="col-md-3">
+				<br><br>
+			</form>
+				<div class="col-md-3" style="margin-top: -20px;">
 					<div class="col-md-2">
 						<label>Status: </label>
 					</div>
@@ -92,39 +122,8 @@
 						</select>
 					</div>
                   </div>
-                  <form method="GET" action="{{ URL::to('/') }}/tlenquirysheet"> 
-					
-                  <div class="col-md-3">
-						<div class="col-md-3">
-								<label>Category: </label>
-						</div>
-						<div class="col-md-6">
-								<select id="categ" class="form-control" name="category">
-									<option value="">--Select--</option>
-									<option value="">All</option>
-									@foreach($category as $category)
-									<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-									@endforeach
-								</select>
-						</div>
-					</div>
-					
-					<div class="col-md-4">
-						<div class="col-md-3">
-							<label> Manufacturer: </label>
-						</div>
-					
-						<div class="col-md-6">
-							<select id="categ" class="form-control" name="manu" onchange="this.form.submit()">
-									<option value="">--Select--</option>
-									<option value="manu">All</option>
-									<option value="Enquiry On Process">Enquiry On Process</option>
-									<option value="Enquiry Confirmed">Enquiry Confirmed</option>
-								</select>
-						</div>
-					</div>
-                </form>
-                <br>
+               
+                <br><br>
 				<table id="myTable" class="table table-responsive table-striped table-hover">
 					<thead>
 						<tr>
@@ -181,36 +180,23 @@
                         
 						@foreach($enquiries as $enquiry)
                         @if($enquiry->status != "Not Processed")
-					        @if($enquiry->manu_id == NULL)
+                            @if($enquiry->project_id != NULL)
 							<td style="text-align: center">
 								<a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
 									<b>{{$enquiry->project_id }}</b>
 								</a> 
 							</td>
-							@else
-							<td style="text-align:center;background-color:rgb(21, 137, 66);color:black;">
-								<a target="_blank" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">
-									<b style="color:white;"> {{$enquiry->manu_id}}</b>
-								</a> 
-							</td>
-							@endif
+							
 							<td style="text-align: center">
-
                                @foreach($wards as $ward)
                                  @if($ward->id ==($enquiry->project != null ? $enquiry->project->sub_ward_id : $enquiry->sub_ward_id) )
-					        @if($enquiry->manu_id == NULL)
-                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry -> project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
+                                <a href="{{ URL::to('/')}}/viewsubward?projectid={{$enquiry->project_id}} && subward={{ $ward->sub_ward_name }}" target="_blank">
                                     {{$ward->sub_ward_name}}
-
                                 </a>
-                                @else
-                                 <a href="{{ URL::to('/')}}/manufacturemap?id={{$enquiry->manu_id}} && subwardid={{$enquiry->sub_ward_id}}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{$ward->sub_ward_name}}
-                                    </a>
-                           @endif
-                            </td>
-
                                   @endif
                                @endforeach
+                            </td>
+
 
 							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name :''  }}
                        {{ $enquiry->proc != null ? $enquiry->proc->name :''  }}
@@ -219,7 +205,7 @@
 							<td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
 							<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
 							 {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
-							<td style="text-align: center">{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }} {{ $enquiry->product }} 
+							<td style="text-align: center"><b>{{$enquiry->brand}}</b><br>{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }} {{ $enquiry->product }} 
 							</td>
 							<td style="text-align: center">
 								<?php $quantity = explode(", ",$enquiry->quantity); ?>
@@ -270,7 +256,7 @@
 							</td>
 							
 						</tr>
-
+                       @endif
 						@endif
 						@endforeach   
 						

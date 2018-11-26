@@ -1,11 +1,11 @@
-@extends('layouts.leheader')
+@extends('layouts.app')
 @section('content')
 <div class="col-md-12" >
         <div class="panel panel-primary"  style="overflow-x:scroll">
            <div class="panel-heading text-center">
                     <a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
                     <a class="pull-right btn btn-sm btn-danger" href="{{url()->previous()}}">Back</a>
-                Enquiry Data&nbsp;&nbsp;&nbsp;   COUNT: [{{count($projects)}}]
+                Enquiry Data&nbsp;&nbsp;&nbsp;   COUNT: [{{$projects->total()}}]
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">

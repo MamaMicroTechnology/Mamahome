@@ -42,13 +42,16 @@
                       {{ $projectdetails->quality }}
                       @endif
                     </center> -->
-                      
+                    <!-- @if(Auth::user()->group_id == 23)
+                    <center>
+                     <button id="getBtn"  class="btn btn-success btn-sm p" onclick="getupdateLocation()">Get Location</button></center><br>
+                      @endif -->
                    <form method="POST" id="sub" action="{{ URL::to('/') }}/{{ $projectdetails->project_id }}/updateProject" enctype="multipart/form-data">
                     <input type="hidden" name="subward" value="{{$projectdetails->sub_ward_id}}">
                     <div id="first">
                     {{ csrf_field() }}
                     <input  class="hidden" type="text" name="longitude1" value="{{ old('longitude') }}" id="longitude1">
-                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1">  
+                     <input  class="hidden" type="text" name="latitude1" value="{{ old('latitude1') }}" id="latitude1"> 
                     <input  class="hidden" type="text" name="address1" value="{{ old('address1') }}" id="address1"> 
                                    
                            <table class="table">
@@ -95,10 +98,18 @@
                                  <tr>
                                    <td>Full Address</td>
                                    <td>:</td>
+                                   @if(Auth::user()->group_id == 2)
+                                   @if($projectdetails->siteaddress ==null)
+                                   <td style="color:red;" >This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input  id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm disable" name="address" ></td>
+                                   @else
+                                   <td><input  id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm disable" name="address"></td>
+                                   @endif
+                                   @else
                                    @if($projectdetails->siteaddress ==null)
                                    <td style="color:red;" >This Project Has No SiteAddress, Kindly Contact MAMA MICRO TECHNOLOGY<input  disabled id="road" value=" " type="text" placeholder="Full Address" class="form-control input-sm disable" name="address" ></td>
                                    @else
                                    <td><input  disabled id="road" value="{{ $projectdetails->siteaddress->address }}" type="text" placeholder="Full Address" class="form-control input-sm disable" name="address"></td>
+                                   @endif
                                    @endif
                                </tr>
                                <tr>
@@ -976,7 +987,7 @@ function check(arg){
 </script>
 <!--This line by Siddharth -->
 
-<script type="teinputt/javascript">
+<script type="text/javascript">
   $(document).ready(function(){
       count();
   });
@@ -1518,6 +1529,66 @@ function sum(){
          }   
   }
 </script> 
+<!-- get location -->
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" charset="utf-8">
+  function getupdateLocation(){
+  
+      document.getElementById("getBtn").className = "hidden";
+      console.log("Entering getLocation()");
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocation,
+        displayError,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+  }
+    
+    function displayCurrentLocation(position){
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+     
+      document.getElementById("longitude1").value = longitude;
+      document.getElementById("latitude1").value  = latitude;
+      getAddressFromLatLang(latitude,longitude);
+    }
+   
+  function  displayError(error){
+    console.log("Entering ConsultantLocator.displayError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLang(lat,lng){
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        document.getElementById("address1").value = results[0].formatted_address;
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
 
 @endsection
 

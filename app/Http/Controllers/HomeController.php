@@ -89,6 +89,10 @@ use App\Manufacturer;
 use App\Manufacturers;
 use App\FieldLogin;
 use App\BreakTime;
+use App\PaymentDetails;
+use App\MamahomePrice;
+use App\Supplierdetails;
+
 use Spatie\Activitylog\Models\Activity;
 
 date_default_timezone_set("Asia/Kolkata");
@@ -259,12 +263,21 @@ class HomeController extends Controller
                                                 'ship' =>$shipadress
                                         ]);
 
+        // $number = ProcurementDetails::where('project_id',$request->selectprojects)->get();
+        // $customer = new CustomerDetails;
+        // $customer->type_customer = "Project";
+        // $customer->manu_type = "";
+        // $customer->project_id = $request->selectprojects;
+        // $customer->manu_id = "";
+        // $customer->billadress = $request->billadress;
+        // $customer->shipaddress = $shipadress;
+        // $customer->contact_no = $number->procurement_contact_no;
+        // $customer->save();
 
+        // $customer =CustomerDetails::where('id',$customer->id)->update(['req_id'=>
+        // $customer->id]);
 
-
-
-
-         $activity = new ActivityLog;
+        $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
         $activity->activity = Auth::user()->name." has added a new requirement for project id: ".$request->selectprojects." at ".date('H:i A');
@@ -351,8 +364,25 @@ class HomeController extends Controller
           
         $totalofenquiry = "";
         $totalenq = "";
-         $wardwise = Ward::get();
-        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
+        
+        $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $etl = explode(",",$s);
+       $wardwise =Ward::whereIn('id',$etl)->get();
+
+        $wardss = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+         $tlward = explode(",",$wardss);
+         $totalofenquiry = "";
+        $totalenq = "";
+        $converter = user::get();
+        $ward = Ward::get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
+        $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
+        $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
+        $this->variable=$pids;
+
+
+
+        $ward = ward::orderby('ward_name','ASC')->get();
         $category = Category::all();
         $depart = [1,6,7,8,11,15,16,17,22];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
@@ -363,7 +393,6 @@ class HomeController extends Controller
                 $enquiries = Requirement::where('status','like','%'.$request->status)
                             ->where('status','!=',"Enquiry Cancelled")
                  ->orderby('created_at','DESC')
-
                             ->select('requirements.*')
                             ->get();
                $converter = user::get();
@@ -431,9 +460,9 @@ class HomeController extends Controller
             $totalenq = count($enquiries);
 
             }
-
+            
         }elseif(!$request->from && !$request->to && !$request->initiator && !$request->category && $request->ward && $request->enqward){
-
+          
            if($request->ward == "All"){
             $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
             }else{
@@ -449,8 +478,9 @@ class HomeController extends Controller
             $converter = user::get();
             $totalenq = count($enquiries);
             
-        }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward){
+        }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward && !$request->enqward){
             // only category
+
             $enquiries = Requirement::where('main_category',$request->category)
                         ->where('status','!=',"Enquiry Cancelled")
                  ->orderby('created_at','DESC')
@@ -474,6 +504,7 @@ class HomeController extends Controller
 
         }elseif($request->from && $request->to && $request->initiator && $request->category && $request->ward && $request->enqward){
             // everything
+        
             if($request->ward == "All"){
             $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
             }else{
@@ -483,7 +514,6 @@ class HomeController extends Controller
             $to = $request->to;
             if($from == $to){
                 $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                ->orderBy('requirements.created_at','DESC')
                 ->whereIn('project_details.sub_ward_id',$subwardid)
                 ->where('requirements.generated_by',$request->initiator)
                 ->where('requirements.created_at','LIKE',$from."%")
@@ -497,16 +527,15 @@ class HomeController extends Controller
                
             }else{
             $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');
-
+               
                 $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                            ->orderBy('requirements.created_at','DESC')
                             ->whereIn('project_details.sub_ward_id',$subwardid)
                             ->where('requirements.generated_by',$request->initiator)
                             ->where('requirements.created_at','>',$from)
                             ->where('requirements.created_at','<',$to)
                             ->where('requirements.status','!=',"Enquiry Cancelled")
                             ->where('requirements.main_category','LIKE',"%".$request->category."%")
-                 ->orderby('requirements.created_at','DESC')
+                            ->orderby('requirements.created_at','DESC')
 
                             ->get();
                 $converter = user::get();
@@ -531,8 +560,6 @@ class HomeController extends Controller
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 
                 ->get();
-
-           dd($enquiries);
                 $converter = user::get();
             $totalenq = count($enquiries);
 
@@ -744,8 +771,8 @@ class HomeController extends Controller
 
                             }
                         }
-          elseif($request->enqward){
-
+          elseif($request->enqward && !$request->category  && !$request->from && !$request->to && !$request->initiator && !$request->ward){
+           // only ward
           $wardtotal = Subward::where('ward_id',$request->enqward)->pluck('id');
           $pro = ProjectDetails::whereIn('sub_ward_id',$wardtotal )->pluck('project_id');
 
@@ -756,6 +783,22 @@ class HomeController extends Controller
                        
             $converter = user::get();
             $totalenq = count($enquiries);
+        }
+        elseif($request->category && $request->enqward && !$request->from && !$request->to && !$request->initiator && !$request->ward){
+          
+            // ward and category
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');
+            $enquiries = Requirement::leftjoin('project_details','project_details.project_id','=','requirements.project_id')
+                        ->whereIn('project_details.sub_ward_id',$subwardid)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
+                        ->where('main_category',$request->category)
+                        ->where('status','!=',"Enquiry Cancelled")
+                        ->orderby('requirements.created_at','DESC')
+                        ->get();
+                        
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
         }
         else{
             // no selection
@@ -779,7 +822,9 @@ class HomeController extends Controller
             'category'=>$category,
             'initiators'=>$initiators,
             'wards'=>$wards,
-            'projectOrdersReceived'=>$projectOrdersReceived
+            'projectOrdersReceived'=>$projectOrdersReceived,
+            'mainward'=>$ward,
+            
         ]);
     }
 
@@ -790,13 +835,18 @@ class HomeController extends Controller
      if(Auth::user()->group_id != 22 ){
        return  $this->enquirysheet1($request);
      }   
-        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $s = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $etl = explode(",",$s);
+       $wardwise =Ward::whereIn('id',$etl)->get();
+
+        $wardss = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+         $tlward = explode(",",$wardss);
          $totalofenquiry = "";
         $totalenq = "";
         $converter = user::get();
         $ward = Ward::get();
-        $wards = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->get();
-        $sub = SubWard::where('ward_id',$tlward)->pluck('id');
+        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
+        $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
         $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
         $this->variable=$pids;
 
@@ -952,7 +1002,6 @@ class HomeController extends Controller
                 ->where('requirements.created_at','LIKE',$from."%")
                 ->where('requirements.status','!=',"Enquiry Cancelled")
                 ->where('requirements.main_category','LIKE',"%".$request->category."%")
-              
                 ->get();
             $totalenq = count($enquiries);
           
@@ -1215,10 +1264,11 @@ class HomeController extends Controller
         $filtered = new Collection;
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
 
-            $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $wardss = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->pluck('id');
+            $wardf = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $tlwardf = explode(",",$wardf);
+            $wardsss = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlwardf)->pluck('id');
 
-           $pp = ProjectDetails::where('sub_ward_id',$wardss)->pluck('project_id');
+           $pp = ProjectDetails::where('sub_ward_id',$wardsss)->pluck('project_id');
 
             $r = Requirement::whereIn('project_id',$pp)->pluck('id');
 
@@ -1233,7 +1283,7 @@ class HomeController extends Controller
             'category'=>$category,
             'initiators'=>$initiators,
             'mainward'=>$ward,
-            'projectOrdersReceived'=>$projectOrdersReceived,'totalenq'=>$totalenq
+            'projectOrdersReceived'=>$projectOrdersReceived,'totalenq'=>$totalenq,'wardwise'=>$wardwise
         ]);
     }
 
@@ -1277,7 +1327,8 @@ class HomeController extends Controller
 
  public function enquiryCancell1(Request $request)
     {
-        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tlward =explode(",",$tl);
         $cancelcount = 0;
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
@@ -1289,7 +1340,7 @@ class HomeController extends Controller
                         ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
                         ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$tlward)
+                            ->whereIn('wards.id',$tlward)
                         ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
                         ->where('requirements.status',"Enquiry Cancelled")
                         ->get();
@@ -1518,7 +1569,7 @@ class HomeController extends Controller
         }else if($group == 'Sales Officer'){
              return redirect('salesofficer');
         }else if($group == 'Finance'){
-            return redirect('financeDashboard');
+            return redirect('financeIndex');
         }else{
             return redirect('chat');
         }
@@ -1542,7 +1593,14 @@ class HomeController extends Controller
         $fake = ProjectDetails::where('quality',"FAKE")->count();
         $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
         $le = User::where('group_id','6')->get();
-        $notes = ProjectDetails::groupBy('with_cont')->pluck('with_cont');
+        $notes = ProjectDetails::groupBy('with_cont')
+                    ->where('with_cont','!=',"DUPLICATE NUMBER")
+                    ->where('with_cont','!=',"FINISHING")
+                    ->where('with_cont','!=',"NOT INTERESTED")
+                    ->where('with_cont','!=',"PROJECT CLOSED")
+                    ->where('with_cont','!=',"THEY HAVE REGULAR SUPPLIERS")
+                    ->where('with_cont','!=',"WRONG NO")
+                    ->pluck('with_cont');
         $count = array();
         foreach($notes as $note){
             $count[$note] = ProjectDetails::where('with_cont',$note)->count();
@@ -1704,10 +1762,21 @@ class HomeController extends Controller
                         ->leftjoin('departments','users.department_id','departments.id')
                         ->select('users.name','users.employeeId','login_times.*','departments.id')
                         ->get();
-         $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-         $x = Ward::where('id',$tl)->pluck('ward_name')->first();
+          $newwards = [];
+         foreach($users as $user){
+                $tlwards = Tlwards::where('user_id',$user->id)->first();
+                if($tlwards == null){   
+                }
+                else{
+                $wardids = explode(",",$tlwards->ward_id);
+                $noofwardids = Ward::whereIn('id',$wardids)->get()->toArray();
+                $userIds = explode(",",$tlwards->users);
+                $noOfUsers = User::whereIn('id',$userIds)->get()->toArray();
+                array_push($newwards,['tl_id'=>$user->id,'wardtl'=>$noofwardids,'tlusers'=>$noOfUsers]);
+            }
+        }
 
-         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'x'=>$x,'usersId'=>$usersId]);
+         return view('/teamLeader',['loggedInUsers'=>$loggedInUsers,'leLogins'=> $leLogins,'users'=>$users,'usersId'=>$usersId,'newwards'=>$newwards]);
    }
      public function assignListSlots(){
     // $group = Group::where('group_name','Listing Engineer')->pluck('id')->first();
@@ -1737,13 +1806,14 @@ class HomeController extends Controller
                             ->where('department_id','!=','10')
                             ->count();
 
-        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tlward = explode(",",$tl);
 
 
          if(Auth::user()->group_id != 22){
         $wards = Ward::orderby('ward_name','ASC')->get();
          }else{
-             $wards = Ward::orderby('ward_name','ASC')->where('id',$tlward)->get();
+             $wards = Ward::orderby('ward_name','ASC')->whereIn('id',$tlward)->get();
          }
 
         $zones = Zone::all();
@@ -1779,9 +1849,10 @@ class HomeController extends Controller
             return $this->tlmaps1($request);
          }
 
-        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tlward = explode(",",$tl); 
         $wards = Ward::orderby('ward_name','ASC')
-        ->where('id',  $tlward)->get();
+        ->whereIn('id',  $tlward)->get();
         $zones = Zone::all();
         return view('tlMaps',['wards'=>$wards,'zones'=>$zones]);
     }
@@ -1831,10 +1902,53 @@ class HomeController extends Controller
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
         $a =Subward::where('id',$wardsAssigned)->pluck('ward_id')->first();
         $acc = Subward::where('ward_id',$a)->get();
-        
 
-        $subwards = SubWard::where('id',$wardsAssigned)->first();
-        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc]);
+    
+
+        $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+        
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+     $subwards = SubWard::where('id',$wardsAssigned)->first();
+        return view('listingEngineer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc,'ward'=>$d]);
     }
     public function leDashboard()
     {
@@ -2234,7 +2348,7 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
             $projectlist = ProjectDetails::where('quality',$request->quality)
             ->where('sub_ward_id',$assignment)
             ->get();
-            dd();
+          
         }
 
         return view('projectlist',['projectlist'=>$projectlist,'pageName'=>"Update"]);
@@ -2841,8 +2955,8 @@ date_default_timezone_set("Asia/Kolkata");
                 $found1 = $searchWard->ward_id;
             }
         }
-    
-     $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+        $found = explode(",",$found1);
+        $ward =Ward::whereIn('id',$found)->get();
         $today = date('Y-m');
         $requests = User::where('department_id', 100)->where('confirmation',0)->orderBy('created_at','DESC')->get();
         $reqcount = count($requests);
@@ -2927,6 +3041,7 @@ date_default_timezone_set("Asia/Kolkata");
     }
  public function amorders1(Request $request)
     {
+            $manusuppliers = ManufacturerDetail::all();
          $id = $request->projectId;
         if($request->projectId){
             $view = Order::orderby('orders.created_at','DESC')
@@ -2942,44 +3057,63 @@ date_default_timezone_set("Asia/Kolkata");
             $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                    ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->leftjoin('requirements','orders.req_id','requirements.id')
+                    ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
-
-
         }
         if(Auth::user()->group_id == 23){
-         $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
-             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
+            $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+            $catsub = Category::where('id',$ac)->pluck('category_name')->first();
 
-             $view = Order::orderby('orders.created_at','DESC')
-                     ->where('orders.main_category',$catsub)
+             $view = Order::orderby('orders.id','DESC')
+                    ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
-                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
                     
-
             
         }
-
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
-
-
-        return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
+        $paymentDetails = PaymentDetails::all();
+        $message = Message::all();
+        $chatUsers = User::all();
+        $counts = array();
+        $suppliers = Supplierdetails::all();
+        foreach($view as $order){
+            $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
+        }
+        $suppliers = SupplierDetails::get();
+      
+        return view('ordersadmin',[
+            'view' => $view,
+            'suppliers'=>$suppliers,
+            'users'=>$users,
+            'req'=>$req,
+            'paymentDetails'=>$paymentDetails,
+            'messages'=>$message,
+            'chatUsers'=>$chatUsers,
+            'manusuppliers'=>$manusuppliers,
+            'suppliers'=>$suppliers,
+            'counts'=>$counts
+           
+        ]);
     }
   public function amorders(Request $request)
        {
-             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-             if(Auth::user()->group_id != 22 || Auth::user()->group_id != 23){
+             if(Auth::user()->group_id != 22 || Auth::user()->group_id == 23){
+
                return $this->amorders1($request);
              }
 
+              $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+              $ward = explode(",",$tlward);
            if($request->projectId){
                $view = Order::orderby('orders.created_at','DESC')
                        ->leftJoin('users','orders.generated_by','=','users.id')
@@ -2989,8 +3123,8 @@ date_default_timezone_set("Asia/Kolkata");
                        ->leftJoin('wards','wards.id','sub_wards.ward_id')
                        ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','orders.id as orderid','users.name','users.group_id',
                             'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
-                       ->where('project_id',$request->projectId)
-                       ->where('wards.id',$tlward)
+                       ->where('project_details.project_id',$request->projectId)
+                       ->whereIn('wards.id',$ward)
                       ->paginate(25);
                   
            }else{
@@ -3001,16 +3135,30 @@ date_default_timezone_set("Asia/Kolkata");
                         ->leftjoin('project_details','project_details.project_id','orders.project_id')
                        ->leftjoin('sub_wards','sub_wards.id','project_details.sub_ward_id')
                        ->leftJoin('wards','wards.id','sub_wards.ward_id')
-                       ->where('wards.id',$tlward)
+                       ->whereIn('wards.id',$ward)
                        ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id',
                        'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
                        ->paginate(25);
            }
-
            $depts = [1,2];
            $users = User::whereIn('department_id',$depts)->get();
            $req = Requirement::pluck('project_id');
-            return view('ordersadmin',['view' => $view,'users'=>$users,'req'=>$req]);
+           $message = Message::all();
+            $paymentDetails = PaymentDetails::all();
+           $chatUsers = User::all();
+            $counts = array();
+            foreach($view as $order){
+            $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
+            }
+            return view('ordersadmin',[
+                'view' => $view,
+                'users'=>$users,
+                'req'=>$req,
+                 'paymentDetails'=>$paymentDetails,
+                'messages'=>$message,
+                'chatUsers'=>$chatUsers,
+                'counts'=>$counts
+            ]);
        }
     public function getSubCat(Request $request)
     {
@@ -3039,11 +3187,37 @@ date_default_timezone_set("Asia/Kolkata");
     
     public function confirmOrder(Request $request)
     {
+
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
-        $x->payment_status = 'Payment Pending';
         $x->save();
+        PaymentDetails::where('order_id',$id)->update([
+            'quantity'=>$request->quantity,
+            'mamahome_price'=>$request->mamaprice,
+            'unit'=>$request->unit
+        ]);
+        $unitwithgst = ($request->mamaprice/1.28);
+        $totalamount = ($request->quantity *  $unitwithgst);
+        $x = (int)$totalamount;
+        $cgst = ($totalamount * 14)/100;
+        $sgst = ($totalamount * 14)/100;
+        $tt = $cgst + $sgst;
+        $totaltax = (int)$tt;
+        $withgst = $cgst + $sgst + $totalamount;
+        $y = (int)$withgst;
+
+        $price = new MamahomePrice;
+            $price->order_id = $id;
+            $price->quantity = $request->quantity;
+            $price->mamahome_price = $request->mamaprice;
+            $price->unitwithoutgst = $unitwithgst;
+            $price->totalamount = $x;
+            $price->cgst = $cgst;
+            $price->sgst = $sgst;
+            $price->totaltax = $totaltax;
+            $price->amountwithgst = $y;     
+            $price->save();
         return back();
 
     }
@@ -3359,8 +3533,9 @@ date_default_timezone_set("Asia/Kolkata");
         }else{
             $stages = $request->stage;
         }
-        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-        $subwards = Subward::where('ward_id',$tlward)->pluck('id');
+        $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tlward = explode(",",$tl);
+        $subwards = Subward::whereIn('ward_id',$tlward)->pluck('id');
         $projectids = new Collection();
         $orders = Order::where('status','Order Confirmed')->pluck('project_id');
         if($stages != null){
@@ -3406,8 +3581,6 @@ date_default_timezone_set("Asia/Kolkata");
 
        return back();
     }
-
-
   public function smstonumber1(Request $request)
     {
         if(!$request->stage ){
@@ -3445,10 +3618,6 @@ date_default_timezone_set("Asia/Kolkata");
             $owner =OwnerDetails::whereIn('project_id',$projectids)->where('owner_contact_no','!=',null)->pluck('owner_contact_no')->toarray();
              $builder =Builder::whereIn('project_id',$projectids)->where('builder_contact_no','!=',null)->pluck('builder_contact_no')->toarray();
             
-
-
-           
-
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
 
            $filtered = array_unique($merge);
@@ -3466,7 +3635,7 @@ date_default_timezone_set("Asia/Kolkata");
        return back();
     }
 
-    public function projectsUpdate(Request $request)
+     public function projectsUpdate(Request $request)
     {   
         
         $date=date('Y-m-d');
@@ -3506,7 +3675,7 @@ date_default_timezone_set("Asia/Kolkata");
          // dd($ward."<br>".$assignedSubWards);
 
         $subwards = AssignStage::where('user_id',Auth::user()->id)->pluck('subward')->first();
-
+        
         $subwardNames = explode(", ", $subwards);
 
          if($subwards != "null"){
@@ -3543,7 +3712,8 @@ date_default_timezone_set("Asia/Kolkata");
         $roomtypes = RoomType::all();
         $projectids = new Collection();
         $projects = ProjectDetails::whereIn('sub_ward_id',$subwardid)->pluck('project_id');
-        if(count($projects) > 0){
+        
+         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
         if(count($projectids) != 0){
@@ -3597,6 +3767,8 @@ date_default_timezone_set("Asia/Kolkata");
                     $projectids = $grd;
                 }
             }
+   
+         
             if($basement != null){
                 if(count($projectids) != 0){
                     $base = ProjectDetails::whereIn('project_id',$projectids)->where('basement', '<=',$basement !=null ? $basement :0 )->where('basement', '>=',$base1 !=null ? $base1 :0 )->pluck('project_id');
@@ -3654,7 +3826,7 @@ date_default_timezone_set("Asia/Kolkata");
                     $projectids = $datec;
                 }
             }
-
+    
 
             $rmcInt = explode(",", $rmc);
             if($rmcInt[0] != "null"){
@@ -3743,7 +3915,6 @@ $upvcInt = explode(",", $upvc);
 
 
 
-
  if(count($projectids) != 0){
                 $project_types = ProjectDetails::whereIn('project_id',$projectids)->where('project_type', '>=',$project_type !=null ? $project_type :0 )->where('project_type', '<=',$total !=null ? $total :0 )->pluck('project_id');
             }else{
@@ -3780,7 +3951,7 @@ $upvcInt = explode(",", $upvc);
                 if(count( $projectids) != 0){
                     $qdate = ProjectDetails::whereIn('project_id',$projectids)->where('updated_at','>=',$previous )->pluck('project_id');
                 }else{
-                    $qdate = ProjectDetails::where('updated_at', $undate )->pluck('project_id');
+                    $qdate = ProjectDetails::where('updated_at',$undate )->pluck('project_id');
                 }
 
                 if(count($qdate) > 0){
@@ -3790,24 +3961,16 @@ $upvcInt = explode(",", $upvc);
              
 
 
-        $checking = AssignStage::where('user_id',Auth::user()->id)->pluck('project_ids')->first();
-        if($checking != null){
-            $projectids = explode(", ",$checking);
-        }else{
-            if(is_array($projectids)){
-                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids)]);
-            }else{
-                AssignStage::where('user_id',Auth::user()->id)->update(['project_ids'=>implode(", ",$projectids->toArray())]);
-            }
-        }
+       
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
+       
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                    ->whereNotIn('project_id',$projectOrdersReceived)
-                    // ->where('quality',"Unverified")
-                    // ->Where('updated_at','LIKE',date('Y-m-d')."%")
+ 
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
-                    ->paginate(15);
+                    ->paginate(20);
+
+        
          $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
        
           if(Auth::user()->group_id == 23){
@@ -3870,7 +4033,7 @@ $upvcInt = explode(",", $upvc);
           $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
           $catsub = Category::where('id',$ac)->pluck('category_name')->first();
           $sprojectids = Requirement::where('main_category',$catsub)->pluck('project_id');
-
+        
           $projects = ProjectDetails::whereIn('project_id',$sprojectids)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
@@ -3898,6 +4061,7 @@ $upvcInt = explode(",", $upvc);
         $category = Category::all();
         $sales = Salesofficer::all();
         $orders = Order::all();
+        $projectupdat=ProjectUpdate::all(); 
        return view('salesengineer',[
                 'projects'=>$projects,
                 'roomtypes'=>$roomtypes,
@@ -3908,12 +4072,12 @@ $upvcInt = explode(",", $upvc);
                 'log'=>$log,
                 'log1'=>$log1,
                 'category'=>$category,
-                'sales'=>$sales
+                'sales'=>$sales,
+                'projectupdat'=>$projectupdat
 
 
             ]);
     }
-
  public function dailywiseProjects(Request $request){
         $today = date('Y-m-d');
         $date = date('Y-m-d',strtotime('-1 day',strtotime($today)));
@@ -4037,8 +4201,9 @@ $upvcInt = explode(",", $upvc);
           
 }else{
             $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tl)->pluck('id')->first();
-            $sub  = Subward::where('ward_id',$ward)->pluck('id');
+              $tll = explode(",",$tl);
+            $ward = Ward::whereIn('id',$tll)->pluck('id');
+            $sub  = Subward::whereIn('ward_id',$ward)->pluck('id');
 
 
                if($request->list =="ALL" && $request->fromdate && $request->todate){
@@ -4621,11 +4786,9 @@ $upvcInt = explode(",", $upvc);
             $today = date('Y-m');
         }
         $user = User::where('employeeId',$id)->first();
-        // $attendances = attendance::where('empId',$id)
-        //             ->where('created_at','LIKE',$today.'%')
-        //             ->orderby('date')
-        //             ->get();   
+          
         $attendances = FieldLogin::where('user_id',$user->id)->where('logindate','like',$today.'%')->orderby('logindate')->leftjoin('users','field_login.user_id','users.id')->get();  
+       
         return view('empattendance',['attendances'=>$attendances,'user'=>$user]);
     }
     public function forgotPw(){
@@ -4641,9 +4804,12 @@ $upvcInt = explode(",", $upvc);
         return redirect('/leDashboard');
     }
     public function viewDailyReport($uId, $date){
+
+        
         $reports = Report::where('empId',$uId)->where('created_at','like',$date.'%')->get();
         $user = User::where('employeeId',$uId)->first();
-        $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
+        // $attendance = attendance::where('empId',$uId)->where('date',$date)->first();
+        $attendance = FieldLogin::where('user_id',$user->id)->where('logindate',$date)->first();
         $points_earned_so_far = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Add')->sum('point');
         $points_subtracted = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->where('type','Subtract')->sum('point');
         $points_indetail = Point::where('user_id',$user->id)->where('confirmation',1)->where('created_at','LIKE',$date."%")->get();
@@ -4695,7 +4861,8 @@ $upvcInt = explode(",", $upvc);
     }
     public function confirmedProject(Request $request){
 
-              ProjectDetails::where('project_id',$request->id)->increment('confirmed');
+           ProjectDetails::where('project_id',$request->id)->increment('confirmed');
+
            $call  = date('Y-m-d');
            $check = Activity::where('subject_id',$request->id)->where('created_at','like',$call."%")->where('subject_type','App\ProjectDetails')->where('description','updated')->where('called',"null")->first();
            $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
@@ -4704,14 +4871,29 @@ $upvcInt = explode(",", $upvc);
          
 
    $x= DB::insert('insert into history (user_id,project_id,called_Time,username) values(?,?,?,?)',[$user_id,$project_id,$call,$username]);
-
        if($check == null ){
-      
             Activity::where('subject_id',$request->id)->where('causer_id',Auth::user()->id)->update(['called'=>1]);
         }
         return redirect()->back();
     }
-
+public function confirmedvisit(Request $request){
+       ProjectDetails::where('project_id',$request->id)->increment('deleted');
+           $subward = ProjectDetails::where('project_id',$request->id)->pluck('sub_ward_id')->first();
+           $quality = ProjectDetails::where('project_id',$request->id)->pluck('quality')->first();
+           $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
+           $cat = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
+            $projectvisit = new ProjectUpdate;
+            $projectvisit->project_id =$request->id;
+            $projectvisit->user_id =$user_id;
+            $projectvisit->location =$request->address;
+            $projectvisit->lat =$request->latitude;
+            $projectvisit->lag =$request->longitude;
+            $projectvisit->sub_ward_id =$subward;
+            $projectvisit->quality =$quality;
+            $projectvisit->cat_id =$cat;
+            $projectvisit->save();
+  return redirect()->back();
+    }
  public function confirmedmanufacture(Request $request){
 
            $check = Manufacturer::where('id',$request->id)->first();
@@ -4766,7 +4948,6 @@ $upvcInt = explode(",", $upvc);
     public function showProjectDetails(Request $request)
     {
         $id = $request->id;
-
         $rec = ProjectDetails::where('project_id',$id)->first();
          $projectupdate = ProjectImage::where('project_id',$id)->pluck('created_at')->last();
         $username = User::where('id',$rec->listing_engineer_id)->first();
@@ -5273,6 +5454,7 @@ $upvcInt = explode(",", $upvc);
         }
         else{
             $projects = "None";
+                       
         }
          $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
         return view('viewallprojects',['projects'=>$projects,'wards'=>$wards,'users'=>$users,'projectimages'=>$projectimages]);
@@ -5286,7 +5468,8 @@ $upvcInt = explode(",", $upvc);
         $wards = Ward::all();
         $users = User::all();
         $ids = array();
-        $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tll= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tl = explode(",",$tll);
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
         $found1 = null;
@@ -5296,7 +5479,7 @@ $upvcInt = explode(",", $upvc);
                 $found1 = $searchWard->ward_id;
             }
         }
-
+   
      $sub_ward = Subward::where('ward_id',$found1)->pluck('id');
 
         
@@ -5330,7 +5513,7 @@ $upvcInt = explode(",", $upvc);
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
-                            ->where('wards.id',$tl)
+                            ->whereIn('wards.id',$tl)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
@@ -5559,8 +5742,10 @@ $upvcInt = explode(",", $upvc);
        public function salesreports1(Request $request)
           {
                   $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-                  $ward = Ward::where('id',$tl)->pluck('id')->first();
-                  $tlward  = Subward::where('ward_id',$ward)->pluck('id');
+                   $eward = explode(",",$tl);
+                  $tlward  = Subward::whereIn('ward_id',$eward)->pluck('id');
+                
+                 
 
               if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
@@ -5633,7 +5818,7 @@ $upvcInt = explode(",", $upvc);
                       $projectIds[$i]['updater'] = $exploded[$i][$name-1];
                   }
                   $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-                  $ward = Ward::where('id',$tl)->pluck('id')->first();
+                   $ward = explode(",",$tl);
                   $sub  = Subward::where('ward_id',$ward)->pluck('id');
 
                   $project = ProjectDetails::where('project_id',$projectIds[$i]['projectId'])->whereIn('sub_ward_id',$sub)->first();
@@ -5826,8 +6011,8 @@ $upvcInt = explode(",", $upvc);
             }
         }
         $stages = AssignStage::where('user_id',Auth::user()->id)->first();
-
-       $ward =Ward::where('id',$found1)->pluck('ward_name')->first();
+           $found = explode(",", $found1);
+       $ward =Ward::whereIn('id',$found)->get();
         return view('scdashboard',['ward'=>$ward,'stages'=>$stages]);
     }
  public function getChat()
@@ -6336,7 +6521,9 @@ public function projectwise(request $request){
 
 }
 
- $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+ $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+
+  $tlward = explode(",",$tl);
 
      $depts = [1,2];
      $wardsAndSub = [];
@@ -6363,7 +6550,7 @@ public function projectwise(request $request){
 
 
    $assignstage=AssignStage::all();
-    $wards = Ward::where('wards.id',$tlward)->get();
+    $wards = Ward::whereIn('wards.id',$tlward)->get();
 
     $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
                ->select('sub_wards.*')->get();
@@ -6426,7 +6613,8 @@ if(Auth::user()->group_id != 22){
     return $this->manufacturerwise1($request);
 }
 
- $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+ $tl1= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+ $tlward = explode(",",$tl1); 
 
      $depts = [1,2];
      $wardsAndSub = [];
@@ -6447,7 +6635,7 @@ if(Auth::user()->group_id != 22){
 
 
    $assignstage=assign_manufacturers::all();
-    $wards = Ward::where('wards.id',$tlward)->get();
+    $wards = Ward::whereIn('wards.id',$tlward)->get();
 
     $subwards = SubWard::leftjoin('project_details','sub_ward_id','sub_wards.id')
                ->select('sub_wards.*')->get();
@@ -6481,8 +6669,9 @@ public function projectstore(request $request)
     $wards = implode(", ", $request->ward);
     }else{
         if(Auth::user()->group_id == 22){
-            $tlWard = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tlWard)->pluck('ward_name')->first();
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $tlWard=explode(",",$tl);
+            $ward = Ward::whereIn('id',$tlWard)->pluck('ward_name');
             $wards = $ward;
         }else{
             $wards = "null";
@@ -6698,11 +6887,12 @@ public function enquirywise(request $request){
             return $this->enquirywise1($request);
         }
 
-           $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+           $ss= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+           $tlward =explode(",",$ss);
            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('users')->first();
           $userIds = explode(",", $tl);
 
-         $wards = Ward::where('wards.id',$tlward)->get();
+         $wards = Ward::whereIn('wards.id',$tlward)->get();
          $depts = [17,6,7,11];
          $wardsAndSub = []; 
          $users = User::whereIn('users.group_id',$depts)
@@ -6754,9 +6944,11 @@ function enquirystore(request $request){
     $wards = implode(", ", $request->ward);
     }else{
         if(Auth::user()->group_id == 22){
-            $tlWard = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tlWard)->pluck('ward_name')->first();
+            $ss = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $tlWard =explode(",",$ss);
+            $ward = Ward::whereIn('id',$tlWard)->pluck('ward_name');
             $wards = $ward;
+           
         }else{
             $wards = "null";
         }
@@ -7069,6 +7261,7 @@ public function display(request $request){
     {
         $conversions = Conversion::all();
         if($request->category){
+            
             $conversion = Conversion::where('id',$request->category)->first();
             $utilizations = Utilization::where('id',$request->category)->first();
             View::share('conversion', $conversion);
@@ -7076,6 +7269,7 @@ public function display(request $request){
         }else{
             View::share('conversion',null);
         }
+       
         $wards = Ward::all();
        $qualityCheck = ['Genuine','Fake','Unverified'];
        // getting total no of projects
@@ -7116,6 +7310,7 @@ public function display(request $request){
        $totalProjects = $planningCount + $diggingCount + $foundationCount + $pillarsCount + $completionCount + $fixturesCount + $paintingCount + $carpentryCount + $flooringCount + $plasteringCount + $enpCount + $roofingCount + $wallsCount + $closedCount;
 
        if($request->ward && !$request->subward){
+
            if($request->ward == "All"){
                $planningCount      = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->count();
                $planningSize       = ProjectDetails::whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
@@ -7154,6 +7349,7 @@ public function display(request $request){
                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
                $planningCount      = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->count();
                $planningSize       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Planning%')->sum('project_size');
+              
                $foundationCount    = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->count();
                $foundationSize     = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Foundation%')->sum('project_size');
                $roofingCount       = ProjectDetails::whereIn('sub_ward_id',$subwards)->whereIn('quality',$qualityCheck)->where('project_status','LIKE','Roofing%')->count();
@@ -7186,7 +7382,7 @@ public function display(request $request){
                $wardname = Ward::where('id',$request->ward)->first();
                $subwards = SubWard::where('ward_id',$request->ward)->get();
            }
-
+        
            return view('projection',[
                'planningCount'=>$planningCount,'planningSize'=>$planningSize,
                'foundationCount'=>$foundationCount,'foundationSize'=>$foundationSize,
@@ -7817,8 +8013,9 @@ public function display(request $request){
 
      public function Unupdated1(Request $request){
 
-        $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-        $wards = Ward::orderby('ward_name','ASC')->where('id',$tlward)->get();
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+        $tlward = explode(",", $tl); 
+        $wards = Ward::orderby('ward_name','ASC')->whereIn('id',$tlward)->get();
         $wardid = $request->subward;
         $previous = date('Y-m-d',strtotime('-30 days'));
         $today = date('Y-m-d');
@@ -8143,12 +8340,23 @@ public function display(request $request){
             ->whereIn('department_id',$def)
             ->where('department_id','!=', 10)
             ->select('departments.*','departments.dept_name','users.name','users.id')->get();
-            
-             
-          $ward = Ward::all();
-          $w = Ward::pluck('id');
-         $u = User::pluck('id');
-          $tlward =Tlwards::leftjoin('wards','wards.id','tlwards.ward_id')->whereIn('tlwards.ward_id',$w)->whereIn('tlwards.user_id',$u)->select('wards.ward_name','tlwards.user_id')->get();
+              $ward = Ward::all();
+             $tluserids = Tlwards::where('group_id',22)->get();
+
+               $newwards = [];
+         foreach($users as $user){
+                $tlwards = Tlwards::where('user_id',$user->id)->first();
+                if($tlwards == null){   
+                }
+                else{
+                $wardids = explode(",",$tlwards->ward_id);
+                $noofwardids = Ward::whereIn('id',$wardids)->get()->toArray();
+                $userIds = explode(",",$tlwards->users);
+                $noOfUsers = User::whereIn('id',$userIds)->get()->toArray();
+                array_push($newwards,['tl_id'=>$user->id,'wardtl'=>$noofwardids,'tlusers'=>$noOfUsers]);
+            }
+        }
+
             $tl = Tlwards::leftjoin('users','users.id','tlwards.user_id')
                  ->pluck('tlwards.users');
                $tt = explode(",", $tl) ;
@@ -8164,13 +8372,17 @@ public function display(request $request){
                 array_push($newUsers,['tl_id'=>$user->id,'employees'=>$noOfUsers]);
             }
         }
-        return view('/assigntl',['newUsers' =>$newUsers,'users'=>$users,'ward'=>$ward,'user1'=>$user1,'tlward'=>$tlward]);
+        return view('/assigntl',['newUsers' =>$newUsers,'users'=>$users,'ward'=>$ward,'user1'=>$user1,'newwards'=>$newwards,'tluserids'=>$tluserids]);
     }
 
     public function tlward(request $request){
         $check = Tlwards::where('user_id',$request->user_id)->first();
-
-        if($request->framework){
+        if($request->ward_id){
+        $ward = implode(",", $request->ward_id);
+        }else{
+            $ward="null";
+        }
+         if($request->framework){
 
         $users = implode(",", $request->framework);
         }else{
@@ -8182,12 +8394,12 @@ public function display(request $request){
             $tlward->user_id = $request->user_id;
              $tlward->group_id = $request->group_id;
              $tlward->users = $users;
-              $tlward->ward_id = $request->ward_id;
+              $tlward->ward_id = $ward;
               $tlward->save();
         }else{
              $check->user_id = $request->user_id;
              $check->group_id = $request->group_id;
-              $check->ward_id = $request->ward_id;
+              $check->ward_id = $ward;
               $check->users = $users;
               $check->save();
         }
@@ -8244,7 +8456,54 @@ public function display(request $request){
          $a =Subward::where('id',$wardsAssigned)->pluck('ward_id')->first();
         $acc = Subward::where('ward_id',$a)->get();
 
-        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc]);
+
+
+             $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+
+ 
+
+
+
+        return view('addManufacturer',['subwards'=>$subwards,'log'=>$log,'log1'=>$log1,'tlwards'=>$tlwards,'acc'=>$acc,'ward'=>$d]);
     }
     public function viewManufacturer(Request $request)
     {
@@ -8255,13 +8514,13 @@ public function display(request $request){
         $dd= $request->type;
         if($request->type){
             $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
-                    ->get();
-           $count = count($manufacturers);
+                    ->paginate(20);
+           $count = Manufacturer::where('manufacturer_type',$request->type)->count();
                     
          }else{
 
-        $manufacturers = Manufacturer::get();
-          $count = count($manufacturers);
+        $manufacturers = Manufacturer::paginate(20);
+          $count = Manufacturer::count();
          }
 
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
@@ -8275,14 +8534,14 @@ public function viewManufacturer1(Request $request)
           $his = History::get();
          if($request->type){
             $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)
-                    ->get();
-    $count = count($manufacturers);
+                    ->paginate(20);
+    $count = Manufacturer::whereIn('sub_ward_id',$ward)->where('manufacturer_type',$request->type)->count();
 
          }else{
 
         $manufacturers = Manufacturer::whereIn('sub_ward_id',$ward)
-                    ->get();
-    $count = count($manufacturers);
+                    ->paginate(20);
+    $count = Manufacturer::whereIn('sub_ward_id',$ward)->count();
          }
                    
         return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
@@ -8317,9 +8576,6 @@ public function viewManufacturer1(Request $request)
          return redirect()->back();
     }
 
-
-
-
     public function auto(request $requests){
      $projects = ProjectDetails::where('automation',"Yes")->where('quality','!=','Fake')->paginate(10); 
      $projectcount= count($projects); 
@@ -8336,7 +8592,7 @@ public function viewManufacturer1(Request $request)
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
-        $manufacturers = Manufacturer::where('sub_ward_id',$wardsAssigned)->get();
+        $manufacturers = Manufacturer::where('listing_engineer_id',Auth::user()->id)->get();
         return view('updateManufacturer',['manufacturers'=>$manufacturers,'log'=>$log,'log1'=>$log1]);
   }
   public function updateManufacturerDetails(Request $request)
@@ -8346,7 +8602,7 @@ public function viewManufacturer1(Request $request)
       $ward=Subward::leftjoin('manufacturers','manufacturers.sub_ward_id','sub_wards.id')
       ->where('manufacturers.id',$request->id)->pluck('sub_wards.sub_ward_name')->first();
      
-      return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
+  return view('updateManufacturers',['manufacturer'=>$manufacturer,'ward'=>$ward]);
   }
   public function getUnverifiedProjects(Request $request)
   {
@@ -8358,8 +8614,9 @@ public function viewManufacturer1(Request $request)
     $site = SiteAddress::all();
     $names = user::get();
     $status =  $request->status;
-     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
-        $tlwards = Ward::where('id',$tl)->get();
+     $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+         $tll = explode(",", $tl);
+        $tlwards = Ward::whereIn('id',$tll)->get();
        
     if($status != null){
         $projectsat = new Collection;
@@ -8498,15 +8755,21 @@ public function viewManufacturer1(Request $request)
   {
 
     $x = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('id')->last();
-   // dd($x);
-    BreakTime::where('id',$x)->update([
-            'stop_time' => date('h:i A')
+     $y = BreakTime::where('user_id',Auth::user()->id)->where('date',date('Y-m-d'))->pluck('start_time')->last();
+    
+   $A = strtotime($y);
+   $B = strtotime(date('h:i A'));
+   $diff = $B - $A;
+    $z =  $diff / 60 ;
+
+   BreakTime::where('id',$x)->update([
+            'stop_time' => date('h:i A'),
+            'totaltime' =>$z
+
         ]);
         return back()->with('Success','Your Break Time has been Ended');
   }
-  // public function starttimer(){
-  //   return view("timer");
-  //}
+ 
   public function getid(){
         $tl1= Tlwards::where('group_id','=',22)->get();
         $userid = Auth::user()->id;
@@ -8660,5 +8923,33 @@ foreach ($user as $users) {
                             ->get();
             }
             return view('hrlatelogins',['users'=>$users]);
+    }
+    public function breakhistory(Request $request){
+            $from = $request->from;
+            $to = $request->to;
+            if(Auth::user()->group_id == 1){
+                    $depts = [1,2,3,4,5,6,8];
+            }
+            else{
+                    $depts = [1,2,3,4,6,8];
+            }
+            $userIds = User::whereIn('department_id',$depts)->pluck('id');
+            if($from == $to){
+                $breaks = BreakTime::orderBy('breaktime.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('breaktime.created_at','LIKE',$from."%")
+                            ->leftjoin('users','breaktime.user_id','users.id')
+                            ->select('breaktime.*','users.name')  
+                            ->get();
+            }else{
+                $breaks = BreakTime::orderBy('breaktime.created_at','DESC')
+                            ->whereIn('user_id',$userIds)
+                            ->where('breaktime.created_at','>',$from)
+                            ->where('breaktime.created_at','<',$to)
+                            ->leftjoin('users','breaktime.user_id','users.id')
+                            ->select('breaktime.*','users.name')
+                            ->get();
+            }
+            return view('breaks',['breaks'=>$breaks]);
     }
 }

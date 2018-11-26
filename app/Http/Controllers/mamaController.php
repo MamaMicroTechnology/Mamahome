@@ -441,53 +441,9 @@ class mamaController extends Controller
     public function addProject(Request $request)
     {
              
+
              $result = (new HomeController)->getid();
              // dd($result);
-
-
-     $Wards = [];
-      $wards = Ward::all();
-     foreach($wards as $user){
-            
-                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
-                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
-            }
-              $allwardlats = [];
-              foreach ($Wards as $all) {
-
-                
-                  $allx = explode(",",$all['ward']['lat']);
-                  $wardid = $all['wardid'];
-                
-                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
-               } 
-               
-    $a = [];
-
-    for($j = 0; $j<sizeof($allwardlats);$j++){
-        $finalward = [];
-        dd($finalward);
-    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
-
-         $lat = $allwardlats[$j]['lat'][$i];
-         $long =  $allwardlats[$j]['lat'][$i+1];
-        $latlong = "{lat: ".$lat.", lng: ".$long."}";
-        array_push($finalward, $latlong);   
-
-    }
-       
-       array_push($a,$finalward);
-
-   }
-       
-dd($a);
-
-
-
-
-
-
-
 
         $point = 0;
         // counting points
@@ -629,10 +585,11 @@ dd($a);
         
             }
               if(Auth::user()->group_id == 22){
-                $ward = $request->tlward;
+                 $ward= $request->subward_id;
+             
               }else{
 
-                $ward = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
+                 $ward= $request->subward_id;
               }
 
             $projectdetails = New ProjectDetails;
@@ -791,7 +748,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-      $text = "Project Added Successfully.<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
+        $subward = Subward::where('id',$request->subward_id)->pluck('sub_ward_name')->first();
+      $text = "Project Added Successfully in Subward : ".$subward.".<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('test',$text);
     }
     public function updateProject($id, Request $request)
@@ -2229,10 +2187,10 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         
 
              if(Auth::user()->group_id == 22){
-                  $wardsAssigned = $request->tlward;
+                  $wardsAssigned = $request->subward_id;
              }else{
                 
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $wardsAssigned = $request->subward_id;
              }
 
 
@@ -2350,7 +2308,9 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $products->save();
             }
         }
-        return back()->with('Success','Manufacturer Saved Successfully');
+        $ward = SubWard::where('id',$request->subward_id)->pluck('sub_ward_name')->first();
+               $text = "Manufacturer Saved Successfully in Subward is : ".$ward."";
+        return back()->with('Success',$text);
     }
     public function listeng(request $request){
        // $s = User::pluck('id');

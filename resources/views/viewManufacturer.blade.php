@@ -1,17 +1,29 @@
+
 @extends('layouts.app')
+
 @section('content')
     <div class="col-md-12">
         <div class="panel panel-primary">
         <div class="panel-heading text-center" style="padding:-20px;">
+          <form method="GET" action="{{ URL::to('/') }}/manusearch" style="margin-top:10px;">
+                  <div class="col-md-4 pull-right">
+                    <div class="input-group">
+                      <input type="text" name="phNo" class="form-control" placeholder="Phone number,Manufacturer Id  and Plant Name Search">
+                      <div class="input-group-btn">
+                        <input type="submit" class="form-control" value="Search">
+                      </div>
+                    </div>
+                  </div>
+        </form>
                         <center ><h5>{{$dd}} Manufacturer Details: &nbsp;&nbsp;&nbsp;{{$count}}</h5></center>
-                 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-35px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
                  <form action="{{ URL::to('/') }}/viewManufacturer" method="GET">
                  <select class="form-control pull-left" style="width:12%;margin-top:-40px;" onchange="this.form.submit()" name="type">
-                     <option>--Manufacutur Type--</option>
+                     <option>--Manufacuturer Type--</option>
                      <option value="RMC">RMC</option>
                      <option value="BLOCKS">BLOCKS</option>
                      <option value="M-SAND">M-SAND</option>
                      <option value="AGGREGATES">AGGREGATES</option>
+                     <option value="Fabricators">FABRICATORS</option>
                  </select>
             </div>
             <div class="panel-body" style="overflow-x: auto">
@@ -41,6 +53,7 @@ tr:nth-child(even) {
             <th>listing Engineer Name</th> 
             <th>Plant Name</th>
             <th>Phone No.</th>
+            <th>Quality</th>
            <!--  <th>Manufacturer Image</th> -->
             <th>Cement Requirement</th>
             <th>Sand Requirement</th>
@@ -64,7 +77,7 @@ tr:nth-child(even) {
                 <td> {{$manufacturer->user != null ? $manufacturer->user->name :'' }}</td>
                 <td>{{ $manufacturer->plant_name }}</td>
                  <td> {{$manufacturer->proc != null ? $manufacturer->proc->contact : $manufacturer->contact_no  }}</td>
-              
+                 <td>{{$manufacturer->quality != null ? $manufacturer->quality :''}}
                 <td>{{ $manufacturer->cement_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer->sand_requirement }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
                 <td>{{ $manufacturer-> aggregates_required }}&nbsp; {{ $manufacturer->cement_requirement_measurement }}</td>
@@ -145,6 +158,27 @@ tr:nth-child(even) {
 <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{$manufacturer->id}}"   type="button" class="btn  btn-sm "  >
              History </button>
 </td> 
+<td>
+                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $manufacturer->id }}" style="padding: 5.5px;">Delete</button>
+                <!-- Modal -->
+                <div class="modal fade" id="delete{{ $manufacturer->id }}" role="dialog">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete this project?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a class="btn btn-danger pull-left" href="{{ URL::to('/') }}/deletemanu?projectId={{ $manufacturer->id }}">Yes</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
 </tr> 
  @endforeach
 </table>
@@ -226,6 +260,8 @@ tr:nth-child(even) {
     </div>
     @endforeach
     </div>
+    <center>{{ $manufacturers->appends(request()->query())->links()}} </center>
+
 </div>
 </div>
 <!-- <script>

@@ -9,9 +9,14 @@
 		<div class="panel panel-default" style="border-color: #f4811f">
 			<div class="panel-heading" style="background-color: #f4811f;text-align:center">
 				<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+				<?php $x=$enq->project_id ;
+				?>
+				 @if($x == "")   
+				<b  class="pull-right" style="text-align:right;color:white;font-size:1.1em;">Manufacturer Type:&nbsp;{{$enq->manu != NULL ? $enq->manu->manufacturer_type:''}}</b>
+				@endif
 				<br><br>
-<p>(Add Only One Category With One Enquiry,<br>
-Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
+      <p>(Add Only One Category With One Enquiry,<br>
+        Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories Just Mension In Remarks)</p>
 			</div>
 			<div class="panel-body">
 				<form method="POST" id="sub" action="{{URL::to('/')}}/editinputdata">
@@ -39,6 +44,8 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 								<td>
 									{{ $enq->procurement_contact_no }} {{ $enq->contractor_contact_no }} {{ $enq->site_engineer_contact_no }}
 									{{ $enq->owner_contact_no }} {{ $enq->consultant_contact_no }}
+
+									 {{$enq->manu != NULL ? $enq->manu->contact_no:''}} {{$enq->proc != NULL ? $enq->proc->contact:''}}
 									<!-- <input value="" required type="text" name="econtact" id='econtact' maxlength="10" onkeyup="check('econtact')" onblur="getProjects()" placeholder="10 Digits Only" class="form-control" /><div id="error"></div> -->
 								</td>
 							</tr>
@@ -49,7 +56,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 							<tr>
 								<td><label>Project* : </label></td>
 								<td>
-									{{ $enq->project_name }}
+									{{ $enq->project_id }}{{$enq->manu_id}}
 								</td>
 							</tr>	
 							<tr>
@@ -181,7 +188,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 							@endif
 							<tr>
 								<td><label>Location* : </label></td>
-								<td>{{ $enq->address }}</td>
+								<td>{{ $enq->address }}{{$enq->manu != NULL ? $enq->manu->address:''}}</td>
 							</tr>
 
                               <tr>

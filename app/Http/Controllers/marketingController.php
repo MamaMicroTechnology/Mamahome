@@ -351,33 +351,26 @@ class marketingController extends Controller
       $check = AssignCategory::where('user_id',$request->user_id)->first();
       $catid = AssignCategory::where('user_id',$request->user_id)->pluck('cat_id')->first();
       $cateids = Category::where('id',$catid)->pluck('category_name')->first();
-
           if($check == null){
            $price = new AssignCategory;
            $price->cat_id = $request->cat;
            $price->user_id = $request->user_id;
             $price->instraction = $request->ins;
             $price->save();
-      
-            
           }else{
            $check->cat_id = $request->cat;
            $check->user_id = $request->user_id;
            $check->instraction = $request->ins;
-            $check->prev =  $cateids;
+           $check->prev =  $cateids;
            $check->save();
-      
           }
                return back()->with('Success','successfully Assigned Category');
  }
-
  public function cashdeposit(request $request)
  {
      $cash = Deposit::all();
      $dep = User::all();
-
-$countrec = count($cash);
-
+    $countrec = count($cash);
      return view('/cashdeposit',['cash'=>$cash,'dep'=>$dep,'countrec'=>$countrec]);
  }
 }

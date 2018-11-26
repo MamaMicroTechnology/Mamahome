@@ -1,13 +1,13 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Manufacturer extends Model
 {
     use LogsActivity;
+     use SoftDeletes;
     public function manufacturerProduct(){
         return $this->hasMany('App\ManufacturerProduce');
     }

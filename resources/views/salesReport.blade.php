@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 
 <div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px">
@@ -124,8 +128,8 @@
                     <tr>
                         <th style="text-align:center">Subward Number</th>
                         <th style="text-align:center">Project-ID</th>
-                        <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Quality</th>
+                        <th style="text-align:center" >Updater</th>
                         <th style="text-align:center">Followup</th>
                        
                     </tr>

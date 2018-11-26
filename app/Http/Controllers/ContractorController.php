@@ -108,7 +108,7 @@ class ContractorController extends Controller
         $projects[$request->phone] = ProjectDetails::whereIn('project_id',$projectIds)->count();
       }else{
         $contractors = ContractorDetails::groupby('contractor_contact_no')->pluck('contractor_contact_no');
-        $conName = ContractorDetails::wherein('contractor_contact_no',$contractors)->paginate(10);
+        $conName = ContractorDetails::whereIn('contractor_contact_no',$contractors)->get();
         $projects = array();
         foreach($conName as $contractor){
           $projectIds = ContractorDetails::where('contractor_contact_no',$contractor->contractor_contact_no)->pluck('project_id');

@@ -32,6 +32,8 @@ Route::post('tlMessage','TokenController@tlMessage');
 Route::get('buyerlogin','TokenController@buyerLogin');
 
 Route::get('/login','TokenController@getLogin');
+Route::get('/tracklogin','TokenController@tracklogin');
+Route::get('/tracklogout','TokenController@tracklogout');
 
 
 
@@ -73,3 +75,6 @@ Route::get('/fakegps','TokenController@fakegps');
 
 //listing engineers
 Route::post('/addleProject','TokenController@addleProject');
+Route::post('/saveManufacturer','TokenController@postSaveManufacturer');
+Route::get('/getward','TokenController@getwards');
+Route::get('/getsubwards','TokenController@getsubwards');

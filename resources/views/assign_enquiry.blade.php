@@ -1,4 +1,8 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 <div class="container">
     <div class="row">
@@ -64,7 +68,7 @@
         @foreach($wards as $ward)
         <div class="col-sm-2">
           <label>
-            <input  onclick="hide('{{ $ward->id }}')"  style=" padding: 5px;" data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
+            <input  onclick="hide('{{ $ward->id }}')"  data-toggle="modal" data-target="#myModal{{ $ward->id }}" type="checkbox" value="{{ $ward->ward_name }}"  name="ward[]">&nbsp;&nbsp;{{ $ward->ward_name }}
           </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
         @endforeach
@@ -91,18 +95,24 @@
     </div>
   </div>
   @endforeach 
-  <h4>Assign Date</h4>
-  <input type="date" name="dateenq" class="form-control" style="width: 50%;">         
   <div class="row">
+  <div class="col-md-12">
+  <div class="col-md-2">
+         <h4>&nbsp;&nbsp; Assign Date</h4>
+          <input type="date" name="dateenq" class="form-control" style="width: 130%"> 
+  </div>
+  <div class="col-md-10">        
         <h4>&nbsp;&nbsp; Select Category</h4>
        @foreach($category as $cat)
-         <div class="col-sm-4">
+         <div class="col-sm-6">
          <label>
        <input type="checkbox" id="cat{{ $cat->id }}" onclick = "displaybrand( {{ $cat->id }})"; style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
         </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
        </div>
         @endforeach
-        </div>
+  </div>
+  </div>
+</div>
 </div>
 <p class="text-center"><button onclick="return confirm('Are you sure you Select The Category');" type="submit" class="btn btn-primary">Submit Data</button></p>                                        
 @foreach($category as $cat)

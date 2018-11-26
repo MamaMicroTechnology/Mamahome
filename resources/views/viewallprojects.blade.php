@@ -1,9 +1,14 @@
-@extends('layouts.app')
+<?php
+    $user = Auth::user()->group_id;
+    $ext = ($user == 1? "layouts.teamheader":"layouts.app");
+?>
+@extends($ext)
 @section('content')
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects : {{ count($projects) }}</p>
-				  <a href="{{ URL::to('/') }}/home" class="btn btn-default pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></a>
+			<div class="panel-heading" style="background-color: green;"><p style="color: white">Total Projects :{{$projects == "None" ?  0 : count($projects)}}
+                 </p>
+				  <a onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></a>
 			</div>
 			<div class="panel-body" style="overflow-x: scroll;">
 				@if(Auth::user()->group_id == 1)
@@ -20,7 +25,7 @@
 						</div>
 						<div class="col-md-4">
 							<select name="subward" id="subward" class="form-control">
-								
+								<option value="">--SELECT--</option>
 							</select>
 						</div>
 						<div class="col-md-4">
@@ -192,6 +197,8 @@
 		function getSubwards()
 	    {
 	        var ward = document.getElementById("ward").value;
+	        if(ward != "All"){
+	        	
 	        $.ajax({
 	            type:'GET',
 	            url:"{{URL::to('/')}}/loadsubwards",
@@ -206,6 +213,7 @@
 	                }
 	            }
 	        });    
+	        }
 	    }
 	</script>
 	<script>

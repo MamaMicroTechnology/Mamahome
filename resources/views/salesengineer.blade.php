@@ -1,12 +1,8 @@
-<?php
-    $user = Auth::user()->group_id;
-    $ext = ($user == 11? "layouts.leheader":"layouts.app");
-?>
-@extends($ext)
+
+@extends('layouts.app')
 @section('content')   
     <div class="col-md-12">     
     <div class="col-md-12" >
-
     <div class="panel panel-default" style="overflow: scroll;">
             <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;">Total Project Count :  {{ $projects->total() }}
          <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-7px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
@@ -23,8 +19,10 @@
                  <th>Action</th>
                  @if(Auth::user()->group_id == 23)
                 <th>Customers Interested Categories</th>
+                 <th>Project Visit</th>
                 @endif
                  <th> Customer History</th>
+
                </thead>
                 <tbody>
              <?php $ii=0; ?>
@@ -118,19 +116,26 @@
   </div>
 </div>
 
-<!-- modal end -->
-                            
-                     
-
-                    </td>
+</td>
                     @if(Auth::user()->group_id == 23)
                    <td>
                       <button style="padding: 5.5px;background-color: #42c3f3 ;color: white" data-toggle="modal" data-target="#Customer{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
                                    Customers Interested Categories </button>
 
                     </td>
+                    <td>
+                    <form method="post"  action="{{ URL::to('/') }}/confirmedvisit" >
+                                      {{ csrf_field() }}
+                       <input type="hidden" name="id" value="{{$project->project_id}}">              
+                    
+                    <button type="submit"  style="padding:5.5px;background-color:#074e68;color:white" class="btn btn-sm" value="visit" >Visited
+                                   <span class="badge">&nbsp;{{  $project->deleted }}&nbsp;</span>
+                                   
+                  </form>
+                </td>
                     @endif
                     <td>
+
                       <button style="padding: 5.5px;background-color: #757575 ;color: white" data-toggle="modal" data-target="#myModal1{{ $project->project_id }}"   type="button" class="btn  btn-sm "  >
                                    History </button>
 
@@ -182,7 +187,7 @@
                                           <th>No</th>
                                           <th>Called Date</th>
                                           <th>Called Time</th>
-                                          <th>Name</th>
+                                          <th>Called By</th>
                                           <th>Question</th>
                                           <th>Call Remark</th>
                                        </thead>
@@ -216,8 +221,44 @@
                                       @endif
                                        @endforeach
                                     </tbody>
+                        </table><br>
+                        @if(Auth::user()->group_id == 23)
+                        <table class="table table-responsive table-hover">
+                                       <thead>
+                                          <!-- <th>User_id</th> -->
+                                          <th>No</th>
+                                          <th>Visit Date</th>
+                                          <th>Visit Time</th>
+                                          <th>Visited By</th>
+                                       </thead>
+                                       <tbody>
+                                     <label>Project Visit History</label>
+
+                                         <?php $i=1 ?>
+                                          @foreach($projectupdat as $yadav)
+                                          @if($yadav->project_id == $project->project_id)
+                                          <tr>
+                                           <!--  <td>
+                                              {{ $call->user_id }}
+                                            </td> -->
+                                           
+                                            <td>{{ $i++ }}</td>
+                                            <td>
+                                              {{ date('d-m-Y', strtotime($yadav->created_at)) }}
+                                            </td>
+                                            <td>
+                                              {{ date('h:i:s A', strtotime($yadav->created_at)) }}
+                                            </td>
+                                            <td>
+                                             {{$yadav->user != null ? $yadav->user->name :'' }}
+                                            </td>
+                              
+                                          </tr>
+                                      @endif
+                                       @endforeach
+                                    </tbody>
                         </table>
-                                      
+                      @endif                
         </div>
         <div class="modal-footer" style="padding:1px;">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -267,11 +308,11 @@ enctype="multipart/form-data" >
                        @foreach($category as $cat)
                          <div class="col-sm-4">
                          <label>
-                       <input type="checkbox" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
+                       <input type="radio" id="cat{{ $cat->id }}"  style=" padding: 5px;" name="cat[]" value="{{$cat->category_name}}">&nbsp;&nbsp;{{$cat->category_name}}
                         </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        </div><br>
                         @endforeach
-                        <textarea class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea><br>
+                      <center>  <textarea style="width:80%;" class="form-control" name="remark" placeholder="Please Enter Customers requirement Information With Quantity"></textarea></center><br>
                      <center>   <button type="submit" class="btn btn-primary btn-sm">submit Data</button></center>
                         </div>  
                         <table class="table table-responsive table-hover">
@@ -532,7 +573,7 @@ function updatemat(arg)
             var name = document.getElementById('consultantname-'+arg).value;
             var phone = document.getElementById('consultantphone-'+arg).value;
             var email = document.getElementById('consultantemail-'+arg).value;
-            alert(id);
+           
             $.ajax({
                type: 'GET',
                url: "{{URL::to('/')}}/updateConsultant",
@@ -799,14 +840,15 @@ function updatemat(arg)
 <!-- get location -->
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
-  function getLocation(){
-      document.getElementById("getBtn").className = "hidden";
+  function getvisitLocation(){
+      // document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(
         displayCurrentLocation,
         displayError,
         { 
+      
           maximumAge: 3000, 
           timeout: 5000, 
           enableHighAccuracy: true 
@@ -818,12 +860,14 @@ function updatemat(arg)
   }
     
     function displayCurrentLocation(position){
+
       //console.log("Entering displayCurrentLocation");
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
       document.getElementById("longitude").value = longitude;
       document.getElementById("latitude").value  = latitude;
       //console.log("Latitude " + latitude +" Longitude " + longitude);
+
       getAddressFromLatLang(latitude,longitude);
       //console.log("Exiting displayCurrentLocation");
     }
@@ -845,15 +889,19 @@ function updatemat(arg)
   }
   function getAddressFromLatLang(lat,lng){
     //console.log("Entering getAddressFromLatLang()");
+   
     var geocoder = new google.maps.Geocoder();
     var latLng = new google.maps.LatLng(lat, lng);
+    
     geocoder.geocode( { 'latLng': latLng}, function(results, status) {
-        // console.log("After getting address");
+        console.log("After getting address");
         // console.log(results);
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[0]) {
-        // console.log(results);
+        console.log(results);
         document.getElementById("address").value = results[0].formatted_address;
+        document.getElementById("myform").form.submit();
+
       }
     }else{
         alert("Geocode was not successful for the following reason: " + status);
@@ -861,6 +909,7 @@ function updatemat(arg)
     });
     //console.log("Entering getAddressFromLatLang()");
   }
+
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU"></script>
@@ -972,8 +1021,8 @@ function dis(){
 
     if (document.getElementById("a").checked){
         document.getElementById('b').disabled=true;
-}
 
+}
 
 </script>
 

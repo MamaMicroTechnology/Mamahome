@@ -11,12 +11,13 @@
   
   <link rel="stylesheet" href="alert/dist/sweetalert.css">
  <script src="alert/dist/sweetalert-dev.js"></script>
-
-  <title></title>
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+<title></title>
 </head>
 <body>
 <div class="topnav">
-  <a class="active"  href="javascript:history.back()" style="font-size:1.1em;font-family:Times New Roman;margin-left:15%;">Home</a>
+  <a class="active" href="{{ URL::to('/') }}/home" style="font-size:1.1em;font-family:Times New Roman;margin-left:15%;">Home</a>
 </div><br><br>
 <style>
 * {box-sizing: border-box;}
@@ -108,17 +109,13 @@ margin-left: 0;
 
                 <a  href="javascript:history.back()" class="btn btn-sm btn-danger pull-right">Back</a>    
                 </div>
-                <div class="panel-body">
-                   @if (session()->has('success'))
-                    <center><h4 style="color:green;size:20px;">{{ session('success') }}</h4></center>
-                  @endif
-                    
+                <div class="panel-body">  
     <form method="POST" id="assign" action="{{ url('/tlward')}}" >
     {{ csrf_field() }}
     <input type="hidden" id="username" name="user_id">
     <input type="hidden" id="username1" name="group_id">
 
-    <select  name="ward_id" id="dateassigned" class="hidden" required >
+    <select  name="ward_id[]" id="dateassigned" class="hidden" required >
                               <option value="select">----------Select Ward------</option>
                             @foreach($ward as $wards)
                               <option {{ $wards->id  ? 'selected' : '' }} value="{{$wards->id}}">      {{ $wards->ward_name }}</option>
@@ -146,25 +143,27 @@ margin-left: 0;
                             <th>Action</th>
                         </thead>
                         <tbody>
-
                            <tr>
                            <td>{{ $i++ }}</td>
                             <td>{{ $user->name }}</td>
                             <td >
                                 <input type="hidden" id= "user{{ $user->id }}" name="user_id" value="{{$user->id}}">
                                 <input type="hidden" id= "user1{{ $user->id }}" name="group_id" value="{{$user->group_id}}">
-                                @foreach($tlward as $tlwards)
-                                @if($user->id == $tlwards->user_id )
-                                  {{ $tlwards->ward_name != null ? $tlwards->ward_name :'' }}
-                                @endif
-                              @endforeach
+                                  @foreach($newwards as $newward)
+                                     @if($newward['tl_id'] == $user->id)
+                                            @foreach($newward['wardtl'] as $wardstl)
+                                              {{$wardstl['ward_name']}}<br>
+                                            @endforeach
+                                          
+                                       @endif
+                                       
+                                @endforeach
                           </td>
                             <td>
-                            <select name="ward_id" id="date{{ $user->id }}" class="form-control">
-                              <option value="select">----Select Ward----</option>
+                            <select name="ward_id[]" id="date{{ $user->id }}" class="form-control" multiple>
+                              <option value="">----Select Ward----</option>
                             @foreach($ward as $wards)
                               <option value="{{$wards->id}}"> {{ $wards->ward_name }}</option>
-
                              @endforeach
                             </select> 
                              
@@ -183,7 +182,7 @@ margin-left: 0;
                                        Assigned Users
                             </button></td>
                             <td>
-                              <button class="btn btn-success pull-left" onclick="return confirm('Are You Sure You Have Selected The Ward ?');">Assign</button>
+                              <input id="this" type="button" class="btn btn-success pull-left" onclick="assigntl('{{$user->id}}')" value="Assign">
                               
                             </td>
                           </tr>         
@@ -280,6 +279,23 @@ margin-left: 0;
             })
         }
     }
+    function assigntl(arg){
+
+        var input = document.getElementById('date'+arg).value;
+        var input1 = document.getElementById('menu'+arg).value;
+       
+        if(input == ""){
+         
+          alert("You Have Not Selected Ward");
+        }
+        else if(input1 == ""){
+          alert("You Have Not Selected Users");
+        }
+        else{
+        
+          document.getElementById('this').form.submit();
+        }
+    }
 </script>
 <script>
 $(document).ready(function(){
@@ -331,7 +347,11 @@ var clist = document.getElementById('ward'+arg).getElementsByTagName('input');
   }
 }
 </script>  
-
+@if(session('success'))
+<script>
+    swal("Success","{{ session('success') }}","success");
+</script>
+@endif
 </body>
 </html>
 

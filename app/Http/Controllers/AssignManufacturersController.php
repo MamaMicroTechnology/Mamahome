@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\assign_manufacturers;
 use Auth;
+use Validator;
 use App\Ward;
 use App\Tlwards;
+use App\BreakTime;
 use App\SubWard;
 use App\History;
 use App\Manufacturer;
@@ -20,11 +22,19 @@ use App\ProjectUpdate;
 use App\AssignCategory;
 use App\Category;
 use App\Salesofficer;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection;      
 use Spatie\Activitylog\Models\Activity;
 use  App\Order;
+use App\Mowner_Deatils;
+use App\Mprocurement_Details;
+use App\Salescontact_Details;
+use App\Manager_Deatils;
+use App\SubWardMap;
+use App\brand;
+use App\Noneed;
+use App\SubCategory;
 
-
+use App\WardMap;
 class AssignManufacturersController extends Controller
 {
  
@@ -37,8 +47,9 @@ class AssignManufacturersController extends Controller
     $wards = implode(", ", $request->ward);
     }else{
         if(Auth::user()->group_id == 22){
-            $tlWard = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tlWard)->pluck('ward_name')->first();
+            $tl= Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+            $tlWard = explode(",",$tl); 
+            $ward = Ward::whereIn('id',$tlWard)->pluck('ward_name');
             $wards = $ward;
         }else{
             $wards = "null";
@@ -149,7 +160,6 @@ if(count($check) == 0){
 
         $projectids = new Collection();
         $projects = Manufacturer::whereIn('sub_ward_id',$subwardid)->pluck('id');
-
         if(count($projects) > 0){
             $projectids = $projectids->merge($projects);
         }
@@ -256,7 +266,7 @@ if($aggregates_required != null){
         $projects = Manufacturer::whereIn('id',$projectids)
                     ->select('manufacturers.*','id')
                     ->orderBy('id','ASC')
-                    ->paginate(15);
+                    ->paginate('20');
 
            $projectcount=count($projects);
              
@@ -271,8 +281,11 @@ if($aggregates_required != null){
 
  public function manuenquiry(Request $request)
     {
-        $category = Manufacturer::all();
-       
+        $category1 = Manufacturer::all();
+        $category = Category::all();
+        $brand = brand::leftjoin('category','category.id','=','brands.category_id')
+                ->select('brand')->get();
+
 
         $depart1 = [6];
         $depart2 = [7];
@@ -281,7 +294,7 @@ if($aggregates_required != null){
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('manuenquiry',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects]);
+        return view('manuenquiry',['category1'=>$category1,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
     }
 
 public function inputdata(Request $request)
@@ -289,24 +302,72 @@ public function inputdata(Request $request)
 
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
 
+           $cat = category::where('id',$request->cat)->pluck('id')->first();
+
          if($request->name){
 
               $shipadress = $request->billadress;
          }
            $shipadress = $request->billadress;
 
-         $points = new Point;
+   // for fetching sub categories
+        $get = implode(", ",array_filter($request->quan));
+        $another = explode(", ",$get);
+        $quantity = array_filter($request->quan);
+        $qu = implode(", ", $quantity);
+
+
+
+        for($i = 0;$i < count($request->subcat); $i++){
+            if($i == 0){
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty = $sub.":".$another[$i];
+            }else{
+                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+                $qnty .= ", ".$another[$i];
+
+            }
+        }
+        $validator = Validator::make($request->all(), [
+            'subcat' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return back()
+                ->with('NotAdded','Select Category Before Submit')
+                ->withErrors($validator)
+                ->withInput();
+            }
+            $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
+            $subcategories = implode(", ", $sub_cat_name);
+            // fetching brands
+            $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
+            $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
+            $brandnames = implode(", ", $brand);
+
+            $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
+            $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
+            $categoryNames = implode(", ", $category);
+
+            $points = new Point;
             $points->user_id = $request->initiator;
             $points->point = 100;
             $points->type = "Add";
             $points->reason = "Generating an enquiry";
             $points->save();
+            $var = count($request->subcat);
+            $var1 = count($brand);
+
+
+            // $qnty = implode(", ", $request->quan);
+
+        $var2 = count($category);
+        $storesubcat =$request->subcat[0]; 
             
         $ward = $request->sub_ward_id;
         $x = DB::table('requirements')->insert(['project_id'    =>'',
-                                                'main_category' => '',
-                                                'brand' => '',
-                                                'sub_category'  =>'',
+                                                'main_category' => $categoryNames,
+                                                'brand' => $brandnames,
+                                                'sub_category'  =>$subcategories,
                                                 'follow_up' =>'',
                                                 'follow_up_by' =>'',
                                                 'material_spec' =>'',
@@ -315,7 +376,7 @@ public function inputdata(Request $request)
                                                 'requirement_date'  =>$request->edate,
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
                                                 'unit_price'   => '',
-                                                 'quantity'     =>'',
+                                                 'quantity'     =>$qnty,
                                                  'total'   =>0,
                                                 'notes'  =>$request->eremarks,
                                                 'created_at' => date('Y-m-d H:i:s'),
@@ -325,7 +386,7 @@ public function inputdata(Request $request)
                                                 'generated_by' => $request->initiator,
                                                 'billadress'=>$request->billadress,
                                                 'total_quantity'=>$request->totalquantity,
-                                                'product'=>$request->product,
+                                               
                                                 'manu_id'=>$request->manu_id,
                                                 'sub_ward_id'=>$ward, 
                                                 'ship' =>$shipadress
@@ -418,7 +479,7 @@ public function addcat(request $request){
 }
  public function catsalesreports(Request $request)
        {
-
+                 $subward = Subward::all();
             if($request->se == "ALL" && $request->fromdate && !$request->todate){
                   $date = $request->fromdate;
                   $str = ProjectUpdate::where('created_at','LIKE',$date.'%')->get();
@@ -506,7 +567,7 @@ public function addcat(request $request){
            }
 
            return view('catofficer',['users'=>$users,'str'=>$str,
-                   'noOfCalls'=>$noOfCalls
+                   'noOfCalls'=>$noOfCalls,'subward'=>$subward
 
                ]);
        }
@@ -537,12 +598,11 @@ public function addcat(request $request){
         // total project of list in stl
         $tllistuser = DB::table('users')->where('group_id',6)->whereIn('id',$userIds)
         ->pluck('id');
-        $tlcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->count();
-        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"RMC")->count();
-        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$tllistuser)->where('manufacturer_type',"Blocks")->count();
+        $tlcount = Manufacturer::where('created_at','like',$date.'%')->count();
+        $tlRMCcount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"RMC")->count();
+        $tlBlocksCount = Manufacturer::where('created_at','like',$date.'%')->where('manufacturer_type',"Blocks")->count();
 
-        $tlupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$tllistuser)->count();
-
+        $tlupcount = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\Manufacturer')->count();
         // total project of list in tl
         $tlaccuser = DB::table('users')->where('group_id',11)->whereIn('id',$userIds)
         ->pluck('id');
@@ -615,9 +675,10 @@ public function addcat(request $request){
 
           
 }else{
-            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
-            $ward = Ward::where('id',$tl)->pluck('id')->first();
-            $sub  = Subward::where('ward_id',$ward)->pluck('id');
+            $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id');
+            $tll = explode(",",$tl);
+            $ward = Ward::whereIn('id',$tl)->pluck('id');
+            $sub  = Subward::whereIn('ward_id',$ward)->pluck('id');
 
 
                if($request->list =="ALL" && $request->fromdate && $request->todate){
@@ -661,6 +722,7 @@ public function addcat(request $request){
                         ->where('created_at','like',$date.'%')->get();
                  }
               }
+   
    foreach($users as $user){
                 $totalListing[$user->id] = Manufacturer::where('listing_engineer_id',$user->id)
                                                 ->where('created_at','LIKE',$date.'%')
@@ -714,10 +776,7 @@ public function addcat(request $request){
                                                 ->count();
             }
             foreach($users as $user){
-                $totalupdates[$user->id] = Manufacturer::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalupdates[$user->id] = Activity::where('created_at','like',$date.'%')->where('description','updated')->where('subject_type','App\Manufacturer')->where('causer_id',$user->id)->count();
             }
             foreach($tlUsers as $user){
                 $totalupdates[$user->id] = Manufacturer::
@@ -835,7 +894,696 @@ public function addcat(request $request){
                 }
 
 }
-
 return view('/monthlyreport',['users' =>$users,'total'=>$total]);
     }
+
+  public function manusearch(Request $request)
+    {
+        $details = array();
+        $ids = array();
+        $tl = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
+       $ward = Subward::where('ward_id',$tl)->pluck('id');
+         $dd= $request->type;
+          $his = History::get();
+        if($request->phNo)
+        {
+             $details[0] = Mowner_Deatils::leftjoin('manufacturers','manufacturers.id','mowner_details.manu_id')->where('mowner_details.contact',$request->phNo)->orwhere('mowner_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+                  ->pluck('manufacturers.id');
+            
+            $details[1] = Mprocurement_Details::leftjoin('manufacturers','manufacturers.id','mprocurement_details.manu_id')->where('mprocurement_details.contact',$request->phNo)->orwhere('mprocurement_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+            ->pluck('manufacturers.id');
+
+
+            $details[2] = Manager_Deatils::leftjoin('manufacturers','manufacturers.id','manager_details.manu_id')->where('manager_details.contact',$request->phNo)->orwhere('manager_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+                  ->pluck('manufacturers.id');
+
+            $details[3] = Salescontact_Details::leftjoin('manufacturers','manufacturers.id','salescontact_details.manu_id')->where('salescontact_details.contact',$request->phNo)->orwhere('salescontact_details.manu_id',$request->phNo)->orwhere('manufacturers.plant_name','LIKE',$request->phNo)
+            ->pluck('manufacturers.id');
+
+
+            for($i = 0; $i < count($details); $i++){
+                for($j = 0; $j<count($details[$i]); $j++){
+                    array_push($ids, $details[$i][$j]);
+                }
+            }
+            $manufacturers = Manufacturer::whereIn('id',$ids)->paginate('10');
+            $count = Manufacturer::whereIn('id',$ids)->count();
+        }
+            return view('viewManufacturer',['manufacturers'=>$manufacturers,'count'=>$count,'dd'=>$dd,'his'=>$his]);
 }
+
+public function manuenquirysheet(Request $request)
+    {
+                         // dd( $enquiries);
+          
+        $totalofenquiry = "";
+        $totalenq = "";
+         $wardwise = Ward::get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
+        $category = Category::all();
+        $depart = [1,6,7,8,11,15,16,17,22];
+        $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
+             // dd($request->status);
+        if($request->status && !$request->category){
+            if($request->status != "all"){
+
+                $enquiries = Requirement::where('status','like','%'.$request->status)
+                            ->where('status','!=',"Enquiry Cancelled")
+                            ->orderby('created_at','DESC')
+                            ->where('manu_id','!=',NULL)
+                            ->select('requirements.*')
+                            ->get();
+               $converter = user::get();
+            $totalenq = count($enquiries);
+                 
+                }
+            else{
+
+                $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")
+                        ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                            ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+                
+            }
+        }elseif($request->status && $request->category){
+            if($request->status != "all"){
+
+                $enquiries = Requirement::where('status','like','%'.$request->status)
+                            ->where('main_category',$request->category)
+                            ->where('status','!=',"Enquiry Cancelled")
+                           ->orderby('created_at','DESC')
+                           ->where('manu_id','!=',NULL)
+                       
+                            ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+               
+            }else{
+
+                $enquiries = Requirement::where('main_category',$request->category)
+                            ->where('status','!=',"Enquiry Cancelled")
+                            ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                            
+                            ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+
+               
+            }
+        }elseif($request->from && $request->to  && !$request->initiator && !$request->category && !$request->ward){
+            // only from and to
+
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                            ->where('created_at','LIKE',$from."%")
+                            ->where('status','!=',"Enquiry Cancelled")
+                            ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                            
+                            ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+            }else{
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                            ->where('created_at','>',$from)
+                            ->where('created_at','<',$to)
+                            ->where('status','!=',"Enquiry Cancelled")
+                 ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                               
+                            ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+            }
+
+        }elseif(!$request->from && !$request->to && !$request->initiator && !$request->category && $request->ward && $request->enqward){
+          
+           if($request->ward == "All"){
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
+            }else{
+            $subwardid = Subward::where('id',$request->ward)->pluck('id');    
+            }
+            // only ward
+            $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                        ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
+                 ->orderby('requirements.created_at','DESC')
+                        ->where('requirements.manu_id','!=',NULL)
+                          
+                        ->get();
+                            
+            $converter = user::get();
+            $totalenq = count($enquiries);
+            
+        }elseif(!$request->from && !$request->to && !$request->initiator && $request->category && !$request->ward && !$request->enqward){
+            // only category
+
+            $enquiries = Requirement::where('main_category',$request->category)
+                        ->where('status','!=',"Enquiry Cancelled")
+                 ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                       
+                        ->get();
+            $totalenq = count($enquiries);
+
+
+          $converter = user::get();
+
+            $totalofenquiry = Requirement::where('main_category',$request->category)->where('requirements.status','!=',"Enquiry Cancelled")->sum('quantity');
+        }elseif(!$request->from && !$request->to && $request->initiator && !$request->category && !$request->ward){
+            // only initiator
+            $enquiries = Requirement::where('generated_by',$request->initiator)
+                        ->where('status','!=',"Enquiry Cancelled")
+                 ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                          
+                        ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+        }elseif($request->from && $request->to && $request->initiator && $request->category && $request->ward && $request->enqward){
+            // everything
+        
+            if($request->ward == "All"){
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
+            }else{
+            $subwardid = Subward::where('id',$request->ward)->pluck('id');    
+            }
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                ->where('requirements.generated_by',$request->initiator)
+                ->where('requirements.created_at','LIKE',$from."%")
+                ->where('requirements.status','!=',"Enquiry Cancelled")
+                ->where('requirements.main_category','LIKE',"%".$request->category."%")
+                 ->orderby('requirements.created_at','DESC')
+                        ->where('requirements.manu_id','!=',NULL)
+                 
+                ->get();
+            $converter = user::get();
+            $totalenq = count($enquiries);
+               
+            }else{
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');
+               
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                            ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                            ->where('requirements.generated_by',$request->initiator)
+                            ->where('requirements.created_at','>',$from)
+                            ->where('requirements.created_at','<',$to)
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
+                            ->where('requirements.main_category','LIKE',"%".$request->category."%")
+                            ->orderby('requirements.created_at','DESC')
+                            ->where('requirements.manu_id','!=',NULL)
+                               
+                            ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+
+            }
+        }elseif($request->from && $request->to && !$request->initiator && !$request->category && $request->ward && $request->enqward){
+
+            // from, to and ward
+            if($request->ward == "All"){
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
+            }else{
+            $subwardid = Subward::where('id',$request->ward)->pluck('id');    
+            }
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                ->orderBy('requirements.created_at','DESC')
+                ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                ->where('requirements.created_at','LIKE',$from."%")
+                ->where('requirements.status','!=',"Enquiry Cancelled")
+                            ->where('requirements.manu_id','!=',NULL)
+                
+                ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+
+            }else{
+
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                ->orderBy('requirements.created_at','DESC')
+                ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                ->where('requirements.created_at','>',$from)
+                ->where('requirements.created_at','<',$to)
+                ->where('requirements.status','!=',"Enquiry Cancelled")
+                 ->where('requirements.manu_id','!=',NULL)
+                
+
+                ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+                
+            }
+        }elseif($request->from && $request->to && $request->initiator && !$request->category && !$request->ward){
+            // from, to and initiator
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','LIKE',$from."%")
+                ->where('status','!=',"Enquiry Cancelled")
+                 ->where('manu_id','!=',NULL)
+                 
+                ->get();
+               $converter = user::get();
+            $totalenq = count($enquiries);
+                
+            }else{
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','>',$from)
+                      
+                ->where('created_at','<',$to)
+                ->where('status','!=',"Enquiry Cancelled")
+                 ->where('manu_id','!=',NULL)
+                 
+                ->get();
+               $converter = user::get();
+            $totalenq = count($enquiries);
+                
+            }
+        }elseif($request->from && $request->to && !$request->initiator && $request->category && !$request->ward){
+            // from, to and category
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('created_at','LIKE',$from."%")
+                ->where('status','!=',"Enquiry Cancelled")
+                 ->where('manu_id','!=',NULL)
+                       
+               
+                ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+                
+            }else{
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('created_at','>',$from)
+                ->where('created_at','<',$to)
+                ->where('status','!=',"Enquiry Cancelled")
+                 ->where('manu_id','!=',NULL)
+                      
+
+                ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+               
+            }
+        }elseif($request->from && $request->to && $request->initiator && $request->category && !$request->ward){
+            // from, to, initiator and category
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','LIKE',$from."%")
+                ->where('status','!=',"Enquiry Cancelled")
+                 ->where('manu_id','!=',NULL)
+                      
+                ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+                
+            }else{
+                $enquiries = Requirement::orderBy('created_at','DESC')
+                ->where('main_category','=',$request->category)
+                ->where('generated_by','=',$request->initiator)
+                ->where('created_at','>',$from)
+                ->where('created_at','<',$to)
+                ->where('status','!=',"Enquiry Cancelled")
+                 ->where('manu_id','!=',NULL)
+                      
+
+                ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+
+                
+            }
+        }elseif($request->from && $request->to && !$request->initiator && $request->category && $request->ward && $request->enqwrad){
+            // from, to, wards and category
+            $from = $request->from;
+          if($request->ward == "All"){
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
+            }else{
+            $subwardid = Subward::where('id',$request->ward)->pluck('id');    
+            }
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                            ->orderBy('requirements.created_at','DESC')
+                            ->where('requirements.main_category','=',$request->category)
+                            ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                            ->where('requirements.created_at','LIKE',$from."%")
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
+                            ->where('requirements.manu_id','!=',NULL)
+                      
+
+                            ->get();
+            $totalenq = count($enquiries);
+
+                        $converter = user::get();
+            }else{
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                            ->orderBy('requirements.created_at','DESC')
+                            ->where('requirements.main_category','=',$request->category)
+                            ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                            ->where('requirements.created_at','>',$from)
+                            ->where('requirements.created_at','<',$to)
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
+                              ->where('requirements.manu_id','!=',NULL)
+                       
+                            
+                            ->get();
+                $converter = user::get();
+            $totalenq = count($enquiries);
+
+               
+                }
+            
+        }elseif($request->from && $request->to && $request->initiator && !$request->category && $request->ward && $request->enqward){
+            // from, to, wards and initiator
+           if($request->ward == "All"){
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');    
+            }else{
+            $subwardid = Subward::where('id',$request->ward)->pluck('id');    
+            }
+
+            $from = $request->from;
+            $to = $request->to;
+            if($from == $to){
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                            ->orderBy('requirements.created_at','DESC')
+                            ->where('requirements.generated_by','=',$request->initiator)
+                            ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                            ->where('requirements.created_at','LIKE',$from."%")
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
+                            ->where('requirements.manu_id','!=',NULL)
+
+                            ->select('requirements.*','manufacturers.sub_ward_id')
+                       
+                            ->get();
+            $totalenq = count($enquiries);
+                
+            }else{
+                $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                            ->orderBy('requirements.created_at','DESC')
+                            ->where('requirements.generated_by','=',$request->initiator)
+                            ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                            ->where('requirements.created_at','>',$from)
+                            ->where('requirements.created_at','<',$to)
+                            ->where('requirements.status','!=',"Enquiry Cancelled")
+                           ->where('requirements.manu_id','!=',NULL)
+                            
+
+                            ->get();
+            $totalenq = count($enquiries);
+                
+            }
+        }elseif(!$request->from && !$request->to && $request->initiator && $request->category && !$request->ward){
+            //initiator and category
+            $from = $request->from; 
+            $to = $request->to;
+            $enquiries = Requirement::where('main_category','=',$request->category)
+                        ->where('generated_by','=',$request->initiator)
+                        ->where('status','!=',"Enquiry Cancelled")
+                       ->orderby('created_at','DESC')
+                 ->where('manu_id','!=',NULL)
+                       
+                        ->get();
+            $totalenq = count($enquiries);
+            
+        }elseif($request->manu){
+                         if($request->manu != "manu"){
+                            $enquiries = Requirement::where('manu_id','!=',NULL)
+                                        ->where('status','like','%'.$request->manu)
+                                        ->orderby('created_at','DESC')
+                                         ->where('manu_id','!=',NULL)
+
+                                        ->select('requirements.*')
+                                        ->get();
+                           $converter = user::get();
+                        $totalenq = count($enquiries);
+                            }
+                        else{
+                           
+                             $enquiries = Requirement::where('manu_id','!=',NULL)
+                                           ->where('status','!=',"Enquiry Cancelled")
+                                           ->orderby('created_at','DESC')
+                                              ->where('manu_id','!=',NULL)
+
+                                           ->get();
+                                $converter = user::get();
+                                $totalenq = count($enquiries);
+
+                            }
+                        }
+          elseif($request->enqward && !$request->category  && !$request->from && !$request->to && !$request->initiator && !$request->ward){
+           // only ward
+          $wardtotal = Subward::where('ward_id',$request->enqward)->pluck('id');
+          $pro = ProjectDetails::whereIn('sub_ward_id',$wardtotal )->pluck('project_id');
+
+         $enquiries = Requirement::whereIn('project_id',$pro)
+                        ->where('status','!=',"Enquiry Cancelled")
+                       ->orderby('created_at','DESC')
+                      ->where('manu_id','!=',NULL)
+
+                        ->get();
+                       
+            $converter = user::get();
+            $totalenq = count($enquiries);
+        }
+        elseif($request->category && $request->enqward && !$request->from && !$request->to && !$request->initiator && !$request->ward){
+          
+            // ward and category
+            $subwardid = Subward::where('ward_id',$request->enqward)->pluck('id');
+            $enquiries = Requirement::leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
+                        ->whereIn('manufacturers.sub_ward_id',$subwardid)
+                        ->where('requirements.status','!=',"Enquiry Cancelled")
+                        ->where('main_category',$request->category)
+                        ->where('status','!=',"Enquiry Cancelled")
+                        ->orderby('requirements.created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+
+                        ->get();
+                        
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+        }
+        else{
+            // no selection
+           
+            $enquiries = Requirement::where('status','!=',"Enquiry Cancelled")
+                       ->orderby('created_at','DESC')
+                        ->where('manu_id','!=',NULL)
+                        ->get();
+                      
+            $converter = user::get();
+            $totalenq = count($enquiries);
+
+         
+            }
+        $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id')->toArray();
+        
+        return view('manuenquirysheet',[
+            'totalenq' =>$totalenq,
+            'totalofenquiry'=>$totalofenquiry,
+            'enquiries'=>$enquiries,
+            'wardwise'=>$wardwise,
+            'category'=>$category,
+            'initiators'=>$initiators,
+            'wards'=>$wards,
+            'projectOrdersReceived'=>$projectOrdersReceived
+        ]);
+    }
+public function getsubwards(request $request){
+
+         
+$sub = SubWard::where('ward_id',9)->get();
+
+
+$subwardlat = [];
+foreach ($sub as  $users) {
+           
+       $nosubwards =SubWardMap::where('sub_ward_id',$users->id)->get()->toArray();
+                array_push($subwardlat,['nosubwards'=>$nosubwards,'wardname'=>$users->sub_ward_name]);
+      }
+    
+
+            
+ return response()->json(['newUsers'=>$subwardlat]);
+}
+public function indexnumber(){
+
+    $number  = Noneed::get();
+    return view('/noneed',['number'=>$number]);
+}
+public function noneed(request $request ){
+
+
+       $check = New Noneed;
+       $check->number = $request->number;
+       $check->save();
+
+    return back();
+}
+ 
+
+ public  function projectsize(request $request)
+ {
+
+    $wards = Ward::all();
+  
+
+    if($request->ward == "All"){
+         $subward = Subward::all();
+
+    }else{
+        
+     $subward = SubWard::where('ward_id',$request->ward)->get();
+    }
+
+    
+    $projectscount =[];
+    
+
+    foreach ($subward as $sub) {
+       $projectcount = ProjectDetails::where('sub_ward_id',$sub->id)->get()->toArray();
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+    }
+   
+     return view('/projectandward',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
+ }
+ public function mini(request $request){
+
+    $users = User::where('department_id','!=',10)->where('group_id','=',7)->get();
+
+        $date=date('Y-m-d');
+        $breacktime = [];
+         foreach ($users as $user) {
+             $usertime = BreakTime::where('user_id',$user->id)
+                            ->where('created_at','LIKE',$date."%")
+                            ->pluck('totaltime')->toArray();
+                        array_push($breacktime,['usertime'=>$usertime,'name'=>$user->name]);      
+        }
+       
+         $on = BreakTime::leftjoin('users','users.id','breaktime.user_id')->where('breaktime.created_at','LIKE',$date."%")->where('breaktime.stop_time','=',"")->select('users.name')->get();
+         return view('/minibreack',['breacktime'=>$breacktime,'on'=>$on]);
+
+ }
+ public function find(request $request){
+     $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+    return view('/subwardfind',['ward'=>$d]);
+}
+
+function subfind(request $request){
+
+
+ $sub = SubWard::where('ward_id',$request->id)->get();     
+ $subwardlat = [];
+foreach ($sub as  $users) {
+           
+       $nosubwards =SubWardMap::where('sub_ward_id',$users->id)->first()->toArray();
+                array_push($subwardlat,['subward'=>$nosubwards,'subid'=>$users->id]);
+      }
+            
+      
+    
+
+
+              $allsubwardlats = [];
+              foreach ($subwardlat as $all) {
+
+                
+                  $allx = explode(",",$all['subward']['lat']);
+                
+                  $wardid = $all['subid'];
+                
+                  array_push($allsubwardlats, ['lat'=>$allx,'subid'=>$wardid]);
+               } 
+             
+    $suba = [];
+
+    for($j = 0; $j<sizeof($allsubwardlats);$j++){
+        $finalsubward = [];
+        $subwardId = $allsubwardlats[$j]['subid'];
+    for($i=0;$i<sizeof($allsubwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allsubwardlats[$j]['lat'][$i];
+         $long =  $allsubwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+        array_push($finalsubward, $latlong);   
+
+    }
+        
+       
+       array_push($suba,['lat'=>$finalsubward,'subward'=>$subwardId]);
+
+   }
+  
+  return response()->json($suba);
+ 
+ }
+}
+

@@ -182,7 +182,7 @@
                                               {{ $call->remarks }}
                                             </td>
                                           </tr>
-                                      @endif
+                                      @endif 
                                        @endforeach
                                     </tbody>
                         </table>
@@ -192,10 +192,10 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-      
     </div>
     </div>
     @endforeach
+<center>{{$projects->links()}}</center>
 </div>
 </div>
 </div>

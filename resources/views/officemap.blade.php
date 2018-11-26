@@ -41,7 +41,6 @@
           {lat: 12.972550873154397, lng: 77.60837640715067},
           {lat: 12.973847291229198, lng: 77.60796334696238}
         ];
-
         var bermudaTriangle = new google.maps.Polygon({paths: triangleCoords});
 
         // Construct the polygon.

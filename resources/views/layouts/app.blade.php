@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="{{ URL::to('/') }}/css/countdown.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+    <script src="http://www.ittutorials.in/js/demo/numtoword.js; type="text/javascript"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <style>
@@ -899,6 +899,9 @@ div#calendar{
                          @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 17)
                          <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
                         @endif
+                        @if(Auth::user()->department_id == 2  && Auth::user()->group_id == 23)
+                         <li><a href="{{ URL::to('/') }}/eqpipeline" style="font-size:1.1em"><b>Enquiry Pipelined</b></a></li>
+                        @endif
                         <?php $d =0 ?>
                          @if(Auth::user()->group_id == 14)
                         <li><a href="{{ URL::to('/') }}/adtraining" style="font-size:1.1em"><b>Training Video <span class="badge">&nbsp;&nbsp;</span></b></a></li>
@@ -1087,6 +1090,8 @@ function myTimer() {
           <div id="dailyslot" class="collapse">
                 <a href="{{ URL::to('/dailyslots') }}">Projects Daily Slots</a>
                 <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
+                <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
+                <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
           </div>
     <a href="{{ URL::to('/salesreports') }}">Sales Engineer Report</a>
     <a href="#" data-toggle="collapse" data-target="#projects">Detailed Projects &#x21F2;</a>
@@ -1096,16 +1101,19 @@ function myTimer() {
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
+    <a href="{{ URL::to('/minibreack') }}">BreakTime Mini Report</a>
+
     <a href="#" data-toggle="collapse" data-target="#enquiry">Enquiry &#x21F2;</a>
     <div id="enquiry" class="collapse">
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
+            <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
         </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
             <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
             <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; - Orders</a>
-           <!--  <a href="{{ URL::to('/mhOrders') }}">&nbsp;&nbsp;&nbsp; - MH Orders</a> -->
+            <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; - Confirmed Orders</a>
         </div>
     <a href="#" data-toggle="collapse" data-target="#demo">Human Resource &#x21F2;</a>
     <div id="demo" class="collapse">
@@ -1182,10 +1190,13 @@ function myTimer() {
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
       <a href="{{ URL::to('/assigntl') }}">Assign Team Leaders </a>
+      <a href="{{ URL::to('/noneed') }}">Delete Numbers</a>
+       <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
+       <a href="{{URL::to('/projectandward') }}">Project Report</a> 
+
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
-       <!--  <a href="{{ URL::to('/amdashboard') }}">&nbsp;&nbsp;&nbsp; - Human Resource</a> -->
         <a href="{{ URL::to('/cat') }}">&nbsp;&nbsp;&nbsp; - Assign Category</a>
         <a href="{{ URL::to('/catofficer') }}">&nbsp;&nbsp;&nbsp; -Category Officers Report </a>
 
@@ -1200,18 +1211,16 @@ function myTimer() {
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
     <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
     <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
-
-
-      
-<!--    </div> -->
      <a href="#" data-toggle="collapse" data-target="#sales">Sales &#x21F2;</a>
 
         <div id="sales" class="collapse">
 
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
+              <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; - Confirmed Orders</a>
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
+              <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
               <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; -Enquiry cancelled</a>
               <a href="{{ URL::to('/assign_project') }}">&nbsp;&nbsp;&nbsp; -Assign Project</a>
               <a href="{{ URL::to('/assign_number') }}">&nbsp;&nbsp;&nbsp; -Assign Phone Numbers</a>
@@ -1231,7 +1240,7 @@ function myTimer() {
                     <a href="{{ URL::to('/manudailyslot') }}">&nbsp;&nbsp;&nbsp; -Manufacturer Daily Slots</a>
               </div>
               <a href="{{ URL::to('/projectDetailsForTL') }}">&nbsp;&nbsp;&nbsp; -Project Search</a>
-              <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Listing Engineers and Reports</a>
+              <a href="{{ URL::to('/') }}/assignListSlots">&nbsp;&nbsp;&nbsp; -Assign Subwards</a>
               <a href="{{ URL::to('/') }}/listatt">&nbsp;&nbsp;&nbsp; -Listing Engineer Attendance</a>
         </div>  
        
@@ -1253,8 +1262,6 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/kra">KRA</a> 
      <a href="{{ URL::to('/') }}/teamlatelogin">Late Logins</a>
      <a href="{{ URL::to('/') }}/breaks">BreakTime</a>
-
-
 </div>  
 
 
@@ -1263,7 +1270,7 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
 
-    <a  id="updates" data-toggle="modal" data-target="#mytask"  >Assigned Task</a>
+   <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
@@ -1278,6 +1285,12 @@ function myTimer() {
 @elseif(Auth::user()->group_id == 23 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+      <a href="#" data-toggle="collapse" data-target="#add">Add &#x21F2;</a>
+         <div id="add" class="collapse">
+      <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
+      <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
+      <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+    </div>
      <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
@@ -1304,15 +1317,9 @@ function myTimer() {
   @elseif(Auth::user()->group_id == 7 && Auth::user()->department_id == 2)
 <div id="mySidenav" class="sidenav">
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-     @if(isset($stages))
-       @if($stages->project_ids == null)
-       <a href="#" data-toggle="modal" data-target="#mytask">Assigned Task</a>
-       @else
-        <a href="#" data-toggle="modal" data-target="#mytask" >Assigned Task</a>
-       @endif
-     @else
+     
      <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
-     @endif
+    
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
      
@@ -1385,18 +1392,18 @@ function myTimer() {
     </div>
 
  <!-- The Modal -->
-  <div class="modal" id="mytask">
+  <!-- <div class="modal" id="mytask">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content"> -->
       
         <!-- Modal Header -->
-        <div class="modal-header"  style="background-color:#f4811f;padding:2px;color:white;">
+       <!--  <div class="modal-header"  style="background-color:#f4811f;padding:2px;color:white;">
           <h4 class="modal-title">Instructions</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+        </div> -->
 
         <!-- Modal body -->
-        <div class="modal-body">
+       <!--  <div class="modal-body">
          @if(isset($stages))
           
         @endif
@@ -1426,28 +1433,28 @@ function myTimer() {
                     </table>
         <center>  <a  href="{{ URL::to('/') }}/projectsUpdate" class="btn btn-primary">Accept To Get Your Projects</a>
          <button  class="btn btn-success" data-toggle="modal" data-target="#myModal10">Set Completed Time</button></center>
-        </div>
+        </div> -->
         <!-- Modal footer -->
-        <div class="modal-footer">
+      <!--   <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
         
       </div>
     </div>
-  </div>
+  </div> -->
 <!-- The Modal -->
-  <div class="modal" id="myModal10">
+  <!-- <div class="modal" id="myModal10">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content"> -->
       
         <!-- Modal Header -->
-        <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
+       <!--  <div class="modal-header" style="width:100%;padding:2px;background-color: rgb(191, 191, 63);">
           <h4 class="modal-title">Time Need To Complete?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+        </div> -->
         
         <!-- Modal body -->
-        <div class="modal-body">
+       <!--  <div class="modal-body">
         <form action="{{ URL::to('/') }}/reject" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         @if(isset($stages))
@@ -1462,10 +1469,10 @@ function myTimer() {
          <textarea type="text" name="remark" style="width:400px;" ></textarea>
         </div>
        <center> <button type="submit" value="submit" class="btn btn-primary">Submit</button></center> 
-        </form>
+        </form> -->
         
         <!-- Modal footer -->
-        <div class="modal-footer" style="padding:2px;"> 
+        <!-- <div class="modal-footer" style="padding:2px;"> 
           <button type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
         </div>
         
@@ -1473,7 +1480,7 @@ function myTimer() {
     </div>
   </div>
   
-</div>
+</div> -->
     <!-- Scripts -->
     <script>
         function openNav() {
@@ -1485,7 +1492,7 @@ function myTimer() {
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-        </script>
+      </script>
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');

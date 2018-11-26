@@ -34,7 +34,7 @@
 <div class="row">
 <div class="col-md-5 col-md-offset-1">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; Office Employess</b></div>
+        <div class="panel-heading"><b>MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; Office Employees</b></div>
         <div class="panel-body">
         <table class="table table-hover">
             <thead>
@@ -61,7 +61,7 @@
 </div>
 <div class="col-md-5 ">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; <span>  Field Employess</span></b></div>
+        <div class="panel-heading"><b>MINI ATTENDANCE ({{ date('d-m-Y') }}) &nbsp;&nbsp;&nbsp; <span>  Field Employees</span></b></div>
         <div class="panel-body">
         <table class="table table-hover">
            <thead>

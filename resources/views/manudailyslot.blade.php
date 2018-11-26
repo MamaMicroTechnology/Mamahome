@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <div class="col-md-3">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
@@ -68,8 +69,8 @@
             </div>
             <div class="panel-body" style="overflow-x:scroll;">
                  @if(Auth::user()->group_id != 22)
-                <label style="color:black">Total Projects Added = <b>{{$lcount}}</b></label><br>
-                <label style="color:black">Total Projects Updated = <b>{{$lupcount}}</b></label><br>
+                <label style="color:black">Total Manufacturer Projects Added = <b>{{$lcount}}</b></label><br>
+                <label style="color:black">Total Manufacturer Projects Updated = <b>{{$lupcount}}</b></label><br>
                 <label style="color:black">Total RMC Listed = <b>{{$lRMCCount}}</b></label><br>
                 <label style="color:black">Total Blocks Listed = <b>{{$lBlocksCount}}</b></label>
                 @else
@@ -138,8 +139,8 @@
             </div>
             <div class="panel-body" style="overflow-x:scroll;">
                 @if(Auth::user()->group_id != 22)
-              <label style="color:black">Total Projects Added = <b>{{$acount}}</b></label>
-              <label style="color:black">Total Projects Updated = <b>{{$aupcount}}</b></label>
+              <label style="color:black">Total Manufacturer Projects Added = <b>{{$acount}}</b></label>
+              <label style="color:black">Total Manufacturer Projects Updated = <b>{{$aupcount}}</b></label>
               <label style="color:black">Total RMC Listed = <b>{{ $aRMCcount }}</b></label><br>
               <label style="color:black">Total Blocks Listed = <b>{{ $aBlocksCount }}</b></label>
               @else
@@ -208,14 +209,14 @@
     <div class="col-md-9" >
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
-                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Manufacturer Added : <b>{{$projcount}}</b></label>
+                <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;Manufacturer Added : <b>{{$projcount}}</b></label>
                  <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button> 
             </div>
             <div class="panel-body">
                 <table class='table table-responsive table-striped' style="color:black" border="1">
                     <thead>
                         <tr>
-                            <th style="text-align:center">Subward Ward Name</th>
+                            <th style="text-align:center">Subward Name</th>
                             <th style="text-align:center">Manufacturer-ID</th>
                             <th style="text-align:center">Owner Contact Number</th>
                             <th style="text-align:center">Manager Contact Number</th>
