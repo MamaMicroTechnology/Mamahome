@@ -726,7 +726,7 @@ Http.onreadystatechange=(e)=>{
 
               
                if(shouldAlert == true){
-                  // alert("subward id: " +subs[i]['subward']);
+                   alert(" your in subward : " +subs[i]['subward']);
                       document.getElementById('subwardid').value=subs[i]['subward'];
                        break;
                 }

@@ -1925,10 +1925,12 @@ class HomeController extends Controller
          
     $a = [];
 
+
     for($j = 0; $j<sizeof($allwardlats);$j++){
         $finalward = [];
 
         $wardId = $allwardlats[$j]['wardid'];
+        
     for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
 
          $lat = $allwardlats[$j]['lat'][$i];
