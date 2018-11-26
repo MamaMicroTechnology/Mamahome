@@ -8590,7 +8590,7 @@ public function viewManufacturer1(Request $request)
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
         $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
         $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
-        $manufacturers = Manufacturer::where('sub_ward_id',$wardsAssigned)->get();
+        $manufacturers = Manufacturer::where('listing_engineer_id',Auth::user()->id)->get();
         return view('updateManufacturer',['manufacturers'=>$manufacturers,'log'=>$log,'log1'=>$log1]);
   }
   public function updateManufacturerDetails(Request $request)
