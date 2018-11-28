@@ -125,7 +125,6 @@ function openCitytest(evt, cityName) {
                         <th> Confirm Order </th>
                        
                         <th>Get Purchase Order</th>
-          
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -236,7 +235,6 @@ function openCitytest(evt, cityName) {
        <table class="table table-responsive table-striped" border="1">
                                     <tr>
                                         <td>Supplier Name :</td>
-                                        <!-- <td><textarea required type="text" name="sname" class="form-control" rows="5" style="resize: none;"></textarea></td> -->
                                         <td> 
                                         <select class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getaddress('{{$rec->orderid}}')">
                                             <option value="">--Select--</option>
@@ -402,17 +400,17 @@ function openCitytest(evt, cityName) {
               </tr>
               @endif
               @if($payment->payment_mode == "CASH IN HAND")
-              <!-- <tr>
+              <tr>
                 <td>Cash Holder Name : </td>
-                <td>{{$payment->cash_holder}}</td>
-              </tr> -->
+                <td>{{$payment->user != null?$payment->user->name :''}}</td>
+              </tr>
                  <tr>
                 <td> Cash Received Date :</td>
                 <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
               </tr>
               @endif
               <tr>
-                <td>Amount :</td>
+                <td>Total Amount :</td>
                 <td>{{$payment->totalamount}}/-</td>
               </tr>
               <tr>

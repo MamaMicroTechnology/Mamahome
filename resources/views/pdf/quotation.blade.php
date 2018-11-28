@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Proforma Invoice</title>
+    <title>Quotation</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- jQuery library -->
@@ -23,15 +23,14 @@
 </head>
 <body>
 @php
-     $bill = explode(", ", $data['price']['billaddress']);
-    $ship = explode(", ", $data['price']['shipaddress']);
-    $items = explode(", ",$data['products']->sub_category);
+    $bill = explode(", ", $data['price']->billaddress);
+    $ship = explode(", ", $data['price']->shipaddress);
 @endphp
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
-            <h4 style="background-color:#FD871F;padding:5px;" class="text-center">PROFORMA INVOICE</h4>
+            <h4 style="background-color:#FD871F;padding:5px;" class="text-center">QUOTATION</h4>
             
             <div class="pull-left" style="padding-top: 20px;">
                 <b>Mama Home Pvt. Ltd.</b>
@@ -52,11 +51,10 @@
             </div>
             <div class="pull-right">
 
-               <div style="padding-right: 20px;"> Invoice No :{{ $data['products']->id }}<br>
+               <div style="padding-right: 20px;">Quotation ID : {{ $data['price']->quotation_id }}<br>
                 Date : {{ date('d F, Y') }}<br>
-              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  <br>
-              Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                Mode Of Payment : {{ $data['products']->payment_mode }}
+              {{ $data['price']->manu_id == null ? "project ID" : "Manufacturer ID" }} : {{ $data['price']->manu_id == null ? $data['price']->project_id : $data['price']->manu_id}}  <br>
+             
             </div>
             </div>
         </div>
@@ -65,7 +63,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left">
                 <b>BILL TO : </b>
-                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
+                <br><b>{{ $data['procurement'] == null ? $data['mprocurement']->name : $data['procurement']->procurement_name }} </b>
                     @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $bill[$i] }}
@@ -75,8 +73,8 @@
                     @endfor
             </div>
             <div class="pull-right">
-                <b> SHIP TO :</b>
-                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
+                <b> SHIP TO :</b>         
+                <br><b>{{ $data['procurement'] == null ? $data['mprocurement']->name : $data['procurement']->procurement_name }} </b>
                     @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $ship[$i] }}
@@ -105,19 +103,19 @@
                  
                         <tr>
                             <td class="text-center">1</td>
-                            <td>{{$data['price']['description']}}</td>
+                            <td>{{$data['price']->description}}</td>
                             <td></td>
-                            <td>{{ $data['price']['unit'] }}</td>
-                            <td >{{ $data['price']['quantity'] }}</td>
-                            <td>{{ $data['price']['unitwithoutgst'] }}</td>
-                            <td>{{ $data['price']['totalamount'] }}</td>
+                            <td>{{ $data['price']->unit }}</td>
+                            <td >{{ $data['price']->quantity }}</td>
+                            <td>{{ $data['price']->pricewithoutgst}}</td>
+                            <td>{{ $data['price']->totalamount}}</td>
                         </tr>
                 
                         <tr>
                             <td colspan="4" rowspan="6"></td>
                             <td class="text-left"><b>GROSS AMOUNT</b></td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['totalamount'] }}</td>
+                            <td class="text-left">{{ $data['price']->totalamount }}</td>
                         </tr>
                         <!-- <tr>
                             <td class="text-left">Discount Amount</td>
@@ -127,17 +125,17 @@
                         <tr>
                             <td class="text-left"><b>TOTAL AMOUNT</b></td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['totalamount'] }}</td>
+                            <td class="text-left">{{ $data['price']->totalamount }}</td>
                         </tr>
                         <tr>
                             <td class="text-left">CGST(14%)</td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['cgst'] }}</td>
+                            <td class="text-left">{{ $data['price']->cgst }}</td>
                         </tr>
                         <tr>
                             <td class="text-left">SGST(14%)</td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['sgst']}}</td>
+                            <td class="text-left">{{ $data['price']->sgst }}</td>
                         </tr>
                         <tr>
                             <td class="text-left">IGST</td>
@@ -147,11 +145,11 @@
                         <tr>
                             <td class="text-left"><b>TOTAL</b></td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['amountwithgst']}}</td>
+                            <td class="text-left">{{ $data['price']->amountwithgst }}</td>
                         </tr>
                         <tr>
                             <td class="text-center" colspan="7">
-                                <b> Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['gstamount_word']}} Only
+                                <b> Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']->gstamount_word }} Only
                             </td>
                         </tr>
                         <tr>
@@ -169,17 +167,17 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{ $data['price']['totalamount']}}</td>
+                            <td>{{ $data['price']->totalamount}}</td>
                             <td>14.00%</td>
-                            <td>{{ $data['price']['cgst']}}</td>
+                            <td>{{ $data['price']->cgst}}</td>
                             <td>14.00%</td>
-                            <td>{{ $data['price']['sgst']}}</td>
-                            <td>{{ $data['price']['totaltax']}}</td>
+                            <td>{{ $data['price']->sgst}}</td>
+                            <td>{{ $data['price']->totaltax}}</td>
                         </tr>
 <tr class="clearfix">
                             <td colspan="7">
                                 <div class="pull-left col-md-6 clearfix" style="padding-left: 150px;">
-                                    <b>Tax Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['tax_word']}} Only
+                                    <b>Tax Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']->tax_word }} Only
                                 </div>
                                 <br><br>
                                 <div class="pull-left col-md-6 clearfix">

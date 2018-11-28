@@ -73,7 +73,7 @@ use App\Mprocurement_Details;
 use App\Mowner_Deatils;
 use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
-// use App\ActivityLog;
+use App\Quotation;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1886,14 +1886,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     
      public function editEnquiry(Request $request)
     {
+
             if($request->note != null){
-            Requirement::where('id',$request->eid)->update(['notes'=>$request->note]);
+          Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+          $requirement = Requirement::where('id',$request->id)->first();
            
         }elseif($request->status != null){
 
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
-           
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
@@ -3351,5 +3352,51 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
    public function holidays(){
     return view('holidays');
    }
+   public function getquotation(Request $request){
+   
+    if($request->quot == "Project"){
+         $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
+         ->get();
+    }  
+    else if($request->quot == "Manufacturer"){
+       $enquiries = Requirement::where('requirements.manu_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
+         ->get();
+    }
+    else{
+        $enquiries = "";
+    }
+        $quotations = Quotation::all();
+        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations]);
+    }
+    public function generatequotation(Request $request){
 
+        $enquiries = Requirement::where('id',$request->id)->update([
+                'quotation'=> "generated"
+        ]);
+        $year = date('Y');
+        $country_code = Country::pluck('country_code')->first();
+        $zone = Zone::pluck('zone_number')->first();
+            $quot = new Quotation;
+            $quot->quotation_id =  "MH_".$country_code."_".$zone."_".$year."_Q".$request->id; 
+            $quot->req_id =$request->id;
+            $quot->manu_id = $request->manu_id;
+            $quot->project_id = $request->pid;
+           $quot->quantity = $request->quantity;
+           $quot->unitprice = $request->price;
+           $quot->pricewithoutgst = $request->withoutgst;
+           $quot->totalamount =$request->display;
+           $quot->cgst  = $request->cgst;
+           $quot->sgst  = $request->sgst;
+           $quot->totaltax  = $request->totaltax;
+           $quot->amountwithgst  = $request->withgst;
+           $quot->unit = $request->unit;
+           $quot->amount_word  = $request->dtow1; 
+           $quot->tax_word  = $request->dtow2;
+           $quot->gstamount_word  = $request->dtow3;
+           $quot->description = $request->description;
+           $quot->shipaddress  = $request->ship;
+           $quot->billaddress   = $request->bill;
+           $quot->save();
+           return back();
+    }
 }
