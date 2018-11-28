@@ -21,6 +21,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Add New Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/updateManufacturer">Update Manufacturer</a><br><br>
+          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/manu_map">Manufacturers Map</a><br><br>
           @endif
          @endif
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>

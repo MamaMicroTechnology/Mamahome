@@ -28,6 +28,12 @@ Route::post('/noneed','AssignManufacturersController@noneed');
 Route::get('/subwardfind','AssignManufacturersController@find');
 Route::get('/findsubward','AssignManufacturersController@findsubward');
 Route::get('/subfind','AssignManufacturersController@subfind');
+//tl dashboard work
+Route::get('/delete_enquiry','TlController@delete_enquiry');
+Route::get('/search_enquiry','TlController@search_enquiry');
+Route::get('/manu_map','TlController@manumap');
+
+
 
 Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
@@ -480,6 +486,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     Route::get('/checkDupPhoneSite', 'HomeController@checkDupPhoneSite');
     Route::get('/checkDupPhoneContractor', 'HomeController@checkDupPhoneContractor');
     Route::get('/checkDupPhoneProcurement', 'HomeController@checkDupPhoneProcurement');
+    Route::get('/checkmanu','HomeController@checkmanu');
     // Route::get('/updateContractor','HomeController@updateContractor');
     // Route::get('/updateConsultant','HomeController@updateConsultant');
     // Route::get('/updateProcurement','HomeController@updateProcurement');

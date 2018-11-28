@@ -92,6 +92,7 @@ use App\BreakTime;
 use App\PaymentDetails;
 use App\MamahomePrice;
 use App\Supplierdetails;
+use App\Mprocurement_Details;
 
 use Spatie\Activitylog\Models\Activity;
 
@@ -260,7 +261,9 @@ class HomeController extends Controller
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator,
                                                 'billadress'=>$request->billadress,
-                                                'ship' =>$shipadress
+                                                'ship' =>$shipadress,
+                                                'price' =>$request->price,
+                                                'total_quantity' =>$request->totalquantity
                                         ]);
 
         // $number = ProcurementDetails::where('project_id',$request->selectprojects)->get();
@@ -1293,22 +1296,29 @@ class HomeController extends Controller
        {
         return $this->enquiryCancell1($request);
        }
+       
         $cancelcount = 0;
         $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $category = Category::all();
         $depart = [6,7];
         $initiators = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
         $subwards2 = array();
-        $enquiries = Requirement::leftjoin('users','users.id','=','requirements.generated_by')
-                        ->leftjoin('procurement_details','procurement_details.project_id','=','requirements.project_id')
-                        ->leftjoin('project_details','project_details.project_id','=','requirements.project_id')
-                        ->select('requirements.*','procurement_details.procurement_name','procurement_details.procurement_contact_no','procurement_details.procurement_email','users.name','project_details.sub_ward_id')
-                        ->where('requirements.status',"Enquiry Cancelled")
-                        ->get();
+         if($request->project == "project"){
+
+        $enquiries = Requirement::where('status',"Enquiry Cancelled")
+                        ->where('manu_id',NULL)->paginate("20");
+         }
+       else{
+
+        $enquiries = Requirement::where('status',"Enquiry Cancelled")
+                        ->where('manu_id','!=',NULL)->paginate("20");
+       }
+                     
+                        
         $cancelcount = count( $enquiries);
-            foreach($enquiries as $enquiry){
-                $subwards2[$enquiry->project_id] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
-            }
+            // foreach($enquiries as $enquiry){
+            //     $subwards2[$enquiry->project != null ?$enquiry->project->project_id : ''] = SubWard::where('id',$enquiry->sub_ward_id)->pluck('sub_ward_name')->first();
+            // }
             //  $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
             // $wardss = SubWard::orderby('sub_ward_name','ASC')->where('ward_id',$tlward)->pluck('id')->first;
             // $pp = ProjectDetails::where('sub_ward_id',$wardss)->pluck('project_id');
@@ -1324,6 +1334,10 @@ class HomeController extends Controller
             'initiators'=>$initiators
         ]);
     }
+
+
+
+
 
  public function enquiryCancell1(Request $request)
     {
@@ -3438,6 +3452,17 @@ date_default_timezone_set("Asia/Kolkata");
         $c = count($check);
         return response()->json($c);
     }
+    public function checkmanu(request $request)
+    {
+
+        
+        $arg = $request->id;
+        $check = Mprocurement_Details::where('contact',$arg)->get();
+        $c = count($check);
+        
+        return response()->json($c);
+    }
+
     public function checkDupPhoneConsultant(Request $request)
     {
         $arg = $request->only('arg');
@@ -7924,7 +7949,7 @@ public function display(request $request){
             }
 
         }
-        if(!$request->subward && $request->ward && $request->status){
+        if(!$request->subward && $request->ward && $request->status && !$request->from && !$request->to){
             $from="";
             $to="";
             if($request->ward == "All"){
@@ -7943,9 +7968,10 @@ public function display(request $request){
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->count();
+                    dd("1");
 
         }
-        else if(!$request->subward && $request->ward){
+        else if(!$request->subward && $request->ward && !$request->from && !$request->to){
             $from="";
             $to="";
             if($request->ward == "All"){
@@ -7963,12 +7989,14 @@ public function display(request $request){
                     ->where('project_status','!=',"Closed")
                     ->where( 'updated_at', '<=', $previous)
                     ->whereIn('sub_ward_id',$subwards)->count();
+                    
+
 
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }
-        else if($request->subward && $request->ward && $request->status){
+        else if($request->subward && $request->ward && $request->status && !$request->from && !$request->to){
          $from=$request->from;
-        $to=$request->to;
+         $to=$request->to;
 
         $projectid = ProjectDetails::whereIn('project_id',$projectsat)
                         ->where('sub_ward_id',$request->subward)
@@ -7980,8 +8008,10 @@ public function display(request $request){
                          ->where('quality','!=',"Fake")
                         ->whereIn('project_id',$projectsat)
                         ->count();
+                   
+
         }
-        else if($request->subward && $request->ward){
+        else if($request->subward && $request->ward && !$request->from && !$request->to){
             $from=$request->from;
             $to=$request->to;
             $projectid = ProjectDetails::where('updated_at','<=',$previous)
@@ -7994,8 +8024,61 @@ public function display(request $request){
                             ->where('quality','!=',"Fake")
                             ->where('project_status','!=',"Closed")
                             ->count();
+                           
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
+        }else if($request->ward && $request->subward && $request->from && $request->to && $request->status){
+                 $from=$request->from;
+                 $to=$request->to;
+                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                        ->where('sub_ward_id',$request->subward)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
+                        ->whereIn('project_id',$projectsat)
+                        ->paginate('20');
+             
+        }else if($request->ward == "All" && !$request->subward && $request->from && $request->to && $request->status){
+            if($request->ward == "All"){
+                $subwards = SubWard::pluck('id');
+            }else{
+                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
+            }
+                 $from=$request->from;
+                 $to=$request->to;
+                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                        ->where('sub_ward_id',$subwards)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
+                        ->whereIn('project_id',$projectsat)
+                        ->paginate('20');
+             
+        }else if($request->ward == "All" && !$request->subward && $request->from && $request->to && !$request->status){
+            if($request->ward == "All"){
+                $subwards = SubWard::pluck('id');
+            }else{
+                $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
+            }
+                 $from=$request->from;
+                 $to=$request->to;
+                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                        ->where('sub_ward_id',$subwards)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
+                        
+                        ->paginate('20');
+             
+        }else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
+           
+                 $from=$request->from;
+                 $to=$request->to;
+                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                        ->where('sub_ward_id',$subwards)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
+                         ->whereIn('project_id',$projectsat)
+                        ->paginate('20');
+             
         }
+
 
         else{
                 $projectid = new Collection;
@@ -8006,7 +8089,7 @@ public function display(request $request){
                 $site = "";
 
         }
-        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names]);
+        return view('unupdated',['projects'=>$projectid,'wards'=>$wards,'from'=>$from,'to'=>$to,'total'=>$total,'site'=>$site,'previous'=>$previous,'today'=>$today,'names'=>$names]);
     }
 
 
