@@ -49,7 +49,7 @@
                                 <button class="btn btn-xs btn-danger pull-right" data-toggle="modal" data-target="#clear{{$order->id}}">Cancel</button>
                 </div>
                  @else
-                 Payment Confirmed
+                  <button type="button" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#payment{{$order->id}}">Edit</button>
                  @endif             
             </td>
             <td>
@@ -108,17 +108,25 @@
                                         <td>{{ $order->quantity }}</td>
                                     </tr>
                                 </table>
+
                            <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}&&manu_id={{$order->manu_id}}" method="post">
                             {{ csrf_field() }}
                             <input class="hidden" type="text" name="dtow1" id="dtow1" value="">
                             <input type="hidden" name="dtow2" id="dtow2" value="">
                             <input type="hidden" name="dtow3" id="dtow3" value="">
-                            @foreach($mamaprices as $price)
-                                @if($price->order_id == $order->id)
-                               <table class="table table-responsive table-striped" border="1">
+                             @foreach($mamaprices as $price )  
+                            @if($price->order_id == $order->id)
+                           <table class="table table-responsive table-striped" border="1">
                            <tr>
-                                  <td>Description of Goods : </td>
+                            <?php 
+                                     $rec =count($order->confirm_payment); 
+                             ?>  
+                              <td>Description of Goods : </td>
+                             @if($rec == 0)
                                   <td><input required type="text" name="desc" class="form-control" value=""></td>
+                             @else
+                                  <td><input required type="text" name="desc" class="form-control" value="{{$price->description}}"></td>
+                                  @endif
                            </tr>
                            <tr>
                              <td>Total Quantity : </td>
@@ -129,24 +137,38 @@
                               <td><input type="radio" name="unit" value="tons" >Tons
                             <input type="radio" name="unit" value="Bags" checked> Bags</td>
                             </tr>
-                            @foreach($reqs as $req)
-                              @if($req->id == $order->req_id)
-                                    <tr>
-                                        <td>Billing Address : </td> 
-                                        <td><input  required type="text" name="bill" class="form-control" value="{{$req->ship}}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shipping Address : </td> 
-                                        <td><input required type="text" name="ship" class="form-control" value="{{$req->billadress}}"></td>
-                                    </tr>
-                                  @endif
-                                 @endforeach  
+                              <?php 
+                                     $rec =count($order->confirm_payment); 
+                             ?> 
+                         @if($rec == 0)
+                                   @foreach($reqs as $req)
+                                    @if($req->id == $order->req_id)
+                                          <tr>
+                                              <td>Billing Address : </td> 
+                                              <td><input  required type="text" name="bill" class="form-control" value="{{$req->ship}}"></td>
+                                          </tr>
+                                          <tr>
+                                              <td>Shipping Address : </td> 
+                                              <td><input required type="text" name="ship" class="form-control" value="{{$req->billadress}}"></td>
+                                          </tr>
+                                        @endif
+                                       @endforeach  
+                         @else
+                                <tr>
+                                  <td>Billing Address : </td> 
+                                  <td><input  required type="text" name="bill" class="form-control" value="{{$price->billaddress}}"></td>
+                              </tr>
+                              <tr>
+                                  <td>Shipping Address : </td> 
+                                  <td><input required type="text" name="ship" class="form-control" value="{{$price->shipaddress}}"></td>
+                              </tr>
+                         @endif
                             <tr>
                               <td>Price(Per Unit) : </td>
                               <td><input required type="number" id="unit{{$order->id}}"  class="form-control" name="price" value="{{$price->mamahome_price}}"  onkeyup="getcalculation('{{$order->id}}')"></td>
                             </tr>  
                             <tr>
-                                          <td>Unit Price without GST :</td>
+                                        <td>Unit Price without GST :</td>
                                         <td>&nbsp;&nbsp;&nbsp;RS.<label class=" alert-success pull-left" id="withoutgst{{$order->id}}"></label>/-
                                             <input  id="withoutgst1{{$order->id}}" type="text" name="unitwithoutgst"  value="{{$price->unitwithoutgst}}">
                                        </td>
@@ -288,6 +310,12 @@
                 </td>
               </tr>
               @endif
+              @if($payment->payment_mode == "CASH IN HAND")
+              <tr>
+                <td>Cash Holder Name :</td>
+               <td>{{$payment->user != null?$payment->user->name :''}}</td>
+              </tr>
+              @endif
               <tr>
                 <td>Amount :</td>
                 <td>{{$payment->totalamount}}/-</td>
@@ -383,8 +411,7 @@
         return false;
     return true;
 }
-
-function NumToWord(inputNumber, outputControl,arg) {
+function NumToWord(inputNumber, outputControl,arg){
     var str = new String(inputNumber)
     var splt = str.split("");
     var rev = splt.reverse();

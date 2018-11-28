@@ -140,11 +140,15 @@
                   </tr>
                 <tr>
                           <td>Cash Recieved Date :</td>
-                        <td><input required class="form-control" name="rdate" type="date"></td>
+                        <td><input required class="form-control" name="date" type="date"></td>
+                </tr>
+                <tr>
+                          <td>Total Amount :</td>
+                        <td><input required class="form-control" name="totalamount" type="number"></td>
                 </tr>
                 <tr>
                           <td>Delivery charges(Driver) :</td>
-                          <td><input class="form-control" name="damount" type="text" placeholder="Enter Amount"></td>
+                          <td><input class="form-control" name="damount" type="number" placeholder="Enter Amount"></td>
                 </tr>
                 <tr>
                           <td>Notes:</td>
