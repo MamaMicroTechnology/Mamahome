@@ -273,7 +273,11 @@
 								</td>
 
 							</tr>
-							
+							<tr>
+            <td><label>Price: </label></td>
+            <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required value="{{ $enq->price }}" /></td>
+
+                          </tr>
 							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>

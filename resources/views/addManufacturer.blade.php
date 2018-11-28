@@ -534,6 +534,50 @@
         swal("You Have Not Entered the Procurement Number")
       }
     }
+    function checklength(data){
+         if(data=='prPhone')
+            {
+                var y = document.getElementById('prPhone').value;
+                const Http = new XMLHttpRequest();
+               var x = y;
+                const url='{{URL::to('/')}}/checkmanu?id='+x;
+                Http.open("GET", url);
+              Http.send();
+
+            Http.onreadystatechange=(e)=>{
+             
+                  if((Http.responseText) > 0){
+                    swal({
+                                  title:"Are you sure?",
+                                  text: "Already Manufacturer Project is listes with number You wan to add Second project?",
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                });
+                            
+                  }
+           }
+                 
+    }
+
+}
+
+    function check(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+      while(isNaN(document.getElementById(arg).value)){
+      var str = document.getElementById(arg).value;
+      str     = str.substring(0, str.length - 1);
+      document.getElementById(arg).value = str;
+      }
+    }
+    else{
+      input = input.trim();
+      document.getElementById(arg).value = input;
+    }
+}
 </script>
 
 <script type="text/javascript">

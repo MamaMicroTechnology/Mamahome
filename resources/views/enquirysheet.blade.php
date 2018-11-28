@@ -137,6 +137,8 @@
 							<th style="text-align: center">Old Quantity</th>
 							<th style="text-align: center">Enquiry Quantity</th>
 							<th style="text-align: center">Total Quantity</th>
+							<th style="text-align: center">Price</th>
+							<th style="text-align: center">Total Amount</th>
 							<th style="text-align: center">Initiator</th>
 							<th style="text-align: center">Converted by</th>
 							<th style="text-align: center">Last Update</th>
@@ -215,6 +217,10 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
+							<?php $total = ($enquiry->total_quantity *  $enquiry->price) ?>
+							<td style="text-align: center">{{ $enquiry->price }}</td>
+							<td style="text-align: center">{{$total}} </td>
+
 							<td style="text-align: center">{{ $enquiry->user != null ? $enquiry->user->name : '' }}</td>
 							<td style="text-align: center">
 							{{ $enquiry->conuser != null ? $enquiry->conuser->name : '' }}

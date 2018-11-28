@@ -718,7 +718,7 @@ Http.onreadystatechange=(e)=>{
         var finalsubward = [];
         finalsubward = subs[i]['lat'].map(s => eval('null,' +s ));
 
-         console.log(finalsubward);
+         // console.log(finalsubward);
 
        var bermudaTriangle = new google.maps.Polygon({paths: finalsubward});  
         var locat = new google.maps.LatLng(latitude,longitude);
@@ -726,7 +726,7 @@ Http.onreadystatechange=(e)=>{
 
               
                if(shouldAlert == true){
-                   alert(" your in subward : " +subs[i]['subward']);
+                   // alert(" your in subward : " +subs[i]['subward']);
                       document.getElementById('subwardid').value=subs[i]['subward'];
                        break;
                 }
@@ -932,6 +932,7 @@ function openCity(evt, cityName) {
             if(arg=='prPhone')
             {
                 var y = document.getElementById('prPhone').value;
+
                 $.ajax({
                     type:'GET',
                     url: '{{URL::to('/')}}/checkDupPhoneProcurement',
@@ -941,6 +942,7 @@ function openCity(evt, cityName) {
                     {
                         if(response > 0)
                         {
+
                                 swal({
                                   title:"Are you sure?",
                                   text: "Already Project is listes with number You wan to add Second project?",
@@ -949,10 +951,6 @@ function openCity(evt, cityName) {
                                   showCancelButton: true,
                                   closeOnConfirm: false,
                                   showLoaderOnConfirm: true
-                                }, function () {
-                                  setTimeout(function () {
-                                    swal("Your request Is accepted  Thank You!");
-                                  }, 1000);
                                 });
                             
                         }

@@ -243,6 +243,15 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
             <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
 
 </tr>
+
+<tr>
+            <td><label>Price: </label></td>
+            <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required /></td>
+
+</tr>
+
+
+
 <td><label>Remarks :</label></td>
 <td>
 <textarea style="resize: none;" rows="4" cols="40" name="eremarks"

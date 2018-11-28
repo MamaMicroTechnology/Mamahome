@@ -9,9 +9,9 @@
     <div class="panel panel-default" style="border-color:green;"> 
                 <div class="panel-heading text-center" style="background-color: green;color:white;">Projects To Be Updated
                 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
-                @if($totalproject != 0)
+                @if(count($projects) != 0)
                  <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
-               Count : <b>{{ $totalproject }}</b>
+               Count : <b>{{ $projects->total() }}</b>
                 <p class="pull-right"> Projects Not Been Updated In 30 Days.</p>
                 @endif
 
@@ -36,6 +36,14 @@
                 <label>Choose Subward :</label><br>
                           <select name="subward" class="form-control" id="subward">
                           </select>
+              </div>
+              <div class="col-md-2">
+                <label>From (Enquiry Date)</label>
+                <input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
+              </div>
+              <div class="col-md-2">
+                <label>To (Enquiry Date)</label>
+                <input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
               </div>
               <div class="col-md-2">
                 <label></label>

@@ -2023,7 +2023,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'enquiry_quantity' =>$request->enquiryquantity,
             'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
-            'requirement_date' => $request->edate
+            'requirement_date' => $request->edate,
+            'price' =>$request->price
         ]);
 $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;
