@@ -1218,6 +1218,7 @@ function myTimer() {
 
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
               <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; - Confirmed Orders</a>
+              <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; - Get Quotation</a>
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
@@ -1276,6 +1277,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
@@ -1296,6 +1298,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
     <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
+    <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
@@ -1310,6 +1313,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/pending">Pending Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
+      <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
        <a href="{{ URL::to('payment') }}">Delivery Order Details</a>
        <a href="{{ URL::to('checkdetailes') }}">Cheq Details</a>
 
@@ -1329,7 +1333,7 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
-     
+      <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
     <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
