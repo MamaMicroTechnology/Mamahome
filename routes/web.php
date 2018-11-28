@@ -123,6 +123,10 @@ Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq1');
 Route::get('/editenq1','HomeController@editEnq1');
 Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
+Route::get('/getquotation','mamaController@getquotation');
+Route::get('/getprojects','mamaController@getquotation');
+
+
 
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
@@ -236,6 +240,7 @@ Route::get('/orders','HomeController@amorders');
 
 Route::get('/updateampay','HomeController@updateampay');
 Route::post('/confirmOrder','HomeController@confirmOrder');
+Route::post('/generatequotation','mamaController@generatequotation');
 Route::get('/cancelOrder','HomeController@cancelOrder');
 Route::get('/updateamdispatch','HomeController@updateamdispatch');
 Route::get('/deliverOrder','HomeController@deliverOrder');
@@ -696,6 +701,7 @@ Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
 Route::get('/downloadInvoice','FinanceDashboard@downloadInvoice')->name('downloadInvoice');
 Route::get('/downloadTaxInvoice','FinanceDashboard@downloadTaxInvoice')->name('downloadTaxInvoice');
 Route::get('/downloadpurchaseOrder','FinanceDashboard@downloadpurchaseOrder')->name('downloadpurchaseOrder');
+Route::get('/downloadquotation','FinanceDashboard@downloadquotation')->name('downloadquotation');
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
 Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
 Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');

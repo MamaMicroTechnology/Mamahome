@@ -521,6 +521,7 @@ div#calendar{
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
               <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; -Confirmed Orders</a>
+              <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; -Get Quotation</a>
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>

@@ -3216,7 +3216,7 @@ date_default_timezone_set("Asia/Kolkata");
             $price->cgst = $cgst;
             $price->sgst = $sgst;
             $price->totaltax = $totaltax;
-            $price->amountwithgst = $y;     
+            $price->amountwithgst = $y;    
             $price->save();
         return back();
 
