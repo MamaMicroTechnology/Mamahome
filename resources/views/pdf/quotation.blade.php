@@ -51,7 +51,7 @@
             </div>
             <div class="pull-right">
 
-               <div style="padding-right: 20px;">Quotation ID : {{ $data['price']->quotation_id }}<br>
+               <div style="padding-right: 50px;">Quotation ID : {{ $data['price']->quotation_id }}<br>
                 Date : {{ date('d F, Y') }}<br>
               {{ $data['price']->manu_id == null ? "project ID" : "Manufacturer ID" }} : {{ $data['price']->manu_id == null ? $data['price']->project_id : $data['price']->manu_id}}  <br>
              
@@ -79,7 +79,7 @@
                     @if($i % 3 == 0)
                         <br>{{ $ship[$i] }}
                     @else
-                        , {{ $ship[$i] }}
+                        {{ $ship[$i] }}
                     @endif
                     @endfor
             </div>

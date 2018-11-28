@@ -145,22 +145,22 @@
                                     @if($req->id == $order->req_id)
                                           <tr>
                                               <td>Billing Address : </td> 
-                                              <td><input  required type="text" name="bill" class="form-control" value="{{$req->ship}}"></td>
+                                              <td><textarea  required type="text" name="bill" class="form-control" style="resize: none;" rows="5">{{$req->billadress}}</textarea></td>
                                           </tr>
                                           <tr>
                                               <td>Shipping Address : </td> 
-                                              <td><input required type="text" name="ship" class="form-control" value="{{$req->billadress}}"></td>
+                                              <td><textarea required type="text" name="ship" class="form-control" style="resize: none;" rows="5">{{$req->siteaddress != null ? $req->siteaddress->address : ''}}</textarea></td>
                                           </tr>
                                         @endif
                                        @endforeach  
                          @else
                                 <tr>
                                   <td>Billing Address : </td> 
-                                  <td><input  required type="text" name="bill" class="form-control" value="{{$price->billaddress}}"></td>
+                                  <td><textarea  required type="text" name="bill" class="form-control" style="resize: none;" rows="5">{{$price->billaddress}}</textarea></td>
                               </tr>
                               <tr>
                                   <td>Shipping Address : </td> 
-                                  <td><input required type="text" name="ship" class="form-control" value="{{$price->shipaddress}}"></td>
+                                  <td><textarea required type="text" name="ship" class="form-control"  style="resize: none;" rows="5">{{$price->shipaddress}}</textarea></td>
                               </tr>
                          @endif
                             <tr>

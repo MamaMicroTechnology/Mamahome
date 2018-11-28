@@ -46,6 +46,9 @@ class Requirement extends Model
     {
       return $this->hasOne('App\Mprocurement_Details','manu_id','manu_id');
     }
+    public function siteaddress(){
+        return $this->belongsTo('App\SiteAddress','project_id','project_id');
+    }
 }
 	
 
