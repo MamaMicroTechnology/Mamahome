@@ -330,15 +330,18 @@ Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 Route::get('/lcoorders','logisticsController@orders');
 Route::get('/manusearch','AssignManufacturersController@manusearch');
+    Route::get('/anr','HomeController@getAnR');
+    Route::get('/humanresources/{dept}','HomeController@getHRDept');
+    Route::get('/{id}/date','HomeController@amreportdates');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');
 Route::get('/deletemanu','mamaController@deletemanuProject');
+Route::get('/{id}/attendance','HomeController@hrAttendance');
 
 Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
-    Route::get('/anr','HomeController@getAnR');
    
     Route::get('/amdept','HomeController@amDept');
     Route::get('/quality','HomeController@quality');
@@ -346,10 +349,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/mapping','HomeController@masterData');
     Route::get('/filter','HomeController@filter');
     Route::get('/amreports','HomeController@getAMReports');
-    Route::get('/{id}/date','HomeController@amreportdates');
     Route::get('/{uid}/{date}/viewreports','HomeController@getViewReports');
     Route::get('/humanresources','HomeController@getHRPage');
-    Route::get('/humanresources/{dept}','HomeController@getHRDept');
     Route::get('/finance','HomeController@getFinance');
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     
@@ -359,7 +360,6 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/adtraining','HomeController@adtraining');
     Route::get('/adenquirysheet','HomeController@enquirysheet');
 
-    Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
     Route::get('/editEmployee','HomeController@editEmployee');
     Route::get('/manufacturerdetails','HomeController@manufacturerDetails');

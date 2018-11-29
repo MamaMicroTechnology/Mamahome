@@ -7,7 +7,6 @@
 @section('content')
 <div class="col-md-12 ">
     <table class="table table-responsive" border=1>
-        <!-- <th>Ward Name</th> -->
         <th>Requirement Date</th>
         <th>Project Id</th>
         <th>Order Id</th>
@@ -149,12 +148,16 @@
                                           </tr>
                                           <tr>
                                               <td>Shipping Address : </td> 
+                                               @if($order-> project_id == null)
+                                               <td><textarea required type="text" name="ship" class="form-control" style="resize: none;" rows="5">{{$req->manu != null ? $req->manu->address : ''}}</textarea></td>
+                                               @else
                                               <td><textarea required type="text" name="ship" class="form-control" style="resize: none;" rows="5">{{$req->siteaddress != null ? $req->siteaddress->address : ''}}</textarea></td>
+                                              @endif
                                           </tr>
                                         @endif
                                        @endforeach  
                          @else
-                                <tr>
+                              <tr>
                                   <td>Billing Address : </td> 
                                   <td><textarea  required type="text" name="bill" class="form-control" style="resize: none;" rows="5">{{$price->billaddress}}</textarea></td>
                               </tr>
@@ -172,7 +175,7 @@
                                         <td>&nbsp;&nbsp;&nbsp;RS.<label class=" alert-success pull-left" id="withoutgst{{$order->id}}"></label>/-
                                             <input  id="withoutgst1{{$order->id}}" type="text" name="unitwithoutgst"  value="{{$price->unitwithoutgst}}">
                                        </td>
-                            </tr>
+                              </tr>
                                     <tr>
                                         <td>Total Amount : </td>
                                         <td>

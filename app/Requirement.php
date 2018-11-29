@@ -49,6 +49,9 @@ class Requirement extends Model
     public function siteaddress(){
         return $this->belongsTo('App\SiteAddress','project_id','project_id');
     }
+    public function quot(){
+        return $this->belongsTo('App\Quotation','id','req_id');
+    }
 }
 	
 

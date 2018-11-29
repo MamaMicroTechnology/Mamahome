@@ -1351,6 +1351,7 @@ function myTimer() {
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/mhemployee">MAMAHOME Employee</a>
+        <a href="{{ URL::to('/anr') }}">Reports</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             <a href="{{ URL::to('/') }}/newamviewattendance">New Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>

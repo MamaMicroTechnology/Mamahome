@@ -186,7 +186,7 @@
                                     Tax invoice will be provided once goods gets delivered<br>
                                     Reward Points are not Applicable for Offer Price<br>
                                     <br>
-                                     This Quotation is Valide For Only 24Hours <br>
+                                     This Quotation is Valid For Only 24Hours <br>
                                 </div>
                                 <div class="pull-right col-md- clearfix6">
                                     For  Mama Home Pvt Ltd 

@@ -1,39 +1,73 @@
-
 @extends('layouts.app')
 @section('content')
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading" style="background-color: green;"><p style="color: white">
-                Search project and Get Quotation
+            <div class="panel-heading " style="background-color: #3097d1;text-align: center;"><p style="color: white">
+               Get Quotation For Manufacturers and Project
                  </p>
-                  <a onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></a>
+                  <a onclick="history.back(-1)" class="btn btn-default pull-right btn-xs" style="margin-top:-30px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;"></i></a>
             </div>
-            <div class="panel-body" style="overflow-x: scroll;">
+            <div class="panel-body" >
                 
                 <form method="GET" action="{{ URL::to('/') }}/getprojects">
                     <div class="col-md-12">
                         <div class="col-md-2">
+                        <label>Project Type :</label>
                             <select required name="quot" onchange="getSubwards()" id="ward" class="form-control">
                                 <option value="">--Select--</option>
                             <option value="Project">Project</option>
                             <option value="Manufacturer">Manufacturer</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                        <label>Search for Project ID/Manufacturere ID</label>
                             <input required type="text" name="id" placeholder="Enter Confirmed Project Id/Manufacturer Id" class="form-control">
                         </div>
                         <div class="col-md-2">
-                            <input type="submit" class="form-control" value="Fetch">
+                        <label>Category</label>
+                            <select id="categ" class="form-control" name="category">
+                                <option value="">--Select--</option>
+                                @foreach($category as $category)
+                                <option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                           
+                            <button style="margin-top: 25px;" type="submit" class="btn btn-success" >Fetch</button>
                         </div>
                     </div>
                 </form>
-                <br><br><br>
+                 <div class="col-md-12 col-md-offset-9" style="margin-top: -35px;">
+                <form method="GET" action="{{ URL::to('/') }}/getprojects">
+                <div  class="col-md-2">    
+                  <input required class="form-control" type="text" placeholder="Search Quotation Id" name="quotid">
+                </div>
+                  <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+                </div><br>
                 <table class="table table-hover" border="1"> 
+                    <br><br><br><br>
                     <thead>
+                   @if($id )
+                    <tr  bgcolor="#c7e2de">
+                       <td colspan="12" style="text-align: center">  <a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$id}}">
+                                    <b>Project ID : {{$id}}</b>
+                                </a></td>
+                    </tr>
+                   @elseif($manu_id)
+                   <tr  bgcolor="#c7e2de">
+                       <td colspan="12" style="text-align: center">  <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manu_id}}">Manufacturer ID : {{$manu_id}}&nbsp;({{ $manu }})
+                       </a></td>
+                   </tr>
+                    @else
+
+                   @endif
+                    @if($enquiries != null)
                         <tr>
-                            <th style="text-align: center">Project_Id</th>
+                            <th style="text-align: center">Enquiry ID</th>
                             <th style="text-align: center">Requirement Date</th>
-                            <th style="text-align: center">Enquiry Date</th>
+                            <!-- <th style="text-align: center">Enquiry Date</th> -->
                             <th style="text-align: center">Contact</th>
                             <th style="text-align: center">Product</th>
                             <th style="text-align: center">Quantity</th>
@@ -41,25 +75,17 @@
                             <th style="text-align: center">Initiator</th>
                             <th style="text-align: center">Status</th>
                             <th style="text-align: center">Remarks</th>
+                            <th style="text-align: center">Quotation ID</th>
                             <th style="text-align: center">Quotation</th>
                             <th style="text-align: center">Action</th>
                         </tr>
                     </thead>
-                    @if($enquiries != null)
                         @foreach($enquiries  as $enquiry)
                     <tbody>
                         <tr>
-                            <td style="text-align: center">
-                                @if($enquiry -> project_id == null)
-                                    <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">Manufacturer {{$enquiry -> manu_id}}</a>
-                                 @else
-                                <a target="_blank" href="{{URL::to('/')}}/showThisProject?id={{$enquiry -> project_id}}">
-                                    <b>{{$enquiry->project_id }}</b>
-                                </a> 
-                                @endif
-                            </td>
+                            <td style="text-align: center"><b>{{$enquiry->id}}</b>
+                               </td>  
                             <td style="text-align: center">{{$newDate = date('d/m/Y', strtotime($enquiry->requirement_date)) }}</td>
-                            <td style="text-align: center">{{ date('d/m/Y', strtotime($enquiry->created_at)) }}</td>
                             <td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
                              {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
                             <td style="text-align: center;width: 30px;" ><b>{{$enquiry->brand}}</b><br>{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }} {{ $enquiry->product }} 
@@ -79,8 +105,13 @@
                                 {{ $enquiry->notes}}
                             </td>
                             @if($enquiry->quotation == null)
+                            <td>
+                                Generate Quotation
+                            </td>
                             <td><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quotation{{$enquiry->id}}{{$enquiry->manu_id}}">Get Quotation</button></td>
                             @else
+                            <td>
+                               {{$enquiry->quot != null ? $enquiry->quot->quotation_id : ""}}</td>
                             <td><a type="button" href="{{ route('downloadquotation',['id'=>$enquiry->id,'manu_id'=>$enquiry->manu_id]) }}" style="background-color: #42413b;color:white" class="btn btn-sm">QUOTATION</a></td>
                             @endif
                             @if($enquiry->quotation != null)
@@ -128,7 +159,12 @@
                                 <tr>
                                     <td>Ship Address : </td>
                                     <td><textarea required type="text" name="ship" class="form-control" style="resize: none;" rows="5">
-                                        {{$enq->siteaddress != null ? $enq->siteaddress->address : ''}}</textarea>
+                                        @if($enq->project_id == null)
+                                        {{$enq->manu != null ? $enq->manu->address : ''}}
+                                        @else
+                                        {{$enq->siteaddress != null ? $enq->siteaddress->address : ''}}
+                                        @endif
+                                    </textarea>
                                     </td>
                                 </tr>
                                 <tr>
