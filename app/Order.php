@@ -24,6 +24,9 @@ class Order extends Model
     function admin(){
         return $this->hasOne('App\Requirement','project_id','project_id');
     }
+    function manudetails(){
+        return $this->hasOne('App\ManufacturerDetails','category','category');
+    }
     protected $fillable = [
             'project_id',
             'req_id',

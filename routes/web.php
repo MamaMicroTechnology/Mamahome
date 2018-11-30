@@ -720,6 +720,10 @@ Route::get('/paymentmode','FinanceDashboard@paymentmode');
 Route::post('/saveunitprice','FinanceDashboard@saveunitprice');
 Route::post('/savesupplierdetails','FinanceDashboard@savesupplierdetails');
 Route::get('/getgst','FinanceDashboard@getgst');
+Route::Post('/addGST','HomeController@ampricing');
+Route::get('/getsupplier','HomeController@getsupplier');
+
+
 
 
 

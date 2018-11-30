@@ -93,6 +93,8 @@ use App\PaymentDetails;
 use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Mprocurement_Details;
+use App\Gst;
+
 
 use Spatie\Activitylog\Models\Activity;
 
@@ -378,7 +380,8 @@ class HomeController extends Controller
         $totalenq = "";
         $converter = user::get();
         $ward = Ward::get();
-        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
+
         $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
         $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
         $this->variable=$pids;
@@ -3029,7 +3032,27 @@ date_default_timezone_set("Asia/Kolkata");
     public function ampricing(Request $request){
         $prices = CategoryPrice::all();
         $categories = Category::all();
-        return view('updateprice',['prices'=>$prices,'categories'=>$categories]);
+        $check =Gst::where('category',$request->category)->first();
+      
+        if(count($check) == 0){
+
+            $gst =  new Gst;
+            $gst->category = $request->category;
+            $gst->cgst = $request->cgst;
+            $gst->sgst = $request->sgst;
+            $gst->igst = $request->igst;
+            $gst->save();
+
+        }
+        else{
+           $check->category = $request->category;
+           $check->cgst = $request->cgst;
+           $check->sgst = $request->sgst;
+           $check->igst = $request->igst;
+           $check->save();
+        }
+        $gstvalue =  Gst::all();
+        return view('updateprice',['prices'=>$prices,'categories'=>$categories,'gstvalue'=>$gstvalue]);
     }
 
     public function setprice(Request $request){
@@ -3104,7 +3127,7 @@ date_default_timezone_set("Asia/Kolkata");
             $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
         }
         $suppliers = SupplierDetails::get();
-      
+        $categories = Category::all();
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3115,7 +3138,8 @@ date_default_timezone_set("Asia/Kolkata");
             'chatUsers'=>$chatUsers,
             'manusuppliers'=>$manusuppliers,
             'suppliers'=>$suppliers,
-            'counts'=>$counts
+            'counts'=>$counts,
+            'categories'=>$categories
            
         ]);
     }
@@ -3206,16 +3230,33 @@ date_default_timezone_set("Asia/Kolkata");
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
         $x->save();
+
         PaymentDetails::where('order_id',$id)->update([
             'quantity'=>$request->quantity,
             'mamahome_price'=>$request->mamaprice,
             'unit'=>$request->unit
         ]);
-        $unitwithgst = ($request->mamaprice/1.28);
+        $cat = Order::where('id',$request->id)->pluck('main_category')->first();
+        $cgstval = Gst::where('category',$cat)->pluck('cgst')->first();
+        $sgstval = Gst::where('category',$cat)->pluck('sgst')->first();
+        if($cgstval == 14){
+            $percent = 1.28;
+        }
+        else if($cgstval == 2.5){
+            $percent = 1.05;
+        }
+        else if($cgstval == 9){
+            $percent = 1.18;
+        }
+        else{
+            $percent = 1.28;
+
+        }
+        $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
-        $cgst = ($totalamount * 14)/100;
-        $sgst = ($totalamount * 14)/100;
+        $cgst = ($totalamount * $cgstval)/100;
+        $sgst = ($totalamount * $sgstval)/100;
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
         $withgst = $cgst + $sgst + $totalamount;
@@ -3231,6 +3272,10 @@ date_default_timezone_set("Asia/Kolkata");
             $price->sgst = $sgst;
             $price->totaltax = $totaltax;
             $price->amountwithgst = $y;    
+            $price->cgstpercent = $cgstval;
+            $price->sgstpercent = $sgstval;
+            $price->gstpercent = $percent;
+            $price->unit = $request->unit;
             $price->save();
         return back();
 
@@ -5420,6 +5465,15 @@ public function confirmedvisit(Request $request){
     {
         $address = SiteAddress::where('project_id',$request->projectId)->first();
         return response()->json($address);
+    }
+    public function getsupplier(Request $request)
+    {
+        $supplier = ManufacturerDetail::where('category',$request->name)->get();
+       $array = [];
+        $id = $request->x;
+        array_push($array,['supplier'=>$supplier,'id'=>$id]);
+
+        return response()->json($array);
     }
     public function viewallProjects(Request $request)
     {

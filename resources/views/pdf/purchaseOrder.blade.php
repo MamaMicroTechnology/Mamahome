@@ -124,12 +124,12 @@
                             <td class="text-left">{{$data['supplier']['amount']}}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">CGST(14%)</td>
+                            <td class="text-left">CGST({{$data['supplier']['cgstpercent']}}%)</td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$cgst}}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">SGST(14%)</td>
+                            <td class="text-left">SGST({{$data['supplier']['sgstpercent']}}%)</td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$sgst}}</td>
                         </tr>

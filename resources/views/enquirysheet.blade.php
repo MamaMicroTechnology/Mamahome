@@ -162,12 +162,8 @@
 							@if($enquiry->status == "Enquiry Confirmed")
 							<?php	$con++; 
 							 ?>
-
-								
 									<?php $sum1 = $sum1 + $enquiry->total_quantity; 
 									 ?>
-								
-
 							@endif
 
 							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")

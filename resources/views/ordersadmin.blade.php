@@ -195,11 +195,17 @@ function openCitytest(evt, cityName) {
                                 </table>
                            <form action="{{ URL::to('/') }}/confirmOrder?id={{$rec->orderid}}" method="post">
                             {{ csrf_field() }}
+                            <input type="hidden" name="cat" value="{{$rec->main_category}}">
                             <label> Total Quantity : </label>
                             <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')">
                             <br>
-                            <input type="radio" name="unit" value="tons" >Tons
-                            <input type="radio" name="unit" value="Bags" checked> Bags
+                           <select  class="form-control" name="unit" >
+                            <option>--Select Unit--</option>
+                             @foreach($categories as $category)
+                            <option value="{{ $category->measurement_unit }}">{{ $category->measurement_unit }}</option>
+                            @endforeach
+                         </select>
+
                             <br></br>
                             <label>Price(Per Unit) : </label>
                             <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')">
@@ -232,15 +238,26 @@ function openCitytest(evt, cityName) {
             {{ csrf_field() }}
         <input type="text" class="hidden" value="" id="dtow{{$rec->orderid}}" name="dtow" >
         <input type="text" class="hidden" value="" id="dtow1{{$rec->orderid}}" name="dtow1" >
+        <input type="text" class="hidden" value="" id="cgstpercent{{$rec->orderid}}" name="cgstpercent" >
+        <input type="text" class="hidden" value="" id="sgstpercent{{$rec->orderid}}" name="sgstpercent" >
+        <input type="text" class="hidden" value="" id="gstpercent{{$rec->orderid}}" name="gstpercent" >
+
        <table class="table table-responsive table-striped" border="1">
+                                    <tr>
+                                    <td>Category</td>
+                                    <td>
+                                    <select id="supplier{{$rec->orderid}}" onchange="getsuppliername('{{$rec->orderid}}')" class="form-control" >
+                                        <option>--Select Category--</option>
+                                        @foreach($categories as $category)
+                                        <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                    </tr>
                                     <tr>
                                         <td>Supplier Name :</td>
                                         <td> 
-                                        <select class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getaddress('{{$rec->orderid}}')">
-                                            <option value="">--Select--</option>
-                                            @foreach($manusuppliers as $manu)
-                                            <option {{ isset($_GET['manu']) ? $_GET['manu'] == $manu->company_name ? 'selected' : '' : '' }} value="{{ $manu->manufacturer_id }}">{{ $manu->company_name }}</option>
-                                            @endforeach
+                                        <select class="form-control" id="name{{$rec->orderid}}" name="name{{$rec->orderid}}" onchange="getaddress('{{$rec->orderid}}')">
                                         </select>
                                       </td>
 
@@ -256,7 +273,7 @@ function openCitytest(evt, cityName) {
                                     </tr>
                                     <tr>
                                         <td>Description of Goods : </td>
-                                        <td><input required type="text" name="desc" id="category{{$rec->orderid}}" class="form-control" value=""></td>
+                                        <td><input required type="text" name="desc" id="category{{$rec->orderid}}" class="form-control" value="" onkeypress="description('{{$rec->orderid}}')"></td>
                                     </tr>
                                    
                                    
@@ -267,8 +284,12 @@ function openCitytest(evt, cityName) {
 
                                      <tr>
                                         <td>Unit:</td>
-                                        <td><input type="radio" name="unit" value="tons" >Tons
-                                            <input type="radio" name="unit" value="Bags" checked> Bags
+                                        <td><select  class="form-control" name="unit" >
+                                            <option>--Select Unit--</option>
+                                             @foreach($categories as $category)
+                                            <option value="{{ $category->measurement_unit }}">{{ $category->measurement_unit }}</option>
+                                            @endforeach
+                                         </select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -290,13 +311,13 @@ function openCitytest(evt, cityName) {
                                     </tr>
                                     <tr>
                                         
-                                        <td>CGST(14%) : </td>
+                                        <td>CGST :<p id="gst1{{$rec->order_id}}"></p> </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$rec->orderid}}"></label>/-
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>SGST(14%) : </td>
+                                        <td>SGST: </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$rec->orderid}}"></label>/-
                                         </td>
@@ -889,17 +910,48 @@ function NumToWord1(inputNumber, outputControl ,arg) {
     document.getElementById('dtow1'+arg).value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
+function description(arg) {
+     var z = document.getElementById('supplier'+arg);
+  var name = z.options[z.selectedIndex].value;
+  document.getElementById('category'+arg).value = name;
+}
 function showthis(arg){
+  var z = document.getElementById('supplier'+arg);
+  var name = z.options[z.selectedIndex].value;
+if(name == "CEMENT"){
+    var percent = 1.28;
+    var gstvalue = 14;
+    var sgstvalue = 14;
+}
+else if(name == "M-SAND"){
+    var percent = 1.05;
+    var gstvalue = 2.5;
+    var sgstvalue = 2.5;
+}
+else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS"){
+    var percent = 1.18;
+    var gstvalue = 9;
+    var sgstvalue = 9;
+}
+else{
+    var percent = 1.28;
+    var gstvalue = 14;
+    var sgstvalue = 14;
+}
+
 var x =document.getElementById('unitprice'+arg).value;
 var y = document.getElementById('qu'+arg).value;
-var withoutgst = (x /1.28);
+var withoutgst = (x /percent);
 var i = parseFloat(withoutgst).toFixed(2);
 var t = (withoutgst * y);
 var f = Math.round(t);
-var gst = (t * 14)/100;
-var sgt = (t * 14)/100;
+var gst = (t * gstvalue)/100;
+var sgt = (t * sgstvalue)/100;
 var withgst = (gst + sgt + t);
 var final = Math.round(withgst);
+document.getElementById('cgstpercent'+arg).value = gstvalue;
+document.getElementById('sgstpercent'+arg).value = sgstvalue;
+document.getElementById('gstpercent'+arg).value = percent;
 document.getElementById('display'+arg).innerHTML = t;
 document.getElementById('cgst'+arg).innerHTML = gst;
 document.getElementById('sgst'+arg).innerHTML = sgt;
@@ -908,7 +960,7 @@ document.getElementById('withoutgst'+arg).innerHTML = i;
 document.getElementById('withoutgst1'+arg).value = i;
 document.getElementById('amount'+arg).value = f;
 document.getElementById('tamount'+arg).value = final;
-// document.getElementById('display'+arg).innerHTML = gst;
+
 }
 function gothr(arg){
   var input =  document.getElementById('amount'+arg).value;
@@ -943,6 +995,32 @@ function getaddress(arg){
                     }
                 });
             }
+</script>
+<script type="text/javascript">
+    function getsuppliername(arg) {
+  var x = document.getElementById('supplier'+arg);
+  var name = x.options[x.selectedIndex].value;
+  var x = arg;
+  $.ajax({
+                    type:'GET',
+                    url:"{{URL::to('/')}}/getsupplier",
+                    async:false,
+                    data:{name : name , x : x},
+                    success: function(response)
+                    {
+
+                        
+                       var id = response[0]['id'];
+                        
+                        var html = "<option value='' disabled selected>---Select---</option>";
+                        for(var i=0; i< response[0]['supplier'].length; i++)
+                        {
+                            html += "<option value='"+response[0]['supplier'][i]['company_name']+"'>"+response[0]['supplier'][i]['company_name']+"</option>";
+                        }
+                        document.getElementById('name'+id).innerHTML = html;
+                    }
+                });
+    }
 </script>
 <script src="http://www.ittutorials.in/js/demo/NumToWord.js; type="text/javascript"></script>
 
