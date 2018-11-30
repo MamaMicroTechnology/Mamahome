@@ -95,15 +95,15 @@
 
             <div class="col-md-4">
                 <label for="CGST">CGST(%)</label>
-                <input type="number" name="cgst" placeholder="CGST" min=1 id="CGST" class="form-control">
+                <input type="text" name="cgst" placeholder="CGST" min=1 id="CGST" class="form-control">
             </div>
             <div class="col-md-4">
                 <label for="SGST">SGST(%)</label>
-                <input type="number" name="sgst" placeholder="SGST" min=1 id="SGST" class="form-control">
+                <input type="text" name="sgst" placeholder="SGST" min=1 id="SGST" class="form-control">
             </div>
             <div class="col-md-4">
                 <label for="IGST">IGST(%)</label>
-                <input type="number" name="igst" placeholder="IGST" min=1 id="IGST" class="form-control">
+                <input type="text" name="igst" placeholder="IGST" min=1 id="IGST" class="form-control">
             </div>
             <div class="col-md-12">
             <br>

@@ -266,7 +266,7 @@ class FinanceDashboard extends Controller
                 $paymentDetails->save();
             }
 
-        return back()->with('Success','Payment Details Saved Successfully');
+        return redirect('/orders')->with('Success','Payment Details Saved Successfully');
     }
     public function getFinanceAttendance()
     {
@@ -329,7 +329,9 @@ class FinanceDashboard extends Controller
     }
     public function saveunitprice(Request $request){
        
-      
+        $unitwithoutgst = round($request->unitwithoutgst,2);
+        $cgst = round($request->cgst,2);
+        $sgst = round($request->sgst,2);
         $check = MamahomePrice::where('order_id',$request->id)->pluck("edited")->last();
         if($check == "No"){
          $check = MamahomePrice::where('order_id',$request->id)->get()->last();
@@ -339,10 +341,10 @@ class FinanceDashboard extends Controller
         $price->order_id = $request->id;
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
-        $price->unitwithoutgst = $request->unitwithoutgst;
+        $price->unitwithoutgst = $unitwithoutgst;
         $price->totalamount = $request->tamount;
-        $price->cgst = $request->cgst;
-        $price->sgst = $request->sgst;
+        $price->cgst = $cgst;
+        $price->sgst = $sgst;
         $price->totaltax = $request->totaltax;
         $price->amountwithgst = $request->gstamount;
         $price->amount_word = $request->dtow1;
@@ -366,10 +368,10 @@ class FinanceDashboard extends Controller
         $price = MamahomePrice::where('order_id',$request->id)->first();
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
-        $price->unitwithoutgst = $request->unitwithoutgst;
+        $price->unitwithoutgst = $unitwithoutgst;
         $price->totalamount = $request->tamount;
-        $price->cgst = $request->cgst;
-        $price->sgst = $request->sgst;
+        $price->cgst = $cgst;
+        $price->sgst = $sgst;
         $price->totaltax = $request->totaltax;
         $price->amountwithgst = $request->gstamount;
         $price->amount_word = $request->dtow1;
@@ -413,6 +415,9 @@ class FinanceDashboard extends Controller
         $supply->totalamount = $request->totalamount;
         $supply->tamount_words = $request->dtow1;
         $supply->unitwithoutgst =$request->unitwithoutgst;
+        $supply->cgstpercent = $request->cgstpercent;
+        $supply->sgstpercent = $request->sgstpercent;
+        $supply->gstpercent = $request->gstpercent;
         $supply->save();
 
         $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$supply->id; 
@@ -421,9 +426,9 @@ class FinanceDashboard extends Controller
         return back();
     }
      public function getgst(Request $request){
-        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('registered_office')->first();
-        $gst = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('gst')->first();
-        $category = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('category')->first();
+        $res = ManufacturerDetail::where('company_name',$request->name)->pluck('registered_office')->first();
+        $gst = ManufacturerDetail::where('company_name',$request->name)->pluck('gst')->first();
+        $category = ManufacturerDetail::where('company_name',$request->name)->pluck('category')->first();
         $id = $request->x;
         return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category]);
     }

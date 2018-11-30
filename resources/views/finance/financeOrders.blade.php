@@ -113,9 +113,13 @@
                             <input class="hidden" type="text" name="dtow1" id="dtow1" value="">
                             <input type="hidden" name="dtow2" id="dtow2" value="">
                             <input type="hidden" name="dtow3" id="dtow3" value="">
+
                              @foreach($mamaprices as $price )  
                             @if($price->order_id == $order->id)
                            <table class="table table-responsive table-striped" border="1">
+                            <input  type="hidden" name="dtow1" id="g1{{$order->id}}" value="{{$price->cgstpercent}}">
+                            <input type="hidden" name="dtow2" id="g2{{$order->id}}" value="{{$price->sgstpercent}}">
+                            <input type="hidden" name="dtow3" id="g3{{$order->id}}" value="{{$price->gstpercent}}">
                            <tr>
                             <?php 
                                      $rec =count($order->confirm_payment); 
@@ -133,8 +137,8 @@
                            </tr>
                             <tr>
                               <td>Unit : </td>
-                              <td><input type="radio" name="unit" value="tons" >Tons
-                            <input type="radio" name="unit" value="Bags" checked> Bags</td>
+                              <td><input  type="text" name="unit" value="{{$price->unit}}" class="form-control" readonly>
+                           
                             </tr>
                               <?php 
                                      $rec =count($order->confirm_payment); 
@@ -801,13 +805,19 @@ function NumToWord2(inputNumber, outputControl,arg){
 function getcalculation(arg){
 var x =document.getElementById('unit'+arg).value;
 var y = document.getElementById('quan'+arg).value;
-var withoutgst = (x /1.28);
+var g1 = document.getElementById('g1'+arg).value;
+var g2 = document.getElementById('g2'+arg).value;
+var g3 = document.getElementById('g3'+arg).value;
+var g4 = document.getElementById('g1'+arg).value;
+var g5 = document.getElementById('g2'+arg).value;
+
+var withoutgst = (x /g3);
 var t = (withoutgst * y);
 var f = Math.round(t);
-var gst = (t * 14)/100;
-var sgt = (t * 14)/100;
-var gst1 = (t * 14)/100;
-var sgt1 = (t * 14)/100;
+var gst = (t * g1)/100;
+var sgt = (t * g2)/100;
+var gst1 = (t * g4)/100;
+var sgt1 = (t * g5)/100;
 var withgst = (gst + sgt + t);
 var final = Math.round(withgst);
 var tt = (gst + sgt);
