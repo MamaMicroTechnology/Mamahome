@@ -3352,19 +3352,64 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
    }
    public function getquotation(Request $request){
    
-    if($request->quot == "Project"){
-         $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
-         ->get();
-    }  
-    else if($request->quot == "Manufacturer"){
-       $enquiries = Requirement::where('requirements.manu_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
-         ->get();
-    }
-    else{
-        $enquiries = "";
-    }
+    $category = Category::all();
+                if($request->quot == "Project" && !$request->category){
+                     $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
+                     ->get();
+                     $id = $request->id;
+                     $manu_id = "";
+                     $manu = "";
+                }
+                else if($request->quot == "Project" && $request->category){
+                     $enquiries = Requirement::where('requirements.project_id',$request->id)
+                     ->where('requirements.status',"Enquiry Confirmed")
+                     ->where('main_category',$request->category)
+                     ->get();
+                     $id = $request->id;
+                     $manu_id = "";
+                     $manu = "";
+                } 
+                else if($request->quot == "Manufacturer" && !$request->category){
+                   $enquiries = Requirement::where('requirements.manu_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
+                     ->get();
+                     $manu_id = $request->id;
+                     $manu = Manufacturer::where('id',$request->id)->pluck('manufacturer_type')->first();
+                     $id = "";
+                }
+                else if($request->quot == "Manufacturer" && $request->category){
+                   $enquiries = Requirement::where('requirements.manu_id',$request->id)
+                   ->where('requirements.status',"Enquiry Confirmed")
+                   ->where('main_category',$request->category)
+                   ->get();
+                     $manu_id = $request->id;
+                     $manu = Manufacturer::where('id',$request->id)->pluck('manufacturer_type')->first();
+                     $id = "";
+                }
+                else if($request->quotid){
+                    $qid = Quotation::where('quotation_id',$request->quotid)->first();      
+                   
+                    $enquiries = Requirement::where('requirements.id',$qid->req_id)
+                   ->where('requirements.status',"Enquiry Confirmed") 
+                   ->get();
+                   if($qid->project_id == null){
+                    $manu_id = $qid->manu_id;
+                    $manu = Manufacturer::where('id',$qid->manu_id)->pluck('manufacturer_type')->first();
+                   }
+                   else{
+                    $id = $qid->project_id;
+                    $manu_id = "";
+                    $manu = "";
+                   }    
+                }
+                else{
+                    $enquiries = "";
+                    $manu_id = "";
+                     $id = "";
+                     $manu = "";
+
+                }
         $quotations = Quotation::all();
-        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations]);
+        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'category'=>$category,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu]);
     }
     public function generatequotation(Request $request){
 
@@ -3374,6 +3419,8 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
         $year = date('Y');
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
+        $check = Quotation::where('req_id',$request->id)->first();
+        if(count($check) == 0){
             $quot = new Quotation;
             $quot->quotation_id =  "MH_".$country_code."_".$zone."_".$year."_Q".$request->id; 
             $quot->req_id =$request->id;
@@ -3395,6 +3442,24 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $quot->shipaddress  = $request->ship;
            $quot->billaddress   = $request->bill;
            $quot->save();
+      }
+      else{
+          $check->quantity = $request->quantity;
+           $check->unitprice = $request->price;
+           $check->pricewithoutgst = $request->withoutgst;
+           $check->totalamount =$request->display;
+           $check->cgst  = $request->cgst;
+           $check->sgst  = $request->sgst;
+           $check->totaltax  = $request->totaltax;
+           $check->amountwithgst  = $request->withgst;
+           $check->amount_word  = $request->dtow1; 
+           $check->tax_word  = $request->dtow2;
+           $check->gstamount_word  = $request->dtow3;
+           $check->description = $request->description;
+           $check->shipaddress  = $request->ship;
+           $check->billaddress   = $request->bill;
+           $check->save();
+      }
            return back();
     }
 }
