@@ -543,7 +543,6 @@ function NumToWord(inputNumber, outputControl,arg){
     for (i = 0; i < numLength; i++) {
         finalOutput = finalOutput + word[i];
     }
-    alert(finalOutput);
     document.getElementById("dtow1").value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
