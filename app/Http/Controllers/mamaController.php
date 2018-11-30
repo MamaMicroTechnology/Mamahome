@@ -2218,6 +2218,55 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         
             }
 
+           $point = 0;
+        // counting points
+        // plant name
+        $point = $request->plant_name != null ? $point+2 : $point+0;
+        // capacity
+        $point = $request->capacity != null ? $point+2 : $point+0;        
+        // cement_requirement 
+        $point = $request->cement_requirement != null ? $point+4 : $point+0;
+        // cement_required type
+        $point = $request->cement_required != null ? $point+5 : $point+0;
+        // interested in rmc
+        $point = $request->brand != null ? $point+3 : $point+0;
+        // type of contract
+        $point = $request->sand_requirement != null ? $point+6 : $point+0;
+        // project status
+        $point = $request->aggregate_requirement != null ? $point+5 : $point+0;
+        // project type
+        $point = $request->manufacturing_type != null && $request->ground != null ? $point+5 : $point+0;
+        // project size
+        $point = $request->moq != null ? $point+8 : $point+0;
+        // budgettype
+        $point = $request->total_area != null ? $point+3 : $point+0;
+
+        // contractor details
+        $point = $request->cName != null ? $point+3 : $point+0;
+        $point = $request->cEmail != null ? $point+3 : $point+0;
+        $point = $request->cContact != null ? $point+3 : $point+0;
+        // consultant details
+        // $point = $request->coName != null ? $point+3 : $point+0;
+        // $point = $request->coEmail != null ? $point+3 : $point+0;
+        // $point = $request->coContact != null ? $point+3 : $point+0;
+        // site engineer details
+        $point = $request->oName != null ? $point+3 : $point+0;
+        $point = $request->oEmail != null ? $point+3 : $point+0;
+        $point = $request->oContact != null ? $point+3 : $point+0;
+        // procurement details
+        $point = $request->prName != null ? $point+3 : $point+0;
+        $point = $request->pEmail != null ? $point+3 : $point+0;
+        $point = $request->prPhone != null ? $point+3 : $point+0;
+        $point = $request->remarks != null ? $point+10 : $point+0;
+        
+        // store points to database
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = "Adding manufacturer project";
+        $points->save();
+
         $manufacturer = new Manufacturer;
         $manufacturer->listing_engineer_id = Auth::user()->id;
         $manufacturer->name = $request->name;
@@ -2983,13 +3032,28 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function listatt(){
 
        $group = [6,11];
+        $group1 = [6,11,7,17,22,23,2];
        $name = Group::where('id',6)->pluck('group_name')->first();
        $thiMonth = date('Y-m');
-        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $userIds = User::whereIn('group_id',$group)->where('department_id','!=',10)->pluck('id');
+        $userat = User::whereIn('group_id',$group1)->where('department_id','!=',10)->get();
+
         $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
         ->leftjoin('users','field_login.user_id','users.id')
         ->select('field_login.*','users.name')->get();
-        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+        $ss = [];
+          foreach ($userat as $user) {
+              
+        $att = FieldLogin::where('user_id',$user->id)->where('created_at','LIKE',$thiMonth."%")->count();
+        $at = FieldLogin::where('user_id',$user->id)->where('logout','<',strtotime('3 pm ' . date('d-m-Y')))->where('created_at','LIKE',$thiMonth."%")->count();
+
+
+                
+                array_push($ss, ['working'=>$att,'halfday'=>$at,'name'=>$user->name]);
+          }
+
+        return view('seniorteam',['users'=>$users,'name'=>$name,'work'=>$ss]);
 
     }
     public function allsaleseng(){

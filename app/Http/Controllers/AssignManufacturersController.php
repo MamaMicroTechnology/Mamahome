@@ -1585,5 +1585,11 @@ foreach ($sub as  $users) {
   return response()->json($suba);
  
  }
+ public function viewmanu(request $request){
+
+       $project = Manufacturer::where('id',$request->id)->first();
+
+       return view('/viewmanu',['project'=>$project]);
+ }
 }
 

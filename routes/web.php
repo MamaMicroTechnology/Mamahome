@@ -28,6 +28,7 @@ Route::post('/noneed','AssignManufacturersController@noneed');
 Route::get('/subwardfind','AssignManufacturersController@find');
 Route::get('/findsubward','AssignManufacturersController@findsubward');
 Route::get('/subfind','AssignManufacturersController@subfind');
+Route::get('/viewmanu','AssignManufacturersController@viewmanu');
 //tl dashboard work
 Route::get('/delete_enquiry','TlController@delete_enquiry');
 Route::get('/search_enquiry','TlController@search_enquiry');

@@ -3447,10 +3447,12 @@ date_default_timezone_set("Asia/Kolkata");
     }
     public function checkDupPhoneProcurement(Request $request)
     {
-        $arg = $request->only('arg');
-        $check = ProcurementDetails::where('procurement_contact_no',$arg)->get();
+        
+        
+        $check = ProcurementDetails::where('procurement_contact_no',$request->id)->get();
         $c = count($check);
-        return response()->json($c);
+       
+        return response()->json($check);
     }
     public function checkmanu(request $request)
     {
@@ -3460,7 +3462,7 @@ date_default_timezone_set("Asia/Kolkata");
         $check = Mprocurement_Details::where('contact',$arg)->get();
         $c = count($check);
         
-        return response()->json($c);
+        return response()->json($check);
     }
 
     public function checkDupPhoneConsultant(Request $request)

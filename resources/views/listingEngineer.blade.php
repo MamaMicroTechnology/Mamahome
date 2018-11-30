@@ -710,7 +710,7 @@ Http.onreadystatechange=(e)=>{
      var longitude  = document.getElementById("longitude").value;
         var subfaulty = data;
       var subs = JSON.parse(subfaulty);
-     
+     console.log(subs);
 
       var shouldAlert;
       for(var i=0; i<Object(subs.length); i++){
@@ -932,22 +932,27 @@ function openCity(evt, cityName) {
             if(arg=='prPhone')
             {
                 var y = document.getElementById('prPhone').value;
+                
+                const Http = new XMLHttpRequest();
+               var x = y;
+                const url='{{URL::to('/')}}/checkDupPhoneProcurement?id='+x;
+                Http.open("GET", url);
+              Http.send();
+            Http.onreadystatechange=(e)=>{
+                var s = (Http.responseText);
 
-                $.ajax({
-                    type:'GET',
-                    url: '{{URL::to('/')}}/checkDupPhoneProcurement',
-                    data: {arg: y},
-                    async: false,
-                    success:function(response)
-                    {
-                        if(response > 0)
-                        {
+                var obj =JSON.parse(s);
+                 console.log(obj);
 
-                                swal({
+                  
+                  if((Http.responseText) != " "){
+                              swal({
                                   title:"Are you sure?",
-                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  text: "Already Project is listes with number You wan to add Second project?"+ '<br>' + "project_id="+obj[0]['project_id'] + '<br>' + "procurement Name="+obj[0]['procurement_name'] + '<br>' + "procurement Number="+obj[0]['procurement_contact_no'],
                                   type: "info",
                                    // imageUrl: 'thumbs-up.jpg',
+                                    html: "Already Project is listes with number You wan to add Second project?"+ '<br>' + "project_id="+obj[0]['project_id'] + '<br>' + "procurement Name="+obj[0]['procurement_name'] + '<br>' + "procurement Number="+obj[0]['procurement_contact_no']+'<br>'+
+                                   '<a class="btn btn-primary btn-sm" href='+"{{ URL::to('/') }}/admindailyslots?projectId="+obj[0]['project_id']+'>Edit Project</a>',
                                   showCancelButton: true,
                                   closeOnConfirm: false,
                                   showLoaderOnConfirm: true
@@ -955,10 +960,12 @@ function openCity(evt, cityName) {
                             
                         }
                     }
-                });
+              
             }
-        }        
-    }
+        }  
+        }
+
+    
     return false;
   }
   

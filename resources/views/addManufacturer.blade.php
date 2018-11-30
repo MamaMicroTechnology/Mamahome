@@ -545,19 +545,24 @@
               Http.send();
 
             Http.onreadystatechange=(e)=>{
-             
-                  if((Http.responseText) > 0){
-                    swal({
+                var s = (Http.responseText);
+
+                var obj =JSON.parse(s);
+                 console.log(obj);
+                  if((Http.responseText) != " "){
+                              swal({
                                   title:"Are you sure?",
-                                  text: "Already Manufacturer Project is listes with number You wan to add Second project?",
+                                  
                                   type: "info",
                                    // imageUrl: 'thumbs-up.jpg',
+                                    html: "Already Project is listes with number You wan to add Second project?"+ '<br>' + "Manufactured_Id="+obj[0]['manu_id'] + '<br>' + "procurement Name="+obj[0]['name'] + '<br>' + "procurement Number="+obj[0]['contact']+'<br>'+
+                                   '<a class="btn btn-primary btn-sm" href='+"{{ URL::to('/') }}/updateManufacturerDetails?id="+obj[0]['manu_id']+'>Edit Project</a>',
                                   showCancelButton: true,
                                   closeOnConfirm: false,
                                   showLoaderOnConfirm: true
                                 });
                             
-                  }
+                        }
            }
                  
     }

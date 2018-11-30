@@ -26,6 +26,8 @@
     <script src="http://www.ittutorials.in/js/demo/numtoword.js; type="text/javascript"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+    <script src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js"></script>
+
     <style>
     body{
         font-family: "Times New Roman";
@@ -1194,6 +1196,8 @@ function myTimer() {
       <a href="{{ URL::to('/noneed') }}">Delete Numbers</a>
        <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
        <a href="{{URL::to('/projectandward') }}">Project Report</a> 
+       <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+        <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
