@@ -117,9 +117,9 @@
                              @foreach($mamaprices as $price )  
                             @if($price->order_id == $order->id)
                            <table class="table table-responsive table-striped" border="1">
-                            <input  type="hidden" name="dtow1" id="g1{{$order->id}}" value="{{$price->cgstpercent}}">
-                            <input type="hidden" name="dtow2" id="g2{{$order->id}}" value="{{$price->sgstpercent}}">
-                            <input type="hidden" name="dtow3" id="g3{{$order->id}}" value="{{$price->gstpercent}}">
+                            <input  type="hidden" name="g1" id="g1{{$order->id}}" value="{{$price->cgstpercent}}">
+                            <input type="hidden" name="g2" id="g2{{$order->id}}" value="{{$price->sgstpercent}}">
+                            <input type="hidden" name="g3" id="g3{{$order->id}}" value="{{$price->gstpercent}}">
                            <tr>
                             <?php 
                                      $rec =count($order->confirm_payment); 
@@ -543,6 +543,7 @@ function NumToWord(inputNumber, outputControl,arg){
     for (i = 0; i < numLength; i++) {
         finalOutput = finalOutput + word[i];
     }
+    alert(finalOutput);
     document.getElementById("dtow1").value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
