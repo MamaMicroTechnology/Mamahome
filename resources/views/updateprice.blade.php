@@ -55,14 +55,16 @@
                             <th>IGST</th>
                         </tr>
                     </thead>
+                    @foreach($gstvalue as $gs)
                     <tbody id="gsts">
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$gs->category}}</td>
+                            <td>{{$gs->sgst}}</td>
+                            <td>{{$gs->cgst}}</td>
+                            <td>{{$gs->igst}}</td>
                         </tr>
                     </tbody>
+                    @endforeach
                 </table>
             </div>
         </div>
@@ -83,33 +85,24 @@
         <form action="{{ URL::to('/') }}/addGST" method="post">
             {{ csrf_field() }}
             <label for="myCategories">Categories</label>
-            <select id="myCategories" onchange="getBrands()" class="form-control">
+            <select id="myCategories"  name="category" class="form-control">
                 <option>--Select Category--</option>
                 @foreach($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
                 @endforeach
             </select>
             <br>
-            <label for="brands">Brands</label>
-            <select id="brands" onchange="getSubs()" class="form-control">
-                
-            </select>
-            <br>
-            <label for="subCategories">Sub Categories</label>
-            <select id="subCategories" class="form-control">
-                
-            </select>
-            <br>
+
             <div class="col-md-4">
-                <label for="CGST">CGST</label>
+                <label for="CGST">CGST(%)</label>
                 <input type="number" name="cgst" placeholder="CGST" min=1 id="CGST" class="form-control">
             </div>
             <div class="col-md-4">
-                <label for="SGST">SGST</label>
+                <label for="SGST">SGST(%)</label>
                 <input type="number" name="sgst" placeholder="SGST" min=1 id="SGST" class="form-control">
             </div>
             <div class="col-md-4">
-                <label for="IGST">IGST</label>
+                <label for="IGST">IGST(%)</label>
                 <input type="number" name="igst" placeholder="IGST" min=1 id="IGST" class="form-control">
             </div>
             <div class="col-md-12">

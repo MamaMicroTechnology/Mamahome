@@ -3328,6 +3328,7 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
                    ->where('requirements.status',"Enquiry Confirmed") 
                    ->get();
                    if($qid->project_id == null){
+                    $id = "";
                     $manu_id = $qid->manu_id;
                     $manu = Manufacturer::where('id',$qid->manu_id)->pluck('manufacturer_type')->first();
                    }

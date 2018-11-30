@@ -18,6 +18,7 @@ use App\Manufacturer;
 use App\Mprocurement_Details;
 use App\Requirement;
 use App\Quotation;
+use App\Gst;
 use DB;
 use Auth;
 use PDF;

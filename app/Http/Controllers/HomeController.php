@@ -93,6 +93,8 @@ use App\PaymentDetails;
 use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Mprocurement_Details;
+use App\Gst;
+
 
 use Spatie\Activitylog\Models\Activity;
 
@@ -3029,7 +3031,27 @@ date_default_timezone_set("Asia/Kolkata");
     public function ampricing(Request $request){
         $prices = CategoryPrice::all();
         $categories = Category::all();
-        return view('updateprice',['prices'=>$prices,'categories'=>$categories]);
+        $check =Gst::where('category',$request->category)->first();
+      
+        if(count($check) == 0){
+
+            $gst =  new Gst;
+            $gst->category = $request->category;
+            $gst->cgst = $request->cgst;
+            $gst->sgst = $request->sgst;
+            $gst->igst = $request->igst;
+            $gst->save();
+
+        }
+        else{
+           $check->category = $request->category;
+           $check->cgst = $request->cgst;
+           $check->sgst = $request->sgst;
+           $check->igst = $request->igst;
+           $check->save();
+        }
+        $gstvalue =  Gst::all();
+        return view('updateprice',['prices'=>$prices,'categories'=>$categories,'gstvalue'=>$gstvalue]);
     }
 
     public function setprice(Request $request){
