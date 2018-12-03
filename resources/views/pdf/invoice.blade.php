@@ -63,7 +63,7 @@
     </div><br>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="pull-left">
+            <div class="pull-left" >
                 <b>BILL TO : </b>
                     <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
                     @for($i = 0;$i < count($bill); $i++)
