@@ -194,7 +194,7 @@
             <div class="row">
               <div class="col-sm-6">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Project Listed date</h4>
-              <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
+              <input style="width:40%;" type="text" name="assigndate" class="form-control input-sm datepicker" placeholder="select date">
               </div>
          <div class="col-sm-6">
                <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Quality</h4>
@@ -211,7 +211,7 @@
               <div class="col-sm-5">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;"> Assign UnUpdated Projects</h4>
               <h5 style="color:green;">It is Fectch Last 30days Projects From Your Selected Date</h5>
-              <input style="width:40%;" type="date" name="undate" class="form-control input-sm" id="datepicker">
+              <input style="width:40%;" type="text" name="undate" class="form-control input-sm datepicker" placeholder="select date" >
               </div>
             </div> <br>  
           <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
@@ -370,7 +370,6 @@
     swal("success","{{ session('success') }}","success");
 </script>
 @endif
-@endsection
 
 <script>
 function makeUserId(arg){
@@ -508,6 +507,28 @@ if(document.getElementById('check'+arg).checked == true){
 function submit(){
   document.getElementById('time').submit();
 }
+
+</script>
+<script type="text/javascript">
+ $(document).ready(function () {
+        var today = new Date();
+        $('.datepicker').datepicker({
+            format: 'mm-dd-yyyy',
+            autoclose:true,
+            endDate: "today",
+            maxDate: today
+        }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+
+
+        $('.datepicker').keyup(function () {
+            if (this.value.match(/[^0-9]/g)) {
+                this.value = this.value.replace(/[^0-9^-]/g, '');
+            }
+        });
+    });
+
 </script>
 
-
+@endsection

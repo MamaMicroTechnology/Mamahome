@@ -4890,7 +4890,9 @@ $upvcInt = explode(",", $upvc);
 
            ProjectDetails::where('project_id',$request->id)->increment('confirmed');
 
-           $call  = date('Y-m-d');
+           $call  = date('Y-m-d H:i:s');
+         
+         
            $check = Activity::where('subject_id',$request->id)->where('created_at','like',$call."%")->where('subject_type','App\ProjectDetails')->where('description','updated')->where('called',"null")->first();
            $project_id = ProjectDetails::where('project_id',$request->id)->pluck('project_id')->first();
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
@@ -8598,13 +8600,13 @@ public function display(request $request){
         $his = History::get();
         $dd= $request->type;
         if($request->type){
-            $manufacturers = Manufacturer::where('manufacturer_type',$request->type)
+            $manufacturers = Manufacturer::where('manufacturer_type',$request->type)->orderBy('id','DESC')
                     ->paginate(20);
            $count = Manufacturer::where('manufacturer_type',$request->type)->count();
                     
          }else{
 
-        $manufacturers = Manufacturer::paginate(20);
+        $manufacturers = Manufacturer::orderBy('id','DESC')->paginate(20);
           $count = Manufacturer::count();
          }
 

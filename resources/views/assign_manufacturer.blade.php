@@ -168,7 +168,7 @@
              <div class="row">
               <div class="col-sm-6">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Manufacture Listed date</h4>
-              <input style="width:40%;" type="date" name="assigndate" class="form-control input-sm" id="datepicker">
+              <input style="width:40%;" type="text" name="assigndate" class="form-control input-sm datepicker" id="datepicker" placeholder="Select Date">
               </div>
          <div class="col-sm-6">
                <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;">Select Manufacture Type</h4>
@@ -291,7 +291,6 @@
 </div>
 </div>
 </div>   
-@endsection
 
 <script>
 function makeUserId(arg){
@@ -424,3 +423,25 @@ function submit(){
   document.getElementById('time').submit();
 }
 </script>
+<script type="text/javascript">
+ $(document).ready(function () {
+        var today = new Date();
+        $('.datepicker').datepicker({
+            format: 'mm-dd-yyyy',
+            autoclose:true,
+            endDate: "today",
+            maxDate: today
+        }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+
+
+        $('.datepicker').keyup(function () {
+            if (this.value.match(/[^0-9]/g)) {
+                this.value = this.value.replace(/[^0-9^-]/g, '');
+            }
+        });
+    });
+
+</script>
+@endsection
