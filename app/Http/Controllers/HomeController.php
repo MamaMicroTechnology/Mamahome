@@ -378,7 +378,7 @@ class HomeController extends Controller
         $totalenq = "";
         $converter = user::get();
         $ward = Ward::get();
-        $wards = SubWard::orderby('sub_ward_name','ASC')->whereIn('ward_id',$tlward)->get();
+        $wards = SubWard::orderby('sub_ward_name','ASC')->get();
         $sub = SubWard::whereIn('ward_id',$tlward)->pluck('id');
         $pids = ProjectDetails::whereIn('sub_ward_id',$sub)->pluck('project_id');
         $this->variable=$pids;
