@@ -48,6 +48,7 @@ class FinanceDashboard extends Controller
             $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
 
         }
+        dd();
         $reqs = Requirement::all();
         $payments = PaymentDetails::get();
         $data = MamahomePrice::distinct()->select('mamahome_prices.order_id','mamahome_prices.id')->pluck('mamahome_prices.id','mamahome_prices.order_id');
@@ -335,7 +336,10 @@ class FinanceDashboard extends Controller
         $sgst = round($request->sgst,2);
         $check = MamahomePrice::where('order_id',$request->id)->pluck("edited")->last();
         if($check == "No"){
-         $check = MamahomePrice::where('order_id',$request->id)->get()->last();
+        $order = Order::where('id',$request->id)->first();
+        $order->confirm_payment = " Received";
+        $order->save();
+        $check = MamahomePrice::where('order_id',$request->id)->get()->last();
         $check->edited = "yes";
         $check->save();
         $price = new MamahomePrice;
@@ -365,7 +369,6 @@ class FinanceDashboard extends Controller
             
         }
         else{
-          
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
         $order->save();    

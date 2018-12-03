@@ -703,8 +703,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $procurementDetails->builder_contact_no = $request->bPhone;
         $procurementDetails->save();
        $no = $request->prPhone;
-        $pid = $projectdetails->id;
-       
+        $pid = $projectdetails->project_id;
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([

@@ -189,7 +189,7 @@ function openCitytest(evt, cityName) {
                                         <td>{{ $rec->quantity }}</td>
                                     </tr>
                                 </table>
-                           <form action="{{ URL::to('/') }}/confirmOrder?id={{$rec->orderid}}" method="post">
+                           <form action="{{ URL::to('/') }}/confirmOrder?id={{$rec->orderid}}&&mid={{$rec->manu_id}}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="cat" value="{{$rec->main_category}}">
                             <label> Total Quantity : </label>

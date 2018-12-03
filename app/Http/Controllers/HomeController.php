@@ -1923,10 +1923,10 @@ class HomeController extends Controller
     
 
         $Wards = [];
-      $wards = Ward::all();
-     foreach($wards as $user){
+      $hello = Ward::all();
+     foreach($hello as $user){
            
-                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                $noOfwards = WardMap::where('ward_id',$user->id)->first();
                 array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
             }
               $allwardlats = [];
