@@ -48,7 +48,7 @@ class FinanceDashboard extends Controller
             $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
 
         }
-        dd();
+       
         $reqs = Requirement::all();
         $payments = PaymentDetails::get();
         $data = MamahomePrice::distinct()->select('mamahome_prices.order_id','mamahome_prices.id')->pluck('mamahome_prices.id','mamahome_prices.order_id');
