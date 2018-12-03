@@ -51,7 +51,7 @@
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right">
-                <div style="padding-right: 40px;">
+                <div style="padding-right: 65px;">
                 Invoice No :{{ $data['products']->id }}<br>
                 Date : {{ date('d F, Y') }} <br>
               {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
