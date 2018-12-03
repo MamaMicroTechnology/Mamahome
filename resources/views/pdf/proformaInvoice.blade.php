@@ -70,7 +70,7 @@
                     @if($i % 3 == 0)
                         <br>{{ $bill[$i] }}
                     @else
-                        , {{ $bill[$i] }}
+                        {{ $bill[$i] }}
                     @endif
                     @endfor
             </div>
@@ -81,7 +81,7 @@
                     @if($i % 3 == 0)
                         <br>{{ $ship[$i] }}
                     @else
-                        , {{ $ship[$i] }}
+                        {{ $ship[$i] }}
                     @endif
                     @endfor
             </div>

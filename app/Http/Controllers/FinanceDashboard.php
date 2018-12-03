@@ -19,6 +19,7 @@ use App\Mprocurement_Details;
 use App\Requirement;
 use App\Quotation;
 use App\Gst;
+use App\Category;
 use DB;
 use Auth;
 use PDF;
@@ -357,6 +358,9 @@ class FinanceDashboard extends Controller
         $price->shipaddress = $request->ship;
         $price->edited = "No";
         $price->updated_by = Auth::user()->id;
+        $price->cgstpercent = $request->g1;
+        $price->sgstpercent = $request->g2;
+        $price->gstpercent = $request->g3;
         $price->save();
             
         }
@@ -383,6 +387,9 @@ class FinanceDashboard extends Controller
         $price->billaddress = $request->bill;
         $price->shipaddress = $request->ship;
         $price->updated_by = Auth::user()->id;
+        $price->cgstpercent = $request->g1;
+        $price->sgstpercent = $request->g2;
+        $price->gstpercent = $request->g3;
         $price->edited = "No";
         $price->save();
         }
@@ -429,8 +436,9 @@ class FinanceDashboard extends Controller
         $res = ManufacturerDetail::where('company_name',$request->name)->pluck('registered_office')->first();
         $gst = ManufacturerDetail::where('company_name',$request->name)->pluck('gst')->first();
         $category = ManufacturerDetail::where('company_name',$request->name)->pluck('category')->first();
+        $unit = Category::where('category_name',$category)->pluck('measurement_unit')->first();
         $id = $request->x;
-        return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category]);
+        return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category,'unit'=>$unit]);
     }
     
 }

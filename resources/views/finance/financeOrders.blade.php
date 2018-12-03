@@ -126,7 +126,7 @@
                              ?>  
                               <td>Description of Goods : </td>
                              @if($rec == 0)
-                                  <td><input required type="text" name="desc" class="form-control" value=""></td>
+                                  <td><input required type="text" name="desc" class="form-control" value="{{ $order->main_category }}"></td>
                              @else
                                   <td><input required type="text" name="desc" class="form-control" value="{{$price->description}}"></td>
                                   @endif

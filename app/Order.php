@@ -27,6 +27,9 @@ class Order extends Model
     function manudetails(){
         return $this->hasOne('App\ManufacturerDetails','category','category');
     }
+     function cat(){
+        return $this->hasOne('App\Category','category_name','main_category');
+    }
     protected $fillable = [
             'project_id',
             'req_id',

@@ -1,3 +1,5 @@
+@extends('layouts.app')
+@section('content')
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,8 +18,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
 * {box-sizing: border-box}
-
-
 /* Style the tab */
 .tab {
     float: left;
@@ -164,11 +164,7 @@ function openCitytest(evt, cityName) {
                             @endif
 
 </div>
-                            
-                             
-      
 </div>
-<!-- Modal -->
                     <div id="payment{{$rec->orderid}}" class="modal fade" role="dialog">
                       <div class="modal-dialog" style="width:30%">
 
@@ -197,18 +193,13 @@ function openCitytest(evt, cityName) {
                             {{ csrf_field() }}
                             <input type="hidden" name="cat" value="{{$rec->main_category}}">
                             <label> Total Quantity : </label>
-                            <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')">
+                            <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')" value="{{$rec->total_quantity}}">
                             <br>
-                           <select  class="form-control" name="unit" >
-                            <option>--Select Unit--</option>
-                             @foreach($categories as $category)
-                            <option value="{{ $category->measurement_unit }}">{{ $category->measurement_unit }}</option>
-                            @endforeach
-                         </select>
-
-                            <br></br>
+                            <label>Measurement Unit : </label>
+                           <input type="text" name="" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control">
+                            <br>
                             <label>Price(Per Unit) : </label>
-                            <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')">
+                            <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')" value="{{$rec->price}}">
                             <br>
                             <!-- <label>Manufacturer Price(Per Unit) : </label>
                             <input  required type="number" id="unit"  class="form-control" name="manuprice" placeholder="Unit Price" onkeyup="checkthis1('unit')"> -->
@@ -273,28 +264,23 @@ function openCitytest(evt, cityName) {
                                     </tr>
                                     <tr>
                                         <td>Description of Goods : </td>
-                                        <td><input required type="text" name="desc" id="category{{$rec->orderid}}" class="form-control" value="" onkeypress="description('{{$rec->orderid}}')"></td>
+                                        <td><input required type="text" name="desc" id="desc{{$rec->orderid}}" class="form-control" value="" ></td>
                                     </tr>
-                                   
-                                   
+                                     <tr>
+                                        <td>Unit of Measurement:</td>
+                                        <td><input required type="unit" name="desc" id="munit{{$rec->orderid}}" class="form-control" value="" ></td>
+                                    </tr>
                                     <tr>
-                                        <td>Quantity :</td>
-                                        <td><input required type="number" name="quantity" class="form-control" id="qu{{$rec->orderid}}"></td>
+                                        <td>Quantity : </td>
+                                        <td><input required type="number" name="quantity" class="form-control" id="qu{{$rec->orderid}}" value="{{$rec->total_quantity}}"></td>
                                     </tr>
 
-                                     <tr>
-                                        <td>Unit:</td>
-                                        <td><select  class="form-control" name="unit" >
-                                            <option>--Select Unit--</option>
-                                             @foreach($categories as $category)
-                                            <option value="{{ $category->measurement_unit }}">{{ $category->measurement_unit }}</option>
-                                            @endforeach
-                                         </select>
-                                        </td>
-                                    </tr>
                                     <tr>
                                         <td>Unit Price :</td>
-                                        <td><input required type="number" id="unitprice{{$rec->orderid}}" name="uprice" class="form-control" onkeyup="showthis('{{$rec->orderid}}')">
+                                        <td>@if($rec->price != null)
+                                            <label class="alert-success">Enquiry price : {{$rec->price}}</label>
+                                            @endif
+                                            <input required type="number" id="unitprice{{$rec->orderid}}" name="uprice" class="form-control" onkeyup="showthis('{{$rec->orderid}}')">
                                        </td>
                                     </tr>
                                     <tr>
@@ -311,13 +297,14 @@ function openCitytest(evt, cityName) {
                                     </tr>
                                     <tr>
                                         
-                                        <td>CGST :<p id="gst1{{$rec->order_id}}"></p> </td>
+                                        <td>CGST( <label  id="tax1{{$rec->orderid}}"></label>%) : </td>
                                         <td>
+
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$rec->orderid}}"></label>/-
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>SGST: </td>
+                                        <td>SGST( <label  id="tax2{{$rec->orderid}}"></label>%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$rec->orderid}}"></label>/-
                                         </td>
@@ -545,8 +532,13 @@ function openCitytest(evt, cityName) {
                         
                        <td>
                        
+                            
+                             <div class="btn-group">
+                                <!-- <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a> -->
+                               
                             <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" class="btn btn-xs btn-primary">Edit</a>
-                       
+                                <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
+                            </div>
                        </td>
 
                     </tr>
@@ -938,6 +930,10 @@ else{
     var gstvalue = 14;
     var sgstvalue = 14;
 }
+var g1 = gstvalue;
+var g2 = sgstvalue;
+document.getElementById('tax1'+arg).innerHTML = g1
+document.getElementById('tax2'+arg).innerHTML = g2;
 
 var x =document.getElementById('unitprice'+arg).value;
 var y = document.getElementById('qu'+arg).value;
@@ -989,9 +985,11 @@ function getaddress(arg){
                         var name = response.res;
                         var gst = response.gst;
                         var cat = response.category;
+                        var unit = response.unit;
                          console.log(document.getElementById('address'+id).value = name); 
-                         console.log(document.getElementById('suppliergst'+id).value = gst); 
-                         // console.log(document.getElementById('category'+id).value = cat); 
+                         console.log(document.getElementById('suppliergst'+id).value = gst);
+                         console.log(document.getElementById('desc'+id).value = cat);
+                         console.log(document.getElementById('munit'+id).value = unit); 
                     }
                 });
             }
@@ -1023,4 +1021,4 @@ function getaddress(arg){
     }
 </script>
 <script src="http://www.ittutorials.in/js/demo/NumToWord.js; type="text/javascript"></script>
-
+@endsection
