@@ -26,6 +26,8 @@
     <script src="http://www.ittutorials.in/js/demo/numtoword.js; type="text/javascript"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+    <script src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js"></script>
+
     <style>
     body{
         font-family: "Times New Roman";
@@ -1108,6 +1110,7 @@ function myTimer() {
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
             <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
+             <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; - Get Quotation</a>
         </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
@@ -1193,6 +1196,8 @@ function myTimer() {
       <a href="{{ URL::to('/noneed') }}">Delete Numbers</a>
        <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
        <a href="{{URL::to('/projectandward') }}">Project Report</a> 
+       <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
+        <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
@@ -1217,6 +1222,7 @@ function myTimer() {
 
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
               <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; - Confirmed Orders</a>
+              <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; - Get Quotation</a>
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
@@ -1278,6 +1284,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/sms" >Assigned Phone Numbers</a>
     <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
     <a href="{{ URL::to('/') }}/scenquirysheet">Enquiry Sheet</a>
+    <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <a href="{{ URL::to('/dailyslots') }}">Daily Slots</a>
     <a href="{{ URL::to('/manudailyslot') }}">Manufacturer Daily Slots</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
@@ -1298,6 +1305,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
     <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
+    <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
 </div>
@@ -1312,6 +1320,7 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/pending">Pending Invoices</a>
       <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>
       <a href="{{ URL::to('/ordersformarketing') }}">Orders</a>
+      <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
        <a href="{{ URL::to('payment') }}">Delivery Order Details</a>
        <a href="{{ URL::to('checkdetailes') }}">Cheq Details</a>
 
@@ -1331,7 +1340,7 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
-     
+      <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
     <!--  <a href="{{ URL::to('/') }}/status_wise_projects" id="updates" >Statuswise Projects</a>
@@ -1346,6 +1355,7 @@ function myTimer() {
      <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
             <a href="{{ URL::to('/') }}/amhumanresources">HR</a>
             <a href="{{ URL::to('/') }}/mhemployee">MAMAHOME Employee</a>
+        <a href="{{ URL::to('/anr') }}">Reports</a>
             <a href="{{ URL::to('/') }}/amviewattendance">Attendance</a>
             <a href="{{ URL::to('/') }}/newamviewattendance">New Attendance</a>
             <a href="{{ URL::to('/') }}/check">HR Files and Checklist</a>

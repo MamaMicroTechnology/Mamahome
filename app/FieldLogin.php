@@ -31,4 +31,9 @@ class FieldLogin extends Model
     protected static $logFillable = true;
     protected static $logOnlyDirty = true;
 
+    public function user()
+    {
+        return $this->hasOne("App\User",'user_id','id');
+    }
+
 }

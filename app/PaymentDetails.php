@@ -11,4 +11,7 @@ class PaymentDetails extends Model
     {
         return $this->belongsTo(Order::class);
     }
+     public function user(){
+        return $this->belongsTo('App\User','cash_holder','id');
+    }
 }

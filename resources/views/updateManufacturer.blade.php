@@ -15,7 +15,7 @@
                 <tbody>
                     @foreach($manufacturers as $manufacturer)
                     <tr>
-                        <td><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}">{{ $manufacturer->id }}</td>
+                        <td><a href="{{ URL::to('/') }}/viewmanu?id={{ $manufacturer->id }}">{{ $manufacturer->id }}</td>
                           
                         <td>{{ $manufacturer->proc != null ?$manufacturer->proc->name:'' }}</td>
                         <td>{{ $manufacturer->address }}</td>

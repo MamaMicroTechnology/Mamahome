@@ -66,7 +66,7 @@ tr:nth-child(even) {
         @foreach($manufacturers as $manufacturer)
             <tr>
                 <td>
-                  <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $manufacturer->id }}">{{$manufacturer->id}}</a>
+                  <a href="{{ URL::to('/') }}/viewmanu?id={{ $manufacturer->id }}">{{$manufacturer->id}}</a>
                 </td>
                 <td>
                       <a href="{{ URL::to('/')}}/manufacturemap?id={{ $manufacturer->id }} && subwardid={{ $manufacturer->sub_ward_id }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">
@@ -87,6 +87,7 @@ tr:nth-child(even) {
                   {{ csrf_field() }}
                   <input type="hidden" value="{{ $manufacturer->id }}" name="id">
                   <div>
+                    <a  href="{{ URL::to('/') }}/viewmanu?id={{ $manufacturer->id }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:30px;font-weight:bold;"></i></a>
                     <a class="btn btn-sm btn-success" name="addenquiry" href="{{ URL::to('/') }}/manuenquiry?projectId={{ $manufacturer->id }}" style="color:white;font-weight:bold;padding: 6px;">Add Enquiry</a>
                                       
                       @if( $manufacturer->confirmed !== "0" ||  $manufacturer->confirmed == "true" )

@@ -51,12 +51,13 @@
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right">
-
-                Invoice No :{{ $data['products']->id }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                Date : {{ date('d F, Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
-              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>
-               Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                <div style="padding-right: 40px;">
+                Invoice No :{{ $data['products']->id }}<br>
+                Date : {{ date('d F, Y') }} <br>
+              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
+               Order ID : {{ $data['price']['order_id'] }}<br>
                 Mode Of Payment : {{ $data['products']->payment_mode }}
+            </div>
             </div>
         </div>
     </div><br>
@@ -101,17 +102,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                   <!--  @for($j = 0; $j < count($items); $j++) -->
+                  
                         <tr>
                             <td class="text-center">1</td>
-                            <td>{{$data['products']->main_category}} {{ $items[$j] }}</td>
+                            <td>{{$data['price']['description']}}</td>
                             <td></td>
                             <td>{{ $data['price']['unit'] }}</td>
                             <td >{{ $data['price']['quantity'] }}</td>
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
                             <td>{{ $data['price']['totalamount'] }}</td>
                         </tr>
-                 <!--    @endfor -->
+                 
                         <tr>
                             <td colspan="4" rowspan="6"></td>
                             <td class="text-left"><b>GROSS AMOUNT</b></td>

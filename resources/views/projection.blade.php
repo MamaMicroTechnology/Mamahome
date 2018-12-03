@@ -108,12 +108,12 @@
                             <!-- <input type="date" required name="from" value="{{ isset($_GET['from']) ? $_GET['from'] : ''}}" id="from" class="form-control input-sm"> -->
                         </div>
                     </div>
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <label style="text-align:left;" for="to" class="control-label col-sm-6">To</label>
                         <div class="col-md-6">
                             <input type="date" required name="to" value="{{ isset($_GET['to']) ? $_GET['to'] : ''}}" id="to" class="form-control input-sm">
                         </div>
-                    </div> -->
+                    </div>
                     <div class="form-group">
                         <label style="text-align:left;" for="wards" class="control-label col-sm-6">Wards</label>
                         <div class="col-md-6">

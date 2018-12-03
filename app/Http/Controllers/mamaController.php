@@ -73,7 +73,7 @@ use App\Mprocurement_Details;
 use App\Mowner_Deatils;
 use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
-// use App\ActivityLog;
+use App\Quotation;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1883,14 +1883,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editEnquiry(Request $request)
     {
+
             if($request->note != null){
-            Requirement::where('id',$request->eid)->update(['notes'=>$request->note]);
+          Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
+          $requirement = Requirement::where('id',$request->id)->first();
            
         }elseif($request->status != null){
 
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
-           
             if($requirement->status == "Enquiry Confirmed"){
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
@@ -2216,6 +2217,55 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 }
         
             }
+
+           $point = 0;
+        // counting points
+        // plant name
+        $point = $request->plant_name != null ? $point+2 : $point+0;
+        // capacity
+        $point = $request->capacity != null ? $point+2 : $point+0;        
+        // cement_requirement 
+        $point = $request->cement_requirement != null ? $point+4 : $point+0;
+        // cement_required type
+        $point = $request->cement_required != null ? $point+5 : $point+0;
+        // interested in rmc
+        $point = $request->brand != null ? $point+3 : $point+0;
+        // type of contract
+        $point = $request->sand_requirement != null ? $point+6 : $point+0;
+        // project status
+        $point = $request->aggregate_requirement != null ? $point+5 : $point+0;
+        // project type
+        $point = $request->manufacturing_type != null && $request->ground != null ? $point+5 : $point+0;
+        // project size
+        $point = $request->moq != null ? $point+8 : $point+0;
+        // budgettype
+        $point = $request->total_area != null ? $point+3 : $point+0;
+
+        // contractor details
+        $point = $request->cName != null ? $point+3 : $point+0;
+        $point = $request->cEmail != null ? $point+3 : $point+0;
+        $point = $request->cContact != null ? $point+3 : $point+0;
+        // consultant details
+        // $point = $request->coName != null ? $point+3 : $point+0;
+        // $point = $request->coEmail != null ? $point+3 : $point+0;
+        // $point = $request->coContact != null ? $point+3 : $point+0;
+        // site engineer details
+        $point = $request->oName != null ? $point+3 : $point+0;
+        $point = $request->oEmail != null ? $point+3 : $point+0;
+        $point = $request->oContact != null ? $point+3 : $point+0;
+        // procurement details
+        $point = $request->prName != null ? $point+3 : $point+0;
+        $point = $request->pEmail != null ? $point+3 : $point+0;
+        $point = $request->prPhone != null ? $point+3 : $point+0;
+        $point = $request->remarks != null ? $point+10 : $point+0;
+        
+        // store points to database
+        $points = new Point;
+        $points->user_id = Auth::user()->id;
+        $points->point = $point;
+        $points->type = "Add";
+        $points->reason = "Adding manufacturer project";
+        $points->save();
 
         $manufacturer = new Manufacturer;
         $manufacturer->listing_engineer_id = Auth::user()->id;
@@ -2982,13 +3032,28 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     public function listatt(){
 
        $group = [6,11];
+        $group1 = [6,11,7,17,22,23,2];
        $name = Group::where('id',6)->pluck('group_name')->first();
        $thiMonth = date('Y-m');
-        $userIds = User::whereIn('group_id',$group)->pluck('id');
+        $userIds = User::whereIn('group_id',$group)->where('department_id','!=',10)->pluck('id');
+        $userat = User::whereIn('group_id',$group1)->where('department_id','!=',10)->get();
+
         $users = FieldLogin::whereIn('user_id',$userIds)->where('field_login.created_at','LIKE',$thiMonth."%")
         ->leftjoin('users','field_login.user_id','users.id')
         ->select('field_login.*','users.name')->get();
-        return view('seniorteam',['users'=>$users,'name'=>$name]);
+
+        $ss = [];
+          foreach ($userat as $user) {
+              
+        $att = FieldLogin::where('user_id',$user->id)->where('created_at','LIKE',$thiMonth."%")->count();
+        $at = FieldLogin::where('user_id',$user->id)->where('logout','<',strtotime('3 pm ' . date('d-m-Y')))->where('created_at','LIKE',$thiMonth."%")->count();
+
+
+                
+                array_push($ss, ['working'=>$att,'halfday'=>$at,'name'=>$user->name]);
+          }
+
+        return view('seniorteam',['users'=>$users,'name'=>$name,'work'=>$ss]);
 
     }
     public function allsaleseng(){
@@ -3282,5 +3347,119 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
        $time =  BreakTime::where('created_at','LIKE',$date.'%')->get();
         dd($time);
     }
+   public function holidays(){
+    return view('holidays');
+   }
+   public function getquotation(Request $request){
+   
+    $category = Category::all();
+                if($request->quot == "Project" && !$request->category){
+                     $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
+                     ->get();
+                     $id = $request->id;
+                     $manu_id = "";
+                     $manu = "";
+                }
+                else if($request->quot == "Project" && $request->category){
+                     $enquiries = Requirement::where('requirements.project_id',$request->id)
+                     ->where('requirements.status',"Enquiry Confirmed")
+                     ->where('main_category',$request->category)
+                     ->get();
+                     $id = $request->id;
+                     $manu_id = "";
+                     $manu = "";
+                } 
+                else if($request->quot == "Manufacturer" && !$request->category){
+                   $enquiries = Requirement::where('requirements.manu_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
+                     ->get();
+                     $manu_id = $request->id;
+                     $manu = Manufacturer::where('id',$request->id)->pluck('manufacturer_type')->first();
+                     $id = "";
+                }
+                else if($request->quot == "Manufacturer" && $request->category){
+                   $enquiries = Requirement::where('requirements.manu_id',$request->id)
+                   ->where('requirements.status',"Enquiry Confirmed")
+                   ->where('main_category',$request->category)
+                   ->get();
+                     $manu_id = $request->id;
+                     $manu = Manufacturer::where('id',$request->id)->pluck('manufacturer_type')->first();
+                     $id = "";
+                }
+                else if($request->quotid){
+                    $qid = Quotation::where('quotation_id',$request->quotid)->first();      
+                   
+                    $enquiries = Requirement::where('requirements.id',$qid->req_id)
+                   ->where('requirements.status',"Enquiry Confirmed") 
+                   ->get();
+                   if($qid->project_id == null){
+                    $manu_id = $qid->manu_id;
+                    $manu = Manufacturer::where('id',$qid->manu_id)->pluck('manufacturer_type')->first();
+                   }
+                   else{
+                    $id = $qid->project_id;
+                    $manu_id = "";
+                    $manu = "";
+                   }    
+                }
+                else{
+                    $enquiries = "";
+                    $manu_id = "";
+                     $id = "";
+                     $manu = "";
 
+                }
+        $quotations = Quotation::all();
+        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'category'=>$category,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu]);
+    }
+    public function generatequotation(Request $request){
+
+        $enquiries = Requirement::where('id',$request->id)->update([
+                'quotation'=> "generated"
+        ]);
+        $year = date('Y');
+        $country_code = Country::pluck('country_code')->first();
+        $zone = Zone::pluck('zone_number')->first();
+        $check = Quotation::where('req_id',$request->id)->first();
+        if(count($check) == 0){
+            $quot = new Quotation;
+            $quot->quotation_id =  "MH_".$country_code."_".$zone."_".$year."_Q".$request->id; 
+            $quot->req_id =$request->id;
+            $quot->manu_id = $request->manu_id;
+            $quot->project_id = $request->pid;
+           $quot->quantity = $request->quantity;
+           $quot->unitprice = $request->price;
+           $quot->pricewithoutgst = $request->withoutgst;
+           $quot->totalamount =$request->display;
+           $quot->cgst  = $request->cgst;
+           $quot->sgst  = $request->sgst;
+           $quot->totaltax  = $request->totaltax;
+           $quot->amountwithgst  = $request->withgst;
+           $quot->unit = $request->unit;
+           $quot->amount_word  = $request->dtow1; 
+           $quot->tax_word  = $request->dtow2;
+           $quot->gstamount_word  = $request->dtow3;
+           $quot->description = $request->description;
+           $quot->shipaddress  = $request->ship;
+           $quot->billaddress   = $request->bill;
+           $quot->save();
+      }
+      else{
+          $check->quantity = $request->quantity;
+           $check->unitprice = $request->price;
+           $check->pricewithoutgst = $request->withoutgst;
+           $check->totalamount =$request->display;
+           $check->cgst  = $request->cgst;
+           $check->sgst  = $request->sgst;
+           $check->totaltax  = $request->totaltax;
+           $check->amountwithgst  = $request->withgst;
+           $check->amount_word  = $request->dtow1; 
+           $check->tax_word  = $request->dtow2;
+           $check->gstamount_word  = $request->dtow3;
+           $check->description = $request->description;
+           $check->shipaddress  = $request->ship;
+           $check->billaddress   = $request->bill;
+           $check->save();
+      }
+           return back();
+    }
 }

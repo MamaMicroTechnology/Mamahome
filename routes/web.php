@@ -28,6 +28,7 @@ Route::post('/noneed','AssignManufacturersController@noneed');
 Route::get('/subwardfind','AssignManufacturersController@find');
 Route::get('/findsubward','AssignManufacturersController@findsubward');
 Route::get('/subfind','AssignManufacturersController@subfind');
+Route::get('/viewmanu','AssignManufacturersController@viewmanu');
 //tl dashboard work
 Route::get('/delete_enquiry','TlController@delete_enquiry');
 Route::get('/search_enquiry','TlController@search_enquiry');
@@ -129,6 +130,10 @@ Route::get('/myenquirysheet','HomeController@myenquirysheet');
 Route::get('/editenq','HomeController@editEnq1');
 Route::get('/editenq1','HomeController@editEnq1');
 Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
+Route::get('/getquotation','mamaController@getquotation');
+Route::get('/getprojects','mamaController@getquotation');
+
+
 
 Route::get('/getAddress','HomeController@getAddress');
 Route::get('/marketing','marketingController@getHome');
@@ -242,6 +247,7 @@ Route::get('/orders','HomeController@amorders');
 
 Route::get('/updateampay','HomeController@updateampay');
 Route::post('/confirmOrder','HomeController@confirmOrder');
+Route::post('/generatequotation','mamaController@generatequotation');
 Route::get('/cancelOrder','HomeController@cancelOrder');
 Route::get('/updateamdispatch','HomeController@updateamdispatch');
 Route::get('/deliverOrder','HomeController@deliverOrder');
@@ -325,15 +331,18 @@ Route::post('/addmanufacturer','mamaController@addManufacturer');
 Route::post('/deleteCertificate','amController@deleteCertificate');
 Route::get('/lcoorders','logisticsController@orders');
 Route::get('/manusearch','AssignManufacturersController@manusearch');
+    Route::get('/anr','HomeController@getAnR');
+    Route::get('/humanresources/{dept}','HomeController@getHRDept');
+    Route::get('/{id}/date','HomeController@amreportdates');
 
 // Admin
 Route::get('/deleteProject','mamaController@deleteProject');
 Route::get('/deletemanu','mamaController@deletemanuProject');
+Route::get('/{id}/attendance','HomeController@hrAttendance');
 
 Route::group(['middleware' => ['admin']],function(){
     Route::post('/aMaddPoints','mamaController@addPoints');
     Route::get('/wardmaping','HomeController@getWardMaping');
-    Route::get('/anr','HomeController@getAnR');
    
     Route::get('/amdept','HomeController@amDept');
     Route::get('/quality','HomeController@quality');
@@ -341,10 +350,8 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/mapping','HomeController@masterData');
     Route::get('/filter','HomeController@filter');
     Route::get('/amreports','HomeController@getAMReports');
-    Route::get('/{id}/date','HomeController@amreportdates');
     Route::get('/{uid}/{date}/viewreports','HomeController@getViewReports');
     Route::get('/humanresources','HomeController@getHRPage');
-    Route::get('/humanresources/{dept}','HomeController@getHRDept');
     Route::get('/finance','HomeController@getFinance');
     Route::get('/finance/{dept}','HomeController@getEmpDetails');
     
@@ -354,7 +361,6 @@ Route::group(['middleware' => ['admin']],function(){
     Route::get('/adtraining','HomeController@adtraining');
     Route::get('/adenquirysheet','HomeController@enquirysheet');
 
-    Route::get('/{id}/attendance','HomeController@hrAttendance');
     Route::get('/{uId}/{date}','HomeController@viewDailyReport');
     Route::get('/editEmployee','HomeController@editEmployee');
     Route::get('/manufacturerdetails','HomeController@manufacturerDetails');
@@ -703,6 +709,7 @@ Route::post('/clearOrderForDelivery','FinanceDashboard@clearOrderForDelivery');
 Route::get('/downloadInvoice','FinanceDashboard@downloadInvoice')->name('downloadInvoice');
 Route::get('/downloadTaxInvoice','FinanceDashboard@downloadTaxInvoice')->name('downloadTaxInvoice');
 Route::get('/downloadpurchaseOrder','FinanceDashboard@downloadpurchaseOrder')->name('downloadpurchaseOrder');
+Route::get('/downloadquotation','FinanceDashboard@downloadquotation')->name('downloadquotation');
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
 Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
 Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');
