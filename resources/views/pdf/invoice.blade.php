@@ -70,6 +70,7 @@
                     @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $bill[$i] }}
+
                     @else
                         {{ $bill[$i] }}
                     @endif
@@ -81,6 +82,7 @@
                     @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $ship[$i] }}
+                        
                     @else
                         {{ $ship[$i] }}
                     @endif
