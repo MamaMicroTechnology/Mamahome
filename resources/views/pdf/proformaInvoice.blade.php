@@ -51,7 +51,7 @@
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right">
-                <div style="padding-right: 40px;">
+                <div style="padding-right: 65px;">
                 Invoice No :{{ $data['products']->id }}<br>
                 Date : {{ date('d F, Y') }} <br>
               {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
@@ -69,8 +69,9 @@
                     @for($i = 0;$i < count($bill); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $bill[$i] }}
+
                     @else
-                        , {{ $bill[$i] }}
+                        {{ $bill[$i] }}
                     @endif
                     @endfor
             </div>
@@ -80,8 +81,9 @@
                     @for($i = 0;$i < count($ship); $i++)
                     @if($i % 3 == 0)
                         <br>{{ $ship[$i] }}
+                        
                     @else
-                        , {{ $ship[$i] }}
+                        {{ $ship[$i] }}
                     @endif
                     @endfor
             </div>
@@ -130,12 +132,12 @@
                             <td class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">CGST(14%)</td>
+                            <td class="text-left">CGST({{ $data['price']['cgstpercent'] }}%)</td>
                             <td class="text-left"></td>
                             <td class="text-left">{{ $data['price']['cgst'] }}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">SGST(14%)</td>
+                            <td class="text-left">SGST({{ $data['price']['sgstpercent'] }}%)</td>
                             <td class="text-left"></td>
                             <td class="text-left">{{ $data['price']['sgst']}}</td>
                         </tr>
@@ -170,9 +172,9 @@
                         <tr>
                             <td></td>
                             <td>{{ $data['price']['totalamount']}}</td>
-                            <td>14.00%</td>
+                            <td>{{ $data['price']['cgstpercent'] }}%</td>
                             <td>{{ $data['price']['cgst']}}</td>
-                            <td>14.00%</td>
+                            <td>{{ $data['price']['cgstpercent'] }}%</td>
                             <td>{{ $data['price']['sgst']}}</td>
                             <td>{{ $data['price']['totaltax']}}</td>
                         </tr>

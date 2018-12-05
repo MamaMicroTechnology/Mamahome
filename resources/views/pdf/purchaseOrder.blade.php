@@ -59,7 +59,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left" style="padding-left: 15px;">
-               <b> SUPPLIER NAME : </b><br>
+               <b> SUPPLIER NAME : </b>
                <?php
                 $address = explode(", ", $data['supplier']['address']);
 
@@ -82,7 +82,7 @@
                     @if($i % 3 == 0)
                         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $normal_address[$i] }}
                     @else
-                        , {{ $normal_address[$i] }}
+                        {{ $normal_address[$i] }}
                     @endif
                     @endfor
             </div>
@@ -124,12 +124,12 @@
                             <td class="text-left">{{$data['supplier']['amount']}}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">CGST(14%)</td>
+                            <td class="text-left">CGST({{$data['supplier']['cgstpercent']}}%)</td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$cgst}}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">SGST(14%)</td>
+                            <td class="text-left">SGST({{$data['supplier']['sgstpercent']}}%)</td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$sgst}}</td>
                         </tr>

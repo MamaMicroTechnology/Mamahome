@@ -52,6 +52,7 @@ class Requirement extends Model
     public function quot(){
         return $this->belongsTo('App\Quotation','id','req_id');
     }
+    
 }
 	
 

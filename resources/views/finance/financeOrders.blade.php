@@ -22,7 +22,7 @@
             <td>{{ date('d M, y',strtotime($order->requirement_date)) }}</td>
              <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$order->project_id}}&&lename=" target="_blank">{{ $order->project_id }}</a>
               @if($order-> project_id == null)
-                            <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $order->manu_id }}">Manufacturer{{$order -> manu_id}}</a>
+                            <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $order->manu_id }}">Manufacturer{{$order->manu_id}}</a>
               @endif
              </td>
             <td>{{ $order->id }}</td>
@@ -63,8 +63,7 @@
     <a type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id,'manu_id'=>$order->manu_id]) }}" class="btn btn-success btn-xs">TAX</a>
     <!-- <a type="button"  href="{{ route('downloadpurchaseOrder',['id'=>$order->id]) }}" class="btn btn-danger btn-xs">PUCHASE</a> -->
   </div>
-                    @else
-                    
+               @else
                     <div class="btn-group">
     <a disabled type="button" href="{{ route('downloadInvoice',['id'=>$order->id]) }}" class="btn btn-primary btn-xs">PROFORMA</a>
     <a disabled type="button" href="{{ route('downloadTaxInvoice',['id'=>$order->id]) }}" class="btn btn-success btn-xs">TAX</a>
@@ -113,16 +112,20 @@
                             <input class="hidden" type="text" name="dtow1" id="dtow1" value="">
                             <input type="hidden" name="dtow2" id="dtow2" value="">
                             <input type="hidden" name="dtow3" id="dtow3" value="">
+
                              @foreach($mamaprices as $price )  
                             @if($price->order_id == $order->id)
                            <table class="table table-responsive table-striped" border="1">
+                            <input  type="hidden" name="g1" id="g1{{$order->id}}" value="{{$price->cgstpercent}}">
+                            <input type="hidden" name="g2" id="g2{{$order->id}}" value="{{$price->sgstpercent}}">
+                            <input type="hidden" name="g3" id="g3{{$order->id}}" value="{{$price->gstpercent}}">
                            <tr>
                             <?php 
                                      $rec =count($order->confirm_payment); 
                              ?>  
                               <td>Description of Goods : </td>
                              @if($rec == 0)
-                                  <td><input required type="text" name="desc" class="form-control" value=""></td>
+                                  <td><input required type="text" name="desc" class="form-control" value="{{ $order->main_category }}"></td>
                              @else
                                   <td><input required type="text" name="desc" class="form-control" value="{{$price->description}}"></td>
                                   @endif
@@ -133,8 +136,8 @@
                            </tr>
                             <tr>
                               <td>Unit : </td>
-                              <td><input type="radio" name="unit" value="tons" >Tons
-                            <input type="radio" name="unit" value="Bags" checked> Bags</td>
+                              <td><input  type="text" name="unit" value="{{$price->unit}}" class="form-control" readonly>
+                           
                             </tr>
                               <?php 
                                      $rec =count($order->confirm_payment); 
@@ -801,13 +804,19 @@ function NumToWord2(inputNumber, outputControl,arg){
 function getcalculation(arg){
 var x =document.getElementById('unit'+arg).value;
 var y = document.getElementById('quan'+arg).value;
-var withoutgst = (x /1.28);
+var g1 = document.getElementById('g1'+arg).value;
+var g2 = document.getElementById('g2'+arg).value;
+var g3 = document.getElementById('g3'+arg).value;
+var g4 = document.getElementById('g1'+arg).value;
+var g5 = document.getElementById('g2'+arg).value;
+
+var withoutgst = (x /g3);
 var t = (withoutgst * y);
 var f = Math.round(t);
-var gst = (t * 14)/100;
-var sgt = (t * 14)/100;
-var gst1 = (t * 14)/100;
-var sgt1 = (t * 14)/100;
+var gst = (t * g1)/100;
+var sgt = (t * g2)/100;
+var gst1 = (t * g4)/100;
+var sgt1 = (t * g5)/100;
 var withgst = (gst + sgt + t);
 var final = Math.round(withgst);
 var tt = (gst + sgt);
