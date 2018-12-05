@@ -17,6 +17,7 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/getid','HomeController@getid');
 Route::get('/getsubwards','AssignManufacturersController@getsubwards');
 Route::get('/manuenquirysheet','AssignManufacturersController@manuenquirysheet');
@@ -34,6 +35,7 @@ Route::get('/delete_enquiry','TlController@delete_enquiry');
 Route::get('/search_enquiry','TlController@search_enquiry');
 Route::get('/manu_map','TlController@manumap');
 
+Route::get('/details','AssignManufacturersController@details');
 
 
 Route::get('/ticketchat','HomeController@chat');
@@ -50,6 +52,7 @@ Route::get('/monthlyreport','AssignManufacturersController@getreport');
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 Route::get('/getprojectsize','HomeController@getProjectSize');
 Route::get('/projectandward','AssignManufacturersController@projectsize');
+Route::post('/storeproject','AssignManufacturersController@storeproject');
 
 
 // chatting

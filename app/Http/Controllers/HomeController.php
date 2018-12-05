@@ -7216,6 +7216,8 @@ function enquirystore(request $request){
     }
 
     public function storecount(request $request){
+
+       
     $check = numbercount::where('user_id',$request->user_id)->first();
     $numberexist = numbercount::where('num',$request->num)->first();
     if($numberexist != null){
