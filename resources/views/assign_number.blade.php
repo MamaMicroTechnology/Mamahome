@@ -63,7 +63,7 @@
                             $i++;
                             $temp = $num->number;
                             array_push($numbers, $temp);
-                          print_r($numbers);
+                         
                           ?>
                          @if($i == 6)
                           </tr>

@@ -56,7 +56,7 @@
 function getBrands(arg){
     const Http = new XMLHttpRequest();
     var x = arg;
-    alert(x);
+  
   const url='{{URL::to('/')}}/subfind?id='+x;
    Http.open("GET", url);
    Http.send();
@@ -73,8 +73,15 @@ Http.onreadystatechange=(e)=>{
   }
 
   function initsubward(arg){
-      var latitude = "13.948388";
-      var longitude = "79.584654";
+       var x = document.getElementById("lat");
+          var lat = x.value;
+        var y = document.getElementById("log");
+        var long = y.value;
+
+
+      var latitude = lat;
+      var longitude = long;
+
      
         var subfaulty = arg;
       //console.log(subfaulty);
