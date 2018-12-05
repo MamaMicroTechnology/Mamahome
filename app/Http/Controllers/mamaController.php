@@ -1892,8 +1892,11 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
             if($requirement->status == "Enquiry Confirmed"){
+                 
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
+                
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
+                
                 if(!$request->manu_id){
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 }else{
@@ -1928,6 +1931,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order->status = $requirement->status;
                 $order->dispatch_status = $requirement->dispatch_status;
                 $order->generated_by  = $requirement->generated_by;
+                $order->manu_id =$requirement->manu_id;
                 $order->save();
             }
         }
@@ -3205,17 +3209,27 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        'contact1' => $request->cContact1
 
        ]);
+     $check = Mprocurement_Details::where("manu_id",$request->id)->first();
+       if(count($check) == 0){
 
-     Mprocurement_Details::where("manu_id",$request->id)->update([
+            $proc = new  Mprocurement_Details;
+            $proc->manu_id = $request->id;
+            $proc->name = $request->prName;
+            $proc->email = $request->pEmail;
+            $proc->contact = $request->prPhone;
+            $proc->contact1 =$request->prPhone1;
+            $proc->save(); 
+        }else{
+            $check->manu_id = $request->id;
+            $check->name = $request->prName;
+            $check->email = $request->pEmail;
+            $check->contact = $request->prPhone;
+            $check->contact1 =$request->prPhone1;
+            $check->save(); 
+        }
 
-       'manu_id' =>  $manufacturer->id,
-       'name' => $request->prName,
-       'email' => $request->pEmail,
-       'contact' => $request->prPhone,
-       'contact1' => $request->prPhone1
+     
 
-
-     ]);
 Mowner_Deatils::where("manu_id",$request->id)->update([
        'manu_id' =>  $manufacturer->id,
        'name' => $request->oName,
