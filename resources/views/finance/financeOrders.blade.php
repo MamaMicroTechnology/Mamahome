@@ -109,9 +109,9 @@
 
                            <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}&&manu_id={{$order->manu_id}}" method="post">
                             {{ csrf_field() }}
-                            <input class="hidden" type="text" name="dtow1" id="dtow1" value="">
-                            <input type="hidden" name="dtow2" id="dtow2" value="">
-                            <input type="hidden" name="dtow3" id="dtow3" value="">
+                            <input class="hidden" type="text" name="dtow1" id="dtow1{{$order->id}}" value="">
+                            <input type="hidden" name="dtow2" id="dtow2{{$order->id}}" value="">
+                            <input type="hidden" name="dtow3" id="dtow3{{$order->id}}" value="">
 
                              @foreach($mamaprices as $price )  
                             @if($price->order_id == $order->id)
@@ -542,7 +542,7 @@ function NumToWord(inputNumber, outputControl,arg){
     for (i = 0; i < numLength; i++) {
         finalOutput = finalOutput + word[i];
     }
-    document.getElementById("dtow1").value = finalOutput;
+    document.getElementById("dtow1"+arg).value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function NumToWord1(inputNumber, outputControl,arg) {
@@ -670,7 +670,7 @@ function NumToWord1(inputNumber, outputControl,arg) {
     for (i = 0; i < numLength; i++) {
         finalOutput = finalOutput + word[i];
     }
-    document.getElementById("dtow2").value = finalOutput;
+    document.getElementById("dtow2"+arg).value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function NumToWord2(inputNumber, outputControl,arg){
@@ -798,7 +798,7 @@ function NumToWord2(inputNumber, outputControl,arg){
     for (i = 0; i < numLength; i++) {
         finalOutput = finalOutput + word[i];
     }
-    document.getElementById("dtow3").value = finalOutput;
+    document.getElementById("dtow3"+arg).value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function getcalculation(arg){

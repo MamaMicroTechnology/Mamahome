@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Order extends Model
 {
+    use SoftDeletes;
     use LogsActivity;
     protected $table = 'orders';
     function payment(){
@@ -29,6 +32,14 @@ class Order extends Model
     }
      function cat(){
         return $this->hasOne('App\Category','category_name','main_category');
+    }
+    public function manu()
+    {
+      return $this->hasOne('App\Manufacturer','id','manu_id');
+    
+    }
+     public function siteaddress(){
+        return $this->belongsTo('App\SiteAddress','project_id','project_id');
     }
     protected $fillable = [
             'project_id',

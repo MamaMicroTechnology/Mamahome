@@ -3249,6 +3249,8 @@ date_default_timezone_set("Asia/Kolkata");
             $percent = 1.18;
         }
         else{
+            $cgstval = 14;
+            $sgstval = 14;
             $percent = 1.28;
 
         }
@@ -3261,7 +3263,6 @@ date_default_timezone_set("Asia/Kolkata");
         $totaltax = (int)$tt;
         $withgst = $cgst + $sgst + $totalamount;
         $y = (int)$withgst;
-
         $price = new MamahomePrice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
@@ -3277,22 +3278,19 @@ date_default_timezone_set("Asia/Kolkata");
             $price->gstpercent = $percent;
             $price->unit = $request->unit;
             $price->save();
+             
         return back();
 
     }
     public function cancelOrder(Request $request)
     {
         $id = $request->id;
-        $x = Order::where('id', $id)->first();
-        $x->status = 'Order Cancelled';
-        if($x->save())
-        {
-            return response()->json('Success !!!');
-        }
-        else
-        {
-            return response()->json('Error !!!');
-        }
+
+        $y =  Order::where('id', $id)->first();
+        $y->status = 'Order Cancelled';
+        $y->save();
+        Order::where('id', $id)->delete();
+        return back();
     }
     public function getPrice(Request $request)
     {
