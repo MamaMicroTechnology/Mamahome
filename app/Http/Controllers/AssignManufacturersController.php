@@ -1475,6 +1475,49 @@ public function noneed(request $request ){
    
      return view('/projectandward',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
  }
+
+public  function manureport(request $request)
+ {
+
+    $wards = Ward::all();
+  
+
+    if($request->ward == "All"){
+         $subward = Subward::all();
+
+    }else{
+        
+     $subward = SubWard::where('ward_id',$request->ward)->get();
+    }
+
+
+   
+    $projectscount =[];
+    
+     if($request->ward && $request->type){
+
+             foreach ($subward as $sub) {
+       $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->where('manufacturer_type',$request->type)->get()->toArray();
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+        }
+
+     }
+    else{
+       foreach ($subward as $sub) {
+       $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->get()->toArray();
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+        }
+    }
+ return view('/manureport',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
+ }
+
+
+
+
+
+
+
+
  public function mini(request $request){
 
     $users = User::where('department_id','!=',10)->where('group_id','=',7)->get();

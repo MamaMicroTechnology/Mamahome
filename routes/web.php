@@ -51,6 +51,7 @@ Route::get('/monthlyreport','AssignManufacturersController@getreport');
 
 Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 Route::get('/getprojectsize','HomeController@getProjectSize');
+Route::get('/manureport','AssignManufacturersController@manureport');
 Route::get('/projectandward','AssignManufacturersController@projectsize');
 Route::post('/storeproject','AssignManufacturersController@storeproject');
 

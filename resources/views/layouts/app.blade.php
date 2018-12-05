@@ -1071,6 +1071,8 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/') }}/mapping">Mapping</a>
     <a href="{{ URL::to('/getprojectsize') }}">Listed Project & Sizes</a>
+    <a href="{{URL::to('/projectandward') }}">Project Report</a> 
+    <a href="{{URL::to('/manureport') }}">Manufactureres Report</a>
     <a href="#" data-toggle="collapse" data-target="#planning">Sales Projection & Planning &#x21F2;</a>
         <div id="planning" class="collapse">
             <a href="{{ URL::to('/projection') }}">&nbsp;&nbsp;&nbsp; - Monthly Sales Projection</a>
@@ -1196,6 +1198,7 @@ function myTimer() {
       <a href="{{ URL::to('/noneed') }}">Delete Numbers</a>
        <a href="{{URL::to('/getprojectsize') }}">Listed Projects & Sizes </a>	
        <a href="{{URL::to('/projectandward') }}">Project Report</a> 
+        <a href="{{URL::to('/manureport') }}">Manufactureres Report</a> 
        <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
         <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
 
