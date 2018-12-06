@@ -1512,12 +1512,6 @@ public  function manureport(request $request)
  }
 
 
-
-
-
-
-
-
  public function mini(request $request){
 
     $users = User::where('department_id','!=',10)->where('group_id','=',7)->get();

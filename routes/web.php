@@ -17,7 +17,7 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/customer','CustomerController@getcustomer');
 Route::get('/getid','HomeController@getid');
 Route::get('/getsubwards','AssignManufacturersController@getsubwards');
 Route::get('/manuenquirysheet','AssignManufacturersController@manuenquirysheet');
