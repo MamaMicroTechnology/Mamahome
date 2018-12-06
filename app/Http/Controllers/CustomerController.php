@@ -25,11 +25,12 @@ class CustomerController extends Controller
         }
 
       $project = CustomerProjectAssign::where('user_id',Auth::user()->id)->pluck('project_id');
-
       $pro = explode(",",$project);
+        
 
-
-      $projects = ProjectDetails::withTrashed()->whereIn('project_id',$pro)->paginate("10");
+      $projects = ProjectDetails::whereIn('project_id',$pro)->paginate(10);
+     
+    
       
         $orders = Order::all();
         $projectupdat=ProjectUpdate::all(); 
@@ -50,7 +51,7 @@ public function customermanu(request $request)
             $project = CustomerProjectAssign::where('user_id',Auth::user()->id)->pluck('project_id');
 
             $pro = explode(",",$project);
-             $projects = Manufacturer::withTrashed()->whereIn('id',$pro)->paginate("10");
+             $projects = Manufacturer::whereIn('id',$pro)->paginate("10");
           
            $projectcount=count($projects);
          

@@ -1632,49 +1632,36 @@ foreach ($sub as  $users) {
  
  public function details(request $request){
 
-                $date=date_create("2018-12-06");
-    // $x=  DB::table("requirements")
-    //       ->select(DB::raw("COUNT(project_id),project_id"))
-    //        ->where('status',"Enquiry Confirmed")
-    //        ->groupBy("project_id")
-    //        ->where('project_id','!='," ")
-    //        ->havingRaw("COUNT(project_id) > 6")
-    //        ->pluck('project_id');
-           
+      $ids =  $request->projectids;
 
-           if($request->type == "project"){
+      $id = explode(',',$ids);
+      if($request->type == "project"){
 
-              // $pro =  DB::table("orders")
-              //     ->select(DB::raw("COUNT(project_id),project_id"))
-              //      ->where('status',"Order Confirmed")
-              //       ->where('project_id','!='," ")
-              //      ->groupBy("project_id")
-              //      ->havingRaw("COUNT(project_id) >= 1")
-              //      ->pluck('project_id');
-
-
-               $project = ProjectDetails::where('type',1)->paginate("10"); 
-               $projectcount = ProjectDetails::where('type',1)->count(); 
-               
-                   
-           }else if($request->type == "manu"){
-
-          //   $ma=  DB::table("orders")
-          // ->select(DB::raw("COUNT(manu_id),manu_id"))
-          //  ->where('status',"Order Confirmed")
-          //   ->where('manu_id','!='," ")
-          //  ->groupBy("manu_id")
-          //  ->havingRaw("COUNT(manu_id) >= 1")
-          //  ->pluck('manu_id');  
-           $project = Manufacturer::where('manu_type',1)->paginate("10"); 
-           $projectcount = Manufacturer::where('manu_type',1)->count(); 
-           }else{
-            $project = [];
-            $projectcount = 0;
-           }
-           $users = User::where('department_id','!=',10)->get();
+        ProjectDetails::whereIn('project_id',$id)->update(['type'=>1]);
         
-    return view('/details',['project'=>$project,'count'=>$projectcount,'users'=>$users]);
+      }else{
+
+        Manufacturer::whereIn('id',$id)->update(['manu_type'=>1]);
+      }
+       $check = CustomerProjectAssign::where('user_id',$request->user_id)->first();    
+              if(count($check) == 0){
+                $number = new CustomerProjectAssign;
+                $number ->user_id = $request->user_id;
+                $number->project_id = $ids;
+                $number->type = $request->type;
+                $number->save();
+            }else{
+                $check->project_id=$ids;
+                $check->type = $request->type;
+                $check->save();
+            }
+
+
+    $users = User::where('department_id','!=',10)->get();
+
+    $projects = CustomerProjectAssign::all();
+        
+    return view('/details',['users'=>$users,'projects'=>$projects]);
      
 
      
