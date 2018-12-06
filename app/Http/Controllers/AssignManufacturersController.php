@@ -1632,39 +1632,42 @@ foreach ($sub as  $users) {
  
  public function details(request $request){
 
-    $x=  DB::table("requirements")
-          ->select(DB::raw("COUNT(project_id),project_id"))
-           ->where('status',"Enquiry Confirmed")
-           ->groupBy("project_id")
-           ->where('project_id','!='," ")
-           ->havingRaw("COUNT(project_id) > 6")
-           ->pluck('project_id');
+                $date=date_create("2018-12-06");
+    // $x=  DB::table("requirements")
+    //       ->select(DB::raw("COUNT(project_id),project_id"))
+    //        ->where('status',"Enquiry Confirmed")
+    //        ->groupBy("project_id")
+    //        ->where('project_id','!='," ")
+    //        ->havingRaw("COUNT(project_id) > 6")
+    //        ->pluck('project_id');
            
 
            if($request->type == "project"){
 
-          $pro =  DB::table("orders")
-                  ->select(DB::raw("COUNT(project_id),project_id"))
-                   ->where('status',"Order Confirmed")
-                    ->where('project_id','!='," ")
-                   ->groupBy("project_id")
-                   ->havingRaw("COUNT(project_id) >= 1")
-                   ->pluck('project_id');
-               $project = ProjectDetails::whereIn('project_id',$pro)->paginate("10"); 
-               $projectcount = ProjectDetails::whereIn('project_id',$pro)->count(); 
+              // $pro =  DB::table("orders")
+              //     ->select(DB::raw("COUNT(project_id),project_id"))
+              //      ->where('status',"Order Confirmed")
+              //       ->where('project_id','!='," ")
+              //      ->groupBy("project_id")
+              //      ->havingRaw("COUNT(project_id) >= 1")
+              //      ->pluck('project_id');
+
+
+               $project = ProjectDetails::where('type',1)->paginate("10"); 
+               $projectcount = ProjectDetails::where('type',1)->count(); 
                
                    
            }else if($request->type == "manu"){
 
-            $ma=  DB::table("orders")
-          ->select(DB::raw("COUNT(manu_id),manu_id"))
-           ->where('status',"Order Confirmed")
-            ->where('manu_id','!='," ")
-           ->groupBy("manu_id")
-           ->havingRaw("COUNT(manu_id) >= 1")
-           ->pluck('manu_id');  
-           $project = Manufacturer::whereIn('id',$ma)->paginate("10"); 
-           $projectcount = Manufacturer::whereIn('id',$ma)->count(); 
+          //   $ma=  DB::table("orders")
+          // ->select(DB::raw("COUNT(manu_id),manu_id"))
+          //  ->where('status',"Order Confirmed")
+          //   ->where('manu_id','!='," ")
+          //  ->groupBy("manu_id")
+          //  ->havingRaw("COUNT(manu_id) >= 1")
+          //  ->pluck('manu_id');  
+           $project = Manufacturer::where('manu_type',1)->paginate("10"); 
+           $projectcount = Manufacturer::where('manu_type',1)->count(); 
            }else{
             $project = [];
             $projectcount = 0;

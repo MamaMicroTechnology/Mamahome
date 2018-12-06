@@ -584,13 +584,18 @@ class mamaController extends Controller
                 }
         
             }
-              if(Auth::user()->group_id == 22){
+              if(count($request->subward_id) != 0){
                  $ward= $request->subward_id;
              
               }else{
 
-                 $ward= $request->subward_id;
+             $ward=WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
               }
+
+
+          
+
+
 
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
@@ -747,7 +752,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-        $subward = Subward::where('id',$request->subward_id)->pluck('sub_ward_name')->first();
+        $subward = Subward::where('id',$ward)->pluck('sub_ward_name')->first();
       $text = "Project Added Successfully in Subward : ".$subward.".<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('test',$text);
     }
@@ -2191,11 +2196,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     {
         
 
-             if(Auth::user()->group_id == 22){
+             if(count($request->sub_ward_id) != 0){
                   $wardsAssigned = $request->subward_id;
              }else{
                 
-        $wardsAssigned = $request->subward_id;
+             $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
              }
 
 

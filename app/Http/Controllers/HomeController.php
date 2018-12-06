@@ -3612,6 +3612,7 @@ date_default_timezone_set("Asia/Kolkata");
             $projectids = ProjectDetails::whereIn('sub_ward_id',$subwards)
             ->whereIn('project_status',$stages)
             ->where('quality','!=','Fake')
+             ->where('type','!=',1)
             ->whereNotIn('project_id',$orders)
             ->pluck('project_id');
         }else{
@@ -3668,6 +3669,7 @@ date_default_timezone_set("Asia/Kolkata");
              $projectids = ProjectDetails::
              whereIn('project_status',$stages)
              ->where('quality','!=','Fake')
+              ->where('type','!=',1)
              ->whereNotIn('project_id',$orders)
              ->pluck('project_id');
          }else{
@@ -4035,7 +4037,7 @@ $upvcInt = explode(",", $upvc);
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
        
         $projects = ProjectDetails::whereIn('project_id',$projectids)
- 
+                     ->where('type','!=',1)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(20);
@@ -4050,6 +4052,7 @@ $upvcInt = explode(",", $upvc);
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
+                     ->where('type','!=',1)
                     ->paginate(15);
                     
             }elseif($request->update1){
@@ -4059,6 +4062,7 @@ $upvcInt = explode(",", $upvc);
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
                     ->where('created_at','>=',$date)
+                     ->where('type','!=',1)
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                     
@@ -4073,6 +4077,7 @@ $upvcInt = explode(",", $upvc);
                          ->whereNotIn('project_id',$spro)
                          ->select('project_details.*','project_id')
                          ->orderBy('project_id','ASC')
+                          ->where('type','!=',1)
                          ->paginate(15);
 
             }elseif($request->unupdate1){
@@ -5495,6 +5500,7 @@ public function confirmedvisit(Request $request){
                 }
             }
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
+                             ->where('project_details.type','!=',1)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')

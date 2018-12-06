@@ -18,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/customer','CustomerController@getcustomer');
+Route::get('/customermanu','CustomerController@customermanu');
+
 Route::get('/getid','HomeController@getid');
 Route::get('/getsubwards','AssignManufacturersController@getsubwards');
 Route::get('/manuenquirysheet','AssignManufacturersController@manuenquirysheet');
