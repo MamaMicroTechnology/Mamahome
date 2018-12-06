@@ -9,6 +9,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\registration;
+
 use Illuminate\Http\Request;
 use App\Department;
 use App\User;
