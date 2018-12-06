@@ -210,7 +210,10 @@
                            @endif 
                                 <tr>
                                     <td>Price(Per Unit) :</td>
-                                    <td><input required type="number" id="unit{{$enq->id}}"  class="form-control" name="price" placeholder="Unit Price" onkeyup="getcalculation('{{$enquiry->id}}')"></td>
+                                    <td>
+                                        <label class="alert-success pull-left">{{$enq->price != null ? $enq->price : ""}}</label>
+                                        <input required type="number" id="unit{{$enq->id}}"  class="form-control" name="price" placeholder="Unit Price" onkeyup="getcalculation('{{$enquiry->id}}')">
+                                    </td>
                                 </tr> 
                                 <tr>
                                         <td>Unit Price without GST :</td>

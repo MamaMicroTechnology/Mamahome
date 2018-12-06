@@ -33,6 +33,7 @@ use App\SubWardMap;
 use App\brand;
 use App\Noneed;
 use App\SubCategory;
+use App\CustomerProjectAssign;
 
 use App\WardMap;
 class AssignManufacturersController extends Controller
@@ -1474,6 +1475,43 @@ public function noneed(request $request ){
    
      return view('/projectandward',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
  }
+
+public  function manureport(request $request)
+ {
+
+    $wards = Ward::all();
+  
+
+    if($request->ward == "All"){
+         $subward = Subward::all();
+
+    }else{
+        
+     $subward = SubWard::where('ward_id',$request->ward)->get();
+    }
+
+
+   
+    $projectscount =[];
+    
+     if($request->ward && $request->type){
+
+             foreach ($subward as $sub) {
+       $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->where('manufacturer_type',$request->type)->get()->toArray();
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+        }
+
+     }
+    else{
+       foreach ($subward as $sub) {
+       $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->get()->toArray();
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+        }
+    }
+ return view('/manureport',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
+ }
+
+
  public function mini(request $request){
 
     $users = User::where('department_id','!=',10)->where('group_id','=',7)->get();
@@ -1591,5 +1629,83 @@ foreach ($sub as  $users) {
 
        return view('/viewmanu',['project'=>$project]);
  }
+ 
+ public function details(request $request){
+
+                $date=date_create("2018-12-06");
+    // $x=  DB::table("requirements")
+    //       ->select(DB::raw("COUNT(project_id),project_id"))
+    //        ->where('status',"Enquiry Confirmed")
+    //        ->groupBy("project_id")
+    //        ->where('project_id','!='," ")
+    //        ->havingRaw("COUNT(project_id) > 6")
+    //        ->pluck('project_id');
+           
+
+           if($request->type == "project"){
+
+              // $pro =  DB::table("orders")
+              //     ->select(DB::raw("COUNT(project_id),project_id"))
+              //      ->where('status',"Order Confirmed")
+              //       ->where('project_id','!='," ")
+              //      ->groupBy("project_id")
+              //      ->havingRaw("COUNT(project_id) >= 1")
+              //      ->pluck('project_id');
+
+
+               $project = ProjectDetails::where('type',1)->paginate("10"); 
+               $projectcount = ProjectDetails::where('type',1)->count(); 
+               
+                   
+           }else if($request->type == "manu"){
+
+          //   $ma=  DB::table("orders")
+          // ->select(DB::raw("COUNT(manu_id),manu_id"))
+          //  ->where('status',"Order Confirmed")
+          //   ->where('manu_id','!='," ")
+          //  ->groupBy("manu_id")
+          //  ->havingRaw("COUNT(manu_id) >= 1")
+          //  ->pluck('manu_id');  
+           $project = Manufacturer::where('manu_type',1)->paginate("10"); 
+           $projectcount = Manufacturer::where('manu_type',1)->count(); 
+           }else{
+            $project = [];
+            $projectcount = 0;
+           }
+           $users = User::where('department_id','!=',10)->get();
+        
+    return view('/details',['project'=>$project,'count'=>$projectcount,'users'=>$users]);
+     
+
+     
+
+ }
+  public function storeproject(request $request){
+      
+
+    $check = CustomerProjectAssign::where('user_id',$request->user_id)->first();
+    $numberexist = CustomerProjectAssign::where('project_id',$request->num)->first();
+    if($numberexist != null){
+        $userName = User::where('id',$numberexist->user_id)->pluck('name')->first();
+        $text = "These Projects are Already Assigned to ".$userName;
+        return back()->with('NotAdded',$text);
+    }
+            if($check == null){
+                $number = new CustomerProjectAssign;
+                $number ->user_id = $request->user_id;
+                $number->project_id = $request->num;
+                $number->type = $request->type;
+                $number->save();
+            }else{
+                $check->project_id=$request->num;
+                $check->type = $request->type;
+                $check->save();
+            }
+            return redirect()->back()->with('success','Projects  Assigned');
+    }
+
+
+
+
 }
 

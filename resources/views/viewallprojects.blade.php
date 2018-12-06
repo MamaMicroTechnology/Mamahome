@@ -56,7 +56,7 @@
 						<th>Floors</th>
 						<th>Project Size</th>
 						<th>Budget</th>
-						<th>Image</th>
+						<!-- <th>Image</th> -->
 						<th>Remarks</th>
 						@if(Auth::user()->group_id != 7 &&  Auth::user()->group_id != 17)
 						<th>Listed By</th>
@@ -88,51 +88,7 @@
 
 							<td>{{ $project->project_size }}</td>
 							<td>{{ $project->budget }}</td>
-							<td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $project->project_id }}">View Image</button>
-								<div id="viewimage{{$project->project_id }}" class="modal fade" role="dialog">
-								  <div class="modal-dialog" style="width: 40%;height: 30%">
-
-								    <!-- Modal content-->
-								    <div class="modal-content">
-								      <div class="modal-header" style="background-color: green;color:white;">
-								        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-								        <h4 class="modal-title">Image</h4>
-								      </div>
-								      <div class="modal-body">
-								      	 <?php
-								      	 $images = explode(",", $project->image);
-                                               ?>
-                                                 @for($i = 0; $i < count($images); $i++)
-                                                 
-                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br/><br>
-                                                  
-                                                 @endfor
-                                                 <br>
-                                              @if($projectimages != null)
-                                            <p>Updated images</p>
-                                             @endif
-                                             @foreach($projectimages as $project)
-                                             <p>Status : {{$project->project_status }}</p>
-                                             <?php
-										      	 $images = explode(",", $project->image);
-		                                               ?>
-                                                 @for($i = 0; $i < count($images); $i++)
-                                                
-                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br/><br>
-                                                 
-                                                 @endfor
-                                                 <br>
-                                                 @endforeach
-
-								      </div>
-								      <div class="modal-footer">
-								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								      </div>
-								    </div>
-
-								  </div>
-							</div>
-							</td>
+							
 							
 							<td>{{ $project->remarks }}</td>
 							@if(Auth::user()->group_id != 7 && Auth::user()->group_id != 17)

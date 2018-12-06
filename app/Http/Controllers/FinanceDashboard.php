@@ -18,6 +18,8 @@ use App\Manufacturer;
 use App\Mprocurement_Details;
 use App\Requirement;
 use App\Quotation;
+use App\Gst;
+use App\Category;
 use DB;
 use Auth;
 use PDF;
@@ -46,6 +48,7 @@ class FinanceDashboard extends Controller
             $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
 
         }
+      
         $reqs = Requirement::all();
         $payments = PaymentDetails::get();
         $data = MamahomePrice::distinct()->select('mamahome_prices.order_id','mamahome_prices.id')->pluck('mamahome_prices.id','mamahome_prices.order_id');
@@ -127,7 +130,7 @@ class FinanceDashboard extends Controller
         $price = MamahomePrice::where('order_id',$request->id)->orderby('created_at','DESC')->first()->getOriginal();
         if( $request->manu_id != null){
         $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();
-        dd($request->manu_id);
+       
         $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
             }
             else{
@@ -164,6 +167,7 @@ class FinanceDashboard extends Controller
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
+       
         if( $request->mid != null){
         $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
             }
@@ -179,6 +183,7 @@ class FinanceDashboard extends Controller
             'manu'=>$manu,
             'supplier'=>$supplier
         );
+
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.purchaseOrder')->setPaper('a4','portrait');
         if($request->has('download')){
@@ -328,47 +333,28 @@ class FinanceDashboard extends Controller
     }
     public function saveunitprice(Request $request){
        
+       // invoice
+
+        $year = date('Y');
+        $country_code = Country::pluck('country_code')->first();
+        $zone = Zone::pluck('zone_number')->first();
+        // roundoff
+        $unitwithoutgst = round($request->unitwithoutgst,2);
+        $cgst = round($request->cgst,2);
+        $sgst = round($request->sgst,2);
       
-        $check = MamahomePrice::where('order_id',$request->id)->pluck("edited")->last();
-        if($check == "No"){
-         $check = MamahomePrice::where('order_id',$request->id)->get()->last();
-        $check->edited = "yes";
-        $check->save();
-        $price = new MamahomePrice;
-        $price->order_id = $request->id;
-        $price->unit = $request->unit;
-        $price->mamahome_price = $request->price;
-        $price->unitwithoutgst = $request->unitwithoutgst;
-        $price->totalamount = $request->tamount;
-        $price->cgst = $request->cgst;
-        $price->sgst = $request->sgst;
-        $price->totaltax = $request->totaltax;
-        $price->amountwithgst = $request->gstamount;
-        $price->amount_word = $request->dtow1;
-        $price->tax_word = $request->dtow2;
-        $price->gstamount_word =  $request->dtow3;
-        $price->quantity = $request->quantity;
-        $price->manu_id = $request->manu_id;
-        $price->description = $request->desc;
-        $price->billaddress = $request->bill;
-        $price->shipaddress = $request->ship;
-        $price->edited = "No";
-        $price->updated_by = Auth::user()->id;
-        $price->save();
-            
-        }
-        else{
-          
+        // orderconfirm
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
-        $order->save();    
+        $order->save();
         $price = MamahomePrice::where('order_id',$request->id)->first();
+        $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$price->id; 
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
-        $price->unitwithoutgst = $request->unitwithoutgst;
+        $price->unitwithoutgst = $unitwithoutgst;
         $price->totalamount = $request->tamount;
-        $price->cgst = $request->cgst;
-        $price->sgst = $request->sgst;
+        $price->cgst = $cgst;
+        $price->sgst = $sgst;
         $price->totaltax = $request->totaltax;
         $price->amountwithgst = $request->gstamount;
         $price->amount_word = $request->dtow1;
@@ -380,15 +366,23 @@ class FinanceDashboard extends Controller
         $price->billaddress = $request->bill;
         $price->shipaddress = $request->ship;
         $price->updated_by = Auth::user()->id;
+        $price->cgstpercent = $request->g1;
+        $price->sgstpercent = $request->g2;
+        $price->gstpercent = $request->g3;
         $price->edited = "No";
+        $price->invoiceno = $invoiceno;
         $price->save();
-        }
+        
          PaymentDetails::where('order_id',$request->id)->update([
             'status'=>"Received"
         ]);
         return back()->with('Success','Payment Confirmed');
     }
     public function savesupplierdetails(Request $request){
+        $check = Supplierdetails::where('order_id',$request->id)->first();
+       
+        
+        if(count($check) == 0){
         $order = Order::where('id',$request->id)->first();
         $order->purchase_order = "yes";
         $order->save();
@@ -396,35 +390,59 @@ class FinanceDashboard extends Controller
         $country_initial = "O";
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
-        $name = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('company_name')->first();
         $supply = New Supplierdetails;
         $supply->manu_id = $request->mid;
         $supply->address = $request->address;
+        $supply->ship = $request->ship;
         $supply->order_id = $request->id;
-        $supply->supplier_name = $name;
+        $supply->supplier_name = $request->name;
         $supply->gst = $request->gst;
         $supply->description = $request->desc;
         $supply->quantity = $request->quantity;
-        $supply->unit = $request->unit;
+        $supply->unit = $request->munit;
         $supply->unit_price = $request->uprice;
         $supply->amount = $request->amount;
         $supply->amount_words = $request->dtow;
         $supply->totalamount = $request->totalamount;
         $supply->tamount_words = $request->dtow1;
         $supply->unitwithoutgst =$request->unitwithoutgst;
+        $supply->cgstpercent = $request->cgstpercent;
+        $supply->sgstpercent = $request->sgstpercent;
+        $supply->gstpercent = $request->gstpercent;
         $supply->save();
-
         $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$supply->id; 
         $supply =Supplierdetails::where('id',$supply->id)->update(['lpo'=>
             $lpoNo]);
+        }
+        else{
+               
+                $check->address = $request->edit1;
+                $check->ship = $request->edit2;  
+                $check->supplier_name = $request->name;
+                $check->gst = $request->edit3;
+                $check->description = $request->edit4;
+                $check->quantity = $request->edit6;
+                $check->unit = $request->edit5;
+                $check->unit_price = $request->uprice;
+                $check->amount = $request->amount;
+                $check->amount_words = $request->dtow;
+                $check->totalamount = $request->totalamount;
+                $check->tamount_words = $request->dtow1;
+                $check->unitwithoutgst =$request->unitwithoutgst;
+                $check->cgstpercent = $request->cgstpercent;
+                $check->sgstpercent = $request->sgstpercent;
+                $check->gstpercent = $request->gstpercent;
+                $check->save();
+        }
         return back();
     }
      public function getgst(Request $request){
-        $res = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('registered_office')->first();
-        $gst = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('gst')->first();
-        $category = ManufacturerDetail::where('manufacturer_id',$request->name)->pluck('category')->first();
+        $res = ManufacturerDetail::where('company_name',$request->name)->pluck('registered_office')->first();
+        $gst = ManufacturerDetail::where('company_name',$request->name)->pluck('gst')->first();
+        $category = ManufacturerDetail::where('company_name',$request->name)->pluck('category')->first();
+        $unit = Category::where('category_name',$category)->pluck('measurement_unit')->first();
         $id = $request->x;
-        return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category]);
+        return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category,'unit'=>$unit]);
     }
     
 }

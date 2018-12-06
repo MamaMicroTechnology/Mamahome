@@ -9,6 +9,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\registration;
+
 use Illuminate\Http\Request;
 use App\Department;
 use App\User;
@@ -584,13 +585,18 @@ class mamaController extends Controller
                 }
         
             }
-              if(Auth::user()->group_id == 22){
+              if(count($request->subward_id) != 0){
                  $ward= $request->subward_id;
              
               }else{
 
-                 $ward= $request->subward_id;
+             $ward=WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
               }
+
+
+          
+
+
 
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
@@ -703,8 +709,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $procurementDetails->builder_contact_no = $request->bPhone;
         $procurementDetails->save();
        $no = $request->prPhone;
-        $pid = $projectdetails->id;
-       
+        $pid = $projectdetails->project_id;
         $newtime = date('H:i A');
         // $newtime = date('H:i A',strtotime('+5 hour +30 minutes',strtotime($time)));
         loginTime::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->update([
@@ -748,7 +753,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                     'TotalProjectsListed' => $number2 + 1
                 ]);
         }
-        $subward = Subward::where('id',$request->subward_id)->pluck('sub_ward_name')->first();
+        $subward = Subward::where('id',$ward)->pluck('sub_ward_name')->first();
       $text = "Project Added Successfully in Subward : ".$subward.".<br><a  class='btn btn-success btn-xs' href='viewProjects?no=".$no." && id=".$pid."'>Click Here</a><br>To View Approximate Material Calculation";
         return back()->with('test',$text);
     }
@@ -1893,8 +1898,11 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
             if($requirement->status == "Enquiry Confirmed"){
+                 
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
+                
                 $project = ProjectDetails::where('project_id',$requirement->project_id)->first();
+                
                 if(!$request->manu_id){
                 $subward = SubWard::where('id',$project->sub_ward_id)->first();
                 }else{
@@ -1929,6 +1937,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order->status = $requirement->status;
                 $order->dispatch_status = $requirement->dispatch_status;
                 $order->generated_by  = $requirement->generated_by;
+                $order->manu_id =$requirement->manu_id;
                 $order->save();
             }
         }
@@ -2188,11 +2197,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     {
         
 
-             if(Auth::user()->group_id == 22){
+             if(count($request->sub_ward_id) != 0){
                   $wardsAssigned = $request->subward_id;
              }else{
                 
-        $wardsAssigned = $request->subward_id;
+             $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
              }
 
 
@@ -3206,17 +3215,27 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        'contact1' => $request->cContact1
 
        ]);
+     $check = Mprocurement_Details::where("manu_id",$request->id)->first();
+       if(count($check) == 0){
 
-     Mprocurement_Details::where("manu_id",$request->id)->update([
+            $proc = new  Mprocurement_Details;
+            $proc->manu_id = $request->id;
+            $proc->name = $request->prName;
+            $proc->email = $request->pEmail;
+            $proc->contact = $request->prPhone;
+            $proc->contact1 =$request->prPhone1;
+            $proc->save(); 
+        }else{
+            $check->manu_id = $request->id;
+            $check->name = $request->prName;
+            $check->email = $request->pEmail;
+            $check->contact = $request->prPhone;
+            $check->contact1 =$request->prPhone1;
+            $check->save(); 
+        }
 
-       'manu_id' =>  $manufacturer->id,
-       'name' => $request->prName,
-       'email' => $request->pEmail,
-       'contact' => $request->prPhone,
-       'contact1' => $request->prPhone1
+     
 
-
-     ]);
 Mowner_Deatils::where("manu_id",$request->id)->update([
        'manu_id' =>  $manufacturer->id,
        'name' => $request->oName,
@@ -3392,6 +3411,7 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
                    ->where('requirements.status',"Enquiry Confirmed") 
                    ->get();
                    if($qid->project_id == null){
+                    $id = "";
                     $manu_id = $qid->manu_id;
                     $manu = Manufacturer::where('id',$qid->manu_id)->pluck('manufacturer_type')->first();
                    }
