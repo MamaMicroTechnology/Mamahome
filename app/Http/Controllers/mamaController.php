@@ -2192,7 +2192,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 
         $wardsAssigned = $request->subward_id;
              }
-
+            
 
            if($request->production){
             $pro = implode(",",$request->production);
