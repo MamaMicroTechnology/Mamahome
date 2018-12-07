@@ -1641,9 +1641,13 @@ foreach ($sub as  $users) {
  }
   public function storeproject(request $request){
       
+      if($request->type != "project"){
+
+        return $this->manustore($request);
+      }
 
      $push = [];
-        $i = CustomerProjectAssign::pluck('user_id');
+        $i = CustomerProjectAssign::where('type',"project")->pluck('user_id');
         $user = User::whereIn('id',$i)->get();
      
         foreach ($user as $project) {
@@ -1695,7 +1699,57 @@ foreach ($sub as  $users) {
             return redirect()->back()->with('success','Projects  Assigned');
     }
 
+ public function manustore(request $request){
+      
 
+       $push = [];
+        $i = CustomerProjectAssign::where('type',"Manufacturer")->pluck('user_id');
+        $user = User::whereIn('id',$i)->get();
+     
+        foreach ($user as $project) {
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+           $ex = explode(",",$ids);
+            array_push($push,$ex);
+          
+        } 
+        $mergearray = [];
+      $ids =  $request->projectids;
+      $id = explode(',',$ids);
+     
+      $result = [];
+      foreach($push as $array){
+        $result = array_merge($result, $array);
+              }
+  $z = array_intersect($result,$id);
+     
+  if($request->type == "project"){
+
+        ProjectDetails::whereIn('project_id',$id)->update(['type'=>1]);
+        
+      }else{
+
+        Manufacturer::whereIn('id',$id)->update(['manu_type'=>1]);
+      }
+
+
+    
+    $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
+    if($z != null){
+
+       $text2 =implode(",",$z);
+       $text = "Project ids are assigned please check "  .$text2;
+       
+        return back()->with('NotAdded',$text);
+    }
+            
+                $number = new CustomerProjectAssign;
+                $number ->user_id = $request->user_id;
+                $number->project_id = $request->projectids;
+                $number->type = $request->type;
+                $number->save();
+           
+            return redirect()->back()->with('success','Projects  Assigned');
+    }
 
 
 }

@@ -1205,6 +1205,7 @@ function myTimer() {
        <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
         <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
 
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
@@ -1287,6 +1288,8 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+
    
    <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
@@ -1312,6 +1315,8 @@ function myTimer() {
     </div>
      <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+
      
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
@@ -1343,6 +1348,8 @@ function myTimer() {
      
      <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+         
     
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
