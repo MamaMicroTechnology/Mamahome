@@ -27,7 +27,7 @@
                         <label>Category</label>
                             <select id="categ" class="form-control" name="category">
                                 <option value="">--Select--</option>
-                                @foreach($category as $category)
+                                @foreach($categories as $category)
                                 <option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
                                 @endforeach
                             </select>
@@ -151,7 +151,20 @@
                             <?php 
                                      $rec =count($enq->quotation);
                              ?>
-                             @if($rec == 0)    
+                             @if($rec == 0) 
+                             <tr>
+                                <td>Select Category : </td>
+                                <td>
+                                <select id="cat{{$enquiry->id}}" onchange="getsuppliername('{{ $enquiry->id}}')" class="form-control" >
+                                        <option>--Select Category--</option>
+                                        @foreach($categories as $category)
+                                       <option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                                        @endforeach 
+                                </select>  
+                                CGST : <label id="g1{{$enquiry->id}}" class="alert-success"></label>%
+                                SGST : <label id="g2{{$enquiry->id}}" class="alert-success"></label>%
+                                </td> 
+                            </tr>
                                 <tr>
                                     <td>Description Of Goods : </td>
                                     <td><input type="text" name="description" value="{{$enq->brand}}" class="form-control"></td>
@@ -211,7 +224,7 @@
                                 <tr>
                                     <td>Price(Per Unit) :</td>
                                     <td>
-                                        <label class="alert-success pull-left">{{$enq->price != null ? $enq->price : ""}}</label>
+                                        <label class="alert-success pull-left">Enquiry Price : {{$enq->price != null ? $enq->price : ""}}</label>
                                         <input required type="number" id="unit{{$enq->id}}"  class="form-control" name="price" placeholder="Unit Price" onkeyup="getcalculation('{{$enquiry->id}}')">
                                     </td>
                                 </tr> 
@@ -695,5 +708,27 @@ function finalsubmit(arg){
   document.getElementById('totaltax1'+arg).addEventListener("click", NumToWord1(output,'lblWord1'+arg,arg));
   document.getElementById('withgst1'+arg).addEventListener("click", NumToWord2(inout,'lblWord2'+arg,arg));
 }
+</script>
+<script type="text/javascript">
+function getsuppliername(arg) {
+  var x = document.getElementById('cat'+arg);
+  var name = x.options[x.selectedIndex].value;
+  var x = arg;
+  $.ajax({
+                    type:'GET',
+                    url:"{{URL::to('/')}}/getgstvalue",
+                    async:false,
+                    data:{name : name , x : x},
+                    success: function(response)
+                    {    
+                        var id = response[0]['id'];
+                        var cgst = response[0]['gstvalue'][0]['cgst'];
+                        var sgst = response[0]['gstvalue'][0]['sgst'];
+                        document.getElementById('g1'+id).innerHTML = cgst;
+                        document.getElementById('g2'+id).innerHTML = sgst;
+
+                    }
+                });
+    }
 </script>
 @endsection

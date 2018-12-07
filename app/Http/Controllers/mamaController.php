@@ -72,6 +72,7 @@ use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
+use App\Gst;
 use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
 use App\Quotation;
@@ -1797,11 +1798,13 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return back();
     }
     public function addManufacturer(Request $request){
+
         $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
         $request->pan->move(public_path('pan'),$pan);
         $manufacturer = new ManufacturerDetail;
         $manufacturer->vendortype = $request->vendortype;
         $manufacturer->company_name = $request->companyName;
+        $manufacturer->state = $request->state;
         $manufacturer->category = $request->category;
         $manufacturer->cin = $request->cin;
         $manufacturer->gst = $request->gst;
@@ -1815,13 +1818,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $manufacturer->sales_contact = $request->salesContact;
         $manufacturer->finance_contact = $request->financeContact;
         $manufacturer->quality_department = $request->qualityDept;
-        
-
         $manufacturer->save();
-           
-       
-
-
         return back()->with('Success','Manufacturer details added successfully');
     }
     public function editsubwardimage(Request $request){
@@ -1888,7 +1885,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editEnquiry(Request $request)
     {
-
             if($request->note != null){
           Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
           $requirement = Requirement::where('id',$request->id)->first();
@@ -1915,7 +1911,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $country = Country::where('id',$ward->country_id)->first();
                 $year = date('Y');
                 $country_initial = "O";
-                $count = count(Order::all())+1;
+                $all =Order::withTrashed()->count();
+                $count = $all + 1;
                 $number = sprintf("%03d", $count);
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
                 $order = new Order;
@@ -2738,16 +2735,28 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
         $logout = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logout');
 
-        if(Auth::user()->department_id == 4){
-             $start = "16:10 ";
-             $now = date('H:i ');
-        }
-        else if(Auth::user()->group_id == 22){
-             $start = "16:30 ";
+        $new = ['MH461',
+                'MH507',
+                'MH503',
+                'MH502',
+                'MH501',
+                'MH496',
+                'MH493',
+                'MH490',
+                'MH473',
+                'MH472',
+                'MH463',
+                'MH450',
+                'MH401'];
+       $use = User::whereIn('employeeId',$new)->pluck("id")->toArray();
+       $user = User::pluck('id')->toArray();
+
+       if(array_intersect($user,$use)){
+               $start = "18:00 ";
              $now = date('H:i ');
         }
         else{
-            $start = "17:00 ";
+             $start = "17:00 ";
              $now = date('H:i ');
         }
             if( $now < $start && $remark == null){
@@ -2885,16 +2894,32 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
-       if(Auth::user()->department_id == 4){
-                $start = "07:10 AM";
+       $new = ['MH461',
+                'MH507',
+                'MH503',
+                'MH502',
+                'MH501',
+                'MH496',
+                'MH493',
+                'MH490',
+                'MH473',
+                'MH472',
+                'MH463',
+                'MH450',
+                'MH401'];
+       $use = User::whereIn('employeeId',$new)->pluck("id")->toArray();
+       $user = User::pluck('id')->toArray();
+
+       if(array_intersect($user,$use)){
+                $start = "09:00 AM";
                 $now = date('H:i A');
         }
         else{
              $start = "08:00 AM";
              $now = date('H:i A');
         }
-        if( $now > $start && count($check)== 0 && $remark == null){
-            
+      
+        if( $now > $start && count($check)== 0 && $remark == null){         
             $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
@@ -3371,7 +3396,6 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
    }
    public function getquotation(Request $request){
    
-    $category = Category::all();
                 if($request->quot == "Project" && !$request->category){
                      $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
                      ->get();
@@ -3428,8 +3452,10 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
                      $manu = "";
 
                 }
+        $categories = Category::all();
+
         $quotations = Quotation::all();
-        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'category'=>$category,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu]);
+        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'categories'=>$categories,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu]);
     }
     public function generatequotation(Request $request){
 
@@ -3481,5 +3507,12 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $check->save();
       }
            return back();
+    }
+    public function getgstvalue(Request $request){
+        $gstvalue = Gst::where('category',$request->name)->get();
+        $array = [];
+        $id = $request->x;
+        array_push($array,['gstvalue'=>$gstvalue,'id'=>$id]);
+        return response()->json($array);
     }
 }

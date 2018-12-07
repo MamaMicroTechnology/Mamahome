@@ -195,12 +195,21 @@ function openCitytest(evt, cityName) {
                             <label> Total Quantity : </label>
                             <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')" value="{{$rec->total_quantity}}">
                             <br>
+                            <label>Select State : </label>
+                            <select required name="state" class="form-control">
+                                <option>--Select State--</option>
+                                <option value="1">Karnataka</option>
+                                <option value="2">Tamil nadu</option>
+
+                            </select>
+                            <br>
                             <label>Measurement Unit : </label>
                            <input required type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons">
                             <br>
                             <label>Mamahome Price(Per Unit) : </label>
                             <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')" value="{{$rec->price}}">
                             <br>
+
                             <!-- <label>Manufacturer Price(Per Unit) : </label>
                             <input  required type="number" id="unit"  class="form-control" name="manuprice" placeholder="Unit Price" onkeyup="checkthis1('unit')"> -->
                             <center><button type="submit" class="btn btn-sm btn-success" type="">Confirm</button></center>
@@ -232,19 +241,30 @@ function openCitytest(evt, cityName) {
         <input type="text" class="hidden" value="" id="cgstpercent{{$rec->orderid}}" name="cgstpercent" >
         <input type="text" class="hidden" value="" id="sgstpercent{{$rec->orderid}}" name="sgstpercent" >
         <input type="text" class="hidden" value="" id="gstpercent{{$rec->orderid}}" name="gstpercent" >
+        <input type="text" class="hidden" value="" id="igstpercent{{$rec->orderid}}" name="igstpercent" >
 
        <table class="table table-responsive table-striped" border="1">
         
                                     <tr>
-                                    <td>Category</td>
+                                    <td>Category :</td>
                                     <td>
-                                    <select id="supplier{{$rec->orderid}}" onchange="getsuppliername('{{$rec->orderid}}')" class="form-control" >
+                                    <select id="supplier{{$rec->orderid}}"  class="form-control" >
                                         <option>--Select Category--</option>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
                                         @endforeach
                                     </select>
                                 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Select State : </td>
+                                        <td>
+                                            <select id="state{{$rec->orderid}}"  name="state" class="form-control" onchange="getsuppliername('{{$rec->orderid}}')">
+                                                <option>--Select--</option>
+                                                <option value="1">Karnataka</option>
+                                                <option value="2">Tamil nadu</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Supplier Name :</td>
@@ -372,10 +392,17 @@ function openCitytest(evt, cityName) {
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$rec->orderid}}"></label>/-
                                         </td>
                                     </tr>
+
                                     <tr>
                                         <td>SGST( <label  id="tax2{{$rec->orderid}}"></label>%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$rec->orderid}}"></label>/-
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IGST( <label  id="tax3{{$rec->orderid}}"></label>%) : </td>
+                                        <td>
+                                             &nbsp;&nbsp;&nbsp;IGST <label class=" alert-success pull-left" id="igst{{$rec->orderid}}"></label>/-
                                         </td>
                                     </tr>
                                     <tr>
@@ -995,31 +1022,66 @@ function showthis(arg){
 
   var z = document.getElementById('supplier'+arg);
   var name = z.options[z.selectedIndex].value;
-if(name == "CEMENT"){
+  var x = document.getElementById('state'+arg);
+  var state = x.options[x.selectedIndex].value;
+
+if(name == "CEMENT" && state == "1"){
     var percent = 1.28;
     var gstvalue = 14;
     var sgstvalue = 14;
+     var igstvalue = "";
 }
-else if(name == "M-SAND"){
+else if(name == "CEMENT" && state == "2"){
+    var percent = 1.28;
+    var gstvalue = 14;
+    var sgstvalue = 14;
+    var igstvalue = 28;
+}
+else if(name == "M-SAND" && state == "1"){
     var percent = 1.05;
     var gstvalue = 2.5;
     var sgstvalue = 2.5;
+    var igstvalue = "";
 }
-else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS"){
+else if(name == "M-SAND" && state == "2"){
+    var percent = 1.05;
+    var gstvalue = 2.5;
+    var sgstvalue = 2.5;
+    var igstvalue = 5;
+}
+else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS" && state == "1"){
     var percent = 1.18;
     var gstvalue = 9;
     var sgstvalue = 9;
+    var igstvalue = "";
+}
+else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS" && state == "2"){
+    var percent = 1.18;
+    var gstvalue = 9;
+    var sgstvalue = 9;
+    var igstvalue = 18;
 }
 else{
     var percent = 1.28;
     var gstvalue = 14;
     var sgstvalue = 14;
+    var igstvalue = "";
 }
+
 var g1 = gstvalue;
 var g2 = sgstvalue;
 document.getElementById('tax1'+arg).innerHTML = g1
 document.getElementById('tax2'+arg).innerHTML = g2;
-
+if(igstvalue != ""){
+    
+var g3 = igstvalue;
+document.getElementById('tax3'+arg).innerHTML = g3;
+}
+else{
+   
+    var g3 = "";
+document.getElementById('tax3'+arg).innerHTML = g3;
+}
 var x =document.getElementById('unitprice'+arg).value;
 var y = document.getElementById('qu'+arg).value;
 var withoutgst = (x /percent);
@@ -1028,66 +1090,22 @@ var t = (withoutgst * y);
 var f = Math.round(t);
 var gst = (t * gstvalue)/100;
 var sgt = (t * sgstvalue)/100;
+var igst = (gst + sgt);
 var withgst = (gst + sgt + t);
 var final = Math.round(withgst);
 document.getElementById('cgstpercent'+arg).value = gstvalue;
 document.getElementById('sgstpercent'+arg).value = sgstvalue;
 document.getElementById('gstpercent'+arg).value = percent;
+document.getElementById('igstpercent'+arg).value = igstvalue;
 document.getElementById('display'+arg).innerHTML = t;
 document.getElementById('cgst'+arg).innerHTML = gst;
 document.getElementById('sgst'+arg).innerHTML = sgt;
-document.getElementById('withgst'+arg).innerHTML = withgst;
-document.getElementById('withoutgst'+arg).innerHTML = i;
-document.getElementById('withoutgst1'+arg).value = i;
-document.getElementById('amount'+arg).value = f;
-document.getElementById('tamount'+arg).value = final;
-
-}
-function showthis1(arg){
-
-  var z = document.getElementById('supplier'+arg);
-  var name = z.options[z.selectedIndex].value;
-if(name == "CEMENT"){
-    var percent = 1.28;
-    var gstvalue = 14;
-    var sgstvalue = 14;
-}
-else if(name == "M-SAND"){
-    var percent = 1.05;
-    var gstvalue = 2.5;
-    var sgstvalue = 2.5;
-}
-else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS"){
-    var percent = 1.18;
-    var gstvalue = 9;
-    var sgstvalue = 9;
+if(igstvalue != ""){
+document.getElementById('igst'+arg).innerHTML = igst;
 }
 else{
-    var percent = 1.28;
-    var gstvalue = 14;
-    var sgstvalue = 14;
+    document.getElementById('igst'+arg).innerHTML = "";
 }
-var g1 = gstvalue;
-var g2 = sgstvalue;
-document.getElementById('tax1'+arg).innerHTML = g1
-document.getElementById('tax2'+arg).innerHTML = g2;
-
-var x =document.getElementById('unitprice'+arg).value;
-var y = document.getElementById('qu'+arg).value;
-var withoutgst = (x /percent);
-var i = parseFloat(withoutgst).toFixed(2);
-var t = (withoutgst * y);
-var f = Math.round(t);
-var gst = (t * gstvalue)/100;
-var sgt = (t * sgstvalue)/100;
-var withgst = (gst + sgt + t);
-var final = Math.round(withgst);
-document.getElementById('cgstpercent'+arg).value = gstvalue;
-document.getElementById('sgstpercent'+arg).value = sgstvalue;
-document.getElementById('gstpercent'+arg).value = percent;
-document.getElementById('display'+arg).innerHTML = t;
-document.getElementById('cgst'+arg).innerHTML = gst;
-document.getElementById('sgst'+arg).innerHTML = sgt;
 document.getElementById('withgst'+arg).innerHTML = withgst;
 document.getElementById('withoutgst'+arg).innerHTML = i;
 document.getElementById('withoutgst1'+arg).value = i;
@@ -1095,6 +1113,7 @@ document.getElementById('amount'+arg).value = f;
 document.getElementById('tamount'+arg).value = final;
 
 }
+
 function gothr(arg){
   var input =  document.getElementById('amount'+arg).value;
   var output = document.getElementById('tamount'+arg).value;
@@ -1113,8 +1132,7 @@ function getaddress(arg){
                     success: function(response)
                     {
                        
-                         console.log(response);
-                         for(var i=0;i<response.length;i++)
+                                                 for(var i=0;i<response.length;i++)
                         {
                            var text = response[i].cin;
                         }
@@ -1123,10 +1141,10 @@ function getaddress(arg){
                         var gst = response.gst;
                         var cat = response.category;
                         var unit = response.unit;
-                         console.log(document.getElementById('address'+id).value = name); 
-                         console.log(document.getElementById('suppliergst'+id).value = gst);
-                         console.log(document.getElementById('desc'+id).value = cat);
-                         console.log(document.getElementById('munit'+id).value = unit); 
+                         document.getElementById('address'+id).value = name; 
+                         document.getElementById('suppliergst'+id).value = gst;
+                         document.getElementById('desc'+id).value = cat;
+                         document.getElementById('munit'+id).value = unit; 
                     }
                 });
             }
@@ -1135,12 +1153,14 @@ function getaddress(arg){
     function getsuppliername(arg) {
   var x = document.getElementById('supplier'+arg);
   var name = x.options[x.selectedIndex].value;
+  var y = document.getElementById('state'+arg);
+  var state = y.options[y.selectedIndex].value;
   var x = arg;
   $.ajax({
                     type:'GET',
                     url:"{{URL::to('/')}}/getsupplier",
                     async:false,
-                    data:{name : name , x : x},
+                    data:{name : name , x : x , state : state},
                     success: function(response)
                     {
 

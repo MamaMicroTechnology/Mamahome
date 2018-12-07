@@ -44,7 +44,7 @@
             @else 
                 @php
                    $normal_address = $data['supplier']['ship']; 
-                   print_r($normal_address);
+               
                 @endphp
             @endif
 @endif
@@ -106,10 +106,20 @@
                             <th>UNIT PRICE</th>
                             <th>AMOUNT (<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
                             <?php 
-
-                            $cgst = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
-                            $sgst = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
-                            $total = $data['supplier']['amount'] + $cgst + $sgst;
+                            $count = count($data['supplier']['igstpercent']) ;
+                            if($count == 0){
+                               
+                                    $cgst = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
+                                    $sgst = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
+                                    $igst = "";
+                            }
+                            else{
+                               $cgst = "";
+                               $sgst = "";
+                                $t1 = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
+                                $t2 = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
+                                $igst = $t1 + $t2 ;
+                            }
                             ?>
                         </tr>
                     </thead>
@@ -125,20 +135,37 @@
                         </tr>
                    
                         <tr>
-                            <td colspan="3" rowspan="4"></td>
+                            <td colspan="3" rowspan="5"></td>
                             <td class="text-left"><b>SUB TOTAL</b></td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$data['supplier']['amount']}}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">CGST({{$data['supplier']['cgstpercent']}}%)</td>
+                            <td class="text-left">CGST 
+                            @if($count ==  0)
+                            ({{$data['supplier']['cgstpercent']}}%)
+                            @endif
+                        </td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$cgst}}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">SGST({{$data['supplier']['sgstpercent']}}%)</td>
+                            <td class="text-left">SGST
+                            @if($count == 0)
+                                ({{$data['supplier']['sgstpercent']}}%)
+                            @endif
+                        </td>
                             <td class="text-left"></td>
                             <td class="text-left">{{$sgst}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">IGST
+                            @if($count == 1)
+                            ({{$data['supplier']['igstpercent']}}%)
+                            @endif
+                        </td>
+                            <td class="text-left"></td>
+                            <td class="text-left">{{$igst}}</td>
                         </tr>
                         <tr>
                             <td class="text-left"><b>TOTAL</b></td>

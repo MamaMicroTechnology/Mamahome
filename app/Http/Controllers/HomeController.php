@@ -3032,7 +3032,7 @@ date_default_timezone_set("Asia/Kolkata");
     public function ampricing(Request $request){
         $prices = CategoryPrice::all();
         $categories = Category::all();
-        $check =Gst::where('category',$request->category)->first();
+        $check =Gst::where('category',$request->category)->where('state',$request->state)->first();
       
         if(count($check) == 0){
 
@@ -3041,6 +3041,7 @@ date_default_timezone_set("Asia/Kolkata");
             $gst->cgst = $request->cgst;
             $gst->sgst = $request->sgst;
             $gst->igst = $request->igst;
+            $gst->state = $request->state;
             $gst->save();
 
         }
@@ -3237,32 +3238,55 @@ date_default_timezone_set("Asia/Kolkata");
             'unit'=>$request->unit
         ]);
         $cat = Order::where('id',$request->id)->pluck('main_category')->first();
-        $cgstval = Gst::where('category',$cat)->pluck('cgst')->first();
-        $sgstval = Gst::where('category',$cat)->pluck('sgst')->first();
-        if($cgstval == 14){
+       
+        $cgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('cgst')->first();
+        $sgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('sgst')->first();
+        $igstval =  Gst::where('category',$cat)->where('state',$request->state)->pluck('igst')->first();
+      
+        if($cgstval == 14 || $igstval == 28){
             $percent = 1.28;
+            $g1 = 14;
+            $g2 = 14;
         }
-        else if($cgstval == 2.5){
+        else if($cgstval == 2.5 || $igstval == 5){
             $percent = 1.05;
+            $g1 = 2.5;
+            $g2 = 2.5;
         }
-        else if($cgstval == 9){
+        else if($cgstval == 9 || $igstval == 18){
             $percent = 1.18;
+            $g1 = 9;
+            $g2 = 9;
         }
         else{
-            $cgstval = 14;
-            $sgstval = 14;
+            $cgstval = "";
+            $sgstval = "";
             $percent = 1.28;
-
+            $g1 = 4;
+            $g2 = 4;
         }
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
-        $cgst = ($totalamount * $cgstval)/100;
-        $sgst = ($totalamount * $sgstval)/100;
+        if($igstval != null){
+        $cgst = 0;
+        $sgst = 0;
+        $t1 = ($totalamount * $g1)/100;
+        $t2 =  ($totalamount * $g2)/100;
+        $igst = ($t1 +  $t2);
+        }
+        else{
+            $cgst = ($totalamount * $g1)/100;
+            $sgst =  ($totalamount * $g2)/100;
+            $igst = 0;
+        }
+
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
-        $withgst = $cgst + $sgst + $totalamount;
+       
+        $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
+       
         $price = new MamahomePrice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
@@ -3271,11 +3295,13 @@ date_default_timezone_set("Asia/Kolkata");
             $price->totalamount = $x;
             $price->cgst = $cgst;
             $price->sgst = $sgst;
+            $price->igst = $igst;
             $price->totaltax = $totaltax;
             $price->amountwithgst = $y;    
             $price->cgstpercent = $cgstval;
             $price->sgstpercent = $sgstval;
             $price->gstpercent = $percent;
+            $price->igstpercent = $igstval;
             $price->unit = $request->unit;
             $price->save();
              
@@ -5473,11 +5499,10 @@ public function confirmedvisit(Request $request){
     }
     public function getsupplier(Request $request)
     {
-        $supplier = ManufacturerDetail::where('category',$request->name)->get();
-       $array = [];
+        $supplier = ManufacturerDetail::where('category',$request->name)->where('state',$request->state)->get();
+        $array = [];
         $id = $request->x;
         array_push($array,['supplier'=>$supplier,'id'=>$id]);
-
         return response()->json($array);
     }
     public function viewallProjects(Request $request)
