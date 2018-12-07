@@ -50,6 +50,7 @@
                             <td>{{ $project->type }}</td>
                               <td>
                 <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->user_id }}">Delete</button>
+
                 <!-- Modal -->
                 <div class="modal fade" id="delete{{ $project->user_id }}" role="dialog">
                   <div class="modal-dialog modal-sm">
@@ -62,7 +63,8 @@
                         <p>Are you sure you want to delete this project?</p>
                       </div>
                       <div class="modal-footer">
-                        <a class="btn btn-danger pull-left" href="{{ URL::to('/') }}/deleteuser?projectId={{ $project->user_id }}">Yes</a>
+                        <input type="hidden" name="type" value="{{$project->type}}">
+                        <a class="btn btn-danger pull-left" href="{{ URL::to('/') }}/deleteuser?projectId={{ $project->user_id }}&&type={{$project->type}}">Yes</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                       </div>
                     </div>
