@@ -65,4 +65,10 @@ public function customermanu(request $request)
 
 }
 
+public function deleteuser(request $request){
+   CustomerProjectAssign::where('user_id',$request->projectId)->delete();
+
+   return back();
+}
+
    }

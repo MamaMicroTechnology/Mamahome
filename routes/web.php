@@ -19,6 +19,8 @@ Route::get('/', function () {
 });
 Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
+Route::get('/deleteuser','CustomerController@deleteuser');
+
 
 Route::get('/getid','HomeController@getid');
 Route::get('/getsubwards','AssignManufacturersController@getsubwards');
