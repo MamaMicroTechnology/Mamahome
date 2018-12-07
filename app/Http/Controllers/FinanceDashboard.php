@@ -94,7 +94,27 @@ class FinanceDashboard extends Controller
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $price = MamahomePrice::where('order_id',$request->id)->orderby('created_at','DESC')->first()->getOriginal();
-        // $manuid =  MamahomePrice::where('order_id',$request->id)->pluck('manu_id')->first();
+        $gst = MamahomePrice::where('order_id',$request->id)->pluck('gstpercent')->first();
+        if($gst == 1.28){
+            $cgst = 14;
+            $sgst = 14;
+            $igst = 28;
+        }
+        else if($gst == 1.18){
+            $cgst = 9;
+            $sgst = 9;
+            $igst = 18;
+        }
+       else if($gst == 1.05){
+            $cgst = 2.5;
+            $sgst = 2.5;
+            $igst = 5;
+        }
+        else{
+            $cgst = 14;
+            $sgst = 14;
+            $igst = 28;
+        }
          if( $request->manu_id != null){
         $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();
         $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
@@ -111,14 +131,17 @@ class FinanceDashboard extends Controller
             'payment'=>$payment,
             'price'=>$price,
             'manu'=>$manu,
-            'mprocurement'=>$mprocurement
+            'mprocurement'=>$mprocurement,
+            'cgst'=>$cgst,
+            'sgst'=>$sgst,
+            'igst'=>$igst
         );
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.invoice')->setPaper('a4','portrait');
         if($request->has('download')){
             return $pdf->download(time().'.pdf');
         }else{
-            return $pdf->stream('pdf.invoice');
+            return $pdf->stream('Invoice.pdf');
         }
     }
     function downloadTaxInvoice(Request $request){
@@ -128,9 +151,29 @@ class FinanceDashboard extends Controller
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $price = MamahomePrice::where('order_id',$request->id)->orderby('created_at','DESC')->first()->getOriginal();
+        $gst = MamahomePrice::where('order_id',$request->id)->pluck('gstpercent')->first();
+        if($gst == 1.28){
+            $cgst = 14;
+            $sgst = 14;
+            $igst = 28;
+        }
+        else if($gst == 1.18){
+            $cgst = 9;
+            $sgst = 9;
+            $igst = 18;
+        }
+       else if($gst == 1.05){
+            $cgst = 2.5;
+            $sgst = 2.5;
+            $igst = 5;
+        }
+        else{
+            $cgst = 14;
+            $sgst = 14;
+            $igst = 28;
+        }
         if( $request->manu_id != null){
-        $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();
-       
+        $manu = Manufacturer::where('id',$request->manu_id)->first()->getOriginal();  
         $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
             }
             else{
@@ -145,14 +188,18 @@ class FinanceDashboard extends Controller
             'payment'=>$payment,
             'price'=>$price,
              'manu'=>$manu,
-            'mprocurement'=>$mprocurement
+            'mprocurement'=>$mprocurement,
+            'cgst'=>$cgst,
+            'sgst'=>$sgst,
+            'igst'=>$igst
+
         );
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.proformaInvoice')->setPaper('a4','portrait');
         if($request->has('download')){
             return $pdf->download(time().'.pdf');
         }else{
-            return $pdf->stream('pdf.proformaInvoice');
+            return $pdf->stream('Tax.pdf');
         }
     }
     function downloadpurchaseOrder(Request $request){
@@ -189,7 +236,7 @@ class FinanceDashboard extends Controller
         if($request->has('download')){
             return $pdf->download(time().'.pdf');
         }else{
-            return $pdf->stream('pdf.purchaseOrder');
+            return $pdf->stream('purchaseOrder.pdf');
         }
     }
     public function savePaymentDetails(Request $request)
@@ -335,6 +382,7 @@ class FinanceDashboard extends Controller
        
        // invoice
 
+       
         $year = date('Y');
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
@@ -342,8 +390,7 @@ class FinanceDashboard extends Controller
         $unitwithoutgst = round($request->unitwithoutgst,2);
         $cgst = round($request->cgst,2);
         $sgst = round($request->sgst,2);
-      
-        // orderconfirm
+        $igst = round($request->igst,2);
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
         $order->save();
@@ -355,11 +402,13 @@ class FinanceDashboard extends Controller
         $price->totalamount = $request->tamount;
         $price->cgst = $cgst;
         $price->sgst = $sgst;
+        $price->igst = $igst;
         $price->totaltax = $request->totaltax;
         $price->amountwithgst = $request->gstamount;
         $price->amount_word = $request->dtow1;
         $price->tax_word = $request->dtow2;
         $price->gstamount_word =  $request->dtow3;
+        $price->igsttax_word = $request->dtow4;
         $price->quantity = $request->quantity;
         $price->manu_id = $request->manu_id;
         $price->description = $request->desc;
@@ -369,6 +418,7 @@ class FinanceDashboard extends Controller
         $price->cgstpercent = $request->g1;
         $price->sgstpercent = $request->g2;
         $price->gstpercent = $request->g3;
+        $price->igstpercent = $request->i1;
         $price->edited = "No";
         $price->invoiceno = $invoiceno;
         $price->save();
@@ -381,7 +431,7 @@ class FinanceDashboard extends Controller
     public function savesupplierdetails(Request $request){
         $check = Supplierdetails::where('order_id',$request->id)->first();
        
-        
+       
         if(count($check) == 0){
         $order = Order::where('id',$request->id)->first();
         $order->purchase_order = "yes";
@@ -409,6 +459,7 @@ class FinanceDashboard extends Controller
         $supply->cgstpercent = $request->cgstpercent;
         $supply->sgstpercent = $request->sgstpercent;
         $supply->gstpercent = $request->gstpercent;
+        $supply->igstpercent = $request->igstpercent;
         $supply->save();
         $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$supply->id; 
         $supply =Supplierdetails::where('id',$supply->id)->update(['lpo'=>
@@ -432,6 +483,7 @@ class FinanceDashboard extends Controller
                 $check->cgstpercent = $request->cgstpercent;
                 $check->sgstpercent = $request->sgstpercent;
                 $check->gstpercent = $request->gstpercent;
+                $check->igstpercent = $request->igstpercent;
                 $check->save();
         }
         return back();

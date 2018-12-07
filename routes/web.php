@@ -135,6 +135,8 @@ Route::get('/editenq1','HomeController@editEnq1');
 Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 Route::get('/getquotation','mamaController@getquotation');
 Route::get('/getprojects','mamaController@getquotation');
+Route::get('/getgstvalue','mamaController@getgstvalue');
+
 
 
 
