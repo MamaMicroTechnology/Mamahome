@@ -35,6 +35,7 @@ use App\Noneed;
 use App\SubCategory;
 use App\CustomerProjectAssign;
 
+
 use App\WardMap;
 class AssignManufacturersController extends Controller
 {
@@ -1632,10 +1633,36 @@ foreach ($sub as  $users) {
  
  public function details(request $request){
 
-      $ids =  $request->projectids;
+    $users = User::where('department_id','!=',10)->get(); 
+    $projects = CustomerProjectAssign::all();
 
+
+    return view('/details',['users'=>$users,'projects'=>$projects]);
+ }
+  public function storeproject(request $request){
+      
+
+     $push = [];
+        $i = CustomerProjectAssign::pluck('user_id');
+        $user = User::whereIn('id',$i)->get();
+     
+        foreach ($user as $project) {
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+           $ex = explode(",",$ids);
+            array_push($push,$ex);
+          
+        } 
+        $mergearray = [];
+      $ids =  $request->projectids;
       $id = explode(',',$ids);
-      if($request->type == "project"){
+     
+      $result = [];
+      foreach($push as $array){
+        $result = array_merge($result, $array);
+              }
+  $z = array_intersect($result,$id);
+     
+  if($request->type == "project"){
 
         ProjectDetails::whereIn('project_id',$id)->update(['type'=>1]);
         
@@ -1643,48 +1670,25 @@ foreach ($sub as  $users) {
 
         Manufacturer::whereIn('id',$id)->update(['manu_type'=>1]);
       }
-       $check = CustomerProjectAssign::where('user_id',$request->user_id)->first();    
-              if(count($check) == 0){
-                $number = new CustomerProjectAssign;
-                $number ->user_id = $request->user_id;
-                $number->project_id = $ids;
-                $number->type = $request->type;
-                $number->save();
-            }else{
-                $check->project_id=$ids;
-                $check->type = $request->type;
-                $check->save();
-            }
 
-
-    $users = User::where('department_id','!=',10)->get();
-
-    $projects = CustomerProjectAssign::all();
-        
-    return view('/details',['users'=>$users,'projects'=>$projects]);
-     
-
-     
-
- }
-  public function storeproject(request $request){
-      
 
     $check = CustomerProjectAssign::where('user_id',$request->user_id)->first();
-    $numberexist = CustomerProjectAssign::where('project_id',$request->num)->first();
-    if($numberexist != null){
-        $userName = User::where('id',$numberexist->user_id)->pluck('name')->first();
-        $text = "These Projects are Already Assigned to ".$userName;
+    $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
+    if($z != null){
+
+       $text2 =implode(",",$z);
+       $text = "Project ids are assigned please check "  .$text2;
+       
         return back()->with('NotAdded',$text);
     }
             if($check == null){
                 $number = new CustomerProjectAssign;
                 $number ->user_id = $request->user_id;
-                $number->project_id = $request->num;
+                $number->project_id = $request->projectids;
                 $number->type = $request->type;
                 $number->save();
             }else{
-                $check->project_id=$request->num;
+                $check->project_id=$request->projectids;
                 $check->type = $request->type;
                 $check->save();
             }
