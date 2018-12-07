@@ -24,7 +24,7 @@ class CustomerController extends Controller
           return  $this->customermanu($request);
         }
 
-      $project = CustomerProjectAssign::where('user_id',Auth::user()->id)->pluck('project_id');
+      $project = CustomerProjectAssign::where('user_id',Auth::user()->id)->where('type',"project")->pluck('project_id');
       $pro = explode(",",$project);
         
 
@@ -48,7 +48,7 @@ class CustomerController extends Controller
 public function customermanu(request $request)
 {
            $his = History::all();
-            $project = CustomerProjectAssign::where('user_id',Auth::user()->id)->pluck('project_id');
+            $project = CustomerProjectAssign::where('user_id',Auth::user()->id)->where('type',"Manufacturer")->pluck('project_id');
 
             $pro = explode(",",$project);
              $projects = Manufacturer::whereIn('id',$pro)->paginate("10");
