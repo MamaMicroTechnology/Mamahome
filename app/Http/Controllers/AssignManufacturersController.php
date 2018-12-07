@@ -1666,17 +1666,13 @@ foreach ($sub as  $users) {
               }
   $z = array_intersect($result,$id);
      
-  if($request->type == "project"){
 
         ProjectDetails::whereIn('project_id',$id)->update(['type'=>1]);
         
-      }else{
-
-        Manufacturer::whereIn('id',$id)->update(['manu_type'=>1]);
-      }
+     
 
 
-    $check = CustomerProjectAssign::where('user_id',$request->user_id)->first();
+    $check = CustomerProjectAssign::where('user_id',$request->user_id)->where('type',"project")->first();
     $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
     if($z != null){
 
@@ -1722,14 +1718,10 @@ foreach ($sub as  $users) {
               }
   $z = array_intersect($result,$id);
      
-  if($request->type == "project"){
-
-        ProjectDetails::whereIn('project_id',$id)->update(['type'=>1]);
-        
-      }else{
+ 
 
         Manufacturer::whereIn('id',$id)->update(['manu_type'=>1]);
-      }
+ 
 
 
     
@@ -1741,13 +1733,19 @@ foreach ($sub as  $users) {
        
         return back()->with('NotAdded',$text);
     }
-            
+    $check = CustomerProjectAssign::where('user_id',$request->user_id)->where('type',"Manufacturer")->first();
+
+            if($check == null){
                 $number = new CustomerProjectAssign;
                 $number ->user_id = $request->user_id;
                 $number->project_id = $request->projectids;
                 $number->type = $request->type;
                 $number->save();
-           
+           }else{
+                $check->project_id=$request->projectids;
+                $check->type = $request->type;
+                $check->save();
+           }
             return redirect()->back()->with('success','Projects  Assigned');
     }
 

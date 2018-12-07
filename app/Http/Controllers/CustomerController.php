@@ -66,7 +66,7 @@ public function customermanu(request $request)
 }
 
 public function deleteuser(request $request){
-  
+ 
    CustomerProjectAssign::where('user_id',$request->projectId)->where('type',$request->type)->delete();
 
    return back();
