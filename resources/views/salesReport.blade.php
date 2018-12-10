@@ -19,7 +19,7 @@
                     <table class="table table-responsive">
 	                    <tbody>
 	                        <tr>
-	                            <td>Select Sales Employee</td>
+	                            <td>Select  Employee</td>
 	                        </tr>
                             <tr>
                                 <td>

@@ -47,7 +47,7 @@
                             <input type="hidden"  name="user_id" value="{{ $user->id }}">
                              <td>{{ $user->ward }}</td>
                              <td>{{ $user->subward }}</td>
-                             <td>{{ $user->data }}</td>
+                             <td>{{date('d-m-Y', strtotime($user->data))  }}</td>
                              <td><button onclick="makeUserId('{{ $user->id }}')" type="button" style="background-color: #00e676;color: white" data-toggle="modal" id="#myModal"  data-target="#myModal"  class="btn  pull-left">Assign</button></td>
                             
                          
