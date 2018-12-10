@@ -1104,6 +1104,7 @@ function myTimer() {
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
+    <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="{{ URL::to('/minibreack') }}">BreakTime Mini Report</a>
     <a href="{{ URL::to('/details') }}">Assign Customers</a>
@@ -1222,6 +1223,7 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+    <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
     <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
     <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>

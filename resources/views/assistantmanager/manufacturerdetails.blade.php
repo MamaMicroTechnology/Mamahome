@@ -121,6 +121,16 @@
                     </div>
                 </div><br>
                 <div class="row">
+                    <div class="col-md-4">Select State</div>
+                    <div class="col-md-8">
+                        <select name="state" class="form-control input-sm" required>
+                            <option value="">--Select--</option>
+                            <option value="1">karnataka</option>
+                            <option value="2">Tamil nadu</option>
+                        </select>
+                    </div>
+                </div><br>
+                <div class="row">
                     <div class="col-md-4">Corporate Identity No.</div>
                     <div class="col-md-8"><input type="text" placeholder="Corporate Identity No." name="cin" class="form-control input-sm"></div>
                 </div><br>

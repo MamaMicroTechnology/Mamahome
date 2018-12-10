@@ -13,7 +13,7 @@
             <center>Type of Customer </center>
                 <select required class="form-control" name="type">
                     <option value="">--Select--</option>
-                    <option value="Manufacturer">Manufacturer</option>
+                  
                     <option value="project">Projects</option>
                     
                 </select>
