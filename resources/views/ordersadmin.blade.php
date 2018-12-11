@@ -1049,13 +1049,13 @@ else if(name == "M-SAND" && state == "2"){
     var sgstvalue = 2.5;
     var igstvalue = 5;
 }
-else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS" && state == "1"){
+else if((state == "1") && (name == "PLUMBING" || "STEEL" || "ELECTRICALS")){
     var percent = 1.18;
     var gstvalue = 9;
     var sgstvalue = 9;
     var igstvalue = "";
 }
-else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS" && state == "2"){
+else if((state == "2") && (name == "PLUMBING" || "STEEL" || "ELECTRICALS") ){
     var percent = 1.18;
     var gstvalue = 9;
     var sgstvalue = 9;
