@@ -8016,11 +8016,11 @@ public function display(request $request){
                         ->get();   
              return view('manufacturemap',['projects'=>$projects,'subwardMap'=>$subwardMap,'name'=>$name]);
     }
-    public function Unupdated(Request $request){
+    public function Unupdated(request $request){
     if(Auth::user()->group_id == 22){
         return $this->Unupdated1($request);
     }
-   $wards = Ward::orderby('ward_name','ASC')->get();
+        $wards = Ward::orderby('ward_name','ASC')->get();
         $wardid = $request->subward;
         $previous = date('Y-m-d',strtotime('-30 days'));
         $today = date('Y-m-d');
@@ -8056,7 +8056,7 @@ public function display(request $request){
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->count();
-                    dd("1");
+                    
 
         }
         else if(!$request->subward && $request->ward && !$request->from && !$request->to){
@@ -8153,20 +8153,30 @@ public function display(request $request){
                         ->where('project_status','!=',"Closed")
                         
                         ->paginate('20');
+                        
              
         }else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
            
                  $from=$request->from;
                  $to=$request->to;
                  $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
-                        ->where('sub_ward_id',$subwards)
                         ->where('quality','!=',"Fake")
                         ->where('project_status','!=',"Closed")
                          ->whereIn('project_id',$projectsat)
                         ->paginate('20');
              
         }
-
+       else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
+           
+                 $from=$request->from;
+                 $to=$request->to;
+                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
+                         ->whereIn('project_id',$projectsat)
+                        ->paginate('20');
+             
+        }
 
         else{
                 $projectid = new Collection;

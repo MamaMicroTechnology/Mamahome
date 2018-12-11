@@ -4,7 +4,6 @@
 ?>
 @extends($ext)
 @section('content')
-
 <div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
@@ -19,7 +18,7 @@
                     <table class="table table-responsive">
 	                    <tbody>
 	                        <tr>
-	                            <td>Select  Employee</td>
+	                            <td>Select  Employees</td>
 	                        </tr>
                             <tr>
                                 <td>
@@ -95,6 +94,8 @@
                     @endforeach
                     @else
                      @foreach( $tlUsers as $user)
+
+                    
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
