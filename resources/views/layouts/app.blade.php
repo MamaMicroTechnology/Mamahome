@@ -64,6 +64,7 @@
             right: 25px;
             font-size: 36px;
             margin-left: 50px;
+            
         }
         
         #main {

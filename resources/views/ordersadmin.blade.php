@@ -624,7 +624,6 @@ function openCitytest(evt, cityName) {
                           
                             </div>
                        </td>
-
                     </tr>
                     @endforeach
                 </tbody>    
@@ -634,8 +633,6 @@ function openCitytest(evt, cityName) {
         </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
     
     function pay(arg)
