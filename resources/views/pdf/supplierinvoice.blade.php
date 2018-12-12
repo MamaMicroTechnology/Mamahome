@@ -51,10 +51,14 @@
 
 
     <div class="row">
+        <div align="text-center">
+        <a  href="{{ URL::to('/') }}/public/supplierinvoice/{{$data['invoiceimage']}}">CLICK HERE TO GET {{ $data['supplier']['supplier_name']}} INVOICE</a>
+        </div>
         <div class="col-md-6 col-md-offset-3">
             <h4 style="background-color:#33cc33;padding:10px;" class="text-center">INVOICE</h4>
             <br>
             <div class="pull-left col-md-6" style="margin-right: 20px;margin-top: 30px;">
+
                 <b>Mama Home Pvt. Ltd.</b>
                 <br>
                 #363,19th Main Road, 1st Block<br>

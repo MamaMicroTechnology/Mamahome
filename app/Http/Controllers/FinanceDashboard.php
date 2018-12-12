@@ -225,7 +225,8 @@ class FinanceDashboard extends Controller
             }
         $suppliername = Supplierdetails::where('order_id',$request->id)->pluck('supplier_name')->first();
         $supplierimage = brand::where('brand',$suppliername)->pluck('brandimage')->first();
-        // dd($supplierimage);
+        $invoiceimage = SupplierInvoice::where('order_id',$request->id)->pluck('file1')->first();
+
         $data = array(
             'products'=>$products,
             'address'=>$address,
@@ -234,6 +235,7 @@ class FinanceDashboard extends Controller
             'manu'=>$manu,
             'supplier'=>$supplier,
             'supplierimage'=>$supplierimage,
+            'invoiceimage'=>$invoiceimage,
             'invoice'=>$invoice
         );
 
