@@ -20,6 +20,8 @@ use App\Requirement;
 use App\Quotation;
 use App\Gst;
 use App\Category;
+use App\SupplierInvoice;
+use App\brand;
 use DB;
 use Auth;
 use PDF;
@@ -200,6 +202,47 @@ class FinanceDashboard extends Controller
             return $pdf->download(time().'.pdf');
         }else{
             return $pdf->stream('Tax.pdf');
+        }
+    }
+    function downloadSupplierInvoice(Request $request){
+        $products = DB::table('orders')->where('id',$request->id)->first();
+         if( $products->project_id != null){
+        $address = SiteAddress::where('project_id',$products->project_id)->first();
+            }
+            else{
+                $address = "";
+            }
+        $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
+        $payment = PaymentDetails::where('order_id',$request->id)->first();
+        $sp = Supplierdetails::where('order_id',$request->id)->pluck('id')->first();
+        $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
+        $invoice = SupplierInvoice::where('order_id',$request->id)->first();
+        if( $request->mid != null){
+        $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
+            }
+            else{
+                $manu = "";
+            }
+        $suppliername = Supplierdetails::where('order_id',$request->id)->pluck('supplier_name')->first();
+        $supplierimage = brand::where('brand',$suppliername)->pluck('brandimage')->first();
+        // dd($supplierimage);
+        $data = array(
+            'products'=>$products,
+            'address'=>$address,
+            'procurement'=>$procurement,
+            'payment'=>$payment,
+            'manu'=>$manu,
+            'supplier'=>$supplier,
+            'supplierimage'=>$supplierimage,
+            'invoice'=>$invoice
+        );
+
+        view()->share('data',$data);
+        $pdf = PDF::loadView('pdf.supplierinvoice')->setPaper('a4','portrait');
+        if($request->has('download')){
+            return $pdf->download(time().'.pdf');
+        }else{
+            return $pdf->stream('supplier.pdf');
         }
     }
     function downloadpurchaseOrder(Request $request){
@@ -391,9 +434,6 @@ class FinanceDashboard extends Controller
         $cgst = round($request->cgst,2);
         $sgst = round($request->sgst,2);
         $igst = round($request->igst,2);
-        $order = Order::where('id',$request->id)->first();
-        $order->confirm_payment = " Received";
-        $order->save();
         $price = MamahomePrice::where('order_id',$request->id)->first();
         $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$price->id; 
         $price->unit = $request->unit;
@@ -423,6 +463,9 @@ class FinanceDashboard extends Controller
         $price->invoiceno = $invoiceno;
         $price->save();
         
+        $order = Order::where('id',$request->id)->first();
+        $order->confirm_payment = " Received";
+        $order->save();
          PaymentDetails::where('order_id',$request->id)->update([
             'status'=>"Received"
         ]);
@@ -496,5 +539,36 @@ class FinanceDashboard extends Controller
         $id = $request->x;
         return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category,'unit'=>$unit]);
     }
-    
+    public function supplierinvoice(Request $request){   
+        if($request->file1 != NULL){
+                $image1 = time().'.'.request()->file1->getClientOriginalExtension();
+                $request->file1->move(public_path('supplierinvoice'),$image1);
+            }else{
+                $image1 = "N/A";
+            }
+         if($request->file2 != NULL){
+                $image2 = time().'.'.request()->file2->getClientOriginalExtension();
+                $request->file2->move(public_path('supplierinvoice'),$image2);
+            }else{
+                $image2 = "N/A";
+            }
+
+        $lpo = Supplierdetails::where('order_id',$request->id)->pluck('lpo')->first();
+   
+        $invoice = New SupplierInvoice;
+        $invoice->lpo_number = $lpo;
+        $invoice->order_id = $request->id;
+        $invoice->invoice_number = $request->supplierinvoice;
+        $invoice->invoice_date = $request->invoicedate;
+        $invoice->file1 = $image1;
+        $invoice->file2 = $image2;
+        $invoice->project_id = $request->project_id;
+        $invoice_manu_id = $request->mid;
+        $invoice->save();
+        $order = Order::where('id',$request->id)->first();
+        $order->supplier_invoice = "yes";
+        $order->save();
+
+        return back();
+    }
 }

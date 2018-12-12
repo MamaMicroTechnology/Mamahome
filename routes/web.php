@@ -141,6 +141,8 @@ Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 Route::get('/getquotation','mamaController@getquotation');
 Route::get('/getprojects','mamaController@getquotation');
 Route::get('/getgstvalue','mamaController@getgstvalue');
+Route::post('/supplierinvoice','FinanceDashboard@supplierinvoice');
+
 
 
 
@@ -720,6 +722,8 @@ Route::get('/downloadInvoice','FinanceDashboard@downloadInvoice')->name('downloa
 Route::get('/downloadTaxInvoice','FinanceDashboard@downloadTaxInvoice')->name('downloadTaxInvoice');
 Route::get('/downloadpurchaseOrder','FinanceDashboard@downloadpurchaseOrder')->name('downloadpurchaseOrder');
 Route::get('/downloadquotation','FinanceDashboard@downloadquotation')->name('downloadquotation');
+Route::get('/downloadSupplierInvoice','FinanceDashboard@downloadSupplierInvoice')->name('downloadSupplierInvoice');
+
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
 Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
 Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');

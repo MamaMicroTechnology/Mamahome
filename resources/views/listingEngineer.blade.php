@@ -9,8 +9,6 @@
              <div id="currentTime" class="pull-right" style="margin--5px;"></div>
             <div id="currentTime" class="pull-left" style="margin--5px;">Assigned Ward id :{{$subwards->sub_ward_name}}</div>
                 </div>
-               
-               
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
                    <br>              

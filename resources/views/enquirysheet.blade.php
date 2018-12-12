@@ -57,7 +57,7 @@
 
 							<div class="col-md-2">
 								<label>Ward</label>
-								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
+								<select name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
 
 									@foreach($mainward as $wards2)

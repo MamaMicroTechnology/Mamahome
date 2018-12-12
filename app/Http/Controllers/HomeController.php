@@ -94,7 +94,7 @@ use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Mprocurement_Details;
 use App\Gst;
-
+use App\SupplierInvoice;
 
 use Spatie\Activitylog\Models\Activity;
 
@@ -3129,6 +3129,7 @@ date_default_timezone_set("Asia/Kolkata");
         }
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
+        $invoice = SupplierInvoice::all();
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3140,6 +3141,7 @@ date_default_timezone_set("Asia/Kolkata");
             'manusuppliers'=>$manusuppliers,
             'suppliers'=>$suppliers,
             'counts'=>$counts,
+            'invoice'=>$invoice,
             'categories'=>$categories
            
         ]);
@@ -5500,6 +5502,7 @@ public function confirmedvisit(Request $request){
     public function getsupplier(Request $request)
     {
         $supplier = ManufacturerDetail::where('category',$request->name)->where('state',$request->state)->get();
+
         $array = [];
         $id = $request->x;
         array_push($array,['supplier'=>$supplier,'id'=>$id]);

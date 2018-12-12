@@ -2749,9 +2749,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 'MH450',
                 'MH401'];
        $use = User::whereIn('employeeId',$new)->pluck("id")->toArray();
-       $user = User::pluck('id')->toArray();
-
-       if(array_intersect($user,$use)){
+       if(in_array(Auth::user()->id, $use)){
                $start = "18:00 ";
              $now = date('H:i ');
         }
@@ -2908,16 +2906,16 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 'MH450',
                 'MH401'];
        $use = User::whereIn('employeeId',$new)->pluck("id")->toArray();
-       $user = User::pluck('id')->toArray();
-
-       if(array_intersect($user,$use)){
+       if(in_array(Auth::user()->id, $use)){
                 $start = "09:00 AM";
                 $now = date('H:i A');
         }
         else{
+           
              $start = "08:00 AM";
              $now = date('H:i A');
         }
+      dd($start);
       
         if( $now > $start && count($check)== 0 && $remark == null){         
             $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
@@ -3396,6 +3394,7 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
    }
    public function getquotation(Request $request){
    
+    $states = state::all();
                 if($request->quot == "Project" && !$request->category){
                      $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
                      ->get();
@@ -3455,13 +3454,13 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
         $categories = Category::all();
 
         $quotations = Quotation::all();
-        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'categories'=>$categories,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu]);
+        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'categories'=>$categories,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu,'states'=>$states]);
     }
     public function generatequotation(Request $request){
-
-        $enquiries = Requirement::where('id',$request->id)->update([
-                'quotation'=> "generated"
-        ]);
+        $cgst = round($request->cgst,2);
+        $sgst = round($request->sgst,2);
+        $igst = round($request->igst,2);
+    
         $year = date('Y');
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
@@ -3476,8 +3475,9 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $quot->unitprice = $request->price;
            $quot->pricewithoutgst = $request->withoutgst;
            $quot->totalamount =$request->display;
-           $quot->cgst  = $request->cgst;
-           $quot->sgst  = $request->sgst;
+           $quot->cgst  = $cgst;
+           $quot->sgst  = $sgst;
+           $quot->igst = $igst;
            $quot->totaltax  = $request->totaltax;
            $quot->amountwithgst  = $request->withgst;
            $quot->unit = $request->unit;
@@ -3487,6 +3487,10 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $quot->description = $request->description;
            $quot->shipaddress  = $request->ship;
            $quot->billaddress   = $request->bill;
+           $quot->cgstpercent = $request->cgstpercent;
+           $quot->sgstpercent = $request->sgstpercent;
+           $quot->igstpercent = $request->igstpercent;
+           $quot->gstpercent =$request->gstpercent;
            $quot->save();
       }
       else{
@@ -3494,8 +3498,8 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $check->unitprice = $request->price;
            $check->pricewithoutgst = $request->withoutgst;
            $check->totalamount =$request->display;
-           $check->cgst  = $request->cgst;
-           $check->sgst  = $request->sgst;
+           $check->cgst  = $cgst;
+           $check->sgst  = $sgst;
            $check->totaltax  = $request->totaltax;
            $check->amountwithgst  = $request->withgst;
            $check->amount_word  = $request->dtow1; 
@@ -3506,10 +3510,14 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $check->billaddress   = $request->bill;
            $check->save();
       }
+        $enquiries = Requirement::where('id',$request->id)->update([
+                'quotation'=> "generated"
+        ]);
            return back();
     }
     public function getgstvalue(Request $request){
-        $gstvalue = Gst::where('category',$request->name)->get();
+       
+        $gstvalue = Gst::where('category',$request->name)->where('state',$request->state)->get();
         $array = [];
         $id = $request->x;
         array_push($array,['gstvalue'=>$gstvalue,'id'=>$id]);

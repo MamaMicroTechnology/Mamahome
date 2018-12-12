@@ -125,6 +125,7 @@ function openCitytest(evt, cityName) {
                         <th> Confirm Order </th>
                        
                         <th>Get Purchase Order</th>
+                        <th>Supplier Invoice</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -222,7 +223,51 @@ function openCitytest(evt, cityName) {
                         </div>
                       </div>
                     </div>
+<!-- Modal -->
+<div id="supplier{{$rec->orderid}}{{$rec->manu_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" >
+      <div class="modal-header" style="background-color: green;color:white;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"  style="text-align: center;">Supplier Invoice</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{{ URL::to('/') }}/supplierinvoice?id={{$rec->orderid}}&&mid={{$rec->manu_id}}&&project_id={{$rec->project_id}}" method="post"  enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <table class="table table-responsive table-striped" border="1">
+                <tr>
+                    <td>
+                      Supplier Invoice Number : 
+                    </td>
+                    <td><input required type="text" name="supplierinvoice" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>
+                        Invoice Date : 
+                    </td>
+                    <td>
+                      <input required type="date" name="invoicedate" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Upload Files : </td>
+                    <td>
+                        <input required type="file" name="file1" class="form-control" accept="image/*"><br>
+                        <input type="file" name="file2" class="form-control" accept="image/*">
+                    </td>
+                </tr>
+            </table><center>
+           <button type="submit" name="btnSubmit" align="center" class="btn btn-success">Submit</button></center>
+       </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
 
+  </div>
+</div>
 <!-- payment details modal -->
 
 <div id="purchase{{$rec->orderid}}{{$rec->manu_id}}" class="modal fade" role="dialog">
@@ -248,7 +293,7 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                     <td>Category :</td>
                                     <td>
-                                    <select id="supplier{{$rec->orderid}}"  class="form-control" >
+                                    <select id="supply{{$rec->orderid}}"  class="form-control" >
                                         <option>--Select Category--</option>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
@@ -617,22 +662,36 @@ function openCitytest(evt, cityName) {
                      
                         @if($rec->purchase_order == "yes"  )
                             @if($rec->manu_id != null)
-                            <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid,'mid'=>$rec->manu_id]) }}" class="btn btn-sm" style="background-color: rgb(204, 102, 153);color:white;">Manufacturer Purchase Order</a>
+                            <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid,'mid'=>$rec->manu_id]) }}" class="btn btn-xs" style="background-color: rgb(204, 102, 153);color:white;">Manufacturer Purchase Order</a>
                             @else
-                             <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid]) }}" class="btn btn-sm" style="background-color: rgb(204, 102, 153);color:white;">Purchase Order</a>
+                             <a href="{{ route('downloadpurchaseOrder',['id'=>$rec->orderid]) }}" class="btn btn-xs" style="background-color: rgb(204, 102, 153);color:white;">Purchase Order</a>
                               @endif
                           @else
                           @if($rec -> project_id == null)
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Get Manufacturer Purchase Order</button>
+                            <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Get Manufacturer Purchase Order</button>
                             @else
-                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Get Purchase Order</button>
+                                <button type="button" class="btn btn-success btn-xs"  data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Get Purchase Order</button>
                           @endif
                          @endif
                      </td>
-                        
+                    <td>
+                     @foreach($invoice as $inv)
+                    @if($inv->order_id == $rec->orderid)
+                    <a href="{{ route('downloadSupplierInvoice',['id'=>$rec->orderid,'mid'=>$rec->manu_id]) }}" class="btn btn-xs" style="background-color: rgb(204, 102, 153);color:white;">Supplier Invoice</a>
+                        @endif
+                     @endforeach
+                  <?php 
+                                $sp =count($rec->supplier_invoice);
+                             ?> 
+                    @if($sp == 0)
+                    <button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#supplier{{$rec->orderid}}{{$rec->manu_id}}">Input Supplier Invoice</button>
+                    @endif
+                  
+                     
+                  
+                  </td>                     
                        <td>
-                       
-                            
+
                              <div class="btn-group">
                                 <!-- <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a> -->
                                
@@ -1014,13 +1073,13 @@ function NumToWord1(inputNumber, outputControl ,arg) {
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function description(arg) {
-     var z = document.getElementById('supplier'+arg);
+     var z = document.getElementById('supply'+arg);
   var name = z.options[z.selectedIndex].value;
   document.getElementById('category'+arg).value = name;
 }
 function showthis(arg){
 
-  var z = document.getElementById('supplier'+arg);
+  var z = document.getElementById('supply'+arg);
   var name = z.options[z.selectedIndex].value;
   var x = document.getElementById('state'+arg);
   var state = x.options[x.selectedIndex].value;
@@ -1049,17 +1108,20 @@ else if(name == "M-SAND" && state == "2"){
     var sgstvalue = 2.5;
     var igstvalue = 5;
 }
-else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS" && state == "1"){
+else if( (state == "1") && (name == "PLUMBING" || "STEEL" || "ELECTRICALS") ){
     var percent = 1.18;
     var gstvalue = 9;
     var sgstvalue = 9;
     var igstvalue = "";
+
+   
 }
-else if(name == "PLUMBING" || "STEEL" || "ELECTRICALS" && state == "2"){
+else if( (state == "2") && (name == "PLUMBING" || "STEEL" || "ELECTRICALS") ){
     var percent = 1.18;
     var gstvalue = 9;
     var sgstvalue = 9;
     var igstvalue = 18;
+
 }
 else{
     var percent = 1.28;
@@ -1070,7 +1132,7 @@ else{
 
 var g1 = gstvalue;
 var g2 = sgstvalue;
-document.getElementById('tax1'+arg).innerHTML = g1
+document.getElementById('tax1'+arg).innerHTML = g1;
 document.getElementById('tax2'+arg).innerHTML = g2;
 if(igstvalue != ""){
     
@@ -1111,7 +1173,6 @@ document.getElementById('withoutgst'+arg).innerHTML = i;
 document.getElementById('withoutgst1'+arg).value = i;
 document.getElementById('amount'+arg).value = f;
 document.getElementById('tamount'+arg).value = final;
-
 }
 
 function gothr(arg){
@@ -1151,7 +1212,7 @@ function getaddress(arg){
 </script>
 <script type="text/javascript">
     function getsuppliername(arg) {
-  var x = document.getElementById('supplier'+arg);
+  var x = document.getElementById('supply'+arg);
   var name = x.options[x.selectedIndex].value;
   var y = document.getElementById('state'+arg);
   var state = y.options[y.selectedIndex].value;
