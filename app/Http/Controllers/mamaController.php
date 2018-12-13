@@ -3167,13 +3167,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function saveUpdatedManufacturer(Request $request)
     {
-        if(Auth::user()->group_id == 22){
+        if(count($request->subward) == 0){
             $wardsAssigned = $request->subward;
         }else{
             
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $wardsAssigned = Manufacturer::where('id',$request->id)->pluck('sub_ward_id')->first();
         }
-       
+
        if($request->production){
             $pro = implode(",",$request->production);
            }else{
