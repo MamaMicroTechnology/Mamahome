@@ -11,6 +11,8 @@ use App\Requirement;
 use Auth;
 use App\ProjectDetails;
 use App\Manufacturer;
+use App\SubWard;
+
 class CustomerController extends Controller
 {
    
@@ -74,4 +76,14 @@ public function deleteuser(request $request){
 public function testindex(){
   return view('/test');
 }
+public function subward(request $request)
+{
+  $sub = SubWard::where('sub_ward_name',$request->wardid)->pluck('id')->first();
+  
+ Requirement::where('manu_id',$request->manu_id)->update(['sub_ward_id'=>$sub]);
+ Manufacturer::where('id',$request->manu_id)->update(['sub_ward_id'=>$sub]);
+ return back();
+ 
+}   
+
    }

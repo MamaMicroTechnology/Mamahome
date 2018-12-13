@@ -21,6 +21,8 @@ Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
 Route::get('/deleteuser','CustomerController@deleteuser');
 Route::get('/test','CustomerController@testindex');
+Route::post('/subward','CustomerController@subward');
+
 
 
 Route::get('/getid','HomeController@getid');

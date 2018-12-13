@@ -3791,6 +3791,7 @@ date_default_timezone_set("Asia/Kolkata");
 
         $constraction = AssignStage::where('user_id',Auth::user()->id)->pluck('constraction_type')->first();
 
+
         $ground = AssignStage::where('user_id',Auth::user()->id)->pluck('Floor')->first();
 
         $basement = AssignStage::where('user_id',Auth::user()->id)->pluck('basement')->first();
@@ -3911,11 +3912,12 @@ date_default_timezone_set("Asia/Kolkata");
                         $cons =ProjectDetails::where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
                     }
                 }
+                   
                 if(Count($cons) > 0){
-                    $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                    $projectids = $cons;
                 }
             }
-            if($date != "NULL"){
+            if(count($date) != 0){
                 if(count($projectids) != 0){
                     $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
                 }else{
@@ -4062,6 +4064,8 @@ $upvcInt = explode(",", $upvc);
 
        
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
+        $d = ProjectDetails::whereIn('project_id',$projectids)->pluck('construction_type');
+       
        
         $projects = ProjectDetails::whereIn('project_id',$projectids)
                      ->where('type',NULL)
