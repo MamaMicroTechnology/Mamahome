@@ -2187,8 +2187,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $projectlist = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->get();
         return view('projectlist',['projectlist'=>$projectlist]);
     }
-    public function editProject(Request $request)
+    public function editProject(request $request)
     {
+       
+       
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
@@ -5614,6 +5616,7 @@ public function confirmedvisit(Request $request){
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->where('wards.id',$found1)
+                            ->where('project_details.type',NULL)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
                         
@@ -5625,6 +5628,7 @@ public function confirmedvisit(Request $request){
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->whereIn('wards.id',$tl)
+                            ->where('project_details.type',NULL)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
@@ -5635,7 +5639,7 @@ public function confirmedvisit(Request $request){
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->where('sub_ward_id',$assigned)
-
+                            ->where('project_details.type',NULL)                            
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
 
@@ -5647,7 +5651,6 @@ public function confirmedvisit(Request $request){
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            
                             ->get();
             }
 
@@ -8166,17 +8169,17 @@ public function display(request $request){
                         ->paginate('20');
              
         }
-       else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
+        else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
            
-                 $from=$request->from;
-                 $to=$request->to;
-                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
-                        ->where('quality','!=',"Fake")
-                        ->where('project_status','!=',"Closed")
-                         ->whereIn('project_id',$projectsat)
-                        ->paginate('20');
-             
-        }
+            $from=$request->from;
+            $to=$request->to;
+            $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                   ->where('quality','!=',"Fake")
+                   ->where('project_status','!=',"Closed")
+                    ->whereIn('project_id',$projectsat)
+                   ->paginate('20');
+        
+   }
 
         else{
                 $projectid = new Collection;

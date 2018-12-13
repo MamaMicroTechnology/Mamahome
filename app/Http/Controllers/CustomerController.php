@@ -71,5 +71,7 @@ public function deleteuser(request $request){
 
    return back();
 }
-
+public function testindex(){
+  return view('/test');
+}
    }

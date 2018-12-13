@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
 Route::get('/deleteuser','CustomerController@deleteuser');
+Route::get('/test','CustomerController@testindex');
 
 
 Route::get('/getid','HomeController@getid');
@@ -42,7 +43,7 @@ Route::get('/manu_map','TlController@manumap');
 Route::get('/details','AssignManufacturersController@details');
 
 
-Route::get('/ticketchat','HomeController@chat');
+ Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
  Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');

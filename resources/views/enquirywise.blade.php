@@ -23,7 +23,7 @@
                     <tbody id="mainPanel">
                        @foreach($projects as $project)
                        <tr>
-                            <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}">{{ $project->project_id }}</a></td>
+                            <td style="text-align:center;"><a  href="{{ URL::to('/') }}/admindailyslots?projectId={{$project->project_id}}&&lename={{ $project->name }}" >{{ $project->project_id }}</a></td>
                             <td>{{ $project->requirement_date }}  </td> 
                             <td>{{ $project->procurement_contact_no      }}</td>
                             <td>{{ $project->quantity }}  </td>                     
