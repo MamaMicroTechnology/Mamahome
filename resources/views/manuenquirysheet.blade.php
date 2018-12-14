@@ -17,7 +17,7 @@
                        	 <button type="submit" value="submit" class="btn btn-sm btn-primary" >submit</button>
                        	
                        </form>
-					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
+					<a href="{{ URL::to('/') }}/manuenquiry" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
@@ -172,7 +172,7 @@
 						@foreach($enquiries as $enquiry)
                         @if($enquiry->status != "Not Processed")
 							<td style="text-align:center;">
-								<a target="_blank" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">
+								<a target="_blank" href="{{ URL::to('/') }}/viewmanu?id={{ $enquiry->manu_id }}">
 									 {{$enquiry->manu_id}}
 								</a> 
 							</td>

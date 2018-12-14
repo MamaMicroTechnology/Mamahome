@@ -302,6 +302,7 @@ if($aggregates_required != null){
 public function inputdata(Request $request)
     {
 
+
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
 
            $cat = category::where('id',$request->cat)->pluck('id')->first();
@@ -364,8 +365,16 @@ public function inputdata(Request $request)
 
         $var2 = count($category);
         $storesubcat =$request->subcat[0]; 
-            
+           if(count($request->sub_ward_id) > 0){
         $ward = $request->sub_ward_id;
+            
+           }else{
+             $find = Manufacturer::where('id',$request->manu_id)->pluck('sub_ward_id')->first();
+             $ward = $find;
+
+           }
+         
+
         $x = DB::table('requirements')->insert(['project_id'    =>'',
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,

@@ -49,12 +49,13 @@ NULL?$projects->proc->contact:$projects->contact_no }}</td>
 @if(!isset($_GET['projectId']))
 <td><label>Project* : </label></td>
 <td>
-<select required class="form-control" id='selectprojects'
-name="selectprojects" onchange="getAddress()">
+<select required class="form-control" id='manu_id'
+name="manu_id" onchange="getAddress()">
 </select>
 </td>
 @else
 <td><label>Manufacturer ID : </label></td>
+<input type="hidden" value="{{ $projects->id }}" name="manu_id">
 <td >
 <input type="hidden" value="{{ $projects->id }}" name="manu_id">
 <input type="hidden" value="{{ $projects->sub_ward_id }}" name="sub_ward_id">
@@ -419,6 +420,59 @@ function submitinputview(){
 //     return arg.
     
 // }
+
+function getProjects()
+{
+    var x = document.getElementById('econtact').value;
+    document.getElementById('error').innerHTML = '';
+    if(x)
+    {
+        $.ajax({
+            type: 'GET',
+            url: "{{URL::to('/')}}/getmanuProjects",
+            data: {contact: x},
+            async: false,
+            success: function(response)
+            {
+                if(response == 'Nothing Found')
+                {
+                    document.getElementById('econtact').style.borderColor = "red";
+                    document.getElementById('error').innerHTML = "<br><div class='alert alert-danger'>No Projects Found !!!</div>";
+                    document.getElementById('econtact').value = '';
+                }
+                else
+                {
+                    var result = new String();
+                    result = "<option value='' disabled selected>----SELECT----</option>";
+                    for(var i=0; i<response.length; i++)
+                    {
+                        result += "<option value='"+response[i].manu_id+"'>"+response[i].name+"</option>";
+                    }
+                    console.log(result);
+                    console.log(response);
+                    document.getElementById('manu_id').innerHTML =result;
+                    
+                }
+            }
+        });
+    }
+}
+function getAddress(){
+    var e = document.getElementById('manu_id');
+    var projectId = e.options[e.selectedIndex].value;
+    
+    $.ajax({
+        type: 'GET',
+        url: "{{ URL::to('/') }}/getmanuAddress",
+        async: false,
+        data: { projectId : projectId},
+        success: function(response){
+            
+            document.getElementById('elocation').value = response.address;
+        }
+    })
+}
+
 </script>
 
 @endsection

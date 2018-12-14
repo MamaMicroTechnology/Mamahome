@@ -363,6 +363,52 @@ class HomeController extends Controller
             return response()->json('Error !!!');
         }
     }
+
+
+ public function getmanuProjects(Request $request)
+    {
+        $contact = $request->contact;
+        
+    
+       $x = Manufacturer::join('mprocurement_details','mprocurement_details.manu_id','=','manufacturers.id')
+                                ->where('mprocurement_details.contact',$contact)
+                                ->get();
+        if(count($x)==0){
+               $x = Manufacturer::join('manager_details','manager_details.manu_id','=','manufacturers.id')
+                            ->where('manager_details.contact',$contact)
+                            ->get();
+
+            if(count($x) == 0)
+            {
+                $x = Manufacturer::join('mowner_details','mowner_details.manu_id','=','manufacturers.id')
+                        ->where('mowner_details.contact',$contact)
+                        ->get();
+                if(count($x) == 0)
+                {
+                    $x = Manufacturer::join('salescontact_details','salescontact_details.manu_id','=','manufacturers.id')
+                        ->where('salescontact_details.contact',$contact)
+                        ->get();
+                        if(count($x) == 0){
+                            $x = 'Nothing Found';
+                        }
+                }
+            }
+        }
+        if($x)
+        {
+            return response()->json($x);
+        }
+        else
+        {
+            return response()->json('Error !!!');
+        }
+    }
+
+
+
+
+
+
     public function enquirysheet1(Request $request)
     {
                          // dd( $enquiries);
@@ -5500,6 +5546,11 @@ public function confirmedvisit(Request $request){
     public function getAddress(Request $request)
     {
         $address = SiteAddress::where('project_id',$request->projectId)->first();
+        return response()->json($address);
+    }
+    public function getmanuAddress(Request $request)
+    {
+        $address = Manufacturer::where('id',$request->projectId)->first();
         return response()->json($address);
     }
     public function getsupplier(Request $request)

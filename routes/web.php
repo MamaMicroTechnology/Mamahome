@@ -37,6 +37,7 @@ Route::get('/subwardfind','AssignManufacturersController@find');
 Route::get('/findsubward','AssignManufacturersController@findsubward');
 Route::get('/subfind','AssignManufacturersController@subfind');
 Route::get('/viewmanu','AssignManufacturersController@viewmanu');
+
 //tl dashboard work
 Route::get('/delete_enquiry','TlController@delete_enquiry');
 Route::get('/search_enquiry','TlController@search_enquiry');
@@ -134,6 +135,8 @@ Route::get('/inputview','HomeController@inputview');
 Route::get('/manuenquiry','AssignManufacturersController@manuenquiry');
 
 Route::get('/getProjects','HomeController@getProjects');
+Route::get('/getmanuProjects','HomeController@getmanuProjects');
+
 Route::get('/showThisProject','HomeController@showProjectDetails');
 
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
@@ -149,6 +152,8 @@ Route::get('/getgstvalue','mamaController@getgstvalue');
 
 
 Route::get('/getAddress','HomeController@getAddress');
+Route::get('/getmanuAddress','HomeController@getmanuAddress');
+
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');

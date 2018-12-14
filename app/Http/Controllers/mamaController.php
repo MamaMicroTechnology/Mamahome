@@ -2032,6 +2032,22 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'requirement_date' => $request->edate,
             'price' =>$request->price
         ]);
+       
+     $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([
+              'main_category' => $categoryNames,
+              'brand' => $brandnames,
+             'sub_category'  =>$subcategories,
+             'quantity' => $request->totalquantity
+                   
+
+
+     ]);
+     
+
+
+
+
+
 $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
@@ -3220,6 +3236,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->total_area = $request->total_area;
         $manufacturer->production_type = $pro;
         $manufacturer->updated_by = Auth::user()->id;
+        $manufacturer->quality  = $request->quality;
 
 
         $manufacturer->save();
