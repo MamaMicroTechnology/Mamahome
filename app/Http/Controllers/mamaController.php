@@ -3237,8 +3237,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->production_type = $pro;
         $manufacturer->updated_by = Auth::user()->id;
         $manufacturer->quality  = $request->quality;
-
-
+        $manufacturer->sample  = $request->sample;
+        $manufacturer->ggbs  = $request->ggbs;
+        $manufacturer->other  = $request->other;
+        $manufacturer->exbrand   = $request->exbrand;
+        $manufacturer->brandquantity   = $request->brandquantity;
         $manufacturer->save();
        
         Salescontact_Details::where("manu_id",$request->id)->update([
