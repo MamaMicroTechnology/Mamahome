@@ -1221,6 +1221,9 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; - Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; - Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
+      
+         <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
     <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
@@ -1314,6 +1317,8 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
     </div>
      <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
@@ -1323,6 +1328,10 @@ function myTimer() {
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
     <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
     <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
@@ -1361,6 +1370,10 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
       <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
