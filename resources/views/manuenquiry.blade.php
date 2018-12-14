@@ -47,7 +47,7 @@ NULL?$projects->proc->contact:$projects->contact_no }}</td>
 </tr>
 <tr>
 @if(!isset($_GET['projectId']))
-<td><label>Project* : </label></td>
+<td><label>Manufacturer* : </label></td>
 <td>
 <select required class="form-control" id='manu_id'
 name="manu_id" onchange="getAddress()">

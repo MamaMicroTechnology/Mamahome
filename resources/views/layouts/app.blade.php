@@ -1221,8 +1221,8 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; - Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; - Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
       
-         <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
 
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
