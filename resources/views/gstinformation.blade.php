@@ -73,20 +73,35 @@
 <body>
 <div class="col-md-12">
     <div class="panel panel-primary" style="overflow-x: scroll;">
-        <div class="panel-heading text-center">
-            <b style="color:white;font-size:1.4em">GST Information</b>
-           <button type="button" onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-3px;" > <i class="fa fa-arrow-circle-left" style="width:30px;"></i></button>
+        <div class="panel-heading" style="height:50px;">
+        <form action="{{ URL::to('/') }}/gstinformation" method="get" class="pull-left">
+                       	{{ csrf_field() }}
+                       	<div class="col-md-3">
+						<input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
+
+							</div>
+							<div class="col-md-3">
+								<input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
+							</div>
+							<div class="col-md-3">
+								<select id="categ" class="form-control" name="category">
+								<option value="">--Select Category--</option>
+								@foreach($category as $category)
+								<option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+								@endforeach
+							</select>
+							</div>
+							<div class="col-md-3">
+                       	 <button type="submit" value="submit" class="form-control btn btn-sm btn-primary" >submit</button>
+								
+							</div>
+                       	
+                       </form>
+           
         </div>
         <div id="myordertable" class="panel-body">
-            <form action="orders" method="get">
-                <div class="input-group col-md-3 pull-right">
-                    <input type="text" class="form-control pull-left" placeholder="Enter Order id" name="projectId" id="projectId">
-                    
-                    <div class="input-group-btn">
-                        <button type="submit" class="btn btn-success">Search</button>
-                    </div>
-                </div>
-            </form>
+        
+
              
             <br><br>
             <table class="table table-responsive table-striped" border="1">
@@ -98,14 +113,13 @@
         <th>CGST(%)</th>
         <th>SGST(%)</th>
          <th>IGST(%)</th>
-         <th>Mamahome Price</th>
-        <th>MGSTWith(Amt)</th>
-        <th>MGSTWithOut(Amt)</th>
-         <th>Suplier Price</th>
-         <th>SGSTWith(Amt)</th>
-        <th>SGSTWithOut(Amt)</th>
+         <th>Selling Price<br>(Mamahome)</th>
+        <th>Mmamahome<br>(GSTWith Amt)</th>
+        <th>Mamahome<br>(GSTWithOut Amt)</th>
+         <th> Buying Price<br>(Suplier)</th>
+         <th>Suplier<br>(GSTWithAmt)</th>
+        <th>Suplier <br>(GSTWithOut Amt)</th>
         <th>Mamahome Income</th>
-
 
               </tr>
                 </thead>
@@ -118,18 +132,90 @@
        <td>{{$mamadata['Mamacgst']}}</td>
        <td>{{$mamadata['Mamasgst']}}</td>
        <td>{{$mamadata['Mamaigst']}}</td>
-       <td>{{$mamadata['Mamaprice']}}</td>
-       <td>{{$mamadata['Mamawithgst']}}</td>
-       <td>{{$mamadata['Mamawithoutgst']}}</td>
-       <td>{{$mamadata['sprice']}}</td>
-       <td>{{$mamadata['swithgst']}}</td>
-       <td>{{$mamadata['swithoutgst']}}</td>
-       <td>{{$mamadata['income']}}</td>
-
-
-
-      </tr>
+       <td>{{number_format(round($mamadata['Mamaprice']))}}</td>
+       <td>{{number_format(round($mamadata['Mamawithgst']))}}</td>
+       <td>{{number_format(round($mamadata['Mamawithoutgst']))}}</td>
+       <td>{{number_format(round($mamadata['sprice']))}}</td>
+       <td>{{number_format(round($mamadata['swithgst']))}}</td>
+       <td>{{number_format(round($mamadata['swithoutgst']))}}</td>
+       <td>{{number_format(round($mamadata['income']))}}</td>
+   </tr>
       @endforeach
+      <tr>
+      	 <td>Total</td>
+       <td>-</td>
+       <td>-</td>
+       <td>-</td>
+       <td>-</td>
+       <td>-</td>
+       <td>-</td>
+        <?php 
+       $da4 = sizeof($data);   
+        $sumdata4 = [];
+         $i=0;
+       for($i=0;$i<$da4;$i++){
+      
+           $d4 = $data[$i]['Mamawithgst'];
+           array_push($sumdata4,$d4);
+       } 
+
+     $fdata4 = array_sum($sumdata4);
+       ?>
+       <td>{{number_format(round($fdata4))}}</td>
+        <?php 
+       $da3 = sizeof($data);   
+        $sumdata3 = [];
+         $i=0;
+       for($i=0;$i<$da3;$i++){
+      
+           $d3 = $data[$i]['Mamawithoutgst'];
+           array_push($sumdata3,$d3);
+       } 
+
+     $fdata3 = array_sum($sumdata3);
+       ?>
+       <td>{{number_format(round($fdata3))}}</td>
+       <td>-</td>
+        <?php 
+       $da2 = sizeof($data);   
+        $sumdata2 = [];
+         $i=0;
+       for($i=0;$i<$da2;$i++){
+      
+           $d2 = $data[$i]['swithgst'];
+           array_push($sumdata2,$d2);
+       } 
+
+     $fdata2 = array_sum($sumdata2);
+       ?>
+       <td>{{number_format(round($fdata2))}}</td>
+       <?php 
+       $da1 = sizeof($data);   
+        $sumdata1 = [];
+         $i=0;
+       for($i=0;$i<$da1;$i++){
+      
+           $d1 = $data[$i]['swithoutgst'];
+           array_push($sumdata1,$d1);
+       } 
+
+     $fdata1 = array_sum($sumdata1);
+       ?>
+       <td>{{number_format(round($fdata1))}}</td>
+       <?php 
+       $da = sizeof($data);   
+        $sumdata = [];
+         $i=0;
+       for($i=0;$i<$da;$i++){
+      
+           $d = $data[$i]['income'];
+           array_push($sumdata,$d);
+       } 
+
+     $fdata = array_sum($sumdata);
+       ?>
+       <td>{{number_format(round($fdata))}}</td>
+      </tr>
 
 
                    </tbody>

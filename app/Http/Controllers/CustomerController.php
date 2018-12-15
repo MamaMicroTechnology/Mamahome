@@ -16,6 +16,8 @@ use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Gst;
 use DB;
+use App\Category;
+
 
 class CustomerController extends Controller
 {
@@ -93,12 +95,34 @@ public function subward(request $request)
 public function gstinfo(request $request){
 
 
-  $orders = DB::table('orders')->where('status',"Order Confirmed")->get();
-  
+  $category = Category::all();
+ if($request->from && $request->to && !$request->category){
 
+        $from = $request->from;
+        $to = $request->to;
+  $orders = DB::table('orders')->where('status',"Order Confirmed")->where('created_at','>',$from)->where('created_at','<',$to)->get();
+   
+  $data = [];
+ foreach ($orders as $order) {
+    $mamacgst =MamahomePrice::where('order_id',$order->id)->pluck('cgstpercent')->first();
+    $mamasgst =MamahomePrice::where('order_id',$order->id)->pluck('sgstpercent')->first();
+    $mamaigst =MamahomePrice::where('order_id',$order->id)->pluck('igst')->first();
+    $mamaquantity =MamahomePrice::where('order_id',$order->id)->pluck('quantity')->first();
+    $mamaprice =MamahomePrice::where('order_id',$order->id)->pluck('mamahome_price')->first();
+    $mamawithgst = MamahomePrice::where('order_id',$order->id)->pluck('amountwithgst')->first();
+    $mamawithoutgst = MamahomePrice::where('order_id',$order->id)->pluck('totalamount')->first();
+    $sprice =Supplierdetails::where('order_id',$order->id)->pluck('unit_price')->first();
+    $swithgst = Supplierdetails::where('order_id',$order->id)->pluck('totalamount')->first();
+    $swithoutgst = Supplierdetails::where('order_id',$order->id)->pluck('amount')->first();
+    $income = $mamawithoutgst - $swithoutgst ;
+    array_push($data,['id'=>$order->id,'category'=>$order->main_category,'quantity'=>$mamaquantity,'Mamaprice'=>$mamaprice,'Mamacgst'=>$mamacgst,'Mamasgst'=>$mamasgst,'Mamaigst'=>$mamaigst,'Mamawithgst'=>$mamawithgst,'Mamawithoutgst'=>$mamawithoutgst,'sprice'=>$sprice,'swithgst'=>$swithgst,'swithoutgst'=>$swithoutgst,'income'=>$income]); 
+}
+        
+  }
+else if($request->category && !$request->from && !$request->to){
+  $orders = DB::table('orders')->where('status',"Order Confirmed")->where('main_category',$request->category)->get();
 
   $data = [];
-
   foreach ($orders as $order) {
     $mamacgst =MamahomePrice::where('order_id',$order->id)->pluck('cgstpercent')->first();
     $mamasgst =MamahomePrice::where('order_id',$order->id)->pluck('sgstpercent')->first();
@@ -110,17 +134,36 @@ public function gstinfo(request $request){
     $sprice =Supplierdetails::where('order_id',$order->id)->pluck('unit_price')->first();
     $swithgst = Supplierdetails::where('order_id',$order->id)->pluck('totalamount')->first();
     $swithoutgst = Supplierdetails::where('order_id',$order->id)->pluck('amount')->first();
-
     $income = $mamawithoutgst - $swithoutgst ;
+    array_push($data,['id'=>$order->id,'category'=>$order->main_category,'quantity'=>$mamaquantity,'Mamaprice'=>$mamaprice,'Mamacgst'=>$mamacgst,'Mamasgst'=>$mamasgst,'Mamaigst'=>$mamaigst,'Mamawithgst'=>$mamawithgst,'Mamawithoutgst'=>$mamawithoutgst,'sprice'=>$sprice,'swithgst'=>$swithgst,'swithoutgst'=>$swithoutgst,'income'=>$income]); 
+}
+}else if($request->category && $request->from && $request->to){
+      $from = $request->from;
+        $to = $request->to;
+  $orders = DB::table('orders')->where('status',"Order Confirmed")->where('main_category',$request->category)->where('created_at','>',$from)->where('created_at','<',$to)->get();
 
-   array_push($data,['id'=>$order->id,'category'=>$order->main_category,'quantity'=>$mamaquantity,'Mamaprice'=>$mamaprice,'Mamacgst'=>$mamacgst,'Mamasgst'=>$mamasgst,'Mamaigst'=>$mamaigst,'Mamawithgst'=>$mamawithgst,'Mamawithoutgst'=>$mamawithoutgst,'sprice'=>$sprice,'swithgst'=>$swithgst,'swithoutgst'=>$swithoutgst,'income'=>$income]); 
+  $data = [];
+  foreach ($orders as $order) {
+    $mamacgst =MamahomePrice::where('order_id',$order->id)->pluck('cgstpercent')->first();
+    $mamasgst =MamahomePrice::where('order_id',$order->id)->pluck('sgstpercent')->first();
+    $mamaigst =MamahomePrice::where('order_id',$order->id)->pluck('igst')->first();
+    $mamaquantity =MamahomePrice::where('order_id',$order->id)->pluck('quantity')->first();
+    $mamaprice =MamahomePrice::where('order_id',$order->id)->pluck('mamahome_price')->first();
+    $mamawithgst = MamahomePrice::where('order_id',$order->id)->pluck('amountwithgst')->first();
+    $mamawithoutgst = MamahomePrice::where('order_id',$order->id)->pluck('totalamount')->first();
+    $sprice =Supplierdetails::where('order_id',$order->id)->pluck('unit_price')->first();
+    $swithgst = Supplierdetails::where('order_id',$order->id)->pluck('totalamount')->first();
+    $swithoutgst = Supplierdetails::where('order_id',$order->id)->pluck('amount')->first();
+    $income = $mamawithoutgst - $swithoutgst ;
+    array_push($data,['id'=>$order->id,'category'=>$order->main_category,'quantity'=>$mamaquantity,'Mamaprice'=>$mamaprice,'Mamacgst'=>$mamacgst,'Mamasgst'=>$mamasgst,'Mamaigst'=>$mamaigst,'Mamawithgst'=>$mamawithgst,'Mamawithoutgst'=>$mamawithoutgst,'sprice'=>$sprice,'swithgst'=>$swithgst,'swithoutgst'=>$swithoutgst,'income'=>$income]); 
+ }
+}else{
+
+ $data = []; 
+}
 
 
-  }
-
-  
-
-  return view('/gstinformation',['data'=>$data]);
+  return view('/gstinformation',['data'=>$data,'category'=>$category]);
 }
 
 
