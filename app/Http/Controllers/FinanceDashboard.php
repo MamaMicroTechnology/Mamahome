@@ -524,7 +524,7 @@ class FinanceDashboard extends Controller
          PaymentDetails::where('order_id',$request->id)->update([
             'status'=>"Received"
         ]);
-         dd();
+        
         return back()->with('Success','Payment Confirmed');
     }
     public function savesupplierdetails(Request $request){
