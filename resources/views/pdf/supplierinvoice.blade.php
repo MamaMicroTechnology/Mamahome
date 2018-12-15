@@ -52,10 +52,10 @@
 
     <div class="row">
         <div align="text-center">
-        <a  href="{{ URL::to('/') }}/public/supplierinvoice/{{$data['invoiceimage']}}">CLICK HERE TO GET {{ $data['supplier']['supplier_name']}} INVOICE</a>
+        <a  href="{{ URL::to('/') }}/public/supplierinvoice/{{$data['invoiceimage']}}"><p style="text-transform: uppercase;">CLICK HERE TO VIEW {{ $data['supplier']['supplier_name']}} INVOICE</p></a>
         </div>
         <div class="col-md-6 col-md-offset-3">
-            <h4 style="background-color:#33cc33;padding:10px;" class="text-center">INVOICE</h4>
+            <h4 style="background-color:#33cc33;padding:10px;text-transform: uppercase;" class="text-center" >{{ $data['supplier']['supplier_name']}} INVOICE</h4>
             <br>
             <div class="pull-left col-md-6" style="margin-right: 20px;margin-top: 30px;">
 
@@ -67,7 +67,8 @@
                 Email : info@mamahome360.com<br>
             </div>
             <div class="pull-right col-md-6" style="margin-right: 5%;">
-          <img src="{{ URL::to('/') }}/public/brands/{{ $data['supplierimage'] }} " height="50ppx" width="250px"> <br>
+
+          <img src="http://localhost/chaithra/public/brands/{{ $data['supplierimage'] }} " height="50px" width="150px"> <br>
                 Date : {{ date('d F, Y') }}<br>
                 LPO : {{ $data['supplier']['lpo'] }}<br>
                 Invoice Number : {{ $data['invoice']->invoice_number}}<br>

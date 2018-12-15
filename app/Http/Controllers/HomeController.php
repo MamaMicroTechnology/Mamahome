@@ -3240,7 +3240,7 @@ date_default_timezone_set("Asia/Kolkata");
             'unit'=>$request->unit
         ]);
         $cat = Order::where('id',$request->id)->pluck('main_category')->first();
-       
+        $projectid = Order::where('id',$request->id)->pluck('project_id')->first();
         $cgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('cgst')->first();
         $sgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('sgst')->first();
         $igstval =  Gst::where('category',$cat)->where('state',$request->state)->pluck('igst')->first();
@@ -3288,7 +3288,6 @@ date_default_timezone_set("Asia/Kolkata");
        
         $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
-       
         $price = new MamahomePrice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
@@ -3305,6 +3304,8 @@ date_default_timezone_set("Asia/Kolkata");
             $price->gstpercent = $percent;
             $price->igstpercent = $igstval;
             $price->unit = $request->unit;
+            $price->category = $cat;
+            $price->project_id = $projectid;
             $price->save();
              
         return back();

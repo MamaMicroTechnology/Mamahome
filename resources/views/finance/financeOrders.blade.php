@@ -1,4 +1,3 @@
-
 <?php
     $user = Auth::user()->group_id;
     $ext = ($user == 26? "finance.layouts.headers":"layouts.app");
@@ -121,10 +120,8 @@
                             <input type="hidden" name="g2" id="g2{{$order->id}}" value="{{$price->sgstpercent}}">
                             <input type="hidden" name="g3" id="g3{{$order->id}}" value="{{$price->gstpercent}}">
                             <input type="hidden" name="i1" id="i1{{$order->id}}" value="{{$price->igstpercent}}">
-                            <input type="hidden" name="totaligst" id="tigst{{$order->id}}" value="{{$price->igst}}">
-                            <?php 
-                              $igsttax = (int)$price->igst;    
-                            ?>
+                            
+                           
                            <tr>
                             <?php 
                                      $rec =count($order->confirm_payment); 
@@ -215,16 +212,12 @@
                                         <label class=" alert-success pull-right" id="lblWord1{{$order->id}}"></label>
                                       </td>
                                     </tr>
-                                    <tr class="hidden">
-                                      <td><input  id="igsttax{{$order->id}}" type="text" name="igsttax" value="{{$igsttax}}">
-                                      </td>
-                                        <label class=" alert-success pull-right" id="lblWord3{{$order->id}}"></label>
-                                    </tr>
                                     <tr>
                                         <td>IGST({{$price->igstpercent}}%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;IGST<label class=" alert-success pull-left" id="igst{{$order->id}}"></label>/-
                                              <input   id="igst1{{$order->id}}" type="text" name="igst" value="{{$price->igst}}">
+                                             <label class=" alert-success pull-right" id="lblWord3{{$order->id}}"></label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -296,7 +289,7 @@
               </tr>
               <tr>
                 <td>Date :</td>
-                <td>{{$payment->date}}</td>
+                <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
               </tr>
               @if($payment->payment_mode == "CASH")
               <tr>
@@ -318,6 +311,21 @@
               </tr>
               @endif
               @if($payment->payment_mode == "RTGS")
+              <tr>
+                <td>RTGS Image: </td>
+                  <td>
+                      <?php
+                             $images = explode(",", $payment->rtgs_file );
+                            ?>
+                           <div class="col-md-12">
+                               @for($i = 0; $i < count($images); $i++)
+                                   <div class="col-md-3">
+                                        <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/rtgs_files/{{ $images[$i] }}" class="img img-thumbnail">
+                                   </div>
+                               @endfor
+                            </div>
+                  </td>
+              </tr>
               <tr>
                 <td>Reference Number :</td>
                 <td>{{$payment->account_number}}<br></td>
@@ -958,7 +966,7 @@ var g4 = document.getElementById('g1'+arg).value;
 var g5 = document.getElementById('g2'+arg).value;
 var i1 = document.getElementById('i1'+arg).value;
 var i2 = document.getElementById('i1'+arg).value;
-var totaligst = document.getElementById('tigst'+arg).value;
+
 
 var withoutgst = (x /g3);
 var t = (withoutgst * y);
@@ -968,11 +976,12 @@ var sgt = (t * g2)/100;
 var igst = (t * i1)/100;
 var gst1 = (t * g4)/100;
 var sgt1 = (t * g5)/100;
-var igst1 = (t * i2)/100;
+var ig = (t * i2)/100;
+var igst1 = Math.round(ig);
 var withgst = (gst + sgt + t + igst);
 var final = Math.round(withgst);
 var tt = (gst + sgt);
-var igsttax = Math.round(totaligst);
+
 var totaltax = Math.round(tt);
 document.getElementById('display'+arg).innerHTML = t;
 document.getElementById('cgst'+arg).innerHTML = gst;
@@ -987,18 +996,17 @@ document.getElementById('sgst1'+arg).value = sgt1;
 document.getElementById('igst1'+arg).value = igst1;
 document.getElementById('totaltax'+arg).innerHTML = tt;
 document.getElementById('totaltax1'+arg).value = totaltax;
-document.getElementById('igsttax'+arg).value = igsttax;
 document.getElementById('amountwithgst'+arg).value = final;
 }
 function finalsubmit(arg){
   var input =  document.getElementById('amount'+arg).value;
   var output = document.getElementById('totaltax1'+arg).value;
   var inout = document.getElementById('amountwithgst'+arg).value;
-  var tax = document.getElementById('igsttax'+arg).value;
+  var tax = document.getElementById('igst1'+arg).value;
   document.getElementById('amount'+arg).addEventListener("click", NumToWord(input,'lblWord'+arg,arg));
   document.getElementById('totaltax1'+arg).addEventListener("click", NumToWord1(output,'lblWord1'+arg,arg));
   document.getElementById('amountwithgst'+arg).addEventListener("click", NumToWord2(inout,'lblWord2'+arg,arg));
-  document.getElementById('igsttax'+arg).addEventListener("click", NumToWord3(tax,'lblWord3'+arg,arg));
+  document.getElementById('igst1'+arg).addEventListener("click", NumToWord3(tax,'lblWord3'+arg,arg));
 
 }
 </script>

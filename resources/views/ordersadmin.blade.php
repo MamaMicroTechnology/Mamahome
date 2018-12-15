@@ -161,7 +161,7 @@ function openCitytest(evt, cityName) {
                                     <span class="badge">{{ $counts[$rec->orderid] }}</span>
                                 </button>
                             @elseif($rec->order_status != "Order Cancelled")
-                                <a href="{{URL::to('/')}}/paymentmode?id={{$rec->orderid}}" target="_blank" class="btn btn-success btn-xs">Payment Details</a>
+                                <a href="{{URL::to('/')}}/paymentmode?id={{$rec->orderid}}&&pid={{$rec->project_id}}&&mid={{$rec->manu_id}}" target="_blank" class="btn btn-success btn-xs">Payment Details</a>
                             @endif
 
 </div>
@@ -238,23 +238,25 @@ function openCitytest(evt, cityName) {
             <table class="table table-responsive table-striped" border="1">
                 <tr>
                     <td>
-                      Supplier Invoice Number : 
+                      <label>Supplier Invoice Number : </label>
                     </td>
                     <td><input required type="text" name="supplierinvoice" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>
-                        Invoice Date : 
+                       <label> Invoice Date : </label>
                     </td>
                     <td>
                       <input required type="date" name="invoicedate" class="form-control">
                     </td>
                 </tr>
                 <tr>
-                    <td>Upload Files : </td>
+                    <td>
+                        <label>Upload Files : </label>
+                    </td>
                     <td>
                         <input required type="file" name="file1" class="form-control" accept="image/*"><br>
-                        <input type="file" name="file2" class="form-control" accept="image/*">
+                         <input type="file" name="file2" class="form-control" accept="image/*">
                     </td>
                 </tr>
             </table><center>
@@ -293,7 +295,7 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                     <td>Category :</td>
                                     <td>
-                                    <select id="supply{{$rec->orderid}}"  class="form-control" >
+                                    <select name="category" id="supply{{$rec->orderid}}"  class="form-control" >
                                         <option>--Select Category--</option>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
@@ -523,11 +525,26 @@ function openCitytest(evt, cityName) {
                 </td>
               </tr>
                <tr>
-                <td>Cash Deposite Date :</td>
+                <td>Cash Deposit Date :</td>
                 <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
               </tr>
               @endif
               @if($payment->payment_mode == "RTGS")
+              <tr>
+                  <td>RTGS Image: </td>
+                  <td>
+                      <?php
+                             $images = explode(",", $payment->rtgs_file );
+                            ?>
+                           <div class="col-md-12">
+                               @for($i = 0; $i < count($images); $i++)
+                                   <div class="col-md-3">
+                                        <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/rtgs_files/{{ $images[$i] }}" class="img img-thumbnail">
+                                   </div>
+                               @endfor
+                            </div>
+                  </td>
+              </tr>
                <tr>
                 <td>Date :</td>
                 <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
@@ -701,10 +718,10 @@ function openCitytest(evt, cityName) {
 
                              ?> 
                                 @if($po == 0)
-                                        <button disabled type="button" class="btn btn-primary btn-sm">Edit</button>
+                                        <button disabled type="button" class="btn btn-primary btn-xs">Edit</button>
                                         <a href="{{ URL::to('/') }}/cancelOrder?id={{$rec->orderid}}" class="btn btn-xs btn-danger pull-right" >Cancel</a>
                                 @else
-                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Edit</button>
+                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#purchase{{$rec->orderid}}{{$rec->manu_id}}">Edit</button>
                                         <a href="{{ URL::to('/') }}/cancelOrder?id={{$rec->orderid}}" class="btn btn-xs btn-danger pull-right" >Cancel</a>
                                 @endif
                           

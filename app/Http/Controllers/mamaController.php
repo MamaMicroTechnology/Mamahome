@@ -2915,7 +2915,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
              $start = "08:00 AM";
              $now = date('H:i A');
         }
-      dd($start);
+     
       
         if( $now > $start && count($check)== 0 && $remark == null){         
             $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";

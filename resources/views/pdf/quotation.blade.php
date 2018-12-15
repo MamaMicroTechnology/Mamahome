@@ -97,6 +97,10 @@
                             <th colspan="2">QUANTITY</th>
                             <th>RATE/UNIT</th>
                             <th colspan="2" >AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
+                                <?php
+                           $count = count($data['price']['igstpercent']);
+                        
+                            ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,19 +132,37 @@
                             <td colspan="2" class="text-left">{{ $data['price']->totalamount }}</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="text-left">CGST(14%)</td>
+                            <td colspan="2" class="text-left">CGST({{$data['price']->cgstpercent}}%)</td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">{{ $data['price']->cgst }}</td>
+                            <td colspan="2" class="text-left">
+                                @if($count == 1)
+                                  -
+                                  @else
+                                    {{ $data['price']->cgst }}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="text-left">SGST(14%)</td>
+                            <td colspan="2" class="text-left">SGST({{$data['price']->sgstpercent}}%)</td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">{{ $data['price']->sgst }}</td>
+                            <td colspan="2" class="text-left">
+                                @if($count == 1)
+                                  -
+                                  @else
+                                {{ $data['price']->sgst }}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="text-left">IGST</td>
+                            <td colspan="2" class="text-left">IGST({{$data['igst']}}%)</td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left"></td>
+                            <td colspan="2" class="text-left">
+                                @if($count == 1)
+                                {{ $data['price']->igst }}
+                                @else
+                                    -
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" class="text-left"><b>TOTAL</b></td>
@@ -155,7 +177,7 @@
                         <tr>
                             <th rowspan=2>HSN/SAC</th>
                             <th rowspan=2>Taxable Value</th>
-                            <th colspan=2>CGST</th><th colspan=2>IGST</th>
+                            <th colspan=2>CGST</th>
                             <th colspan=2>SGST</th>
                             <th colspan=2>IGST</th>
                             <th rowspan=2>Total Tax Amount</th>
@@ -171,12 +193,24 @@
                         <tr>
                             <td></td>
                             <td>{{ $data['price']->totalamount}}</td>
-                            <td>14.00%</td>
-                            <td>{{ $data['price']->cgst}}</td>
-                            <td>14.00%</td>
-                            <td>{{ $data['price']->sgst}}</td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$data['price']->cgstpercent}}%</td>
+                            <td>@if($count == 1)
+                                  -
+                                  @else
+                                    {{ $data['price']->cgst }}
+                                @endif</td>
+                            <td>{{$data['price']->sgstpercent}}%</td>
+                            <td>@if($count == 1)
+                                  -
+                                  @else
+                                    {{ $data['price']->cgst }}
+                                @endif</td>
+                            <td>{{$data['igst']}}%</td>
+                            <td>@if($count == 1)
+                                {{ $data['price']->igst }}
+                                @else
+                                    -
+                                @endif</td>
                             <td>{{ $data['price']->totaltax}}</td>
                         </tr>
 <tr class="clearfix">
