@@ -12,6 +12,10 @@ use Auth;
 use App\ProjectDetails;
 use App\Manufacturer;
 use App\SubWard;
+use App\MamahomePrice;
+use App\Supplierdetails;
+use App\Gst;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -84,6 +88,41 @@ public function subward(request $request)
  Manufacturer::where('id',$request->manu_id)->update(['sub_ward_id'=>$sub]);
  return back();
  
-}   
+}
+
+public function gstinfo(request $request){
+
+
+  $orders = DB::table('orders')->where('status',"Order Confirmed")->get();
+  
+
+
+  $data = [];
+
+  foreach ($orders as $order) {
+    $mamacgst =MamahomePrice::where('order_id',$order->id)->pluck('cgstpercent')->first();
+    $mamasgst =MamahomePrice::where('order_id',$order->id)->pluck('sgstpercent')->first();
+    $mamaigst =MamahomePrice::where('order_id',$order->id)->pluck('igst')->first();
+    $mamaquantity =MamahomePrice::where('order_id',$order->id)->pluck('quantity')->first();
+    $mamaprice =MamahomePrice::where('order_id',$order->id)->pluck('mamahome_price')->first();
+    $mamawithgst = MamahomePrice::where('order_id',$order->id)->pluck('amountwithgst')->first();
+    $mamawithoutgst = MamahomePrice::where('order_id',$order->id)->pluck('totalamount')->first();
+    $sprice =Supplierdetails::where('order_id',$order->id)->pluck('unit_price')->first();
+    $swithgst = Supplierdetails::where('order_id',$order->id)->pluck('totalamount')->first();
+    $swithoutgst = Supplierdetails::where('order_id',$order->id)->pluck('amount')->first();
+
+    $income = $mamawithoutgst - $swithoutgst ;
+
+   array_push($data,['id'=>$order->id,'category'=>$order->main_category,'quantity'=>$mamaquantity,'Mamaprice'=>$mamaprice,'Mamacgst'=>$mamacgst,'Mamasgst'=>$mamasgst,'Mamaigst'=>$mamaigst,'Mamawithgst'=>$mamawithgst,'Mamawithoutgst'=>$mamawithoutgst,'sprice'=>$sprice,'swithgst'=>$swithgst,'swithoutgst'=>$swithoutgst,'income'=>$income]); 
+
+
+  }
+
+  
+
+  return view('/gstinformation',['data'=>$data]);
+}
+
+
 
    }
