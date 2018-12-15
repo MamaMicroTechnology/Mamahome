@@ -94,7 +94,7 @@ use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Mprocurement_Details;
 use App\Gst;
-
+use App\SupplierInvoice;
 
 use Spatie\Activitylog\Models\Activity;
 
@@ -3177,6 +3177,7 @@ date_default_timezone_set("Asia/Kolkata");
         }
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
+        $invoice = SupplierInvoice::all();
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3188,6 +3189,7 @@ date_default_timezone_set("Asia/Kolkata");
             'manusuppliers'=>$manusuppliers,
             'suppliers'=>$suppliers,
             'counts'=>$counts,
+            'invoice'=>$invoice,
             'categories'=>$categories
            
         ]);
@@ -3286,7 +3288,7 @@ date_default_timezone_set("Asia/Kolkata");
             'unit'=>$request->unit
         ]);
         $cat = Order::where('id',$request->id)->pluck('main_category')->first();
-       
+        $projectid = Order::where('id',$request->id)->pluck('project_id')->first();
         $cgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('cgst')->first();
         $sgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('sgst')->first();
         $igstval =  Gst::where('category',$cat)->where('state',$request->state)->pluck('igst')->first();
@@ -3334,7 +3336,6 @@ date_default_timezone_set("Asia/Kolkata");
        
         $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
-       
         $price = new MamahomePrice;
             $price->order_id = $id;
             $price->quantity = $request->quantity;
@@ -3351,6 +3352,8 @@ date_default_timezone_set("Asia/Kolkata");
             $price->gstpercent = $percent;
             $price->igstpercent = $igstval;
             $price->unit = $request->unit;
+            $price->category = $cat;
+            $price->project_id = $projectid;
             $price->save();
              
         return back();
@@ -5556,6 +5559,7 @@ public function confirmedvisit(Request $request){
     public function getsupplier(Request $request)
     {
         $supplier = ManufacturerDetail::where('category',$request->name)->where('state',$request->state)->get();
+
         $array = [];
         $id = $request->x;
         array_push($array,['supplier'=>$supplier,'id'=>$id]);

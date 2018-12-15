@@ -30,9 +30,7 @@
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-
-            <h4 style="background-color:#FD871F;padding:5px;" class="text-center">PROFORMA INVOICE</h4>
-            
+            <h4 style="background-color:#FD871F;padding:3px;margin-top: -20px;" class="text-center">PROFORMA INVOICE</h4>   
             <div class="pull-left" style="padding-top: 20px;">
                 <b>Mama Home Pvt. Ltd.</b>
             </div>
@@ -96,7 +94,7 @@
                             <th colspan="2">AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
                             <?php
                         $count = count($data['price']['igstpercent']);
-                       $count1 = count($data['price']['cgstpercent'])
+                       $count1 = count($data['price']['cgstpercent']);
                         ?>
                         </tr>
                     </thead>
@@ -238,6 +236,7 @@
                         </tr>
                         <tr class="clearfix">
                             <td colspan="9">
+                               
                                 <div class="pull-left col-md-6 clearfix" style="padding-left: 150px;">
                                     <b>Tax Amount In Words</b> &nbsp;&nbsp;&nbsp; 
                                      @if($count1 == 1)
@@ -246,7 +245,6 @@
                                       @else
                                        {{ $data['price']['igsttax_word']}} Only
                                         @endif
-                                    
                                 </div>
                                 <br><br>
                                 <div class="pull-left col-md-6 clearfix">
@@ -254,23 +252,30 @@
                                     <br>
                                     Tax invoice will be provided once goods gets delivered<br>
                                     Reward Points are not Applicable for Offer Price<br>
-                                    <br>
-                                    This is just for a reference ,which is not applicable <br>
-                                    for GST climing
+                                    This is just for a reference ,which is not applicable for GST climing<br>
+                                    
+                                    <i><b>Bank Details</b></i><br>
+                                    Name : Mama home Pvt ltd<br>
+                                    Bank name : Axis Bank<br>
+                                    Account Number : 917020086803914<br>
+                                    Account Type : Current Account<br>
+                                    Ifsc : UTIB0003266<br>
+                                    Branch : Kodichikanahalli Bangalore- 560076<br>     
+                                    <br><br>  
                                 </div>
-                                <div class="pull-right col-md- clearfix6">
-                                    For  Mama Home Pvt Ltd 
-                                </div>
-                                <br><br><br><br>
-                                <div class="pull-left col-md-6 clearfix">
+                                <div class="pull-left col-md-6 clearfix" style="margin-top: 150px;">
                                     <i><b>Payment Terms:</b></i>
                                     <br>
                                     Full Payment in Advance 
                                 </div>
                                 <div class="pull-right col-md- clearfix6">
+                                    For  Mama Home Pvt Ltd <br><br>
                                     Authorised Signatory
                                 </div>
-                                <br><br>
+                                
+                                
+                               <br><br><br><br>
+                               <br><br><br><br><br><br><br>
                             </td>
                         </tr>
                         <tr>
