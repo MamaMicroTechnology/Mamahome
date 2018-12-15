@@ -86,12 +86,12 @@
                     <thead>
                         <tr style="background-color:#e6e6e6">
                             <th>SL.NO</th>
-                            <th>DESCRIPTION OF GOODS</th>
+                            <th colspan="2">DESCRIPTION OF GOODS</th>
                             <th>HSN/SAC</th>
                             <th>UNIT</th>
                             <th colspan="2" >QUANTITY</th>
                             <th>RATE/UNIT</th>
-                            <th colspan="2">AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
+                            <th >AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
                             <?php
                         $count = count($data['price']['igstpercent']);
                        $count1 = count($data['price']['cgstpercent']);
@@ -102,19 +102,19 @@
                  
                         <tr>
                             <td class="text-center">1</td>
-                            <td>{{$data['price']['description']}}</td>
+                            <td colspan="2">{{$data['price']['description']}}</td>
                             <td></td>
                             <td>{{ $data['price']['unit'] }}</td>
                             <td colspan="2">{{ $data['price']['quantity'] }}</td>
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
-                            <td colspan="2">{{ $data['price']['totalamount'] }}</td>
+                            <td >{{ $data['price']['totalamount'] }}</td>
                         </tr>
                 
                         <tr>
-                            <td colspan="4" rowspan="6"></td>
+                            <td colspan="5" rowspan="6"></td>
                             <td colspan="2" class="text-left"><b>GROSS AMOUNT</b></td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">{{ $data['price']['totalamount'] }}</td>
+                            <td  class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <!-- <tr>
                             <td class="text-left">Discount Amount</td>
@@ -124,7 +124,7 @@
                         <tr>
                             <td colspan="2" class="text-left"><b>TOTAL AMOUNT</b></td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">{{ $data['price']['totalamount'] }}</td>
+                            <td  class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <tr>
                         <td colspan="2" class="text-left">CGST
@@ -133,7 +133,7 @@
                            
                         </td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">
+                            <td  class="text-left">
                             @if($count1 == 1)
                           {{ $data['price']['cgst'] }}
                           @else
@@ -148,7 +148,7 @@
                            
                         </td>
                             <td class="text-left"></td>
-                            <td colspan="2"class="text-left">
+                            <td  class="text-left">
                             @if($count1 == 1)
                             {{ $data['price']['sgst']}}
                            @else
@@ -163,7 +163,7 @@
                               
                             </td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">
+                            <td  class="text-left">
                                 @if($count == 1)
                                 {{ $data['price']['igst']}}
                                 @else
@@ -175,7 +175,7 @@
                         <tr>
                             <td colspan="2" class="text-left"><b>TOTAL</b></td>
                             <td class="text-left"></td>
-                            <td colspan="2" class="text-left">{{ $data['price']['amountwithgst']}}</td>
+                            <td  class="text-left">{{ $data['price']['amountwithgst']}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" colspan="9">
@@ -252,7 +252,7 @@
                                     <br>
                                     Tax invoice will be provided once goods gets delivered<br>
                                     Reward Points are not Applicable for Offer Price<br>
-                                    This is just for a reference ,which is not applicable for GST climing<br>
+                                    This is just for a reference, which is not applicable for GST Claiming<br>
                                     
                                     <i><b>Bank Details</b></i><br>
                                     Name : Mama home Pvt ltd<br>
