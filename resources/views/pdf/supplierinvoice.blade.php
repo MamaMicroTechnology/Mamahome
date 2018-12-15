@@ -68,7 +68,7 @@
             </div>
             <div class="pull-right col-md-6" style="margin-right: 5%;">
 
-          <img src="{{ URL::to('/') }}/public/brands/{{ $data['supplierimage'] }} " height="50px" width="150px"> <br>
+          <img src="https://mamamicrotechnology.com/clients/MH/webapp/public/brands/{{ $data['supplierimage'] }} " height="50px" width="150px"> <br>
                 Date : {{ date('d F, Y') }}<br>
                 LPO : {{ $data['supplier']['lpo'] }}<br>
                 Invoice Number : {{ $data['invoice']->invoice_number}}<br>
