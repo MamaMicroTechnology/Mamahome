@@ -1490,9 +1490,6 @@ class HomeController extends Controller
     //     return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status'=>$check ,'stages'=>$stages]);
     //    }
 
-
-
-
        public function datewise(Request $request )
        {
             $assigndate =AssignStage::where('user_id',Auth::user()->id)
@@ -3228,7 +3225,6 @@ date_default_timezone_set("Asia/Kolkata");
     
     public function confirmOrder(Request $request)
     {
-
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
@@ -3306,8 +3302,8 @@ date_default_timezone_set("Asia/Kolkata");
             $price->unit = $request->unit;
             $price->category = $cat;
             $price->project_id = $projectid;
+            $price->state = $request->state;
             $price->save();
-             
         return back();
 
     }
@@ -8061,7 +8057,7 @@ public function display(request $request){
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->count();
-                    dd("1");
+                  
 
         }
         else if(!$request->subward && $request->ward && !$request->from && !$request->to){
