@@ -104,9 +104,9 @@ public function gstinfo(request $request){
    
   $data = [];
  foreach ($orders as $order) {
-    $mamacgst =MamahomePrice::where('order_id',$order->id)->pluck('cgstpercent')->first();
-    $mamasgst =MamahomePrice::where('order_id',$order->id)->pluck('sgstpercent')->first();
-    $mamaigst =MamahomePrice::where('order_id',$order->id)->pluck('igst')->first();
+    $mamacgst =Supplierdetails::where('order_id',$order->id)->pluck('cgstpercent')->first();
+    $mamasgst =Supplierdetails::where('order_id',$order->id)->pluck('sgstpercent')->first();
+    $mamaigst =Supplierdetails::where('order_id',$order->id)->pluck('igstpercent')->first();
     $mamaquantity =MamahomePrice::where('order_id',$order->id)->pluck('quantity')->first();
     $mamaprice =MamahomePrice::where('order_id',$order->id)->pluck('mamahome_price')->first();
     $mamawithgst = MamahomePrice::where('order_id',$order->id)->pluck('amountwithgst')->first();

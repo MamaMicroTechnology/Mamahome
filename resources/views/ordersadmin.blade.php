@@ -89,12 +89,12 @@ function openCitytest(evt, cityName) {
 
 <div class="col-md-12">
     <div class="panel panel-primary" style="overflow-x: scroll;">
-        <div class="panel-heading text-center">
+        <div class="panel-heading text-center" style="position:fixed;width:98%;">
             <b style="color:white;font-size:1.4em">Orders</b>
            <button type="button" onclick="history.back(-1)" class="btn btn-default pull-right" style="margin-top:-3px;" > <i class="fa fa-arrow-circle-left" style="width:30px;"></i></button>
             <h4 class="pull-left" style="margin-top: -0.5px;">Total Count : {{ $view->total() }}</h4>
 
-        </div>
+        </div><br><br>
         <div id="myordertable" class="panel-body">
             <form action="orders" method="get">
                 <div class="input-group col-md-3 pull-right">
