@@ -384,9 +384,9 @@ function openCitytest(evt, cityName) {
                                                 <td>Category :</td>
                                                 <td>
                                                 <select required name="category" id="supply{{$rec->orderid}}"  class="form-control" >
-                                                    @foreach($categories as $category)
+                                                   
                                                     <option value="{{ $supply->category }}">{{ $supply->category }}</option>
-                                                    @endforeach
+                                                   
                                                 </select>
                                             </td>
                                                 </tr>
