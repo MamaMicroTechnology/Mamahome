@@ -196,13 +196,22 @@ function openCitytest(evt, cityName) {
                             <label> Total Quantity : </label>
                             <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')" value="{{$rec->total_quantity}}">
                             <br>
-                            <label>Select State : </label>
-                            <select required name="state" class="form-control">
-                                <option>--Select State--</option>
-                                <option value="1">Karnataka</option>
-                                <option value="2">Tamil nadu</option>
-
+                             @foreach($suppliers as $supply)
+                            @if($supply->order_id == $rec->orderid)
+                               @if($supply->state == "1")
+                               <label> State : </label>
+                                <select name="state" class="form-control">
+                                <option value="{{$supply->state}}">Karnataka</option>
                             </select>
+                               @else 
+                               <label> State : </label>
+                                <select  name="state" class="form-control">
+                                <option value="{{$supply->state}}">Tamil Nadu</option>
+                            </select>
+                               @endif
+                            
+                            @endif
+                            @endforeach
                             <br>
                             <label>Measurement Unit : </label>
                            <input required type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons">
@@ -291,11 +300,16 @@ function openCitytest(evt, cityName) {
         <input type="text" class="hidden" value="" id="igstpercent{{$rec->orderid}}" name="igstpercent" >
 
        <table class="table table-responsive table-striped" border="1">
+                                    <?php 
+                                        $po =count($rec->purchase_order); 
+
+                                     ?> 
+                                @if($po == 0)
         
                                     <tr>
                                     <td>Category :</td>
                                     <td>
-                                    <select name="category" id="supply{{$rec->orderid}}"  class="form-control" >
+                                    <select required name="category" id="supply{{$rec->orderid}}"  class="form-control" >
                                         <option>--Select Category--</option>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
@@ -306,7 +320,7 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                         <td>Select State : </td>
                                         <td>
-                                            <select id="state{{$rec->orderid}}"  name="state" class="form-control" onchange="getsuppliername('{{$rec->orderid}}')">
+                                            <select required id="state{{$rec->orderid}}"  name="state" class="form-control" onchange="getsuppliername('{{$rec->orderid}}')">
                                                 <option>--Select--</option>
                                                 <option value="1">Karnataka</option>
                                                 <option value="2">Tamil nadu</option>
@@ -316,16 +330,11 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                         <td>Supplier Name :</td>
                                         <td> 
-                                        <select class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getaddress('{{$rec->orderid}}')">
+                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getaddress('{{$rec->orderid}}')">
                                         </select>
                                       </td>
 
                                     </tr>
-                                    <?php 
-                                        $po =count($rec->purchase_order); 
-
-                                     ?> 
-                                @if($po == 0)
                                     <tr>
                                       <td>Registered Office :
                                       </td>
@@ -371,6 +380,41 @@ function openCitytest(evt, cityName) {
 
                                                  @foreach($suppliers as $supply)
                                                  @if($supply->order_id == $rec->orderid)
+                                                             <tr>
+                                                <td>Category :</td>
+                                                <td>
+                                                <select required name="category" id="supply{{$rec->orderid}}"  class="form-control" >
+                                                   
+                                                    <option value="{{ $supply->category }}">{{ $supply->category }}</option>
+                                                   
+                                                </select>
+                                            </td>
+                                                </tr>
+                                    <tr>
+                                            <td> State : </td>
+                                            <td>
+                                                @if($supply->state == "1")
+                                              
+                                            <select id="state{{$rec->orderid}}" name="state" class="form-control">
+                                                <option value="{{$supply->state}}">Karnataka</option>
+                                            </select>
+                                               @else 
+                                             
+                                            <select id="state{{$rec->orderid}}" name="state" class="form-control">
+                                                <option value="{{$supply->state}}">Tamil Nadu</option>
+                                            </select>
+                                               @endif
+                                                            
+                                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Supplier Name :</td>
+                                        <td> 
+                                        <input required class="form-control"  name="name"  value="{{$supply->supplier_name}}"> 
+                                      </td>
+
+                                    </tr>
+                                    
                                                 <tr>
                                                   <td>Registered Office :
                                                   </td>
@@ -1146,7 +1190,6 @@ else{
     var sgstvalue = 14;
     var igstvalue = "";
 }
-
 var g1 = gstvalue;
 var g2 = sgstvalue;
 document.getElementById('tax1'+arg).innerHTML = g1;

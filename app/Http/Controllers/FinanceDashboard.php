@@ -560,6 +560,7 @@ class FinanceDashboard extends Controller
         $supply->sgstpercent = $request->sgstpercent;
         $supply->gstpercent = $request->gstpercent;
         $supply->igstpercent = $request->igstpercent;
+        $supply->state = $request->state;
         $supply->save();
         $lpoNo = "MH_".$country_code."_".$zone."_LPO_".$year."_".$supply->id; 
         $supply =Supplierdetails::where('id',$supply->id)->update(['lpo'=>
