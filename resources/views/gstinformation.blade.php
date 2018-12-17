@@ -92,7 +92,7 @@
 							</select>
 							</div>
 							<div class="col-md-3">
-                       	 <button type="submit" value="submit" class="form-control btn btn-sm btn-primary" >submit</button>
+                       	 <button type="submit" value="Submit" class="form-control btn btn-sm btn-success" >submit</button>
 								
 							</div>
                        	
@@ -114,7 +114,7 @@
         <th>SGST(%)</th>
          <th>IGST(%)</th>
          <th>Selling Price<br>(Mamahome)</th>
-        <th>Mmamahome<br>(GSTWith Amt)</th>
+        <th>Mamahome<br>(GSTWith Amt)</th>
         <th>Mamahome<br>(GSTWithOut Amt)</th>
          <th> Buying Price<br>(Suplier)</th>
          <th>Suplier<br>(GSTWithAmt)</th>
