@@ -3327,7 +3327,6 @@ date_default_timezone_set("Asia/Kolkata");
             $sgst =  ($totalamount * $g2)/100;
             $igst = 0;
         }
-    dd($x,$cgst,$sgst);
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
        
