@@ -106,7 +106,7 @@
             <br><br>
             <table class="table table-responsive table-striped" border="1">
                 <thead>
-                    <tr>
+       <tr>
         <th>Order Id</th>
         <th>Category</th>
         <th>Quantity</th>
@@ -216,9 +216,7 @@
        ?>
        <td>{{number_format(round($fdata))}}</td>
       </tr>
-
-
-                   </tbody>
+</tbody>
                </table>
            </div>
        </div>
