@@ -359,26 +359,6 @@ function myFunction() {
 		document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}   /   Total Quantity  :  {{ $sum2 }}  "
 		}
 	}
-
-
-	// if(document.getElementById("myInput").value  == "Enquiry On Process"){
-
-	// 	if(document.getElementById("categ").value  == "All Category"){
-			
-	// 	document.getElementById("display").innerHTML = "Enquiry On Process  :  {{  $pro }}"
-	// 	}
-	// }
-	// else if(document.getElementById("myInput").value == "Enquiry Confirmed"){
-		
-	// 	if(document.getElementById("categ").value  == "All Category"){
-	// 	document.getElementById("display").innerHTML = "Enquiry Confirmed  :  {{  $con }}"
-	// 	}
-	// }
-	// else {
-	// 	if(document.getElementById("categ").value  == "All Category"){
-	// 	document.getElementById("display").innerHTML = "Total Enquiry Count  :  {{  $total }}"
-	// }
-	// }
 }
 </script>
  <script>
