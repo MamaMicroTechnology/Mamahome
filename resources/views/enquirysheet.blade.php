@@ -317,17 +317,14 @@
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript">
 function myFunction() {
-
   // Declare variables
   var input, filter, table, tr, td, i;
   input = document.getElementById("myInput");
-  
 
   filter = input.value.toUpperCase();
 
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
-  
   // Loop through all table rows, and hide those who don't match the search query
   
   if(filter == "ALL"){
