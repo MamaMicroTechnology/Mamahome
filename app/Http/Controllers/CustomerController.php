@@ -25,6 +25,9 @@ use App\Mowner_Deatils;
 use App\Mprocurement_Details;
 use App\Manager_Deatils;
 use App\Salescontact_Details;
+use App\Group;
+use App\Department;
+use App\User;
 class CustomerController extends Controller
 {
 
@@ -259,7 +262,11 @@ $cancelorder =DB::table('orders')->whereIn('project_id',$ids)->orwhereIn('manu_i
 
 }
 
-   
+  public function changedesc(request $request){
+     $user = User::where('id',$request->user)->update(['department_id'=>$request->dept,'group_id'=>$request->designation]);
+
+    return back();
+  } 
 
 
    }

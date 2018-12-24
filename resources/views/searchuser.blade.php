@@ -143,7 +143,7 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading" style="background-color:green">
-               <b style="color:white">Enquiry Details</b> 
+               <b style="color:white">Order Details</b> 
             </div>
             <div class="panel-body">
                 <table class="table table-hover">

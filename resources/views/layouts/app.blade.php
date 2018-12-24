@@ -1147,6 +1147,8 @@ function myTimer() {
         </div> 
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
+        <a href="{{ URL::to('/minibreack') }}">&nbsp;&nbsp;&nbsp;BreakTime Mini Report</a>
+
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
         <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
