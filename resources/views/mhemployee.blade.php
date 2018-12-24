@@ -18,7 +18,7 @@
                     {{ session('Added') }}
                 </div>
             @endif
-            @if(session('NotAdded'))
+            @if(session('NotAdded'))''
                <div class="alert alert-danger alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                    {{ session('NotAdded') }}
