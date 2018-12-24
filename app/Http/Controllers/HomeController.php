@@ -173,9 +173,9 @@ class HomeController extends Controller
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'log'=>$log,'log1'=>$log1]);
+       $states = State::all();
+        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'log'=>$log,'log1'=>$log1,'states'=>$states]);
     }
-
     public function inputdata(Request $request)
     {
 
@@ -184,10 +184,12 @@ class HomeController extends Controller
 
          if($request->name){
 
-              $shipadress = $request->billadress;
+              $billaddress = $request->shipaddress;
          }
-           $shipadress = $request->billadress;
-
+         else{
+            
+           $billaddress = $request->billaddress;
+         }
    // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
@@ -234,8 +236,6 @@ class HomeController extends Controller
             $points->save();
             $var = count($request->subcat);
             $var1 = count($brand);
-
-
             // $qnty = implode(", ", $request->quan);
 
         $var2 = count($category);
@@ -262,25 +262,14 @@ class HomeController extends Controller
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator,
-                                                'billadress'=>$request->billadress,
-                                                'ship' =>$shipadress,
+                                                'billadress'=>$billaddress,
+                                                'ship' =>$request->shipaddress,
                                                 'price' =>$request->price,
+                                                'State'=>$request->state,
                                                 'total_quantity' =>$request->totalquantity
                                         ]);
 
-        // $number = ProcurementDetails::where('project_id',$request->selectprojects)->get();
-        // $customer = new CustomerDetails;
-        // $customer->type_customer = "Project";
-        // $customer->manu_type = "";
-        // $customer->project_id = $request->selectprojects;
-        // $customer->manu_id = "";
-        // $customer->billadress = $request->billadress;
-        // $customer->shipaddress = $shipadress;
-        // $customer->contact_no = $number->procurement_contact_no;
-        // $customer->save();
-
-        // $customer =CustomerDetails::where('id',$customer->id)->update(['req_id'=>
-        // $customer->id]);
+        
 
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
@@ -1470,7 +1459,7 @@ class HomeController extends Controller
     public function editEnq1(Request $request)
     {
 
-
+        $states = State::all();
         $category = Category::all();
         $depart = [7];
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
@@ -1491,7 +1480,7 @@ class HomeController extends Controller
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
 
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'states'=>$states]);
     }
     public function eqpipelineedit(Request $request)
     {
@@ -3158,8 +3147,6 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
-                    
-            
         }
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
@@ -3314,7 +3301,7 @@ date_default_timezone_set("Asia/Kolkata");
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
-        
+      
         if($igstval != null){
         $cgst = 0;
         $sgst = 0;
@@ -7357,7 +7344,6 @@ function enquirystore(request $request){
 
     public function storecount(request $request){
 
-       
     $check = numbercount::where('user_id',$request->user_id)->first();
     $numberexist = numbercount::where('num',$request->num)->first();
     if($numberexist != null){
@@ -8982,13 +8968,16 @@ public function viewManufacturer1(Request $request)
   }
   public function breaktime(Request $request)
   {
-    $time = New BreakTime;
+          
+        $time = New BreakTime;
             $time->user_id = Auth::user()->id;
             $time->date = date('Y-m-d');
             $time->start_time = date('h:i A');
-            $time->stop_time = "";
+            $time->stop_time = null;
             $time->save();
-        return back()->with('Success','Your Break Time Started');
+       $break ="break started";
+    return response()->json($break);
+        
   }
   public function sbreaktime(Request $request)
   {

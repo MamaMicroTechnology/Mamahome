@@ -53,7 +53,7 @@
 						<tr>
 							<td style="text-align: center">
 								<a href="{{URL::to('/')}}/showThisProject?id={{$enquiry ->project != null?$enquiry ->project->project_id :''}}">
-									<b>{{$enquiry ->project != null?$enquiry ->project->project_id :'' }}</b>
+									<b>{{$enquiry ->project != null?$enquiry ->project->project_id : $enquiry->manu_id }}</b>
 								</a> 
 							</td>
 							<td style="text-align: center">

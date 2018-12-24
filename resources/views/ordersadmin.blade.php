@@ -160,8 +160,9 @@ function openCitytest(evt, cityName) {
                                     {{ $rec->payment_mode }}
                                     <span class="badge">{{ $counts[$rec->orderid] }}</span>
                                 </button>
+                                <a href="{{URL::to('/')}}/paymentmode?id={{$rec->orderid}}&&pid={{$rec->project_id}}&&mid={{$rec->manu_id}}&&reqid={{$rec->id}}" target="_blank" class="btn btn-default btn-xs" ><i class="fa fa-plus"></i></a>
                             @elseif($rec->order_status != "Order Cancelled")
-                                <a href="{{URL::to('/')}}/paymentmode?id={{$rec->orderid}}&&pid={{$rec->project_id}}&&mid={{$rec->manu_id}}" target="_blank" class="btn btn-success btn-xs">Payment Details</a>
+                                <a href="{{URL::to('/')}}/paymentmode?id={{$rec->orderid}}&&pid={{$rec->project_id}}&&mid={{$rec->manu_id}}&&reqid={{$rec->id}}" target="_blank" class="btn btn-success btn-xs">Payment Details</a>
                             @endif
 
 </div>
@@ -310,27 +311,32 @@ function openCitytest(evt, cityName) {
                                     <td>Category :</td>
                                     <td>
                                     <select required name="category" id="supply{{$rec->orderid}}"  class="form-control" >
-                                        <option>--Select Category--</option>
-                                        @foreach($categories as $category)
-                                        <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-                                        @endforeach
+                                        
+                                        
+                                        <option value="{{ $rec->main_category }}">{{ $rec->main_category }}</option>
+                                      
                                     </select>
                                 </td>
                                     </tr>
                                     <tr>
                                         <td>Select State : </td>
                                         <td>
-                                            <select required id="state{{$rec->orderid}}"  name="state" class="form-control" onchange="getsuppliername('{{$rec->orderid}}')">
-                                                <option>--Select--</option>
-                                                <option value="1">Karnataka</option>
-                                                <option value="2">Tamil nadu</option>
+
+                                            <select required id="state{{$rec->orderid}}"  name="state" class="form-control" >
+                                                @if($rec->state == "1")
+                                                <option value="{{$rec->state}}">Karnataka</option>  
+                                                @endif
+                                                @if($rec->state == "2")
+                                                 <option value="{{$rec->state}}">Tamil Nadu</option>  
+                                                @endif
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Supplier Name :</td>
                                         <td> 
-                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name" onchange="getaddress('{{$rec->orderid}}')">
+                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name">
+                                            <option>{{$rec->supplier != null ? $rec->supplier->company_name : ''}}</option>
                                         </select>
                                       </td>
 
@@ -338,7 +344,7 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                       <td>Registered Office :
                                       </td>
-                                      <td><textarea required type="text" class="form-control" name="address" id="address{{$rec->orderid}}" name="address" rows="5" style="resize: none;"></textarea></td>
+                                      <td><textarea required type="text" class="form-control" name="address" id="address{{$rec->orderid}}" name="address" rows="5" style="resize: none;">{{$rec->supplier != null ? $rec->supplier->registered_office : ''}}</textarea></td>
                                     </tr>
                                                 <tr>
                                                     <td>Shipping Address : </td>
@@ -354,15 +360,15 @@ function openCitytest(evt, cityName) {
                                                 </tr>
                                                 <tr>
                                                     <td>GST :</td>
-                                                    <td><input required type="text" id="suppliergst{{$rec->orderid}}" name="gst" value="" class="form-control"></td>
+                                                    <td><input required type="text" id="suppliergst{{$rec->orderid}}" name="gst" class="form-control" value="{{$rec->supplier != null ? $rec->supplier->gst : ''}}" ></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Description of Goods : </td>
-                                                    <td><input required type="text" name="desc" id="desc{{$rec->orderid}}" class="form-control" value="" ></td>
+                                                    <td><input required type="text" name="desc" id="desc{{$rec->orderid}}" class="form-control" value="{{$rec->supplier != null ? $rec->supplier->category : ''}}" ></td>
                                                 </tr>
                                                  <tr>
                                                     <td>Unit of Measurement:</td>
-                                                    <td><input required type="unit" name="munit" id="munit{{$rec->orderid}}" class="form-control" value="" ></td>
+                                                    <td><input required type="unit" name="munit" id="munit{{$rec->orderid}}" class="form-control" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" ></td>
                                                 </tr>
                                     <tr>
                                         <td>Quantity : </td>
@@ -375,6 +381,44 @@ function openCitytest(evt, cityName) {
                                             @endif
                                             <input required type="number" id="unitprice{{$rec->orderid}}" name="uprice" class="form-control" onkeyup="showthis('{{$rec->orderid}}')" value="">
                                        </td>
+                                    </tr>
+                                    <tr>
+                                          <td>Unit Price without GST :</td>
+                                        <td>&nbsp;&nbsp;&nbsp;<label class=" alert-success pull-left" id="withoutgst{{$rec->orderid}}"></label>Rs./-
+                                             <input  id="withoutgst1{{$rec->orderid}}" type="hidden" name="unitwithoutgst" value="">
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Amount : </td>
+                                        <td>
+                                              &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="display{{$rec->orderid}}"></label>/-
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>CGST( <label  id="tax1{{$rec->orderid}}"></label>%) : </td>
+                                        <td>
+
+                                              &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$rec->orderid}}"></label>/-
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td>SGST( <label  id="tax2{{$rec->orderid}}"></label>%) : </td>
+                                        <td>
+                                             &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$rec->orderid}}"></label>/-
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IGST( <label  id="tax3{{$rec->orderid}}"></label>%) : </td>
+                                        <td>
+                                             &nbsp;&nbsp;&nbsp;IGST <label class=" alert-success pull-left" id="igst{{$rec->orderid}}"></label>/-
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount (Including GST) :</td>
+                                        <td>
+                                              &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="withgst{{$rec->orderid}}"></label> /-
+                                        </td>
                                     </tr>
                                     @else
 
@@ -447,76 +491,65 @@ function openCitytest(evt, cityName) {
                                                         <input required type="number" id="unitprice{{$rec->orderid}}" name="uprice" class="form-control" onkeyup="showthis('{{$rec->orderid}}')" value="{{$supply->unit_price}}">
                                                    </td>
                                                 </tr>
-                                               
-                                                @endif
-                                                @endforeach
-                                    @endif
-                                    <tr>
-                                          <td>Unit Price without GST :</td>
-                                        <td>&nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="withoutgst{{$rec->orderid}}"></label>/-
-                                            <input class="hidden" id="withoutgst1{{$rec->orderid}}" type="text" name="unitwithoutgst" value="">
-                                            <?php 
-                                                    $po =count($rec->purchase_order); 
-                                                 ?> 
-                                            @if($po == 1)
-                                                    <input type="text" name="" value="{{$supply->unitwithoutgst}}">
-                                            @endif
-                                       </td>
-                                    </tr>
-                                    <tr>
+                                                <tr>
+                                                <td>Unit Price without GST :</td>
+                                                <td>&nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="withoutgst{{$rec->orderid}}"></label>/-
+                                                    <input  id="withoutgst1{{$rec->orderid}}" type="text" name="unitwithoutgst" value="{{$supply->unitwithoutgst}}"> 
+                                               </td>
+                                                </tr>
+                                                <tr>
                                         <td>Total Amount : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="display{{$rec->orderid}}"></label>/-
-                                               <?php 
-                                                    $po =count($rec->purchase_order); 
-                                                 ?> 
-                                            @if($po == 1)
+                                               
                                                     <input type="text" name="" value="{{$supply->amount}}">
-                                            @endif
+                                           
                                         </td>
                                     </tr>
                                     <tr>
+                                            <?php
+                                    $t1 = ($supply->amount * $supply->cgstpercent)/100;
+                                    $t2 = ($supply->amount * $supply->sgstpercent)/100;
+                                    $t3 = ($supply->amount * $supply->igstpercent)/100;
+                                            ?>
                                         
-                                        <td>CGST( <label  id="tax1{{$rec->orderid}}"></label>%) : </td>
+                                        <td>CGST(<label  id="tax1{{$rec->orderid}}">{{$supply->cgstpercent}}</label>%) : </td>
                                         <td>
-
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$rec->orderid}}"></label>/-
+                                              <input name="" value="{{$t1}}">
                                         </td>
                                     </tr>
-
                                     <tr>
-                                        <td>SGST( <label  id="tax2{{$rec->orderid}}"></label>%) : </td>
+                                        <td>SGST(<label  id="tax2{{$rec->orderid}}"> {{$supply->sgstpercent}}</label>%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$rec->orderid}}"></label>/-
+                                             <input name="" value="{{$t2}}">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>IGST( <label  id="tax3{{$rec->orderid}}"></label>%) : </td>
+                                        <td>IGST( <label  id="tax3{{$rec->orderid}}">{{$supply->igstpercent}}</label>%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;IGST <label class=" alert-success pull-left" id="igst{{$rec->orderid}}"></label>/-
+                                             <input name="" value="{{$t3}}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amount (Including GST) :</td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="withgst{{$rec->orderid}}"></label> /-
-                                              <?php 
-                                                    $po =count($rec->purchase_order); 
-                                                 ?> 
-                                            @if($po == 1)
+                                             
                                                     <input type="text" name="" value="{{$supply->totalamount}}">
-                                            @endif
+                                            
                                         </td>
                                     </tr>
-                                  
+                                        @endif
+                                        @endforeach        
+                                    @endif
                                         <input id="amount{{$rec->orderid}}" required type="hidden" name="amount" maxlength="9"  onclick="NumToWord(this.value,'lblWord{{$rec->orderid}}','{{ $rec->orderid }}');" class="form-control" />
                              <label class=" alert-success pull-right" id="lblWord{{$rec->orderid}}"></label>
-                             
-                                   
-                                        
                                        <input  id="tamount{{$rec->orderid}}" type="hidden" name="totalamount" maxlength="9"  onclick="NumToWord1(this.value,'lblWord1{{$rec->orderid}}','{{ $rec->orderid }}');" class="form-control" />
                              <label class=" alert-success pull-right" id="lblWord1{{$rec->orderid}}"></label>
-                                   
+                               
         </table>
         <button onclick="gothr('{{$rec->orderid}}')" class="btn btn-success">Submit</button>
         </form>
@@ -1005,7 +1038,7 @@ function NumToWord(inputNumber, outputControl ,arg){
     document.getElementById('dtow'+arg).value = finalOutput;
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
-function NumToWord1(inputNumber, outputControl ,arg) {
+function NumToWord1(inputNumber, outputControl ,arg){
     var str = new String(inputNumber)
     var splt = str.split("");
     var rev = splt.reverse();
@@ -1228,6 +1261,7 @@ document.getElementById('igst'+arg).innerHTML = igst;
 else{
     document.getElementById('igst'+arg).innerHTML = "";
 }
+
 document.getElementById('withgst'+arg).innerHTML = withgst;
 document.getElementById('withoutgst'+arg).innerHTML = i;
 document.getElementById('withoutgst1'+arg).value = i;

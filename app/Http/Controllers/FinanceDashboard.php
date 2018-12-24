@@ -22,6 +22,7 @@ use App\Gst;
 use App\Category;
 use App\SupplierInvoice;
 use App\brand;
+use App\PaymentHistory;
 use DB;
 use Auth;
 use PDF;
@@ -242,11 +243,14 @@ class FinanceDashboard extends Controller
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
         $invoice = SupplierInvoice::where('order_id',$request->id)->first();
         if( $request->mid != null){
-        $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
+                $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
+                $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
             }
-            else{
+        else{
                 $manu = "";
-            }
+                $mprocurement = "";
+        }
+            
         $suppliername = Supplierdetails::where('order_id',$request->id)->pluck('supplier_name')->first();
         $supplierimage = brand::where('brand',$suppliername)->pluck('brandimage')->first();
         
@@ -261,7 +265,8 @@ class FinanceDashboard extends Controller
             'supplier'=>$supplier,
             'supplierimage'=>$supplierimage,
             'invoiceimage'=>$invoiceimage,
-            'invoice'=>$invoice
+            'invoice'=>$invoice,
+            'mprocurement'=>$mprocurement
         );
 
         view()->share('data',$data);
@@ -286,19 +291,22 @@ class FinanceDashboard extends Controller
         $supplier = Supplierdetails::where('id',$sp)->first()->getOriginal();
        
         if( $request->mid != null){
-        $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
+                $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
+                $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
             }
             else{
                 $manu = "";
+                $mprocurement = "";
             }
-          
+       
         $data = array(
             'products'=>$products,
             'address'=>$address,
             'procurement'=>$procurement,
             'payment'=>$payment,
             'manu'=>$manu,
-            'supplier'=>$supplier
+            'supplier'=>$supplier,
+            'mprocurement'=>$mprocurement
         );
 
         view()->share('data',$data);
@@ -346,7 +354,8 @@ class FinanceDashboard extends Controller
                      $i++;
                 }
             }
-
+        $check = PaymentDetails::where('order_id',$request->id)->count();
+        if($check == 0){
         if($request->method == "CASH"){
                
                     $paymentDetails = new PaymentDetails;
@@ -394,9 +403,9 @@ class FinanceDashboard extends Controller
                 $paymentDetails->payment_note = $request->notes;
                 $paymentDetails->bank_name =$request->bankname;
                 $paymentDetails->branch_name = $request->branchname;
-                 $paymentDetails->category = $category;
-                 $paymentDetails->project_id = $request->pid;
-                    $paymentDetails->manu_id = $request->mid;
+                $paymentDetails->category = $category;
+                $paymentDetails->project_id = $request->pid;
+                $paymentDetails->manu_id = $request->mid;
                 $paymentDetails->save();
             }
             else{
@@ -408,11 +417,72 @@ class FinanceDashboard extends Controller
                 $paymentDetails->damount = $request->damount;
                 $paymentDetails->payment_note = $request->notes;
                 $paymentDetails->Totalamount = $request->totalamount;
-                 $paymentDetails->category = $category;
-                 $paymentDetails->project_id = $request->pid;
-                    $paymentDetails->manu_id = $request->mid;
+                $paymentDetails->category = $category;
+                $paymentDetails->project_id = $request->pid;
+                $paymentDetails->manu_id = $request->mid;
                 $paymentDetails->save();
             }
+        }
+        else{
+                if($request->method == "CASH"){
+               
+                    $paymentDetails = new PaymentHistory;
+                    $paymentDetails->order_id = $request->id;
+                    $paymentDetails->payment_mode = $request->method;
+                    $paymentDetails->date = $request->date;
+                    $paymentDetails->Totalamount = $request->totalamount;
+                    $paymentDetails->damount = $request->damount;
+                    $paymentDetails->file = $paymentimage;
+                    $paymentDetails->payment_note = $request->notes;
+                    $paymentDetails->bank_name =$request->bankname;
+                    $paymentDetails->branch_name = $request->branchname;
+    
+                    $paymentDetails->save();
+            }
+            else if($request->method == "RTGS"){
+                    $paymentDetails = new PaymentHistory;
+                    $paymentDetails->order_id = $request->id;
+                    $paymentDetails->payment_mode = $request->method;
+                    $paymentDetails->account_number = $request->accnum;
+                    $paymentDetails->branch_name =$request->accname;
+                    $paymentDetails->date =$request->date;
+                    $paymentDetails->Totalamount = $request->totalamount;
+                    $paymentDetails->damount = $request->damount;
+                    $paymentDetails->file = "";
+                    $paymentDetails->payment_note = $request->notes;
+    
+                    $paymentDetails->rtgs_file = $rtgsimage;
+                    $paymentDetails->save();
+            }
+            else if($request->method == "CHEQUE"){
+               
+                $paymentDetails = new PaymentHistory;
+                $paymentDetails->order_id = $request->id;
+                $paymentDetails->payment_mode = $request->method;
+                $paymentDetails->cheque_number =$request->cheque_num;
+                $paymentDetails->date =$request->date;
+                $paymentDetails->Totalamount = $request->totalamount;
+                $paymentDetails->damount = $request->damount;
+                $paymentDetails->file = "";
+                $paymentDetails->payment_note = $request->notes;
+                $paymentDetails->bank_name =$request->bankname;
+                $paymentDetails->branch_name = $request->branchname;
+
+                $paymentDetails->save();
+            }
+            else{
+                $paymentDetails = new PaymentHistory;
+                $paymentDetails->order_id = $request->id;
+                $paymentDetails->payment_mode = $request->method;
+                $paymentDetails->cash_holder = $request->name;
+                $paymentDetails->date =$request->date;
+                $paymentDetails->damount = $request->damount;
+                $paymentDetails->payment_note = $request->notes;
+                $paymentDetails->Totalamount = $request->totalamount;
+
+                $paymentDetails->save();
+            }
+        }
 
         return back()->with('Success','Payment Details Saved Successfully');
     }
@@ -473,8 +543,17 @@ class FinanceDashboard extends Controller
     // }
     public function paymentmode(Request $request){
         $users = User::where('department_id','!=',10)->get();
-
-       return view('finance.payment',['id'=>$request->id,'users'=>$users,'mid'=>$request->mid,'pid'=>$request->pid]);
+        $quan = Requirement::where('id',$request->reqid)->pluck('total_quantity')->first();
+        $price = Requirement::where('id',$request->reqid)->pluck('price')->first();
+          if($price == null){
+                $total = null;
+          }
+          else{
+                $total = $quan * $price;
+          }
+        $payments = PaymentDetails::where('order_id',$request->id)->first();
+        $payhistory = PaymentHistory::where('order_id',$request->id)->get();
+       return view('finance.payment',['id'=>$request->id,'users'=>$users,'mid'=>$request->mid,'pid'=>$request->pid,'total'=>$total,'payments'=>$payments,'payhistory'=>$payhistory]);
     }
     public function saveunitprice(Request $request){
        
@@ -528,6 +607,7 @@ class FinanceDashboard extends Controller
         return back()->with('Success','Payment Confirmed');
     }
     public function savesupplierdetails(Request $request){
+      
         $check = Supplierdetails::where('order_id',$request->id)->first();
         if(count($check) == 0){
         $projectid = Order::where('id',$request->id)->pluck('project_id')->first();

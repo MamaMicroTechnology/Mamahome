@@ -133,15 +133,6 @@
                                   <td><input required type="text" name="desc" class="form-control" value="{{$price->description}}"></td>
                                   @endif
                            </tr>
-                           <tr>
-                             <td>Total Quantity : </td>
-                             <td><input required type="number" class="form-control" name="quantity" value="{{$price->quantity}}" id="quan{{$order->id}}"></td>
-                           </tr>
-                            <tr>
-                              <td>Unit : </td>
-                              <td><input  type="text" name="unit" value="{{$price->unit}}" class="form-control" readonly>
-                           
-                            </tr>
                               <?php 
                                      $rec =count($order->confirm_payment); 
                              ?> 
@@ -172,6 +163,15 @@
                                   <td><textarea required type="text" name="ship" class="form-control"  style="resize: none;" rows="5">{{$price->shipaddress}}</textarea></td>
                               </tr>
                          @endif
+                           <tr>
+                             <td>Total Quantity : </td>
+                             <td><input required type="number" class="form-control" name="quantity" value="{{$price->quantity}}" id="quan{{$order->id}}"></td>
+                           </tr>
+                            <tr>
+                              <td>Unit : </td>
+                              <td><input  type="text" name="unit" value="{{$price->unit}}" class="form-control" readonly>
+                           
+                            </tr>
                             <tr>
                               <td>Price(Per Unit) : </td>
                               <td><input required type="number" id="unit{{$order->id}}"  class="form-control" name="price" value="{{$price->mamahome_price}}"  onkeyup="getcalculation('{{$order->id}}')"></td>
