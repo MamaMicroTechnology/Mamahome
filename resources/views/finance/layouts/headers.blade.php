@@ -137,7 +137,10 @@
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/orders') }}">Orders</a>
     <a href="{{ URL::to('/') }}/financeDashboard"> Confirmed Orders</a>
-    <a href="{{ URL::to('/financeAttendance') }}">Attendance</a>
+    <!-- <a href="{{ URL::to('/financeAttendance') }}">Attendance</a> -->
+    <a href="{{ URL::to('/') }}/gstinformation">GST Information</a>
+    <a href="{{ URL::to('/') }}/gstinformation">ADD Ledger Files</a>
+
 </div>
 
 

@@ -40,5 +40,9 @@ class Supplierdetails extends Model
       public function brand(){
         return $this->belongsTo('App\brand','brand','supplier_name');
     }
+    //  public function cat(){
+    //     return $this->belongsTo('App\Category','id','category');
+    // }
+    
 }
 

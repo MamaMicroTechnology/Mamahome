@@ -3314,6 +3314,7 @@ date_default_timezone_set("Asia/Kolkata");
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
+        
         if($igstval != null){
         $cgst = 0;
         $sgst = 0;
@@ -3326,7 +3327,6 @@ date_default_timezone_set("Asia/Kolkata");
             $sgst =  ($totalamount * $g2)/100;
             $igst = 0;
         }
-
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
        
