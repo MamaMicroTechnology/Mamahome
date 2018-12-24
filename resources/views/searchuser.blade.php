@@ -112,18 +112,20 @@
                             <td>
                           @foreach($confirmenq as $ide)
 
-                           <a href="{{URL::to('/')}}/showThisProject?id={{$ids}}"> {{$ide}}<br></a>
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$ide}}"> {{$ide}}<br></a>
                           @endforeach 
                       </td>
                       	<td>
                       		@foreach($cancelenq as $typee)
-                                  {{$typee}}<br><br>
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$typee}}"> {{$typee}}<br></a>
+                                 <br><br>
 
                       		@endforeach
                       	</td>
                         <td>
                       		@foreach($onprocessenq as $on)
-                                  {{$on}}<br><br>
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$on}}"> {{$on}}<br></a>
+                                  <br><br>
 
                       		@endforeach
                       	</td>
@@ -156,7 +158,7 @@
                         <tr>
                             <td>
                           @foreach($orderconfirm as $ido)
-                           <a href="{{URL::to('/')}}/showThisProject?id={{$ids}}"> {{$ido}}<br></a>
+                           <a href=""> {{$ido}}<br></a>
                           @endforeach 
                       </td>
                       	<td>
