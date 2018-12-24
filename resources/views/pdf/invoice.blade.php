@@ -47,7 +47,7 @@
                 <b>GST : 29AAKCM5956G1ZX</b><br>
                 CIN : U45309KA2016PTC096188<br>
                 Email : info@mamahome360.com<br>
-                Contact Number : 8548888940/41/42/43<br>
+                Contact : 8548888940/41/42/43<br>
             </div>
             <div class="pull-right">
 
@@ -55,7 +55,9 @@
                 Date : {{ date('d F, Y') }}<br>
               {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  <br>
               Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                Mode Of Payment : {{ $data['products']->payment_mode }}
+                Mode Of Payment : <?php $pay = explode(", ",$data['products']->payment_mode);
+                                        $pay = implode(" / ", $pay);        
+                                        ?>{{ $pay }}
             </div>
             </div>
         </div>

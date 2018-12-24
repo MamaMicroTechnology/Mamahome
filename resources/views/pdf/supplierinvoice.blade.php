@@ -52,7 +52,14 @@
 
     <div class="row">
         <div align="text-center">
-        <a  href="{{ URL::to('/') }}/public/supplierinvoice/{{$data['invoiceimage']}}"><p style="text-transform: uppercase;">CLICK HERE TO VIEW {{ $data['supplier']['supplier_name']}} INVOICE</p></a>
+            <?php
+                 $file = explode(",", $data['invoiceimage']); 
+               
+                ?>
+        @for($i = 0; $i < count($file); $i++)                                              
+        <a  href="{{ URL::to('/') }}/public/supplierinvoice/{{$file[$i]}}"><p style="text-transform: uppercase;">CLICK HERE TO VIEW {{ $data['supplier']['supplier_name']}} INVOICE</p></a>
+        @endfor
+                                                   
         </div>
         <div class="col-md-6 col-md-offset-3">
             <h4 style="background-color:#33cc33;padding:10px;text-transform: uppercase;" class="text-center" >{{ $data['supplier']['supplier_name']}} INVOICE</h4>

@@ -157,8 +157,13 @@ function openCitytest(evt, cityName) {
                         <td>
                             @if($rec->ostatus == "Payment Received")
                                 <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#paymentModal{{ $rec->orderid }}">
-                                    {{ $rec->payment_mode }}
+                                <?php $pay = explode(", ",$rec->payment_mode); 
+                               
+                                $pay = implode(" / ", $pay);        
+                                ?>
+                                   {{$pay}}
                                     <span class="badge">{{ $counts[$rec->orderid] }}</span>
+                                   
                                 </button>
                                 <a href="{{URL::to('/')}}/paymentmode?id={{$rec->orderid}}&&pid={{$rec->project_id}}&&mid={{$rec->manu_id}}&&reqid={{$rec->id}}" target="_blank" class="btn btn-default btn-xs" ><i class="fa fa-plus"></i></a>
                             @elseif($rec->order_status != "Order Cancelled")
@@ -180,7 +185,10 @@ function openCitytest(evt, cityName) {
                                 <table class="table table-responsive table-striped" border="1">
                                     <tr>
                                         <td>Payment Mode :</td>
-                                        <td>{{ $rec->payment_mode }}</td>   
+                                        <td><?php $pay = explode(", ",$rec->payment_mode);
+                                        $pay = implode(" / ", $pay);        
+                                        ?>
+                                   {{$pay}}</td>   
                                     </tr>
                                     <tr>
                                         <td>Category :</td>
@@ -195,19 +203,19 @@ function openCitytest(evt, cityName) {
                             {{ csrf_field() }}
                             <input type="hidden" name="cat" value="{{$rec->main_category}}">
                             <label> Total Quantity : </label>
-                            <input required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')" value="{{$rec->total_quantity}}">
+                            <input readonly required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')" value="{{$rec->total_quantity}}">
                             <br>
                              @foreach($suppliers as $supply)
                             @if($supply->order_id == $rec->orderid)
                                @if($supply->state == "1")
                                <label> State : </label>
                                 <select name="state" class="form-control">
-                                <option value="{{$supply->state}}">Karnataka</option>
+                                <option  value="{{$supply->state}}">Karnataka</option>
                             </select>
                                @else 
                                <label> State : </label>
                                 <select  name="state" class="form-control">
-                                <option value="{{$supply->state}}">Tamil Nadu</option>
+                                <option  value="{{$supply->state}}">Tamil Nadu</option>
                             </select>
                                @endif
                             
@@ -215,7 +223,7 @@ function openCitytest(evt, cityName) {
                             @endforeach
                             <br>
                             <label>Measurement Unit : </label>
-                           <input required type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons">
+                           <input  readonly required type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons">
                             <br>
                             <label>Mamahome Price(Per Unit) : </label>
                             <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')" value="{{$rec->price}}">
@@ -265,8 +273,8 @@ function openCitytest(evt, cityName) {
                         <label>Upload Files : </label>
                     </td>
                     <td>
-                        <input required type="file" name="file1" class="form-control" accept="image/*"><br>
-                         <input type="file" name="file2" class="form-control" accept="image/*">
+                        <input required type="file" multiple name="file[]" class="form-control" accept="image/*"><br>
+                         
                     </td>
                 </tr>
             </table><center>
@@ -583,6 +591,105 @@ function openCitytest(evt, cityName) {
               </tr>
               <tr>
                 <td>Payment Mode :</td>
+                <td>
+                    {{ $payment->payment_mode }}</td>
+              </tr>
+              @if($payment->payment_mode == "CASH")
+              <tr>
+                <td>Cash Deposit Slip :</td>
+                <td>
+                  <?php
+                                                     $images = explode(",", $payment->file );
+                                                    ?>
+                                                   <div class="col-md-12">
+                                                       @for($i = 0; $i < count($images); $i++)
+                                                           <div class="col-md-3">
+                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/payment_details/{{ $images[$i] }}" class="img img-thumbnail">
+                                                           </div>
+                                                       @endfor
+                                                    </div>
+                </td>
+              </tr>
+               <tr>
+                <td>Cash Deposit Date :</td>
+                <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "RTGS")
+              <tr>
+                  <td>RTGS Image: </td>
+                  <td>
+                      <?php
+                             $images = explode(",", $payment->rtgs_file );
+                            ?>
+                           <div class="col-md-12">
+                               @for($i = 0; $i < count($images); $i++)
+                                   <div class="col-md-3">
+                                        <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/rtgs_files/{{ $images[$i] }}" class="img img-thumbnail">
+                                   </div>
+                               @endfor
+                            </div>
+                  </td>
+              </tr>
+               <tr>
+                <td>Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              <tr>
+                <td>Reference Number :</td>
+                <td>{{$payment->account_number}}<br></td>
+              </tr>
+              <tr>
+                <td>Branch Name :</td>
+                <td>{{$payment->branch_name}}<br></td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "CHEQUE")
+               <tr>
+                <td>Cheque Deposit Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              <tr>
+                <td>Cheque Number :</td>
+                <td>{{$payment->cheque_number}}
+                </td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "CASH IN HAND")
+              <tr>
+                <td>Cash Holder Name : </td>
+                <td>{{$payment->user != null?$payment->user->name :''}}</td>
+              </tr>
+                 <tr>
+                <td> Cash Received Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              @endif
+              <tr>
+                <td>Total Amount :</td>
+                <td>{{$payment->totalamount}}/-</td>
+              </tr>
+              <tr>
+                <td>Delivery Charges :</td>
+                <td>{{$payment->damount}}/-</td>
+              </tr>
+              <tr>
+                <td>Note :</td>
+                <td>{{$payment->payment_note}}</td>
+              </tr>
+            </table>
+              <!-- <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"> -->
+            @endif
+            @endforeach
+            @foreach($payhistory as $payment)
+            @if($payment->order_id == $rec->orderid)
+                <table class="table table-responsive table-striped" border="1">
+              <tr>
+                <td>OrderId :</td>
+                <td>{{$payment->order_id}}</td>
+              </tr>
+              <tr>
+                <td>Payment Mode :</td>
                 <td>{{ $payment->payment_mode }}</td>
               </tr>
               @if($payment->payment_mode == "CASH")
@@ -669,13 +776,8 @@ function openCitytest(evt, cityName) {
                 <td>{{$payment->payment_note}}</td>
               </tr>
             </table>
-            
-             
-            <!-- <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"> -->
             @endif
-           
             @endforeach
-            
             <hr>
             <div class="row">
                 <div class="col-md-12">
