@@ -249,7 +249,7 @@ Route::get('/getmaphistory1','mamaController@getaccmap');
 
 // Route::get('/starttimer','HomeController@starttimer');
 Route::get('/starttimer','HomeController@starttimer');
-Route::post('/breaktime','HomeController@breaktime');
+Route::get('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
 Route::get('/breaks','HomeController@breaks');
 

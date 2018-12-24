@@ -990,14 +990,17 @@ div#calendar{
                                   <div class="modal-body">
 
                                     <p>Click On Start To Take a Break?</p>
-                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                  <!-- <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
                                       {{ csrf_field() }}
-                                    <button type="submit" class="btn btn-success btn-sm">START</button>
-                                  </form>
+                                  </form> -->
+                                    <button type="submit" class="btn btn-success btn-sm"  onclick="startbreak();">START</button>
                                   <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
                                       {{ csrf_field() }}
                                     <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
                                   </form>
+                                  
+                                    <label id="currentTime" class="alert-success"></label>
+                                  
                                   </div>
                                   <div class="modal-footer">
                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1056,15 +1059,7 @@ div#calendar{
                               </div>
                             </div>
                             <!-- mpdal end -->
-<script>
-function myTimer() {
-  var myVar = setInterval(myTimer ,1000);
-    var d = new Date();
-    document.getElementById("time").innerHTML = d.toLocaleTimeString();
-    document.getElementById("timer").form.submit();
 
-}
-</script>
 @if(Auth::check())
 @if(Auth::user()->group_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -1531,6 +1526,27 @@ function myTimer() {
   
 </div> -->
     <!-- Scripts -->
+<script type="text/javascript">
+  function startbreak(){
+    var id = "hello";
+    $.ajax({
+        type: 'GET',
+        url: "{{ URL::to('/') }}/breaktime",
+        async: false,
+        data: { id : id},
+        success: function(response){  
+          setInterval(mytimer, 1000);
+        }
+    })
+  }
+  function mytimer(){
+    var str = "";
+      var now = new Date();
+
+      str += "Your Break Time Started: " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      document.getElementById("currentTime").innerHTML = str;
+  }
+</script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -1697,7 +1713,6 @@ function myTimer() {
 
 </script>
 @endif
-
 <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>
 <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js'></script>

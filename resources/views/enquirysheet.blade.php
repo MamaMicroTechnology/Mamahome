@@ -215,7 +215,7 @@
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
 							<?php $total = ($enquiry->total_quantity *  $enquiry->price) ?>
 							<td style="text-align: center">{{ $enquiry->price }}</td>
-							<td style="text-align: center">{{$total}} </td>
+							<td style="text-align: center">{{$total}}</td>
 
 							<td style="text-align: center">{{ $enquiry->user != null ? $enquiry->user->name : '' }}</td>
 							<td style="text-align: center">

@@ -13,6 +13,7 @@ use App\SubWard;
 use App\History;
 use App\Manufacturer;
 use App\User;
+use App\State;
 use App\ProjectDetails;
 use App\Point;
 use App\Requirement;
@@ -296,7 +297,8 @@ if($aggregates_required != null){
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('manuenquiry',['category1'=>$category1,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
+        $states = State::all();
+        return view('manuenquiry',['category1'=>$category1,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'states'=>$states]);
     }
 
 public function inputdata(Request $request)
@@ -306,21 +308,20 @@ public function inputdata(Request $request)
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
 
            $cat = category::where('id',$request->cat)->pluck('id')->first();
+        if($request->name){
 
-         if($request->name){
-
-              $shipadress = $request->billadress;
+              $billaddress = $request->shipaddress;
          }
-           $shipadress = $request->billadress;
-
+         else{
+            
+           $billaddress = $request->billaddress;
+         }
+     
    // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
         $quantity = array_filter($request->quan);
         $qu = implode(", ", $quantity);
-
-
-
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
@@ -373,8 +374,6 @@ public function inputdata(Request $request)
              $ward = $find;
 
            }
-         
-
         $x = DB::table('requirements')->insert(['project_id'    =>'',
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
@@ -395,12 +394,13 @@ public function inputdata(Request $request)
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator,
-                                                'billadress'=>$request->billadress,
+                                                'billadress'=> $billaddress,
                                                 'total_quantity'=>$request->totalquantity,
                                                
                                                 'manu_id'=>$request->manu_id,
                                                 'sub_ward_id'=>$ward, 
-                                                'ship' =>$shipadress
+                                                'ship' =>$request->shipaddress,
+                                                'state'=>$request->name
                                         ]);
 
 

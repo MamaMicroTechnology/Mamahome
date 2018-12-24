@@ -2013,7 +2013,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             ->withErrors($validator)
             ->withInput();
         }
+        if($request->name){
 
+              $billaddress = $request->shipaddress;
+         }
+         else{
+            
+           $billaddress = $request->billaddress;
+         }
+       
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -2049,7 +2057,10 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate,
-            'price' =>$request->price
+            'price' =>$request->price,
+            'state'=>$request->state,
+            'ship'=>$request->shipaddress,
+            'billadress'=>$billaddress
         ]);
        
      $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([
