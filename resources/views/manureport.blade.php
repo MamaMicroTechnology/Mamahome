@@ -39,7 +39,7 @@
                 <thead>
                     <th class="text-center">Slno</th>
                     <th class="text-center">SubWard Name</th>
-                    <th class="text-center">Manufacturer&nbsp;{{$projectscount[0]['type'] != null ?$projectscount[0]['type'] : ''}} Count</th>
+                    <th class="text-center">Manufacturer&nbsp;</th>
                 </thead>
                 <?php
                 $i =1; 
