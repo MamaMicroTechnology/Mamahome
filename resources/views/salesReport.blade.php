@@ -123,11 +123,11 @@
             </label>
             <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
-        <div class="panel-body" style="overflow-y:scroll; height:500px; max-height:500px">
+        <div class="panel-body" style="overflow-y:scroll; height:700px; max-height:700px">
             <table class='table table-responsive table-striped' style="color:black" border="1">
                 <thead>
                     <tr>
-                        <th style="text-align:center">Subward Number</th>
+                        <th style="text-align:center">Subward Name</th>
                         <th style="text-align:center">Project-ID</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center" >Updater</th>

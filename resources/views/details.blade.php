@@ -6,7 +6,7 @@
 <div class="panel panel-success">
     <div class="panel-heading">
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="overflow-x:scroll;overflow-y:scroll;">
             <form method="post" action="{{ URL::to('/') }}/storeproject">
               {{ csrf_field() }}  
         <div class="col-md-2">
@@ -37,7 +37,7 @@
                 <button style="width:50%;" class="btn btn-primary form-control" type="submit">Submit</button>
             </form>
 
-            <table class="table table-responsive table-striped table-hover" class="table">
+            <table class="table table-responsive"  class="table">
                         <thead>
                             <th style="width:15%">Name</th>
                             <th style="width:15%">Assigned Ids</th>

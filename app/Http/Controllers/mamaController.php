@@ -9,7 +9,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\registration;
-
 use Illuminate\Http\Request;
 use App\Department;
 use App\User;
@@ -593,11 +592,6 @@ class mamaController extends Controller
 
              $ward=WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
               }
-
-
-          
-
-
 
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
@@ -1893,6 +1887,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
 
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
+
             if($requirement->status == "Enquiry Confirmed"){
                  
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
@@ -1915,6 +1910,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $count = $all + 1;
                 $number = sprintf("%03d", $count);
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
+                $check = Order::where('req_id',$request->eid)->first();
+                if(count($check) == 0){
                 $order = new Order;
                 $order->id = $orderNo;
                 $order->req_id = $request->eid;
@@ -1936,6 +1933,28 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order->generated_by  = $requirement->generated_by;
                 $order->manu_id =$requirement->manu_id;
                 $order->save();
+                }else{
+                $check->id = $orderNo;
+                $check->req_id = $request->eid;
+                $check->project_id = $requirement->project_id;
+                $check->main_category = $requirement->main_category;
+                $check->brand = $requirement->brand;
+                $check->sub_category = $requirement->sub_category;
+                $check->material_spec = $requirement->material_spec;
+                $check->referral_image1 = $requirement->referral_image1;
+                $check->referral_image2 = $requirement->referral_image2;
+                $check->requirement_date = $requirement->requirement_date;
+                $check->measurement_unit = $requirement->measurement_unit;
+                $check->unit_price = $requirement->unit_price;
+                $check->quantity = $requirement->quantity;
+                $check->total = $requirement->total;
+                $check->notes = $requirement->notes;
+                $check->status = $requirement->status;
+                $check->dispatch_status = $requirement->dispatch_status;
+                $check->generated_by  = $requirement->generated_by;
+                $check->manu_id =$requirement->manu_id;
+                $check->save(); 
+                }
             }
         }
         $activity = new ActivityLog;

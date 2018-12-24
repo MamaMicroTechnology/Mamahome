@@ -1508,14 +1508,14 @@ public  function manureport(request $request)
 
              foreach ($subward as $sub) {
        $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->where('manufacturer_type',$request->type)->get()->toArray();
-       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name,'type'=>$request->type]);
         }
 
      }
     else{
        foreach ($subward as $sub) {
        $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->get()->toArray();
-       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name,'type'=>$request->type]);
         }
     }
  return view('/manureport',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
