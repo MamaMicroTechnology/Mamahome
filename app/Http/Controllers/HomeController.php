@@ -95,9 +95,8 @@ use App\Supplierdetails;
 use App\Mprocurement_Details;
 use App\Gst;
 use App\SupplierInvoice;
-
+use App\PaymentHistory;
 use Spatie\Activitylog\Models\Activity;
-
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -3152,6 +3151,7 @@ date_default_timezone_set("Asia/Kolkata");
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
         $paymentDetails = PaymentDetails::all();
+        $payhistory = PaymentHistory::all();
         $message = Message::all();
         $chatUsers = User::all();
         $counts = array();
@@ -3174,7 +3174,8 @@ date_default_timezone_set("Asia/Kolkata");
             'suppliers'=>$suppliers,
             'counts'=>$counts,
             'invoice'=>$invoice,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'payhistory'=>$payhistory
            
         ]);
     }
@@ -3301,7 +3302,6 @@ date_default_timezone_set("Asia/Kolkata");
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
-        dd($x);
         if($igstval != null){
         $cgst = 0;
         $sgst = 0;

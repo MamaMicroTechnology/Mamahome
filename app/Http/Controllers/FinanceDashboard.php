@@ -321,10 +321,6 @@ class FinanceDashboard extends Controller
     {
         $totalRequests = count($request->payment_slip);
         $category =  Order::where('id',$request->id)->pluck('main_category')->first();
-        $order = Order::where('id',$request->id)->first();
-        $order->payment_status = "Payment Received";
-        $order->payment_mode = $request->method;
-        $order->save();
         $i = 0;
         $paymentimage ="";
             if($request->payment_slip){
@@ -356,6 +352,10 @@ class FinanceDashboard extends Controller
             }
         $check = PaymentDetails::where('order_id',$request->id)->count();
         if($check == 0){
+        $order = Order::where('id',$request->id)->first();
+        $order->payment_status = "Payment Received";
+        $order->payment_mode = $request->method;
+        $order->save();
         if($request->method == "CASH"){
                
                     $paymentDetails = new PaymentDetails;
@@ -424,6 +424,12 @@ class FinanceDashboard extends Controller
             }
         }
         else{
+        $payment = Order::where('id',$request->id)->pluck('payment_mode')->first();
+        $payment .= ", ".$request->method;
+
+        $order = Order::where('id',$request->id)->first();
+        $order->payment_mode = $payment;
+        $order->save();
                 if($request->method == "CASH"){
                
                     $paymentDetails = new PaymentHistory;
@@ -678,28 +684,28 @@ class FinanceDashboard extends Controller
         return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category,'unit'=>$unit]);
     }
     public function supplierinvoice(Request $request){   
-        if($request->file1 != NULL){
-                $image1 = time().'.'.request()->file1->getClientOriginalExtension();
-                $request->file1->move(public_path('supplierinvoice'),$image1);
-            }else{
-                $image1 = "N/A";
+        $image = " ";
+        $i = 0;    
+       if($request->file){
+                foreach($request->file as $pimage){
+                     $imageName3 = $i.time().'.'.$pimage->getClientOriginalExtension();
+                     $pimage->move(public_path('supplierinvoice'),$imageName3);
+                     if($i == 0){
+                        $image .=$imageName3;
+                     }
+                     else{
+                            $image .= ",".$imageName3;
+                     }
+                     $i++;
+                }
             }
-         if($request->file2 != NULL){
-                $image2 = time().'.'.request()->file2->getClientOriginalExtension();
-                $request->file2->move(public_path('supplierinvoice'),$image2);
-            }else{
-                $image2 = "N/A";
-            }
-
         $lpo = Supplierdetails::where('order_id',$request->id)->pluck('lpo')->first();
-   
         $invoice = New SupplierInvoice;
         $invoice->lpo_number = $lpo;
         $invoice->order_id = $request->id;
         $invoice->invoice_number = $request->supplierinvoice;
         $invoice->invoice_date = $request->invoicedate;
-        $invoice->file1 = $image1;
-        $invoice->file2 = $image2;
+        $invoice->file1 = $image;
         $invoice->project_id = $request->project_id;
         $invoice_manu_id = $request->mid;
         $invoice->save();
