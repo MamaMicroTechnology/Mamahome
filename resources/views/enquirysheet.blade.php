@@ -215,7 +215,7 @@
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
 							<?php $total = ($enquiry->total_quantity *  $enquiry->price) ?>
 							<td style="text-align: center">{{ $enquiry->price }}</td>
-							<td style="text-align: center">{{$total}} </td>
+							<td style="text-align: center">{{$total}}</td>
 
 							<td style="text-align: center">{{ $enquiry->user != null ? $enquiry->user->name : '' }}</td>
 							<td style="text-align: center">
@@ -333,7 +333,7 @@ function myFunction() {
 	  }
 	}else{
 		for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[13];
+	    td = tr[i].getElementsByTagName("td")[15];
 	    if (td) {
 	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 	        tr[i].style.display = "";

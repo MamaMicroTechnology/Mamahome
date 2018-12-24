@@ -49,6 +49,8 @@
                 <b>GST : 29AAKCM5956G1ZX</b><br>
                 CIN : U45309KA2016PTC096188<br>
                 Email : info@mamahome360.com<br>
+                Contact Number : 8548888940/41/42/43<br>
+                
             </div>
             <div class="pull-right">
                 <div style="padding-right: 70px;">
@@ -138,7 +140,7 @@
                             @if($count1 == 1)
                           {{ $data['price']['cgst'] }}
                           @else
-                          -
+                          0
                             @endif
                       </td>
                         </tr>
@@ -153,7 +155,7 @@
                             @if($count1 == 1)
                             {{ $data['price']['sgst']}}
                            @else
-                          -
+                          0
                             @endif
                         </td>
                         </tr>
@@ -168,7 +170,7 @@
                                 @if($count == 1)
                                 {{ $data['price']['igst']}}
                                 @else
-                                 -
+                                 0
                                 @endif
                                
                             </td>
@@ -208,7 +210,7 @@
                                @if($count1 == 1)
                                 {{ $data['price']['cgst']}}
                                 @else
-                              -
+                              0
                                 @endif
                             </td>
                             <td>{{ $data['sgst']}}%</td>
@@ -216,7 +218,7 @@
                                 @if($count1 == 1)
                                 {{ $data['price']['sgst']}}
                                 @else
-                              -
+                              0
                                 @endif
                             </td>
                             <td>{{ $data['igst']}}%</td>
@@ -224,7 +226,7 @@
                                 @if($count == 1)
                                 {{ $data['price']['igst']}}
                                 @else
-                                 -
+                                 0
                                 @endif
                             </td>
                             <td>

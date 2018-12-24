@@ -28,7 +28,7 @@ class Order extends Model
         return $this->hasOne('App\Requirement','project_id','project_id');
     }
     function manudetails(){
-        return $this->hasOne('App\ManufacturerDetails','category','category');
+        return $this->hasOne('App\ManufacturerDetail','category','category');
     }
      function cat(){
         return $this->hasOne('App\Category','category_name','main_category');
@@ -40,6 +40,10 @@ class Order extends Model
     }
      public function siteaddress(){
         return $this->belongsTo('App\SiteAddress','project_id','project_id');
+    }
+   
+    public function supplier(){
+        return $this->belongsTo('App\ManufacturerDetail','brand','company_name');
     }
     protected $fillable = [
             'project_id',

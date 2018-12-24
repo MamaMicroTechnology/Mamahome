@@ -89,13 +89,11 @@
                  <br><b>GST : {{ $data['supplier']['gst'] }}</b><br>
             </div>
            <div class="pull-right  col-md-6" style="padding-right: 30px; ">
-                 <b>SHIP TO :</b><br>
-               CHETTINAD CEMENT<br>
-                 <?php
-                $address = $data['supplier']['address'];
-                echo wordwrap($address,45,"<br>\n");
-                ?>
-                   
+                 <b>SHIP TO :</b>
+                 <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b><br>
+                <?php
+                        echo wordwrap($normal_address,45,"<br>\n");
+                    ?> 
             </div>
        
         <br><br><br><br><br><br><br><br>
@@ -112,6 +110,7 @@
                             <th>AMOUNT (<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
                             <?php 
                             $count = count($data['supplier']['igstpercent']) ;
+                            $total = ( $data['supplier']['cgstpercent'] +  $data['supplier']['cgstpercent'] );
                             if($count == 0){
                                
                                     $cgst = ($data['supplier']['amount'] * $data['supplier']['cgstpercent'])/100;
@@ -147,30 +146,47 @@
                         </tr>
                         <tr>
                             <td class="text-left">CGST 
-                            @if($count ==  0)
+                           
                             ({{$data['supplier']['cgstpercent']}}%)
-                            @endif
+                          
                         </td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{$cgst}}</td>
+                            <td class="text-left">
+                             @if($count ==  0)
+                                {{$cgst}}
+                            @else
+                                0
+                            @endif</td>
                         </tr>
                         <tr>
                             <td class="text-left">SGST
-                            @if($count == 0)
+                          
                                 ({{$data['supplier']['sgstpercent']}}%)
-                            @endif
+                        
                         </td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{$sgst}}</td>
+                            <td class="text-left">
+                            @if($count ==  0)
+                              {{$sgst}}
+                              @else
+                              0
+                              @endif</td>
                         </tr>
                         <tr>
                             <td class="text-left">IGST
-                            @if($count == 1)
+                           @if($count == 1)
                             ({{$data['supplier']['igstpercent']}}%)
+                            @else
+                            ({{ $total }}%)
                             @endif
                         </td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{$igst}}</td>
+                            <td class="text-left">
+                            @if($count == 1)
+                            {{$igst}}
+                            @else
+                            0
+                            @endif</td>
                         </tr>
                         <tr>
                             <td class="text-left"><b>TOTAL</b></td>
