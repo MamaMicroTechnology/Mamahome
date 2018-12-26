@@ -4439,29 +4439,17 @@ $upvcInt = explode(",", $upvc);
                                                 ->count();
             }
             foreach($users as $user){
-                $totalupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                 $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             foreach($tlUsers as $user){
-                $totalupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+               $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
 
             foreach($accusers as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             foreach($tlUsers1 as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+               $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             
         $projcount = count($projects); 
