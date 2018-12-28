@@ -11,9 +11,9 @@
         <th>Order Id</th>
         <th>Category</th>
         <th>Quantity</th>
-        <th>Payment Details</th>
+        <th>Generate Invoice</th>
         @if(Auth::user()->group_id != 22)
-        <th>Confirm Payment</th>
+        <th> Generate Invoice</th>
         <th>MAMAHOME Invoice</th>
         @endif
         @foreach($orders as $order)
@@ -88,10 +88,10 @@
                         <div class="modal-content">
                           <div class="modal-header" style="background-color: #5cb85c;color:white">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirm Payment</h4>
+                            <h4 class="modal-title">Generate Invoice</h4>
                           </div>
                           <div class="modal-body">
-                                <table class="table table-responsive table-striped" border="1">
+                                <!-- <table class="table table-responsive table-striped" border="1">
                                     <tr>
                                         <td>Payment Mode :</td>
                                         <td>{{ $order->payment_mode }}</td>   
@@ -104,7 +104,7 @@
                                         <td>Quantity :</td>
                                         <td>{{ $order->quantity }}</td>
                                     </tr>
-                                </table>
+                                </table> -->
 
                            <form action="{{ URL::to('/') }}/saveunitprice?id={{$order->id}}&&manu_id={{$order->manu_id}}" method="post">
                             {{ csrf_field() }}
