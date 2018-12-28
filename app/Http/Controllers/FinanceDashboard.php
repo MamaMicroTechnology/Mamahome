@@ -59,10 +59,11 @@ class FinanceDashboard extends Controller
         $messages = Message::all();
         $counts = array();
         $users = User::all();
+         $payhistory = PaymentHistory::all();
         foreach($orders as $order){
             $counts[$order->id] = Message::where('to_user',$order->id)->count();
         }
-        return view('finance.financeOrders',['mamaprices'=>$mamaprices,'users'=>$users,'orders'=>$orders,'payments'=>$payments,'messages'=>$messages,'counts'=>$counts,'reqs'=>$reqs]);
+        return view('finance.financeOrders',['mamaprices'=>$mamaprices,'users'=>$users,'orders'=>$orders,'payments'=>$payments,'messages'=>$messages,'counts'=>$counts,'reqs'=>$reqs,'payhistory'=>$payhistory]);
     }
     public function clearOrderForDelivery(Request $request)
     {
@@ -244,7 +245,7 @@ class FinanceDashboard extends Controller
         $invoice = SupplierInvoice::where('order_id',$request->id)->first();
         if( $request->mid != null){
                 $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
-                $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
+                $mprocurement = Mprocurement_Details::where('manu_id',$request->mid)->first()->getOriginal();
             }
         else{
                 $manu = "";
@@ -292,7 +293,7 @@ class FinanceDashboard extends Controller
        
         if( $request->mid != null){
                 $manu = Manufacturer::where('id',$request->mid)->first()->getOriginal();
-                $mprocurement = Mprocurement_Details::where('manu_id',$request->manu_id)->first()->getOriginal();
+                $mprocurement = Mprocurement_Details::where('manu_id',$request->mid)->first()->getOriginal();
             }
             else{
                 $manu = "";

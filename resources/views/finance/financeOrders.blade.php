@@ -363,7 +363,104 @@
             </table>
             <!-- <img src="{{ URL::to('/') }}/payment_details/{{ $payment->file }}" alt="" class="img img-responsive"> -->
             @endif 
-            @endforeach  
+            @endforeach 
+            @foreach($payhistory as $payment)
+            @if($payment->order_id == $order->id)
+                <table class="table table-responsive table-striped" border="1">
+              <tr>
+                <td>OrderId :</td>
+                <td>{{$payment->order_id}}</td>
+              </tr>
+              <tr>
+                <td>Payment Mode :</td>
+                <td>{{ $payment->payment_mode }}</td>
+              </tr>
+              @if($payment->payment_mode == "CASH")
+              <tr>
+                <td>Cash Deposit Slip :</td>
+                <td>
+                  <?php
+                                                     $images = explode(",", $payment->file );
+                                                    ?>
+                                                   <div class="col-md-12">
+                                                       @for($i = 0; $i < count($images); $i++)
+                                                           <div class="col-md-3">
+                                                                <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/payment_details/{{ $images[$i] }}" class="img img-thumbnail">
+                                                           </div>
+                                                       @endfor
+                                                    </div>
+                </td>
+              </tr>
+               <tr>
+                <td>Cash Deposit Date :</td>
+                <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "RTGS")
+              <tr>
+                  <td>RTGS Image: </td>
+                  <td>
+                      <?php
+                             $images = explode(",", $payment->rtgs_file );
+                            ?>
+                           <div class="col-md-12">
+                               @for($i = 0; $i < count($images); $i++)
+                                   <div class="col-md-3">
+                                        <img height="350" width="350" id="project_img" src="{{ URL::to('/') }}/public/rtgs_files/{{ $images[$i] }}" class="img img-thumbnail">
+                                   </div>
+                               @endfor
+                            </div>
+                  </td>
+              </tr>
+               <tr>
+                <td>Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              <tr>
+                <td>Reference Number :</td>
+                <td>{{$payment->account_number}}<br></td>
+              </tr>
+              <tr>
+                <td>Branch Name :</td>
+                <td>{{$payment->branch_name}}<br></td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "CHEQUE")
+               <tr>
+                <td>Cheque Deposit Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              <tr>
+                <td>Cheque Number :</td>
+                <td>{{$payment->cheque_number}}
+                </td>
+              </tr>
+              @endif
+              @if($payment->payment_mode == "CASH IN HAND")
+              <tr>
+                <td>Cash Holder Name : </td>
+                <td>{{$payment->user != null?$payment->user->name :''}}</td>
+              </tr>
+                 <tr>
+                <td> Cash Received Date :</td>
+                <td>{{date('d-m-Y',strtotime($payment->date))}}</td>
+              </tr>
+              @endif
+              <tr>
+                <td>Total Amount :</td>
+                <td>{{$payment->totalamount}}/-</td>
+              </tr>
+              <tr>
+                <td>Delivery Charges :</td>
+                <td>{{$payment->damount}}/-</td>
+              </tr>
+              <tr>
+                <td>Note :</td>
+                <td>{{$payment->payment_note}}</td>
+              </tr>
+            </table>
+            @endif
+            @endforeach 
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
