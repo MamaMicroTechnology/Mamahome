@@ -1604,8 +1604,8 @@ div#calendar{
     
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(
-        displayCurrentLocation,
-        displayError,
+        displayCurrentLocationapp,
+        displayErrorapp,
         { 
           maximumAge: 3000, 
           timeout: 5000, 
@@ -1616,17 +1616,17 @@ div#calendar{
     } 
   }
     
-    function displayCurrentLocation(position){
+    function displayCurrentLocationapp(position){
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
       document.getElementById("longitudeapp").value = longitude;
       document.getElementById("latitudeapp").value  = latitude;
-      getAddressFromLatLang(latitude,longitude);
+      getAddressFromLatLangapp(latitude,longitude);
             initMap();
   }
    
-  function  displayError(error){
-    console.log("Entering ConsultantLocator.displayError()");
+  function  displayErrorapp(error){
+    console.log("Entering ConsultantLocator.displayErrorapp()");
     var errorType = {
       0: "Unknown error",
       1: "Permission denied by user",
@@ -1638,9 +1638,9 @@ div#calendar{
       errorMessage = errorMessage + "  " + error.message;
     }
     alert("Error Message " + errorMessage);
-    console.log("Exiting ConsultantLocator.displayError()");
+    console.log("Exiting ConsultantLocator.displayErrorapp()");
   }
-  function getAddressFromLatLang(lat,lng){
+  function getAddressFromLatLangapp(lat,lng){
     var geocoder = new google.maps.Geocoder();
     var latLng = new google.maps.LatLng(lat, lng);
     geocoder.geocode( { 'latLng': latLng}, function(results, status) {

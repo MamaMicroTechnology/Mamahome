@@ -598,6 +598,7 @@
 <script type="text/javascript" charset="utf-8">
   function getLocation(){
    
+    
       document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){
