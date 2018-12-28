@@ -1110,7 +1110,7 @@ div#calendar{
             <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
              <!-- <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; - Get Quotation</a> -->
-        </div>
+    </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
             <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
@@ -1423,9 +1423,9 @@ div#calendar{
                 
                 <form method="POST"  action="{{ URL::to('/') }}/logintime" >
                   {{ csrf_field() }}
-                                   <!--  <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
+                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
                                     <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeapp">
-                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
+                                    <input class="hidden" id="addressapp" type="text" name="address" value="{{ old('address') }}">
                         <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
                 </form> 
                  <!-- <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
@@ -1594,7 +1594,59 @@ div#calendar{
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
   function submitapp(){
+    
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocation,
+        displayError,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+  }
+    
+    function displayCurrentLocation(position){
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      document.getElementById("longitudeapp").value = longitude;
+      document.getElementById("latitudeapp").value  = latitude;
+      getAddressFromLatLang(latitude,longitude);
+            initMap();
+  }
+   
+  function  displayError(error){
+    console.log("Entering ConsultantLocator.displayError()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayError()");
+  }
+  function getAddressFromLatLang(lat,lng){
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+       
+        document.getElementById("addressapp").value = results[0].formatted_address;
         document.getElementById("login").form.submit();
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
   }
   // function lll(){
     

@@ -179,7 +179,11 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
       <!-- Modal body -->
       <div class="modal-body">
          <label>Shipping Address</label>
-            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">
+          @if(isset($_GET['projectId']))
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $projects->address!= Null ? $projects->address : '' }}"
+          @else
+          <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">
+            @endif
         </textarea>  
        <br>
 
@@ -231,6 +235,11 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 <tr>
             <td><label>Total Quantity : </label></td>
             <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
+
+</tr>
+<tr>
+            <td><label>Price: </label></td>
+            <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required /></td>
 
 </tr>
 <tr>

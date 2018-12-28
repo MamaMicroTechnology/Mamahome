@@ -45,6 +45,9 @@ class Order extends Model
     public function supplier(){
         return $this->belongsTo('App\ManufacturerDetail','brand','company_name');
     }
+      public function st(){
+        return $this->belongsTo('App\State','state','id');
+    }
     protected $fillable = [
             'project_id',
             'req_id',
