@@ -8968,14 +8968,21 @@ public function viewManufacturer1(Request $request)
   public function breaktime(Request $request)
   {
           
-        $time = New BreakTime;
+    //     $time = New BreakTime;
+    //         $time->user_id = Auth::user()->id;
+    //         $time->date = date('Y-m-d');
+    //         $time->start_time = date('h:i A');
+    //         $time->stop_time = null;
+    //         $time->save();
+    //    $break ="break started";
+    // return response()->json($break);
+    $time = New BreakTime;
             $time->user_id = Auth::user()->id;
             $time->date = date('Y-m-d');
             $time->start_time = date('h:i A');
-            $time->stop_time = null;
+            $time->stop_time = "";
             $time->save();
-       $break ="break started";
-    return response()->json($break);
+        return back()->with('Success','Your Break Time Started');
         
   }
   public function sbreaktime(Request $request)

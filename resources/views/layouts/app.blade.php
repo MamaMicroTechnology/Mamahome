@@ -992,13 +992,20 @@ div#calendar{
                                     <p>Click On Start To Take a Break?</p>
                                   <!-- <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
                                       {{ csrf_field() }}
-                                  </form> -->
+                                  </form>
                                     <button type="submit" class="btn btn-success btn-sm"  onclick="startbreak();">START</button>
                                   <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
                                       {{ csrf_field() }}
                                     <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form> -->
+                                  <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-success btn-sm">START</button>
                                   </form>
-                                  
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form>
                                     <label id="currentTime" class="alert-success"></label>
                                   
                                   </div>
