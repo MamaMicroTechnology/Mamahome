@@ -182,7 +182,12 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
       <!-- Modal body -->
       <div class="modal-body">
          <label>Shipping Address</label>
+          @if(isset($_GET['projectId']))
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $projects->siteaddress != Null ?
+    $projects->siteaddress->address : '' }}
+          @else
             <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">
+            @endif
         </textarea>  
        <br>
 

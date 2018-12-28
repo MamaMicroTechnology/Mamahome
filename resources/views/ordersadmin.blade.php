@@ -284,6 +284,44 @@ function openCitytest(evt, cityName) {
   </div>
 </div>
 <!-- payment details modal -->
+<!-- cancel modal -->
+<!-- Modal -->
+<div id="cancel{{$rec->orderid}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" style="width: 70%;">
+      <div class="modal-header" style="background-color:#776e69;color: white">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cancel Order</h4>
+      </div>
+      <div class="modal-body">
+                    <button href="{{URL::to('/')}}/storedetails" onclick="refund('{{$rec->orderid}}')" class=" btn btn-sm btn-success" >Refund</button>
+                    <a href="{{URL::to('/')}}/storedetails"  onclick="show()" class=" btn btn-sm btn-danger " href="{{url()->previous()}}" >Adjust</a>
+                    <br>
+                    <div id="cancelorder{{$rec->orderid}}" style="display: none">
+                    <form action="{{ URL::to('/') }}/savesupplierdetails?id={{$rec->orderid}}&&mid={{$rec->manu_id}}" method="post">
+            {{ csrf_field() }}
+                        <input type="text" name="orderid" value="{{$rec->orderid}}" id="orderid{{$rec->orderid}}" class="form-control" readonly>
+                    </form>
+                    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script type="text/javascript">
+    function refund(arg){
+
+        var dvPassport = document.getElementById("cancelorder"+arg);
+
+        dvPassport.style.display =  "block" ;
+    }
+</script>
+<!-- end -->
 
 <div id="purchase{{$rec->orderid}}{{$rec->manu_id}}" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -324,14 +362,15 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                         <td>Select State : </td>
                                         <td>
-
+                                            <label class="alert-danger">{{$rec->st != null ? '' : "Go to Enquiry and Select State"}}</label>
                                             <select required id="state{{$rec->orderid}}"  name="state" class="form-control" >
-                                                @if($rec->state == "1")
+                                               <!--  @if($rec->state == "1")
                                                 <option value="{{$rec->state}}">Karnataka</option>  
                                                 @endif
                                                 @if($rec->state == "2")
                                                  <option value="{{$rec->state}}">Tamil Nadu</option>  
-                                                @endif
+                                                @endif -->
+                                                 <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -842,7 +881,7 @@ function openCitytest(evt, cityName) {
                             <div class="btn-group">
                                 <!-- <a class="btn btn-xs btn-success" href="{{URL::to('/')}}/confirmOrder?id={{ $rec->orderid }}">Confirm</a> -->
                                 <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#payment{{$rec->orderid}}"> Confirm</button>
-                                <button class="btn btn-xs btn-danger pull-right" onclick="cancelOrder('{{ $rec->orderid }}')">Cancel</button>
+                                <button class="btn btn-xs btn-danger pull-right" data-toggle="modal" data-target="#cancel{{$rec->orderid}}" >Cancel</button>
                             </div>
                             @else
                            {{ $rec->order_status }}
