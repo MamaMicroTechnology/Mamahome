@@ -268,8 +268,6 @@ class HomeController extends Controller
                                                 'total_quantity' =>$request->totalquantity
                                         ]);
 
-        
-
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;

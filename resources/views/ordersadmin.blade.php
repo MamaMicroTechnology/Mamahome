@@ -210,22 +210,12 @@ function openCitytest(evt, cityName) {
                             <label> Total Quantity : </label>
                             <input readonly required type="number" class="form-control" name="quantity" placeholder="quantity" id="quan" onkeyup="checkthis('quan')" value="{{$rec->total_quantity}}">
                             <br>
-                             @foreach($suppliers as $supply)
-                            @if($supply->order_id == $rec->orderid)
-                               @if($supply->state == "1")
-                               <label> State : </label>
-                                <select name="state" class="form-control">
-                                <option  value="{{$supply->state}}">Karnataka</option>
+                              
+                               <label> State : </label><label class="alert-danger">{{$rec->st != null ? '' : "Select State From Enquiry"}}</label>
+                            <select required name="state" class="form-control">
+                                <option  value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}</option>
                             </select>
-                               @else 
-                               <label> State : </label>
-                                <select  name="state" class="form-control">
-                                <option  value="{{$supply->state}}">Tamil Nadu</option>
-                            </select>
-                               @endif
-                            
-                            @endif
-                            @endforeach
+                             
                             <br>
                             <label>Measurement Unit : </label>
                            <input  readonly required type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons">

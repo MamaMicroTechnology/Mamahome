@@ -8,6 +8,9 @@
     border-radius: 50%;
     display: inline-block;
 }
+.img1 {
+    border-radius: 50%;
+}
 </style>
 <div class="container">
     <div class="row">
@@ -67,7 +70,7 @@
 
         <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
                       
-                                     <img src="http://mamahome360.com/public/android-icon-36x36.png">
+                                     <img  src="http://mamahome360.com/public/android-icon-36x36.png">
                                      MAMA HOME PVT LTD&nbsp;&nbsp;
                                      Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
                           width: 9px;
@@ -87,8 +90,8 @@
                           <div id="" style="overflow: hidden;" class="col-md-3 col-md-offset-1">
                           <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
                            <p style="text-align: center;">{{ $user->name }}</p>
-                            <p style="text-align: center;">{{  $user->office_phone }}</p>
-                          
+                            <p style="text-align: center;">{{ $user->office_phone != null ? $user->office_phone : $user->contactNo}}</p>
+              
                           </center>
                           @if($loop->iteration % 3==0)
                               </div>
