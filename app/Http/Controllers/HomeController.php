@@ -3159,7 +3159,8 @@ date_default_timezone_set("Asia/Kolkata");
         }
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
-        $invoice = SupplierInvoice::all();
+        $invoice = SupplierInvoice::all();   
+      
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3315,7 +3316,7 @@ date_default_timezone_set("Asia/Kolkata");
 
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
-       
+        $igstint = (int)$igst;
         $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
         $price = new MamahomePrice;
@@ -3326,7 +3327,7 @@ date_default_timezone_set("Asia/Kolkata");
             $price->totalamount = $x;
             $price->cgst = $cgst;
             $price->sgst = $sgst;
-            $price->igst = $igst;
+            $price->igst = $igstint;
             $price->totaltax = $totaltax;
             $price->amountwithgst = $y;    
             $price->cgstpercent = $cgstval;
@@ -3339,7 +3340,6 @@ date_default_timezone_set("Asia/Kolkata");
             $price->state = $request->state;
             $price->save();
         return back();
-
     }
     public function cancelOrder(Request $request)
     {
@@ -8584,6 +8584,7 @@ public function display(request $request){
             $tl = Tlwards::leftjoin('users','users.id','tlwards.user_id')
                  ->pluck('tlwards.users');
                $tt = explode(",", $tl) ;
+            
             foreach($users as $user){
 
                 $tlwards = Tlwards::where('user_id',$user->id)->first();
@@ -8606,7 +8607,7 @@ public function display(request $request){
         }else{
             $ward="null";
         }
-         if($request->framework){
+        if($request->framework){
 
         $users = implode(",", $request->framework);
         }else{
@@ -9185,5 +9186,18 @@ foreach ($user as $users) {
                             ->get();
             }
             return view('breaks',['breaks'=>$breaks]);
+    }
+    public function logistic(Request $request)
+    {
+     if($request->framework){
+
+        $users = implode(",", $request->framework);
+        }else{
+            $users="null";
+        }
+         Order::where('id',$request->logicid)->update([
+            'logistic' => $users,
+        ]);
+         return back();
     }
 }
