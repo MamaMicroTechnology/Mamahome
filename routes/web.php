@@ -19,6 +19,24 @@ Route::get('/', function () {
 });
 Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
+Route::get('/deleteuser','CustomerController@deleteuser');
+Route::post('/test','CustomerController@testindex');
+Route::post('/subward','CustomerController@subward');
+Route::get('/gstinformation','CustomerController@gstinfo');
+Route::get('/searchuser','CustomerController@userfull');
+Route::post('/changedesc','CustomerController@changedesc');
+Route::get('/ledger','CustomerController@leview');
+Route::post('/legderdetails','CustomerController@ledgeracc');
+Route::get('/testdata','CustomerController@testdata');
+Route::post('/testedit','CustomerController@testeditdata');
+Route::get('/getsubaccounthead','CustomerController@getsubaccounthead');
+
+
+
+
+
+
+
 
 Route::get('/getid','HomeController@getid');
 Route::get('/getsubwards','AssignManufacturersController@getsubwards');
@@ -32,6 +50,7 @@ Route::get('/subwardfind','AssignManufacturersController@find');
 Route::get('/findsubward','AssignManufacturersController@findsubward');
 Route::get('/subfind','AssignManufacturersController@subfind');
 Route::get('/viewmanu','AssignManufacturersController@viewmanu');
+
 //tl dashboard work
 Route::get('/delete_enquiry','TlController@delete_enquiry');
 Route::get('/search_enquiry','TlController@search_enquiry');
@@ -40,7 +59,7 @@ Route::get('/manu_map','TlController@manumap');
 Route::get('/details','AssignManufacturersController@details');
 
 
-Route::get('/ticketchat','HomeController@chat');
+ Route::get('/ticketchat','HomeController@chat');
  Route::get('/assign_manufacturer','HomeController@manufacturerwise');
  Route::post('/Manufacturestore','AssignManufacturersController@Manufacturestore');
  Route::get('/sales_manufacture','AssignManufacturersController@sales_manufacture');
@@ -129,6 +148,8 @@ Route::get('/inputview','HomeController@inputview');
 Route::get('/manuenquiry','AssignManufacturersController@manuenquiry');
 
 Route::get('/getProjects','HomeController@getProjects');
+Route::get('/getmanuProjects','HomeController@getmanuProjects');
+
 Route::get('/showThisProject','HomeController@showProjectDetails');
 
 Route::get('/enquiryCancell','HomeController@enquiryCancell');
@@ -138,10 +159,16 @@ Route::get('/editenq1','HomeController@editEnq1');
 Route::get('/eqpipelineedit','HomeController@eqpipelineedit');
 Route::get('/getquotation','mamaController@getquotation');
 Route::get('/getprojects','mamaController@getquotation');
+Route::get('/getgstvalue','mamaController@getgstvalue');
+Route::post('/supplierinvoice','FinanceDashboard@supplierinvoice');
+
+
 
 
 
 Route::get('/getAddress','HomeController@getAddress');
+Route::get('/getmanuAddress','HomeController@getmanuAddress');
+
 Route::get('/marketing','marketingController@getHome');
 Route::get('/wardsforle','HomeController@wardsForLe');
 Route::get('/wardsforle','HomeController@wardsForLe');
@@ -231,6 +258,7 @@ Route::get('/getmaphistory1','mamaController@getaccmap');
 
 // Route::get('/starttimer','HomeController@starttimer');
 Route::get('/starttimer','HomeController@starttimer');
+// Route::get('/breaktime','HomeController@breaktime');
 Route::post('/breaktime','HomeController@breaktime');
 Route::post('/sbreaktime','HomeController@sbreaktime');
 Route::get('/breaks','HomeController@breaks');
@@ -716,6 +744,8 @@ Route::get('/downloadInvoice','FinanceDashboard@downloadInvoice')->name('downloa
 Route::get('/downloadTaxInvoice','FinanceDashboard@downloadTaxInvoice')->name('downloadTaxInvoice');
 Route::get('/downloadpurchaseOrder','FinanceDashboard@downloadpurchaseOrder')->name('downloadpurchaseOrder');
 Route::get('/downloadquotation','FinanceDashboard@downloadquotation')->name('downloadquotation');
+Route::get('/downloadSupplierInvoice','FinanceDashboard@downloadSupplierInvoice')->name('downloadSupplierInvoice');
+
 Route::post('/savePaymentDetails','FinanceDashboard@savePaymentDetails');
 Route::get('/financeAttendance','FinanceDashboard@getFinanceAttendance');
 Route::get('/viewProformaInvoice','FinanceDashboard@getViewProformaInvoice');

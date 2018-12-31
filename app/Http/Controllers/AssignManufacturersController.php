@@ -13,6 +13,7 @@ use App\SubWard;
 use App\History;
 use App\Manufacturer;
 use App\User;
+use App\State;
 use App\ProjectDetails;
 use App\Point;
 use App\Requirement;
@@ -34,6 +35,7 @@ use App\brand;
 use App\Noneed;
 use App\SubCategory;
 use App\CustomerProjectAssign;
+
 
 use App\WardMap;
 class AssignManufacturersController extends Controller
@@ -295,30 +297,31 @@ if($aggregates_required != null){
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('manuenquiry',['category1'=>$category1,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand]);
+        $states = State::all();
+        return view('manuenquiry',['category1'=>$category1,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'states'=>$states]);
     }
 
 public function inputdata(Request $request)
     {
 
+
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
 
            $cat = category::where('id',$request->cat)->pluck('id')->first();
+        if($request->name){
 
-         if($request->name){
-
-              $shipadress = $request->billadress;
+              $billaddress = $request->shipaddress;
          }
-           $shipadress = $request->billadress;
-
+         else{
+            
+           $billaddress = $request->billaddress;
+         }
+     
    // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
         $quantity = array_filter($request->quan);
         $qu = implode(", ", $quantity);
-
-
-
         for($i = 0;$i < count($request->subcat); $i++){
             if($i == 0){
                 $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
@@ -363,8 +366,14 @@ public function inputdata(Request $request)
 
         $var2 = count($category);
         $storesubcat =$request->subcat[0]; 
-            
+           if(count($request->sub_ward_id) > 0){
         $ward = $request->sub_ward_id;
+            
+           }else{
+             $find = Manufacturer::where('id',$request->manu_id)->pluck('sub_ward_id')->first();
+             $ward = $find;
+
+           }
         $x = DB::table('requirements')->insert(['project_id'    =>'',
                                                 'main_category' => $categoryNames,
                                                 'brand' => $brandnames,
@@ -385,15 +394,15 @@ public function inputdata(Request $request)
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator,
-                                                'billadress'=>$request->billadress,
+                                                'billadress'=> $billaddress,
                                                 'total_quantity'=>$request->totalquantity,
                                                
                                                 'manu_id'=>$request->manu_id,
                                                 'sub_ward_id'=>$ward, 
-                                                'ship' =>$shipadress
+                                                'ship' =>$request->shipaddress,
+                                                'state'=>$request->state,
+                                                'price' =>$request->price
                                         ]);
-
-
          $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
@@ -449,8 +458,9 @@ public function inputdata(Request $request)
                     ->leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
                     ->select('requirements.*','users.name','manufacturers.name','manufacturers.contact_no','manufacturers.address','requirements.total_quantity')
                     ->first();
+                    $category = Category::all();
 
-         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'category'=>$category]);
     }
 public function addcat(request $request){
          
@@ -825,13 +835,14 @@ public function addcat(request $request){
                  $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')
                              ->where('created_at','LIKE',$to."%")->count();
                  
-
+                  
 
                  $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
 
                   $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count();
                 
-                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')
+                  ->where('created_at','LIKE',$to."%")->count(); 
 
                 
                 $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','like',$from.'%')
@@ -849,49 +860,46 @@ public function addcat(request $request){
             
                 }
             }else{
-                     foreach($users as $user){
-                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count();
-                 
+        foreach($users as $user){
+        $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from."%")
+            ->where('created_at','<=',$to)->count();
+         $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>',$from."%")->where('created_at','<=',$to."%")->count(); 
 
-
-                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
-
-                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>',$from."%")->where('created_at','<=',$to."%")->count(); 
                 
-                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from."%")->where('created_at','<=',$to."%")->count(); 
 
                 
-                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count(); 
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from."%")
+                             ->where('created_at','<=',$to."%")->count(); 
 
-                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count();
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from."%")
+                             ->where('created_at','<=',$to."%")->count();
 
                
-               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>',$from)
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>',$from."%")
                              ->where('created_at','<=',$to)->count();
-               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>',$from)
-                             ->where('called_Time','<=',$to)->count();
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>',$from."%")
+                            ->where('called_Time','<=',$to."%")->count();
             
                 }
  }
 }else{
         foreach($users as $user){
-                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
-                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
-                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous."%")->count();
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous."%")->count(); 
+                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous."%")->count(); 
 
-                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous)->count(); 
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous."%")->count(); 
 
-                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count(); 
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous."%")->count(); 
 
-                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count();
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous."%")->count();
 
-               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>=', $previous)->count();
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>=', $previous."%")->count();
                  
 
-               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous)->count();
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous."%")->count();
                 }
 
 }
@@ -1498,14 +1506,14 @@ public  function manureport(request $request)
 
              foreach ($subward as $sub) {
        $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->where('manufacturer_type',$request->type)->get()->toArray();
-       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name,'type'=>$request->type]);
         }
 
      }
     else{
        foreach ($subward as $sub) {
        $projectcount = Manufacturer::where('sub_ward_id',$sub->id)->get()->toArray();
-       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name,'type'=>$request->type]);
         }
     }
  return view('/manureport',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
@@ -1514,7 +1522,7 @@ public  function manureport(request $request)
 
  public function mini(request $request){
 
-    $users = User::where('department_id','!=',10)->where('group_id','=',7)->get();
+    $users = User::where('department_id','!=',10)->get();
 
         $date=date('Y-m-d');
         $breacktime = [];
@@ -1632,79 +1640,121 @@ foreach ($sub as  $users) {
  
  public function details(request $request){
 
-                $date=date_create("2018-12-06");
-    // $x=  DB::table("requirements")
-    //       ->select(DB::raw("COUNT(project_id),project_id"))
-    //        ->where('status',"Enquiry Confirmed")
-    //        ->groupBy("project_id")
-    //        ->where('project_id','!='," ")
-    //        ->havingRaw("COUNT(project_id) > 6")
-    //        ->pluck('project_id');
-           
-
-           if($request->type == "project"){
-
-              // $pro =  DB::table("orders")
-              //     ->select(DB::raw("COUNT(project_id),project_id"))
-              //      ->where('status',"Order Confirmed")
-              //       ->where('project_id','!='," ")
-              //      ->groupBy("project_id")
-              //      ->havingRaw("COUNT(project_id) >= 1")
-              //      ->pluck('project_id');
+    $users = User::where('department_id','!=',10)->get(); 
+    $projects = CustomerProjectAssign::all();
 
 
-               $project = ProjectDetails::where('type',1)->paginate("10"); 
-               $projectcount = ProjectDetails::where('type',1)->count(); 
-               
-                   
-           }else if($request->type == "manu"){
-
-          //   $ma=  DB::table("orders")
-          // ->select(DB::raw("COUNT(manu_id),manu_id"))
-          //  ->where('status',"Order Confirmed")
-          //   ->where('manu_id','!='," ")
-          //  ->groupBy("manu_id")
-          //  ->havingRaw("COUNT(manu_id) >= 1")
-          //  ->pluck('manu_id');  
-           $project = Manufacturer::where('manu_type',1)->paginate("10"); 
-           $projectcount = Manufacturer::where('manu_type',1)->count(); 
-           }else{
-            $project = [];
-            $projectcount = 0;
-           }
-           $users = User::where('department_id','!=',10)->get();
-        
-    return view('/details',['project'=>$project,'count'=>$projectcount,'users'=>$users]);
-     
-
-     
-
+    return view('/details',['users'=>$users,'projects'=>$projects]);
  }
   public function storeproject(request $request){
       
+      if($request->type != "project"){
 
-    $check = CustomerProjectAssign::where('user_id',$request->user_id)->first();
-    $numberexist = CustomerProjectAssign::where('project_id',$request->num)->first();
-    if($numberexist != null){
-        $userName = User::where('id',$numberexist->user_id)->pluck('name')->first();
-        $text = "These Projects are Already Assigned to ".$userName;
+        return $this->manustore($request);
+      }
+
+     $push = [];
+        $i = CustomerProjectAssign::where('type',"project")->pluck('user_id');
+        $user = User::whereIn('id',$i)->get();
+     
+        foreach ($user as $project) {
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+           $ex = explode(",",$ids);
+            array_push($push,$ex);
+          
+        } 
+        $mergearray = [];
+      $ids =  $request->projectids;
+      $id = explode(',',$ids);
+     
+      $result = [];
+      foreach($push as $array){
+        $result = array_merge($result, $array);
+              }
+  $z = array_intersect($result,$id);
+     
+
+        ProjectDetails::whereIn('project_id',$id)->update(['type'=>1]);
+        
+     
+
+
+    $check = CustomerProjectAssign::where('user_id',$request->user_id)->where('type',"project")->first();
+    $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
+    if($z != null){
+
+       $text2 =implode(",",$z);
+       $text = "Project ids are assigned please check "  .$text2;
+       
         return back()->with('NotAdded',$text);
     }
             if($check == null){
                 $number = new CustomerProjectAssign;
                 $number ->user_id = $request->user_id;
-                $number->project_id = $request->num;
+                $number->project_id = $request->projectids;
                 $number->type = $request->type;
                 $number->save();
             }else{
-                $check->project_id=$request->num;
+                $check->project_id=$request->projectids;
                 $check->type = $request->type;
                 $check->save();
             }
             return redirect()->back()->with('success','Projects  Assigned');
     }
 
+ public function manustore(request $request){
+      
 
+       $push = [];
+        $i = CustomerProjectAssign::where('type',"Manufacturer")->pluck('user_id');
+        $user = User::whereIn('id',$i)->get();
+     
+        foreach ($user as $project) {
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+           $ex = explode(",",$ids);
+            array_push($push,$ex);
+          
+        } 
+        $mergearray = [];
+      $ids =  $request->projectids;
+      $id = explode(',',$ids);
+     
+      $result = [];
+      foreach($push as $array){
+        $result = array_merge($result, $array);
+              }
+  $z = array_intersect($result,$id);
+     
+ 
+
+        Manufacturer::whereIn('id',$id)->update(['manu_type'=>1]);
+ 
+
+
+    
+    $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
+    if($z != null){
+
+       $text2 =implode(",",$z);
+       $text = "Project ids are assigned please check "  .$text2;
+       
+        return back()->with('NotAdded',$text);
+    }
+    $check = CustomerProjectAssign::where('user_id',$request->user_id)->where('type',"Manufacturer")->first();
+
+            if($check == null){
+                $number = new CustomerProjectAssign;
+                $number ->user_id = $request->user_id;
+                $number->project_id = $request->projectids;
+                $number->type = $request->type;
+                $number->save();
+           }else{
+                $check->project_id=$request->projectids;
+                $check->type = $request->type;
+                $check->save();
+           }
+            return redirect()->back()->with('success','Projects  Assigned');
+    }
 
 
 }

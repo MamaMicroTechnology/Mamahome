@@ -9,7 +9,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\registration;
-
 use Illuminate\Http\Request;
 use App\Department;
 use App\User;
@@ -72,6 +71,7 @@ use App\Salescontact_Details;
 use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
+use App\Gst;
 use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
 use App\Quotation;
@@ -592,11 +592,6 @@ class mamaController extends Controller
 
              $ward=WardAssignment::where('user_id',Auth::user()->id)->pluck('subward_id')->first();
               }
-
-
-          
-
-
 
             $projectdetails = New ProjectDetails;
             $projectdetails->sub_ward_id = $ward;
@@ -1797,11 +1792,13 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return back();
     }
     public function addManufacturer(Request $request){
+
         $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
         $request->pan->move(public_path('pan'),$pan);
         $manufacturer = new ManufacturerDetail;
         $manufacturer->vendortype = $request->vendortype;
         $manufacturer->company_name = $request->companyName;
+        $manufacturer->state = $request->state;
         $manufacturer->category = $request->category;
         $manufacturer->cin = $request->cin;
         $manufacturer->gst = $request->gst;
@@ -1815,13 +1812,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $manufacturer->sales_contact = $request->salesContact;
         $manufacturer->finance_contact = $request->financeContact;
         $manufacturer->quality_department = $request->qualityDept;
-        
-
         $manufacturer->save();
-           
-       
-
-
         return back()->with('Success','Manufacturer details added successfully');
     }
     public function editsubwardimage(Request $request){
@@ -1888,7 +1879,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editEnquiry(Request $request)
     {
-
             if($request->note != null){
           Requirement::where('id',$request->id)->update(['notes'=>$request->note]);
           $requirement = Requirement::where('id',$request->id)->first();
@@ -1897,6 +1887,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
 
             Requirement::where('id',$request->eid)->update(['status'=>$request->status,'converted_by'=>Auth::user()->id]);
             $requirement = Requirement::where('id',$request->eid)->first();
+
             if($requirement->status == "Enquiry Confirmed"){
                  
                 $project1 = Manufacturer::where('id',$requirement->manu_id)->first();
@@ -1915,9 +1906,12 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $country = Country::where('id',$ward->country_id)->first();
                 $year = date('Y');
                 $country_initial = "O";
-                $count = count(Order::all())+1;
+                $all =Order::withTrashed()->count();
+                $count = $all + 1;
                 $number = sprintf("%03d", $count);
                 $orderNo = "MH_".$country->country_code."_".$zone->zone_number."_".$year."_".$country_initial.$number;
+                $check = Order::where('req_id',$request->eid)->first();
+                if(count($check) == 0){
                 $order = new Order;
                 $order->id = $orderNo;
                 $order->req_id = $request->eid;
@@ -1939,6 +1933,28 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $order->generated_by  = $requirement->generated_by;
                 $order->manu_id =$requirement->manu_id;
                 $order->save();
+                }else{
+                $check->id = $orderNo;
+                $check->req_id = $request->eid;
+                $check->project_id = $requirement->project_id;
+                $check->main_category = $requirement->main_category;
+                $check->brand = $requirement->brand;
+                $check->sub_category = $requirement->sub_category;
+                $check->material_spec = $requirement->material_spec;
+                $check->referral_image1 = $requirement->referral_image1;
+                $check->referral_image2 = $requirement->referral_image2;
+                $check->requirement_date = $requirement->requirement_date;
+                $check->measurement_unit = $requirement->measurement_unit;
+                $check->unit_price = $requirement->unit_price;
+                $check->quantity = $requirement->quantity;
+                $check->total = $requirement->total;
+                $check->notes = $requirement->notes;
+                $check->status = $requirement->status;
+                $check->dispatch_status = $requirement->dispatch_status;
+                $check->generated_by  = $requirement->generated_by;
+                $check->manu_id =$requirement->manu_id;
+                $check->save(); 
+                }
             }
         }
         $activity = new ActivityLog;
@@ -1997,7 +2013,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             ->withErrors($validator)
             ->withInput();
         }
+        if($request->name){
 
+              $billaddress = $request->shipaddress;
+         }
+         else{
+            
+           $billaddress = $request->billaddress;
+         }
+       
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -2033,8 +2057,27 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate,
-            'price' =>$request->price
+            'price' =>$request->price,
+            'state'=>$request->state,
+            'ship'=>$request->shipaddress,
+            'billadress'=>$billaddress
         ]);
+       
+     $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([
+              'main_category' => $categoryNames,
+              'brand' => $brandnames,
+             'sub_category'  =>$subcategories,
+             'quantity' => $request->totalquantity
+                   
+
+
+     ]);
+     
+
+
+
+
+
 $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
@@ -2738,16 +2781,26 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $check = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logindate'); 
         $logout = FieldLogin::where('user_id',Auth::user()->id)->where('logindate',date('Y-m-d'))->pluck('logout');
 
-        if(Auth::user()->department_id == 4){
-             $start = "16:10 ";
-             $now = date('H:i ');
-        }
-        else if(Auth::user()->group_id == 22){
-             $start = "16:30 ";
+        $new = ['MH461',
+                'MH507',
+                'MH503',
+                'MH502',
+                'MH501',
+                'MH496',
+                'MH493',
+                'MH490',
+                'MH473',
+                'MH472',
+                'MH463',
+                'MH450',
+                'MH401'];
+       $use = User::whereIn('employeeId',$new)->pluck("id")->toArray();
+       if(in_array(Auth::user()->id, $use)){
+               $start = "18:00 ";
              $now = date('H:i ');
         }
         else{
-            $start = "17:00 ";
+             $start = "17:00 ";
              $now = date('H:i ');
         }
             if( $now < $start && $remark == null){
@@ -2887,15 +2940,31 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $address = $request->address; 
        if(Auth::user()->department_id == 4){
                 $start = "08:00 AM";
+     
+       $new = ['MH461',
+                'MH507',
+                'MH503',
+                'MH502',
+                'MH501',
+                'MH496',
+                'MH493',
+                'MH490',
+                'MH473',
+                'MH472',
+                'MH463',
+                'MH450',
+                'MH401'];
+       $use = User::whereIn('employeeId',$new)->pluck("id")->toArray();
+       if(in_array(Auth::user()->id, $use)){
+                $start = "09:00 AM";
                 $now = date('H:i A');
         }
         else{
              $start = "08:00 AM";
              $now = date('H:i A');
         }
-        if( $now > $start && count($check)== 0 && $remark == null){
-            
-            $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+        if($now > $start && count($check)== 0 && $remark == null){         
+            $text = " <form action='emplate?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
@@ -2906,9 +2975,9 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $remark;
-                        $field->latitude = "";
-                        $field->longitude = "";
-                        $field->address = "";
+                        $field->latitude = $request->latitude;
+                        $field->longitude =$request->longitude ;
+                        $field->address = $request->address;
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";
@@ -3142,13 +3211,13 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
     }
     public function saveUpdatedManufacturer(Request $request)
     {
-        if(Auth::user()->group_id == 22){
+        if(count($request->subward) == 0){
             $wardsAssigned = $request->subward;
         }else{
             
-        $wardsAssigned = WardAssignment::where('user_id',Auth::user()->id)->where('status','Not Completed')->pluck('subward_id')->first();
+        $wardsAssigned = Manufacturer::where('id',$request->id)->pluck('sub_ward_id')->first();
         }
-       
+
        if($request->production){
             $pro = implode(",",$request->production);
            }else{
@@ -3195,8 +3264,12 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $manufacturer->total_area = $request->total_area;
         $manufacturer->production_type = $pro;
         $manufacturer->updated_by = Auth::user()->id;
-
-
+        $manufacturer->quality  = $request->quality;
+        $manufacturer->sample  = $request->sample;
+        $manufacturer->ggbs  = $request->ggbs;
+        $manufacturer->other  = $request->other;
+        $manufacturer->exbrand   = $request->exbrand;
+        $manufacturer->brandquantity   = $request->brandquantity;
         $manufacturer->save();
        
         Salescontact_Details::where("manu_id",$request->id)->update([
@@ -3371,7 +3444,7 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
    }
    public function getquotation(Request $request){
    
-    $category = Category::all();
+    $states = state::all();
                 if($request->quot == "Project" && !$request->category){
                      $enquiries = Requirement::where('requirements.project_id',$request->id)->where('requirements.status',"Enquiry Confirmed")
                      ->get();
@@ -3428,14 +3501,16 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
                      $manu = "";
 
                 }
+        $categories = Category::all();
+
         $quotations = Quotation::all();
-        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'category'=>$category,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu]);
+        return view('/quotation',['enquiries'=>$enquiries,'quotations'=>$quotations,'categories'=>$categories,'id'=>$id,'manu_id'=>$manu_id,'manu'=>$manu,'states'=>$states]);
     }
     public function generatequotation(Request $request){
-
-        $enquiries = Requirement::where('id',$request->id)->update([
-                'quotation'=> "generated"
-        ]);
+        $cgst = round($request->cgst,2);
+        $sgst = round($request->sgst,2);
+        $igst = round($request->igst,2);
+    
         $year = date('Y');
         $country_code = Country::pluck('country_code')->first();
         $zone = Zone::pluck('zone_number')->first();
@@ -3450,8 +3525,9 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $quot->unitprice = $request->price;
            $quot->pricewithoutgst = $request->withoutgst;
            $quot->totalamount =$request->display;
-           $quot->cgst  = $request->cgst;
-           $quot->sgst  = $request->sgst;
+           $quot->cgst  = $cgst;
+           $quot->sgst  = $sgst;
+           $quot->igst = $igst;
            $quot->totaltax  = $request->totaltax;
            $quot->amountwithgst  = $request->withgst;
            $quot->unit = $request->unit;
@@ -3461,6 +3537,10 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $quot->description = $request->description;
            $quot->shipaddress  = $request->ship;
            $quot->billaddress   = $request->bill;
+           $quot->cgstpercent = $request->cgstpercent;
+           $quot->sgstpercent = $request->sgstpercent;
+           $quot->igstpercent = $request->igstpercent;
+           $quot->gstpercent =$request->gstpercent;
            $quot->save();
       }
       else{
@@ -3468,8 +3548,8 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $check->unitprice = $request->price;
            $check->pricewithoutgst = $request->withoutgst;
            $check->totalamount =$request->display;
-           $check->cgst  = $request->cgst;
-           $check->sgst  = $request->sgst;
+           $check->cgst  = $cgst;
+           $check->sgst  = $sgst;
            $check->totaltax  = $request->totaltax;
            $check->amountwithgst  = $request->withgst;
            $check->amount_word  = $request->dtow1; 
@@ -3480,6 +3560,22 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
            $check->billaddress   = $request->bill;
            $check->save();
       }
+        $enquiries = Requirement::where('id',$request->id)->update([
+                'quotation'=> "generated"
+        ]);
            return back();
+    }
+    public function getgstvalue(Request $request){
+       
+        $gstvalue = Gst::where('category',$request->name)->where('state',$request->state)->get();
+        $array = [];
+        $id = $request->x;
+        array_push($array,['gstvalue'=>$gstvalue,'id'=>$id]);
+        return response()->json($array);
+    }
+    public function deletemanuProject(request $request){
+
+        Manufacturer::where('id',$request->projectId)->delete();
+        return back();
     }
 }

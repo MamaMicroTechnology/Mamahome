@@ -35,11 +35,11 @@
                                     <td>Production Type</td>
                                     <td>:</td>
                                     <td>
-                                 <label required class="checkbox-inline"><input id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
-                                  <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
-                                      <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
-                                        <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="Fabricators">FABRICATORS</label> 
+                                 <label  class="checkbox-inline"><input id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
+                                    <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
+                                  <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
+                                      <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                        <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="Fabricators">FABRICATORS</label> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -55,11 +55,11 @@
                                    <td id="x">
                                     <div class="col-sm-6">
                                       <label>Longitude:</label>
-                                        <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
+                                        <input placeholder=" Latitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Latitude:</label>
-                                        <input placeholder="Latitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                        <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
                                     </div>
                                    </td>
                                </tr>

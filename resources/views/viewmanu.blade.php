@@ -35,7 +35,13 @@
                         @endif
                         @endif
                         <tr>
-                            <td style="width:40%"><b>Updated On : </b></td>
+                            <td><b>Updated By : </b></td>
+                            <td>
+                                {{ $project->user1 != null ? $project->user1->name : '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%"><b>Last Updated On : </b></td>
                             <td>{{ date('d-m-Y h:i:s A',strtotime($project->updated_at)) }}</td>
                         </tr>
                         

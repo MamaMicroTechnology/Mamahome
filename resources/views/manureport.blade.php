@@ -39,10 +39,11 @@
                 <thead>
                     <th class="text-center">Slno</th>
                     <th class="text-center">SubWard Name</th>
-                    <th class="text-center">Project Count</th>
+                    <th class="text-center">Manufacturer&nbsp;</th>
                 </thead>
                 <?php
                 $i =1; 
+               
                 ?>
                 <tbody>
                     @foreach($projectscount as $view)

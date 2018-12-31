@@ -35,6 +35,10 @@ class Manufacturer extends Model
     {
         return $this->hasOne('App\user','id','listing_engineer_id');
     }
+     public function user1()
+    {
+        return $this->hasOne('App\user','id','updated_by');
+    }
     protected $fillable = [
             'sub_ward_id',
             'name',

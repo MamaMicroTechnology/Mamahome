@@ -991,6 +991,14 @@ div#calendar{
                                   <div class="modal-body">
 
                                     <p>Click On Start To Take a Break?</p>
+                                  <!-- <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
+                                      {{ csrf_field() }}
+                                  </form>
+                                    <button type="submit" class="btn btn-success btn-sm"  onclick="startbreak();">START</button>
+                                  <form id="timer" action="{{ URL::to('/') }}/sbreaktime" method="POST">
+                                      {{ csrf_field() }}
+                                    <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
+                                  </form> -->
                                   <form id="timer" action="{{ URL::to('/') }}/breaktime" method="POST">
                                       {{ csrf_field() }}
                                     <button type="submit" class="btn btn-success btn-sm">START</button>
@@ -999,6 +1007,8 @@ div#calendar{
                                       {{ csrf_field() }}
                                     <button style="margin-top:-20%;margin-left: 70px;" type="submit" class="btn btn-danger btn-sm">STOP</button>
                                   </form>
+                                    <label id="currentTime" class="alert-success"></label>
+                                  
                                   </div>
                                   <div class="modal-footer">
                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1057,15 +1067,7 @@ div#calendar{
                               </div>
                             </div>
                             <!-- mpdal end -->
-<script>
-function myTimer() {
-  var myVar = setInterval(myTimer ,1000);
-    var d = new Date();
-    document.getElementById("time").innerHTML = d.toLocaleTimeString();
-    document.getElementById("timer").form.submit();
 
-}
-</script>
 @if(Auth::check())
 @if(Auth::user()->group_id == 1)
 <div id="mySidenav" class="sidenav">
@@ -1105,6 +1107,7 @@ function myTimer() {
             <a href="{{ URL::to('/viewallProjects') }}">&nbsp;&nbsp;&nbsp; - View All Projects</a>
             <a href="{{ URL::to('/') }}/Unupdated">&nbsp;&nbsp;&nbsp; -UnUpdated Projects</a>
         </div>
+    <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
     <a href="{{ URL::to('/ampricing') }}">Pricing</a>
     <a href="{{ URL::to('/minibreack') }}">BreakTime Mini Report</a>
     <a href="{{ URL::to('/details') }}">Assign Customers</a>
@@ -1114,8 +1117,8 @@ function myTimer() {
             <a href="{{ URL::to('/adenquirysheet') }}">&nbsp;&nbsp;&nbsp; - Enquiry sheet</a>
             <a href="{{ URL::to('/') }}/manuenquirysheet">&nbsp;&nbsp;&nbsp; -Manufacturer Enquiry Sheet</a>
             <a href="{{ URL::to('/enquiryCancell') }}">&nbsp;&nbsp;&nbsp; - Enquiry cancelled</a>
-             <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; - Get Quotation</a>
-        </div>
+             <!-- <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; - Get Quotation</a> -->
+    </div>
     <a href="#" data-toggle="collapse" data-target="#orders">Orders &#x21F2;</a>
         <div id="orders" class="collapse">
             <a href="{{ URL::to('/salesStatistics') }}">&nbsp;&nbsp;&nbsp; - Sales Statistics</a>
@@ -1147,6 +1150,8 @@ function myTimer() {
         </div> 
         <a href="{{ URL::to('/humanresources') }}">&nbsp;&nbsp;&nbsp; - Employees</a>
         <a href="{{ URL::to('/') }}/mhemployee">&nbsp;&nbsp;&nbsp; - MAMAHOME Employee</a>
+        <a href="{{ URL::to('/minibreack') }}">&nbsp;&nbsp;&nbsp;BreakTime Mini Report</a>
+
         <a href="{{ URL::to('/anr') }}">&nbsp;&nbsp;&nbsp; - Reports</a>
         <a href="{{ URL::to('/check') }}">&nbsp;&nbsp;&nbsp; - HR Files and Checklist</a>
         <a href="{{ URL::to('/') }}/assets">&nbsp;&nbsp;&nbsp; - Add Assets</a>
@@ -1206,7 +1211,9 @@ function myTimer() {
        <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
         <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
-
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+           <a href="{{ URL::to('/ledger') }}">Enter Ledger</a>
+           
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
@@ -1220,8 +1227,12 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/listingEngineer">&nbsp;&nbsp;&nbsp; - Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer">&nbsp;&nbsp;&nbsp; - Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview">&nbsp;&nbsp;&nbsp; - Add New Enquiry</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+      
+
     </div>
       <a  href="{{ URL::to('/')}}/lebrands">Brands</a>
+    <a href="{{ URL::to('/') }}/marketingvendordetails">Vendor details</a>
     <a href="{{ URL::to('/viewManufacturer') }}"> Manufacter Details</a>
     <a href="{{ URL::to('/monthlyreport') }}"> Monthly Sales Report</a>
     <a href="{{ URL::to('/newActivityLog') }}">Projects Updated Report</a>
@@ -1288,6 +1299,8 @@ function myTimer() {
     <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
     <a href="{{ URL::to('/allprice') }}">Products Prices</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+
    
    <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates"  >Assigned Manufacture</a>
@@ -1310,13 +1323,21 @@ function myTimer() {
       <a  href="{{ URL::to('/')}}/listingEngineer">Add New Project</a>
       <a  href="{{ URL::to('/')}}/addManufacturer"> Add New Manufacturer</a>
       <a  href="{{ URL::to('/')}}/inputview"> Add New Enquiry</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
     </div>
      <a href="{{ URL::to('/marketing') }}">Add Products and Brand</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+
      
     <a href="{{ URL::to('/') }}/projectsUpdate" >Projects</a>
     <a href="{{ URL::to('/') }}/enquirywise">Enquiries</a>
     <a href="{{ URL::to('/') }}/inputview">Add Enquiry</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
     <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <a href="{{ URL::to('/') }}/projectsUpdate?interested=interest">Interested Customers</a>   
     <a href="{{ URL::to('/') }}/kra">KRA</a>
@@ -1344,6 +1365,8 @@ function myTimer() {
      
      <a href="{{ URL::to('/') }}/projectsUpdate"> Assigned Task </a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
+           <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
+         
     
     <a href="{{ URL::to('/') }}/sales_manufacture" id="updates" >Assigned Manufacture</a>
     <a href="{{ URL::to('/') }}/enquirywise" style="font-size:1.1em">Assigned Enquiry </a>   
@@ -1353,6 +1376,10 @@ function myTimer() {
      <a href="{{ URL::to('/') }}/sms"  >Assigned Phone Numbers</a>
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
+    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
+
       <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
@@ -1405,9 +1432,9 @@ function myTimer() {
                 
                 <form method="POST"  action="{{ URL::to('/') }}/logintime" >
                   {{ csrf_field() }}
-                                   <!--  <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
+                                    <input  class="hidden" type="text" name="longitude" value="{{ old('longitude') }}" id="longitudeapp"> 
                                     <input  class="hidden" type="text" name="latitude" value="{{ old('latitude') }}" id="latitudeapp">
-                                    <input class="hidden" id="addressapp" type="text" placeholder="Full Address" class="form-control input-sm" name="address" value="{{ old('address') }}"> -->
+                                    <input class="hidden" id="addressapp" type="text" name="address" value="{{ old('address') }}">
                         <button id="login" class="hidden" onsubmit="show()" type="submit" >Submit</button>
                 </form> 
                  <!-- <form method="POST"  action="{{ URL::to('/') }}/emplogouttime" >
@@ -1508,6 +1535,27 @@ function myTimer() {
   
 </div> -->
     <!-- Scripts -->
+<script type="text/javascript">
+  function startbreak(){
+    var id = "hello";
+    $.ajax({
+        type: 'GET',
+        url: "{{ URL::to('/') }}/breaktime",
+        async: false,
+        data: { id : id},
+        success: function(response){  
+          setInterval(mytimer, 1000);
+        }
+    })
+  }
+  function mytimer(){
+    var str = "";
+      var now = new Date();
+
+      str += "Your Break Time Started: " + now.getHours() +":" + now.getMinutes() + ":" + now.getSeconds();
+      document.getElementById("currentTime").innerHTML = str;
+  }
+</script>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
@@ -1555,7 +1603,59 @@ function myTimer() {
 <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" charset="utf-8">
   function submitapp(){
+    
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+        displayCurrentLocationapp,
+        displayErrorapp,
+        { 
+          maximumAge: 3000, 
+          timeout: 5000, 
+          enableHighAccuracy: true 
+        });
+    }else{
+      alert("Oops.. No Geo-Location Support !");
+    } 
+  }
+    
+    function displayCurrentLocationapp(position){
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      document.getElementById("longitudeapp").value = longitude;
+      document.getElementById("latitudeapp").value  = latitude;
+      getAddressFromLatLangapp(latitude,longitude);
+            initMap();
+  }
+   
+  function  displayErrorapp(error){
+    console.log("Entering ConsultantLocator.displayErrorapp()");
+    var errorType = {
+      0: "Unknown error",
+      1: "Permission denied by user",
+      2: "Position is not available",
+      3: "Request time out"
+    };
+    var errorMessage = errorType[error.code];
+    if(error.code == 0  || error.code == 2){
+      errorMessage = errorMessage + "  " + error.message;
+    }
+    alert("Error Message " + errorMessage);
+    console.log("Exiting ConsultantLocator.displayErrorapp()");
+  }
+  function getAddressFromLatLangapp(lat,lng){
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+       
+        document.getElementById("addressapp").value = results[0].formatted_address;
         document.getElementById("login").form.submit();
+      }
+    }else{
+        alert("Geocode was not successful for the following reason: " + status);
+     }
+    });
   }
   // function lll(){
     
@@ -1674,7 +1774,6 @@ function myTimer() {
 
 </script>
 @endif
-
 <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>
 <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js'></script>

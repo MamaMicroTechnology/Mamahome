@@ -37,5 +37,12 @@ class Supplierdetails extends Model
      protected static $logFillable = true;
      protected static $logOnlyDirty = true; 
      protected static $causerId = 3;
+      public function brand(){
+        return $this->belongsTo('App\brand','brand','supplier_name');
+    }
+    //  public function cat(){
+    //     return $this->belongsTo('App\Category','id','category');
+    // }
+    
 }
 

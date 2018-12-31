@@ -277,10 +277,8 @@
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[0]) {
         // console.log(results);
-
         document.getElementById("address").value = results[0].formatted_address;
         document.getElementById("sub").form.submit();
-
       }
     }else{
         alert("Geocode was not successful for the following reason: " + status);

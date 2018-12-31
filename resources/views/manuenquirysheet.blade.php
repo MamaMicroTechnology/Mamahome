@@ -10,12 +10,20 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center">
-					<a href="{{ URL::to('/') }}/inputview" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
+                       <form action="{{ URL::to('/') }}/subward" method="post">
+                       	{{ csrf_field() }}
+                       	 <input type="text" name="wardid" placeholder="ward name" style="color:red;">
+                       	 <input type="text" name="manu_id" placeholder="manu_id" style="color:red;">
+                       	 <button type="submit" value="submit" class="btn btn-sm btn-primary" >submit</button>
+                       	
+                       </form>
+					<a href="{{ URL::to('/') }}/manuenquiry" class="btn btn-danger btn-sm pull-left">Add Enquiry</a>
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 					<p class="pull-left" style="padding-left: 50px;" id="display" >
 				</p>
 					
 				Enquiry Data : {{count($enquiries)}}
+                       
 				 <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color: black;"></i></button>
 				
 					
@@ -164,7 +172,7 @@
 						@foreach($enquiries as $enquiry)
                         @if($enquiry->status != "Not Processed")
 							<td style="text-align:center;">
-								<a target="_blank" href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $enquiry->manu_id }}">
+								<a target="_blank" href="{{ URL::to('/') }}/viewmanu?id={{ $enquiry->manu_id }}">
 									 {{$enquiry->manu_id}}
 								</a> 
 							</td>

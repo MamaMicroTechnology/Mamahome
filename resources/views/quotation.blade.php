@@ -27,7 +27,7 @@
                         <label>Category</label>
                             <select id="categ" class="form-control" name="category">
                                 <option value="">--Select--</option>
-                                @foreach($category as $category)
+                                @foreach($categories as $category)
                                 <option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
                                 @endforeach
                             </select>
@@ -147,11 +147,41 @@
                             <input type="hidden"  name="dtow1" id="dtow1{{$enq->id}}" value="">
                             <input type="hidden" name="dtow2" id="dtow2{{$enq->id}}" value="">
                             <input type="hidden" name="dtow3" id="dtow3{{$enq->id}}" value="">
+                             <input type="text" class="hidden" value="" id="cgstpercent{{$enq->id}}" name="cgstpercent" >
+        <input type="text" class="hidden" value="" id="sgstpercent{{$enq->id}}" name="sgstpercent" >
+        <input type="text" class="hidden" value="" id="gstpercent{{$enq->id}}" name="gstpercent" >
+        <input type="text" class="hidden" value="" id="igstpercent{{$enq->id}}" name="igstpercent" >
                             <table class="table table-responsive table-striped" border="1">
                             <?php 
                                      $rec =count($enq->quotation);
                              ?>
-                             @if($rec == 0)    
+                             @if($rec == 0) 
+                             <tr>
+                                <td>Select Category : </td>
+                                <td>
+                                <select required id="cat{{$enquiry->id}}"  class="form-control" >
+                                        <option>--Select Category--</option>
+                                        @foreach($categories as $category)
+                                       <option {{ isset($_GET['category']) ? $_GET['category'] == $category->category_name ? 'selected' : '' : '' }} value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                                        @endforeach 
+                                </select>  
+                               
+                                </td> 
+                            </tr>
+                            <tr>
+                                <td>Select State : </td>
+                                <td>
+                                <select required id="state{{$enquiry->id}}"  onchange="getsuppliername('{{ $enquiry->id}}')" class="form-control"> 
+                                    <option>--Select--</option>
+                                @foreach($states as $state)
+                                    <option value="{{$state->id}}">{{$state->state_name}}</option>
+                                @endforeach
+                                </select>
+                                CGST : <label id="g1{{$enquiry->id}}" class="alert-success"></label>%
+                                SGST : <label id="g2{{$enquiry->id}}" class="alert-success"></label>%
+                                IGST : <label id="g3{{$enquiry->id}}" class="alert-success"></label>%
+                            </td>
+                            </tr>
                                 <tr>
                                     <td>Description Of Goods : </td>
                                     <td><input type="text" name="description" value="{{$enq->brand}}" class="form-control"></td>
@@ -211,7 +241,7 @@
                                 <tr>
                                     <td>Price(Per Unit) :</td>
                                     <td>
-                                        <label class="alert-success pull-left">{{$enq->price != null ? $enq->price : ""}}</label>
+                                        <label class="alert-success pull-left">Enquiry Price : {{$enq->price != null ? $enq->price : ""}}</label>
                                         <input required type="number" id="unit{{$enq->id}}"  class="form-control" name="price" placeholder="Unit Price" onkeyup="getcalculation('{{$enquiry->id}}')">
                                     </td>
                                 </tr> 
@@ -230,7 +260,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>CGST(14%) : </td>
+                                        <td>CGST(<label  id="tax1{{$enq->id}}"></label>%) : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$enq->id}}"></label>/-
                                               <input class="hidden" id="cgst1{{$enq->id}}" value="" name="cgst">
@@ -238,7 +268,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>SGST(14%) : </td>
+                                        <td>SGST(<label  id="tax2{{$enq->id}}"></label>%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$enq->id}}"></label>/-
                                               <input class="hidden" id="sgst1{{$enq->id}}" value="" name="sgst">
@@ -250,6 +280,13 @@
                                         <input class="hidden" id="totaltax1{{$enq->id}}" value="" name="totaltax">
                                         <label class=" alert-success pull-right" id="lblWord1{{$enq->id}}"></label>
                                       </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IGST( <label  id="tax3{{$enq->id}}"></label>%) : </td>
+                                        <td>
+                                             &nbsp;&nbsp;&nbsp;IGST <label class=" alert-success pull-left" id="igst{{$enq->id}}"></label>/-
+                                             <input id="igst1{{$enq->id}}" class="hidden" type="text" name="igst">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Amount (Including GST) :</td>
@@ -662,21 +699,102 @@ function NumToWord2(inputNumber, outputControl,arg){
     document.getElementById(outputControl).innerHTML = finalOutput;
 }
 function getcalculation(arg){
+    // gst category wise
+var z = document.getElementById('cat'+arg);
+  var name = z.options[z.selectedIndex].value;
+  var x = document.getElementById('state'+arg);
+  var state = x.options[x.selectedIndex].value;
+if(name == "CEMENT" && state == "1"){
+    var percent = 1.28;
+    var gstvalue = 14;
+    var sgstvalue = 14;
+     var igstvalue = "";
+}
+else if(name == "CEMENT" && state == "2"){
+    var percent = 1.28;
+    var gstvalue = 14;
+    var sgstvalue = 14;
+    var igstvalue = 28;
+}
+else if(name == "M-SAND" && state == "1"){
+    var percent = 1.05;
+    var gstvalue = 2.5;
+    var sgstvalue = 2.5;
+    var igstvalue = "";
+}
+else if(name == "M-SAND" && state == "2"){
+    var percent = 1.05;
+    var gstvalue = 2.5;
+    var sgstvalue = 2.5;
+    var igstvalue = 5;
+}
+else if( (state == "1") && (name == "PLUMBING" || "STEEL" || "ELECTRICALS") ){
+    var percent = 1.18;
+    var gstvalue = 9;
+    var sgstvalue = 9;
+    var igstvalue = "";
+
+   
+}
+else if( (state == "2") && (name == "PLUMBING" || "STEEL" || "ELECTRICALS") ){
+    var percent = 1.18;
+    var gstvalue = 9;
+    var sgstvalue = 9;
+    var igstvalue = 18;
+
+}
+else{
+    var percent = 1.28;
+    var gstvalue = 14;
+    var sgstvalue = 14;
+    var igstvalue = "";
+}
+var t1 = gstvalue;
+var t2 = sgstvalue;
+document.getElementById('tax1'+arg).innerHTML = t1
+document.getElementById('tax2'+arg).innerHTML = t2;
+if(igstvalue != ""){
+    
+var t3 = igstvalue;
+document.getElementById('tax3'+arg).innerHTML = t3;
+}
+else{
+   
+    var t3 = "";
+document.getElementById('tax3'+arg).innerHTML = t3;
+}
+document.getElementById('cgstpercent'+arg).value = gstvalue;
+document.getElementById('sgstpercent'+arg).value = sgstvalue;
+document.getElementById('gstpercent'+arg).value = percent;
+document.getElementById('igstpercent'+arg).value = igstvalue;
+// end
+
 var x =document.getElementById('unit'+arg).value;
 var y = document.getElementById('quan'+arg).value;
-var withoutgst = (x /1.28);
+var withoutgst = (x /percent);
 var t = (withoutgst * y);
 var f = Math.round(t);
-var gst = (t * 14)/100;
-var sgt = (t * 14)/100;
-var withgst = (gst + sgt + t);
+var gst = (t * gstvalue)/100;
+var sgt = (t * sgstvalue)/100;
+var igst = (gst + sgt);
+var withgst = (gst + sgt + t );
 var final = Math.round(withgst);
 var tt = (gst + sgt);
 var totaltax = Math.round(tt);
+
 document.getElementById('display'+arg).innerHTML = t;
 document.getElementById('display1'+arg).value = f;
 document.getElementById('cgst'+arg).innerHTML = gst;
 document.getElementById('sgst'+arg).innerHTML = sgt;
+if(igstvalue != ""){
+document.getElementById('igst'+arg).innerHTML = igst;
+document.getElementById('igst1'+arg).value = igst;
+
+}
+else{
+    document.getElementById('igst'+arg).innerHTML = "";
+    document.getElementById('igst1'+arg).value = "";
+}
 document.getElementById('cgst1'+arg).value = gst;
 document.getElementById('sgst1'+arg).value = sgt;
 document.getElementById('withgst'+arg).innerHTML = withgst;
@@ -695,5 +813,32 @@ function finalsubmit(arg){
   document.getElementById('totaltax1'+arg).addEventListener("click", NumToWord1(output,'lblWord1'+arg,arg));
   document.getElementById('withgst1'+arg).addEventListener("click", NumToWord2(inout,'lblWord2'+arg,arg));
 }
+</script>
+<script type="text/javascript">
+function getsuppliername(arg) {
+  var x = document.getElementById('cat'+arg);
+  var name = x.options[x.selectedIndex].value;
+  var y = document.getElementById('state'+arg);
+  var state = y.options[y.selectedIndex].value;
+  var x = arg;
+  $.ajax({
+                    type:'GET',
+                    url:"{{URL::to('/')}}/getgstvalue",
+                    async:false,
+                    data:{name : name , x : x , state :state},
+                    success: function(response)
+                    {    
+                        var id = response[0]['id'];
+                        console.log(response);
+                        var cgst = response[0]['gstvalue'][0]['cgst'];
+                        var sgst = response[0]['gstvalue'][0]['sgst'];
+                        var igst = response[0]['gstvalue'][0]['igst'];
+                        document.getElementById('g1'+id).innerHTML = cgst;
+                        document.getElementById('g2'+id).innerHTML = sgst;
+                        document.getElementById('g3'+id).innerHTML = igst;
+
+                    }
+                });
+    }
 </script>
 @endsection

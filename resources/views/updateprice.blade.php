@@ -92,7 +92,14 @@
                 @endforeach
             </select>
             <br>
+            <label for="myCategories">Select State </label>
+            <select  name="state" class="form-control">
+                <option>--Select--</option>
+                <option value="1">Karnataka</option>
+                <option value="2">Tamil nadu</option>
 
+            </select>
+            <br>
             <div class="col-md-4">
                 <label for="CGST">CGST(%)</label>
                 <input type="text" name="cgst" placeholder="CGST" min=1 id="CGST" class="form-control">

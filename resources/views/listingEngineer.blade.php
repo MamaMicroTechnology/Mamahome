@@ -9,8 +9,6 @@
              <div id="currentTime" class="pull-right" style="margin--5px;"></div>
             <div id="currentTime" class="pull-left" style="margin--5px;">Assigned Ward id :{{$subwards->sub_ward_name}}</div>
                 </div>
-               
-               
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
                    <br>              
@@ -600,6 +598,7 @@
 <script type="text/javascript" charset="utf-8">
   function getLocation(){
    
+    
       document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){

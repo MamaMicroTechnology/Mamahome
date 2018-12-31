@@ -21,7 +21,7 @@
                     <form method="GET" action="{{ URL::to('/') }}/unverifiedProjects">
                         <div class="col-md-2">
                 <label>Choose Ward :</label><br>
-                          <select name="ward" class="form-control" id="ward" onchange="loadsubwards()">
+                          <select required name="ward" class="form-control" id="ward" onchange="loadsubwards()">
                               <option value="">--Select--</option>
                               @if(Auth::user()->group_id != 22)
                               <option value="All">All</option>

@@ -181,8 +181,13 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 
       <!-- Modal body -->
       <div class="modal-body">
-        <label>Billing Address</label>
-            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="billadress" cols="50" rows="5" style="resize:none;">
+         <label>Shipping Address</label>
+          @if(isset($_GET['projectId']))
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $projects->siteaddress != Null ?
+    $projects->siteaddress->address : '' }}
+          @else
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">
+            @endif
         </textarea>  
        <br>
 
@@ -192,8 +197,8 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
             </div>
             
         </div>
-        <label id="sp1">Shipping Address</label>
-            <textarea  required placeholder="Enter Shipping Address" class="form-control" id="sp" type="text" name="ship" cols="50" rows="5" style="resize:none;">
+        <label id="sp1">Billing Address</label>
+            <textarea  required placeholder="Enter Shipping Address" class="form-control" id="sp" type="text" name="billaddress" cols="50" rows="5" style="resize:none;">
         </textarea>
            <script type="text/javascript">
                function myfunction(){
@@ -210,7 +215,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                     
                 }
                 else{
-                    alert("You Have Not Entered Billing Address");
+                    alert("You Have Not Entered Shipping Address");
                     document.getElementById('ss').checked = false;
                 }
                }
@@ -238,7 +243,6 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     </td>
 </tr>
 <tr>
-<tr>
             <td><label>Total Quantity : </label></td>
             <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
 
@@ -249,9 +253,21 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
             <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required /></td>
 
 </tr>
-
-
-
+<tr>
+        <td><label>Select State : </label></td>
+        <td>
+            <select  name="state" class="form-control" id="state">
+                <option>--select--</option>
+                @foreach($states as $state)
+                <option value="{{$state->id}}">{{$state->state_name}}</option>
+               @endforeach
+            </select>
+        </td>
+</tr>
+<!-- <tr>
+    <td><label>Customer GST : </label></td>
+    <td><input type="text" name="cgst" class="form-control" value=""></td>
+</tr> -->
 <td><label>Remarks :</label></td>
 <td>
 <textarea style="resize: none;" rows="4" cols="40" name="eremarks"
@@ -412,6 +428,8 @@ function getAddress(){
         data: { projectId : projectId},
         success: function(response){
             document.getElementById('elocation').value = response.address;
+            document.getElementById('val').value = response.address;
+            // document.getElementById('billing').value = response.address;
         }
     })
 }
@@ -426,23 +444,6 @@ function getquantity()
     }
 }
 </script>
-<!-- <script type="text/javascript">
-function popup()
-{
-$.ajax({
-type:'GET',
-url:"{{URL::to('/')}}/getcount",
-success: function(response)
-{
-console.log(response);
-if(count == 0)
-{
-alert(count);
-}
-}
-});
-}
-</script> -->
 <script>
 function quan(arg){
     if(parseInt(document.getElementById('quan'+arg).value) < parseInt(document.getElementById('quantity'+arg).value)){
@@ -471,21 +472,32 @@ function checkthis(arg){
         
                document.getElementById(arg).value = "";
     }
-
 }
 function submitinputview(){
+    var z = document.getElementById('state');
+  var name = z.options[z.selectedIndex].value;
+    var bill = document.getElementById('sp').value;
+   if (document.getElementById('ss').checked) {
+        var id = "";
+    }
+    else{
+        var id ="none";
+    }
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
+          }
+          else if(document.getElementById('sp').value == "" && id == "none"){
+                     
+                        window.alert("You Have Not Entered Bill Address");
+        }
+          else if(name == "--select--"){
+            window.alert("You Have Not Selected State");
+
           }
         else{
             document.getElementById("sub").submit();
         }
 }
-// function countthis(arg){
-
-//     return arg.
-    
-// }
 </script>
 
 @endsection

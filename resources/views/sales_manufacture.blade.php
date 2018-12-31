@@ -22,7 +22,7 @@
 <tr>
                    
 
-                   <td  style="text-align:center"><a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{$project->id}}" target="_blank">{{$project->id}}</a></td>
+                   <td  style="text-align:center"><a href="{{ URL::to('/') }}/viewmanu?id={{ $project->id }}" target="_blank">{{$project->id}}</a></td>
                    <td>{{ $project->proc != null ? $project->proc->name :$project->name }}</td>
                     <td>
                                      <a target="_blank" href="https://maps.google.co.in?q={{ $project->address != null ? $project->address : '' }}">{{$project->address}}</a>

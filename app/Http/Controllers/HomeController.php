@@ -94,10 +94,9 @@ use App\MamahomePrice;
 use App\Supplierdetails;
 use App\Mprocurement_Details;
 use App\Gst;
-
-
+use App\SupplierInvoice;
+use App\PaymentHistory;
 use Spatie\Activitylog\Models\Activity;
-
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -173,9 +172,9 @@ class HomeController extends Controller
         $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->get();
        $users1 = User::whereIn('group_id',$depart1)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
        $users2 = User::whereIn('group_id',$depart2)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
-        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'log'=>$log,'log1'=>$log1]);
+       $states = State::all();
+        return view('inputview',['category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'projects'=>$projects,'brand'=>$brand,'log'=>$log,'log1'=>$log1,'states'=>$states]);
     }
-
     public function inputdata(Request $request)
     {
 
@@ -184,10 +183,12 @@ class HomeController extends Controller
 
          if($request->name){
 
-              $shipadress = $request->billadress;
+              $billaddress = $request->shipaddress;
          }
-           $shipadress = $request->billadress;
-
+         else{
+            
+           $billaddress = $request->billaddress;
+         }
    // for fetching sub categories
         $get = implode(", ",array_filter($request->quan));
         $another = explode(", ",$get);
@@ -234,8 +235,6 @@ class HomeController extends Controller
             $points->save();
             $var = count($request->subcat);
             $var1 = count($brand);
-
-
             // $qnty = implode(", ", $request->quan);
 
         $var2 = count($category);
@@ -262,25 +261,12 @@ class HomeController extends Controller
                                                 'status' => "Enquiry On Process",
                                                 'dispatch_status' => "Not yet dispatched",
                                                 'generated_by' => $request->initiator,
-                                                'billadress'=>$request->billadress,
-                                                'ship' =>$shipadress,
+                                                'billadress'=>$billaddress,
+                                                'ship' =>$request->shipaddress,
                                                 'price' =>$request->price,
+                                                'State'=>$request->state,
                                                 'total_quantity' =>$request->totalquantity
                                         ]);
-
-        // $number = ProcurementDetails::where('project_id',$request->selectprojects)->get();
-        // $customer = new CustomerDetails;
-        // $customer->type_customer = "Project";
-        // $customer->manu_type = "";
-        // $customer->project_id = $request->selectprojects;
-        // $customer->manu_id = "";
-        // $customer->billadress = $request->billadress;
-        // $customer->shipaddress = $shipadress;
-        // $customer->contact_no = $number->procurement_contact_no;
-        // $customer->save();
-
-        // $customer =CustomerDetails::where('id',$customer->id)->update(['req_id'=>
-        // $customer->id]);
 
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
@@ -363,6 +349,52 @@ class HomeController extends Controller
             return response()->json('Error !!!');
         }
     }
+
+
+ public function getmanuProjects(Request $request)
+    {
+        $contact = $request->contact;
+        
+    
+       $x = Manufacturer::join('mprocurement_details','mprocurement_details.manu_id','=','manufacturers.id')
+                                ->where('mprocurement_details.contact',$contact)
+                                ->get();
+        if(count($x)==0){
+               $x = Manufacturer::join('manager_details','manager_details.manu_id','=','manufacturers.id')
+                            ->where('manager_details.contact',$contact)
+                            ->get();
+
+            if(count($x) == 0)
+            {
+                $x = Manufacturer::join('mowner_details','mowner_details.manu_id','=','manufacturers.id')
+                        ->where('mowner_details.contact',$contact)
+                        ->get();
+                if(count($x) == 0)
+                {
+                    $x = Manufacturer::join('salescontact_details','salescontact_details.manu_id','=','manufacturers.id')
+                        ->where('salescontact_details.contact',$contact)
+                        ->get();
+                        if(count($x) == 0){
+                            $x = 'Nothing Found';
+                        }
+                }
+            }
+        }
+        if($x)
+        {
+            return response()->json($x);
+        }
+        else
+        {
+            return response()->json('Error !!!');
+        }
+    }
+
+
+
+
+
+
     public function enquirysheet1(Request $request)
     {
                          // dd( $enquiries);
@@ -1423,7 +1455,7 @@ class HomeController extends Controller
     public function editEnq1(Request $request)
     {
 
-
+        $states = State::all();
         $category = Category::all();
         $depart = [7];
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
@@ -1444,7 +1476,7 @@ class HomeController extends Controller
                     ->select('requirements.*','users.name','project_details.project_name','procurement_details.procurement_contact_no','site_addresses.address','contractor_details.contractor_contact_no','owner_details.owner_contact_no','site_engineer_details.site_engineer_contact_no','consultant_details.consultant_contact_no')
                     ->first();
 
-        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+        return view('editEnq1',['enq'=>$enq,'category'=>$category,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'states'=>$states]);
     }
     public function eqpipelineedit(Request $request)
     {
@@ -1488,9 +1520,6 @@ class HomeController extends Controller
 
     //     return view('status_wise_projects', ['projects' => $projects, 'totalListing'=>$totalListing,'status'=>$check ,'stages'=>$stages]);
     //    }
-
-
-
 
        public function datewise(Request $request )
        {
@@ -2186,8 +2215,10 @@ $projects = ProjectDetails::join('site_addresses','project_details.project_id','
         $projectlist = ProjectDetails::where('listing_engineer_id',Auth::user()->id)->get();
         return view('projectlist',['projectlist'=>$projectlist]);
     }
-    public function editProject(Request $request)
+    public function editProject(request $request)
     {
+       
+       
         $date=date('Y-m-d');
         $log = FieldLogin::where('user_id',Auth::user()->id)->where('created_at','LIKE',$date.'%')->count();
          $log1 = FieldLogin::where('user_id',Auth::user()->id)->where('logout','!=','NULL')->pluck('logout')->count();
@@ -3031,7 +3062,7 @@ date_default_timezone_set("Asia/Kolkata");
     public function ampricing(Request $request){
         $prices = CategoryPrice::all();
         $categories = Category::all();
-        $check =Gst::where('category',$request->category)->first();
+        $check =Gst::where('category',$request->category)->where('state',$request->state)->first();
       
         if(count($check) == 0){
 
@@ -3040,6 +3071,7 @@ date_default_timezone_set("Asia/Kolkata");
             $gst->cgst = $request->cgst;
             $gst->sgst = $request->sgst;
             $gst->igst = $request->igst;
+            $gst->state = $request->state;
             $gst->save();
 
         }
@@ -3111,13 +3143,12 @@ date_default_timezone_set("Asia/Kolkata");
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
                     'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
                     ->paginate(25);
-                    
-            
         }
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
         $paymentDetails = PaymentDetails::all();
+        $payhistory = PaymentHistory::all();
         $message = Message::all();
         $chatUsers = User::all();
         $counts = array();
@@ -3127,6 +3158,7 @@ date_default_timezone_set("Asia/Kolkata");
         }
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
+        $invoice = SupplierInvoice::all();
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3138,7 +3170,9 @@ date_default_timezone_set("Asia/Kolkata");
             'manusuppliers'=>$manusuppliers,
             'suppliers'=>$suppliers,
             'counts'=>$counts,
-            'categories'=>$categories
+            'invoice'=>$invoice,
+            'categories'=>$categories,
+            'payhistory'=>$payhistory
            
         ]);
     }
@@ -3224,7 +3258,6 @@ date_default_timezone_set("Asia/Kolkata");
     
     public function confirmOrder(Request $request)
     {
-
         $id = $request->id;
         $x = Order::where('id', $id)->first();
         $x->status = 'Order Confirmed';
@@ -3236,31 +3269,52 @@ date_default_timezone_set("Asia/Kolkata");
             'unit'=>$request->unit
         ]);
         $cat = Order::where('id',$request->id)->pluck('main_category')->first();
-        $cgstval = Gst::where('category',$cat)->pluck('cgst')->first();
-        $sgstval = Gst::where('category',$cat)->pluck('sgst')->first();
-        if($cgstval == 14){
+        $projectid = Order::where('id',$request->id)->pluck('project_id')->first();
+        $cgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('cgst')->first();
+        $sgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('sgst')->first();
+        $igstval =  Gst::where('category',$cat)->where('state',$request->state)->pluck('igst')->first();
+      
+        if($cgstval == 14 || $igstval == 28){
             $percent = 1.28;
+            $g1 = 14;
+            $g2 = 14;
         }
-        else if($cgstval == 2.5){
+        else if($cgstval == 2.5 || $igstval == 5){
             $percent = 1.05;
+            $g1 = 2.5;
+            $g2 = 2.5;
         }
-        else if($cgstval == 9){
+        else if($cgstval == 9 || $igstval == 18){
             $percent = 1.18;
+            $g1 = 9;
+            $g2 = 9;
         }
         else{
-            $cgstval = 14;
-            $sgstval = 14;
+            $cgstval = "";
+            $sgstval = "";
             $percent = 1.28;
-
+            $g1 = 4;
+            $g2 = 4;
         }
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
-        $cgst = ($totalamount * $cgstval)/100;
-        $sgst = ($totalamount * $sgstval)/100;
+        if($igstval != null){
+        $cgst = 0;
+        $sgst = 0;
+        $t1 = ($totalamount * $g1)/100;
+        $t2 =  ($totalamount * $g2)/100;
+        $igst = ($t1 +  $t2);
+        }
+        else{
+            $cgst = ($totalamount * $g1)/100;
+            $sgst =  ($totalamount * $g2)/100;
+            $igst = 0;
+        }
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
-        $withgst = $cgst + $sgst + $totalamount;
+       
+        $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
         $price = new MamahomePrice;
             $price->order_id = $id;
@@ -3270,14 +3324,18 @@ date_default_timezone_set("Asia/Kolkata");
             $price->totalamount = $x;
             $price->cgst = $cgst;
             $price->sgst = $sgst;
+            $price->igst = $igst;
             $price->totaltax = $totaltax;
             $price->amountwithgst = $y;    
             $price->cgstpercent = $cgstval;
             $price->sgstpercent = $sgstval;
             $price->gstpercent = $percent;
+            $price->igstpercent = $igstval;
             $price->unit = $request->unit;
+            $price->category = $cat;
+            $price->project_id = $projectid;
+            $price->state = $request->state;
             $price->save();
-             
         return back();
 
     }
@@ -3611,7 +3669,7 @@ date_default_timezone_set("Asia/Kolkata");
             $projectids = ProjectDetails::whereIn('sub_ward_id',$subwards)
             ->whereIn('project_status',$stages)
             ->where('quality','!=','Fake')
-             ->where('type','!=',1)
+             ->where('type',NULL)
             ->whereNotIn('project_id',$orders)
             ->pluck('project_id');
         }else{
@@ -3634,8 +3692,7 @@ date_default_timezone_set("Asia/Kolkata");
 
 
            $merge = array_merge($procurement,$siteeng, $contractor,$consultant,$owner,$builder);
-
-           $filtered = array_unique($merge);
+                     $filtered = array_unique($merge);
 
            $unique = array_combine(range(1,count($filtered)), array_values($filtered));
 
@@ -3668,7 +3725,7 @@ date_default_timezone_set("Asia/Kolkata");
              $projectids = ProjectDetails::
              whereIn('project_status',$stages)
              ->where('quality','!=','Fake')
-              ->where('type','!=',1)
+              ->where('type',NULL)
              ->whereNotIn('project_id',$orders)
              ->pluck('project_id');
          }else{
@@ -3762,6 +3819,7 @@ date_default_timezone_set("Asia/Kolkata");
         $lab = AssignStage::where('user_id',Auth::user()->id)->pluck('contract_type')->first();
 
         $constraction = AssignStage::where('user_id',Auth::user()->id)->pluck('constraction_type')->first();
+
 
         $ground = AssignStage::where('user_id',Auth::user()->id)->pluck('Floor')->first();
 
@@ -3883,11 +3941,12 @@ date_default_timezone_set("Asia/Kolkata");
                         $cons =ProjectDetails::where('construction_type','LIKE', "%".$sta[$i]."%")->pluck('project_id');
                     }
                 }
+                   
                 if(Count($cons) > 0){
-                    $datec = ProjectDetails::where('created_at','LIKE' ,$date."%")->pluck('project_id');
+                    $projectids = $cons;
                 }
             }
-            if($date != "NULL"){
+            if(count($date) != 0){
                 if(count($projectids) != 0){
                     $datec = ProjectDetails::whereIn('project_id',$projectids)->where('created_at','LIKE' ,$date."%")->pluck('project_id');
                 }else{
@@ -4034,9 +4093,11 @@ $upvcInt = explode(",", $upvc);
 
        
         $projectOrdersReceived = Order::whereIn('status',["Order Confirmed","Order Cancelled"])->pluck('project_id');
+        $d = ProjectDetails::whereIn('project_id',$projectids)->pluck('construction_type');
+       
        
         $projects = ProjectDetails::whereIn('project_id',$projectids)
-                     ->where('type','!=',1)
+                     ->where('type',NULL)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
                     ->paginate(20);
@@ -4051,7 +4112,7 @@ $upvcInt = explode(",", $upvc);
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
                     ->orderBy('project_id','ASC')
-                     ->where('type','!=',1)
+                     ->where('type',NULL)
                     ->paginate(15);
                     
             }elseif($request->update1){
@@ -4061,7 +4122,7 @@ $upvcInt = explode(",", $upvc);
                 $projects = ProjectDetails::whereIn('project_id',$spro)
                     ->select('project_details.*','project_id')
                     ->where('created_at','>=',$date)
-                     ->where('type','!=',1)
+                     ->where('type',NULL)
                     ->orderBy('project_id','ASC')
                     ->paginate(15);
                     
@@ -4076,7 +4137,7 @@ $upvcInt = explode(",", $upvc);
                          ->whereNotIn('project_id',$spro)
                          ->select('project_details.*','project_id')
                          ->orderBy('project_id','ASC')
-                          ->where('type','!=',1)
+                          ->where('type',NULL)
                          ->paginate(15);
 
             }elseif($request->unupdate1){
@@ -4172,7 +4233,7 @@ $upvcInt = explode(",", $upvc);
     public function dailyslots(Request $request)
     {
 
-
+   
         $totalListing = array();
         $totalRMCListing = array();
         $totalBlocksListing = array();
@@ -4375,29 +4436,17 @@ $upvcInt = explode(",", $upvc);
                                                 ->count();
             }
             foreach($users as $user){
-                $totalupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                 $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             foreach($tlUsers as $user){
-                $totalupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+               $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
 
             foreach($accusers as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+                $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             foreach($tlUsers1 as $user){
-                $totalaccupdates[$user->id] = ProjectDetails::
-                                                where('updated_at','LIKE',$date.'%')
-                                                ->where('updated_by','=',$user->id)
-                                                ->count();
+               $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             
         $projcount = count($projects); 
@@ -5470,13 +5519,18 @@ public function confirmedvisit(Request $request){
         $address = SiteAddress::where('project_id',$request->projectId)->first();
         return response()->json($address);
     }
+    public function getmanuAddress(Request $request)
+    {
+        $address = Manufacturer::where('id',$request->projectId)->first();
+        return response()->json($address);
+    }
     public function getsupplier(Request $request)
     {
-        $supplier = ManufacturerDetail::where('category',$request->name)->get();
-       $array = [];
+        $supplier = ManufacturerDetail::where('category',$request->name)->where('state',$request->state)->get();
+
+        $array = [];
         $id = $request->x;
         array_push($array,['supplier'=>$supplier,'id'=>$id]);
-
         return response()->json($array);
     }
     public function viewallProjects(Request $request)
@@ -5499,7 +5553,7 @@ public function confirmedvisit(Request $request){
                 }
             }
             $projects = ProjectDetails::whereIn('project_details.project_id',$ids)
-                             ->where('project_details.type','!=',1)
+                             ->where('project_details.type',NULL)
                             ->leftjoin('users','users.id','=','project_details.listing_engineer_id')
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
@@ -5589,6 +5643,7 @@ public function confirmedvisit(Request $request){
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->where('wards.id',$found1)
+                            ->where('project_details.type',NULL)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
                         
@@ -5600,6 +5655,7 @@ public function confirmedvisit(Request $request){
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->whereIn('wards.id',$tl)
+                            ->where('project_details.type',NULL)
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
                             
@@ -5610,7 +5666,7 @@ public function confirmedvisit(Request $request){
                              ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('wards','wards.id','sub_wards.ward_id')
                             ->where('sub_ward_id',$assigned)
-
+                            ->where('project_details.type',NULL)                            
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')->get();
 
@@ -5622,7 +5678,6 @@ public function confirmedvisit(Request $request){
                             ->leftjoin('sub_wards','project_details.sub_ward_id','=','sub_wards.id')
                             ->leftjoin('site_addresses','site_addresses.project_id','=','project_details.project_id')
                             ->select('project_details.*','users.name','sub_wards.sub_ward_name','site_addresses.address')
-                            
                             ->get();
             }
 
@@ -7274,7 +7329,6 @@ function enquirystore(request $request){
 
     public function storecount(request $request){
 
-       
     $check = numbercount::where('user_id',$request->user_id)->first();
     $numberexist = numbercount::where('num',$request->num)->first();
     if($numberexist != null){
@@ -7991,11 +8045,11 @@ public function display(request $request){
                         ->get();   
              return view('manufacturemap',['projects'=>$projects,'subwardMap'=>$subwardMap,'name'=>$name]);
     }
-    public function Unupdated(Request $request){
+    public function Unupdated(request $request){
     if(Auth::user()->group_id == 22){
         return $this->Unupdated1($request);
     }
-   $wards = Ward::orderby('ward_name','ASC')->get();
+        $wards = Ward::orderby('ward_name','ASC')->get();
         $wardid = $request->subward;
         $previous = date('Y-m-d',strtotime('-30 days'));
         $today = date('Y-m-d');
@@ -8031,7 +8085,7 @@ public function display(request $request){
                     ->whereIn('sub_ward_id',$subwards)
                     ->whereIn('project_id',$projectsat)
                     ->count();
-                    dd("1");
+                  
 
         }
         else if(!$request->subward && $request->ward && !$request->from && !$request->to){
@@ -8128,20 +8182,30 @@ public function display(request $request){
                         ->where('project_status','!=',"Closed")
                         
                         ->paginate('20');
+                        
              
         }else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
            
                  $from=$request->from;
                  $to=$request->to;
                  $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
-                        ->where('sub_ward_id',$subwards)
                         ->where('quality','!=',"Fake")
                         ->where('project_status','!=',"Closed")
                          ->whereIn('project_id',$projectsat)
                         ->paginate('20');
              
         }
-
+        else if(!$request->ward && !$request->subward && $request->from && $request->to && $request->status){
+           
+            $from=$request->from;
+            $to=$request->to;
+            $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                   ->where('quality','!=',"Fake")
+                   ->where('project_status','!=',"Closed")
+                    ->whereIn('project_id',$projectsat)
+                   ->paginate('20');
+        
+   }
 
         else{
                 $projectid = new Collection;
@@ -8889,6 +8953,15 @@ public function viewManufacturer1(Request $request)
   }
   public function breaktime(Request $request)
   {
+          
+    //     $time = New BreakTime;
+    //         $time->user_id = Auth::user()->id;
+    //         $time->date = date('Y-m-d');
+    //         $time->start_time = date('h:i A');
+    //         $time->stop_time = null;
+    //         $time->save();
+    //    $break ="break started";
+    // return response()->json($break);
     $time = New BreakTime;
             $time->user_id = Auth::user()->id;
             $time->date = date('Y-m-d');
@@ -8896,6 +8969,7 @@ public function viewManufacturer1(Request $request)
             $time->stop_time = "";
             $time->save();
         return back()->with('Success','Your Break Time Started');
+        
   }
   public function sbreaktime(Request $request)
   {

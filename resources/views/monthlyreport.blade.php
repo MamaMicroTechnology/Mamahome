@@ -50,9 +50,9 @@
                         <th>Added manufactures</th>
                         <th>Updated Projects</th>
                         <th>Enquiries</th> 
-                        <th>Confirm  Enquiries</th>
+                        <th>Confirmed  Enquiries</th>
                         <th>Converted  Enquiries</th>
-                        <th>Confirm Orders</th>
+                        <th>Confirmed Orders</th>
                         <th>No Of Calls</th>
 
                     </tr>
