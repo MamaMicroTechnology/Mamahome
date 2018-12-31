@@ -459,8 +459,9 @@ public function inputdata(Request $request)
                     ->leftjoin('manufacturers','manufacturers.id','=','requirements.manu_id')
                     ->select('requirements.*','users.name','manufacturers.name','manufacturers.contact_no','manufacturers.address','requirements.total_quantity')
                     ->first();
+                    $category = Category::all();
 
-         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2]);
+         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'category'=>$category]);
     }
 public function addcat(request $request){
          
@@ -835,13 +836,14 @@ public function addcat(request $request){
                  $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','like',$from.'%')
                              ->where('created_at','LIKE',$to."%")->count();
                  
-
+                  
 
                  $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
 
                   $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count();
                 
-                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')->where('created_at','LIKE',$to."%")->count(); 
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','like',$from.'%')
+                  ->where('created_at','LIKE',$to."%")->count(); 
 
                 
                 $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','like',$from.'%')
@@ -859,49 +861,46 @@ public function addcat(request $request){
             
                 }
             }else{
-                     foreach($users as $user){
-                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count();
-                 
+        foreach($users as $user){
+        $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>',$from."%")
+            ->where('created_at','<=',$to)->count();
+         $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>',$from."%")->where('created_at','<=',$to."%")->count(); 
 
-
-                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
-
-                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>',$from."%")->where('created_at','<=',$to."%")->count(); 
                 
-                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from)->where('created_at','<=',$to)->count(); 
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>',$from."%")->where('created_at','<=',$to."%")->count(); 
 
                 
-                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count(); 
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from."%")
+                             ->where('created_at','<=',$to."%")->count(); 
 
-                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from)
-                             ->where('created_at','<=',$to)->count();
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>',$from."%")
+                             ->where('created_at','<=',$to."%")->count();
 
                
-               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>',$from)
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>',$from."%")
                              ->where('created_at','<=',$to)->count();
-               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>',$from)
-                             ->where('called_Time','<=',$to)->count();
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>',$from."%")
+                            ->where('called_Time','<=',$to."%")->count();
             
                 }
  }
 }else{
         foreach($users as $user){
-                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
-                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
-                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous)->count(); 
+                 $total[$user->id]['updateproject'] = Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous."%")->count();
+                 $total[$user->id]['addproject'] = ProjectDetails::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous."%")->count(); 
+                 $total[$user->id]['addmanu'] = Manufacturer::where('listing_engineer_id',$user->id)->where('created_at','>=', $previous."%")->count(); 
 
-                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous)->count(); 
+                $total[$user->id]['addenquiry'] = Requirement::where('generated_by',$user->id)->where('created_at','>=', $previous."%")->count(); 
 
-                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count(); 
+                $total[$user->id]['confirm'] = Requirement::where('generated_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous."%")->count(); 
 
-                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous)->count();
+                $total[$user->id]['converted'] = Requirement::where('converted_by',$user->id)->where('status','Enquiry Confirmed')->where('created_at','>=', $previous."%")->count();
 
-               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>=', $previous)->count();
+               $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','>=', $previous."%")->count();
                  
 
-               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous)->count();
+               $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous."%")->count();
                 }
 
 }

@@ -1204,7 +1204,8 @@ div#calendar{
         <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
            <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
-
+           <a href="{{ URL::to('/ledger') }}">Enter Ledger</a>
+           
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>

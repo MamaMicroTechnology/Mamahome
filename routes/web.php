@@ -20,11 +20,20 @@ Route::get('/', function () {
 Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
 Route::get('/deleteuser','CustomerController@deleteuser');
-Route::get('/test','CustomerController@testindex');
+Route::post('/test','CustomerController@testindex');
 Route::post('/subward','CustomerController@subward');
 Route::get('/gstinformation','CustomerController@gstinfo');
 Route::get('/searchuser','CustomerController@userfull');
 Route::post('/changedesc','CustomerController@changedesc');
+Route::get('/ledger','CustomerController@leview');
+Route::post('/legderdetails','CustomerController@ledgeracc');
+Route::get('/testdata','CustomerController@testdata');
+Route::post('/testedit','CustomerController@testeditdata');
+Route::get('/getsubaccounthead','CustomerController@getsubaccounthead');
+
+
+
+
 
 
 

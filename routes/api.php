@@ -78,3 +78,5 @@ Route::post('/addleProject','TokenController@addleProject');
 Route::post('/saveManufacturer','TokenController@postSaveManufacturer');
 Route::get('/getward','TokenController@getwards');
 Route::get('/getsubwards','TokenController@getsubwards');
+Route::post('/testhead','CustomerController@testhead');
+Route::post('/subtesthead','CustomerController@subtesthead');

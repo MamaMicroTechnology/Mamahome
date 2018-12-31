@@ -3573,4 +3573,9 @@ Mowner_Deatils::where("manu_id",$request->id)->update([
         array_push($array,['gstvalue'=>$gstvalue,'id'=>$id]);
         return response()->json($array);
     }
+    public function deletemanuProject(request $request){
+
+        Manufacturer::where('id',$request->projectId)->delete();
+        return back();
+    }
 }

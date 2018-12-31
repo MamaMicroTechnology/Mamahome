@@ -28,6 +28,14 @@ use App\Salescontact_Details;
 use App\Group;
 use App\Department;
 use App\User;
+use App\Ledger;
+use League\Csv\Reader;
+use League\Csv\Statement;
+use League\Csv\Writer;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\AccountHead;
+use App\Subaccountheads;
 class CustomerController extends Controller
 {
 
@@ -87,8 +95,42 @@ public function deleteuser(request $request){
 
    return back();
 }
-public function testindex(){
-  return view('/test');
+public function testindex(request $request){
+     $bank =$request->bank;
+    
+     if($request->acc != NULL){
+                $imageName1 = time().'.'.request()->acc->getClientOriginalExtension();
+                $request->acc->move(public_path('Ledger'),$imageName1);
+            }else{
+                $imageName1 = "N/A";
+            }
+
+    $path = base_path('public/ledger/' .$imageName1);
+    // $path ="/var/www/html/mamaReu/public/Ledger/book.xlsx"; 
+     $rows = Excel::load($path, function($reader) { })->get()->toArray();
+     
+   foreach ($rows as $row) {
+           
+            $yadav = new Ledger;
+            $yadav->val_date =$row['date'];
+            $yadav->Transaction =$row['transaction_particulars'];
+            $yadav->amount =$row['amountinr'];
+            $yadav->debitcredit =$row['drcr'];
+            $yadav->bank =$bank;
+            $yadav->branch =$row['branch_name'];
+            $yadav->accounthead ="";
+            $yadav->remark = $row['remarks'];
+            $yadav->save();
+
+       }    
+$ledger = Ledger::orderBy('id','DESC')->get();
+      $acc = AccountHead::all();
+   // dd($rows);
+    
+
+    // $y="/var/www/html/mamaReu/public/Ledger/book.csv";
+
+  return view('/ledger',['ledger'=>$ledger,'acc'=>$acc]);
 }
 public function subward(request $request)
 {
@@ -267,6 +309,93 @@ $cancelorder =DB::table('orders')->whereIn('project_id',$ids)->orwhereIn('manu_i
 
     return back();
   } 
+public function leview(request $request){
+     $ledger = Ledger::orderBy('id','DESC')->get();
+      $acc = AccountHead::all(); 
+       
 
+  return view('/ledger',['ledger'=>$ledger,'acc'=>$acc]);
+}
+
+public function ledgeracc(request $request){
+  $yadav = new Ledger;
+  $yadav->val_date = $request->date;
+  $yadav->Transaction = $request->Transaction;
+  $yadav->amount = $request->money;
+  $yadav->bank = $request->bank;
+  $yadav->branch = $request->branch;
+  $yadav->accounthead = $request->acchead;
+  $yadav->subhead = $request->brand;
+  $yadav->debitcredit  = $request->crdr;
+  $yadav->remark = $request->remark;
+  $yadav->save();
+
+  return back()->with('success',' Added Successfully !!!');
+
+}
+public function testdata(request $request){
+
+  $m =unserialize($request->id);
+  for($i=0;$i<sizeof($m);$i++){
+          $murali = [];
+          foreach ($m[$i] as $data) {
+            array_push($murali,$data);
+          }
+
+  $yadav = new Ledger;
+  $yadav->val_date =$murali[0];
+  $yadav->Transaction =$murali[1];
+  $yadav->amount =$murali[2];
+  $yadav->debitcredit =$murali[3];
+  $yadav->bank =$murali[4];
+  $yadav->branch =$murali[5];
+  $yadav->accounthead =$murali[6];
+  $yadav->remark = $murali[7];
+  $yadav->save();
+
+  }
+  $i = $i+1;
+  return redirect('/ledger');
+}
+  public function testeditdata(request $request){
+    
+  $data = Ledger::where('id',$request->id)->first();
+   $data->val_date =$request->date;
+  $data->Transaction =$request->trans;
+  $data->amount =$request->amount;
+  $data->debitcredit =$request->dr;
+  $data->bank =$request->bank;
+  $data->branch =$request->branch;
+  $data->accounthead =$request->acchead;
+  $data->subhead = $request->br;
+  $data->remark = $request->remark;
+  $data->save();
+
+  return back();
+  } 
+public function testhead(request $request){
+
+    $check = new AccountHead;
+    $check->name = $request->achead;
+    $check->type = $request->crdr;
+    $check->save();
+    return back();
+}
+public function subtesthead(request $request){
+
+    $check = new Subaccountheads;
+    $check->AccountHead = $request->accounthead;
+    $check->Subaccountheads = $request->subhead;
+    $check->save();
+    return back();
+}
+public function getsubaccounthead(request $request){
+
+       $cat = $request->cat;
+        $subcat = Subaccountheads::where('id',$cat)
+            ->get();
+        $res = $subcat;
+        return response()->json($res);
+}
 
    }
