@@ -222,6 +222,7 @@
 
  </tr>
       </thead>
+
       <tbody>
         @foreach($ledger as $led)
         <tr>
