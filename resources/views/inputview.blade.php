@@ -182,7 +182,12 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
       <!-- Modal body -->
       <div class="modal-body">
          <label>Shipping Address</label>
+          @if(isset($_GET['projectId']))
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $projects->siteaddress != Null ?
+    $projects->siteaddress->address : '' }}
+          @else
             <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">
+            @endif
         </textarea>  
        <br>
 
@@ -248,7 +253,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
             <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required /></td>
 
 </tr>
- <tr>
+<tr>
         <td><label>Select State : </label></td>
         <td>
             <select  name="state" class="form-control" id="state">
@@ -259,6 +264,10 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
             </select>
         </td>
 </tr>
+<!-- <tr>
+    <td><label>Customer GST : </label></td>
+    <td><input type="text" name="cgst" class="form-control" value=""></td>
+</tr> -->
 <td><label>Remarks :</label></td>
 <td>
 <textarea style="resize: none;" rows="4" cols="40" name="eremarks"

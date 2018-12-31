@@ -2938,6 +2938,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
        $lat = $request->latitude;
        $lon = $request->longitude;
        $address = $request->address; 
+     
        $new = ['MH461',
                 'MH507',
                 'MH503',
@@ -2957,14 +2958,11 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                 $now = date('H:i A');
         }
         else{
-           
              $start = "08:00 AM";
              $now = date('H:i A');
         }
-     
-      
-        if( $now > $start && count($check)== 0 && $remark == null){         
-            $text = " <form action='emplate' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
+        if($now > $start && count($check)== 0 && $remark == null){         
+            $text = " <form action='emplate?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
@@ -2975,9 +2973,9 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
                         $field->logindate = date('Y-m-d');
                         $field->logintime = date(' H:i A');
                         $field->remark = $remark;
-                        $field->latitude = "";
-                        $field->longitude = "";
-                        $field->address = "";
+                        $field->latitude = $request->latitude;
+                        $field->longitude =$request->longitude ;
+                        $field->address = $request->address;
                         $field->tlapproval = "Pending";
                         $field->adminapproval = "Pending";
                         $field->status = "Pending";

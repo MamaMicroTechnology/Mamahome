@@ -95,9 +95,8 @@ use App\Supplierdetails;
 use App\Mprocurement_Details;
 use App\Gst;
 use App\SupplierInvoice;
-
+use App\PaymentHistory;
 use Spatie\Activitylog\Models\Activity;
-
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
 {
@@ -268,8 +267,6 @@ class HomeController extends Controller
                                                 'State'=>$request->state,
                                                 'total_quantity' =>$request->totalquantity
                                         ]);
-
-        
 
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
@@ -3152,6 +3149,7 @@ date_default_timezone_set("Asia/Kolkata");
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
         $paymentDetails = PaymentDetails::all();
+        $payhistory = PaymentHistory::all();
         $message = Message::all();
         $chatUsers = User::all();
         $counts = array();
@@ -3174,7 +3172,8 @@ date_default_timezone_set("Asia/Kolkata");
             'suppliers'=>$suppliers,
             'counts'=>$counts,
             'invoice'=>$invoice,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'payhistory'=>$payhistory
            
         ]);
     }
@@ -3301,7 +3300,6 @@ date_default_timezone_set("Asia/Kolkata");
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
-      
         if($igstval != null){
         $cgst = 0;
         $sgst = 0;
@@ -4439,36 +4437,17 @@ $upvcInt = explode(",", $upvc);
                                                 ->count();
             }
             foreach($users as $user){
-                // $totalupdates[$user->id] = ProjectDetails::
-                //                                 where('updated_at','LIKE',$date.'%')
-                //                                 ->where('updated_by','=',$user->id)
-                //                                 ->count();
-               $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();                                
+                 $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             foreach($tlUsers as $user){
-                // $totalupdates[$user->id] = ProjectDetails::
-                //                                 where('updated_at','LIKE',$date.'%')
-                //                                 ->where('updated_by','=',$user->id)
-                //                                 ->count();
-                $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
-                                                
+               $totalupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
 
             foreach($accusers as $user){
-                // $totalaccupdates[$user->id] = ProjectDetails::
-                //                                 where('updated_at','LIKE',$date.'%')
-                //                                 ->where('updated_by','=',$user->id)
-                //                                 ->count();
-                //                                 Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
                 $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             foreach($tlUsers1 as $user){
-                // $totalaccupdates[$user->id] = ProjectDetails::
-                //                                 where('updated_at','LIKE',$date.'%')
-                //                                 ->where('updated_by','=',$user->id)
-                //                                 ->count();
-                //                                 Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $previous)->count();
-                $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
+               $totalaccupdates[$user->id] =  Activity::where('causer_id',$user->id)->where('description','updated')->where('subject_type','App\ProjectDetails')->where('created_at','>=', $date.'%')->count();
             }
             
         $projcount = count($projects); 
@@ -8976,14 +8955,21 @@ public function viewManufacturer1(Request $request)
   public function breaktime(Request $request)
   {
           
-        $time = New BreakTime;
+    //     $time = New BreakTime;
+    //         $time->user_id = Auth::user()->id;
+    //         $time->date = date('Y-m-d');
+    //         $time->start_time = date('h:i A');
+    //         $time->stop_time = null;
+    //         $time->save();
+    //    $break ="break started";
+    // return response()->json($break);
+    $time = New BreakTime;
             $time->user_id = Auth::user()->id;
             $time->date = date('Y-m-d');
             $time->start_time = date('h:i A');
-            $time->stop_time = null;
+            $time->stop_time = "";
             $time->save();
-       $break ="break started";
-    return response()->json($break);
+        return back()->with('Success','Your Break Time Started');
         
   }
   public function sbreaktime(Request $request)

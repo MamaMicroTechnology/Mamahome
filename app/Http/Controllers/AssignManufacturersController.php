@@ -400,10 +400,9 @@ public function inputdata(Request $request)
                                                 'manu_id'=>$request->manu_id,
                                                 'sub_ward_id'=>$ward, 
                                                 'ship' =>$request->shipaddress,
-                                                'state'=>$request->name
+                                                'state'=>$request->state,
+                                                'price' =>$request->price
                                         ]);
-
-
          $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;
