@@ -18,7 +18,7 @@ class CreateTrackerConnectionsTable extends Migration
      */
     public function migrateUp()
     {
-        $this->builder->create(
+        $this->builder->connection('tracker')->create(
             $this->table,
             function ($table) {
                 $table->bigIncrements('id');

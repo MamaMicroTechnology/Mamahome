@@ -18,7 +18,7 @@ class AddLanguageIdColumnToSessions extends Migration
      */
     public function migrateUp()
     {
-        $this->builder->table(
+        $this->builder->connection('tracker')->table(
             $this->table,
             function ($table) {
                 $table->bigInteger('language_id')->unsigned()->nullable()->index();
@@ -33,7 +33,7 @@ class AddLanguageIdColumnToSessions extends Migration
      */
     public function migrateDown()
     {
-        $this->builder->table(
+        $this->builder->connection('tracker')->table(
             $this->table,
             function ($table) {
                 $table->dropColumn('language_id');

@@ -19,7 +19,7 @@ class AddNullableToTrackerError extends Migration
     public function migrateUp()
     {
         try {
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->string('code')->nullable()->change();

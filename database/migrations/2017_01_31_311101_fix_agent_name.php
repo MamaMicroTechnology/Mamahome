@@ -19,21 +19,21 @@ class FixAgentName extends Migration
     public function migrateUp()
     {
         try {
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->dropUnique('tracker_agents_name_unique');
                 }
             );
 
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->mediumText('name')->change();
                 }
             );
 
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->unique('id', 'tracker_agents_name_unique'); // this is a dummy index
@@ -52,7 +52,7 @@ class FixAgentName extends Migration
     public function migrateDown()
     {
         try {
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->string('name', 255)->change();

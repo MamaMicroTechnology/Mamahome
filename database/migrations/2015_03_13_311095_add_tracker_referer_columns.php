@@ -45,7 +45,7 @@ class AddTrackerRefererColumns extends Migration
      */
     public function migrateDown()
     {
-        $this->builder->table(
+        $this->builder->connection('tracker')->table(
             $this->table,
             function ($table) {
                 $table->dropColumn('medium');
@@ -54,7 +54,7 @@ class AddTrackerRefererColumns extends Migration
             }
         );
 
-        $this->builder->table(
+        $this->builder->connection('tracker')->table(
             $this->foreign,
             function ($table) {
                 $table->dropForeign('tracker_referers_referer_id_fk');

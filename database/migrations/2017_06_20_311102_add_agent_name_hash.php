@@ -20,7 +20,7 @@ class AddAgentNameHash extends Migration
     public function migrateUp()
     {
         try {
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->dropUnique('tracker_agents_name_unique');
@@ -35,7 +35,7 @@ class AddAgentNameHash extends Migration
                 $agent->save();
             });
 
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->unique('name_hash');
@@ -54,7 +54,7 @@ class AddAgentNameHash extends Migration
     public function migrateDown()
     {
         try {
-            $this->builder->table(
+            $this->builder->connection('tracker')->table(
                 $this->table,
                 function ($table) {
                     $table->dropUnique('tracker_agents_name_hash_unique');
