@@ -23,7 +23,6 @@ Route::get('/deleteuser','CustomerController@deleteuser');
 Route::post('/test','CustomerController@testindex');
 Route::post('/subward','CustomerController@subward');
 Route::get('/gstinformation','CustomerController@gstinfo');
-Route::get('/searchuser','CustomerController@userfull');
 Route::post('/changedesc','CustomerController@changedesc');
 Route::get('/ledger','CustomerController@leview');
 Route::post('/legderdetails','CustomerController@ledgeracc');
@@ -31,6 +30,7 @@ Route::get('/testdata','CustomerController@testdata');
 Route::post('/testedit','CustomerController@testeditdata');
 Route::get('/getsubaccounthead','CustomerController@getsubaccounthead');
 
+Route::get('/searchuser','CustomerController@userfull');
 
 
 
