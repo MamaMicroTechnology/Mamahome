@@ -244,13 +244,13 @@ function openCitytest(evt, cityName) {
       </div>
       <div class="modal-body" >
         @if($rec->logistic != null)
-        <b>Assigned Logistic Coordinators : </b><br>-
+        <b>Assigned Logistic Coordinators : </b><br>
         <?php $topic_ids = explode(',', $rec->logistic);
       $topics = App\User::whereIn('id', $topic_ids)->pluck('name');
         ?>
-@foreach($topics as $topic)
-{{ $topic }}<br>
-@endforeach
+          @foreach($topics as $topic)
+          {{ $topic }}<br>
+          @endforeach
         <br>
         @endif
        <form method="POST" id="assign" action="{{ url('/logistic')}}" >

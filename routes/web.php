@@ -193,6 +193,7 @@ Route::Post('/earlyremark','mamaController@empreports');
 Route::get('/loginhistory','HomeController@loginhistory');
 Route::get('/breakhistory','HomeController@breakhistory');
 Route::get('/minibreack','AssignManufacturersController@mini');
+Route::get('/fetchemp','amController@fetchemp');
 
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');
