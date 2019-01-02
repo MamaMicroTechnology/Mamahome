@@ -78,8 +78,9 @@
                           background-color:green;
                           border-radius: 50%;
                           display: inline-block;"></span> {{ $totalcount }}
-                          <div class="col-md-4 pull-right">
-                                    <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names and Phone Number" >
+                       
+                          <div class="col-md-5 pull-right">
+                                    <input required type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search By Name/OfficeNumber/PersonalNumber" >
                           </div>
                           <br>
                           <br>
@@ -92,7 +93,8 @@
                           <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
                            <p style="text-align: center;">{{ $user->name }}</p>
                             <p style="text-align: center;">{{ $user->office_phone != null ? $user->office_phone : $user->contactNo}}</p>
-              
+                            <p hidden style="text-align: center;">{{ $user->contactNo != null ? $user->contactNo : ''}}</p>
+                            <p hidden style="text-align: center;">{{ $user->alt_phone != null ? $user->alt_phone : ''}}</p>
                           </center>
                           @if($loop->iteration % 3==0)
                               </div>
@@ -340,7 +342,10 @@ $(document).ready(function () {
     for (i = 0; i < p.length; i++) {
         a = p[i].getElementsByTagName("p")[0];
         b = p[i].getElementsByTagName("p")[1];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        c = p[i].getElementsByTagName("p")[2];
+        d = p[i].getElementsByTagName("p")[3];
+
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1 || c.innerHTML.toUpperCase().indexOf(filter) > -1 || d.innerHTML.toUpperCase().indexOf(filter) > -1) {
              p[i].style.display = "";
         } else {
             p[i].style.display = "none";

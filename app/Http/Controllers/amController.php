@@ -888,9 +888,8 @@ class amController extends Controller
                 ->where('users.id','!=',108)
                  ->where('users.id','!=',112)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
-                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone','employee_details.alt_phone')
                 ->get();
-               
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
         return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users,'avgAge'=>$avgAge,'groupname'=>$groupname,'grp'=>$grp]);
     }
@@ -917,5 +916,9 @@ class amController extends Controller
                 ->get();
             $count = count($users);
         return view('mhemp',['users'=>$users,'grp'=>$grp,'pageName'=>'HR','count'=>$count]);
+    }
+     public function fetchemp(Request $request)
+    {
+       
     }
 }

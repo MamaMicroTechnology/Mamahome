@@ -48,6 +48,9 @@ class Order extends Model
       public function st(){
         return $this->belongsTo('App\State','state','id');
     }
+    public function userid(){
+        return $this->belongsTo('App\User','logistic','id');
+    }
     protected $fillable = [
             'project_id',
             'req_id',

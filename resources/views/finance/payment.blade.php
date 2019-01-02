@@ -4,7 +4,7 @@
   <div  class="col-md-3"  style="border: 2px solid gray;;height: 50%;">
     <center><label>Payment Details</label></center>
     Order Id : {{$id}}<br>
-    Total Amount : {{$total}}<br><br>
+    Customer Total Amount : {{$total}}<br><br>
     @if($payments != null)
         <?php
           $pending = ( $total - $payments->totalamount);
@@ -37,9 +37,9 @@
     @endif
      @if($payments != null)
         @if($pending == 0)
-             <button class="btn btn-success">Payment Completed</button>
+             <label class="alert-success">Payment Completed</label>
          @else
-         <button class="btn btn-warning">Pending Amount : {{$pending}}RS/-</button>
+        <label class="alert-danger">Pending Amount : {{$pending}}RS/-</label>
         @endif
      @endif
   </div>
@@ -59,7 +59,7 @@
               <div id="home" class="tab-pane fade in active">
                 <!-- radio select -->
 <script type="text/javascript">
-function ShowHideDiv() {
+function ShowHideDiv(){
         var chkYes = document.getElementById("chkYes");
         var dvPassport = document.getElementById("cashdep");
         dvPassport.style.display = chkYes.checked ? "block" : "none";
@@ -67,7 +67,7 @@ function ShowHideDiv() {
         var dvPassport = document.getElementById("cashcol");
         dvPassport.style.display = chkYes.checked ? "block" : "none";
     }
-function ShowHideDiv1() {
+function ShowHideDiv1(){
         var chkYes = document.getElementById("chkNo");
         var dvPassport = document.getElementById("cashcol");
         dvPassport.style.display = chkYes.checked ? "block" : "none";
