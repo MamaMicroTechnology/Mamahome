@@ -165,7 +165,7 @@
 
                           @endforeach
                       	</td>
-  
+
                            
                         </tr>
                     </tbody>
@@ -188,9 +188,9 @@
                     <thead>
                         <th>Order Confirms&nbsp;({{count($orderconfirm)}})({{count($oconfirm)}})</th>
                         <th>Cancel Orders&nbsp;({{count($cancelorder)}})({{count($corder)}})</th>
-                        <th>LPO</th>
-                        <th>Customer_Invoice</th>
-                        <th>Supplier_Invoice</th>
+                        <th>Supplier Invoice</th>
+                        <th>Customer Invoice</th>
+                       <!--  <th>Quotation</th> -->
 
 
                         <!-- <th>Enquiry On Process</th> -->
@@ -215,7 +215,22 @@
 
                           @endforeach
                       	</td>
-                        
+                         <td>
+                          @foreach($sproinc as $onsd)
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$onsd}}"> {{$onsd}}<br></a>
+                          @endforeach
+                            @foreach($smanuinc as $manu)
+                           <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manu}}<br></a>
+                          @endforeach
+                        </td>
+                        <td>
+                          @foreach($cproinc as $cpro)
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$onsd}}"> {{$cpro}}<br></a>
+                          @endforeach
+                            @foreach($cmanuinc as $manuinc)
+                           <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manuinc}}<br></a>
+                          @endforeach
+                        </td>
                            
                         </tr>
                     </tbody>

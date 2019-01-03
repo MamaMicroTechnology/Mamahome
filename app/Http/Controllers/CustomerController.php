@@ -8,7 +8,7 @@ use App\ProjectUpdate;
 use App\History;
 use App\Requirement;
 use App\Builder;
-
+use App\SupplierInvoice;
 use Auth;
 use App\ProjectDetails;
 use App\Manufacturer;
@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\AccountHead;
 use App\Subaccountheads;
+use App\Quotation;
 class CustomerController extends Controller
 {
 
@@ -321,6 +322,10 @@ $cancel = [];
 $onprocess = [];
 $oconfirm = [];
 $corder = [];
+$sproinc=[];
+$smanuinc=[];
+$cproinc=[];
+$cmanuinc=[];
 
  if(count($request->manuid) > 0){
    $manu = $request->manuid;
@@ -348,8 +353,18 @@ $onprocessenq = Requirement::where('project_id',$pro)->where('status',"Enquiry O
 $onprocess = Requirement::where('manu_id',$manu)->where('status',"Enquiry On Process")->pluck('id');
 
 $orderconfirm =DB::table('orders')->where('project_id',$pro)->where('status',"Order Confirmed")->pluck('id');
-
 $oconfirm =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Confirmed")->pluck('id');
+
+
+$sproinc = SupplierInvoice::whereIn('order_id',$orderconfirm)->pluck('lpo_number');
+$smanuinc = SupplierInvoice::whereIn('order_id',$oconfirm)->pluck('lpo_number');
+// dd($smanuinc);
+$cproinc = MamahomePrice::whereIn('order_id',$orderconfirm)->pluck('invoiceno');
+$cmanuinc = MamahomePrice::whereIn('order_id',$oconfirm)->pluck('invoiceno');
+
+// $qproinc = Quotation::whereIn('order_id',$orderconfirm)->pluck('invoiceno');
+// $qmanuinc = Quotation::whereIn('order_id',$oconfirm)->pluck('invoiceno');
+
 
 $cancelorder =DB::table('orders')->where('project_id',$pro)->where('status',"Order Cancelled")->pluck('id');
 $corder =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Cancelled")->pluck('id');
@@ -362,7 +377,7 @@ $s = array_unique($ids);
 'cancel'=>$cancel,
 'onprocess'=>$onprocess,
 'oconfirm'=>$oconfirm,
-'corder'=>$corder,'cname'=>$cname,'cmanu'=>$cmanu]);
+'corder'=>$corder,'cname'=>$cname,'cmanu'=>$cmanu,'sproinc'=>$sproinc,'smanuinc'=>$smanuinc,'cproinc'=>$cproinc,'cmanuinc'=>$cmanuinc]);
 
 }
 
