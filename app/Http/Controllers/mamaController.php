@@ -1792,14 +1792,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return back();
     }
     public function addManufacturer(Request $request){
-
+        $cat = Category::where('id',$request->category)->pluck('category_name')->first();
         $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
         $request->pan->move(public_path('pan'),$pan);
         $manufacturer = new ManufacturerDetail;
         $manufacturer->vendortype = $request->vendortype;
         $manufacturer->company_name = $request->companyName;
         $manufacturer->state = $request->state;
-        $manufacturer->category = $request->category;
+        $manufacturer->category = $cat;
+        $manufacturer->brand = $request->brand;
         $manufacturer->cin = $request->cin;
         $manufacturer->gst = $request->gst;
         $manufacturer->registered_office = $request->regOffice;
@@ -2021,7 +2022,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             
            $billaddress = $request->billaddress;
          }
-       
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -2054,13 +2054,15 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'updated_by' =>Auth::user()->id,
             'quantity' => $qnty,
             'enquiry_quantity' =>$request->enquiryquantity,
-            'total_quantity' =>$request->totalquantity,
+            'total_quantity' =>$request->total_quantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate,
             'price' =>$request->price,
             'state'=>$request->state,
             'ship'=>$request->shipaddress,
-            'billadress'=>$billaddress
+            'billadress'=>$billaddress,
+            'price' =>$request->price,
+            'State'=>$request->state
         ]);
        
      $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([

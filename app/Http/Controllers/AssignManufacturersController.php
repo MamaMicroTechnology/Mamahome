@@ -445,7 +445,6 @@ public function inputdata(Request $request)
     }
  public function editEnq(Request $request)
     {
-
         $depart = [7];
        $users = User::whereIn('group_id',$depart)->where('department_id','!=',10)->where('name',Auth::user()->name)->get();
         $depart1 = [6];
@@ -459,8 +458,8 @@ public function inputdata(Request $request)
                     ->select('requirements.*','users.name','manufacturers.name','manufacturers.contact_no','manufacturers.address','requirements.total_quantity')
                     ->first();
                     $category = Category::all();
-
-         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'category'=>$category]);
+         $states = State::all();
+         return view('menqedit',['enq'=>$enq,'users'=>$users,'users1'=>$users1,'users2'=>$users2,'category'=>$category,'states'=>$states]);
     }
 public function addcat(request $request){
          

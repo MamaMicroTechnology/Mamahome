@@ -400,6 +400,9 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                     <td>Category :</td>
                                     <td>
+                                        <?php
+                                                $s1 =  $rec->main_category;
+                                        ?>
                                     <select required name="category" id="supply{{$rec->orderid}}"  class="form-control" >
                                         <option value="{{ $rec->main_category }}">{{ $rec->main_category }}</option>
                                       
@@ -417,16 +420,34 @@ function openCitytest(evt, cityName) {
                                                 @if($rec->state == "2")
                                                  <option value="{{$rec->state}}">Tamil Nadu</option>  
                                                 @endif -->
-                                                 <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}</option>
+                                                <?php
+                                                $s2 = $rec->st->id;
+                                                $s3 = $rec->brandid;
+                                                ?>
+                                               <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}
+                                               </option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Supplier Name :</td>
                                         <td> 
+
+                                     @foreach($manudetails as $manu)
+                                                
+                                                 @if($s3 == $manu->brand)
+                                                    @if($s2 == $manu->state)
                                         <select required class="form-control" id="name{{$rec->orderid}}" name="name">
-                                            <option>{{ $rec->supplier != null ? $rec->supplier->company_name : '' }}</option>
+                                            <option>
+
+                                           
+                                                    {{$manu->company_name}}
+                                            </option>
+                                              
                                         </select>
+                                                  @endif
+                                                  @endif
+                                                @endforeach
                                       </td>
 
                                     </tr>
