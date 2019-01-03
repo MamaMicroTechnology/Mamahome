@@ -3127,24 +3127,21 @@ date_default_timezone_set("Asia/Kolkata");
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')
-                    ->leftjoin('brands','orders.brand','brands.brand')
                     ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
-                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity','brands.id as brandid')
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus')
                     ->paginate(25);
         }
         if(Auth::user()->group_id == 23){
             $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
-
              $view = Order::orderby('orders.id','DESC')
                     ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                    ->leftjoin('brands','orders.brand','brands.brand')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
-                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity','brands.id as brandid')
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus')
                     ->paginate(25);
         }
         

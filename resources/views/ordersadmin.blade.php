@@ -422,32 +422,28 @@ function openCitytest(evt, cityName) {
                                                 @endif -->
                                                 <?php
                                                 $s2 = $rec->st->id;
-                                                $s3 = $rec->brandid;
+                                                $s3 = $rec->main_category;
                                                 ?>
                                                <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}
                                                </option>
                                             </select>
                                         </td>
                                     </tr>
+
                                     <tr>
                                         <td>Supplier Name :</td>
                                         <td> 
-
-                                     @foreach($manudetails as $manu)
-                                                
-                                                 @if($s3 == $manu->brand)
+                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name"  onchange="getaddress('{{$rec->orderid}}')">
+                                          <option>--Select--</option>
+                                     @foreach($manudetails as $manu)           
+                                                 @if($s3 == $manu->category )
                                                     @if($s2 == $manu->state)
-                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name">
-                                            <option>
-
-                                           
-                                                    {{$manu->company_name}}
-                                            </option>
+                                            <option value="{{$manu->company_name}}" >{{$manu->company_name}}</option>
                                               
+                                                  @endif
+                                                  @endif
+                                    @endforeach
                                         </select>
-                                                  @endif
-                                                  @endif
-                                                @endforeach
                                       </td>
 
                                     </tr>
