@@ -135,7 +135,7 @@ function openCitytest(evt, cityName) {
                             @endif
                         </td>
                         <td>
-                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" >{{$rec->id}}</a>
+                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->req_id }}" >{{$rec->req_id}}</a>
                         </td>
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
@@ -421,7 +421,7 @@ function openCitytest(evt, cityName) {
                                                  <option value="{{$rec->state}}">Tamil Nadu</option>  
                                                 @endif -->
                                                 <?php
-                                                $s2 = {{$rec->st != null ? $rec->st->state_name : '' }};
+                                                $s2 = $rec->st != null ? $rec->st->id : '' ;
                                                 $s3 = $rec->main_category;
                                                 ?>
                                                <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}
