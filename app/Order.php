@@ -43,7 +43,7 @@ class Order extends Model
     }
    
     public function supplier(){
-        return $this->belongsTo('App\ManufacturerDetail','brand','company_name');
+        return $this->belongsTo('App\ManufacturerDetail','brandid','brand');
     }
       public function st(){
         return $this->belongsTo('App\State','state','id');

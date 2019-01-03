@@ -474,7 +474,7 @@ function checkthis(arg){
     }
 }
 function submitinputview(){
-    var z = document.getElementById('state');
+var z = document.getElementById('state');
   var name = z.options[z.selectedIndex].value;
     var bill = document.getElementById('sp').value;
    if (document.getElementById('ss').checked) {

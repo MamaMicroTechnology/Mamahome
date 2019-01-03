@@ -123,6 +123,7 @@ class amController extends Controller
         return response()->json($desc);
     }
     public function getBrands(Request $request){
+
         $res[0] = brand::where('category_id',$request->cat)->get();
         return response()->json($res);
     }

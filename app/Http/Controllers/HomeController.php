@@ -3127,9 +3127,10 @@ date_default_timezone_set("Asia/Kolkata");
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')
+                    ->leftjoin('brands','orders.brand','brands.brand')
                     ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
-                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity','brands.id as brandid')
                     ->paginate(25);
         }
         if(Auth::user()->group_id == 23){
@@ -3140,11 +3141,13 @@ date_default_timezone_set("Asia/Kolkata");
                     ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
+                    ->leftjoin('brands','orders.brand','brands.brand')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
-                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity','brands.id as brandid')
                     ->paginate(25);
         }
+        
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
@@ -3154,6 +3157,7 @@ date_default_timezone_set("Asia/Kolkata");
         $chatUsers = User::all();
         $counts = array();
         $suppliers = Supplierdetails::all();
+        $manudetails = ManufacturerDetail::all();
         foreach($view as $order){
             $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
         }
@@ -3174,7 +3178,8 @@ date_default_timezone_set("Asia/Kolkata");
             'counts'=>$counts,
             'invoice'=>$invoice,
             'categories'=>$categories,
-            'payhistory'=>$payhistory
+            'payhistory'=>$payhistory,
+            'manudetails'=>$manudetails
            
         ]);
     }
@@ -5150,7 +5155,9 @@ public function confirmedvisit(Request $request){
         $imageName1 = Auth::user()->name.time().'.'.request()->pp->getClientOriginalExtension();
         $request->pp->move(public_path('profilePic'),$imageName1);
         if($request->userid){
-            User::where('employeeId',$request->userid)->update(['profilepic'=>$imageName1]);
+            $name =  User::where('employeeId',$request->userid)->pluck('name')->first();
+            $image = $name.time().'.'.request()->pp->getClientOriginalExtension();
+            User::where('employeeId',$request->userid)->update(['profilepic'=>$image]);
             return back()->with('Success','Profile picture added successfully');
         }else{
             User::where('id',Auth::user()->id)->update(['profilepic'=>$imageName1]);
