@@ -225,7 +225,7 @@
                         </td>
                         <td>
                           @foreach($cproinc as $cpro)
-                           <a href="{{ URL::to('/') }}/editenq?reqId={{$onsd}}"> {{$cpro}}<br></a>
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$cpro}}"> {{$cpro}}<br></a>
                           @endforeach
                             @foreach($cmanuinc as $manuinc)
                            <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manuinc}}<br></a>
@@ -240,7 +240,17 @@
     </div>
 </div>
 
-
+ <div class="col-md-6">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Generate Customer Information </b> 
+            </div>
+            <div class="panel-body">
+                      
+            </div>
+        </div>
+    </div>
 
 			</div>
 		</div>
