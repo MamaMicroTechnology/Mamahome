@@ -135,7 +135,7 @@ function openCitytest(evt, cityName) {
                             @endif
                         </td>
                         <td>
-                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" >{{$rec->id}}</a>
+                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->req_id }}" >{{$rec->req_id}}</a>
                         </td>
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
