@@ -7,6 +7,8 @@ use App\Order;
 use App\ProjectUpdate;
 use App\History;
 use App\Requirement;
+use App\Builder;
+
 use Auth;
 use App\ProjectDetails;
 use App\Manufacturer;
@@ -231,6 +233,7 @@ public function userfull(request $request){
 
   $project = ProcurementDetails::where('project_id',$request->phNo)->pluck('procurement_contact_no')->first();
   }
+   $cname =ProcurementDetails::where('project_id',$request->phNo)->pluck('procurement_name')->first();
 
   if(count($project > 0 ))
         {
@@ -259,6 +262,13 @@ public function userfull(request $request){
                  $name = "Owner";
                 array_push($pdetails,['name'=>$name]);
             }
+              $details[5] =Builder::where('builder_contact_no',$project)->pluck('project_id');
+
+            if(count($details[5]) > 0){
+                 $name = "Builder";
+                array_push($pdetails,['name'=>$name]);
+
+            }
              
             for($i = 0; $i < count($details); $i++){
                 for($j = 0; $j<count($details[$i]); $j++){
@@ -268,6 +278,8 @@ public function userfull(request $request){
           }
 
   $project1 = Mprocurement_Details::where('manu_id',$request->phNo)->pluck('contact')->first();
+  $cmanu = Mprocurement_Details::where('manu_id',$request->phNo)->pluck('name')->first();
+
  $manuids = [];
  $mdestails = [];  
  if(count($project1) > 0 )
@@ -350,7 +362,7 @@ $s = array_unique($ids);
 'cancel'=>$cancel,
 'onprocess'=>$onprocess,
 'oconfirm'=>$oconfirm,
-'corder'=>$corder]);
+'corder'=>$corder,'cname'=>$cname,'cmanu'=>$cmanu]);
 
 }
 
