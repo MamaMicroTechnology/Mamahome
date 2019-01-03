@@ -3119,6 +3119,7 @@ date_default_timezone_set("Asia/Kolkata");
                      ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','orders.id as orderid','users.name','users.group_id',
                          'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
                     ->where('project_id',$request->projectId)
+                    ->orwhere('manu_id',$request->projectId)
 
                     ->paginate(25);
 
