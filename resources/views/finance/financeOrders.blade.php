@@ -4,6 +4,17 @@
 ?>
 @extends($ext)
 @section('content')
+ <form action="financeDashboard" method="get">
+                <div class="input-group col-md-3 pull-right">
+                    <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
+                    
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </div>
+            </form>
+             
+            <br><br>
 <div class="col-md-12 ">
     <table class="table table-responsive" border=1>
         <th>Requirement Date</th>

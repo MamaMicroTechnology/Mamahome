@@ -4,7 +4,7 @@
 		<div class="panel panel-default">
 			
 			<div class="panel-body" style="overflow-x: scroll;">
-				<form method="GET" action="{{ URL::to('/api') }}/searchuser">
+				<form method="GET" action="{{ URL::to('/') }}/searchuser">
 					<div class="col-md-4 pull-right">
 						<div class="input-group">
 							<input type="text" name="phNo" class="form-control" placeholder="project_id or Manufacturer Id search">
@@ -15,7 +15,8 @@
 					</div>
 				</form><br><br><br>
 			
-
+  <div class="card">
+    
    <div class="col-md-6">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
@@ -23,16 +24,17 @@
                <b style="color:white">Project Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-responsive ">
                     <thead>
-                        <th>Projects</th>
+                        <th>Projects &nbsp;({{count($projectids)}})</th>
                         <th>action</th>
                         <th>Type Of Customer</th>
+                        <th>Name</th>
                         <th>Number</th>
                     </thead>
                     <tbody>
                         <tr>
-                        	
+                          
                        <td>
                           @foreach($projectids as $ids)
 
@@ -41,7 +43,7 @@
                       </td>
                       <td>
                        @foreach($projectids as $ids)
-                        <a style="width:70%;" href="{{ URL::to('/api') }}/searchuser?id={{$ids}}" class="btn btn-primary btn-sm form-control">click here to get details{{$ids}}<br></a>
+                        <a style="width:100%;" href="{{ URL::to('/') }}/searchuser?phNo={{isset($_GET['phNo']) ? $_GET['phNo']: ''}}&&id={{$ids}}" class="btn btn-info btn-sm form-control" name="pro" id="project" onclick="murali('{{$ids}}')">click here to get details{{$ids}}</a><br>
                         @endforeach
                         </td>
                         <td>
@@ -50,6 +52,7 @@
 
                           @endforeach
                         </td>
+                        <td>{{$cname}}</td>
                         <td>{{$project}}</td>
                            
                         </tr>
@@ -59,6 +62,7 @@
         </div>
     </div>
 </div>
+  </div>
 <div class="col-md-6">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
@@ -66,12 +70,14 @@
                <b style="color:white">Manufacturer Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-responsive">
                     <thead>
-                        <th>Manufacturers</th>
+                        <th>Manufacturers&nbsp;({{count($manuids)}})</th>
                         <th>Action</th>
                         <th>Type Of Customer</th>
+                        <th>Name</th>
                         <th>Number</th>
+
                     </thead>
                     <tbody>
                         <tr>
@@ -83,7 +89,7 @@
                       </td>
                        <td>
                        @foreach($manuids as $ids)
-                        <a style="width:70%;" href="{{ URL::to('/api') }}/searchuser?manuid={{$ids}}" class="btn btn-primary btn-sm form-control">click here to get details{{$ids}}<br></a>
+                        <a style="width:100%;" href="{{ URL::to('/') }}/searchuser?phNo={{isset($_GET['phNo']) ? $_GET['phNo']: ''}}&&manuid={{$ids}}" class="btn btn-primary btn-sm form-control" name="manu">click here to get details{{$ids}}<br></a>
                         @endforeach
                         </td>
                       	<td>
@@ -92,6 +98,7 @@
 
                       		@endforeach
                       	</td>
+                        <td>{{$cmanu}}</td>
                        <td>{{$project1}} </td>
                            
                         </tr>
@@ -108,11 +115,11 @@
                <b style="color:white">Enquiry Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-responsive">
                     <thead>
-                        <th>Confirm Enquires</th>
-                        <th>Cancel Enquires</th>
-                        <th>Enquiry On Process</th>
+                        <th>Confirm Enquires&nbsp;({{count($confirmenq)}})({{count($confirms)}})</th>
+                        <th>Cancel Enquires&nbsp;&nbsp;({{count($cancelenq)}})({{count($cancel)}})</th>
+                        <th>Enquiry On Process&nbsp;({{count($onprocessenq)}})({{count($onprocess)}})</th>
                     </thead>
                     <tbody>
                         <tr>
@@ -158,7 +165,7 @@
 
                           @endforeach
                       	</td>
-  
+
                            
                         </tr>
                     </tbody>
@@ -177,10 +184,15 @@
                <b style="color:white">Order Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-responsive">
                     <thead>
-                        <th>Order Confirms</th>
-                        <th>Cancel Orders</th>
+                        <th>Order Confirms&nbsp;({{count($orderconfirm)}})({{count($oconfirm)}})</th>
+                        <th>Cancel Orders&nbsp;({{count($cancelorder)}})({{count($corder)}})</th>
+                        <th>Supplier Invoice</th>
+                        <th>Customer Invoice</th>
+                       <!--  <th>Quotation</th> -->
+
+
                         <!-- <th>Enquiry On Process</th> -->
                     </thead>
                     <tbody>
@@ -203,7 +215,27 @@
 
                           @endforeach
                       	</td>
+                         <td>
+                         
+                          @foreach($sproinc as $onsd)
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$onsd}}"> {{$onsd}}<br></a>
+                          @endforeach
+                            @foreach($smanuinc as $manu)
+                           <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manu}}<br></a>
+                          @endforeach
+                         <a href="{{ URL::to('/') }}/orders?projectId={{isset($_GET['id']) ? $_GET['id']:''}} {{isset($_GET['manuid']) ? $_GET['manuid']:''}} " class=" btn btn-primary">Get Purchase Order</a>
+                        </td>
                         
+
+                        <td>
+                          @foreach($cproinc as $cpro)
+                           <a href="{{ URL::to('/') }}/editenq?reqId={{$cpro}}"> {{$cpro}}<br></a>
+                          @endforeach
+                            @foreach($cmanuinc as $manuinc)
+                           <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manuinc}}<br></a>
+                          @endforeach
+                            <a href="{{ URL::to('/') }}/financeDashboard?projectId={{isset($_GET['id']) ? $_GET['id']:''}} {{isset($_GET['manuid']) ? $_GET['manuid']:''}} " class=" btn btn-primary">Generate Peoforma Invoice</a>
+                        </td>
                            
                         </tr>
                     </tbody>
@@ -213,13 +245,21 @@
     </div>
 </div>
 
-
+ <div class="col-md-6">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default" style="border-color:green">
+            <div class="panel-heading" style="background-color:green">
+               <b style="color:white">Generate Customer Information </b> 
+            </div>
+            <div class="panel-body">
+                      
+            </div>
+        </div>
+    </div>
 
 			</div>
 		</div>
 	</div>
-	
-
-
-
+  </script>
+  
 @endsection

@@ -17,7 +17,6 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
 Route::get('/deleteuser','CustomerController@deleteuser');
 Route::post('/test','CustomerController@testindex');
@@ -29,9 +28,8 @@ Route::post('/legderdetails','CustomerController@ledgeracc');
 Route::get('/testdata','CustomerController@testdata');
 Route::post('/testedit','CustomerController@testeditdata');
 Route::get('/getsubaccounthead','CustomerController@getsubaccounthead');
-
 Route::get('/searchuser','CustomerController@userfull');
-
+Route::get('/customer','CustomerController@getcustomer');
 
 
 
@@ -518,6 +516,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     // Route::get('/enquirysheet','HomeController@enquirysheet');
     // Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
+Route::get('/customer','CustomerController@getcustomer');
    
     Route::get('/allProjects','HomeController@viewAll');
     Route::get('/{id}/viewDetails','HomeController@viewDetails');
@@ -671,6 +670,8 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::post('/addBuilderProject','aeController@addBuilderProject');
     Route::get('/deliveredOrders','aeController@getDeliveredOrders');
     });
+Route::get('/customer','CustomerController@getcustomer');
+
     Route::get('/accountlistingEngineer','HomeController@listingEngineer');
     Route::get('/accountroads','HomeController@getRoads');
     Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
