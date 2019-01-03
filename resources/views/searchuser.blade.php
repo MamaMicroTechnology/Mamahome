@@ -216,20 +216,33 @@
                           @endforeach
                       	</td>
                          <td>
+                          @if(count($sproinc) >0 || count($smanuinc) > 0 )
                           @foreach($sproinc as $onsd)
                            <a href="{{ URL::to('/') }}/editenq?reqId={{$onsd}}"> {{$onsd}}<br></a>
                           @endforeach
                             @foreach($smanuinc as $manu)
                            <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manu}}<br></a>
                           @endforeach
+                          
+                          @else
+                           <a href="{{ URL::to('/') }}/orders?projectId={{isset($_GET['phNo']) ? $_GET['phNo']: ''}}" class="btn btn-info"> Get Supplier Invoice <br></a>
+                           @endif
+
                         </td>
+                        
+
                         <td>
+                           @if(count($cproinc) >0 || count($cmanuinc) > 0 )
                           @foreach($cproinc as $cpro)
                            <a href="{{ URL::to('/') }}/editenq?reqId={{$cpro}}"> {{$cpro}}<br></a>
                           @endforeach
                             @foreach($cmanuinc as $manuinc)
                            <a href="{{ URL::to('/') }}/manuenquiry?projectId={{$manu }}"> {{$manuinc}}<br></a>
                           @endforeach
+                          @else
+                            <a href="{{ URL::to('/') }}/financeDashboard?projectId={{isset($_GET['phNo']) ? $_GET['phNo']: ''}}" class="btn btn-info"> Get Customer Invoice <br></a>
+                           @endif
+
                         </td>
                            
                         </tr>
