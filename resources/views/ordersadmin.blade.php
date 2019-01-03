@@ -421,7 +421,8 @@ function openCitytest(evt, cityName) {
                                                  <option value="{{$rec->state}}">Tamil Nadu</option>  
                                                 @endif -->
                                                 <?php
-                                                $s2 = {{$rec->st != null ? $rec->st->state_name : '' }};
+
+                                                $s2 = $rec->st != null ? $rec->st->state_name : '' ;
                                                 $s3 = $rec->main_category;
                                                 ?>
                                                <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}
