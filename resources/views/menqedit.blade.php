@@ -263,7 +263,7 @@
 </tr>
 <tr>
 		<td><label>Total Quantity : </label></td>
-		<td><input type="text" value="{{ $enq->total_quantity  !=null ? $enq->total_quantity  : ''}}" name="total_quantity" id="tquantity" class="form-control" />
+		<td><input type="text" value="{{ $enq->total_quantity  !=null ? $enq->total_quantity  : ''}}" name="totalquantity" id="tquantity" class="form-control" />
 		</td>
 </tr>
 <tr>

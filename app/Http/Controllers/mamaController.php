@@ -1793,14 +1793,18 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function addManufacturer(Request $request){
         $cat = Category::where('id',$request->category)->pluck('category_name')->first();
-        $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
+        if($request->pan != null){
+                $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
         $request->pan->move(public_path('pan'),$pan);
+        }
+        else{
+            $pan = null;
+        }
         $manufacturer = new ManufacturerDetail;
         $manufacturer->vendortype = $request->vendortype;
         $manufacturer->company_name = $request->companyName;
         $manufacturer->state = $request->state;
         $manufacturer->category = $cat;
-        $manufacturer->brand = $request->brand;
         $manufacturer->cin = $request->cin;
         $manufacturer->gst = $request->gst;
         $manufacturer->registered_office = $request->regOffice;
@@ -2054,7 +2058,7 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'updated_by' =>Auth::user()->id,
             'quantity' => $qnty,
             'enquiry_quantity' =>$request->enquiryquantity,
-            'total_quantity' =>$request->total_quantity,
+            'total_quantity' =>$request->totalquantity,
              'notes' => $request->eremarks,
             'requirement_date' => $request->edate,
             'price' =>$request->price,

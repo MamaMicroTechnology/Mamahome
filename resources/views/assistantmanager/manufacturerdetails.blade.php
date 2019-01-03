@@ -112,7 +112,7 @@
                 <div class="row">
                     <div class="col-md-4">Category</div>
                     <div class="col-md-8">
-                        <select required name="category" id="category2" class="form-control input-sm" onchange="brands()" required>
+                        <select required name="category" id="category2" class="form-control input-sm" required>
                             <option value="">--Select--</option>
                             @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>
@@ -120,13 +120,6 @@
                         </select>
                     </div>
                 </div><br>
-                 <div class="row">
-                    <div class="col-md-4">Brand</div>
-                    <div class="col-md-8">
-                            <select required id="brands2" name="brand" class="form-control">    
-                            </select>
-                </div>
-            </div><br>
                 <div class="row">
                     <div class="col-md-4">Select State</div>
                     <div class="col-md-8">
