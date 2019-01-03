@@ -3112,15 +3112,17 @@ date_default_timezone_set("Asia/Kolkata");
     {
             $manusuppliers = ManufacturerDetail::all();
          $id = $request->projectId;
+
         if($request->projectId){
             $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','orders.id as orderid','users.name','users.group_id',
-                         'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
-                    ->where('project_id',$request->projectId)
-                    ->orwhere('manu_id',$request->projectId)
-
+                    ->leftjoin('requirements','orders.req_id','requirements.id')
+                    ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus')
+                    ->where('orders.project_id',$request->projectId)
+                    ->orwhere('orders.manu_id',$request->projectId)
                     ->paginate(25);
 
         }else{

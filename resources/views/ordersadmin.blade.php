@@ -90,7 +90,7 @@ function openCitytest(evt, cityName) {
 
         </div><br><br>
         <div id="myordertable" class="panel-body">
-            <form action="orders" method="get">
+            <form action="{{URL::to('/')}}/orders" method="get">
                 <div class="input-group col-md-3 pull-right">
                     <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
                     
@@ -1010,7 +1010,7 @@ function openCitytest(evt, cityName) {
                 </tbody>    
             </table>
             <br>
-            <center>{{$view->links()}}</center>    
+            <center>{{ $view->appends(request()->query())->links()}} </center>   
         </div>
     </div>
 </div>
