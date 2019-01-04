@@ -7,16 +7,21 @@
 	
            
 <div class="col-md-12">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="panel panel-default" style="overflow: scroll;">
             <div class="panel-heading" style="background-color:#158942;color:white;font-size:1.4em;font-weight:bold">Blocked Project List : {{count($projects)}}</div>  
             <div class="panel-body">
-             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name" class="form-control">
-              <table class="order-table table table table-hover table-striped" id="myTable">
+             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Project id.." title="Type in a name" class="form-control">
+              <table class="order-table table table table-hover" id="myTable">
                 <thead>
                     <th>Project Id</th>
                   <th>Procurement Name</th>
                   <th>Contact No.</th>
+                  <th>Construction Type</th>
+            <th>Sub-Ward Number</th>
+            <th>Project Status</th>
+            <th>Quality</th>
+            <th>Address</th>
                   <th>Action</th>
                 </thead>
               @foreach($projects as $project)
@@ -27,8 +32,17 @@
                                         {{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_name:'' }}
                                     </td>
                     <td id="projcont-{{$project->project_id}}"><address>{{ $project->procurementdetails != NULL?$project->procurementdetails->procurement_contact_no:'' }}</address></td>
+                    <td>{{ $project->construction_type }}</td>
+              
+              <td>
+                {{ $project->subward != null ? $project->subward->sub_ward_name:' ' }}
+                                    </a></td>
+              <td>{{ $project->project_status }}</td>
+              <td>{{ $project->quality }}</td>
+              <td>{{ $project->siteaddress != null ? $project->siteaddress->address : ' ' }}</td>
 
                     <td>
+
                     <div class="btn-group btn-group-xs">
                                    <form action="{{ url('/toggle-approve1')}}" method="post">
                                  {{csrf_field()}}
