@@ -326,6 +326,10 @@ $sproinc=[];
 $smanuinc=[];
 $cproinc=[];
 $cmanuinc=[];
+$enq = [];
+$enqmanu = [];
+$cenq = [];
+$cenqm = [];
 
  if(count($request->manuid) > 0){
    $manu = $request->manuid;
@@ -353,7 +357,9 @@ $onprocessenq = Requirement::where('project_id',$pro)->where('status',"Enquiry O
 $onprocess = Requirement::where('manu_id',$manu)->where('status',"Enquiry On Process")->pluck('id');
 
 $orderconfirm =DB::table('orders')->where('project_id',$pro)->where('status',"Order Confirmed")->pluck('id');
+$enq=DB::table('orders')->where('project_id',$pro)->where('status',"Order Confirmed")->pluck('req_id');
 $oconfirm =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Confirmed")->pluck('id');
+$enqmanu =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Confirmed")->pluck('req_id');
 
 
 $sproinc = SupplierInvoice::whereIn('order_id',$orderconfirm)->pluck('lpo_number');
@@ -368,6 +374,9 @@ $cmanuinc = MamahomePrice::whereIn('order_id',$oconfirm)->pluck('invoiceno');
 
 $cancelorder =DB::table('orders')->where('project_id',$pro)->where('status',"Order Cancelled")->pluck('id');
 $corder =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Cancelled")->pluck('id');
+
+$cenq =DB::table('orders')->where('project_id',$pro)->where('status',"Order Cancelled")->pluck('req_id');
+$cenqm =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Cancelled")->pluck('req_id');
      }    
 
 $s = array_unique($ids);
@@ -377,7 +386,7 @@ $s = array_unique($ids);
 'cancel'=>$cancel,
 'onprocess'=>$onprocess,
 'oconfirm'=>$oconfirm,
-'corder'=>$corder,'cname'=>$cname,'cmanu'=>$cmanu,'sproinc'=>$sproinc,'smanuinc'=>$smanuinc,'cproinc'=>$cproinc,'cmanuinc'=>$cmanuinc]);
+'corder'=>$corder,'cname'=>$cname,'cmanu'=>$cmanu,'sproinc'=>$sproinc,'smanuinc'=>$smanuinc,'cproinc'=>$cproinc,'cmanuinc'=>$cmanuinc,'enq'=>$enq,'enqmanu'=>$enqmanu,'cenq'=>$cenq,'cenqm'=>$cenqm]);
 
 }
 

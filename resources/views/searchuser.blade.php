@@ -187,7 +187,9 @@
                 <table class="table table-hover table-responsive">
                     <thead>
                         <th>Order Confirms&nbsp;({{count($orderconfirm)}})({{count($oconfirm)}})</th>
+                        <th>Enquiry Id</th>
                         <th>Cancel Orders&nbsp;({{count($cancelorder)}})({{count($corder)}})</th>
+                        <th>Enquiry Id</th>
                         <th>Supplier Invoice</th>
                         <th>Customer Invoice</th>
                        <!--  <th>Quotation</th> -->
@@ -201,10 +203,18 @@
                           @foreach($orderconfirm as $ido)
                            <a href=""> {{$ido}}<br></a>
                           @endforeach 
+                        
                             @foreach($oconfirm as $idos)
                            <a href=""> {{$idos}}<br></a>
                           @endforeach 
                       </td>
+                      <td>  @foreach($enq as $id)
+                           <a href=""> {{$id}}<br></a>
+                          @endforeach 
+                           @foreach($enqmanu as $eid)
+                           <a href=""> {{$eid}}<br></a>
+                          @endforeach 
+                        </td>
                       	<td>
                       		@foreach($cancelorder as $or)
                                   {{$or}}<br>
@@ -215,6 +225,16 @@
 
                           @endforeach
                       	</td>
+                          <td>
+                          @foreach($cenq as $orc)
+                                  {{$orc}}<br>
+
+                          @endforeach
+                          @foreach($cenqm as $orsm)
+                                  {{$orsm}}<br>
+
+                          @endforeach
+                        </td>
                          <td>
                          
                           @foreach($sproinc as $onsd)
@@ -252,7 +272,7 @@
                <b style="color:white">Generate Customer Information </b> 
             </div>
             <div class="panel-body">
-              <form action="{{URL::to('/')}}/getcustom" method="post">
+              <form action="{{URL::to('/')}}/getcustome" method="post">
                     {{ csrf_field() }}
                  <label>Enter Contact Number
                    <input type="text" name="contact" class="form-control" placeholder="Enter Contact Number">

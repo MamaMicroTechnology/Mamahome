@@ -47,6 +47,9 @@ class Order extends Model
     public function userid(){
         return $this->belongsTo('App\User','logistic','id');
     }
+     public function req(){
+        return $this->belongsTo('App\Requirement','id','req_id');
+    }
     protected $fillable = [
             'project_id',
             'req_id',
