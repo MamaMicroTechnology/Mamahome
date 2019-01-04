@@ -488,7 +488,7 @@ public function getsubaccounthead(request $request){
 public function getuser(request $request){
 
        $cat = $request->cat;
-        $subcat = User::get();
+        $subcat = User::where('department_id','!=',10)->get();
         $res = $subcat;
         return response()->json($res);
 }
