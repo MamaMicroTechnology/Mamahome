@@ -190,7 +190,7 @@
                         <th>Enquiry Id</th>
                         <th>Cancel Orders&nbsp;({{count($cancelorder)}})({{count($corder)}})</th>
                         <th>Enquiry Id</th>
-                        <th>Supplier Invoice</th>
+                        <th>Get Purchase Invoice</th>
                         <th>Customer Invoice</th>
                        <!--  <th>Quotation</th> -->
 
