@@ -190,7 +190,13 @@
               </div>
                <div class="col-md-2"><br>
                 <label>Sub Accounts Head </label>
-               <select id="sub2"  class="form-control" name="brand">
+               <select id="sub2"  class="form-control" name="brand" onchange="assetinfo()">
+                        
+                    </select>
+              </div>
+               <div class="col-md-2"><br>
+                <label>Select Asset</label>
+               <select id="asset"  class="form-control" name="name">
                         
                     </select>
               </div>
@@ -340,6 +346,42 @@
             }
         });
     }
+
+
+function assetinfo()
+    {
+        var e = document.getElementById('sub2');
+        var cat = e.options[e.selectedIndex].value;
+
+if(cat == 1){
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/userinfo",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+
+               console.log(response.length);
+                for(var i=0;i<response.length;i++)
+                {
+                     ans += "<option value='"+response[i].id+"'>"+response[i]. name+"</option>";
+                   
+                }
+                document.getElementById('asset').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+        }else{
+           alert("NO Asset nedded ");
+        }
+    }
+
+
+
+
     function yadav(arg)
     {
 

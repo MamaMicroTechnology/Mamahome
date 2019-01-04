@@ -29,6 +29,7 @@ Route::get('/testdata','CustomerController@testdata');
 Route::post('/testedit','CustomerController@testeditdata');
 Route::get('/getsubaccounthead','CustomerController@getsubaccounthead');
 Route::get('/searchuser','CustomerController@userfull');
+Route::get('/userinfo','CustomerController@getuser');
 Route::get('/customer','CustomerController@getcustomer');
 Route::post('/getcustom','CustomerController@getdetails');
 

@@ -414,6 +414,8 @@ public function ledgeracc(request $request){
   $yadav->subhead = $request->brand;
   $yadav->debitcredit  = $request->crdr;
   $yadav->remark = $request->remark;
+  $yadav->name = $request->name;
+
   $yadav->save();
 
   return back()->with('success',' Added Successfully !!!');
@@ -483,7 +485,13 @@ public function getsubaccounthead(request $request){
         $res = $subcat;
         return response()->json($res);
 }
+public function getuser(request $request){
 
+       $cat = $request->cat;
+        $subcat = User::get();
+        $res = $subcat;
+        return response()->json($res);
+}
 public function getdetails(request $request){
 
     $ids = [];
