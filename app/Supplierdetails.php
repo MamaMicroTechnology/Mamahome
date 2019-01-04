@@ -4,8 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-
-
 class Supplierdetails extends Model
 {
 	use LogsActivity;
@@ -43,6 +41,8 @@ class Supplierdetails extends Model
     //  public function cat(){
     //     return $this->belongsTo('App\Category','id','category');
     // }
-    
+    public function st(){
+        return $this->belongsTo('App\State','state','id');
+    }
 }
 

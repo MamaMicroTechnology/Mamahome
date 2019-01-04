@@ -243,16 +243,6 @@ function openCitytest(evt, cityName) {
         <h4 class="modal-title">Assign Logistic Coordinators</h4>
       </div>
       <div class="modal-body" >
-        @if($rec->logistic != null)
-        <b>Assigned Logistic Coordinators : </b><br>
-        <?php $topic_ids = explode(',', $rec->logistic);
-      $topics = App\User::whereIn('id', $topic_ids)->pluck('name');
-        ?>
-          @foreach($topics as $topic)
-          {{ $topic }}<br>
-          @endforeach
-        <br>
-        @endif
        <form method="POST" id="assign" action="{{ url('/logistic')}}" >
           {{ csrf_field() }}
           <input type="hidden" name="logicid" value="{{$rec->orderid}}">
@@ -265,6 +255,16 @@ function openCitytest(evt, cityName) {
                               <button class="btn btn-success" type="submit">Submit</button>
                              </div> 
           </form>    
+        @if($rec->logistic != null)
+        <b>Assigned Logistic Coordinators : </b><br>
+        <?php $topic_ids = explode(',', $rec->logistic);
+      $topics = App\User::whereIn('id', $topic_ids)->pluck('name');
+        ?>
+          @foreach($topics as $topic)
+          {{ $topic }}<br>
+          @endforeach
+        <br>
+        @endif
                              <script type="text/javascript">
                                              $(document).ready(function(){
                                           @foreach($users as $user)
@@ -414,12 +414,6 @@ function openCitytest(evt, cityName) {
                                         <td>
                                             <label class="alert-danger">{{$rec->st != null ? '' : "Select State From Enquiry"}}</label>
                                             <select required id="state{{$rec->orderid}}"  name="state" class="form-control" >
-                                               <!--  @if($rec->state == "1")
-                                                <option value="{{$rec->state}}">Karnataka</option>  
-                                                @endif
-                                                @if($rec->state == "2")
-                                                 <option value="{{$rec->state}}">Tamil Nadu</option>  
-                                                @endif -->
                                                 <?php
                                                 $s2 = $rec->st != null ? $rec->st->id : '' ;
                                                 $s3 = $rec->main_category;
@@ -478,7 +472,7 @@ function openCitytest(evt, cityName) {
                                                 </tr>
                                     <tr>
                                         <td>Quantity : </td>
-                                        <td><input required type="number" name="quantity" class="form-control" id="qu{{$rec->orderid}}" value="{{$rec->total_quantity}}"></td>
+                                        <td><input required type="number" name="quantity" class="form-control" id="qu{{$rec->orderid}}" value="{{$rec->total_quantity}}" onkeyup="showthis('{{$rec->orderid}}')"></td>
                                     </tr>
                                     <tr>
                                         <td> Supplier Unit Price :</td>
@@ -543,17 +537,13 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                             <td> State : </td>
                                             <td>
-                                                @if($supply->state == "1")
+                                              
                                               
                                             <select id="state{{$rec->orderid}}" name="state" class="form-control">
-                                                <option value="{{$supply->state}}">Karnataka</option>
+                                                 <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$supply->st != null ? $supply->st->state_name : '' }}
+                                               </option>
                                             </select>
-                                               @else 
-                                             
-                                            <select id="state{{$rec->orderid}}" name="state" class="form-control">
-                                                <option value="{{$supply->state}}">Tamil Nadu</option>
-                                            </select>
-                                               @endif
+                                              
                                                             
                                                         </td>
                                     </tr>
@@ -589,7 +579,7 @@ function openCitytest(evt, cityName) {
                                                 </tr>
                                                 <tr>
                                                     <td>Quantity : </td>
-                                                    <td><input required type="number" name="edit6" id="qu{{$rec->orderid}}" class="form-control"  value="{{$supply->quantity}}"></td>
+                                                    <td><input required type="number" name="edit6" id="qu{{$rec->orderid}}" class="form-control"  value="{{$supply->quantity}}" onkeyup="showthis('{{$rec->orderid}}')"></td>
                                                 </tr>
                                                 <tr>
                                                     <td> Supplier Unit Price :</td>
