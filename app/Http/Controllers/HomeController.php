@@ -3303,8 +3303,7 @@ date_default_timezone_set("Asia/Kolkata");
             $g1 = 4;
             $g2 = 4;
         }
-        dd($cgstval ,
-            $sgstval );
+       
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
