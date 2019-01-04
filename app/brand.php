@@ -36,4 +36,5 @@ protected $fillable = ['category_id',
     {
         return $this->hasMany('App\SubCategory');
     }
+    
 }

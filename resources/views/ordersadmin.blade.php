@@ -90,7 +90,7 @@ function openCitytest(evt, cityName) {
 
         </div><br><br>
         <div id="myordertable" class="panel-body">
-            <form action="orders" method="get">
+            <form action="{{URL::to('/')}}/orders" method="get">
                 <div class="input-group col-md-3 pull-right">
                     <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
                     
@@ -135,7 +135,7 @@ function openCitytest(evt, cityName) {
                             @endif
                         </td>
                         <td>
-                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->id }}" >{{$rec->id}}</a>
+                                <a href="{{ URL::to('/') }}/editenq?reqId={{ $rec->req_id }}" >{{$rec->req_id}}</a>
                         </td>
                         <td>{{ $rec->orderid }}  </td>
                         <td>{{$rec->name}}</td>
@@ -400,6 +400,9 @@ function openCitytest(evt, cityName) {
                                     <tr>
                                     <td>Category :</td>
                                     <td>
+                                        <?php
+                                                $s1 =  $rec->main_category;
+                                        ?>
                                     <select required name="category" id="supply{{$rec->orderid}}"  class="form-control" >
                                         <option value="{{ $rec->main_category }}">{{ $rec->main_category }}</option>
                                       
@@ -417,15 +420,29 @@ function openCitytest(evt, cityName) {
                                                 @if($rec->state == "2")
                                                  <option value="{{$rec->state}}">Tamil Nadu</option>  
                                                 @endif -->
-                                                 <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}</option>
+                                                <?php
+                                                $s2 = $rec->st != null ? $rec->st->id : '' ;
+                                                $s3 = $rec->main_category;
+                                                ?>
+                                               <option value="{{ $rec->st != null ? $rec->st->id : ''}}">{{$rec->st != null ? $rec->st->state_name : '' }}
+                                               </option>
                                             </select>
                                         </td>
                                     </tr>
+
                                     <tr>
                                         <td>Supplier Name :</td>
                                         <td> 
-                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name">
-                                            <option>{{ $rec->supplier != null ? $rec->supplier->company_name : '' }}</option>
+                                        <select required class="form-control" id="name{{$rec->orderid}}" name="name"  onchange="getaddress('{{$rec->orderid}}')">
+                                          <option>--Select--</option>
+                                     @foreach($manudetails as $manu)           
+                                                 @if($s3 == $manu->category )
+                                                    @if($s2 == $manu->state)
+                                            <option value="{{$manu->company_name}}" >{{$manu->company_name}}</option>
+                                              
+                                                  @endif
+                                                  @endif
+                                    @endforeach
                                         </select>
                                       </td>
 
@@ -993,7 +1010,7 @@ function openCitytest(evt, cityName) {
                 </tbody>    
             </table>
             <br>
-            <center>{{$view->links()}}</center>    
+            <center>{{ $view->appends(request()->query())->links()}} </center>   
         </div>
     </div>
 </div>

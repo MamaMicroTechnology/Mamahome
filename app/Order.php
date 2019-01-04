@@ -41,10 +41,6 @@ class Order extends Model
      public function siteaddress(){
         return $this->belongsTo('App\SiteAddress','project_id','project_id');
     }
-   
-    public function supplier(){
-        return $this->belongsTo('App\ManufacturerDetail','brand','company_name');
-    }
       public function st(){
         return $this->belongsTo('App\State','state','id');
     }
