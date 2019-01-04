@@ -3111,14 +3111,17 @@ date_default_timezone_set("Asia/Kolkata");
     {
             $manusuppliers = ManufacturerDetail::all();
          $id = $request->projectId;
+
         if($request->projectId){
             $view = Order::orderby('orders.created_at','DESC')
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
-                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','orders.id as orderid','users.name','users.group_id',
-                         'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date','orders.payment_status as ostatus','orders.quantity')
-                    ->where('project_id',$request->projectId)
-
+                    ->leftjoin('requirements','orders.req_id','requirements.id')
+                    ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
+                    ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus')
+                    ->where('orders.project_id',$request->projectId)
+                    ->orwhere('orders.manu_id',$request->projectId)
                     ->paginate(25);
 
         }else{
@@ -3128,22 +3131,22 @@ date_default_timezone_set("Asia/Kolkata");
                     ->leftjoin('requirements','orders.req_id','requirements.id')
                     ->whereIn('orders.status',['Enquiry Confirmed','Order Confirmed','Order Cancelled'])
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','orders.project_id','orders.requirement_date',
-                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus')
                     ->paginate(25);
         }
         if(Auth::user()->group_id == 23){
             $ac = AssignCategory::where('user_id',Auth::user()->id)->pluck('cat_id')->first();
             $catsub = Category::where('id',$ac)->pluck('category_name')->first();
-
              $view = Order::orderby('orders.id','DESC')
                     ->where('orders.main_category',$catsub)
                     ->leftJoin('users','orders.generated_by','=','users.id')
                     ->leftJoin('delivery_details','orders.id','delivery_details.order_id')
                     ->leftjoin('requirements','orders.req_id','requirements.id')->where('requirements.status','=','Enquiry Confirmed')
                     ->select('orders.*','orders.status as order_status','orders.delivery_status as order_delivery_status','requirements.*','orders.id as orderid','users.name','users.group_id','$users.id as userid',
-                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus','orders.quantity')
+                    'delivery_details.vehicle_no','delivery_details.location_picture','delivery_details.quality_of_material','delivery_details.delivery_video','delivery_details.delivery_date' ,'orders.payment_status as ostatus')
                     ->paginate(25);
         }
+        
         $depts = [1,2];
         $users = User::whereIn('department_id',$depts)->get();
         $req = Requirement::pluck('project_id');
@@ -3153,12 +3156,14 @@ date_default_timezone_set("Asia/Kolkata");
         $chatUsers = User::all();
         $counts = array();
         $suppliers = Supplierdetails::all();
+        $manudetails = ManufacturerDetail::all();
         foreach($view as $order){
             $counts[$order->orderid] = Message::where('to_user',$order->orderid)->count();
         }
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
-        $invoice = SupplierInvoice::all();
+        $invoice = SupplierInvoice::all();   
+      
         return view('ordersadmin',[
             'view' => $view,
             'suppliers'=>$suppliers,
@@ -3172,7 +3177,8 @@ date_default_timezone_set("Asia/Kolkata");
             'counts'=>$counts,
             'invoice'=>$invoice,
             'categories'=>$categories,
-            'payhistory'=>$payhistory
+            'payhistory'=>$payhistory,
+            'manudetails'=>$manudetails
            
         ]);
     }
@@ -3313,7 +3319,7 @@ date_default_timezone_set("Asia/Kolkata");
         }
         $tt = $cgst + $sgst;
         $totaltax = (int)$tt;
-       
+        $igstint = (int)$igst;
         $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
         $price = new MamahomePrice;
@@ -3324,7 +3330,7 @@ date_default_timezone_set("Asia/Kolkata");
             $price->totalamount = $x;
             $price->cgst = $cgst;
             $price->sgst = $sgst;
-            $price->igst = $igst;
+            $price->igst = $igstint;
             $price->totaltax = $totaltax;
             $price->amountwithgst = $y;    
             $price->cgstpercent = $cgstval;
@@ -3337,7 +3343,6 @@ date_default_timezone_set("Asia/Kolkata");
             $price->state = $request->state;
             $price->save();
         return back();
-
     }
     public function cancelOrder(Request $request)
     {
@@ -4518,7 +4523,7 @@ $upvcInt = explode(",", $upvc);
     // public function gettodayleinfo(Request $request)
     // {
     //     $records = array();
-    //     $id = $request->id;
+    //     $ id = $request->id;
     //     $from = $request->from_date;
     //     $to = date('Y-m-d', strtotime($request->to));
     //     if($id !== 'ALL')
@@ -5149,7 +5154,9 @@ public function confirmedvisit(Request $request){
         $imageName1 = Auth::user()->name.time().'.'.request()->pp->getClientOriginalExtension();
         $request->pp->move(public_path('profilePic'),$imageName1);
         if($request->userid){
-            User::where('employeeId',$request->userid)->update(['profilepic'=>$imageName1]);
+            $name =  User::where('employeeId',$request->userid)->pluck('name')->first();
+            $image = $name.time().'.'.request()->pp->getClientOriginalExtension();
+            User::where('employeeId',$request->userid)->update(['profilepic'=>$image]);
             return back()->with('Success','Profile picture added successfully');
         }else{
             User::where('id',Auth::user()->id)->update(['profilepic'=>$imageName1]);
@@ -5619,10 +5626,7 @@ public function confirmedvisit(Request $request){
                 $found1 = $searchWard->ward_id;
             }
         }
-   
      $sub_ward = Subward::where('ward_id',$found1)->pluck('id');
-
-        
         if($request->phNo){
             $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo )->orwhere('project_id',$request->phNo)->pluck('project_id');
             $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
@@ -5681,6 +5685,8 @@ public function confirmedvisit(Request $request){
                             ->get();
             }
 
+
+       
             $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
             $updater = User::whereIn('id',$projectdetails)->first();
             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
@@ -8570,6 +8576,7 @@ public function display(request $request){
             $tl = Tlwards::leftjoin('users','users.id','tlwards.user_id')
                  ->pluck('tlwards.users');
                $tt = explode(",", $tl) ;
+            
             foreach($users as $user){
 
                 $tlwards = Tlwards::where('user_id',$user->id)->first();
@@ -8592,7 +8599,7 @@ public function display(request $request){
         }else{
             $ward="null";
         }
-         if($request->framework){
+        if($request->framework){
 
         $users = implode(",", $request->framework);
         }else{
@@ -9171,5 +9178,18 @@ foreach ($user as $users) {
                             ->get();
             }
             return view('breaks',['breaks'=>$breaks]);
+    }
+    public function logistic(Request $request)
+    {
+     if($request->framework){
+
+        $users = implode(",", $request->framework);
+        }else{
+            $users="null";
+        }
+         Order::where('id',$request->logicid)->update([
+            'logistic' => $users,
+        ]);
+         return back();
     }
 }

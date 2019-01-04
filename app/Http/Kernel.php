@@ -24,6 +24,7 @@ class Kernel extends HttpKernel
         \PragmaRX\Tracker\Vendor\Laravel\Middlewares\Tracker::class,
     ];
 
+
     /**
      * The application's route middleware groups.
      *

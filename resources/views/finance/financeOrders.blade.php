@@ -4,6 +4,17 @@
 ?>
 @extends($ext)
 @section('content')
+ <form action="financeDashboard" method="get">
+                <div class="input-group col-md-3 pull-right">
+                    <input type="text" class="form-control pull-left" placeholder="Enter project id" name="projectId" id="projectId">
+                    
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </div>
+            </form>
+             
+            <br><br>
 <div class="col-md-12 ">
     <table class="table table-responsive" border=1>
         <th>Requirement Date</th>
@@ -11,7 +22,7 @@
         <th>Order Id</th>
         <th>Category</th>
         <th>Quantity</th>
-        <th>Generate Invoice</th>
+        <th>Payment Details</th>
         @if(Auth::user()->group_id != 22)
         <th> Generate Invoice</th>
         <th>MAMAHOME Invoice</th>
@@ -179,14 +190,14 @@
                             <tr>
                                         <td>Unit Price without GST :</td>
                                         <td>&nbsp;&nbsp;&nbsp;RS.<label class=" alert-success pull-left" id="withoutgst{{$order->id}}"></label>/-
-                                            <input  id="withoutgst1{{$order->id}}" type="text" name="unitwithoutgst"  value="{{$price->unitwithoutgst}}">
+                                            <input readonly id="withoutgst1{{$order->id}}" type="text" name="unitwithoutgst"  value="{{$price->unitwithoutgst}}">
                                        </td>
                               </tr>
                                     <tr>
                                         <td>Total Amount : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="display{{$order->id}}"></label>/-
-                                              <input id="amount{{$order->id}}" type="text" name="tamount" value="{{$price->totalamount}}">
+                                              <input readonly id="amount{{$order->id}}" type="text" name="tamount" value="{{$price->totalamount}}">
                                               <label class=" alert-success pull-right" id="lblWord{{$order->id}}"></label>
                                         </td>
                                     </tr>
@@ -194,7 +205,7 @@
                                         <td>CGST({{$price->cgstpercent}}%) : </td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;CGST <label class=" alert-success pull-left" id="cgst{{$order->id}}"></label>/-
-                                              <input   id="cgst1{{$order->id}}" type="text" name="cgst" value="{{$price->cgst}}">
+                                              <input readonly  id="cgst1{{$order->id}}" type="text" name="cgst" value="{{$price->cgst}}">
 
                                         </td>
                                     </tr>
@@ -202,13 +213,13 @@
                                         <td>SGST({{$price->sgstpercent}}%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;SGST <label class=" alert-success pull-left" id="sgst{{$order->id}}"></label>/-
-                                             <input   id="sgst1{{$order->id}}" type="text" name="sgst" value="{{$price->sgst}}">
+                                             <input readonly  id="sgst1{{$order->id}}" type="text" name="sgst" value="{{$price->sgst}}">
                                         </td>
                                     </tr>
                                     <tr>
                                       <td>Total Tax :</td>
                                       <td>&nbsp;&nbsp;&nbsp;<label class=" alert-success pull-left" id="totaltax{{$order->id}}"></label>Total
-                                        <input  id="totaltax1{{$order->id}}" type="text" name="totaltax" value="{{$price->totaltax}}">
+                                        <input readonly id="totaltax1{{$order->id}}" type="text" name="totaltax" value="{{$price->totaltax}}">
                                         <label class=" alert-success pull-right" id="lblWord1{{$order->id}}"></label>
                                       </td>
                                     </tr>
@@ -216,7 +227,7 @@
                                         <td>IGST({{$price->igstpercent}}%) : </td>
                                         <td>
                                              &nbsp;&nbsp;&nbsp;IGST<label class=" alert-success pull-left" id="igst{{$order->id}}"></label>/-
-                                             <input   id="igst1{{$order->id}}" type="text" name="igst" value="{{$price->igst}}">
+                                             <input readonly  id="igst1{{$order->id}}" type="text" name="igst" value="{{$price->igst}}">
                                              <label class=" alert-success pull-right" id="lblWord3{{$order->id}}"></label>
                                         </td>
                                     </tr>
@@ -224,7 +235,7 @@
                                         <td>Amount (Including GST) :</td>
                                         <td>
                                               &nbsp;&nbsp;&nbsp;RS .<label class=" alert-success pull-left" id="withgst{{$order->id}}"></label> /-
-                                              <input  id="amountwithgst{{$order->id}}" type="text" name="gstamount" value="{{$price->amountwithgst}}">
+                                              <input readonly id="amountwithgst{{$order->id}}" type="text" name="gstamount" value="{{$price->amountwithgst}}">
                                               <label class=" alert-success pull-right" id="lblWord2{{$order->id}}"></label>
                                         </td>
                                     </tr>

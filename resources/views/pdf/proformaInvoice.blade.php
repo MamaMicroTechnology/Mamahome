@@ -56,7 +56,7 @@
                 <div style="padding-right: 70px;">
                 Invoice No :{{ $data['price']['invoiceno'] }}<br>
                 Date : {{ date('d F, Y') }} <br>
-              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
+              {{ $data['manu'] == null ? "Project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
                Order ID : {{ $data['price']['order_id'] }}<br>
                 Mode Of Payment : <?php $pay = explode(", ",$data['products']->payment_mode);
                                         $pay = implode(" / ", $pay);        

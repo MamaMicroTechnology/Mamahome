@@ -17,22 +17,24 @@ Route::get('phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/customer','CustomerController@getcustomer');
 Route::get('/customermanu','CustomerController@customermanu');
 Route::get('/deleteuser','CustomerController@deleteuser');
 Route::post('/test','CustomerController@testindex');
 Route::post('/subward','CustomerController@subward');
 Route::get('/gstinformation','CustomerController@gstinfo');
-Route::get('/searchuser','CustomerController@userfull');
 Route::post('/changedesc','CustomerController@changedesc');
 Route::get('/ledger','CustomerController@leview');
 Route::post('/legderdetails','CustomerController@ledgeracc');
 Route::get('/testdata','CustomerController@testdata');
 Route::post('/testedit','CustomerController@testeditdata');
 Route::get('/getsubaccounthead','CustomerController@getsubaccounthead');
+Route::get('/searchuser','CustomerController@userfull');
+Route::get('/userinfo','CustomerController@getuser');
+Route::get('/customer','CustomerController@getcustomer');
+Route::post('/getcustom','CustomerController@getdetails');
+Route::get('/blocked_projects','CustomerController@blocked');
 
-
-
+Route::post('/toggle-approve1',"CustomerController@approval1");
 
 
 
@@ -92,6 +94,8 @@ Route::get('/logoutFromChat','TokenController@logout');
  Route::get('/allprice','HomeController@allprice');
  Route::get('/assigntl','HomeController@assigntl');
  Route::post('/tlward','HomeController@tlward');
+ Route::post('/logistic','HomeController@logistic');
+
 
 
  Route::get('/pending','marketingController@pending');
@@ -124,7 +128,6 @@ Route::get('/accept','HomeController@acceptConfidentiality');
 Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
-Route::get('/blocked_projects','HomeController@blocked');
 
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
@@ -202,6 +205,7 @@ Route::Post('/earlyremark','mamaController@empreports');
 Route::get('/loginhistory','HomeController@loginhistory');
 Route::get('/breakhistory','HomeController@breakhistory');
 Route::get('/minibreack','AssignManufacturersController@mini');
+Route::get('/fetchemp','amController@fetchemp');
 
 
 // Route::post('/emplogouttime','mamaController@emplogouttime');
@@ -515,6 +519,7 @@ Route::group(['middleware' => ['listingEngineer']],function(){
     // Route::get('/enquirysheet','HomeController@enquirysheet');
     // Route::get('/projectlist','HomeController@projectList');
     Route::get('/edit','HomeController@editProject');
+Route::get('/customer','CustomerController@getcustomer');
    
     Route::get('/allProjects','HomeController@viewAll');
     Route::get('/{id}/viewDetails','HomeController@viewDetails');
@@ -668,6 +673,8 @@ Route::group(['middleware'=>['AccountExecutive']],function(){
     Route::post('/addBuilderProject','aeController@addBuilderProject');
     Route::get('/deliveredOrders','aeController@getDeliveredOrders');
     });
+Route::get('/customer','CustomerController@getcustomer');
+
     Route::get('/accountlistingEngineer','HomeController@listingEngineer');
     Route::get('/accountroads','HomeController@getRoads');
     Route::get('/accountrequirementsroads','HomeController@getRequirementRoads');
@@ -696,7 +703,6 @@ Route::get('/projection','HomeController@getProjection');
 Route::post('/lockProjection','HomeController@getLockProjection');
 
 Route::post('/toggle-approve',"HomeController@approval");
-Route::post('/toggle-approve1',"HomeController@approval1");
 Route::get('/sendSMS', 'HomeController@sendSMS');
 Route::get('/planning','HomeController@getLockedProjection');
 Route::get('/stage','HomeController@getLockedStage');

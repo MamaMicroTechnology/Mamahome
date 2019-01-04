@@ -41,12 +41,14 @@ class Order extends Model
      public function siteaddress(){
         return $this->belongsTo('App\SiteAddress','project_id','project_id');
     }
-   
-    public function supplier(){
-        return $this->belongsTo('App\ManufacturerDetail','brand','company_name');
-    }
       public function st(){
         return $this->belongsTo('App\State','state','id');
+    }
+    public function userid(){
+        return $this->belongsTo('App\User','logistic','id');
+    }
+     public function req(){
+        return $this->belongsTo('App\Requirement','id','req_id');
     }
     protected $fillable = [
             'project_id',

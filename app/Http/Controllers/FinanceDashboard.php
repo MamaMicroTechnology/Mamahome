@@ -33,8 +33,10 @@ class FinanceDashboard extends Controller
     {
         return view('finance.index');
     }
-    public function getFinanceDashboard()
+    public function getFinanceDashboard(request $request)
     {
+
+        
         if(Auth::user()->group_id == 22){
             $tlward = Tlwards::where('user_id',Auth::user()->id)->pluck('ward_id')->first();
             $ward = explode(",",$tlward);
@@ -47,11 +49,14 @@ class FinanceDashboard extends Controller
                        ->paginate('20');
                       
         }
+        else if($request->projectId){
+              $orders = DB::table('orders')->where('project_id',$request->projectId)->orwhere('manu_id',$request->projectId)->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
+        }
         else{
             $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
 
         }
-      
+
         $reqs = Requirement::all();
         $payments = PaymentDetails::get();
         $data = MamahomePrice::distinct()->select('mamahome_prices.order_id','mamahome_prices.id')->pluck('mamahome_prices.id','mamahome_prices.order_id');

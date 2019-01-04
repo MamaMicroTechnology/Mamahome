@@ -7,6 +7,8 @@ use App\Order;
 use App\ProjectUpdate;
 use App\History;
 use App\Requirement;
+use App\Builder;
+use App\SupplierInvoice;
 use Auth;
 use App\ProjectDetails;
 use App\Manufacturer;
@@ -36,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\AccountHead;
 use App\Subaccountheads;
+use App\Quotation;
 class CustomerController extends Controller
 {
 
@@ -225,32 +228,47 @@ else if($request->category && !$request->from && !$request->to){
 public function userfull(request $request){
   $ids = [];
   $pdetails =[];
-  if($request->phNo )
+  $project ='';
+  $project1 = '';
+  if($request->phNo){
+
+  $project = ProcurementDetails::where('project_id',$request->phNo)->pluck('procurement_contact_no')->first();
+  }
+   $cname =ProcurementDetails::where('project_id',$request->phNo)->pluck('procurement_name')->first();
+
+  if(count($project > 0 ))
         {
-            $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
+            $details[0] = ContractorDetails::where('contractor_contact_no',$project)->pluck('project_id');
             if(count($details[0]) > 0){
                 $name = "Contractor";
                 array_push($pdetails,['name'=>$name]);
             }
-            $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
+            $details[1] = ProcurementDetails::where('procurement_contact_no',$project)->pluck('project_id');
             if(count($details[1]) > 0){
                  $name = "Procurement";
            array_push($pdetails,['name'=>$name]);
             }
-            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
+            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$project)->pluck('project_id');
             if(count($details[2]) > 0){
                  $name = "SiteEngineer";
            array_push($pdetails,['name'=>$name]);
             }
-            $details[3] = ConsultantDetails::where('consultant_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
+            $details[3] = ConsultantDetails::where('consultant_contact_no',$project)->pluck('project_id');
             if(count($details[3]) > 0){
                  $name = "Consultant";
            array_push($pdetails,['name'=>$name]);
             }
-            $details[4] = OwnerDetails::where('owner_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
+            $details[4] = OwnerDetails::where('owner_contact_no',$project)->pluck('project_id');
             if(count($details[4]) > 0){
                  $name = "Owner";
                 array_push($pdetails,['name'=>$name]);
+            }
+              $details[5] =Builder::where('builder_contact_no',$project)->pluck('project_id');
+
+            if(count($details[5]) > 0){
+                 $name = "Builder";
+                array_push($pdetails,['name'=>$name]);
+
             }
              
             for($i = 0; $i < count($details); $i++){
@@ -260,50 +278,115 @@ public function userfull(request $request){
             }
           }
 
+  $project1 = Mprocurement_Details::where('manu_id',$request->phNo)->pluck('contact')->first();
+  $cmanu = Mprocurement_Details::where('manu_id',$request->phNo)->pluck('name')->first();
+
  $manuids = [];
  $mdestails = [];  
- if($request->phNo )
+ if(count($project1) > 0 )
         {
-            $details1[10] = Salescontact_Details::where('contact',$request->phNo)->pluck('manu_id');
-            if(count($details1[10]) > 0){
+            $details1[0] = Salescontact_Details::where('contact',$project1)->pluck('manu_id');
+            if(count($details1[0]) >= 0){
                 $name = "Salesmanager";
                 array_push($mdestails,['name'=>$name]);
             }
-            $details1[11] = Manager_Deatils::where('contact',$request->phNo)->pluck('manu_id');
+            $details1[1] = Manager_Deatils::where('contact',$project1)->pluck('manu_id');
 
-            if(count($details1[11]) > 0){
+            if(count($details1[1]) > 0){
                  $name = "Manager";
            array_push($mdestails,['name'=>$name]);
             }
-            $details1[12] = Mprocurement_Details::where('contact',$request->phNo)->pluck('manu_id');
-            if(count($details1[12]) > 0){
+            $details1[2] = Mprocurement_Details::where('contact',$project1)->pluck('manu_id');
+            if(count($details1[2]) > 0){
                  $name = "Procurement";
                 array_push($mdestails,['name'=>$name]);
             }
-            $details1[13] = Mowner_Deatils::where('contact',$request->phNo)->pluck('manu_id');
-             if(count($details1[13]) > 0){
+            $details1[3] = Mowner_Deatils::where('contact',$project1)->pluck('manu_id');
+             if(count($details1[3]) > 0){
                  $name = "Owner";
            array_push($mdestails,['name'=>$name]);
             }
-           
-            for($i = 10; $i < count($details1); $i++){
-                for($j = 10; $j<count($details1[$i]); $j++){
+            for($i =0; $i < count($details1); $i++){
+                for($j = 0; $j<count($details1[$i]); $j++){
                     array_push($manuids, $details1[$i][$j]);
                 }
             }
           }
-         
-       
-$confirmenq = Requirement::whereIn('project_id',$ids)->orwhereIn('manu_id',$manuids)->where('status',"Enquiry Confirmed")->pluck('id');
-$cancelenq = Requirement::whereIn('project_id',$ids)->orwhereIn('manu_id',$manuids)->where('status',"Enquiry Cancelled")->pluck('id');
-$onprocessenq = Requirement::whereIn('project_id',$ids)->orwhereIn('manu_id',$manuids)->where('status',"Enquiry On Process")->pluck('id');
+$confirmenq =[];
+$cancelenq  = [];
+$onprocessenq = [];
+$orderconfirm = [];
+$cancelorder = [];
+$confirms = [];
+$cancel = [];
+$onprocess = [];
+$oconfirm = [];
+$corder = [];
+$sproinc=[];
+$smanuinc=[];
+$cproinc=[];
+$cmanuinc=[];
+$enq = [];
+$enqmanu = [];
+$cenq = [];
+$cenqm = [];
 
-$orderconfirm =DB::table('orders')->whereIn('project_id',$ids)->orwhereIn('manu_id',$manuids)->where('status',"Order Confirmed")->pluck('id');
+ if(count($request->manuid) > 0){
+   $manu = $request->manuid;
 
-$cancelorder =DB::table('orders')->whereIn('project_id',$ids)->orwhereIn('manu_id',$manuids)->where('status',"Order Cancelled")->pluck('id');
+ }else{
+  $manu ="no";
+ }
+ if(count($request->id) > 0){
+   $pro = $request->id;
+
+ }else{
+  $pro ="nu";
+ }
+if($request->id || $request->manuid){
+$confirmenq = Requirement::where('project_id',$pro)->where('status',"Enquiry Confirmed")->pluck('id');
+$confirms =Requirement::Where('manu_id',$manu)->where('status',"Enquiry Confirmed")->pluck('id');
 
 
- return view('/searchuser',['projectids'=>$ids,'projecttype'=>$pdetails,'manuids'=>$manuids,'manutype'=>$mdestails,'confirmenq'=>$confirmenq,'cancelenq'=>$cancelenq,'onprocessenq'=>$onprocessenq,'orderconfirm'=>$orderconfirm,'cancelorder'=>$cancelorder]);
+$cancelenq = Requirement::where('project_id',$pro)->where('status',"Enquiry Cancelled")->pluck('id');
+   
+  $cancel = Requirement::where('manu_id',$manu)->where('status',"Enquiry Cancelled")->pluck('id');
+
+$onprocessenq = Requirement::where('project_id',$pro)->where('status',"Enquiry On Process")->pluck('id');
+
+$onprocess = Requirement::where('manu_id',$manu)->where('status',"Enquiry On Process")->pluck('id');
+
+$orderconfirm =DB::table('orders')->where('project_id',$pro)->where('status',"Order Confirmed")->pluck('id');
+$enq=DB::table('orders')->where('project_id',$pro)->where('status',"Order Confirmed")->pluck('req_id');
+$oconfirm =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Confirmed")->pluck('id');
+$enqmanu =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Confirmed")->pluck('req_id');
+
+
+$sproinc = SupplierInvoice::whereIn('order_id',$orderconfirm)->pluck('lpo_number');
+$smanuinc = SupplierInvoice::whereIn('order_id',$oconfirm)->pluck('lpo_number');
+// dd($smanuinc);
+$cproinc = MamahomePrice::whereIn('order_id',$orderconfirm)->pluck('invoiceno');
+$cmanuinc = MamahomePrice::whereIn('order_id',$oconfirm)->pluck('invoiceno');
+
+// $qproinc = Quotation::whereIn('order_id',$orderconfirm)->pluck('invoiceno');
+// $qmanuinc = Quotation::whereIn('order_id',$oconfirm)->pluck('invoiceno');
+
+
+$cancelorder =DB::table('orders')->where('project_id',$pro)->where('status',"Order Cancelled")->pluck('id');
+$corder =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Cancelled")->pluck('id');
+
+$cenq =DB::table('orders')->where('project_id',$pro)->where('status',"Order Cancelled")->pluck('req_id');
+$cenqm =DB::table('orders')->where('manu_id',$manu)->where('status',"Order Cancelled")->pluck('req_id');
+     }    
+
+$s = array_unique($ids);
+  
+ return view('/searchuser',['projectids'=>$s,'projecttype'=>$pdetails,'manuids'=>$manuids,'manutype'=>$mdestails,'confirmenq'=>$confirmenq,'cancelenq'=>$cancelenq,'onprocessenq'=>$onprocessenq,'orderconfirm'=>$orderconfirm,'cancelorder'=>$cancelorder,'project'=>$project,'project1'=>$project1,
+'confirms'=>$confirms,
+'cancel'=>$cancel,
+'onprocess'=>$onprocess,
+'oconfirm'=>$oconfirm,
+'corder'=>$corder,'cname'=>$cname,'cmanu'=>$cmanu,'sproinc'=>$sproinc,'smanuinc'=>$smanuinc,'cproinc'=>$cproinc,'cmanuinc'=>$cmanuinc,'enq'=>$enq,'enqmanu'=>$enqmanu,'cenq'=>$cenq,'cenqm'=>$cenqm]);
 
 }
 
@@ -331,6 +414,8 @@ public function ledgeracc(request $request){
   $yadav->subhead = $request->brand;
   $yadav->debitcredit  = $request->crdr;
   $yadav->remark = $request->remark;
+  $yadav->name = $request->name;
+
   $yadav->save();
 
   return back()->with('success',' Added Successfully !!!');
@@ -400,5 +485,113 @@ public function getsubaccounthead(request $request){
         $res = $subcat;
         return response()->json($res);
 }
+public function getuser(request $request){
 
+       $cat = $request->cat;
+        $subcat = User::where('department_id','!=',10)->get();
+        $res = $subcat;
+        return response()->json($res);
+}
+public function getdetails(request $request){
+
+    $ids = [];
+    $pdetails =[];
+     $project = $request->contact;
+      if($request->type == "Project"){
+
+          $details[0] = ContractorDetails::where('contractor_contact_no',$project)->pluck('project_id');
+            if(count($details[0]) > 0){
+                $name = "Contractor";
+                array_push($pdetails,['name'=>$name]);
+            }
+            $details[1] = ProcurementDetails::where('procurement_contact_no',$project)->pluck('project_id');
+            if(count($details[1]) > 0){
+                 $name = "Procurement";
+           array_push($pdetails,['name'=>$name]);
+            }
+            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$project)->pluck('project_id');
+            if(count($details[2]) > 0){
+                 $name = "SiteEngineer";
+           array_push($pdetails,['name'=>$name]);
+            }
+            $details[3] = ConsultantDetails::where('consultant_contact_no',$project)->pluck('project_id');
+            if(count($details[3]) > 0){
+                 $name = "Consultant";
+           array_push($pdetails,['name'=>$name]);
+            }
+            $details[4] = OwnerDetails::where('owner_contact_no',$project)->pluck('project_id');
+            if(count($details[4]) > 0){
+                 $name = "Owner";
+                array_push($pdetails,['name'=>$name]);
+            }
+              $details[5] =Builder::where('builder_contact_no',$project)->pluck('project_id');
+
+            if(count($details[5]) > 0){
+                 $name = "Builder";
+                array_push($pdetails,['name'=>$name]);
+
+            }
+             
+            for($i = 0; $i < count($details); $i++){
+                for($j = 0; $j<count($details[$i]); $j++){
+                    array_push($ids, $details[$i][$j]);
+                }
+            }
+
+
+
+      }
+      else if($request->type == "Manufacturer"){
+
+       $details[0] = Salescontact_Details::where('contact',$project)->pluck('manu_id');
+            if(count($details[0]) >= 0){
+                $name = "Salesmanager";
+                array_push($pdetails,['name'=>$name]);
+            }
+            $details[1] = Manager_Deatils::where('contact',$project)->pluck('manu_id');
+
+            if(count($details[1]) > 0){
+                 $name = "Manager";
+           array_push($pdetails,['name'=>$name]);
+            }
+            $details[2] = Mprocurement_Details::where('contact',$project)->pluck('manu_id');
+            if(count($details[2]) > 0){
+                 $name = "Procurement";
+                array_push($pdetails,['name'=>$name]);
+            }
+            $details[3] = Mowner_Deatils::where('contact',$project)->pluck('manu_id');
+             if(count($details[3]) > 0){
+                 $name = "Owner";
+           array_push($pdetails,['name'=>$name]);
+            }
+            for($i =0; $i < count($details); $i++){
+                for($j = 0; $j<count($details[$i]); $j++){
+                    array_push($ids, $details[$i][$j]);
+                }
+            }
+      }
+     else{
+            $ids = [];
+            $pdetails = [];
+
+     }
+   
+  dd($ids);
+
+}
+public function blocked(request $request){
+
+      $projects = ProjectDetails::onlyTrashed()->get();
+
+      return view('/blocked_projects',['projects'=>$projects]);
+
+}
+public  function approval1(request $request){
+
+  
+    $val = NULL;
+   ProjectDetails::withTrashed()->where('project_id',$request->id1)->update(['deleted_at'=>null]);
+   return back();
+
+}
    }

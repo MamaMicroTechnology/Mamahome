@@ -1792,14 +1792,19 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return back();
     }
     public function addManufacturer(Request $request){
-
-        $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
+        $cat = Category::where('id',$request->category)->pluck('category_name')->first();
+        if($request->pan != null){
+                $pan = $request->companyName.time().'.'.request()->pan->getClientOriginalExtension();
         $request->pan->move(public_path('pan'),$pan);
+        }
+        else{
+            $pan = null;
+        }
         $manufacturer = new ManufacturerDetail;
         $manufacturer->vendortype = $request->vendortype;
         $manufacturer->company_name = $request->companyName;
         $manufacturer->state = $request->state;
-        $manufacturer->category = $request->category;
+        $manufacturer->category = $cat;
         $manufacturer->cin = $request->cin;
         $manufacturer->gst = $request->gst;
         $manufacturer->registered_office = $request->regOffice;
@@ -2021,7 +2026,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             
            $billaddress = $request->billaddress;
          }
-       
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -2060,7 +2064,9 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'price' =>$request->price,
             'state'=>$request->state,
             'ship'=>$request->shipaddress,
-            'billadress'=>$billaddress
+            'billadress'=>$billaddress,
+            'price' =>$request->price,
+            'State'=>$request->state
         ]);
        
      $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([
