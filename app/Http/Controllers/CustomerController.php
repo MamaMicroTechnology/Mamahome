@@ -579,5 +579,19 @@ public function getdetails(request $request){
   dd($ids);
 
 }
+public function blocked(request $request){
 
+      $projects = ProjectDetails::onlyTrashed()->get();
+
+      return view('/blocked_projects',['projects'=>$projects]);
+
+}
+public  function approval1(request $request){
+
+  
+    $val = NULL;
+   ProjectDetails::withTrashed()->where('project_id',$request->id1)->update(['deleted_at'=>null]);
+   return back();
+
+}
    }

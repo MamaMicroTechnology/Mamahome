@@ -32,7 +32,9 @@ Route::get('/searchuser','CustomerController@userfull');
 Route::get('/userinfo','CustomerController@getuser');
 Route::get('/customer','CustomerController@getcustomer');
 Route::post('/getcustom','CustomerController@getdetails');
+Route::get('/blocked_projects','CustomerController@blocked');
 
+Route::post('/toggle-approve1',"CustomerController@approval1");
 
 
 
@@ -126,7 +128,6 @@ Route::get('/accept','HomeController@acceptConfidentiality');
 Route::get('/getBrands','amController@getBrands');
 Route::get('/showProjectDetails','HomeController@showProjectDetails');
 Route::get('/admindailyslots','HomeController@projectadmin');
-Route::get('/blocked_projects','HomeController@blocked');
 
 Route::get('/contractorDetails','ContractorController@getContractorDetails');
 Route::get('/updateContractors','ContractorController@getUpdates');
@@ -702,7 +703,6 @@ Route::get('/projection','HomeController@getProjection');
 Route::post('/lockProjection','HomeController@getLockProjection');
 
 Route::post('/toggle-approve',"HomeController@approval");
-Route::post('/toggle-approve1',"HomeController@approval1");
 Route::get('/sendSMS', 'HomeController@sendSMS');
 Route::get('/planning','HomeController@getLockedProjection');
 Route::get('/stage','HomeController@getLockedStage');

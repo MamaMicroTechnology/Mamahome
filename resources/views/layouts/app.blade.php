@@ -1214,6 +1214,8 @@ div#calendar{
          <a href="{{ URL::to('/customer') }}">Assigned Customers</a>
            <a href="{{ URL::to('/customermanu') }}">Assigned Manufacturer Customers</a>
            <a href="{{ URL::to('/ledger') }}">Enter Ledger</a>
+           <a href="{{ URL::to('/blocked_projects') }}">Blocked Projects</a>
+
            
 
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->

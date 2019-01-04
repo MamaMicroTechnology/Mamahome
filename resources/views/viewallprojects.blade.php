@@ -116,17 +116,17 @@
                             @endif
 							@if(Auth::user()->group_id == 1 || Auth::user()->group_id == 2)
 							<td>
-								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>
+								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Block</button>
 								<!-- Modal -->
 							  <div class="modal fade" id="delete{{ $project->project_id }}" role="dialog">
 							    <div class="modal-dialog modal-sm">
 							      <div class="modal-content">
 							        <div class="modal-header">
 							          <button type="button" class="close" data-dismiss="modal">&times;</button>
-							          <h4 class="modal-title">Delete</h4>
+							          <h4 class="modal-title">Block</h4>
 							        </div>
 							        <div class="modal-body">
-							          <p>Are you sure you want to delete this project?</p>
+							          <p>Are you sure you want to Block this project?</p>
 							        </div>
 							        <div class="modal-footer">
 							        	<a class="btn btn-danger pull-left" href="{{ URL::to('/') }}/deleteProject?projectId={{ $project->project_id }}">Yes</a>

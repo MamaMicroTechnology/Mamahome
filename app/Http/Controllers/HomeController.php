@@ -5627,10 +5627,7 @@ public function confirmedvisit(Request $request){
                 $found1 = $searchWard->ward_id;
             }
         }
-   
      $sub_ward = Subward::where('ward_id',$found1)->pluck('id');
-
-        
         if($request->phNo){
             $details[0] = ContractorDetails::where('contractor_contact_no',$request->phNo )->orwhere('project_id',$request->phNo)->pluck('project_id');
             $details[1] = ProcurementDetails::where('procurement_contact_no',$request->phNo)->orwhere('project_id',$request->phNo)->pluck('project_id');
@@ -5689,6 +5686,8 @@ public function confirmedvisit(Request $request){
                             ->get();
             }
 
+
+       
             $projectdetails = ProjectDetails::whereIn('project_id',$ids)->pluck('updated_by');
             $updater = User::whereIn('id',$projectdetails)->first();
             $projectimages = ProjectImage::whereIn('project_id',$ids)->get();
