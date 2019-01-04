@@ -11,13 +11,19 @@
                         <div class="panel-heading" style="height:50px;background-color:#42c3f3;color:black;">
                       <span class="pull-lect" style="color:white;"> Your Assigned Ward Is {{$ward}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                            <div  class="pull-right" style="color:#ffffffe3;">
-                                 Listed On : {{$manufacturer->created_at}}
+                              Last updated 0n  {{$manufacturer->updated_at}} /   Listed On :  {{$manufacturer->created_at}}
                            </div>
                            
                         </div>
                         <div class="panel-body">
                              <center> <label id="headingPanel"> Manufacturer Details</label></center>
                             <table class="table table-hover">
+                              <tr>
+                                    <td>Updated status</td>
+                                    <td>:</td>
+                                    <td>{{$manufacturer->updated_at}} by  {{ $manufacturer->user1 != null ? $manufacturer->user1->name : '' }}</td>
+
+                                </tr>
                                 <tr>
                                     <td>Manufacturer Id</td>
                                     <td>:</td>

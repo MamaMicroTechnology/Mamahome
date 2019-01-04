@@ -16,6 +16,18 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/searchuser','CustomerController@userfull');
+Route::get('/yadav','CustomerController@yadav');
+
+
+
+
+
+
+
+
+
 Route::get('messages','TokenController@index');
 Route::post('message','TokenController@store');
 Route::get('privatemessage','TokenController@pms');
@@ -78,3 +90,5 @@ Route::post('/addleProject','TokenController@addleProject');
 Route::post('/saveManufacturer','TokenController@postSaveManufacturer');
 Route::get('/getward','TokenController@getwards');
 Route::get('/getsubwards','TokenController@getsubwards');
+Route::post('/testhead','CustomerController@testhead');
+Route::post('/subtesthead','CustomerController@subtesthead');

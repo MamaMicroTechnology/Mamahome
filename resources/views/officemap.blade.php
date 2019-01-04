@@ -92,42 +92,42 @@
             shouldAlert = 0;
           }
           
-          // if(shouldAlert == 1 ){
-          //         swal({   title: "Attendance",   
-          //         text: "{{$name}} Logged Outside The Office.Is It a Permitted Login?",   
-          //         type: "warning",   
-          //         showCancelButton: true,   
-          //         confirmButtonColor: "#259e33", 
-          //         cancelButtonColor: "#DD6B55",   
-          //         confirmButtonText: "Approve",   
-          //         cancelButtonText: "Reject",   
-          //         closeOnConfirm: false,   
-          //         closeOnCancel: false }, 
-          //         function(isConfirm){   
-          //           if (isConfirm) 
-          //           {   
-          //             $.ajax({
-          //                   type: 'GET',
-          //                   url: "{{URL::to('/')}}/atapprove",
-          //                   data: {id: arg},
-          //                   async: false,
-          //                   success: function(response){
-          //                     swal("Thank You", "Attendance Approved", "success");  
-          //                   }
-          //               });  
-          //           }else{
-          //                   $.ajax({
-          //                   type: 'GET',
-          //                   url: "{{URL::to('/')}}/atreject",
-          //                   data: {id: arg},
-          //                   async: false,
-          //                   success: function(response){
-          //                     swal("Thank You", "Attendance Rejected", "error");  
-          //                   }
-          //               });
-          //           }
-          //       });
-          // }
+          if(shouldAlert == 1 ){
+                  swal({   title: "Attendance",   
+                  text: "{{$name}} Logged Outside The Office.Is It a Permitted Login?",   
+                  type: "warning",   
+                  showCancelButton: true,   
+                  confirmButtonColor: "#259e33", 
+                  cancelButtonColor: "#DD6B55",   
+                  confirmButtonText: "Approve",   
+                  cancelButtonText: "Reject",   
+                  closeOnConfirm: false,   
+                  closeOnCancel: false }, 
+                  function(isConfirm){   
+                    if (isConfirm) 
+                    {   
+                      $.ajax({
+                            type: 'GET',
+                            url: "{{URL::to('/')}}/atapprove",
+                            data: {id: arg},
+                            async: false,
+                            success: function(response){
+                              swal("Thank You", "Attendance Approved", "success");  
+                            }
+                        });  
+                    }else{
+                            $.ajax({
+                            type: 'GET',
+                            url: "{{URL::to('/')}}/atreject",
+                            data: {id: arg},
+                            async: false,
+                            success: function(response){
+                              swal("Thank You", "Attendance Rejected", "error");  
+                            }
+                        });
+                    }
+                });
+          }
         }
     }
   </script>

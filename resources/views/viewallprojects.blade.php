@@ -56,7 +56,7 @@
 						<th>Floors</th>
 						<th>Project Size</th>
 						<th>Budget</th>
-						<th>Image</th>
+						<!-- <th>Image</th> -->
 						<th>Remarks</th>
 						@if(Auth::user()->group_id != 7 &&  Auth::user()->group_id != 17)
 						<th>Listed By</th>
@@ -88,51 +88,7 @@
 
 							<td>{{ $project->project_size }}</td>
 							<td>{{ $project->budget }}</td>
-							<td><button class="btn btn-primary btn-xs"data-toggle="modal" data-target="#viewimage{{ $project->project_id }}">View Image</button>
-								<div id="viewimage{{$project->project_id }}" class="modal fade" role="dialog">
-								  <div class="modal-dialog" style="width: 40%;height: 30%">
-
-								    <!-- Modal content-->
-								    <div class="modal-content">
-								      <div class="modal-header" style="background-color: green;color:white;">
-								        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-								        <h4 class="modal-title">Image</h4>
-								      </div>
-								      <div class="modal-body">
-								      	 <?php
-								      	 $images = explode(",", $project->image);
-                                               ?>
-                                                 @for($i = 0; $i < count($images); $i++)
-                                                 
-                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br/><br>
-                                                  
-                                                 @endfor
-                                                 <br>
-                                              @if($projectimages != null)
-                                            <p>Updated images</p>
-                                             @endif
-                                             @foreach($projectimages as $project)
-                                             <p>Status : {{$project->project_status }}</p>
-                                             <?php
-										      	 $images = explode(",", $project->image);
-		                                               ?>
-                                                 @for($i = 0; $i < count($images); $i++)
-                                                
-                                                          <img height="350" width="500" id="project_img" src="{{ URL::to('/') }}/public/projectImages/{{ $images[$i] }}" ><br/><br>
-                                                 
-                                                 @endfor
-                                                 <br>
-                                                 @endforeach
-
-								      </div>
-								      <div class="modal-footer">
-								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								      </div>
-								    </div>
-
-								  </div>
-							</div>
-							</td>
+							
 							
 							<td>{{ $project->remarks }}</td>
 							@if(Auth::user()->group_id != 7 && Auth::user()->group_id != 17)
@@ -160,17 +116,17 @@
                             @endif
 							@if(Auth::user()->group_id == 1 || Auth::user()->group_id == 2)
 							<td>
-								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Delete</button>
+								<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->project_id }}">Block</button>
 								<!-- Modal -->
 							  <div class="modal fade" id="delete{{ $project->project_id }}" role="dialog">
 							    <div class="modal-dialog modal-sm">
 							      <div class="modal-content">
 							        <div class="modal-header">
 							          <button type="button" class="close" data-dismiss="modal">&times;</button>
-							          <h4 class="modal-title">Delete</h4>
+							          <h4 class="modal-title">Block</h4>
 							        </div>
 							        <div class="modal-body">
-							          <p>Are you sure you want to delete this project?</p>
+							          <p>Are you sure you want to Block this project?</p>
 							        </div>
 							        <div class="modal-footer">
 							        	<a class="btn btn-danger pull-left" href="{{ URL::to('/') }}/deleteProject?projectId={{ $project->project_id }}">Yes</a>

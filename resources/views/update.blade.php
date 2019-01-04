@@ -21,6 +21,8 @@
                   @endif
                  <small id="currentTime">
                     Listed On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->created_at)) }}
+                    &nbsp; &nbsp; / &nbsp; &nbsp;
+                    Updated On {{ date('d-m-Y h:i:s A', strtotime($projectdetails->updated_at)) }}
                   </small>
                 </div>
                 <div class="panel-body">

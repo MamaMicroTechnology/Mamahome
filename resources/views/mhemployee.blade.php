@@ -8,6 +8,9 @@
     border-radius: 50%;
     display: inline-block;
 }
+.img1 {
+    border-radius: 50%;
+}
 </style>
 <div class="container">
     <div class="row">
@@ -18,13 +21,14 @@
                     {{ session('Added') }}
                 </div>
             @endif
-            @if(session('NotAdded'))
+            @if(session('NotAdded'))''
                <div class="alert alert-danger alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                    {{ session('NotAdded') }}
                 </div>
             @endif
-            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee </button>
+            <button class="btn btn-default form-control" data-toggle="modal" data-target="#addEmployee" style="background-color:green;color:white;font-weight:bold">Add Employee </button><br>
+            <button class="btn btn-default form-control" data-toggle="modal" data-target="#changeEmployee" style="background-color:green;color:white;font-weight:bold">Change Designation</button><br>
             <br><br>
             <div class="panel panel-default" style="border-color:#f4811f">
                 <div class="panel-heading" style="background-color:#f4811f"><b style="font-size:1.3em;color:white">Departments</b></div>
@@ -67,15 +71,16 @@
 
         <div class="panel-body" style="height:500px;max-height:500px;overflow-x:hidden; overflow-y:scroll;">
                       
-                                     <img src="http://mamahome360.com/public/android-icon-36x36.png">
+                                     <img  src="http://mamahome360.com/public/android-icon-36x36.png">
                                      MAMA HOME PVT LTD&nbsp;&nbsp;
                                      Total employees &nbsp;&nbsp;<span class="dot" style=" height: 9px;
                           width: 9px;
                           background-color:green;
                           border-radius: 50%;
                           display: inline-block;"></span> {{ $totalcount }}
-                          <div class="col-md-4 pull-right">
-                                    <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names and Phone Number" >
+                       
+                          <div class="col-md-5 pull-right">
+                                    <input required type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search By Name/OfficeNumber/PersonalNumber" >
                           </div>
                           <br>
                           <br>
@@ -87,8 +92,9 @@
                           <div id="" style="overflow: hidden;" class="col-md-3 col-md-offset-1">
                           <center><img class="img1" src="{{ URL::to('/') }}/public/profilePic/{{ $user->profilepic }}" width="100" height="100">
                            <p style="text-align: center;">{{ $user->name }}</p>
-                            <p style="text-align: center;">{{  $user->office_phone }}</p>
-                          
+                            <p style="text-align: center;">{{ $user->office_phone != null ? $user->office_phone : $user->contactNo}}</p>
+                            <p hidden style="text-align: center;">{{ $user->contactNo != null ? $user->contactNo : ''}}</p>
+                            <p hidden style="text-align: center;">{{ $user->alt_phone != null ? $user->alt_phone : ''}}</p>
                           </center>
                           @if($loop->iteration % 3==0)
                               </div>
@@ -212,6 +218,60 @@
 
 </form>
 
+<form method="post" action="{{ URL::to('/') }}/changedesc">
+    {{ csrf_field() }}
+  <div class="modal fade" id="changeEmployee" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#f4811f;color:white;fon-weight:bold">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Change Designation</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-hover">
+              <tbody>
+                  <tr>
+                   <td><label>Users</label></td>
+                      <td><select required class="form-control" name="user">
+                      <option value="">--Select--</option>
+                      @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                      @endforeach
+                  </select></td>
+                  </tr>
+                  <tr>
+                    <td><label>Department</label></td>
+                      <td><select required class="form-control" name="dept">
+                      <option value="">--Select--</option>
+                      @foreach($departments as $department)
+                        <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
+                      @endforeach
+                  </select></td>
+                  </tr>
+                  <tr>
+                    <td><label>Designation</label></td>
+                    <td> <select required class="form-control" name="designation">
+                      <option value="">--Select--</option>
+                      @foreach($groups as $designation)
+                        <option value="{{ $designation->id }}">{{ $designation->group_name }}</option>
+                      @endforeach
+                  </select></td>
+                  </tr> 
+                </tbody>
+              </table>
+            </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+
+
 <div class='b'></div>
 <div class='bb'></div>
 <div class='message'>
@@ -282,7 +342,10 @@ $(document).ready(function () {
     for (i = 0; i < p.length; i++) {
         a = p[i].getElementsByTagName("p")[0];
         b = p[i].getElementsByTagName("p")[1];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        c = p[i].getElementsByTagName("p")[2];
+        d = p[i].getElementsByTagName("p")[3];
+
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || b.innerHTML.toUpperCase().indexOf(filter) > -1 || c.innerHTML.toUpperCase().indexOf(filter) > -1 || d.innerHTML.toUpperCase().indexOf(filter) > -1) {
              p[i].style.display = "";
         } else {
             p[i].style.display = "none";

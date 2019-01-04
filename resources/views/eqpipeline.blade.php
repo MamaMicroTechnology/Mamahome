@@ -151,8 +151,10 @@
 										<select required name="status" onchange="this.form.submit();" style="width:100px;">
 											<option value="">--Select--</option>
 											<option>Enquiry On Process</option>
-											<option>Enquiry Confirmed</option>
 											<option>Enquiry Cancelled</option>
+											@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
+											<option>Enquiry Confirmed</option>
+											@endif
 										</select>
 									</form>
 								</td>

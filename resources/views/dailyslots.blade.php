@@ -213,6 +213,19 @@
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading" id="panelhead">
                 <label>Daily Listings For The Date : <b>{{ date('d-m-Y',strtotime($date)) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Projects Added : <b>@if( $projcount  == 0)
+                    <?php 
+                            echo "<script>
+                           swal({
+                                  title: 'No Projects Found',
+                                  width: 400,
+                                  hight: 400,
+                                  padding: '3em',
+                                  type: 'info',
+                                
+                                });
+                            
+                            </script>";
+                    ?>
                   No Projects Found
                 @else
                   {{$projcount}}

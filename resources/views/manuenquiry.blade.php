@@ -8,7 +8,7 @@ $ext = ($user == 4? "layouts.amheader":"layouts.app");
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-default" style="border-color: #f4811f">
 <div class="panel-heading" style="background-color: #f4811f;text-align:center">
-<b style="font-size: 1.3em;color:white;">Enquiry Sheet</b>
+<b style="font-size: 1.3em;color:white;">Manufacturer Enquiry Sheet</b>
 <br><br>
 </div>
 <div class="panel-body">
@@ -47,14 +47,15 @@ NULL?$projects->proc->contact:$projects->contact_no }}</td>
 </tr>
 <tr>
 @if(!isset($_GET['projectId']))
-<td><label>Project* : </label></td>
+<td><label>Manufacturer* : </label></td>
 <td>
-<select required class="form-control" id='selectprojects'
-name="selectprojects" onchange="getAddress()">
+<select required class="form-control" id='manu_id'
+name="manu_id" onchange="getAddress()">
 </select>
 </td>
 @else
 <td><label>Manufacturer ID : </label></td>
+<input type="hidden" value="{{ $projects->id }}" name="manu_id">
 <td >
 <input type="hidden" value="{{ $projects->id }}" name="manu_id">
 <input type="hidden" value="{{ $projects->sub_ward_id }}" name="sub_ward_id">
@@ -170,59 +171,87 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Billing And Shipping Address </h4>
+      <div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" >Billing And Shipping Address </h4>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-       
-        <label>Blling Adderss</label>
-            <textarea required class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;">
-        </textarea>
-            
+         <label>Shipping Address</label>
+          @if(isset($_GET['projectId']))
+            <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $projects->address!= Null ? $projects->address : '' }}"
+          @else
+          <textarea required id="val" placeholder="Enter Billing Address"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">
+            @endif
+        </textarea>  
        <br>
-        <label>Shipping Adderss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br><br>
+
         <div class="col-md-12">
             <div class="col-md-9">
-               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;&nbsp;same Address</label><br><br>
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;Same As Above</label><br><br>
             </div>
             
         </div>
-        <label id="sp1">Shipping Adderss</label>
-            <textarea  required class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;">
+        <label id="sp1">Billing Address</label>
+            <textarea  required placeholder="Enter Shipping Address" class="form-control" id="sp" type="text" name="billaddress" cols="50" rows="5" style="resize:none;">
         </textarea>
            <script type="text/javascript">
                function myfunction(){
-          
+                var ans = document.getElementById('val').value;
+                var ans1 = document.getElementById('sp').value;
+                if(ans && ans1){
+                 alert("Make sure You Have Selected Only One Address?");
+                  document.getElementById('sp').focus();
+                   document.getElementById('ss').checked =  false;
+                }
+                else if(ans){
                 document.getElementById('sp').style.display = "none";
                 document.getElementById('sp1').style.display = "none";
+                    
+                }
+                else{
+                    alert("You Have Not Entered Shipping Address");
+                    document.getElementById('ss').checked = false;
+                }
                }
-
-
+               function clearit(){      
+                     document.getElementById('val').value = " ";
+                     document.getElementById('sp').value = " ";
+                     document.getElementById('ss').checked = false;
+               }
            </script> 
        <br>
         </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="clearit()">Reset</button>
         <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
       </div>
 </div>
-
-      <!-- Modal footer -->
-
     </div>
   </div>
-
-
-
     </td>
 </tr>
-<tr>
 <tr>
             <td><label>Total Quantity : </label></td>
             <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
 
+</tr>
+<tr>
+            <td><label>Price: </label></td>
+            <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required /></td>
+
+</tr>
+<tr>
+        <td><label>Select State : </label></td>
+        <td>
+            <select  name="state" class="form-control" id="state">
+                <option>--select--</option>
+                @foreach($states as $state)
+                <option value="{{$state->id}}">{{$state->state_name}}</option>
+               @endforeach
+            </select>
+        </td>
 </tr>
 <td><label>Remarks :</label></td>
 <td>
@@ -288,13 +317,30 @@ function quan(arg){
 </script>
 <script>
 function submitinputview(){
+    var z = document.getElementById('state');
+  var name = z.options[z.selectedIndex].value;
+    var bill = document.getElementById('sp').value;
+   if (document.getElementById('ss').checked) {
+        var id = "";
+    }
+    else{
+        var id ="none";
+    }
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
           }
-      else if(document.getElementById("product").value == ""){
-            window.alert("You Have Not Select Product");
-          }else if(document.getElementById("edate").value == ""){
-            window.alert("You Have Not Select date");
+      // else if(document.getElementById("product").value == ""){
+      //       window.alert("You Have Not Select Product");
+      //     }else if(document.getElementById("edate").value == ""){
+      //       window.alert("You Have Not Select date");
+      //     }
+          else if(document.getElementById('sp').value == "" && id == "none"){
+                     
+                        window.alert("You Have Not Entered Bill Address");
+        }
+          else if(name == "--select--"){
+            window.alert("You Have Not Selected State");
+
           }
         else{
             document.getElementById("sub").submit();
@@ -406,19 +452,61 @@ function checkthis(arg){
     }
 
 }
-function submitinputview(){
-     if(document.getElementById("totalquantity").value == ""){
-            window.alert("You Have Not Entered Total Quantity");
-          }
-        else{
-            document.getElementById("sub").submit();
-        }
-}
-// function countthis(arg){
 
-//     return arg.
+function getProjects()
+{
+    var x = document.getElementById('econtact').value;
+    document.getElementById('error').innerHTML = '';
+    if(x)
+    {
+        $.ajax({
+            type: 'GET',
+            url: "{{URL::to('/')}}/getmanuProjects",
+            data: {contact: x},
+            async: false,
+            success: function(response)
+            {
+                if(response == 'Nothing Found')
+                {
+                    document.getElementById('econtact').style.borderColor = "red";
+                    document.getElementById('error').innerHTML = "<br><div class='alert alert-danger'>No Projects Found !!!</div>";
+                    document.getElementById('econtact').value = '';
+                }
+                else
+                {
+                    var result = new String();
+                    result = "<option value='' disabled selected>----SELECT----</option>";
+                    for(var i=0; i<response.length; i++)
+                    {
+                        result += "<option value='"+response[i].manu_id+"'>"+response[i].name+"</option>";
+                    }
+                    console.log(result);
+                    console.log(response);
+                    document.getElementById('manu_id').innerHTML =result;
+                    
+                }
+            }
+        });
+    }
+}
+function getAddress(){
+    var e = document.getElementById('manu_id');
+    var projectId = e.options[e.selectedIndex].value;
     
-// }
+    $.ajax({
+        type: 'GET',
+        url: "{{ URL::to('/') }}/getmanuAddress",
+        async: false,
+        data: { projectId : projectId},
+        success: function(response){
+            
+            document.getElementById('elocation').value = response.address;
+            document.getElementById('val').value = response.address;
+
+        }
+    })
+}
+
 </script>
 
 @endsection

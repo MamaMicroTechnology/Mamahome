@@ -57,7 +57,7 @@
 
 							<div class="col-md-2">
 								<label>Ward</label>
-								<select   name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
+								<select name="enqward" id="ward" onchange="loadsubwards()" class="form-control ">
 									<option value="">--Select--</option>
 
 									@foreach($mainward as $wards2)
@@ -137,6 +137,8 @@
 							<th style="text-align: center">Old Quantity</th>
 							<th style="text-align: center">Enquiry Quantity</th>
 							<th style="text-align: center">Total Quantity</th>
+							<th style="text-align: center">Price</th>
+							<th style="text-align: center">Total Amount</th>
 							<th style="text-align: center">Initiator</th>
 							<th style="text-align: center">Converted by</th>
 							<th style="text-align: center">Last Update</th>
@@ -160,12 +162,8 @@
 							@if($enquiry->status == "Enquiry Confirmed")
 							<?php	$con++; 
 							 ?>
-
-								
 									<?php $sum1 = $sum1 + $enquiry->total_quantity; 
 									 ?>
-								
-
 							@endif
 
 							@if($enquiry->status == "Enquiry Confirmed" || $enquiry->status == "Enquiry On Process")
@@ -215,6 +213,10 @@
 							</td>
 							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
+							<?php $total = ($enquiry->total_quantity *  $enquiry->price) ?>
+							<td style="text-align: center">{{ $enquiry->price }}</td>
+							<td style="text-align: center">{{$total}}</td>
+
 							<td style="text-align: center">{{ $enquiry->user != null ? $enquiry->user->name : '' }}</td>
 							<td style="text-align: center">
 							{{ $enquiry->conuser != null ? $enquiry->conuser->name : '' }}
@@ -245,7 +247,9 @@
 									<select required name="status" onchange="this.form.submit();" style="width:100px;">
 										<option value="">--Select--</option>
 										<option>Enquiry On Process</option>
-										<option>Enquiry Confirmed</option>
+										@if(Auth::user()->group_id == 2 || Auth::user()->group_id == 1)
+											<option>Enquiry Confirmed</option>
+											@endif
 										<option>Enquiry Cancelled</option>
 									</select>
 									
@@ -331,7 +335,7 @@ function myFunction() {
 	  }
 	}else{
 		for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[13];
+	    td = tr[i].getElementsByTagName("td")[15];
 	    if (td) {
 	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 	        tr[i].style.display = "";

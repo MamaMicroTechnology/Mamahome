@@ -52,6 +52,7 @@
                      <td>
                        <?php
                           $numbers = array();
+
                        ?>
                        <table class="table table-striped">
                        <tr>
@@ -62,6 +63,7 @@
                             $i++;
                             $temp = $num->number;
                             array_push($numbers, $temp);
+                         
                           ?>
                          @if($i == 6)
                           </tr>
