@@ -123,10 +123,11 @@
                 <div class="row">
                     <div class="col-md-4">Select State</div>
                     <div class="col-md-8">
-                        <select name="state" class="form-control input-sm" required>
-                            <option value="">--Select--</option>
-                            <option value="1">karnataka</option>
-                            <option value="2">Tamil nadu</option>
+                        <select required name="state" class="form-control input-sm" required>
+                                <option >--Select--</option>
+                            @foreach($states as $state)
+                                <option value="{{$state->id}}">{{$state->state_name}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div><br>

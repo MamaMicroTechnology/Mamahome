@@ -685,7 +685,7 @@ class FinanceDashboard extends Controller
         return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category,'unit'=>$unit]);
     }
     public function supplierinvoice(Request $request){   
-        $image = " ";
+        $image = "";
         $i = 0;    
        if($request->file){
                 foreach($request->file as $pimage){
@@ -700,6 +700,7 @@ class FinanceDashboard extends Controller
                      $i++;
                 }
             }
+        
         $lpo = Supplierdetails::where('order_id',$request->id)->pluck('lpo')->first();
         $invoice = New SupplierInvoice;
         $invoice->lpo_number = $lpo;
