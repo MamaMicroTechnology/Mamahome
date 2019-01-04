@@ -245,21 +245,37 @@
     </div>
 </div>
 
- <div class="col-md-6">
+ <center><div class="col-md-6 col-md-offset-3">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading" style="background-color:green">
                <b style="color:white">Generate Customer Information </b> 
             </div>
             <div class="panel-body">
-                      
+              <form action="{{URL::to('/')}}/getcustom" method="post">
+                    {{ csrf_field() }}
+                 <label>Enter Contact Number
+                   <input type="text" name="contact" class="form-control" placeholder="Enter Contact Number">
+                 </label>  
+                 <label>Select Type
+                    <select name="type" class="form-control" id="type" onchange="project()">
+                       <option>------select------</option>
+                       <option>Project</option>
+                       <option>Manufacturer</option>
+                    </select>
+                 </label> <br> 
+                 <button style="width:50%;" type="submit" class="form-control btn btn-warning btn-sm"> Generate </button>
+               </form>
             </div>
         </div>
     </div>
 
 			</div>
 		</div>
-	</div>
-  </script>
+	</div></center>
+
+
+ 
+
   
 @endsection
