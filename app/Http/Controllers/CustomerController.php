@@ -137,7 +137,8 @@ $ledger = Ledger::orderBy('id','DESC')->get();
     // $y="/var/www/html/mamaReu/public/Ledger/book.csv";
 
 
-  return redirect('/ledger',['ledger'=>$ledger,'acc'=>$acc]);
+  return view('/ledger',['ledger'=>$ledger,'acc'=>$acc]);
+  return back();
 }
 public function subward(request $request)
 {
