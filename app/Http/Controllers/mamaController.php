@@ -75,6 +75,7 @@ use App\Gst;
 use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
 use App\Quotation;
+use App\MamahomePrice;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1960,6 +1961,18 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $check->manu_id =$requirement->manu_id;
                 $check->save(); 
                 }
+                $invoice = new MamahomePrice;
+                $invoice->order_id = $orderNo;
+                $invoice->save();
+                
+                // generate invoice
+                $year = date('Y');
+                $country_code = Country::pluck('country_code')->first();
+                $zone = Zone::pluck('zone_number')->first();
+                $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$invoice->id;
+                $ino = MamahomePrice::where('order_id',$orderNo)->update([
+                    'invoiceno'=>$invoiceno
+                ]);
             }
         }
         $activity = new ActivityLog;

@@ -59,7 +59,7 @@ class FinanceDashboard extends Controller
 
         $reqs = Requirement::all();
         $payments = PaymentDetails::get();
-        $data = MamahomePrice::distinct()->select('mamahome_prices.order_id','mamahome_prices.id')->pluck('mamahome_prices.id','mamahome_prices.order_id');
+        $data = MamahomePrice::distinct()->select('mamahome_invoices.order_id','mamahome_invoices.id')->pluck('mamahome_invoices.id','mamahome_invoices.order_id');
         $mamaprices = MamahomePrice::whereIn('id',$data)->get();
         $messages = Message::all();
         $counts = array();
@@ -573,16 +573,13 @@ class FinanceDashboard extends Controller
        // invoice
 
        
-        $year = date('Y');
-        $country_code = Country::pluck('country_code')->first();
-        $zone = Zone::pluck('zone_number')->first();
+       
         // roundoff
         $unitwithoutgst = round($request->unitwithoutgst,2);
         $cgst = round($request->cgst,2);
         $sgst = round($request->sgst,2);
         $igst = round($request->igst,2);
         $price = MamahomePrice::where('order_id',$request->id)->first();
-        $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$price->id; 
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
         $price->unitwithoutgst = $unitwithoutgst;
@@ -607,7 +604,6 @@ class FinanceDashboard extends Controller
         $price->gstpercent = $request->g3;
         $price->igstpercent = $request->i1;
         $price->edited = "No";
-        $price->invoiceno = $invoiceno;
         $price->save();
         
         $order = Order::where('id',$request->id)->first();
