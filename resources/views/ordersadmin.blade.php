@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
 
   <style>
+input[data-readonly] {
+  pointer-events: none;
+}
+</style>
+  <style>
 * {box-sizing: border-box}
 /* Style the tab */
 .tab {
@@ -213,7 +218,7 @@ function openCitytest(evt, cityName) {
                              
                             <br>
                             <label>Measurement Unit : </label>
-                           <input  readonly required type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons">
+                           <input  type="text" name="unit" value="{{$rec->cat != null ? $rec->cat->measurement_unit: ''}}" class="form-control" placeholder="Bags/Tons" required data-readonly>
                             <br>
                             <label>Mamahome Price(Per Unit) : </label>
                             <input required type="number" id="unit"  class="form-control" name="mamaprice" placeholder="Unit Price" onkeyup="checkthis1('unit')" value="{{$rec->price}}">
@@ -221,7 +226,7 @@ function openCitytest(evt, cityName) {
 
                             <!-- <label>Manufacturer Price(Per Unit) : </label>
                             <input  required type="number" id="unit"  class="form-control" name="manuprice" placeholder="Unit Price" onkeyup="checkthis1('unit')"> -->
-                            <center><button type="submit" class="btn btn-sm btn-success" type="">Confirm</button></center>
+                            <center><button type="submit" class="btn btn-sm btn-success" >Confirm</button></center>
                             <br>
                            </form>
                           </div>
