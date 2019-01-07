@@ -2973,7 +2973,7 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
             }
         else
         {
-        dd(count($check));
+        dd($now, $start, $remark,count($check) );
                     if(count($check)== 0){
                         $field = new FieldLogin;
                         $field->user_id = $id;
