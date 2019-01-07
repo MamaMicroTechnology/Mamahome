@@ -301,7 +301,7 @@
             <label style="color:rgb(70, 141, 221);font-weight:bold;">Amount(INR)
           <input type="text" name="amount" class="form-control" value=" {{number_format(round($led->amount))}}">
           </label>
-            <label style="color:rgb(70, 141, 221);font-weight:bold;">DType of Head
+            <label style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head
           <input type="text" name="dr" class="form-control" value="{{$led->debitcredit}}">
           </label>
             <label style="color:rgb(70, 141, 221);font-weight:bold;">Bank Name
@@ -356,7 +356,7 @@
                console.log(response.length);
                 for(var i=0;i<response.length;i++)
                 {
-                     ans += "<option value='"+response[i].id+"'>"+response[i].  Subaccountheads+"</option>";
+                     ans += "<option value='"+response[i].id+"'>"+response[i].Subaccountheads+"</option>";
                    
                 }
                 document.getElementById('sub2').innerHTML = ans;

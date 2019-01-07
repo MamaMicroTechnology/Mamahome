@@ -853,7 +853,12 @@ public function addcat(request $request){
                
                $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','like',$from.'%')
                              ->where('created_at','LIKE',$to."%")->count();
-           
+                   
+
+    
+                    
+
+
                $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','like',$from.'%')
                              ->where('called_Time','LIKE',$to."%")->count();
             
@@ -899,8 +904,11 @@ public function addcat(request $request){
                  
 
                $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous."%")->count();
-                }
+            
 
+             }
+
+                 
 }
 return view('/monthlyreport',['users' =>$users,'total'=>$total]);
     }

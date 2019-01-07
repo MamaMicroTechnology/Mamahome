@@ -482,10 +482,9 @@ public function subtesthead(request $request){
 public function getsubaccounthead(request $request){
 
        $cat = $request->cat;
-        $subcat = Subaccountheads::where('id',$cat)
+        $subcat = Subaccountheads::where('AccountHead',$cat)
             ->get();
-        $res = $subcat;
-        return response()->json($res);
+        return response()->json($subcat);
 }
 public function getuser(request $request){
 
