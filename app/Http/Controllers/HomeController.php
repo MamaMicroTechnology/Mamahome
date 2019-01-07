@@ -3270,6 +3270,7 @@ date_default_timezone_set("Asia/Kolkata");
         $x->status = 'Order Confirmed';
         $x->save();
 
+        // price may change ,so updates here
         PaymentDetails::where('order_id',$id)->update([
             'quantity'=>$request->quantity,
             'mamahome_price'=>$request->mamaprice,
@@ -3280,7 +3281,6 @@ date_default_timezone_set("Asia/Kolkata");
         $cgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('cgst')->first();
         $sgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('sgst')->first();
         $igstval =  Gst::where('category',$cat)->where('state',$request->state)->pluck('igst')->first();
-      
         if($cgstval == 14 || $igstval == 28){
             $percent = 1.28;
             $g1 = 14;
