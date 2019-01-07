@@ -75,6 +75,7 @@ use App\Gst;
 use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
 use App\Quotation;
+use App\MamahomePrice;
 
 
 date_default_timezone_set("Asia/Kolkata");
@@ -1960,6 +1961,18 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 $check->manu_id =$requirement->manu_id;
                 $check->save(); 
                 }
+                $invoice = new MamahomePrice;
+                $invoice->order_id = $orderNo;
+                $invoice->save();
+                
+                // generate invoice
+                $year = date('Y');
+                $country_code = Country::pluck('country_code')->first();
+                $zone = Zone::pluck('zone_number')->first();
+                $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$invoice->id;
+                $ino = MamahomePrice::where('order_id',$orderNo)->update([
+                    'invoiceno'=>$invoiceno
+                ]);
             }
         }
         $activity = new ActivityLog;
@@ -2967,13 +2980,12 @@ $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
              $start = "08:00 AM";
              $now = date('H:i A');
         }
-        if($now > $start && count($check) == 0 && $remark == null){         
+        if($now > $start && count($check)== 0 && $remark == null){         
             $text = " <form action='emplate?latitude=".$lat." && longitude=".$lon." && address=".$address."' method='POST'> <input type='hidden' name='_token' value='".Session::token()."'> <textarea required style='resize:none;'  name='remark' placeholder='Reason For Late Login..' class='form-control' type='text'></textarea><br><center><button type='submit' class='btn btn-success' >Submit</button></center></form>";
             return back()->with('Latelogin',$text); 
             }
         else
         {
-        dd($now, $start, $remark,count($check) );
                     if(count($check)== 0){
                         $field = new FieldLogin;
                         $field->user_id = $id;

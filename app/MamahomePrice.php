@@ -10,7 +10,7 @@ class MamahomePrice extends Model
 {
 	 use SoftDeletes;
          use LogsActivity;
-     protected $table = 'mamahome_prices';
+     protected $table = 'mamahome_invoices';
      protected $primaryKey = 'id';
 
       protected $fillable = [

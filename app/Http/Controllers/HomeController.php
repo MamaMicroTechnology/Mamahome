@@ -3300,6 +3300,7 @@ date_default_timezone_set("Asia/Kolkata");
             $g1 = 4;
             $g2 = 4;
         }
+       
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
@@ -3320,26 +3321,41 @@ date_default_timezone_set("Asia/Kolkata");
         $igstint = (int)$igst;
         $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
-        $price = new MamahomePrice;
-            $price->order_id = $id;
-            $price->quantity = $request->quantity;
-            $price->mamahome_price = $request->mamaprice;
-            $price->unitwithoutgst = $unitwithgst;
-            $price->totalamount = $x;
-            $price->cgst = $cgst;
-            $price->sgst = $sgst;
-            $price->igst = $igstint;
-            $price->totaltax = $totaltax;
-            $price->amountwithgst = $y;    
-            $price->cgstpercent = $cgstval;
-            $price->sgstpercent = $sgstval;
-            $price->gstpercent = $percent;
-            $price->igstpercent = $igstval;
-            $price->unit = $request->unit;
-            $price->category = $cat;
-            $price->project_id = $projectid;
-            $price->state = $request->state;
-            $price->save();
+        $check = MamahomePrice::where('order_id',$id)->first();
+        if(count($check) == 0){
+                $invoice = new MamahomePrice;
+                $invoice->order_id = $id;
+                $invoice->quantity = $request->quantity;
+                $invoice->mamahome_price = $request->mamaprice;
+                $invoice->unitwithoutgst = $unitwithgst;
+                $invoice->totalamount = $x;
+                $invoice->cgst = $cgst;
+                $invoice->sgst = $sgst;
+                $invoice->igst = $igstint;
+                $invoice->totaltax = $totaltax;
+                $invoice->amountwithgst = $y;    
+                $invoice->cgstpercent = $cgstval;
+                $invoice->sgstpercent = $sgstval;
+                $invoice->gstpercent = $percent;
+                $invoice->igstpercent = $igstval;
+                $invoice->unit = $request->unit;
+                $invoice->category = $cat;
+                $invoice->project_id = $projectid;
+                $invoice->state = $request->state;
+                $invoice->save();
+                // generate invoice
+                $year = date('Y');
+                $country_code = Country::pluck('country_code')->first();
+                $zone = Zone::pluck('zone_number')->first();
+                $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$invoice->id;
+                 $ino = MamahomePrice::where('order_id',$id)->first();
+                
+
+                $ino = MamahomePrice::where('order_id',$id)->update([
+                    'invoiceno'=>$invoiceno
+                ]);
+        }
+     
         return back();
     }
     public function cancelOrder(Request $request)
