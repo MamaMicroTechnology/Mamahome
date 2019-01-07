@@ -69,7 +69,7 @@
         <!--    <label style="color:rgb(70, 141, 221);font-weight:bold;">Sub Head
           <input type="text" name="subhead" class="form-control" required>
           </label> -->
-           <label style="color:rgb(70, 141, 221);font-weight:bold;">Debit/Credit
+           <label style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head
            <select class="form-control" name="crdr" id="subward" required>
                    <option value="">---Select--</option>
                    <option value="Debit">Debit</option>
@@ -158,7 +158,7 @@
                 </div><br>
 
                 <div class="row">
-                    <div class="col-md-4">Debit/Credit</div>
+                    <div class="col-md-4">Type of Head</div>
                     <div class="col-md-8">
                         <select class="form-control" name="crdr" id="subward">
                    <option value="">---Select--</option>
@@ -180,7 +180,7 @@
 
                  <div class="row">
                     <div class="col-md-4">Branch Name</div>
-                    <div class="col-md-8"><input  type="text" class="form-control" name="branch" placeholder="Branch name"></div>
+                    <div class="col-md-8"><input  type="text" class="form-control" name="branch" placeholder="Branch name with IFS Code"></div>
                 </div><br>
   
 
@@ -235,7 +235,7 @@
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Date</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Transaction Particulars</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Amount(INR)</th>
-        <th style="color:rgb(70, 141, 221);font-weight:bold;">Debit/Credit</th>
+        <th style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Bank Name</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Branch Name</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Account Head </th>
@@ -301,7 +301,7 @@
             <label style="color:rgb(70, 141, 221);font-weight:bold;">Amount(INR)
           <input type="text" name="amount" class="form-control" value=" {{number_format(round($led->amount))}}">
           </label>
-            <label style="color:rgb(70, 141, 221);font-weight:bold;">Debit/Credit
+            <label style="color:rgb(70, 141, 221);font-weight:bold;">DType of Head
           <input type="text" name="dr" class="form-control" value="{{$led->debitcredit}}">
           </label>
             <label style="color:rgb(70, 141, 221);font-weight:bold;">Bank Name
