@@ -26,17 +26,18 @@
     22 => 'Barryvdh\\Cors\\ServiceProvider',
     23 => 'Barryvdh\\DomPDF\\ServiceProvider',
     24 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    25 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    26 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
-    27 => 'Carbon\\Laravel\\ServiceProvider',
-    28 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
-    29 => 'App\\Providers\\AppServiceProvider',
-    30 => 'App\\Providers\\AuthServiceProvider',
-    31 => 'App\\Providers\\EventServiceProvider',
-    32 => 'App\\Providers\\RouteServiceProvider',
-    33 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
-    34 => 'Barryvdh\\Cors\\ServiceProvider',
-    35 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    25 => 'Jenssegers\\Agent\\AgentServiceProvider',
+    26 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    27 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    28 => 'Carbon\\Laravel\\ServiceProvider',
+    29 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    30 => 'App\\Providers\\AppServiceProvider',
+    31 => 'App\\Providers\\AuthServiceProvider',
+    32 => 'App\\Providers\\EventServiceProvider',
+    33 => 'App\\Providers\\RouteServiceProvider',
+    34 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    35 => 'Barryvdh\\Cors\\ServiceProvider',
+    36 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -162,6 +163,8 @@
     'translation.loader' => 'Illuminate\\Translation\\TranslationServiceProvider',
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
+    'agent' => 'Jenssegers\\Agent\\AgentServiceProvider',
+    'Jenssegers\\Agent\\Agent' => 'Jenssegers\\Agent\\AgentServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
   ),
   'when' => 
@@ -200,6 +203,9 @@
     array (
     ),
     'Illuminate\\Validation\\ValidationServiceProvider' => 
+    array (
+    ),
+    'Jenssegers\\Agent\\AgentServiceProvider' => 
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 

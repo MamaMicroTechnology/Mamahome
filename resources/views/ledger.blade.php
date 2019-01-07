@@ -9,6 +9,7 @@
   <button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#myModal10">Add Account Head</button>
   <button type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#myModal11">Add Sub Account Head</button>
 
+ <button type="button" class="btn btn-warning btn-sm pull-right" data-toggle="modal" data-target="#addManufacturer">Add Ledger</button>
 <div class="container">
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
@@ -127,90 +128,107 @@
   </div>
   
 </div>
-
-        </div>
-<form action="{{ URL::to('/') }}/legderdetails" method="post">
-          {{csrf_field()}}
-          @if(SESSION('success'))
-<div class="text-center alert alert-success">
-<h3 style="font-size:1.8em">{{SESSION('success')}}</h3>
 </div>
-@endif
-      <div class="panel-body">
-          <div class="col-md-12">
-              <div class="col-md-2">
-                <label>Date</label>
-                <input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="date">
-              </div>
-              <div class="col-md-2">
-                <label>Transaction Particulars</label>
-                <input  type="text" class="form-control" name="Transaction" placeholder="Transaction Particulars">
-              </div>
-               <div class="col-md-2">
-                <label>Amount(INR)</label>
-                <input  type="text" class="form-control" name="money" placeholder="Amount(INR)">
-              </div>
-             <!--  <div class="col-md-2">
-                <label>Debit/Credit</label>
-                <select class="form-control" name="drcr" id="subward">
+
+  <form method="POST" action="{{ URL::to('/') }}/legderdetails" enctype="multipart/form-data">     
+    <div id="addManufacturer" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-md">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="background-color:blue">
+            <button type="button" class="close" data-dismiss="modal" style="color:black"><b style="color:black">&times;</b></button>
+            <h4 class="modal-title" ><b style="color:white;text-align:center">Add New Ledger</b></h4>
+          </div>
+          <div class="modal-body" style="max-height: 500px; overflow-y:scroll;">
+                {{ csrf_field() }}
+                <div class="row">
+                    <div class="col-md-4">Date</div>
+                    <div class="col-md-8"> <input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="date"></div>
+                </div><br>
+
+                 <div class="row">
+                    <div class="col-md-4">Transaction Particulars</div>
+                    <div class="col-md-8"> <input  type="text" class="form-control" name="Transaction" placeholder="Transaction Particulars"></div>
+                </div><br>
+
+                <div class="row">
+                    <div class="col-md-4">Amount(INR)</div>
+                    <div class="col-md-8"> <input  type="text" class="form-control" name="money" placeholder="Amount(INR)"></div>
+                </div><br>
+
+                <div class="row">
+                    <div class="col-md-4">Debit/Credit</div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="crdr" id="subward">
                    <option value="">---Select--</option>
                    <option value="Debit">Debit</option>
                    <option value="Credit">Credit</option>
                 </select>
-              </div> -->
-               <div class="col-md-2">
-                <label>Bank Name</label>
-                <select class="form-control" name="bank" id="subward">
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-4">Bank Name</div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="bank" id="subward">
                    <option value="">---Select--</option>
                    <option value="Axis">Axis Bank</option>
                    <option value="HDFC">HDFC Bank</option>
                 </select>
-              </div>
-              <div class="col-md-2">
-                <label>Branch Name</label>
-                <input  type="text" class="form-control" name="branch" placeholder="Branch name">
-              </div>
-           <div class="col-md-2"><br>
-                <label>Debit/Credit </label>
-                <select class="form-control" name="crdr"  required>
-                   <option value="">---Select--</option>
-                   <option value="Debit">Debit</option>
-                   <option value="Credit">Credit</option>
-                </select>
-              </div>
-              <div class="col-md-2"><br>
-                <label>Accounts Head </label>
-                <select class="form-control" name="acchead" id="mydad" onchange="Subs()">
+                    </div>
+                </div><br>
+
+                 <div class="row">
+                    <div class="col-md-4">Branch Name</div>
+                    <div class="col-md-8"><input  type="text" class="form-control" name="branch" placeholder="Branch name"></div>
+                </div><br>
+  
+
+                <div class="row">
+                    <div class="col-md-4">Accounts Head </div>
+                    <div class="col-md-8">
+                       <select class="form-control" name="acchead" id="mydad" onchange="Subs()">
                    <option value="">---Select--</option>
                    @foreach($acc as $account)
                    <option value="{!! $account->id !!}">{!! $account->name !!}</option>
                    @endforeach
 
                 </select>
-              </div>
-               <div class="col-md-2"><br>
-                <label>Sub Accounts Head </label>
-               <select id="sub2"  class="form-control" name="brand" onchange="assetinfo()">
+                    </div>
+                </div><br>
+                   
+                   <div class="row">
+                    <div class="col-md-4">Sub Accounts Head </div>
+                    <div class="col-md-8">
+                      <select id="sub2"  class="form-control" name="brand" onchange="assetinfo()">
                         
                     </select>
-              </div>
-               <div class="col-md-2"><br>
-                <label>Select Asset</label>
-               <select id="asset"  class="form-control" name="name">
+                    </div>
+                </div><br>
+                 <div class="row">
+                    <div class="col-md-4">Select Asset </div>
+                    <div class="col-md-8">
+                      <select id="asset"  class="form-control" name="name">
                         
                     </select>
-              </div>
-               <div class="col-md-2"><br>
-                <label>Remarks</label>
-                <textarea class="form-control" name="remark" placeholder="Remarks"></textarea>    
-              </div>
-                <div class="col-md-2"><br>
-                <label></label>
-                <button  type="submit" class="form-control btn-success btn-sm" >Submit</button>
-              </div>
+                    </div>
+                </div><br>
+                 <div class="row">
+                    <div class="col-md-4">Remarks</div>
+                    <div class="col-md-8"> <textarea class="form-control" name="remark" placeholder="Remarks"></textarea>  </div>
+                </div><br>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
+        </div>
+    
       </div>
-    </form>
+    </div>
+  </div>
+</form>
+
+
       <table class="table table-responsive table-striped table-hover">
       <thead>
         <tr>
