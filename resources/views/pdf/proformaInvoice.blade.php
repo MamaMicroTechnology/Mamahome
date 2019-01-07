@@ -260,10 +260,10 @@
                                     <br>
                                     <i><b>Bank Details</b></i><br>
                                     Name : Mama home Pvt ltd<br>
-                                    Bank name : Axis Bank<br>
+                                    Bank Name : Axis Bank<br>
                                     Account Number : 917020086803914<br>
                                     Account Type : Current Account<br>
-                                    Ifsc : UTIB0003266<br>
+                                    IFSC : UTIB0003266<br>
                                     Branch : Kodichikanahalli Bangalore- 560076<br>     
                                     <br><br>  
                                 </div>

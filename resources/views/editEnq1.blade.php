@@ -308,13 +308,9 @@
                           	</td>
                           	@else
                           	<td>
-                          	<select required name="state" class="form-control" id="state" >
-				                 @if($enq->state == "1")
-                                <option value="{{$enq->state}}">Karnataka</option>  
-                                @endif
-                                @if($enq->state == "2")
-                                 <option value="{{$enq->state}}">Tamil Nadu</option>  
-                                @endif
+				            <select  name="state" class="form-control" id="state">
+				                <option value="{{ $enq->st != null ? $enq->st->id : ''}}">{{$enq->st != null ? $enq->st->state_name : '' }}
+                                </option>
 				            </select>
                           	</td>
                           	@endif

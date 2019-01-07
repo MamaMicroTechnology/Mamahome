@@ -119,9 +119,9 @@ class FinanceDashboard extends Controller
     }
     public function downloadInvoice(Request $request)
     {
+        $id = $request->id;
         $products = DB::table('orders')->where('id',$request->id)->first();
         $address = SiteAddress::where('project_id',$products->project_id)->first();
-
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
         $payment = PaymentDetails::where('order_id',$request->id)->first();
         $price = MamahomePrice::where('order_id',$request->id)->orderby('created_at','DESC')->first()->getOriginal();
@@ -172,10 +172,11 @@ class FinanceDashboard extends Controller
         if($request->has('download')){
             return $pdf->download(time().'.pdf');
         }else{
-            return $pdf->stream('Invoice.pdf');
+            return $pdf->stream('ProformaInvoice'.'('.$id.')'.'.pdf');
         }
     }
     function downloadTaxInvoice(Request $request){
+        $id = $request->id;
         $products = DB::table('orders')->where('id',$request->id)->first();
         $address = SiteAddress::where('project_id',$products->project_id)->first();
         $procurement = ProcurementDetails::where('project_id',$products->project_id)->first();
@@ -232,7 +233,7 @@ class FinanceDashboard extends Controller
         if($request->has('download')){
             return $pdf->download(time().'.pdf');
         }else{
-            return $pdf->stream('Tax.pdf');
+            return $pdf->stream('TaxInvoice'.'('.$id.')'.'.pdf');
         }
     }
     function downloadSupplierInvoice(Request $request){
@@ -284,6 +285,7 @@ class FinanceDashboard extends Controller
         }
     }
     function downloadpurchaseOrder(Request $request){
+        $id = $request->id;
         $products = DB::table('orders')->where('id',$request->id)->first();
          if( $products->project_id != null){
         $address = SiteAddress::where('project_id',$products->project_id)->first();
@@ -314,13 +316,12 @@ class FinanceDashboard extends Controller
             'supplier'=>$supplier,
             'mprocurement'=>$mprocurement
         );
-
         view()->share('data',$data);
         $pdf = PDF::loadView('pdf.purchaseOrder')->setPaper('a4','portrait');
         if($request->has('download')){
             return $pdf->download(time().'.pdf');
         }else{
-            return $pdf->stream('purchaseOrder.pdf');
+            return $pdf->stream('PurchaseOrder'.'('.$id.')'.'.pdf');
         }
     }
     public function savePaymentDetails(Request $request)
@@ -690,7 +691,7 @@ class FinanceDashboard extends Controller
         return response()->json(['res'=>$res,'id'=>$id,'gst'=>$gst,'category'=>$category,'unit'=>$unit]);
     }
     public function supplierinvoice(Request $request){   
-        $image = " ";
+        $image = "";
         $i = 0;    
        if($request->file){
                 foreach($request->file as $pimage){
@@ -705,6 +706,7 @@ class FinanceDashboard extends Controller
                      $i++;
                 }
             }
+
         $lpo = Supplierdetails::where('order_id',$request->id)->pluck('lpo')->first();
         $invoice = New SupplierInvoice;
         $invoice->lpo_number = $lpo;

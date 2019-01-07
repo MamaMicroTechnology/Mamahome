@@ -179,7 +179,7 @@
                              <td><input required type="number" class="form-control" name="quantity" value="{{$price->quantity}}" id="quan{{$order->id}}"></td>
                            </tr>
                             <tr>
-                              <td>Unit : </td>
+                              <td>Unit of Measurement : </td>
                               <td><input  type="text" name="unit" value="{{$price->unit}}" class="form-control" readonly>
                            
                             </tr>
