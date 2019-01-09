@@ -15,7 +15,7 @@
                     <option value="">--Select--</option>
                   
                     <option value="project">Projects</option>
-                    
+                    <option value="Manufacturer">Manufacturer</option>
                 </select>
         </div>
         <div class="col-md-4">

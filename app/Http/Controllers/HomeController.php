@@ -5103,6 +5103,50 @@ public function confirmedvisit(Request $request){
         $roomtypes = RoomType::where('project_id',$id)->get();
         $listedby = User::where('id',$rec->listing_engineer_id)->first();
         $subward = SubWard::where('id',$rec->sub_ward_id)->pluck('sub_ward_name')->first();
+
+     $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+
         return view('adminprojectdetails',[
                 'rec' => $rec,
                 'username'=>$username,
@@ -5111,7 +5155,8 @@ public function confirmedvisit(Request $request){
                 'followupby'=>$followupby,
                 'listedby'=>$listedby,
                 'projectupdate'=>$projectupdate,
-                'subward'=>$subward
+                'subward'=>$subward,
+                'ward'=>$d
             ]);
     }
      public function projectadmin1(Request $id){

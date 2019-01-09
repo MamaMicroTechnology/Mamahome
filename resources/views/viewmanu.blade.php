@@ -84,7 +84,29 @@
                         <tr>
                             <td style="width:40%"><b>Sub-ward : </b></td>
                             <td><a href="{{ URL::to('/')}}/viewsubward?manu_id={{$project->id}} && subward={{ $project->subward != null ?$project->subward->sub_ward_name:'' }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->subward != null?$project->subward->sub_ward_name:'' }}
-                                    </a></td>
+                                    </a>
+                                 
+                                  <?php 
+                                $sub = App\Manufacturer::where('id',$project->id)->pluck('latitude')->first();
+                                $subs = App\Manufacturer::where('id',$project->id)->pluck('longitude')->first();
+                                
+                                ?> 
+    <form  action="{{ URL::to('/') }}/findmanuward" method="post">
+        {{ csrf_field() }}
+<div>
+  <input type="hidden" name="lat" id="lat" class="form-control" value="{{$sub}}" placeholder="lat">
+  <input type="hidden" name="lat" id="log" class="form-control" value="{{$subs}}"  placeholder="long">
+  <input type="hidden" name="manusubidfind" id="manusubid" value="">
+  <input type="hidden" name="projectid" value="{{$project->id}}">
+  <button onclick="initMap()" type="submit">Get Subward</button>
+</div>
+    </form>  
+
+
+
+ 
+
+                                </td>
                         </tr>
                        
                        
@@ -232,4 +254,114 @@ $(document).ready(function(){
 
 });
 </script> 
+<script type="text/javascript">
+  
+    function initMap() {
+
+      var x = document.getElementById("lat");
+          var lat = x.value;
+        var y = document.getElementById("log");
+        var long = y.value;
+     
+      var latitude = lat;
+      var longitude = long;
+      var faultyward = "{{json_encode($ward)}}";
+      var ward = faultyward.split('&quot;,&quot;').join('","');
+      ward = ward.split('&quot;').join('"');
+
+      var ss = JSON.parse(ward);
+      var shouldAlert;
+      for(var i=0; i<Object(ss['original'].length); i++){
+        
+        var finalward = [];
+        finalward = ss['original'][i]['lat'].map(s => eval('null,' +s ));
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+       shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+              
+               if(shouldAlert == true){
+
+                      getBrands(ss['original'][i]['ward']);
+                          break;
+
+                }
+           
+      }
+      if(shouldAlert == false){
+        alert("not serviceable area");
+      }
+  }
+function getBrands(arg){
+    const Http = new XMLHttpRequest();
+    var x = arg;
+  
+  const url='{{URL::to('/')}}/subfind?id='+x;
+   Http.open("GET", url);
+   Http.send();
+
+Http.onreadystatechange=(e)=>{
+              
+
+           initsubward(Http.responseText);
+            
+            
+            }
+  
+
+  }
+
+  function initsubward(arg){
+       var x = document.getElementById("lat");
+          var lat = x.value;
+        var y = document.getElementById("log");
+        var long = y.value;
+
+
+      var latitude = lat;
+      var longitude = long;
+
+     
+        var subfaulty = arg;
+      //console.log(subfaulty);
+      /*
+      var subward = subfaulty.split('&quot;,&quot;').join('","');
+     
+      subward = subward.split('&quot;').join('"');*/
+
+      var subs = JSON.parse(subfaulty);
+
+     // console.log(subs.length);
+
+
+      for(var i=0; i<Object(subs.length); i++){
+        
+        var finalsubward = [];
+        finalsubward = subs[i]['lat'].map(s => eval('null,' +s ));
+
+       var bermudaTriangle = new google.maps.Polygon({paths: finalsubward});  
+        var locat = new google.maps.LatLng(latitude,longitude);
+       var shouldAlert = google.maps.geometry.poly.containsLocation(locat, bermudaTriangle);
+
+              
+               if(shouldAlert == true){
+                        // alert(subs[i]['subward']);
+                        var m = subs[i]['subward'];
+                       document.getElementById('manusubid').value = m;
+
+
+                }
+
+           
+      }
+      
+
+
+  }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGSf_6gjXK-5ipH2C2-XFI7eUxbHg1QTU&libraries=geometry&callback=initMap"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
 @endsection    

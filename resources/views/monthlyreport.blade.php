@@ -7,13 +7,7 @@
                 <b style="color:white">Sales Mini Report (30 Days)
                </b>
             </div>
-         <?php 
-             $s = App\Order::pluck('logistic');
-             $w = explode(",",$s);
-
-             print_r($w);
-
-         ?>
+         
 
             <div class="panel-body">
              <form action="{{ URL::to('/') }}/monthlyreport" method="GET" enctype="multipart/form-data"> 

@@ -35,6 +35,8 @@ Route::post('/getcustom','CustomerController@getdetails');
 Route::get('/blocked_projects','CustomerController@blocked');
 
 Route::post('/toggle-approve1',"CustomerController@approval1");
+Route::post('/findward','CustomerController@findward');
+Route::post('/findmanuward','CustomerController@findmanuward');
 
 
 

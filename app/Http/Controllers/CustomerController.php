@@ -11,6 +11,7 @@ use App\Builder;
 use App\SupplierInvoice;
 use Auth;
 use App\ProjectDetails;
+use App\ProjectUpdate;
 use App\Manufacturer;
 use App\SubWard;
 use App\MamahomePrice;
@@ -595,4 +596,24 @@ public  function approval1(request $request){
    return back();
 
 }
+ public function findward(request $request){
+
+       
+      $sub =ProjectDetails::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+       
+       ProjectUpdate::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+       Requirement::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+
+
+      return back();
+ }
+ public function findmanuward(request $request){
+
+       
+      $sub =Manufacturer::where('id',$request->projectid)->update(['sub_ward_id'=>$request->manusubidfind]); 
+            Requirement::where('manu_id',$request->projectid)->update(['sub_ward_id'=>$request->manusubidfind]); 
+      return back();
+ }
+
+
    }
