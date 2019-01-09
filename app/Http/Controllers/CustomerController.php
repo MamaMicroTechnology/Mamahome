@@ -11,7 +11,6 @@ use App\Builder;
 use App\SupplierInvoice;
 use Auth;
 use App\ProjectDetails;
-use App\ProjectUpdate;
 use App\Manufacturer;
 use App\SubWard;
 use App\MamahomePrice;
