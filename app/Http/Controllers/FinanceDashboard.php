@@ -566,8 +566,6 @@ class FinanceDashboard extends Controller
     public function saveunitprice(Request $request){
        
        // invoice
-
-       
        
         // roundoff
         $unitwithoutgst = round($request->unitwithoutgst,2);
@@ -611,7 +609,7 @@ class FinanceDashboard extends Controller
         return back()->with('Success','Payment Confirmed');
     }
     public function savesupplierdetails(Request $request){
-      
+     
         $check = Supplierdetails::where('order_id',$request->id)->first();
         if(count($check) == 0){
         $projectid = Order::where('id',$request->id)->pluck('project_id')->first();
