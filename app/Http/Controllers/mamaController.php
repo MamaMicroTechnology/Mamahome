@@ -76,7 +76,7 @@ use Spatie\Activitylog\Models\Activity;
 // use LogsActivity;
 use App\Quotation;
 use App\MamahomePrice;
-
+use DB;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -1963,8 +1963,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                 }
                 $invoice = new MamahomePrice;
                 $invoice->order_id = $orderNo;
+                $invoice->req_id = $request->eid;
                 $invoice->save();
-                
                 // generate invoice
                 $year = date('Y');
                 $country_code = Country::pluck('country_code')->first();
@@ -2042,7 +2042,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
-         
             // fetching brands
         $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
         $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
@@ -2081,22 +2080,21 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'price' =>$request->price,
             'State'=>$request->state
         ]);
-       
      $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([
               'main_category' => $categoryNames,
               'brand' => $brandnames,
              'sub_category'  =>$subcategories,
              'quantity' => $request->totalquantity
-                   
-
-
      ]);
-     
-
-
-
-
-
+     $inv = DB::table('orders')->where('req_id',$request->reqId)->pluck('id')->first();
+    $invoice = MamahomePrice::where('order_id',$inv)->get();
+if($invoice != null){
+        $invoice = MamahomePrice::where('order_id',$inv)->update([
+            'category' =>$categoryNames,
+            'quantity'=>$request->totalquantity,
+            'mamahome_price'=>$request->price
+        ]);
+    }
 $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');

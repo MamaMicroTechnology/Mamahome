@@ -3327,6 +3327,7 @@ date_default_timezone_set("Asia/Kolkata");
         $check = MamahomePrice::where('order_id',$id)->first();
         if(count($check) == 0){
                 $invoice = new MamahomePrice;
+                $invoice->req_id = $request->rid;
                 $invoice->order_id = $id;
                 $invoice->quantity = $request->quantity;
                 $invoice->mamahome_price = $request->mamaprice;
@@ -3358,7 +3359,26 @@ date_default_timezone_set("Asia/Kolkata");
                     'invoiceno'=>$invoiceno
                 ]);
         }
-     
+        else{
+                $check->quantity = $request->quantity;
+                $check->mamahome_price = $request->mamaprice;
+                $check->unitwithoutgst = $unitwithgst;
+                $check->totalamount = $x;
+                $check->cgst = $cgst;
+                $check->sgst = $sgst;
+                $check->igst = $igstint;
+                $check->totaltax = $totaltax;
+                $check->amountwithgst = $y;    
+                $check->cgstpercent = $cgstval;
+                $check->sgstpercent = $sgstval;
+                $check->gstpercent = $percent;
+                $check->igstpercent = $igstval;
+                $check->unit = $request->unit;
+                $check->category = $cat;
+                $check->project_id = $projectid;
+                $check->state = $request->state;
+                $check->save();
+        }
         return back();
     }
     public function cancelOrder(Request $request)
