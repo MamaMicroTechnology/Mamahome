@@ -24,7 +24,7 @@
                <b style="color:white">Project Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-responsive ">
+                <table class="table table-hover table-responsive " border="1">
                     <thead>
                         <th>Projects &nbsp;({{count($projectids)}})</th>
                         <th>action</th>
@@ -70,7 +70,7 @@
                <b style="color:white">Manufacturer Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-responsive">
+                <table class="table table-hover table-responsive" border="1">
                     <thead>
                         <th>Manufacturers&nbsp;({{count($manuids)}})</th>
                         <th>Action</th>
@@ -115,7 +115,7 @@
                <b style="color:white">Enquiry Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-responsive">
+                <table class="table table-hover table-responsive" border="1">
                     <thead>
                         <th>Confirm Enquires&nbsp;({{count($confirmenq)}})({{count($confirms)}})</th>
                         <th>Cancel Enquires&nbsp;&nbsp;({{count($cancelenq)}})({{count($cancel)}})</th>
@@ -184,14 +184,14 @@
                <b style="color:white">Order Details</b> 
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-responsive">
+                <table class="table table-hover table-responsive" border="1">
                     <thead>
                         <th>Order Confirms&nbsp;({{count($orderconfirm)}})({{count($oconfirm)}})</th>
                         <th>Enquiry Id</th>
                         <th>Cancel Orders&nbsp;({{count($cancelorder)}})({{count($corder)}})</th>
                         <th>Enquiry Id</th>
                         <th>Get Purchase Invoice</th>
-                        <th>Customer Invoice</th>
+                        <th>Get Peoforma Invoice</th>
                        <!--  <th>Quotation</th> -->
 
 
@@ -269,7 +269,7 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default" style="border-color:green">
             <div class="panel-heading" style="background-color:green">
-               <b style="color:white">Generate Customer Information </b> 
+               <b style="color:white"> Generate Customer_ID </b> 
             </div>
             <div class="panel-body">
               <form action="{{URL::to('/')}}/getcustome" method="post">

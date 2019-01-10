@@ -853,7 +853,12 @@ public function addcat(request $request){
                
                $total[$user->id]['order'] = Order::where('generated_by',$user->id)->where('status','Order Confirmed')->where('created_at','like',$from.'%')
                              ->where('created_at','LIKE',$to."%")->count();
-           
+                   
+
+    
+                    
+
+
                $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','like',$from.'%')
                              ->where('called_Time','LIKE',$to."%")->count();
             
@@ -899,8 +904,17 @@ public function addcat(request $request){
                  
 
                $total[$user->id]['calls'] = History::where('user_id',$user->id)->where('called_Time','>=', $previous."%")->count();
-                }
 
+               $orderdata = Order::all();
+
+               foreach ($orderdata as $order) {
+                   # code...
+               }
+            
+
+             }
+
+                 
 }
 return view('/monthlyreport',['users' =>$users,'total'=>$total]);
     }
@@ -1473,10 +1487,10 @@ public function noneed(request $request ){
 
     
     $projectscount =[];
-    
+     $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->pluck('project_id');
 
     foreach ($subward as $sub) {
-       $projectcount = ProjectDetails::where('sub_ward_id',$sub->id)->get()->toArray();
+       $projectcount = ProjectDetails::where('sub_ward_id',$sub->id)->where('quality','!=',"FAKE")->whereNotIn('project_id',$closed)->get()->toArray();
        array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
     }
    
@@ -1633,8 +1647,50 @@ foreach ($sub as  $users) {
  public function viewmanu(request $request){
 
        $project = Manufacturer::where('id',$request->id)->first();
+         $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
 
-       return view('/viewmanu',['project'=>$project]);
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+
+       return view('/viewmanu',['project'=>$project,'ward'=>$d]);
  }
  
  public function details(request $request){
@@ -1732,10 +1788,11 @@ foreach ($sub as  $users) {
 
     
     $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
+    
     if($z != null){
 
        $text2 =implode(",",$z);
-       $text = "Project ids are assigned please check "  .$text2;
+       $text = "Project ids are assigned please check ".$use .'' .$text2;
        
         return back()->with('NotAdded',$text);
     }

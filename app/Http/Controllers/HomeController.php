@@ -1637,7 +1637,9 @@ class HomeController extends Controller
         
         
         $fake = ProjectDetails::where('quality',"FAKE")->count();
-        $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
+        
+        $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->where('quality','!=',"FAKE")->count();
+        
         $le = User::where('group_id','6')->get();
         $notes = ProjectDetails::groupBy('with_cont')
                     ->where('with_cont','!=',"DUPLICATE NUMBER")
@@ -3270,6 +3272,7 @@ date_default_timezone_set("Asia/Kolkata");
         $x->status = 'Order Confirmed';
         $x->save();
 
+        // price may change ,so updates here
         PaymentDetails::where('order_id',$id)->update([
             'quantity'=>$request->quantity,
             'mamahome_price'=>$request->mamaprice,
@@ -3280,7 +3283,6 @@ date_default_timezone_set("Asia/Kolkata");
         $cgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('cgst')->first();
         $sgstval = Gst::where('category',$cat)->where('state',$request->state)->pluck('sgst')->first();
         $igstval =  Gst::where('category',$cat)->where('state',$request->state)->pluck('igst')->first();
-      
         if($cgstval == 14 || $igstval == 28){
             $percent = 1.28;
             $g1 = 14;
@@ -3303,6 +3305,7 @@ date_default_timezone_set("Asia/Kolkata");
             $g1 = 4;
             $g2 = 4;
         }
+       
         $unitwithgst = ($request->mamaprice/$percent);
         $totalamount = ($request->quantity *  $unitwithgst);
         $x = (int)$totalamount;
@@ -3323,26 +3326,61 @@ date_default_timezone_set("Asia/Kolkata");
         $igstint = (int)$igst;
         $withgst = $cgst + $sgst + $totalamount + $igst;
         $y = (int)$withgst;
-        $price = new MamahomePrice;
-            $price->order_id = $id;
-            $price->quantity = $request->quantity;
-            $price->mamahome_price = $request->mamaprice;
-            $price->unitwithoutgst = $unitwithgst;
-            $price->totalamount = $x;
-            $price->cgst = $cgst;
-            $price->sgst = $sgst;
-            $price->igst = $igstint;
-            $price->totaltax = $totaltax;
-            $price->amountwithgst = $y;    
-            $price->cgstpercent = $cgstval;
-            $price->sgstpercent = $sgstval;
-            $price->gstpercent = $percent;
-            $price->igstpercent = $igstval;
-            $price->unit = $request->unit;
-            $price->category = $cat;
-            $price->project_id = $projectid;
-            $price->state = $request->state;
-            $price->save();
+        $check = MamahomePrice::where('order_id',$id)->first();
+        if(count($check) == 0){
+                $invoice = new MamahomePrice;
+                $invoice->req_id = $request->rid;
+                $invoice->order_id = $id;
+                $invoice->quantity = $request->quantity;
+                $invoice->mamahome_price = $request->mamaprice;
+                $invoice->unitwithoutgst = $unitwithgst;
+                $invoice->totalamount = $x;
+                $invoice->cgst = $cgst;
+                $invoice->sgst = $sgst;
+                $invoice->igst = $igstint;
+                $invoice->totaltax = $totaltax;
+                $invoice->amountwithgst = $y;    
+                $invoice->cgstpercent = $cgstval;
+                $invoice->sgstpercent = $sgstval;
+                $invoice->gstpercent = $percent;
+                $invoice->igstpercent = $igstval;
+                $invoice->unit = $request->unit;
+                $invoice->category = $cat;
+                $invoice->project_id = $projectid;
+                $invoice->state = $request->state;
+                $invoice->save();
+                // generate invoice
+                $year = date('Y');
+                $country_code = Country::pluck('country_code')->first();
+                $zone = Zone::pluck('zone_number')->first();
+                $invoiceno = "MH_".$country_code."_".$zone."_".$year."_IN".$invoice->id;
+                 $ino = MamahomePrice::where('order_id',$id)->first();
+                
+
+                $ino = MamahomePrice::where('order_id',$id)->update([
+                    'invoiceno'=>$invoiceno
+                ]);
+        }
+        else{
+                $check->quantity = $request->quantity;
+                $check->mamahome_price = $request->mamaprice;
+                $check->unitwithoutgst = $unitwithgst;
+                $check->totalamount = $x;
+                $check->cgst = $cgst;
+                $check->sgst = $sgst;
+                $check->igst = $igstint;
+                $check->totaltax = $totaltax;
+                $check->amountwithgst = $y;    
+                $check->cgstpercent = $cgstval;
+                $check->sgstpercent = $sgstval;
+                $check->gstpercent = $percent;
+                $check->igstpercent = $igstval;
+                $check->unit = $request->unit;
+                $check->category = $cat;
+                $check->project_id = $projectid;
+                $check->state = $request->state;
+                $check->save();
+        }
         return back();
     }
     public function cancelOrder(Request $request)
@@ -5064,7 +5102,47 @@ public function confirmedvisit(Request $request){
         $callAttendedBy = User::where('id',$details->call_attended_by)->first();
         $listedby = User::where('id',$details->listing_engineer_id)->first();
         $subward = SubWard::where('id',$details->sub_ward_id)->pluck('sub_ward_name')->first();
+$Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
 
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
         return view('viewDailyProjects',[
                 'details'=>$details,
                 'roomtypes'=>$roomtypes,
@@ -5073,7 +5151,7 @@ public function confirmedvisit(Request $request){
                 'listedby'=>$listedby,
                 'subward'=>$subward,
                 'projectupdate'=>$projectupdate,
-                'check'=>$check
+                'check'=>$check,'ward'=>$d
             ]);
     }
     public function showProjectDetails(Request $request)
@@ -5087,6 +5165,50 @@ public function confirmedvisit(Request $request){
         $roomtypes = RoomType::where('project_id',$id)->get();
         $listedby = User::where('id',$rec->listing_engineer_id)->first();
         $subward = SubWard::where('id',$rec->sub_ward_id)->pluck('sub_ward_name')->first();
+
+     $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
+
+
         return view('adminprojectdetails',[
                 'rec' => $rec,
                 'username'=>$username,
@@ -5095,7 +5217,8 @@ public function confirmedvisit(Request $request){
                 'followupby'=>$followupby,
                 'listedby'=>$listedby,
                 'projectupdate'=>$projectupdate,
-                'subward'=>$subward
+                'subward'=>$subward,
+                'ward'=>$d
             ]);
     }
      public function projectadmin1(Request $id){
@@ -5105,13 +5228,54 @@ public function confirmedvisit(Request $request){
         $callAttendedBy = User::where('id',$details->call_attended_by)->first();
         $listedby = User::where('id',$details->listing_engineer_id)->first();
         $subward = SubWard::where('id',$details->sub_ward_id)->pluck('sub_ward_name')->first();
+        $Wards = [];
+      $wards = Ward::all();
+     foreach($wards as $user){
+           
+                $noOfwards = WardMap::where('ward_id',$user->id)->first()->toArray();
+                array_push($Wards,['ward'=>$noOfwards,'wardid'=>$user->id]);
+            }
+              $allwardlats = [];
+              foreach ($Wards as $all) {
+
+               
+                  $allx = explode(",",$all['ward']['lat']);
+                  $wardid = $all['wardid'];
+               
+                  array_push($allwardlats, ['lat'=>$allx,'wardid'=>$wardid]);
+               }
+             
+         
+    $a = [];
+
+    for($j = 0; $j<sizeof($allwardlats);$j++){
+        $finalward = [];
+
+        $wardId = $allwardlats[$j]['wardid'];
+    for($i=0;$i<sizeof($allwardlats[$j]['lat'])-3; $i+=2){
+
+         $lat = $allwardlats[$j]['lat'][$i];
+         $long =  $allwardlats[$j]['lat'][$i+1];
+        $latlong = "{lat: ".$lat.", lng: ".$long."}";
+       
+         array_push($finalward,$latlong);
+
+    }
+
+
+      
+       array_push($a,['lat'=>$finalward,'ward'=>$wardId]);
+
+   }
+
+    $d = response()->json($a);
         return view('viewDailyProjects1',[
                 'details'=>$details,
                 'roomtypes'=>$roomtypes,
                 'followupby'=>$followupby,
                 'callAttendedBy'=>$callAttendedBy,
                 'listedby'=>$listedby,
-                'subward'=>$subward
+                'subward'=>$subward,'ward'=>$d
             ]);
     }
     public function editEmployee(Request $request){
@@ -7299,9 +7463,10 @@ function enquirystore(request $request){
     }
     public function allProjectsWithWards(Request $request)
     {
+
         $wardMaps = null;
         $projects = null;
-        if($request->wards && $request->quality ){
+        if($request->wards && $request->quality && $request->type == "Project"){
 
             $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
             $wardMaps = WardMap::where('ward_id',$request->wards)->first();
@@ -7313,21 +7478,17 @@ function enquirystore(request $request){
                         ->where('project_details.quality',$request->quality)
                         ->whereIn('project_details.sub_ward_id',$subwards)
                         ->get();
+        }else{
+            $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
+            $wardMaps = WardMap::where('ward_id',$request->wards)->first();
+            if($wardMaps == null ){
+                $wardMaps = "None";
+            }
+            $projects = Manufacturer::where('quality',$request->quality)
+                        ->whereIn('sub_ward_id',$subwards)
+                        ->get();
         }
-        // $zonemap== null;
-        // if( $request->zone){
-        //     $zones = Zone::where('id',$request->zone)->pluck('id')->toArray();
-        //     $zonemap = ZoneMap::where('zone_id',$request->zone)->first();
-        //     if($zonemap== null ){
-        //         $zonemap = "None";
-        //     }
-        // }
-        // $projects = Zone::leftjoin('wards','wards.zone_id','zones.id')
-        //  ->leftjoin('sub_wards','sub_wards.ward_id','wards.id')
-        //  ->leftjoin('project_details','project_details.sub_ward_id','sub_wards.id')
-        //  ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
-        //  ->select('site_addresses.*','project_details.quality')
-        //  ->get();
+        
 
         $wards = Ward::all();
         $zone = Zone::all();

@@ -7,6 +7,8 @@
                 <b style="color:white">Sales Mini Report (30 Days)
                </b>
             </div>
+         
+
             <div class="panel-body">
              <form action="{{ URL::to('/') }}/monthlyreport" method="GET" enctype="multipart/form-data"> 
                     {{ csrf_field() }}

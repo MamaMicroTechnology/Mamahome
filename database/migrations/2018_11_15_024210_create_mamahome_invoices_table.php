@@ -13,7 +13,7 @@ class CreateMamahomePricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mamahome_prices', function (Blueprint $table) {
+        Schema::create('mamahome_invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateMamahomePricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mamahome_prices');
+        Schema::dropIfExists('mamahome_invoices');
     }
 }

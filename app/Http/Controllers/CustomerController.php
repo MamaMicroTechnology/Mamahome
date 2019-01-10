@@ -136,7 +136,9 @@ $ledger = Ledger::orderBy('id','DESC')->get();
 
     // $y="/var/www/html/mamaReu/public/Ledger/book.csv";
 
-  return view('/ledger',['ledger'=>$ledger,'acc'=>$acc]);
+
+  // return view('/ledger',['ledger'=>$ledger,'acc'=>$acc]);
+      return redirect('/ledger');
 }
 public function subward(request $request)
 {
@@ -480,10 +482,9 @@ public function subtesthead(request $request){
 public function getsubaccounthead(request $request){
 
        $cat = $request->cat;
-        $subcat = Subaccountheads::where('id',$cat)
+        $subcat = Subaccountheads::where('AccountHead',$cat)
             ->get();
-        $res = $subcat;
-        return response()->json($res);
+        return response()->json($subcat);
 }
 public function getuser(request $request){
 
@@ -594,4 +595,28 @@ public  function approval1(request $request){
    return back();
 
 }
+ public function findward(request $request){
+
+       if(count($request->subid) > 0){
+        
+      $sub =ProjectDetails::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+       
+       ProjectUpdate::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+       Requirement::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+       }
+
+
+      return back();
+ }
+ public function findmanuward(request $request){
+
+       if(count($request->manusubidfind) > 0){
+      $sub =Manufacturer::where('id',$request->projectid)->update(['sub_ward_id'=>$request->manusubidfind]); 
+            Requirement::where('manu_id',$request->projectid)->update(['sub_ward_id'=>$request->manusubidfind]); 
+        
+       }
+      return back();
+ }
+
+
    }

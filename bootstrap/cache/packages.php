@@ -24,11 +24,33 @@
       0 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     ),
   ),
+  'jenssegers/agent' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Jenssegers\\Agent\\AgentServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Agent' => 'Jenssegers\\Agent\\Facades\\Agent',
+    ),
+  ),
   'laravel/tinker' => 
   array (
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    ),
+  ),
+  'maatwebsite/excel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
     ),
   ),
   'nesbot/carbon' => 
@@ -38,29 +60,11 @@
       0 => 'Carbon\\Laravel\\ServiceProvider',
     ),
   ),
-  'renatomarinho/laravel-page-speed' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
-    ),
-  ),
   'spatie/laravel-activitylog' => 
   array (
     'providers' => 
     array (
       0 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
-    ),
-  ),
-  'spatie/laravel-image-optimizer' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\LaravelImageOptimizer\\ImageOptimizerServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'ImageOptimizer' => 'Spatie\\LaravelImageOptimizer\\Facades\\ImageOptimizer',
     ),
   ),
 );

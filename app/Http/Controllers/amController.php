@@ -39,6 +39,7 @@ use App\training;
 use App\MamahomeAsset;
 use Carbon\Carbon;
 use App\FieldLogin;
+use App\State;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -421,7 +422,8 @@ class amController extends Controller
         $category = ManufacturerDetail::groupBy('category')->pluck('category');
         $categories = Category::all();
         $vendor = DB::table('vendor')->select('vendor.*')->get();
-        return view('assistantmanager.manufacturerdetails',['mfdetails'=>$mfdetails,'category'=>$category,'vendor' => $vendor,'categories'=>$categories,'pageName'=>'Vendor Details']);
+        $states = State::all();
+        return view('assistantmanager.manufacturerdetails',['mfdetails'=>$mfdetails,'category'=>$category,'vendor' => $vendor,'categories'=>$categories,'pageName'=>'Vendor Details','states'=>$states]);
     }
     public function amdailyslots(Request $request)
     {

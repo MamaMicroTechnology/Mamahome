@@ -76,6 +76,11 @@
 						</thead>
 						<tbody>
 							@foreach($pipelines as $enquiry)
+							      <?php 
+
+                                    $y = $enquiry->id;
+                                    $yadav = App\Order::where('req_id',$y)->where('status','Order Confirmed')->count();
+							      ?>
 							<tr>	
 								 @if($enquiry->manu_id == null)
 								<td style="text-align: center">
@@ -97,17 +102,22 @@
 									{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_name :''  }}
                                    {{ $enquiry->proc != null ? $enquiry->proc->name :''  }}
 								</td>
-								
-								@if($enquiry->manu_id == null)
-
-								<td style="text-align: center" >
-								<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-success btn-sm pull-right">Edit</a>
-								</td>
-								@else
-								<td style="text-align: center" >
-								<a href="{{ URL::to('/') }}/menqedit?reqId={{$enquiry->id}}" class="btn btn-primary btn-sm pull-right">Edit</a>
-								</td>
-								@endif
+								 
+								@if($yadav == 0)
+										@if($enquiry->manu_id == null)
+		                                 <td style="text-align: center" >
+										<a href="{{ URL::to('/') }}/editenq1?reqId={{ $enquiry->id }}" class="btn btn-success btn-sm pull-right">Edit</a>
+										</td>
+										@else
+										<td style="text-align: center" >
+										<a href="{{ URL::to('/') }}/menqedit?reqId={{$enquiry->id}}" class="btn btn-primary btn-sm pull-right">Edit</a>
+										</td>
+										@endif
+							      @else
+							      	<td style="text-align: center" >
+										<a disabled href="{{ URL::to('/') }}/menqedit?reqId={{$enquiry->id}}" class="btn btn-primary btn-sm pull-right" >Edit</a>
+										</td>
+							     @endif					
 								
 								<td style="text-align: center">
 									{{ date('d/m/Y', strtotime($enquiry->created_at)) }}
