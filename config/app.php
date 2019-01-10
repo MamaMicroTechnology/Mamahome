@@ -178,9 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
-        RenatoMarinho\LaravelPageSpeed\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        Spatie\LaravelImageOptimizer\ImageOptimizerServiceProvider::class,
      
     ],
 
