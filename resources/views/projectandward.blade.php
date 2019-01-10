@@ -5,7 +5,19 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-success">
     <div class="panel-heading">
-       {{-- Total No Of Projects In Zone 1 : {{$totalProjects}}--}}
+
+        <?php 
+
+                      $s = [];
+                     foreach ($projectscount as $view ) {
+                             $m = count($view['projectcount']);
+                              array_push($s,$m);
+                     }
+                   
+                   $f = array_sum($s);
+
+                   ?>
+       Total No Of Projects  :&nbsp;<?php print_r($f) ?>
     </div>
     <div class="panel-body">
         <div class="col-md-6">
@@ -39,9 +51,10 @@
                         <td>{{$i++}}</td>
                         <td>{{$view['wardname']}}</td>
                         <td>{{count($view['projectcount'])}}</td>
-                       
+                        
                     </tr>
                    @endforeach
+                   
                 </tbody>
             </table> 
          

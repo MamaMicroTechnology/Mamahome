@@ -21,6 +21,14 @@
             <option {{ isset($_GET['zones']) ? $_GET['zones'] == $zone->id ? 'selected' : '' : '' }} value="{{ $zoo->id }}">{{ $zoo->zone_name }}</option>
             @endforeach
         </select> -->
+        <label for="wards">Select Type:</label>
+        <select name="type" class="form-control" id="" required="required">
+            <option>---select---</option>
+           
+            <option value="Project">Project </option>
+            <option value="Manufacturer">Manufacturer</option>
+           
+        </select>
         <label for="wards">Select Wards:</label>
         <select required name="wards" class="form-control" id="wards">
             <option>---select---</option>
@@ -77,7 +85,7 @@
           newpath.push({lat: parseFloat(places[i]), lng: parseFloat(places[i+1])});
     }
     @foreach($projects as $project)
-        locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}}, {{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
+        locations.push(["<a href=\"https://maps.google.com/?q={{ $project->address }}\">{{$project->project_id}},{{$project->id}} {{ $project->address }}</a>",{{ $project->latitude}}, {{ $project->longitude }}]);
         created.push("{{ $project->created_at}}");
         updated.push("{{ $project->updated_at}}");
         quality.push("{{ $project->quality }}");

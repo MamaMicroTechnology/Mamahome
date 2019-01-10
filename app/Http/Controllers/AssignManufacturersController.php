@@ -1487,10 +1487,10 @@ public function noneed(request $request ){
 
     
     $projectscount =[];
-    
+     $closed = ProjectDetails::where('project_status','LIKE',"%Closed%")->pluck('project_id');
 
     foreach ($subward as $sub) {
-       $projectcount = ProjectDetails::where('sub_ward_id',$sub->id)->get()->toArray();
+       $projectcount = ProjectDetails::where('sub_ward_id',$sub->id)->where('quality','!=',"FAKE")->whereNotIn('project_id',$closed)->get()->toArray();
        array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
     }
    
@@ -1788,10 +1788,11 @@ foreach ($sub as  $users) {
 
     
     $numberexist = CustomerProjectAssign::where('project_id',$request->projectids)->first();
+    
     if($z != null){
 
        $text2 =implode(",",$z);
-       $text = "Project ids are assigned please check "  .$text2;
+       $text = "Project ids are assigned please check ".$use .'' .$text2;
        
         return back()->with('NotAdded',$text);
     }

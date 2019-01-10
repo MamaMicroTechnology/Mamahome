@@ -1637,7 +1637,9 @@ class HomeController extends Controller
         
         
         $fake = ProjectDetails::where('quality',"FAKE")->count();
-        $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->count();
+        
+        $notConfirmed = ProjectDetails::where('quality',"Unverified")->whereNotIn('project_id',$closed)->where('quality','!=',"FAKE")->count();
+        
         $le = User::where('group_id','6')->get();
         $notes = ProjectDetails::groupBy('with_cont')
                     ->where('with_cont','!=',"DUPLICATE NUMBER")
@@ -7461,9 +7463,10 @@ function enquirystore(request $request){
     }
     public function allProjectsWithWards(Request $request)
     {
+
         $wardMaps = null;
         $projects = null;
-        if($request->wards && $request->quality ){
+        if($request->wards && $request->quality && $request->type == "Project"){
 
             $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
             $wardMaps = WardMap::where('ward_id',$request->wards)->first();
@@ -7475,21 +7478,17 @@ function enquirystore(request $request){
                         ->where('project_details.quality',$request->quality)
                         ->whereIn('project_details.sub_ward_id',$subwards)
                         ->get();
+        }else{
+            $subwards = SubWard::where('ward_id',$request->wards)->pluck('id')->toArray();
+            $wardMaps = WardMap::where('ward_id',$request->wards)->first();
+            if($wardMaps == null ){
+                $wardMaps = "None";
+            }
+            $projects = Manufacturer::where('quality',$request->quality)
+                        ->whereIn('sub_ward_id',$subwards)
+                        ->get();
         }
-        // $zonemap== null;
-        // if( $request->zone){
-        //     $zones = Zone::where('id',$request->zone)->pluck('id')->toArray();
-        //     $zonemap = ZoneMap::where('zone_id',$request->zone)->first();
-        //     if($zonemap== null ){
-        //         $zonemap = "None";
-        //     }
-        // }
-        // $projects = Zone::leftjoin('wards','wards.zone_id','zones.id')
-        //  ->leftjoin('sub_wards','sub_wards.ward_id','wards.id')
-        //  ->leftjoin('project_details','project_details.sub_ward_id','sub_wards.id')
-        //  ->leftJoin('site_addresses','project_details.project_id','site_addresses.project_id')
-        //  ->select('site_addresses.*','project_details.quality')
-        //  ->get();
+        
 
         $wards = Ward::all();
         $zone = Zone::all();

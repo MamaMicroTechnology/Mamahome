@@ -40,13 +40,14 @@
             <table class="table table-responsive"  class="table">
                         <thead>
                             <th style="width:15%">Name</th>
-                            <th style="width:15%">Assigned Ids</th>
                             <th style="width:15%">Type </th>
+                            <th style="width:15%">Action </th>
+
+                            <th style="width:15%">Assigned Ids</th>
                           </thead>
                           @foreach($projects as $project)
                             <tr>
                             <td>{{$project->user != null ? $project->user->name : ''}}</td>
-                            <td>{{ $project->project_id }}</td>
                             <td>{{ $project->type }}</td>
                               <td>
                 <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete{{ $project->user_id }}">Delete</button>
@@ -71,6 +72,7 @@
                   </div>
                 </div>
               </td>            
+                            <td>{{ $project->project_id }}</td>
                           </tr>
 
                           @endforeach
