@@ -597,20 +597,24 @@ public  function approval1(request $request){
 }
  public function findward(request $request){
 
-       
+       if(count($request->subid) > 0){
+        
       $sub =ProjectDetails::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
        
        ProjectUpdate::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
        Requirement::where('project_id',$request->projectid)->update(['sub_ward_id'=>$request->subid]); 
+       }
 
 
       return back();
  }
  public function findmanuward(request $request){
 
-       
+       if(count($request->manusubidfind) > 0){
       $sub =Manufacturer::where('id',$request->projectid)->update(['sub_ward_id'=>$request->manusubidfind]); 
             Requirement::where('manu_id',$request->projectid)->update(['sub_ward_id'=>$request->manusubidfind]); 
+        
+       }
       return back();
  }
 

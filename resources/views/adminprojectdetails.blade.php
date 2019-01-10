@@ -457,7 +457,7 @@ Http.onreadystatechange=(e)=>{
 
               
                if(shouldAlert == true){
-                       // alert(subs[i]['subward']);
+                       alert(subs[i]['subward']);
                         var m = subs[i]['subward'];
                        document.getElementById('manu').value = m;
 
