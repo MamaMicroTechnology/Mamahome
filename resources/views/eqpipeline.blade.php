@@ -115,7 +115,7 @@
 										@endif
 							      @else
 							      	<td style="text-align: center" >
-										<a disabled href="{{ URL::to('/') }}/menqedit?reqId={{$enquiry->id}}" class="btn btn-primary btn-sm pull-right" >Edit</a>
+										<a disabled  class="btn btn-primary btn-sm pull-right" >Edit</a>
 										</td>
 							     @endif					
 								
