@@ -3297,8 +3297,8 @@ date_default_timezone_set("Asia/Kolkata");
             $cgstval = "";
             $sgstval = "";
             $percent = 1.28;
-            $g1 = 4;
-            $g2 = 4;
+            $g1 = 14;
+            $g2 = 14;
         }
        
         $unitwithgst = ($request->mamaprice/$percent);

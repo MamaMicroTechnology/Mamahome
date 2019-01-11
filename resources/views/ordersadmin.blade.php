@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
@@ -388,8 +387,8 @@ function openCitytest(evt, cityName) {
       <div class="modal-body">
         <form action="{{ URL::to('/') }}/savesupplierdetails?id={{$rec->orderid}}&&mid={{$rec->manu_id}}" method="post">
             {{ csrf_field() }}
-        <input type="text" class="hidden" value="" id="dtow{{$rec->orderid}}" name="dtow" >
-        <input type="text" class="hidden" value="" id="dtow1{{$rec->orderid}}" name="dtow1" >
+       <!--  <input type="text" class="hidden" value="" id="dtow{{$rec->orderid}}" name="dtow" >
+        <input type="text" class="hidden" value="" id="dtow1{{$rec->orderid}}" name="dtow1" > -->
         <input type="text" class="hidden" value="" id="cgstpercent{{$rec->orderid}}" name="cgstpercent" >
         <input type="text" class="hidden" value="" id="sgstpercent{{$rec->orderid}}" name="sgstpercent" >
         <input type="text" class="hidden" value="" id="gstpercent{{$rec->orderid}}" name="gstpercent" >
@@ -646,13 +645,13 @@ function openCitytest(evt, cityName) {
                                         @endif
                                         @endforeach        
                                     @endif
-                                        <input id="amount{{$rec->orderid}}" required type="hidden" name="amount" maxlength="9"  onclick="NumToWord(this.value,'lblWord{{$rec->orderid}}','{{ $rec->orderid }}');" class="form-control" />
+                                        <input id="amount{{$rec->orderid}}" required type="hidden" name="amount" maxlength="9"   class="form-control" />
                              <label class=" alert-success pull-right" id="lblWord{{$rec->orderid}}"></label>
-                                       <input  id="tamount{{$rec->orderid}}" type="hidden" name="totalamount" maxlength="9"  onclick="NumToWord1(this.value,'lblWord1{{$rec->orderid}}','{{ $rec->orderid }}');" class="form-control" />
+                                       <input  id="tamount{{$rec->orderid}}" type="hidden" name="totalamount" maxlength="9"  class="form-control" />
                              <label class=" alert-success pull-right" id="lblWord1{{$rec->orderid}}"></label>
                                
         </table>
-        <button onclick="gothr('{{$rec->orderid}}')" class="btn btn-success">Submit</button>
+        <button  class="btn btn-success">Submit</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -1106,262 +1105,7 @@ function openCitytest(evt, cityName) {
     }
 </script>
 <script type="text/javascript">
-function NumToWord(inputNumber, outputControl ,arg){
-    var str = new String(inputNumber)
-    var splt = str.split("");
-    var rev = splt.reverse();
-    var once = ['Zero', ' One', ' Two', ' Three', ' Four', ' Five', ' Six', ' Seven', ' Eight', ' Nine'];
-    var twos = ['Ten', ' Eleven', ' Twelve', ' Thirteen', ' Fourteen', ' Fifteen', ' Sixteen', ' Seventeen', ' Eighteen', ' Nineteen'];
-    var tens = ['', 'Ten', ' Twenty', ' Thirty', ' Forty', ' Fifty', ' Sixty', ' Seventy', ' Eighty', ' Ninety'];
 
-    numLength = rev.length;
-    var word = new Array();
-    var j = 0;
-
-    for (i = 0; i < numLength; i++) {
-        switch (i) {
-
-            case 0:
-                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = '' + once[rev[i]];
-                }
-                word[j] = word[j];
-                break;
-
-            case 1:
-                aboveTens();
-                break;
-
-            case 2:
-                if (rev[i] == 0) {
-                    word[j] = '';
-                }
-                else if ((rev[i - 1] == 0) || (rev[i - 2] == 0)) {
-                    word[j] = once[rev[i]] + " Hundred ";
-                }
-                else {
-                    word[j] = once[rev[i]] + " Hundred and";
-                }
-                break;
-
-            case 3:
-                if (rev[i] == 0 || rev[i + 1] == 1) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = once[rev[i]];
-                }
-                if ((rev[i + 1] != 0) || (rev[i] > 0)) {
-                    word[j] = word[j] + " Thousand";
-                }
-                break;
-
-                
-            case 4:
-                aboveTens();
-                break;
-
-            case 5:
-                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = once[rev[i]];
-                }
-                if (rev[i + 1] !== '0' || rev[i] > '0') {
-                    word[j] = word[j] + " Lakh";
-                }
-                 
-                break;
-
-            case 6:
-                aboveTens();
-                break;
-
-            case 7:
-                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = once[rev[i]];
-                }
-                if (rev[i + 1] !== '0' || rev[i] > '0') {
-                    word[j] = word[j] + " Crore";
-                }                
-                break;
-
-            case 8:
-                aboveTens();
-                break;
-
-            //            This is optional. 
-
-            //            case 9:
-            //                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-            //                    word[j] = '';
-            //                }
-            //                else {
-            //                    word[j] = once[rev[i]];
-            //                }
-            //                if (rev[i + 1] !== '0' || rev[i] > '0') {
-            //                    word[j] = word[j] + " Arab";
-            //                }
-            //                break;
-
-            //            case 10:
-            //                aboveTens();
-            //                break;
-
-            default: break;
-        }
-        j++;
-    }
-
-    function aboveTens() {
-        if (rev[i] == 0) { word[j] = ''; }
-        else if (rev[i] == 1) { word[j] = twos[rev[i - 1]]; }
-        else { word[j] = tens[rev[i]]; }
-    }
-
-    word.reverse();
-    var finalOutput = '';
-    for (i = 0; i < numLength; i++) {
-        finalOutput = finalOutput + word[i];
-    }
-    document.getElementById('dtow'+arg).value = finalOutput;
-    document.getElementById(outputControl).innerHTML = finalOutput;
-}
-function NumToWord1(inputNumber, outputControl ,arg){
-    var str = new String(inputNumber)
-    var splt = str.split("");
-    var rev = splt.reverse();
-    var once = ['Zero', ' One', ' Two', ' Three', ' Four', ' Five', ' Six', ' Seven', ' Eight', ' Nine'];
-    var twos = ['Ten', ' Eleven', ' Twelve', ' Thirteen', ' Fourteen', ' Fifteen', ' Sixteen', ' Seventeen', ' Eighteen', ' Nineteen'];
-    var tens = ['', 'Ten', ' Twenty', ' Thirty', ' Forty', ' Fifty', ' Sixty', ' Seventy', ' Eighty', ' Ninety'];
-
-    numLength = rev.length;
-    var word = new Array();
-    var j = 0;
-
-    for (i = 0; i < numLength; i++) {
-        switch (i) {
-
-            case 0:
-                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = '' + once[rev[i]];
-                }
-                word[j] = word[j];
-                break;
-
-            case 1:
-                aboveTens();
-                break;
-
-            case 2:
-                if (rev[i] == 0) {
-                    word[j] = '';
-                }
-                else if ((rev[i - 1] == 0) || (rev[i - 2] == 0)) {
-                    word[j] = once[rev[i]] + " Hundred ";
-                }
-                else {
-                    word[j] = once[rev[i]] + " Hundred and";
-                }
-                break;
-
-            case 3:
-                if (rev[i] == 0 || rev[i + 1] == 1) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = once[rev[i]];
-                }
-                if ((rev[i + 1] != 0) || (rev[i] > 0)) {
-                    word[j] = word[j] + " Thousand";
-                }
-                break;
-
-                
-            case 4:
-                aboveTens();
-                break;
-
-            case 5:
-                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = once[rev[i]];
-                }
-                if (rev[i + 1] !== '0' || rev[i] > '0') {
-                    word[j] = word[j] + " Lakh";
-                }
-                 
-                break;
-
-            case 6:
-                aboveTens();
-                break;
-
-            case 7:
-                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-                    word[j] = '';
-                }
-                else {
-                    word[j] = once[rev[i]];
-                }
-                if (rev[i + 1] !== '0' || rev[i] > '0') {
-                    word[j] = word[j] + " Crore";
-                }                
-                break;
-
-            case 8:
-                aboveTens();
-                break;
-
-            //            This is optional. 
-
-            //            case 9:
-            //                if ((rev[i] == 0) || (rev[i + 1] == 1)) {
-            //                    word[j] = '';
-            //                }
-            //                else {
-            //                    word[j] = once[rev[i]];
-            //                }
-            //                if (rev[i + 1] !== '0' || rev[i] > '0') {
-            //                    word[j] = word[j] + " Arab";
-            //                }
-            //                break;
-
-            //            case 10:
-            //                aboveTens();
-            //                break;
-
-            default: break;
-        }
-        j++;
-    }
-
-    function aboveTens() {
-        if (rev[i] == 0) { word[j] = ''; }
-        else if (rev[i] == 1) { word[j] = twos[rev[i - 1]]; }
-        else { word[j] = tens[rev[i]]; }
-    }
-
-    word.reverse();
-    var finalOutput = '';
-    for (i = 0; i < numLength; i++) {
-        finalOutput = finalOutput + word[i];
-    }
-    document.getElementById('dtow1'+arg).value = finalOutput;
-    document.getElementById(outputControl).innerHTML = finalOutput;
-}
 function description(arg) {
      var z = document.getElementById('supply'+arg);
   var name = z.options[z.selectedIndex].value;
@@ -1465,12 +1209,12 @@ document.getElementById('amount'+arg).value = f;
 document.getElementById('tamount'+arg).value = final;
 }
 
-function gothr(arg){
-  var input =  document.getElementById('amount'+arg).value;
-  var output = document.getElementById('tamount'+arg).value;
-  document.getElementById('amount'+arg).addEventListener("click", NumToWord(input,'lblWord'+arg,arg));
-  document.getElementById('tamount'+arg).addEventListener("click", NumToWord1(output,'lblWord1'+arg,arg));
-}
+// function gothr(arg){
+//   var input =  document.getElementById('amount'+arg).value;
+//   var output = document.getElementById('tamount'+arg).value;
+//   document.getElementById('amount'+arg).addEventListener("click", NumToWord(input,'lblWord'+arg,arg));
+//   document.getElementById('tamount'+arg).addEventListener("click", NumToWord1(output,'lblWord1'+arg,arg));
+// }
 function getaddress(arg){
   var x = document.getElementById('name'+arg);
   var name = x.options[x.selectedIndex].value;
