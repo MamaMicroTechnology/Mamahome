@@ -521,6 +521,7 @@ div#calendar{
         <div id="sales" class="collapse">
               <a href="{{ URL::to('/orders') }}">&nbsp;&nbsp;&nbsp; -Orders</a>
               <a href="{{ URL::to('/financeDashboard') }}">&nbsp;&nbsp;&nbsp; -Confirmed Orders</a>
+              <a href="{{ URL::to('/getquotation') }}">&nbsp;&nbsp;&nbsp; -Get Quotation</a>
               <a href="{{ URL::to('/allprice') }}">&nbsp;&nbsp;&nbsp; -Products Prices</a>
               <a href="{{ URL::to('/tlsalesreports') }}">&nbsp;&nbsp;&nbsp; -Sales Engineer Report</a>
               <a href="{{ URL::to('/') }}/tlenquirysheet">&nbsp;&nbsp;&nbsp; -Enquiry Sheet</a>
@@ -818,26 +819,3 @@ div#calendar{
 @endif
 </body>
 </html>
-@if(session('earlylogout'))
-  <div class="modal fade" id="emplate" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: #f27d7d;color:white;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Early logout</h4>
-        </div>
-        <div class="modal-body">
-          <p style="text-align:center;">{!! session('earlylogout') !!}</p>  
-        </div>
-        <div class="modal-footer">
-          <button type="button" style="background-color: #c9ced6;" class="btn btn-default" data-dismiss="modal" onClick="window.location.reload()">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-      $("#emplate").modal('show');
-  });
-</script>
-@endif

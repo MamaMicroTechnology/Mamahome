@@ -1,18 +1,30 @@
 <div class="panel panel-default" style="border-color:#0e877f">
 <div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white"></div>
 <div class="panel-body" style="height:500px;max-height:500px">
-  
-<div id="map" style="width:980PX;height:450px;overflow-y: hidden;overflow-x: hidden;"></div>
+<h3>Enter lat and log </h3>
+<div>
+  <input type="text" name="lat" id="lat" class="form-control" placeholder="lat">
+  <input type="text" name="lat" id="log" class="form-control"  placeholder="long">
+  <button onclick="initMap()">Submit</button>
 </div>
+
+  </div>
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
 <!-- <script type="text/javascript" scr="https://maps.google.com/maps/api/js?sensor=false"></script> -->
   <script type="text/javascript">
+  
     function initMap() {
-      var latitude = "13.948388";
-      var longitude = "79.584654";
+
+      var x = document.getElementById("lat");
+          var lat = x.value;
+        var y = document.getElementById("log");
+        var long = y.value;
+     
+      var latitude = lat;
+      var longitude = long;
       var faultyward = "{{json_encode($ward)}}";
       var ward = faultyward.split('&quot;,&quot;').join('","');
       ward = ward.split('&quot;').join('"');
@@ -44,7 +56,7 @@
 function getBrands(arg){
     const Http = new XMLHttpRequest();
     var x = arg;
-    alert(x);
+  
   const url='{{URL::to('/')}}/subfind?id='+x;
    Http.open("GET", url);
    Http.send();
@@ -61,8 +73,15 @@ Http.onreadystatechange=(e)=>{
   }
 
   function initsubward(arg){
-      var latitude = "13.948388";
-      var longitude = "79.584654";
+       var x = document.getElementById("lat");
+          var lat = x.value;
+        var y = document.getElementById("log");
+        var long = y.value;
+
+
+      var latitude = lat;
+      var longitude = long;
+
      
         var subfaulty = arg;
       //console.log(subfaulty);

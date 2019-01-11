@@ -192,7 +192,7 @@
 							</tr>
 
                               <tr>
-    <td><label>Billing And Shipping Address : </label></td>
+    <td><label>Billing And Shipping Address* : </label></td>
     <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
  Address
 </button>
@@ -202,7 +202,7 @@
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
+      <div class="modal-header" style="background-color: rgb(244, 129, 31);color: white;">
         <h4 class="modal-title">Billing And Shipping Address </h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
@@ -210,30 +210,44 @@
       <!-- Modal body -->
       <div class="modal-body">
        
-        <label>Blling Adderss</label>
-            <textarea class="form-control" type="text" name="billadress" cols="70" rows="7" style="resize:none;" value="{{ $enq->billadress }}">{{ $enq->billadress }}
-        </textarea>
-            
+      <label>Shipping Address</label>
+            <textarea required id="val"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $enq->address }}{{$enq->manu != NULL ? $enq->manu->address:''}}
+        </textarea>  
        <br>
-        <label>Shipping Adderss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br><br>
+
         <div class="col-md-12">
             <div class="col-md-9">
-               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;&nbsp;same Address</label><br><br>
+               <label><input type="radio" name="name" id="ss" onclick="myfunction()">&nbsp;&nbsp;Same As Above</label><br><br>
             </div>
             
         </div>
-        <label id="sp1">Shipping Adderss</label>
-            <textarea class="form-control" id="sp" type="text" name="ship" cols="70" rows="7" style="resize:none;" value="{{ $enq->ship }}">
-            {{ $enq->ship }}
+        <label id="sp1">Billing Address</label>
+            <textarea  required placeholder="Enter Shipping Address" class="form-control" id="sp" type="text" name="billaddress" cols="50" rows="5" style="resize:none;">{{$enq->billadress != NULL ? $enq->billadress :''}}
         </textarea>
            <script type="text/javascript">
                function myfunction(){
-          
+                var ans = document.getElementById('val').value;
+                var ans1 = document.getElementById('sp').value;
+                if(ans && ans1){
+                 alert("Make sure You Have Selected Only One Address?");
+                  document.getElementById('sp').focus();
+                   document.getElementById('ss').checked =  false;
+                }
+                else if(ans){
                 document.getElementById('sp').style.display = "none";
                 document.getElementById('sp1').style.display = "none";
+                    
+                }
+                else{
+                    alert("You Have Not Entered Shipping Address");
+                    document.getElementById('ss').checked = false;
+                }
                }
-
-
+               function clearit(){      
+                     document.getElementById('val').value = " ";
+                     document.getElementById('sp').value = " ";
+                     document.getElementById('ss').checked = false;
+               }
            </script> 
        <br>
         </div>
@@ -267,13 +281,46 @@
 							<td>{{ $enq->brand }}(Note: Only One Brand For One Enquiry)</td>
 							</tr>
 							<tr>
-								<td><label>Total Quantity : </label></td>
+								<td><label>Total Quantity* : </label></td>
 								<td><input  type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
 								
 								</td>
 
 							</tr>
-							
+							<tr>
+            <td><label>Price* : </label></td>
+            <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required value="{{ $enq->price }}" /></td>
+
+                          </tr>
+                          <tr>
+                          	<?php 
+                          	$count = count($enq->state);
+                          	?>
+                          	@if($count == 0)
+                          	 <td><label>Select State* : </label></td>
+                          	<td>
+                          	<select required id="state" name="state" class="form-control" >
+				                <option>--Select--</option>
+				                @foreach($states as $state)
+				                <option value="{{$state->id}}">{{$state->state_name}}</option>
+				               @endforeach
+				            </select>
+                          	</td>
+                          	@else
+                          	<td><label>Selected State : </label></td>
+                          	<td>
+	                          		   <select required name="state" class="form-control" id="state">
+					                <option value="{{ $enq->st != null ? $enq->st->id : ''}}">{{$enq->st != null ? $enq->st->state_name : '' }}
+                                </option>
+					                @foreach($states as $state)
+					                <option value="{{$state->id}}">{{$state->state_name}}</option>
+					               @endforeach
+					            </select>
+                          	</td>
+                          		
+                          	@endif
+                          </tr>
+
 							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>
@@ -423,9 +470,25 @@
 
 }
 function submiteditenq(){
+  var z = document.getElementById('state');
+  var name = z.options[z.selectedIndex].value;
+ 
+ if (document.getElementById('ss').checked) {
+        var id = "";
+    }
+    else{
+        var id ="none";
+    }
      if(document.getElementById("totalquantity").value == ""){
             window.alert("You Have Not Entered Total Quantity");
           }
+          else if(document.getElementById('sp').value == "" && id == "none"){
+                     
+                        window.alert("You Have Not Entered Bill Address");
+        }
+       else if(name == "--Select--"){
+       		window.alert("You Have Not Selected State");
+       }
         else{
             document.getElementById("sub").submit();
         }

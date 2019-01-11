@@ -21,6 +21,9 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/requirementsroads">Add New Enquiry</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/addManufacturer">Add New Manufacturer</a><br><br>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/updateManufacturer">Update Manufacturer</a><br><br>
+          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/manu_map">Manufacturers Map</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/customer') }}">Assigned Customers</a>
+
           @endif
          @endif
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
@@ -41,6 +44,7 @@
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountrequirementsroads">Project Enquiry</a><br><br>
          <!-- <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/accountreports">My Report</a><br><br> -->
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lebrands">Brands</a><br><br>
+         <a class="btn btn-primary form-control" href="{{ URL::to('/customer') }}">Assigned Customers</a>
          <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/lcoorders">Orders</a><br><br>
         <!--  <a class="btn btn-primary form-control" href="{{ URL::to('/')}}/public/subWardImages/{{$subwards->sub_ward_image }}"> SubWard image</a><br><br> -->
         <a href="{{ URL::to('/') }}/kra" class="form-control btn btn-primary">KRA</a><br><br>

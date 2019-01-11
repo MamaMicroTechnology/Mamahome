@@ -23,12 +23,12 @@
 </head>
 <body>
 @php
-     $bill = explode(", ", $data['price']['billaddress']);
-    $ship = explode(", ", $data['price']['shipaddress']);
+     $bill = $data['price']['billaddress'];
+    $ship = $data['price']['shipaddress'];
     $items = explode(", ",$data['products']->sub_category);
 @endphp
 
-    <div class="row">
+    <div class="row" style="margin-top: -20px;">
         <div class="col-md-6 col-md-offset-3">
 
             <h4 style="background-color:#FD871F;padding:5px;" class="text-center">TAX INVOICE</h4>
@@ -49,14 +49,19 @@
                 <b>GST : 29AAKCM5956G1ZX</b><br>
                 CIN : U45309KA2016PTC096188<br>
                 Email : info@mamahome360.com<br>
+                Contact : 8548888940/41/42/43<br>
+                
             </div>
             <div class="pull-right">
-
-                Invoice No :{{ $data['products']->id }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                Date : {{ date('d F, Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
-              {{ $data['manu'] == null ? "project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>
-               Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                Mode Of Payment : {{ $data['products']->payment_mode }}
+                <div style="padding-right: 70px;">
+                Invoice No :{{ $data['price']['invoiceno'] }}<br>
+                Date : {{ date('d F, Y') }} <br>
+              {{ $data['manu'] == null ? "Project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
+               Order ID : {{ $data['price']['order_id'] }}<br>
+                Mode Of Payment : <?php $pay = explode(", ",$data['products']->payment_mode);
+                                        $pay = implode(" / ", $pay);        
+                                        ?>{{ $pay }}
+            </div>
             </div>
         </div>
     </div><br>
@@ -64,59 +69,57 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="pull-left">
                 <b>BILL TO : </b>
-                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
-                    @for($i = 0;$i < count($bill); $i++)
-                    @if($i % 3 == 0)
-                        <br>{{ $bill[$i] }}
-                    @else
-                        , {{ $bill[$i] }}
-                    @endif
-                    @endfor
+                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b><br>
+                    <?php
+                        echo wordwrap($bill,45,"<br>\n");
+                    ?>
+                   
             </div>
-            <div class="pull-right">
+            <div class="pull-right" style="padding-right: 20px;">
                 <b> SHIP TO :</b>
-                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b>
-                    @for($i = 0;$i < count($ship); $i++)
-                    @if($i % 3 == 0)
-                        <br>{{ $ship[$i] }}
-                    @else
-                        , {{ $ship[$i] }}
-                    @endif
-                    @endfor
+                    <br><b>{{ $data['manu'] == null ? $data['procurement']->procurement_name : $data['mprocurement']['name']}} </b><br>
+                    <?php
+                        echo wordwrap($ship,45,"<br>\n");
+                    ?>
+                   
             </div>
         </div>
-        <br><br><br><br><br><br>
+        <br><br><br><br><br><br><br>
             <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <table class="table table-responsive" border=1>
                     <thead>
                         <tr style="background-color:#e6e6e6">
                             <th>SL.NO</th>
-                            <th>DESCRIPTION OF GOODS</th>
+                            <th colspan="2">DESCRIPTION OF GOODS</th>
                             <th>HSN/SAC</th>
                             <th>UNIT</th>
-                            <th >QUANTITY</th>
+                            <th colspan="2">QUANTITY</th>
                             <th>RATE/UNIT</th>
-                            <th>AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
+                            <th >AMOUNT(<img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8px" height="10px" style="margin-top: 4px;">)</th>
+                        <?php
+                        $count = count($data['price']['igstpercent']);
+                       $count1 = count($data['price']['cgstpercent']);
+                        ?>
                         </tr>
                     </thead>
                     <tbody>
-                   <!--  @for($j = 0; $j < count($items); $j++) -->
+                  
                         <tr>
                             <td class="text-center">1</td>
-                            <td>{{$data['products']->main_category}} {{ $items[$j] }}</td>
+                            <td colspan="2">{{$data['price']['description']}}</td>
                             <td></td>
                             <td>{{ $data['price']['unit'] }}</td>
-                            <td >{{ $data['price']['quantity'] }}</td>
+                            <td colspan="2" >{{ $data['price']['quantity'] }}</td>
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
-                            <td>{{ $data['price']['totalamount'] }}</td>
+                            <td >{{ $data['price']['totalamount'] }}</td>
                         </tr>
-                 <!--    @endfor -->
+                 
                         <tr>
-                            <td colspan="4" rowspan="6"></td>
-                            <td class="text-left"><b>GROSS AMOUNT</b></td>
+                            <td colspan="5" rowspan="6"></td>
+                            <td colspan="2" class="text-left"><b>GROSS AMOUNT</b></td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['totalamount'] }}</td>
+                            <td  class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <!-- <tr>
                             <td class="text-left">Discount Amount</td>
@@ -124,43 +127,78 @@
                             <td class="text-left"></td>
                         </tr> -->
                         <tr>
-                            <td class="text-left"><b>TOTAL AMOUNT</b></td>
+                            <td colspan="2" class="text-left"><b>TOTAL AMOUNT</b></td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['totalamount'] }}</td>
+                            <td  class="text-left">{{ $data['price']['totalamount'] }}</td>
                         </tr>
                         <tr>
-                            <td class="text-left">CGST(14%)</td>
+                        <td colspan="2" class="text-left">CGST
+                           
+                            ({{ $data['cgst'] }}%)
+                           
+                        </td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['cgst'] }}</td>
+                            <td  class="text-left">
+                            @if($count1 == 1)
+                          {{ $data['price']['cgst'] }}
+                          @else
+                          0
+                            @endif
+                      </td>
                         </tr>
                         <tr>
-                            <td class="text-left">SGST(14%)</td>
+                            <td colspan="2" class="text-left">SGST
+                              
+                            ({{ $data['sgst'] }}%)
+                           
+                        </td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['sgst']}}</td>
+                            <td class="text-left">
+                            @if($count1 == 1)
+                            {{ $data['price']['sgst']}}
+                           @else
+                          0
+                            @endif
+                        </td>
                         </tr>
                         <tr>
-                            <td class="text-left">IGST</td>
+                            <td colspan="2" class="text-left">IGST
+                               
+                                ({{ $data['igst']}}%)
+                              
+                            </td>
                             <td class="text-left"></td>
-                            <td class="text-left"></td>
+                            <td class="text-left">
+                                @if($count == 1)
+                                {{ $data['price']['igst']}}
+                                @else
+                                 0
+                                @endif
+                               
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-left"><b>TOTAL</b></td>
+                            <td colspan="2" class="text-left"><b>TOTAL</b></td>
                             <td class="text-left"></td>
-                            <td class="text-left">{{ $data['price']['amountwithgst']}}</td>
+                            <td  class="text-left">{{ $data['price']['amountwithgst']}}</td>
                         </tr>
                         <tr>
-                            <td class="text-center" colspan="7">
+                            <td class="text-center" colspan="9">
                                 <b> Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['gstamount_word']}} Only
                             </td>
                         </tr>
+                       
                         <tr>
                             <th rowspan=2>HSN/SAC</th>
                             <th rowspan=2>Taxable Value</th>
                             <th colspan=2>CGST</th>
                             <th colspan=2>SGST</th>
+                            <th colspan=2>IGST</th>
                             <th rowspan=2>Total Tax Amount</th>
                         </tr>
                         <tr>
+                            <th>Rate</th>
+                            <th>Amount</th>
                             <th>Rate</th>
                             <th>Amount</th>
                             <th>Rate</th>
@@ -169,41 +207,83 @@
                         <tr>
                             <td></td>
                             <td>{{ $data['price']['totalamount']}}</td>
-                            <td>14.00%</td>
-                            <td>{{ $data['price']['cgst']}}</td>
-                            <td>14.00%</td>
-                            <td>{{ $data['price']['sgst']}}</td>
-                            <td>{{ $data['price']['totaltax']}}</td>
+                            <td>{{ $data['cgst'] }}%</td>
+                            <td>
+                               @if($count1 == 1)
+                                {{ $data['price']['cgst']}}
+                                @else
+                              0
+                                @endif
+                            </td>
+                            <td>{{ $data['sgst']}}%</td>
+                            <td>
+                                @if($count1 == 1)
+                                {{ $data['price']['sgst']}}
+                                @else
+                              0
+                                @endif
+                            </td>
+                            <td>{{ $data['igst']}}%</td>
+                            <td>
+                                @if($count == 1)
+                                {{ $data['price']['igst']}}
+                                @else
+                                 0
+                                @endif
+                            </td>
+                            <td>
+                             @if($count == 1)
+                                {{ $data['price']['igst']}}
+                                @else
+                                  {{ $data['price']['totaltax']}}
+                                @endif
+                           </td>
+
                         </tr>
                         <tr class="clearfix">
-                            <td colspan="7">
+                            <td colspan="9">
+                               
                                 <div class="pull-left col-md-6 clearfix" style="padding-left: 150px;">
-                                    <b>Tax Amount In Words</b> &nbsp;&nbsp;&nbsp; {{ $data['price']['tax_word']}} Only
+                                    <b>Tax Amount In Words</b> &nbsp;&nbsp;&nbsp; 
+                                     @if($count1 == 1)
+                                    
+                                    {{ $data['price']['tax_word']}} Only
+                                      @else
+                                       {{ $data['price']['igsttax_word']}} Only
+                                        @endif
                                 </div>
-                                
                                 <br><br>
                                 <div class="pull-left col-md-6 clearfix">
                                     <i><b>Terms And Conditions</b></i>
                                     <br>
                                     Reward Points are not Applicable for Offer Price
+                                    <br>
+                                    <i><b>Bank Details</b></i><br>
+                                    Name : Mama home Pvt ltd<br>
+                                    Bank Name : Axis Bank<br>
+                                    Account Number : 917020086803914<br>
+                                    Account Type : Current Account<br>
+                                    IFSC : UTIB0003266<br>
+                                    Branch : Kodichikanahalli Bangalore- 560076<br>     
+                                    <br><br>  
                                 </div>
-                                <div class="pull-right col-md- clearfix6">
-                                    For  Mama Home Pvt Ltd 
-                                </div>
-                                <br><br><br>
-                                <div class="pull-left col-md-6 clearfix">
+                                <div class="pull-left col-md-6 clearfix" style="margin-top: 120px;">
                                     <i><b>Payment Terms:</b></i>
                                     <br>
                                     Full Payment in Advance 
                                 </div>
                                 <div class="pull-right col-md- clearfix6">
+                                    For  Mama Home Pvt Ltd <br><br>
                                     Authorised Signatory
                                 </div>
-                                <br><br>
+                                
+                                
+                               <br><br><br><br>
+                               <br><br><br><br><br>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="7" class="text-center">This is a computer generated invoice</td>
+                            <td colspan="9" class="text-center">This is a computer generated invoice</td>
                         </tr>
                     </tbody>
                 </table>

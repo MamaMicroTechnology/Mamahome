@@ -36,7 +36,7 @@
                             @foreach($breacktime as $break)
                                    <tr>
                                   
-                                    <td>{{ $break['name']}}</td>
+                                    <td>{{ $break['name'] }}</td>
                                     <td>
                                        <?php $s = array_sum($break['usertime']);
                                         ?>

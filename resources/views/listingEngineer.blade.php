@@ -7,9 +7,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading" style="background-color:#42c3f3;color:#ffffffe3;padding:20px;">
              <div id="currentTime" class="pull-right" style="margin--5px;"></div>
+            <div id="currentTime" class="pull-left" style="margin--5px;">Assigned Ward id :{{$subwards->sub_ward_name}}</div>
                 </div>
-               
-               
                 <div class="panel-body">
                    <center> <label id="headingPanel"></label></center>
                    <br>              
@@ -599,6 +598,7 @@
 <script type="text/javascript" charset="utf-8">
   function getLocation(){
    
+    
       document.getElementById("getBtn").className = "hidden";
       console.log("Entering getLocation()");
       if(navigator.geolocation){
@@ -710,7 +710,7 @@ Http.onreadystatechange=(e)=>{
      var longitude  = document.getElementById("longitude").value;
         var subfaulty = data;
       var subs = JSON.parse(subfaulty);
-     
+     console.log(subs);
 
       var shouldAlert;
       for(var i=0; i<Object(subs.length); i++){
@@ -718,7 +718,7 @@ Http.onreadystatechange=(e)=>{
         var finalsubward = [];
         finalsubward = subs[i]['lat'].map(s => eval('null,' +s ));
 
-         console.log(finalsubward);
+         // console.log(finalsubward);
 
        var bermudaTriangle = new google.maps.Polygon({paths: finalsubward});  
         var locat = new google.maps.LatLng(latitude,longitude);
@@ -726,7 +726,7 @@ Http.onreadystatechange=(e)=>{
 
               
                if(shouldAlert == true){
-                   alert(" your in subward : " +subs[i]['subward']);
+                   // alert(" your in subward : " +subs[i]['subward']);
                       document.getElementById('subwardid').value=subs[i]['subward'];
                        break;
                 }
@@ -932,35 +932,40 @@ function openCity(evt, cityName) {
             if(arg=='prPhone')
             {
                 var y = document.getElementById('prPhone').value;
-                $.ajax({
-                    type:'GET',
-                    url: '{{URL::to('/')}}/checkDupPhoneProcurement',
-                    data: {arg: y},
-                    async: false,
-                    success:function(response)
-                    {
-                        if(response > 0)
-                        {
-                                swal({
+                
+                const Http = new XMLHttpRequest();
+               var x = y;
+                const url='{{URL::to('/')}}/checkDupPhoneProcurement?id='+x;
+                Http.open("GET", url);
+              Http.send();
+            Http.onreadystatechange=(e)=>{
+                var s = (Http.responseText);
+
+                var obj =JSON.parse(s);
+                 console.log(obj);
+
+                  
+                  if((Http.responseText) != " "){
+                              swal({
                                   title:"Are you sure?",
-                                  text: "Already Project is listes with number You wan to add Second project?",
+                                  text: "Already Project is listes with number You wan to add Second project?"+ '<br>' + "project_id="+obj[0]['project_id'] + '<br>' + "procurement Name="+obj[0]['procurement_name'] + '<br>' + "procurement Number="+obj[0]['procurement_contact_no'],
                                   type: "info",
                                    // imageUrl: 'thumbs-up.jpg',
+                                    html: "Already Project is listes with number You wan to add Second project?"+ '<br>' + "project_id="+obj[0]['project_id'] + '<br>' + "procurement Name="+obj[0]['procurement_name'] + '<br>' + "procurement Number="+obj[0]['procurement_contact_no']+'<br>'+
+                                   '<a class="btn btn-primary btn-sm" href='+"{{ URL::to('/') }}/admindailyslots?projectId="+obj[0]['project_id']+'>Edit Project</a>',
                                   showCancelButton: true,
                                   closeOnConfirm: false,
                                   showLoaderOnConfirm: true
-                                }, function () {
-                                  setTimeout(function () {
-                                    swal("Your request Is accepted  Thank You!");
-                                  }, 1000);
                                 });
                             
                         }
                     }
-                });
+              
             }
-        }        
-    }
+        }  
+        }
+
+    
     return false;
   }
   

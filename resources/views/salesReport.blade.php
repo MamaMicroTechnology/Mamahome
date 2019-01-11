@@ -4,7 +4,6 @@
 ?>
 @extends($ext)
 @section('content')
-
 <div class="col-md-4" style="overflow-y:scroll; height:570px; max-height:570px">
         <div class="panel panel-primary" style="overflow-x:scroll">
             <div class="panel-heading text-center">
@@ -19,7 +18,7 @@
                     <table class="table table-responsive">
 	                    <tbody>
 	                        <tr>
-	                            <td>Select Sales Employee</td>
+	                            <td>Select  Employees</td>
 	                        </tr>
                             <tr>
                                 <td>
@@ -95,6 +94,8 @@
                     @endforeach
                     @else
                      @foreach( $tlUsers as $user)
+
+                    
                     <tr>
                         <td style="font-size: 10px; text-align: center;">{{ $user->name }}</td>
                         <td style="font-size: 10px; text-align: center;">{{ $noOfCalls[$user->id]['calls'] }}</td>
@@ -122,11 +123,11 @@
             </label>
             <button type="button" onclick="history.back(-1)" class="bk-btn-triangle pull-right" style="margin-top:-10px;" > <i class="fa fa-arrow-circle-left" style="padding:5px;width:50px;color:black;"></i></button>
         </div>
-        <div class="panel-body" style="overflow-y:scroll; height:500px; max-height:500px">
+        <div class="panel-body" style="overflow-y:scroll; height:700px; max-height:700px">
             <table class='table table-responsive table-striped' style="color:black" border="1">
                 <thead>
                     <tr>
-                        <th style="text-align:center">Subward Number</th>
+                        <th style="text-align:center">Subward Name</th>
                         <th style="text-align:center">Project-ID</th>
                         <th style="text-align:center">Quality</th>
                         <th style="text-align:center" >Updater</th>

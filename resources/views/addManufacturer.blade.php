@@ -9,6 +9,7 @@
                <div class="panel-heading" style="background-color:#42c3f3;padding:20px;">
                  
                             <div id="currentTime" class="pull-right" style="color:white;margin-top:-5px;"></div>
+                             <div  class="pull-left" style="color:white;margin-top:-5px;">Assigned ward is : {{$subwards->sub_ward_name}}</div>
                             
                         </div>
                         <div class="panel-body">
@@ -34,11 +35,11 @@
                                     <td>Production Type</td>
                                     <td>:</td>
                                     <td>
-                                 <label required class="checkbox-inline"><input id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
-                                    <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
-                                  <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
-                                      <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
-                                        <label required class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="Fabricators">FABRICATORS</label> 
+                                 <label  class="checkbox-inline"><input id="constructionType1" name="production[]" type="checkbox" value="RMC">RMC </label>
+                                    <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="BLOCKS">BLOCKS</label> 
+                                  <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="M-SAND">M-SAND</label> 
+                                      <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="AGGREGATES">AGGREGATES</label> 
+                                        <label  class="checkbox-inline"><input id="constructionType2" name="production[]" type="checkbox" value="Fabricators">FABRICATORS</label> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -54,11 +55,11 @@
                                    <td id="x">
                                     <div class="col-sm-6">
                                       <label>Longitude:</label>
-                                        <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
+                                        <input placeholder=" Latitude" class="form-control input-sm" required readonly type="text" name="longitude" value="{{ old('longitude') }}" id="longitude">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Latitude:</label>
-                                        <input placeholder="Latitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
+                                        <input placeholder="Longitude" class="form-control input-sm" required readonly type="text" name="latitude" value="{{ old('latitude') }}" id="latitude">
                                     </div>
                                    </td>
                                </tr>
@@ -534,6 +535,55 @@
         swal("You Have Not Entered the Procurement Number")
       }
     }
+    function checklength(data){
+         if(data=='prPhone')
+            {
+                var y = document.getElementById('prPhone').value;
+                const Http = new XMLHttpRequest();
+               var x = y;
+                const url='{{URL::to('/')}}/checkmanu?id='+x;
+                Http.open("GET", url);
+              Http.send();
+
+            Http.onreadystatechange=(e)=>{
+                var s = (Http.responseText);
+
+                var obj =JSON.parse(s);
+                 console.log(obj);
+                  if((Http.responseText) != " "){
+                              swal({
+                                  title:"Are you sure?",
+                                  
+                                  type: "info",
+                                   // imageUrl: 'thumbs-up.jpg',
+                                    html: "Already Project is listes with number You wan to add Second project?"+ '<br>' + "Manufactured_Id="+obj[0]['manu_id'] + '<br>' + "procurement Name="+obj[0]['name'] + '<br>' + "procurement Number="+obj[0]['contact']+'<br>'+
+                                   '<a class="btn btn-primary btn-sm" href='+"{{ URL::to('/') }}/updateManufacturerDetails?id="+obj[0]['manu_id']+'>Edit Project</a>',
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  showLoaderOnConfirm: true
+                                });
+                            
+                        }
+           }
+                 
+    }
+
+}
+
+    function check(arg){
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+      while(isNaN(document.getElementById(arg).value)){
+      var str = document.getElementById(arg).value;
+      str     = str.substring(0, str.length - 1);
+      document.getElementById(arg).value = str;
+      }
+    }
+    else{
+      input = input.trim();
+      document.getElementById(arg).value = input;
+    }
+}
 </script>
 
 <script type="text/javascript">

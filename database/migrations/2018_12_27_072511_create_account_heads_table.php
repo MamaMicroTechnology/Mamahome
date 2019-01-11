@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMamahomePricesTable extends Migration
+class CreateAccountHeadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMamahomePricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mamahome_prices', function (Blueprint $table) {
+        Schema::create('account_heads', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateMamahomePricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mamahome_prices');
+        Schema::dropIfExists('account_heads');
     }
 }

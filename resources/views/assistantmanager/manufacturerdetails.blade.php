@@ -112,10 +112,21 @@
                 <div class="row">
                     <div class="col-md-4">Category</div>
                     <div class="col-md-8">
-                        <select name="category" class="form-control input-sm" required>
+                        <select required name="category" id="category2" class="form-control input-sm" required>
                             <option value="">--Select--</option>
                             @foreach($categories as $category)
-                            <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-4">Select State</div>
+                    <div class="col-md-8">
+                        <select required name="state" class="form-control input-sm" required>
+                                <option >--Select--</option>
+                            @foreach($states as $state)
+                                <option value="{{$state->id}}">{{$state->state_name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -227,6 +238,28 @@
 </div>
 
 <script>
+        function brands(){
+        var e = document.getElementById('category2');
+        var cat = e.options[e.selectedIndex].value;
+        $("html body").css("cursor", "progress");
+        $.ajax({
+            type:'GET',
+            url:"{{URL::to('/')}}/getBrands",
+            async:false,
+            data:{cat : cat},
+            success: function(response)
+            {
+                console.log(response);
+                var ans = "<option value=''>--Select--</option>";
+                for(var i=0;i<response[0].length;i++)
+                {
+                    ans += "<option value='"+response[0][i].id+"'>"+response[0][i].brand+"</option>";
+                }
+                document.getElementById('brands2').innerHTML = ans;
+                $("body").css("cursor", "default");
+            }
+        });
+    }
     function checknumber(arg){
 	    var input = document.getElementById(arg).value;
 	    if(isNaN(input)){

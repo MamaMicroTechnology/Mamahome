@@ -39,6 +39,7 @@ use App\training;
 use App\MamahomeAsset;
 use Carbon\Carbon;
 use App\FieldLogin;
+use App\State;
 
 date_default_timezone_set("Asia/Kolkata");
 class amController extends Controller
@@ -123,6 +124,7 @@ class amController extends Controller
         return response()->json($desc);
     }
     public function getBrands(Request $request){
+
         $res[0] = brand::where('category_id',$request->cat)->get();
         return response()->json($res);
     }
@@ -420,7 +422,8 @@ class amController extends Controller
         $category = ManufacturerDetail::groupBy('category')->pluck('category');
         $categories = Category::all();
         $vendor = DB::table('vendor')->select('vendor.*')->get();
-        return view('assistantmanager.manufacturerdetails',['mfdetails'=>$mfdetails,'category'=>$category,'vendor' => $vendor,'categories'=>$categories,'pageName'=>'Vendor Details']);
+        $states = State::all();
+        return view('assistantmanager.manufacturerdetails',['mfdetails'=>$mfdetails,'category'=>$category,'vendor' => $vendor,'categories'=>$categories,'pageName'=>'Vendor Details','states'=>$states]);
     }
     public function amdailyslots(Request $request)
     {
@@ -888,9 +891,8 @@ class amController extends Controller
                 ->where('users.id','!=',108)
                  ->where('users.id','!=',112)
                 ->leftJoin('employee_details', 'users.employeeId', '=', 'employee_details.employee_id')
-                ->select('users.*','employee_details.verification_status','employee_details.office_phone')
+                ->select('users.*','employee_details.verification_status','employee_details.office_phone','employee_details.alt_phone')
                 ->get();
-               
         $depts["FormerEmployees"] = User::where('department_id',10)->count();
         return view('mhemployee',['departments'=>$departments,'groups'=>$groups,'depts'=>$depts,'totalcount'=>$totalcount,'users'=>$users,'avgAge'=>$avgAge,'groupname'=>$groupname,'grp'=>$grp]);
     }
@@ -917,5 +919,9 @@ class amController extends Controller
                 ->get();
             $count = count($users);
         return view('mhemp',['users'=>$users,'grp'=>$grp,'pageName'=>'HR','count'=>$count]);
+    }
+     public function fetchemp(Request $request)
+    {
+       
     }
 }

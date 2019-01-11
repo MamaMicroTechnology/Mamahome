@@ -40,6 +40,16 @@
     36 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
     37 => 'Barryvdh\\DomPDF\\ServiceProvider',
     38 => 'Spatie\\LaravelImageOptimizer\\ImageOptimizerServiceProvider',
+    26 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    27 => 'Carbon\\Laravel\\ServiceProvider',
+    28 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    29 => 'App\\Providers\\AppServiceProvider',
+    30 => 'App\\Providers\\AuthServiceProvider',
+    31 => 'App\\Providers\\EventServiceProvider',
+    32 => 'App\\Providers\\RouteServiceProvider',
+    33 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    34 => 'Barryvdh\\Cors\\ServiceProvider',
+    35 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -69,6 +79,16 @@
     23 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
     24 => 'Barryvdh\\DomPDF\\ServiceProvider',
     25 => 'Spatie\\LaravelImageOptimizer\\ImageOptimizerServiceProvider',
+    13 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    14 => 'Carbon\\Laravel\\ServiceProvider',
+    15 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    16 => 'App\\Providers\\AppServiceProvider',
+    17 => 'App\\Providers\\AuthServiceProvider',
+    18 => 'App\\Providers\\EventServiceProvider',
+    19 => 'App\\Providers\\RouteServiceProvider',
+    20 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    21 => 'Barryvdh\\Cors\\ServiceProvider',
+    22 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'deferred' => 
   array (

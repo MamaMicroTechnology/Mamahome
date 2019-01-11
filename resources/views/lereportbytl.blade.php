@@ -32,11 +32,16 @@
 		<div class="panel-heading">
 			@if($loginTimes)
 			Report of {{ $username->name }} ({{ date('d-m-Y',strtotime($loginTimes->logindate)) }})
-			@else
+		@else
 			User may have failed to log in today
 			@endif
 			@if(session('Error'))
-			<div class="alert-danger pull-right">{{ session('Error') }} </div>
+			<div class="alert-danger pull-right">
+
+			
+			{{ session('Error') }} </div>
+			
+
 			@endif
 		</div>
 		<div class="panel-body">

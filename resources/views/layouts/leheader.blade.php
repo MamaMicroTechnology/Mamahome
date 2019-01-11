@@ -11,6 +11,7 @@
     <title>MamaHome</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js"></script>
 </head>
 <body>
 <!-- @if(SESSION('Success'))
@@ -276,10 +277,8 @@
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[0]) {
         // console.log(results);
-
         document.getElementById("address").value = results[0].formatted_address;
         document.getElementById("sub").form.submit();
-
       }
     }else{
         alert("Geocode was not successful for the following reason: " + status);

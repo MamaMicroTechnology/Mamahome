@@ -4,9 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Mprocurement_Details extends Model
 {
+      use SoftDeletes;
     use LogsActivity;
 	protected $table='mprocurement_details';
     public function Manufacturer()
