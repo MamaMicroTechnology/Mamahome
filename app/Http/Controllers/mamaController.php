@@ -2019,9 +2019,23 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return back();
     }
     public function editinputdata(Request $request)
-    {
-       
-      
+    { 
+        $var1 =Requirement::where('id',$request->reqId)->pluck('total_quantity')->first();
+        $var2 =Requirement::where('id',$request->reqId)->pluck('price')->first();
+
+        if($var1 == $request->totalquantity){
+            $quan = $request->totalquantity;//nt changed
+        }
+        else{
+            $quan ="none";//changed
+        }
+        if($var2 == $request->price){
+            $price = $request->price;
+        }
+        else{
+            $price = "none";
+        }
+
         $validator = Validator::make($request->all(), [
         'subcat' => 'required'
         ]);
@@ -2080,22 +2094,68 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             'price' =>$request->price,
             'State'=>$request->state
         ]);
+
+        
      $y =Order::where('req_id',$request->reqId)->where('status',"Enquiry Confirmed")->update([
               'main_category' => $categoryNames,
               'brand' => $brandnames,
              'sub_category'  =>$subcategories,
              'quantity' => $request->totalquantity
      ]);
-     $inv = DB::table('orders')->where('req_id',$request->reqId)->pluck('id')->first();
-    $invoice = MamahomePrice::where('order_id',$inv)->get();
-if($invoice != null){
-        $invoice = MamahomePrice::where('order_id',$inv)->update([
-            'category' =>$categoryNames,
-            'quantity'=>$request->totalquantity,
-            'mamahome_price'=>$request->price
-        ]);
-    }
-$pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
+        $inv = DB::table('orders')->where('req_id',$request->reqId)->pluck('id')->first();
+        $invgenerate = DB::table('orders')->where('req_id',$request->reqId)->pluck('confirm_payment')->first();
+        $invoice = MamahomePrice::where('order_id',$inv)->get()->first();
+            if($invoice != null && $invgenerate != null){
+
+                    if($quan == "none" || $price == "none"){
+                            // calculation part
+                       
+                        $q = $request->totalquantity;
+                        $p = $request->price;
+                        $igst = $invoice->igstpercent;
+                        $unitwithgst = ($p/$invoice->gstpercent);
+                        $totalamount = ($q *  $unitwithgst);//int
+                        $tamount = (int)$totalamount;
+                        $cgst = ($totalamount * $invoice->cgstpercent)/100;
+                        $sgst =  ($totalamount * $invoice->sgstpercent)/100;
+                        $tt = $cgst + $sgst;//int
+                        $totaltax = (int)$tt;
+                        $igst = ($totalamount * $invoice->igstpercent)/100;//int
+                        $tigst = (int)$igst;
+                        $withgst = ($totalamount + $tt + $igst);//int
+                        $finalamount = (int)$withgst;
+
+                        // convert to wordwrap
+        $f = new \NumberFormatter( locale_get_default(), \NumberFormatter::SPELLOUT );
+        $word = $f->format($tamount);
+        $word1 = $f->format($totaltax);
+        $word2 = $f->format($finalamount);
+        $word3 = $f->format($tigst);
+
+        $dtow = ucwords($word);
+        $dtow1 = ucwords($word1);
+        $dtow2 = ucwords($word2);
+        $dtow3 = ucwords($word3);
+                    $invoice = MamahomePrice::where('order_id',$inv)->update([
+                        'category' =>$categoryNames,
+                        'quantity'=>$q,
+                        'mamahome_price'=>$p,
+                        'unitwithoutgst'=>$unitwithgst,
+                        'totalamount'=>$tamount,
+                        'cgst'=>$cgst,
+                        'sgst'=>$sgst,
+                        'igst'=>$tigst,
+                        'totaltax'=>$totaltax,
+                        'amountwithgst'=>$finalamount,
+                        'amount_word'=>$dtow,
+                        'tax_word'=>$dtow1,
+                        'gstamount_word'=>$dtow2,
+                        'igsttax_word'=>$dtow3
+                       
+                    ]);
+                }
+            }
+        $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;
         $activity->time = date('Y-m-d H:i A');
         $activity->employee_id = Auth::user()->employeeId;

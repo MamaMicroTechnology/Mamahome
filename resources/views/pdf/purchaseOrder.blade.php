@@ -68,6 +68,8 @@
                
                 Date : {{ date('d F, Y') }}
                 <br>
+                Order ID : {{ $data['supplier']['order_id'] }}
+                <br>
                 LPO : {{ $data['supplier']['lpo'] }}<br>
             </div>
         </div>
@@ -197,7 +199,7 @@
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">
-                                Amount In Words : &nbsp;&nbsp;&nbsp;  {{ $data['supplier']['tamount_words']}} ONLY
+                                Amount In Words : &nbsp;&nbsp;&nbsp;  {{ $data['supplier']['tamount_words']}} Only
                             </td>
                         </tr>
                         <tr class="clearfix">
