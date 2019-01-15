@@ -69,13 +69,13 @@
         <!--    <label style="color:rgb(70, 141, 221);font-weight:bold;">Sub Head
           <input type="text" name="subhead" class="form-control" required>
           </label> -->
-           <label style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head
+           <!-- <label style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head
            <select class="form-control" name="crdr" id="subward" required>
                    <option value="">---Select--</option>
                    <option value="Debit">Debit</option>
                    <option value="Credit">Credit</option>
                 </select>
-          </label>
+          </label> -->
             
           <button class="btn btn-warning btn-sm" type="submit">Submit</button>
         </form>
@@ -110,6 +110,13 @@
                    @foreach($acc as $account)
                    <option value="{!! $account->id !!}">{!! $account->name !!}</option>
                    @endforeach
+                </select>
+          </label>
+           <label style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head
+           <select class="form-control" name="crdr" id="subward" required>
+                   <option value="">---Select--</option>
+                   <option value="Debit">Debit</option>
+                   <option value="Credit">Credit</option>
                 </select>
           </label>
            <label style="color:rgb(70, 141, 221);font-weight:bold;">Sub Account Head
@@ -157,7 +164,7 @@
                     <div class="col-md-8"> <input  type="text" class="form-control" name="money" placeholder="Amount(INR)"></div>
                 </div><br>
 
-                <div class="row">
+               <!--  <div class="row">
                     <div class="col-md-4">Type of Head</div>
                     <div class="col-md-8">
                         <select class="form-control" name="crdr" id="subward">
@@ -166,7 +173,7 @@
                    <option value="Credit">Credit</option>
                 </select>
                     </div>
-                </div><br>
+                </div><br> -->
                 <div class="row">
                     <div class="col-md-4">Bank Name</div>
                     <div class="col-md-8">
@@ -235,7 +242,7 @@
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Date</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Transaction Particulars</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Amount(INR)</th>
-        <th style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head</th>
+       <!--  <th style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head</th> -->
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Bank Name</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Branch Name</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Account Head </th>
@@ -254,7 +261,7 @@
         <td>{{$led->Transaction}}</td>
         <td>
           {{number_format(round($led->amount))}}</td>
-        <td>{!! $led->debitcredit !!}</td>
+      <!--   <td>{!! $led->debitcredit !!}</td> -->
         <td>{{$led->bank}}</td>
         <td>{{$led->branch}}</td>
         <td>{!! $led->acc != null ? $led->acc->name : '' !!}</td>
