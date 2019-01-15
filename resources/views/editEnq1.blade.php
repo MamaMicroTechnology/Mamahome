@@ -192,7 +192,7 @@
 							</tr>
 
                               <tr>
-    <td><label>Billing And Shipping Address : </label></td>
+    <td><label>Billing And Shipping Address* : </label></td>
     <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
  Address
 </button>
@@ -281,23 +281,23 @@
 							<td>{{ $enq->brand }}(Note: Only One Brand For One Enquiry)</td>
 							</tr>
 							<tr>
-								<td><label>Total Quantity : </label></td>
+								<td><label>Total Quantity* : </label></td>
 								<td><input  type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
 								
 								</td>
 
 							</tr>
 							<tr>
-            <td><label>Price: </label></td>
+            <td><label>Price* : </label></td>
             <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required value="{{ $enq->price }}" /></td>
 
                           </tr>
                           <tr>
-                          	<td><label>Select State : </label></td>
                           	<?php 
                           	$count = count($enq->state);
                           	?>
                           	@if($count == 0)
+                          	 <td><label>Select State* : </label></td>
                           	<td>
                           	<select required id="state" name="state" class="form-control" >
 				                <option>--Select--</option>
@@ -307,14 +307,20 @@
 				            </select>
                           	</td>
                           	@else
+                          	<td><label>Selected State : </label></td>
                           	<td>
-				            <select  name="state" class="form-control" id="state">
-				                <option value="{{ $enq->st != null ? $enq->st->id : ''}}">{{$enq->st != null ? $enq->st->state_name : '' }}
+	                          		   <select required name="state" class="form-control" id="state">
+					                <option value="{{ $enq->st != null ? $enq->st->id : ''}}">{{$enq->st != null ? $enq->st->state_name : '' }}
                                 </option>
-				            </select>
+					                @foreach($states as $state)
+					                <option value="{{$state->id}}">{{$state->state_name}}</option>
+					               @endforeach
+					            </select>
                           	</td>
+                          		
                           	@endif
                           </tr>
+
 							<tr>
 								<td><label>Remarks* : </label></td>
 								<td>

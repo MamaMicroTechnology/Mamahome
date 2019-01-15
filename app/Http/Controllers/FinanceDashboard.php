@@ -577,6 +577,19 @@ class FinanceDashboard extends Controller
         $cgst = round($request->cgst,2);
         $sgst = round($request->sgst,2);
         $igst = round($request->igst,2);
+        
+        $f = new \NumberFormatter( locale_get_default(), \NumberFormatter::SPELLOUT );
+        $word = $f->format($request->tamount);
+        $word1 = $f->format($request->totaltax);
+        $word2 = $f->format($request->gstamount);
+        $word3 = $f->format($igst);
+
+        $dtow = ucwords($word);
+        $dtow1 = ucwords($word1);
+        $dtow2 = ucwords($word2);
+        $dtow3 = ucwords($word3);
+        
+      
         $price = MamahomePrice::where('order_id',$request->id)->first();
         $price->unit = $request->unit;
         $price->mamahome_price = $request->price;
@@ -587,10 +600,10 @@ class FinanceDashboard extends Controller
         $price->igst = $igst;
         $price->totaltax = $request->totaltax;
         $price->amountwithgst = $request->gstamount;
-        $price->amount_word = $request->dtow1;
-        $price->tax_word = $request->dtow2;
-        $price->gstamount_word =  $request->dtow3;
-        $price->igsttax_word = $request->dtow4;
+        $price->amount_word = $dtow;
+        $price->tax_word = $dtow1;
+        $price->gstamount_word =  $dtow2;
+        $price->igsttax_word = $dtow3;
         $price->quantity = $request->quantity;
         $price->manu_id = $request->manu_id;
         $price->description = $request->desc;
@@ -607,14 +620,20 @@ class FinanceDashboard extends Controller
         $order = Order::where('id',$request->id)->first();
         $order->confirm_payment = " Received";
         $order->save();
+
          PaymentDetails::where('order_id',$request->id)->update([
             'status'=>"Received"
         ]);
         
-        return back()->with('Success','Payment Confirmed');
+        return back()->with('Success','Invoice Generated');
     }
     public function savesupplierdetails(Request $request){
-     
+
+        $f = new \NumberFormatter( locale_get_default(), \NumberFormatter::SPELLOUT );
+        $word = $f->format($request->amount);
+        $word1 = $f->format($request->totalamount);
+        $dtow = ucwords($word);
+        $dtow1 = ucwords($word1);  
         $check = Supplierdetails::where('order_id',$request->id)->first();
         if(count($check) == 0){
         $projectid = Order::where('id',$request->id)->pluck('project_id')->first();
@@ -639,9 +658,9 @@ class FinanceDashboard extends Controller
         $supply->unit = $request->munit;
         $supply->unit_price = $request->uprice;
         $supply->amount = $request->amount;
-        $supply->amount_words = $request->dtow;
+        $supply->amount_words = $dtow;
         $supply->totalamount = $request->totalamount;
-        $supply->tamount_words = $request->dtow1;
+        $supply->tamount_words = $dtow1;
         $supply->unitwithoutgst =$request->unitwithoutgst;
         $supply->cgstpercent = $request->cgstpercent;
         $supply->sgstpercent = $request->sgstpercent;
@@ -654,7 +673,7 @@ class FinanceDashboard extends Controller
             $lpoNo]);
         }
         else{
-               
+           
                 $check->address = $request->edit1;
                 $check->ship = $request->edit2;  
                 $check->supplier_name = $request->name;
@@ -664,9 +683,9 @@ class FinanceDashboard extends Controller
                 $check->unit = $request->edit5;
                 $check->unit_price = $request->uprice;
                 $check->amount = $request->amount;
-                $check->amount_words = $request->dtow;
+                $check->amount_words = $dtow;
                 $check->totalamount = $request->totalamount;
-                $check->tamount_words = $request->dtow1;
+                $check->tamount_words = $dtow1;
                 $check->unitwithoutgst =$request->unitwithoutgst;
                 $check->cgstpercent = $request->cgstpercent;
                 $check->sgstpercent = $request->sgstpercent;

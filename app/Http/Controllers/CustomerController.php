@@ -476,6 +476,7 @@ public function subtesthead(request $request){
     $check = new Subaccountheads;
     $check->AccountHead = $request->accounthead;
     $check->Subaccountheads = $request->subhead;
+    $check->type = $request->crdr;
     $check->save();
     return back();
 }
