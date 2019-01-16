@@ -55,7 +55,11 @@
             <div class="pull-right">
                 <div style="padding-right: 70px;">
                 Invoice No :{{ $data['price']['invoiceno'] }}<br>
-                Date : {{ date('d F, Y') }} <br>
+                Date :@if($data['price']['invoicedate'] != null)
+                {{ date('d F, Y', strtotime( $data['price']['invoicedate'])) }}
+                @else
+                {{ date('d F, Y', strtotime( $data['price']['created_at'])) }}
+                @endif<br>
               {{ $data['manu'] == null ? "Project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}} <br>
                Order ID : {{ $data['price']['order_id'] }}<br>
                 Mode Of Payment : <?php $pay = explode(", ",$data['products']->payment_mode);

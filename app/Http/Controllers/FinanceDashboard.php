@@ -610,6 +610,7 @@ class FinanceDashboard extends Controller
         $price->gstpercent = $request->g3;
         $price->igstpercent = $request->i1;
         $price->edited = "No";
+        $price->invoicedate = date('Y-m-d');
         $price->save();
         
         $order = Order::where('id',$request->id)->first();

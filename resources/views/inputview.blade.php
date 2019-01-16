@@ -69,7 +69,7 @@ name="selectprojects" onchange="getAddress()">
 @endif
 </tr>
 <tr>
-<td><label>Select Category:</label></td>
+<td><label>Select Category* :</label></td>
 <td><button required type="button" class="btn btn-success"
 data-toggle="modal" data-target="#myModal">Product</button></td>
 </tr>
@@ -100,10 +100,9 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                         @foreach($brand->subcategory as $subcategory)
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label class="checkbox-inline">
-                            
-                               
+
                                 <input type="checkbox"  name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="" >{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity"  id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')"   name="quan[]" class="form-control">
+                                <input type="text" placeholder="Quantity"  id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="validate('quan{{$subcategory->id}}')" name="quan[]" class="form-control">
                             </label>
                             <br><br>
                         @endforeach
@@ -164,7 +163,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     </td>
 </tr>
 <tr>
-    <td><label>Billing And Shipping Address : </label></td>
+    <td><label>Billing And Shipping Address* : </label></td>
     <td><button required type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
  Address
 </button>
@@ -243,18 +242,18 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
     </td>
 </tr>
 <tr>
-            <td><label>Total Quantity : </label></td>
-            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity In Only Numbers" id="totalquantity"  class="form-control" /></td>
+            <td><label>Total Quantity* : </label></td>
+            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity" id="totalquantity"  class="form-control" /></td>
 
 </tr>
 
 <tr>
-            <td><label>Price: </label></td>
-            <td><input type="text"  name="price" placeholder="Enter price In Only Numbers" id="totalquantity"  class="form-control" required /></td>
+            <td><label>Enter Price* : </label></td>
+            <td><input type="text" onkeyup="checkthis('price')" name="price" placeholder="Enter price In Only Numbers" id="price"  class="form-control" required /></td>
 
 </tr>
 <tr>
-        <td><label>Select State : </label></td>
+        <td><label>Select Supplier State* : </label></td>
         <td>
             <select  name="state" class="form-control" id="state">
                 <option>--select--</option>
@@ -290,6 +289,7 @@ style="width:40%" onclick="submitinputview()"  >Submit</button>
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 function check(arg){
+
     var input = document.getElementById(arg).value;
     if(isNaN(input)){
                document.getElementById(arg).value = "";
@@ -307,6 +307,27 @@ function check(arg){
             }
         }
     }
+}
+function validate(arg){
+
+    var input = document.getElementById(arg).value;
+    if(isNaN(input)){
+               document.getElementById(arg).value = "";
+    }
+    document.getElementById('econtact').style.borderColor = '';
+   
+    if(input){
+       
+        if(isNaN(input)){
+            
+            while(isNaN(document.getElementById(arg).value)){
+                var str = document.getElementById(arg).value;
+                str = str.substring(0, str.length - 1);
+                document.getElementById(arg).value = str;
+            }
+        }
+    }
+    document.getElementById('totalquantity').value = input;
 }
 function getProjects()
 {
@@ -446,6 +467,7 @@ function getquantity()
 </script>
 <script>
 function quan(arg){
+    var input = document.getElementById(arg).value;
     if(parseInt(document.getElementById('quan'+arg).value) < parseInt(document.getElementById('quantity'+arg).value)){
         alert("Minimum"+ document.getElementById('quantity'+arg).value + "quantity");
         document.getElementById('quan'+arg).value ="";

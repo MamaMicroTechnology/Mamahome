@@ -188,7 +188,7 @@
 							@endif
 							<tr>
 								<td><label>Location* : </label></td>
-								<td>{{ $enq->address }}{{$enq->manu != NULL ? $enq->manu->address:''}}</td>
+								<td>{{$enq->manu != NULL ? $enq->manu->address: $enq->address}}</td>
 							</tr>
 
                               <tr>
@@ -211,7 +211,7 @@
       <div class="modal-body">
        
       <label>Shipping Address</label>
-            <textarea required id="val"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{ $enq->address }}{{$enq->manu != NULL ? $enq->manu->address:''}}
+            <textarea required id="val"  class="form-control" type="text" name="shipaddress" cols="50" rows="5" style="resize:none;">{{$enq->ship != NULL ? $enq->ship : ($enq->manu != NULL ? $enq->manu->address: $enq->address) }}
         </textarea>  
        <br>
 
@@ -260,26 +260,22 @@
 
     </div>
   </div>
-
-
-
     </td>
 </tr>
-
-							<tr>
-								<td><label>Quantity* : </label></td>
-								<td>{{ $enq->quantity }}</td>
-							</tr>
-							<tr>
-								<td><label>Enquiry Quantity : </label></td>
-								<td><input type="text" value="{{ $enq->enquiry_quantity !=null ? $enq->enquiry_qantity : $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" />
-								Before Entering the Enquiry Quantity Make Sure You Have Selected The Proper Sub-Category And Brand From Above Selection.<br>
-								(Ex : 53 Grade:1500 )</td>
-							</tr>
 							<tr>
 							<td><label>Brand :</label></td>
 							<td>{{ $enq->brand }}(Note: Only One Brand For One Enquiry)</td>
 							</tr>
+							<tr>
+								<td><label>Quantity : </label></td>
+								<td>{{ $enq->quantity }}</td>
+							</tr>
+							<!-- <tr>
+								<td><label>Enquiry Quantity : </label></td>
+								<td><input type="text" value="{{ $enq->enquiry_quantity !=null ? $enq->enquiry_qantity : $enq->quantity }}" name="enquiryquantity" id="tquantity" class="form-control" />
+								Before Entering the Enquiry Quantity Make Sure You Have Selected The Proper Sub-Category And Brand From Above Selection.<br>
+								(Ex : 53 Grade:1500 )</td>
+							</tr> -->
 							<tr>
 								<td><label>Total Quantity* : </label></td>
 								<td><input  type="text" onkeyup="checkthis('totalquantity')" value="{{ $enq->total_quantity }}" name="totalquantity" id="totalquantity" title="Three letter country code" class="form-control" />
@@ -297,7 +293,7 @@
                           	$count = count($enq->state);
                           	?>
                           	@if($count == 0)
-                          	 <td><label>Select State* : </label></td>
+                          	 <td><label>Select Supplier State* : </label></td>
                           	<td>
                           	<select required id="state" name="state" class="form-control" >
 				                <option>--Select--</option>
@@ -307,7 +303,7 @@
 				            </select>
                           	</td>
                           	@else
-                          	<td><label>Selected State : </label></td>
+                          	<td><label>Select Supplier State* : </label></td>
                           	<td>
 	                          		   <select required name="state" class="form-control" id="state">
 					                <option value="{{ $enq->st != null ? $enq->st->id : ''}}">{{$enq->st != null ? $enq->st->state_name : '' }}
@@ -322,7 +318,7 @@
                           </tr>
 
 							<tr>
-								<td><label>Remarks* : </label></td>
+								<td><label>Remarks : </label></td>
 								<td>
 									<textarea rows="4" cols="40" name="eremarks" id="eremarks" class="form-control" />{{ $enq->notes }}</textarea>
 								</td>

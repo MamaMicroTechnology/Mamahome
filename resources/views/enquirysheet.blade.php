@@ -129,18 +129,18 @@
 						<tr>
 							<th style="text-align: center">Project_Id</th>
 							<th style="text-align: center">SubWard Name</th>
-							<th style="text-align: center">Name</th>
+							<th style="text-align: center">Project Name</th>
 							<th style="text-align: center">Requirement Date</th>
 							<th style="text-align: center">Enquiry Date</th>
-							<th style="text-align: center">Contact</th>
+							<th style="text-align: center">Customer Contact</th>
 							<th style="text-align: center">Product</th>
-							<th style="text-align: center">Old Quantity</th>
 							<th style="text-align: center">Enquiry Quantity</th>
+							<!-- <th style="text-align: center">Enquiry Quantity</th> -->
 							<th style="text-align: center">Total Quantity</th>
 							<th style="text-align: center">Price</th>
 							<th style="text-align: center">Total Amount</th>
 							<th style="text-align: center">Initiator</th>
-							<th style="text-align: center">Converted by</th>
+							<th style="text-align: center">Confirmed by</th>
 							<th style="text-align: center">Last Update</th>
 							<th style="text-align: center">Status</th>
 							<th style="text-align: center">Remarks</th>
@@ -211,7 +211,7 @@
 								{{ $quantity[$i] }}<br>
 								@endfor
 							</td>
-							<td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td>
+							<!-- <td style="text-align: center">{{ $enquiry->enquiry_quantity }}</td> -->
 							<td style="text-align: center">{{ $enquiry->total_quantity }}</td>
 							<?php $total = ($enquiry->total_quantity *  $enquiry->price) ?>
 							<td style="text-align: center">{{ $enquiry->price }}</td>
@@ -333,7 +333,7 @@ function myFunction() {
 	  }
 	}else{
 		for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[15];
+	    td = tr[i].getElementsByTagName("td")[14];
 	    if (td) {
 	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 	        tr[i].style.display = "";

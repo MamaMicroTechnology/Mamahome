@@ -77,6 +77,7 @@ use Spatie\Activitylog\Models\Activity;
 use App\Quotation;
 use App\MamahomePrice;
 use DB;
+use App\PaymentDetails;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -2020,21 +2021,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editinputdata(Request $request)
     { 
-        $var1 =Requirement::where('id',$request->reqId)->pluck('total_quantity')->first();
-        $var2 =Requirement::where('id',$request->reqId)->pluck('price')->first();
-
-        if($var1 == $request->totalquantity){
-            $quan = $request->totalquantity;//nt changed
-        }
-        else{
-            $quan ="none";//changed
-        }
-        if($var2 == $request->price){
-            $price = $request->price;
-        }
-        else{
-            $price = "none";
-        }
 
         $validator = Validator::make($request->all(), [
         'subcat' => 'required'
@@ -2053,6 +2039,37 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             
            $billaddress = $request->billaddress;
          }
+
+        $var1 =Requirement::where('id',$request->reqId)->pluck('total_quantity')->first();
+        $var2 =Requirement::where('id',$request->reqId)->pluck('price')->first();
+        $var3 =Requirement::where('id',$request->reqId)->pluck('billadress')->first();
+        $var4 =Requirement::where('id',$request->reqId)->pluck('ship')->first();
+
+        if($var1 == $request->totalquantity){
+            $quan = $request->totalquantity;//nt changed
+        }
+        else{
+            $quan ="none";//changed
+        }
+        if($var2 == $request->price){
+            $price = $request->price;
+        }
+        else{
+            $price = "none";
+        }
+        if($var3 == $billaddress){
+            $bill = $billaddress;//ntchanged
+        }
+        else{
+            $bill = "none";
+        }
+        if($var4 == $request->shipaddress){
+            $ship = $request->shipaddress;//ntchanged
+        }
+        else{
+            $ship = "none";
+        }
+      
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -2104,6 +2121,14 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
      ]);
         $inv = DB::table('orders')->where('req_id',$request->reqId)->pluck('id')->first();
         $invgenerate = DB::table('orders')->where('req_id',$request->reqId)->pluck('confirm_payment')->first();
+        $payment = DB::table('orders')->where('req_id',$request->reqId)->pluck('payment_status')->first();
+      
+        if($payment != null){
+                PaymentDetails::where('order_id',$inv)->update([
+                'quantity'=>$request->totalquantity,
+                'mamahome_price'=>$request->price
+            ]);
+        }
         $invoice = MamahomePrice::where('order_id',$inv)->get()->first();
             if($invoice != null && $invgenerate != null){
 
@@ -2154,6 +2179,12 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                        
                     ]);
                 }
+                 if($bill == "none" || $ship == "none" ){
+                        $invoice = MamahomePrice::where('order_id',$inv)->update([
+                        'billaddress' =>$billaddress,
+                        'shipaddress' =>$request->shipaddress
+                    ]);
+                 }
             }
         $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;

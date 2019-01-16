@@ -114,15 +114,10 @@
 								</td>
 								<td style="text-align: center">{{ $enquiry->procurementdetails != null ? $enquiry->procurementdetails->procurement_contact_no : '' }}
 							 {{ $enquiry->proc != null ? $enquiry->proc->contact :''  }}</td>
-                               @if($enquiry->manu_id == null)
+                             
 								<td style="text-align: center">
 									{{$enquiry -> main_category}} ({{ $enquiry->sub_category }}), {{ $enquiry->material_spec }}
 								</td>
-								@else
-								<td style="text-align: center">
-									{{$enquiry->product}}
-								</td>
-								@endif
 								<td style="text-align: center">
 									{{$enquiry -> quantity}}
 								</td>
