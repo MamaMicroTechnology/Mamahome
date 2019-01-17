@@ -12,11 +12,8 @@
 			<tbody>
 				@foreach($activities as $activity)
 				<tr>
-					<?php
-						$newdate = substr($activity->time,0,15);
-						echo $newdate;
-					?>
-					<td>{{ date('d-m-Y h:i A', strtotime($newdate)) }}</td>
+					
+					<td>{{ date('d-m-Y h:i A', strtotime($activity->created_at)) }}</td>
 					<td>{{ $activity->employee_id }}</td>
 					<td>{{ $activity->activity }}</td>
 				</tr>
