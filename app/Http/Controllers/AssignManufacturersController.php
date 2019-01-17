@@ -1792,7 +1792,7 @@ foreach ($sub as  $users) {
     if($z != null){
 
        $text2 =implode(",",$z);
-       $text = "Project ids are assigned please check ".$use .'' .$text2;
+       $text = "Project ids are assigned please check ".$text2;
        
         return back()->with('NotAdded',$text);
     }
