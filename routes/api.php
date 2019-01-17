@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/searchuser','CustomerController@userfull');
 Route::get('/yadav','CustomerController@yadav');
-
+Route::post('/getcustome','CustomerController@getdetails');
 
 
 

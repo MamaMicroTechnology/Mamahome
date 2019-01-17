@@ -272,7 +272,7 @@
                <b style="color:white"> Generate Customer_ID </b> 
             </div>
             <div class="panel-body">
-              <form action="http://10.156.5.198:8000/mamahome/index.php/api/post_cust" method="post">
+              <form action="{{URL::to('/api')}}/getcustome" method="post">
 
                     {{ csrf_field() }}
                 

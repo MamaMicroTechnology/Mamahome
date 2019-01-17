@@ -1713,7 +1713,7 @@ foreach ($sub as  $users) {
         $user = User::whereIn('id',$i)->get();
      
         foreach ($user as $project) {
-            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->where('type',"project")->pluck('project_id')->first();
            $ex = explode(",",$ids);
             array_push($push,$ex);
           
@@ -1765,7 +1765,7 @@ foreach ($sub as  $users) {
         $user = User::whereIn('id',$i)->get();
      
         foreach ($user as $project) {
-            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->where('type',"Manufacturer")->pluck('project_id')->first();
            $ex = explode(",",$ids);
             array_push($push,$ex);
           
