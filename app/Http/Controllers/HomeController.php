@@ -4335,7 +4335,7 @@ $upvcInt = explode(",", $upvc);
         $aBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"Blocks")->count();
         $aupcount = ProjectDetails::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
         $projects = ProjectDetails::where('created_at','like',$date.'%')->get();
-        $groupid = [6,11];
+        $groupid = [6,11,22,23,2,17];
         $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         
         if(Auth::user()->group_id != 22){

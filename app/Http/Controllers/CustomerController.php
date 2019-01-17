@@ -44,10 +44,10 @@ class CustomerController extends Controller
 
 public function getcustomer(request $request){
 
-        $type = CustomerProjectAssign::where('user_id',Auth::user()->id)->pluck('type')->first();
+        $type = CustomerProjectAssign::where('user_id',Auth::user()->id)->where('type',"project")->first();
         
-
-        if($type != "project"){
+       
+        if(count($type) == 0){
           return  $this->customermanu($request);
         }
 
@@ -94,7 +94,7 @@ public function customermanu(request $request)
 
 public function deleteuser(request $request){
  
-   CustomerProjectAssign::where('user_id',$request->projectId)->where('type',$request->type)->delete();
+   CustomerProjectAssign::where('id',$request->projectId)->delete();
 
    return back();
 }

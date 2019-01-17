@@ -117,8 +117,8 @@
             <div class="panel-body">
                 <table class="table table-hover table-responsive" border="1">
                     <thead>
-                        <th>Confirm Enquires&nbsp;({{count($confirmenq)}})({{count($confirms)}})</th>
-                        <th>Cancel Enquires&nbsp;&nbsp;({{count($cancelenq)}})({{count($cancel)}})</th>
+                        <th>Confirm Enquiries&nbsp;({{count($confirmenq)}})({{count($confirms)}})</th>
+                        <th>Cancel Enquiries&nbsp;&nbsp;({{count($cancelenq)}})({{count($cancel)}})</th>
                         <th>Enquiry On Process&nbsp;({{count($onprocessenq)}})({{count($onprocess)}})</th>
                     </thead>
                     <tbody>
@@ -191,7 +191,7 @@
                         <th>Cancel Orders&nbsp;({{count($cancelorder)}})({{count($corder)}})</th>
                         <th>Enquiry Id</th>
                         <th>Get Purchase Invoice</th>
-                        <th>Get Peoforma Invoice</th>
+                        <th>Get Proforma Invoice</th>
                        <!--  <th>Quotation</th> -->
 
 

@@ -32,7 +32,7 @@
             <td>{{ date('d M, y',strtotime($order->requirement_date)) }}</td>
              <td style="text-align:center"><a href="{{ URL::to('/') }}/admindailyslots?projectId={{$order->project_id}}&&lename=" target="_blank">{{ $order->project_id }}</a>
               @if($order-> project_id == null)
-                            <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $order->manu_id }}">Manufacturer{{$order->manu_id}}</a>
+                            <a href="{{ URL::to('/') }}/viewmanu?id={{ $order->manu_id}}">Manufacturer{{$order->manu_id}}</a>
               @endif
              </td>
             <td>{{ $order->id }}</td>

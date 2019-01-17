@@ -135,7 +135,7 @@ function openCitytest(evt, cityName) {
                         <td>
                             <a href="{{URL::to('/')}}/showThisProject?id={{$rec->project_id}}">{{$rec -> project_id}}</a>
                              @if($rec -> project_id == null)
-                            <a href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $rec->manu_id }}">Manufacturer {{$rec -> manu_id}}</a>
+                            <a href="{{ URL::to('/') }}/viewmanu?id={{ $rec->manu_id }}">Manufacturer {{$rec -> manu_id}}</a>
                             @endif
                         </td>
                         <td>
