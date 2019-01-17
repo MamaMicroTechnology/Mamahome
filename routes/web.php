@@ -33,7 +33,7 @@ Route::get('/userinfo','CustomerController@getuser');
 Route::get('/customer','CustomerController@getcustomer');
 Route::post('/getcustom','CustomerController@getdetails');
 Route::get('/blocked_projects','CustomerController@blocked');
-
+Route::post('/getcustome','CustomerController@getdetails');
 Route::post('/toggle-approve1',"CustomerController@approval1");
 Route::post('/findward','CustomerController@findward');
 Route::post('/findmanuward','CustomerController@findmanuward');

@@ -272,18 +272,44 @@
                <b style="color:white"> Generate Customer_ID </b> 
             </div>
             <div class="panel-body">
-              <form action="{{URL::to('/')}}/getcustome" method="post">
+              <form action="http://10.156.5.198:8000/mamahome/index.php/api/post_cust" method="post">
+
                     {{ csrf_field() }}
-                 <label>Enter Contact Number
-                   <input type="text" name="contact" class="form-control" placeholder="Enter Contact Number">
-                 </label>  
-                 <label>Select Type
-                    <select name="type" class="form-control" id="type" onchange="project()">
-                       <option>------select------</option>
-                       <option>Project</option>
-                       <option>Manufacturer</option>
-                    </select>
-                 </label> <br> 
+                
+                   <?php 
+                   $projectids = serialize($projectids);
+                    $projecttype = serialize($projecttype);
+                    $manuids = serialize($manuids);
+                    $manutype = serialize($manutype);
+                    $pconfirmenq = serialize($confirmenq);
+                    $pcancelenq = serialize($cancelenq);
+                    $ponprocess = serialize($onprocessenq);
+                    $porderconfirm = serialize($orderconfirm);
+
+                    $pordercancel = serialize($cancelorder);
+                    $monfirmsenq = serialize($confirms);
+                    $mcancelenq = serialize($cancel);
+                    $monprocess = serialize($onprocess);
+                    $morderconfirm = serialize($oconfirm);
+                    $mordercancel = serialize($corder);
+                  ?>
+                   <input type="hidden" name="projectid" value="{{$projectids}}">
+                   <input type="hidden" name="project_type" value="{{$projecttype}}">
+                   <input type="hidden" name="manuids" value="{{$manuids}}">
+                   <input type="hidden" name="manutype" value="{{$manutype}}">
+
+                   <input type="hidden" name="pconfirmenq" value="{{$pconfirmenq}}">
+                   <input type="hidden" name="pcancelenq" value="{{$pcancelenq}}">
+                   <input type="hidden" name="ponprocess" value="{{$ponprocess}}">
+                   <input type="hidden" name="porderconfirm" value="{{$porderconfirm}}">
+
+                    <input type="hidden" name="pordercancel" value="{{$pordercancel}}">
+                   <input type="hidden" name="monfirmsenq" value="{{$monfirmsenq}}">
+                   <input type="hidden" name="mcancelenq" value="{{$mcancelenq}}">
+                   <input type="hidden" name="monprocess" value="{{$monprocess}}">
+                    <input type="hidden" name="morderconfirm" value="{{$morderconfirm}}">
+                   <input type="hidden" name="mordercancel" value="{{$mordercancel}}">
+                  
                  <button style="width:50%;" type="submit" class="form-control btn btn-warning btn-sm"> Generate </button>
                </form>
             </div>

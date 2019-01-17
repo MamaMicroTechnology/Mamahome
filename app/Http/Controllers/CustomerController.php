@@ -578,7 +578,7 @@ public function getdetails(request $request){
 
      }
    
-  dd($ids);
+  dd($pdetails);
 
 }
 public function blocked(request $request){
