@@ -243,7 +243,7 @@
                                 <a href="{{ URL::to('/')}}/manufacturemap?id={{ $project->id }} && subwardid={{ $project->sub_ward_id }}" data-toggle="tooltip" data-placement="top" title="click here to view map" class="red-tooltip" target="_blank">{{ $project->subward != null ? $project->subward->sub_ward_name : '' }}
                              </a></td>
 
-                            <td style="text-align:center"><a  href="{{ URL::to('/') }}/updateManufacturerDetails?id={{ $project->id }}"  target="_blank">{{ $project->id }}</a></td>
+                            <td style="text-align:center"><a  href="{{ URL::to('/') }}/viewmanu?id={{ $project->id }}"  target="_blank">{{ $project->id }}</a></td>
                             
                             <td style="text-align:center">{{$project->owner !=null ?$project->owner->contact :''}}</td>
                             <td style="text-align:center">{{$project->Manager != null?$project->Manager->contact:''}}</td>

@@ -640,7 +640,7 @@ public function addcat(request $request){
         $aBlocksCount = Manufacturer::where('created_at','like',$date.'%')->whereIn('listing_engineer_id',$account)->where('manufacturer_type',"Blocks")->count();
         $aupcount = Manufacturer::where('updated_at','like',$date.'%')->whereIn('updated_by',$account)->count();
         $projects = Manufacturer::where('created_at','like',$date.'%')->get();
-        $groupid = [6,11];
+        $groupid = [6,11,17,23,2,22,23,7];
         $le = DB::table('users')->whereIn('group_id',$groupid)->where('department_id','!=',10)->get();
         
         if(Auth::user()->group_id != 22){
@@ -1713,7 +1713,7 @@ foreach ($sub as  $users) {
         $user = User::whereIn('id',$i)->get();
      
         foreach ($user as $project) {
-            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->where('type',"project")->pluck('project_id')->first();
            $ex = explode(",",$ids);
             array_push($push,$ex);
           
@@ -1765,7 +1765,7 @@ foreach ($sub as  $users) {
         $user = User::whereIn('id',$i)->get();
      
         foreach ($user as $project) {
-            $ids =CustomerProjectAssign::where('user_id',$project->id)->pluck('project_id')->first();
+            $ids =CustomerProjectAssign::where('user_id',$project->id)->where('type',"Manufacturer")->pluck('project_id')->first();
            $ex = explode(",",$ids);
             array_push($push,$ex);
           
@@ -1792,7 +1792,7 @@ foreach ($sub as  $users) {
     if($z != null){
 
        $text2 =implode(",",$z);
-       $text = "Project ids are assigned please check ".$use .'' .$text2;
+       $text = "Project ids are assigned please check ".$text2;
        
         return back()->with('NotAdded',$text);
     }
