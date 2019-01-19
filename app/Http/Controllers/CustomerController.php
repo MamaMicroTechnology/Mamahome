@@ -100,6 +100,7 @@ public function deleteuser(request $request){
 }
 public function testindex(request $request){
      $bank =$request->bank;
+     dd($request->bank);
     
      if($request->acc != NULL){
                 $imageName1 = time().'.'.request()->acc->getClientOriginalExtension();
