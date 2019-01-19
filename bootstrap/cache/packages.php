@@ -24,6 +24,17 @@
       0 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     ),
   ),
+  'jenssegers/agent' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Jenssegers\\Agent\\AgentServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Agent' => 'Jenssegers\\Agent\\Facades\\Agent',
+    ),
+  ),
   'laravel/tinker' => 
   array (
     'providers' => 
@@ -59,6 +70,17 @@
     'providers' => 
     array (
       0 => 'Carbon\\Laravel\\ServiceProvider',
+    ),
+  ),
+  'pragmarx/tracker' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'PragmaRX\\Tracker\\Vendor\\Laravel\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Tracker' => 'PragmaRX\\Tracker\\Vendor\\Laravel\\Facade',
     ),
   ),
   'spatie/laravel-activitylog' => 

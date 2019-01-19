@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrustProxies::class,
         \Barryvdh\Cors\HandleCors::class,
         \App\Http\Middleware\Cors::class,
+        \PragmaRX\Tracker\Vendor\Laravel\Middlewares\Tracker::class,
     ];
 
 
@@ -38,7 +39,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-           
+           \PragmaRX\Tracker\Vendor\Laravel\Middlewares\Tracker::class,
         ],
 
         'api' => [

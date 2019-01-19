@@ -43,9 +43,9 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', 'mamahome_mamahome'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', 'yadav'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
@@ -53,6 +53,24 @@ return [
             'strict' => true,
             'engine' => null,
         ],
+
+
+
+     'tracker' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'tracker'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', 'yadav'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         
         'pgsql' => [
             'driver' => 'pgsql',
@@ -76,17 +94,6 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
-        ],
-    'tracker' => [
-            'driver'   => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE_2', 'forge'),
-            'username' => env('DB_USERNAME_2', 'forge'),
-            'password' => env('DB_PASSWORD_2', ''),
-            'charset' => 'utf',
-            'collation' => 'utf_unicode_ci',
-            'strict' => false, 
         ],
 
     ],
