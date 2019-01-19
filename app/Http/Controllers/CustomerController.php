@@ -44,10 +44,10 @@ class CustomerController extends Controller
 
 public function getcustomer(request $request){
 
-        $type = CustomerProjectAssign::where('user_id',Auth::user()->id)->pluck('type')->first();
+        $type = CustomerProjectAssign::where('user_id',Auth::user()->id)->where('type',"project")->first();
         
-
-        if($type != "project"){
+       
+        if(count($type) == 0){
           return  $this->customermanu($request);
         }
 
@@ -94,13 +94,12 @@ public function customermanu(request $request)
 
 public function deleteuser(request $request){
  
-   CustomerProjectAssign::where('user_id',$request->projectId)->where('type',$request->type)->delete();
+   CustomerProjectAssign::where('id',$request->projectId)->delete();
 
    return back();
 }
 public function testindex(request $request){
      $bank =$request->bank;
-     dd($request->bank);
     
      if($request->acc != NULL){
                 $imageName1 = time().'.'.request()->acc->getClientOriginalExtension();
@@ -111,7 +110,9 @@ public function testindex(request $request){
       
     // $path = base_path("public/ledger/".$imageName1);
 
-     $path ="/var/www/html/mamaReu/public/Ledger/".$imageName1; 
+     // $path ="/var/www/mamamicrotech/clients/MH/webapp/public/Ledger/".$imageName1; 
+
+            $path = "/var/www/html/mamaReu/public/Ledger/".$imageName1;
       chmod($path,0777);
 
      $rows = Excel::load($path, function($reader) { })->get()->toArray();
@@ -496,91 +497,25 @@ public function getuser(request $request){
         return response()->json($res);
 }
 public function getdetails(request $request){
+           
+$projectid = $request->projectid;
+$project_type = $request->project_type;
+$manuids = $request->manuids;
+$manutype = $request->manutype;
+$pconfirmenq = $request->pconfirmenq;
+$pcancelenq = $request->pcancelenq;
+$ponprocess = $request->ponprocess;
+$porderconfirm = $request->porderconfirm;
+$pordercancel = $request->pordercancel;
+$monfirmsenq = $request->monfirmsenq;
+$mcancelenq = $request->mcancelenq;
+$monprocess = $request->monprocess;
+$mordercancel  = $request->mordercancel;    
 
-    $ids = [];
-    $pdetails =[];
-     $project = $request->contact;
-      if($request->type == "Project"){
-
-          $details[0] = ContractorDetails::where('contractor_contact_no',$project)->pluck('project_id');
-            if(count($details[0]) > 0){
-                $name = "Contractor";
-                array_push($pdetails,['name'=>$name]);
-            }
-            $details[1] = ProcurementDetails::where('procurement_contact_no',$project)->pluck('project_id');
-            if(count($details[1]) > 0){
-                 $name = "Procurement";
-           array_push($pdetails,['name'=>$name]);
-            }
-            $details[2] = SiteEngineerDetails::where('site_engineer_contact_no',$project)->pluck('project_id');
-            if(count($details[2]) > 0){
-                 $name = "SiteEngineer";
-           array_push($pdetails,['name'=>$name]);
-            }
-            $details[3] = ConsultantDetails::where('consultant_contact_no',$project)->pluck('project_id');
-            if(count($details[3]) > 0){
-                 $name = "Consultant";
-           array_push($pdetails,['name'=>$name]);
-            }
-            $details[4] = OwnerDetails::where('owner_contact_no',$project)->pluck('project_id');
-            if(count($details[4]) > 0){
-                 $name = "Owner";
-                array_push($pdetails,['name'=>$name]);
-            }
-              $details[5] =Builder::where('builder_contact_no',$project)->pluck('project_id');
-
-            if(count($details[5]) > 0){
-                 $name = "Builder";
-                array_push($pdetails,['name'=>$name]);
-
-            }
-             
-            for($i = 0; $i < count($details); $i++){
-                for($j = 0; $j<count($details[$i]); $j++){
-                    array_push($ids, $details[$i][$j]);
-                }
-            }
+ 
 
 
-
-      }
-      else if($request->type == "Manufacturer"){
-
-       $details[0] = Salescontact_Details::where('contact',$project)->pluck('manu_id');
-            if(count($details[0]) >= 0){
-                $name = "Salesmanager";
-                array_push($pdetails,['name'=>$name]);
-            }
-            $details[1] = Manager_Deatils::where('contact',$project)->pluck('manu_id');
-
-            if(count($details[1]) > 0){
-                 $name = "Manager";
-           array_push($pdetails,['name'=>$name]);
-            }
-            $details[2] = Mprocurement_Details::where('contact',$project)->pluck('manu_id');
-            if(count($details[2]) > 0){
-                 $name = "Procurement";
-                array_push($pdetails,['name'=>$name]);
-            }
-            $details[3] = Mowner_Deatils::where('contact',$project)->pluck('manu_id');
-             if(count($details[3]) > 0){
-                 $name = "Owner";
-           array_push($pdetails,['name'=>$name]);
-            }
-            for($i =0; $i < count($details); $i++){
-                for($j = 0; $j<count($details[$i]); $j++){
-                    array_push($ids, $details[$i][$j]);
-                }
-            }
-      }
-     else{
-            $ids = [];
-            $pdetails = [];
-
-     }
    
-  dd($ids);
-
 }
 public function blocked(request $request){
 
