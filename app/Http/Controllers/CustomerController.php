@@ -512,16 +512,23 @@ $pordercancel = $request->pordercancel;
 $monfirmsenq = $request->monfirmsenq;
 $mcancelenq = $request->mcancelenq;
 $monprocess = $request->monprocess;
-$mordercancel  = $request->mordercancel;    
+$mordercancel  = $request->mordercancel;   
+
+$d = unserialize($projectid);
+  $s = implode(",",$d); 
      
        $client = new \GuzzleHttp\Client();
-       $url = "https://microtechtesting.tk/MH/api/post_cust";
-       $request = $client->post($url,['projectid'=>$projectid,'project_type'=>$project_type,'manuids'=>$manuids,'pconfirmenq'=>$pconfirmenq,'pcancelenq'=>$pcancelenq,'ponprocess'=>$ponprocess,'porderconfirm','pordercancel'=>$pordercancel,'monfirmsenq'=>$monfirmsenq,'mcancelenq'=>$mcancelenq,'monprocess'=>$monprocess,'mordercancel'=>$mordercancel]);
-       $response = $request->send();
+      
+       // $request = $client->post($url,['project_id'=>$projectid,'project_type'=>$project_type,'manuids'=>$manuids,'pconfirmenq'=>$pconfirmenq,'pcancelenq'=>$pcancelenq,'ponprocess'=>$ponprocess,'porderconfirm','pordercancel'=>$pordercancel,'monfirmsenq'=>$monfirmsenq,'mcancelenq'=>$mcancelenq,'monprocess'=>$monprocess,'mordercancel'=>$mordercancel]);
+       // $response = $request->send();
 
+$response = $client->request('POST', 'https://microtechtesting.tk/MH/api/post_cust', [
+    'form_params' => ['project_id'=>$s,'order_id'=>123]
+                      
+]);
 
-    dd($response);
- 
+    
+ return back();
 
 
    
