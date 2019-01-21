@@ -272,7 +272,7 @@
                <b style="color:white"> Generate Customer_ID </b> 
             </div>
             <div class="panel-body">
-              <form action="{{URL::to('/api')}}/getcustome" method="post">
+              <form action="{{URL::to('/')}}/getcustome" method="post">
 
                     {{ csrf_field() }}
                 

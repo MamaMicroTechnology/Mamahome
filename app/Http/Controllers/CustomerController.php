@@ -39,6 +39,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\AccountHead;
 use App\Subaccountheads;
 use App\Quotation;
+use GuzzleHttp\Client;
+
 class CustomerController extends Controller
 {
 
@@ -511,7 +513,14 @@ $monfirmsenq = $request->monfirmsenq;
 $mcancelenq = $request->mcancelenq;
 $monprocess = $request->monprocess;
 $mordercancel  = $request->mordercancel;    
+     
+       $client = new \GuzzleHttp\Client();
+       $url = "https://microtechtesting.tk/MH/api/post_cust";
+       $request = $client->post($url,['projectid'=>$projectid,'project_type'=>$project_type,'manuids'=>$manuids,'pconfirmenq'=>$pconfirmenq,'pcancelenq'=>$pcancelenq,'ponprocess'=>$ponprocess,'porderconfirm','pordercancel'=>$pordercancel,'monfirmsenq'=>$monfirmsenq,'mcancelenq'=>$mcancelenq,'monprocess'=>$monprocess,'mordercancel'=>$mordercancel]);
+       $response = $request->send();
 
+
+    dd($response);
  
 
 
