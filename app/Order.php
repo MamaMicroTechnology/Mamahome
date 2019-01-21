@@ -27,6 +27,9 @@ class Order extends Model
     function admin(){
         return $this->hasOne('App\Requirement','project_id','project_id');
     }
+    function req(){
+        return $this->belongsTo('App\Requirement');
+    }
     function manudetails(){
         return $this->hasOne('App\ManufacturerDetail','category','category');
     }
@@ -46,6 +49,9 @@ class Order extends Model
     }
     public function userid(){
         return $this->belongsTo('App\User','logistic','id');
+    }
+    public function invoice(){
+        return $this->belongsTo('App\MamahomePrice','order_id','id');
     }
     protected $fillable = [
             'project_id',

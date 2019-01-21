@@ -2021,7 +2021,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editinputdata(Request $request)
     { 
-
         $validator = Validator::make($request->all(), [
         'subcat' => 'required'
         ]);
@@ -2077,18 +2076,20 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
         $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
         $brandnames = implode(", ", $brand);
-        $get = implode(", ",array_filter($request->quan));
-        $another = explode(", ",$get);
-        $quantity = array_filter($request->quan);
-        for($i = 0;$i < count($request->subcat); $i++){
-            if($i == 0){
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty = $sub." :".$another[$i];
-            }else{
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty .= ", ".$sub." :".$another[$i];
-            }
-        }
+        // $get = implode(", ",array_filter($request->quan));
+        // $another = explode(", ",$get);
+        // $quantity = array_filter($request->quan);
+        // for($i = 0;$i < count($request->subcat); $i++){
+        //     if($i == 0){
+        //         $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+        //         $qnty = $sub." :".$another[$i];
+        //     }else{
+        //         $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+        //         $qnty .= ", ".$sub." :".$another[$i];
+        //     }
+        // }
+        $sub = SubCategory::where('id',$request->subcat)->pluck('sub_cat_name')->first();
+         $qnty = $sub." :".$request->totalquantity;//new code
 
         $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();

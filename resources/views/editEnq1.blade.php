@@ -98,11 +98,11 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label class="checkbox-inline">
                                 <input type="hidden" id="quantity{{ $subcategory->id }}" value="{{ $subcategory->Quantity }}">
-                                <input {{ in_array($subcategory->sub_cat_name, explode(" :",$sub[$i])) ? 'checked' : '' }} type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="">{{ $subcategory->sub_cat_name}}
+                                <input {{ in_array($subcategory->sub_cat_name, explode(" :",$sub[$i])) ? 'checked' : '' }} type="checkbox" name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" onclick="checkout()">{{ $subcategory->sub_cat_name}}
 								<?php 
 									$qnt = explode(' :',$sub[$i]);
 								?>
-								<input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$sub[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control">
+								<!-- <input value= "{{ in_array($subcategory->sub_cat_name, explode(' :',$sub[$i])) ? $qnt[1] : '' }}" type="text" placeholder="Quantity" id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="check('quan{{$subcategory->id}}')" autocomplete="off" name="quan[]" class="form-control"> -->
                             </label>
                             <br><br>
                         @endforeach
@@ -337,6 +337,22 @@
 </div>
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
+	function checkout(){
+          var checkBox = document.getElementsByName('subcat[]');
+          var ln = checkBox.length;
+          var count = 0;
+          for(var i =0 ; i < ln ; i++){
+            if(checkBox[i].checked == true){
+                count++;
+            }
+            if(count >1){        
+                checkBox[i].checked = false;   
+            }    
+          }
+          if(count > 1){
+            alert("You Cannot Select Mutiple Category");      
+          }         
+}
 	function check(arg){
 	 var input = document.getElementById(arg).value;
 	    if(isNaN(input)){

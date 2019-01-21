@@ -32,8 +32,7 @@ Do Not Add All Category In Single Enquiry, <br>If You Want To Add All Categories
 <tbody>
 <tr>
 <td style="width:30%"><label> Requirement Date* : </label></td>
-<td style="width:70%"><input required type="date" name="edate"
-id="edate" class="form-control" style="width:30%" /></td>
+<td style="width:70%"> <input type="date"  id="txtDate" required="Required" class="form-control" name="txtDate" placeholder="Select suitable date" style="width:30%"></td>
 </tr>
 <tr>
 @if(!isset($_GET['projectId']))
@@ -100,9 +99,8 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
                         @foreach($brand->subcategory as $subcategory)
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label class="checkbox-inline">
-
-                                <input type="checkbox"  name="subcat[]" id="subcat{{ $subcategory->id }}" value="{{ $subcategory->id}}" id="" >{{ $subcategory->sub_cat_name}}
-                                <input type="text" placeholder="Quantity"  id="quan{{$subcategory->id}}" onblur="quan('{{$subcategory->id }}')" onkeyup="validate('quan{{$subcategory->id}}')" name="quan[]" class="form-control">
+                                <input type="checkbox"  name="subcat[]"  id="subcat" value="{{ $subcategory->id}}" onclick="checkout()">{{ $subcategory->sub_cat_name}}
+                                <!-- <input type="text" placeholder="Quantity"  id="quan" onblur="quan('{{$subcategory->id }}')" onkeyup="validate('quan{{$subcategory->id}}')" name="quan[]" class="form-control" > -->
                             </label>
                             <br><br>
                         @endforeach
@@ -243,7 +241,7 @@ data-toggle="modal" data-target="#myModal">Product</button></td>
 </tr>
 <tr>
             <td><label>Total Quantity* : </label></td>
-            <td><input type="text" onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity" id="totalquantity"  class="form-control" /></td>
+            <td><input type="text" required onkeyup="checkthis('totalquantity')" name="totalquantity" placeholder="Enter Quantity" id="totalquantity"  class="form-control" /></td>
 
 </tr>
 
@@ -402,43 +400,43 @@ function getBrands(id,category_name){
         }
     }
 }
-function getSubCat(id,brandname)
-{
-    var brand = id;
-    var subcategory =document.getElementById("brand"+id);
-    if(subcategory.checked == true){
-        $.ajax({
-            type:'GET',
-            url:"{{URL::to('/')}}/getSubCat",
-            async:false,
-            data:{brand: brand},
-            success: function(response)
-            {
-                console.log(response);
-                var name =brandname;
-                var text = document.getElementById('sCategory').innerHTML;
-                var n = text.search(brandname);
-                if(n != -1){
+// function getSubCat(id,brandname)
+// {
+//     var brand = id;
+//     var subcategory =document.getElementById("brand"+id);
+//     if(subcategory.checked == true){
+//         $.ajax({
+//             type:'GET',
+//             url:"{{URL::to('/')}}/getSubCat",
+//             async:false,
+//             data:{brand: brand},
+//             success: function(response)
+//             {
+//                 console.log(response);
+//                 var name =brandname;
+//                 var text = document.getElementById('sCategory').innerHTML;
+//                 var n = text.search(brandname);
+//                 if(n != -1){
                   
-                    document.getElementById(brandname).style.display = "";
-                }else{
-                    text += "<div id = '"+name+"' class='col-md-4'>"+"*"+name+"<br>";
-                    for(var i=0; i < response[1].length; i++){
-                        text += "<label class='checkbox-inline'>"+"<input name='subcat[]' type='checkbox' value="+response[1][i].id+">"+response[1][i].sub_cat_name+"</label>"+"<br>";
-                    }
-                    text += "<div>";
-                    document.getElementById('sCategory').innerHTML = text;
-                }
-            }
-        });
-    }else{
-        var check = document.getElementById("sCategory").innerHTML;
-        var n = check.search(brandname);
-        if(n != -1){
-            document.getElementById(brandname).style.display = "none";
-        }
-    }
-}
+//                     document.getElementById(brandname).style.display = "";
+//                 }else{
+//                     text += "<div id = '"+name+"' class='col-md-4'>"+"*"+name+"<br>";
+//                     for(var i=0; i < response[1].length; i++){
+//                         text += "<label class='checkbox-inline'>"+"<input name='subcat[]' type='checkbox' value="+response[1][i].id+">"+response[1][i].sub_cat_name+"</label>"+"<br>";
+//                     }
+//                     text += "<div>";
+//                     document.getElementById('sCategory').innerHTML = text;
+//                 }
+//             }
+//         });
+//     }else{
+//         var check = document.getElementById("sCategory").innerHTML;
+//         var n = check.search(brandname);
+//         if(n != -1){
+//             document.getElementById(brandname).style.display = "none";
+//         }
+//     }
+// }
 function getAddress(){
     var e = document.getElementById('selectprojects');
     var projectId = e.options[e.selectedIndex].value;
@@ -520,6 +518,25 @@ var z = document.getElementById('state');
             document.getElementById("sub").submit();
         }
 }
+function checkout(){
+          var checkBox = document.getElementsByName('subcat[]');
+          var ln = checkBox.length;
+          var count = 0;
+          for(var i =0 ; i < ln ; i++){
+            if(checkBox[i].checked == true){
+                count++;
+            }
+            if(count >1){        
+                checkBox[i].checked = false;   
+            }    
+          }
+          if(count > 1){
+            alert("You Cannot Select Mutiple Category");      
+          }         
+}
 </script>
-
+<script type="text/javascript">
+var today = new Date().toISOString().split('T')[0];
+document.getElementsByName("txtDate")[0].setAttribute('min', today);
+</script>
 @endsection

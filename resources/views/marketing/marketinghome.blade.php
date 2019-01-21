@@ -41,12 +41,16 @@
                             <div class="col-md-4">
                                 <input required type="file" placeholder="category image" name="catimage" class="form-control">
                             </div>
+                            <br><br>
+                           <div class="col-md-3">
+                                <input type="text" placeholder="HSN/SAC" name="hsn" class="form-control">
+                            </div>
                             <div class="col-md-2">
                                 <input type="submit" value="Save" class="form-control btn btn-primary">
                             </div>
                         </form>
                         @endif
-                        <br>
+                        <br><br>
                         <table class="table table-hover">
                             <tr>
                             <td>Category</td>
@@ -57,18 +61,19 @@
                              @if(Auth::user()->group_id != 23)
                                 <td>{{ $category->category_name }}</td>
                                 @else
-                                @if($category->id == $sub)
-                                 <td>{{ $category->category_name }}</td>
-                                <td>
-                                <form method="POST" action="{{ URL::to('/') }}/deleteCategory">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="{{ $category->id }}" name="id">
-                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-                                </form>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit</button>
-                                </td>
+                                        @if($category->id == $sub)
+                                         <td>{{ $category->category_name }}</td>
+                                        <td>
+                                        <form method="POST" action="{{ URL::to('/') }}/deleteCategory">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" value="{{ $category->id }}" name="id">
+                                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                        </form>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                        </td>
+                                        
                                  @endif
                               @endif 
                               @if(Auth::user()->group_id != 23)   
@@ -80,7 +85,51 @@
                                 </form>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit</button>
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$category->id}}" >Edit</button>
+                                    <!-- Modal -->
+                                        <div id="myModal{{$category->id}}" class="modal fade" role="dialog">
+                                          <div class="modal-dialog" style="width: 30%">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                              <div class="modal-header" style="background-color:#3366ff;color:white;">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title" >Category Details</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                         <form method="POST" action="{{ URL::to('/') }}/updateCategory" enctype="multipart/form-data">
+                                                    {{ csrf_field() }}
+                                                    <input type="hidden" value="{{ $category->id }}" name="id">
+                                                   <table class="table table-responsive">
+                                                    <tr>
+                                                        <label>Category Name :</label>
+                                                        <input type="text" name="name" value="{{ $category->category_name }}" class="form-control input-sm">
+                                                    </tr>
+                                                    <br>
+                                                    <tr>
+                                                        <label>Category Image :</label>
+                                                        <input  type="file" placeholder="category image" name="catimage" class="form-control input-sm">
+                                                    </tr>
+                                                    <br>
+                                                    <tr>
+                                                        <label>HSN/SAC</label>
+                                                        <input type="text" name="hsn" class="form-control input-sm" placeholder="HSN/SAC" value="{{ $category->HSN }}">
+                                                    </tr>
+                                                    <br>
+                                                  <center>
+                                                        <button class="btn btn-sm btn-success" type="submit">Save</button>
+                                                    </center>
+                                                    </table>
+                                                </form>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              </div>
+                                            </div>
+
+                                          </div>
+                                        </div>
+                                        <!-- modal end -->
                                 </td>
                                 @endif
                             </tr>
@@ -145,7 +194,7 @@
                             </tr>
                             @foreach($brands as $brand)
                             <tr id="currentb{{ $brand->id }}">
-                                <td>{{ $brand->category->category_name }}</td>
+                                <td>{{ $brand->category_name }}</td>
                                 <td>{{ $brand->brand }}</td>
                                 <td>
                                 <form method="POST" action="{{ URL::to('/') }}/deletebrand">
@@ -270,6 +319,7 @@
   </div>
 </div>
 </form>
+
 <div class='b'></div>
 <div class='bb'></div>
 <div class='message'>

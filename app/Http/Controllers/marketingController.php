@@ -96,6 +96,7 @@ class marketingController extends Controller
         $category->category_name = $request->category;
         $category->measurement_unit = $request->measurement;
         $category->catimage = $cat;
+        $category->HSN = $request->hsn;
         $category->save();
         return back()->with('Success','Category added successfully');
     }
@@ -137,13 +138,15 @@ class marketingController extends Controller
     }
     public function updateCategory(Request $request){
 
-            if($request->catimage){
-               
+            if($request->catimage){   
         $cat = $request->category.time().'.'.request()->catimage->getClientOriginalExtension();
         $request->catimage->move(public_path('category'),$cat);
+          Category::where('id',$request->id)
+            ->update(['catimage'=>$cat]);
             } 
+           
         Category::where('id',$request->id)
-            ->update(['category_name'=>$request->name,'catimage'=>$cat]);
+            ->update(['category_name'=>$request->name,'HSN'=>$request->hsn]);
         return back()->with('Success','Category has been updated');
     }
     public function updateBrand(Request $request){

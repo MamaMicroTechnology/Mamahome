@@ -48,8 +48,8 @@ class FinanceDashboard extends Controller
                       
         }
         else{
+            
             $orders = DB::table('orders')->where('status','Order Confirmed')->orderBy('updated_at','desc')->paginate('20');
-
         }
       
         $reqs = Requirement::all();

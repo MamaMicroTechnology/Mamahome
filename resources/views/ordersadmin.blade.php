@@ -270,7 +270,7 @@ function openCitytest(evt, cityName) {
 Department : {{ $user->department->dept_name }}
 Designation : {{ $user->group->group_name }}
 Personal Phone No : {{ $user->contactNo }}
-Office Phone No : {{ $user->emp->office_phone }}"
+Office Phone No : {{ $user->emp != null ? $user->emp->office_phone : '' }}"
            class="red-tooltip">{{ $user->name}}</a><br>
           @endforeach
         <br>
@@ -596,6 +596,7 @@ Office Phone No : {{ $user->emp->office_phone }}"
                                                     <td> Supplier Unit Price :</td>
                                                     <td>
                                                         <input required type="number" id="unitprice{{$rec->orderid}}" name="uprice" class="form-control" onkeyup="showthis('{{$rec->orderid}}')" value="{{$supply->unit_price}}">
+                                                         <input type="hidden" value="{{$rec->price}}" id="test{{$rec->orderid}}">
                                                    </td>
                                                 </tr>
                                                 <tr>
@@ -658,7 +659,7 @@ Office Phone No : {{ $user->emp->office_phone }}"
                              <label class=" alert-success pull-right" id="lblWord1{{$rec->orderid}}"></label>
                                
         </table>
-        <button  class="btn btn-success">Submit</button>
+        <button  class="btn btn-success" onclick="fill('{{$rec->orderid}}')">Submit</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -1120,13 +1121,15 @@ function description(arg) {
 function fill(arg){
   var x =document.getElementById('unitprice'+arg).value;
   var y =document.getElementById('test'+arg).value;
+
   if(x > y){
     document.getElementById('unitprice'+arg).value = "";
+    alert("Purchase Order Price should be Less Than Enquiry Price");
   }
 }
 function showthis(arg){
 
-  fill(arg);
+  
   var z = document.getElementById('supply'+arg);
   var name = z.options[z.selectedIndex].value;
   var x = document.getElementById('state'+arg);
