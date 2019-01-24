@@ -77,6 +77,7 @@ use Spatie\Activitylog\Models\Activity;
 use App\Quotation;
 use App\MamahomePrice;
 use DB;
+use App\PaymentDetails;
 
 date_default_timezone_set("Asia/Kolkata");
 class mamaController extends Controller
@@ -2020,22 +2021,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function editinputdata(Request $request)
     { 
-        $var1 =Requirement::where('id',$request->reqId)->pluck('total_quantity')->first();
-        $var2 =Requirement::where('id',$request->reqId)->pluck('price')->first();
-
-        if($var1 == $request->totalquantity){
-            $quan = $request->totalquantity;//nt changed
-        }
-        else{
-            $quan ="none";//changed
-        }
-        if($var2 == $request->price){
-            $price = $request->price;
-        }
-        else{
-            $price = "none";
-        }
-
         $validator = Validator::make($request->all(), [
         'subcat' => 'required'
         ]);
@@ -2053,6 +2038,37 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
             
            $billaddress = $request->billaddress;
          }
+
+        $var1 =Requirement::where('id',$request->reqId)->pluck('total_quantity')->first();
+        $var2 =Requirement::where('id',$request->reqId)->pluck('price')->first();
+        $var3 =Requirement::where('id',$request->reqId)->pluck('billadress')->first();
+        $var4 =Requirement::where('id',$request->reqId)->pluck('ship')->first();
+
+        if($var1 == $request->totalquantity){
+            $quan = $request->totalquantity;//nt changed
+        }
+        else{
+            $quan ="none";//changed
+        }
+        if($var2 == $request->price){
+            $price = $request->price;
+        }
+        else{
+            $price = "none";
+        }
+        if($var3 == $billaddress){
+            $bill = $billaddress;//ntchanged
+        }
+        else{
+            $bill = "none";
+        }
+        if($var4 == $request->shipaddress){
+            $ship = $request->shipaddress;//ntchanged
+        }
+        else{
+            $ship = "none";
+        }
+      
         // for fetching sub categories
         $sub_cat_name = SubCategory::whereIn('id',$request->subcat)->pluck('sub_cat_name')->toArray();
         $subcategories = implode(", ", $sub_cat_name);
@@ -2060,18 +2076,20 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         $brand_ids = SubCategory::whereIn('id',$request->subcat)->pluck('brand_id')->toArray();
         $brand = brand::whereIn('id',$brand_ids)->pluck('brand')->toArray();
         $brandnames = implode(", ", $brand);
-        $get = implode(", ",array_filter($request->quan));
-        $another = explode(", ",$get);
-        $quantity = array_filter($request->quan);
-        for($i = 0;$i < count($request->subcat); $i++){
-            if($i == 0){
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty = $sub." :".$another[$i];
-            }else{
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty .= ", ".$sub." :".$another[$i];
-            }
-        }
+        // $get = implode(", ",array_filter($request->quan));
+        // $another = explode(", ",$get);
+        // $quantity = array_filter($request->quan);
+        // for($i = 0;$i < count($request->subcat); $i++){
+        //     if($i == 0){
+        //         $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+        //         $qnty = $sub." :".$another[$i];
+        //     }else{
+        //         $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+        //         $qnty .= ", ".$sub." :".$another[$i];
+        //     }
+        // }
+        $sub = SubCategory::where('id',$request->subcat)->pluck('sub_cat_name')->first();
+         $qnty = $sub." :".$request->totalquantity;//new code
 
         $category_ids = SubCategory::whereIn('id',$request->subcat)->pluck('category_id')->toArray();
         $category= Category::whereIn('id',$category_ids)->pluck('category_name')->toArray();
@@ -2104,6 +2122,14 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
      ]);
         $inv = DB::table('orders')->where('req_id',$request->reqId)->pluck('id')->first();
         $invgenerate = DB::table('orders')->where('req_id',$request->reqId)->pluck('confirm_payment')->first();
+        $payment = DB::table('orders')->where('req_id',$request->reqId)->pluck('payment_status')->first();
+      
+        if($payment != null){
+                PaymentDetails::where('order_id',$inv)->update([
+                'quantity'=>$request->totalquantity,
+                'mamahome_price'=>$request->price
+            ]);
+        }
         $invoice = MamahomePrice::where('order_id',$inv)->get()->first();
             if($invoice != null && $invgenerate != null){
 
@@ -2154,6 +2180,12 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                        
                     ]);
                 }
+                 if($bill == "none" || $ship == "none" ){
+                        $invoice = MamahomePrice::where('order_id',$inv)->update([
+                        'billaddress' =>$billaddress,
+                        'shipaddress' =>$request->shipaddress
+                    ]);
+                 }
             }
         $pro = Requirement::where('id',$request->reqId)->pluck('project_id')->first();
         $activity = new ActivityLog;
@@ -2557,13 +2589,27 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function getmap(request $request)
     {
+    $date = date('Y-m-d');
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
       $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
       $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
       $subwards = SubWard::where('id',$wardsAssigned)->first();
       $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
-        // dd($projects);
+      $totalListing = ProjectDetails::where('listing_engineer_id',$id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+        $totalmanu = Manufacturer::where('listing_engineer_id',$id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();                              
+        $rmc = Manufacturer::where('listing_engineer_id',$id)
+                                ->where('created_at','LIKE',$date.'%')
+                                ->where('manufacturer_type',"RMC")
+                                ->count();
+        $blocks = Manufacturer::where('listing_engineer_id',$id)
+                                ->where('created_at','LIKE',$date.'%')
+                                ->where('manufacturer_type',"Blocks")
+                                ->count();
         if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
             
@@ -2626,9 +2672,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                         ->where('date',date('Y-m-d'))
                         ->first();
         }
-      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads]);
+      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads,'totalListing'=>$totalListing,'totalmanu'=>$totalmanu,'rmc'=>$rmc,'blocks'=>$blocks]);
     }
-
     public function getaccmap(request $request)
     {
       $name = $request->name;
@@ -3258,7 +3303,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return view('seniorteam',['users'=>$users,'name'=>$name]);
     }
     public function hr(){
-
        $group = [14];
        $name = Group::where('id',14)->pluck('group_name')->first();
        $thiMonth = date('Y-m');

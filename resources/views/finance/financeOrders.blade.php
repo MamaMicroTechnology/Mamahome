@@ -21,7 +21,8 @@
         <th>Project Id</th>
         <th>Order Id</th>
         <th>Category</th>
-        <th>Quantity</th>
+        <th style="width:30%">Quantity</th>
+        <th>Invoice No</th>
         <th>Payment Details</th>
         @if(Auth::user()->group_id != 22)
         <th> Generate Invoice</th>
@@ -37,7 +38,9 @@
              </td>
             <td>{{ $order->id }}</td>
             <td>{{ $order->main_category }}</td>
-            <td>{{ $order->quantity }}</td>
+            <td style="width:30%">{{ $order->quantity }}</td>
+            <?php $invoice = App\MamahomePrice::where('order_id',$order->id)->pluck('invoiceno')->first(); ?>
+            <td>{{ $invoice }}</td>
             <td>
                 @if($order->payment_status == "Payment Received")
                 <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal{{ $order->id }}">

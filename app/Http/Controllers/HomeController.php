@@ -96,6 +96,7 @@ use App\Mprocurement_Details;
 use App\Gst;
 use App\SupplierInvoice;
 use App\PaymentHistory;
+use App\Denomination;
 use Spatie\Activitylog\Models\Activity;
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -177,7 +178,6 @@ class HomeController extends Controller
     }
     public function inputdata(Request $request)
     {
-
            $user_id = User::where('id',Auth::user()->id)->pluck('id')->first();
            $cat = category::where('id',$request->cat)->pluck('id')->first();
 
@@ -190,23 +190,25 @@ class HomeController extends Controller
            $billaddress = $request->billaddress;
          }
    // for fetching sub categories
-        $get = implode(", ",array_filter($request->quan));
-        $another = explode(", ",$get);
-        $quantity = array_filter($request->quan);
-        $qu = implode(", ", $quantity);
+        // $get = implode(", ",array_filter($request->quan));
+        // $another = explode(", ",$get);
+        // $quantity = array_filter($request->quan);
+        // $qu = implode(", ", $quantity);
 
 
 
-        for($i = 0;$i < count($request->subcat); $i++){
-            if($i == 0){
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty = $sub.":".$another[$i];
-            }else{
-                $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
-                $qnty .= ", ".$another[$i];
+        // for($i = 0;$i < count($request->subcat); $i++){
+        //     if($i == 0){
+        //         $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+        //         $qnty = $sub.":".$another[$i];
+        //     }else{
+        //         $sub = SubCategory::where('id',$request->subcat[$i])->pluck('sub_cat_name')->first();
+        //         $qnty .= ", ".$another[$i];
 
-            }
-        }
+        //     }
+        // }  
+        $sub = SubCategory::where('id',$request->subcat)->pluck('sub_cat_name')->first();
+         $qnty = $sub." :".$request->totalquantity;//new code
         $validator = Validator::make($request->all(), [
             'subcat' => 'required'
             ]);
@@ -249,7 +251,7 @@ class HomeController extends Controller
                                                 'material_spec' =>'',
                                                 'referral_image1'   =>'',
                                                 'referral_image2'   =>'',
-                                                'requirement_date'  =>$request->edate,
+                                                'requirement_date'  =>$request->txtDate,
                                                 'measurement_unit'  =>$request->measure != null?$request->measure:'',
                                                 'unit_price'   => '',
                                                  'quantity'     =>$qnty,
@@ -3166,10 +3168,10 @@ date_default_timezone_set("Asia/Kolkata");
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
         $invoice = SupplierInvoice::all();   
-      
+        $denoms = Denomination::all();
         return view('ordersadmin',[
             'view' => $view,
-            'suppliers'=>$suppliers,
+            'suppliers'=>$suppliers, 
             'users'=>$users,
             'req'=>$req,
             'paymentDetails'=>$paymentDetails,
@@ -3181,8 +3183,8 @@ date_default_timezone_set("Asia/Kolkata");
             'invoice'=>$invoice,
             'categories'=>$categories,
             'payhistory'=>$payhistory,
-            'manudetails'=>$manudetails
-           
+            'manudetails'=>$manudetails,
+            'denoms'=>$denoms
         ]);
     }
   public function amorders(Request $request)
@@ -3299,8 +3301,8 @@ date_default_timezone_set("Asia/Kolkata");
             $g2 = 9;
         }
         else{
-            $cgstval = "";
-            $sgstval = "";
+            $cgstval = 14;
+            $sgstval = 14;
             $percent = 1.28;
             $g1 = 14;
             $g2 = 14;
@@ -5316,14 +5318,16 @@ $Wards = [];
         return view('my_Profile',['log'=>$log,'log1'=>$log1]);
     }
     public function postMyProfile(Request $request){
-        $imageName1 = Auth::user()->name.time().'.'.request()->pp->getClientOriginalExtension();
-        $request->pp->move(public_path('profilePic'),$imageName1);
         if($request->userid){
             $name =  User::where('employeeId',$request->userid)->pluck('name')->first();
-            $image = $name.time().'.'.request()->pp->getClientOriginalExtension();
+            $name1 = explode(" ",$name);
+            $image = $name1[0].time().'.'.request()->pp->getClientOriginalExtension();
+            $request->pp->move(public_path('profilePic'),$image);      
             User::where('employeeId',$request->userid)->update(['profilepic'=>$image]);
             return back()->with('Success','Profile picture added successfully');
         }else{
+            $imageName1 = Auth::user()->name.time().'.'.request()->pp->getClientOriginalExtension();
+        $request->pp->move(public_path('profilePic'),$imageName1);
             User::where('id',Auth::user()->id)->update(['profilepic'=>$imageName1]);
             return redirect('/home')->with('Success','Profile picture added successfully');
         }
@@ -8312,6 +8316,7 @@ public function display(request $request){
                            
              // return view('unupdated',['project'=>$projectid,'wards'=>$wards,'site'=>$site,'from'=>$from,'to'=>$to,'total'=>$total,'totalproject'=>$totalproject]);
         }else if($request->ward && $request->subward && $request->from && $request->to && $request->status){
+            
                  $from=$request->from;
                  $to=$request->to;
                  $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
@@ -8321,7 +8326,17 @@ public function display(request $request){
                         ->whereIn('project_id',$projectsat)
                         ->paginate('20');
              
-        }else if($request->ward == "All" && !$request->subward && $request->from && $request->to && $request->status){
+        }
+        else if($request->ward && $request->subward && $request->from && $request->to && !$request->status){
+            $from=$request->from;
+                 $to=$request->to;
+                 $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)
+                        ->where('sub_ward_id',$request->subward)
+                        ->where('quality','!=',"Fake")
+                        ->where('project_status','!=',"Closed")
+                        ->paginate('20');
+        }
+        else if($request->ward == "All" && !$request->subward && $request->from && $request->to && $request->status){
             if($request->ward == "All"){
                 $subwards = SubWard::pluck('id');
             }else{
@@ -8342,6 +8357,7 @@ public function display(request $request){
             }else{
                 $subwards = SubWard::where('ward_id',$request->ward)->pluck('id');
             }
+
                  $from=$request->from;
                  $to=$request->to;
                  $projectid = ProjectDetails::where('created_at','>=',$from)->where('updated_at','<=',$to)

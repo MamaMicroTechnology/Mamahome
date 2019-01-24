@@ -1,3 +1,12 @@
+<style type="text/css">
+    table {
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  th, td {
+    border: 1px solid black;
+  }
+</style>
 <div class="panel panel-default" style="border-color:#0e877f">
 <div class="panel-heading" style="background-color:#0e877f;font-weight:bold;font-size:1.3em;color:white;">
  <div style="margin-left: 20px;">{{ $ward ? $ward : "No Ward"}} {{ isset($_GET['$ward']) ? date('d/m/Y', strtotime($_GET['$ward'])) : '' }}</div>
@@ -12,7 +21,7 @@
                 <input type="submit" value="Fetch" class="form-control btn btn-primary">
   </form>
 </div>
-<table style="margin-left: 600px;" class="table" border="1">
+<table style="margin-left: 600px;" class="table">
    <tbody>
       <tr>
         <td>Red Marker</td>
@@ -39,6 +48,21 @@
         <b>Field Logout Time:</b>{{ $login->logout }}<br><br>
         <b>Remark(Late Login) : </b>{{ $login->remark }}<br><br>
         <b>Approved By :</b><br><br>
+        <table class="table table-hover" border="1">
+          <tr>
+            <td>Projects</td>
+            <td>Manufacturers</td>
+            <td>RMC</td>
+            <td>Blocks</td>
+           
+          </tr>
+          <tr> 
+            <td>{{$totalListing}}</td>
+            <td>{{$totalmanu}}</td>
+            <td>{{$rmc}}</td>
+            <td>{{$blocks}}</td>
+          </tr>
+        </table>
         @endforeach
          <!-- <b>Distance :</b>{{ $storoads != null ? $storoads->kms : ""}}<br><br> -->
         <br><br><br>

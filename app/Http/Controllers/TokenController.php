@@ -72,6 +72,7 @@ use App\Manager_Deatils;
 use App\Mprocurement_Details;
 use App\Mowner_Deatils;
 use App\Banner;
+use App\Message;
 use Spatie\Activitylog\Models\Activity;
 
 use App\Http\Resources\Message as MessageResource;
@@ -226,6 +227,7 @@ class TokenController extends Controller
     }
      public function getLogin(Request $request)
     {
+        dd();
          date_default_timezone_set("Asia/Kolkata");
         $messages = new Collection;
         if(Auth::attempt(['email'=>$request->username,'password'=>$request->password])){

@@ -12,7 +12,11 @@
                 @if(count($projects) != 0)
                  <span>&nbsp;&nbsp;&nbsp;</span>From <b>{{ date('d-m-Y', strtotime($previous)) }}</b> To <b>{{ date('d-m-Y', strtotime($today)) }}</b>
                Count : <b>{{ $projects->total() }}</b>
+                 @if(isset($_GET['from']))
+                <p class="pull-right"> Projects Not Been Updated from {{$_GET['from']}} to {{$_GET['to']}}</p>
+                 @else
                 <p class="pull-right"> Projects Not Been Updated In 30 Days.</p>
+                 @endif
                 @endif
 
                     @if(session('ErrorFile'))
@@ -38,11 +42,11 @@
                           </select>
               </div>
               <div class="col-md-2">
-                <label>From (Enquiry Date)</label>
+                <label>Projects(From Date)</label>
                 <input value = "{{ isset($_GET['from']) ? $_GET['from']: '' }}" type="date" class="form-control" name="from">
               </div>
               <div class="col-md-2">
-                <label>To (Enquiry Date)</label>
+                <label>Projects(To Date)</label>
                 <input  value = "{{ isset($_GET['to']) ? $_GET['to']: '' }}" type="date" class="form-control" name="to">
               </div>
               <div class="col-md-2">

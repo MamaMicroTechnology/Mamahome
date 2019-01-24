@@ -52,5 +52,8 @@ class User extends Authenticatable
     function activity1(){
         return $this->hasMany(ActivityLog::class,'enquiry','id');
     }
+    function emp(){
+        return $this->belongsTo('App\EmployeeDetails','employeeId','employee_id');
+    }
 }
  

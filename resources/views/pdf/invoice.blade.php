@@ -16,9 +16,13 @@
         body{
             font-size: 11px;
         }
-        table{
-            padding: 0px;
-        }
+        table {
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  th, td {
+    border: 1px solid black;
+  }
     </style>
 </head>
 <body>
@@ -52,7 +56,12 @@
             <div class="pull-right">
 
                <div style="padding-right: 55px;"> Invoice No : {{ $data['price']['invoiceno'] }}<br>
-                Date : {{ date('d F, Y') }}<br>
+                Date :@if($data['price']['invoicedate'] != null)
+                {{ date('d F, Y', strtotime( $data['price']['invoicedate'])) }}
+                @else
+                {{ date('d F, Y', strtotime( $data['price']['created_at'])) }}
+                @endif
+                <br>
               {{ $data['manu'] == null ? "Project ID" : "Manufacturer ID" }} : {{ $data['manu'] == null ? $data['procurement']->project_id : $data['manu']['id']}}  <br>
               Order ID : {{ $data['price']['order_id'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                 Mode Of Payment : <?php $pay = explode(", ",$data['products']->payment_mode);
@@ -83,14 +92,17 @@
             </div>
         </div>
         <br><br><br><br><br><br><br>
+       
             <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <table class="table table-responsive" border=1>
-                    <thead>
+                <table class="table" border="1">
+                    <thead >
                         <tr style="background-color:#e6e6e6">
                             <th>SL.NO</th>
                             <th colspan="2">DESCRIPTION OF GOODS</th>
-                            <th>HSN/SAC</th>
+                            <th>HSN/SAC
+                                <?php $hsn = App\Category::where('category_name',$data['products']->main_category)->pluck('HSN')->first(); ?>
+                            </th>
                             <th>UNIT</th>
                             <th colspan="2" >QUANTITY</th>
                             <th>RATE/UNIT</th>
@@ -106,7 +118,7 @@
                         <tr>
                             <td class="text-center">1</td>
                             <td colspan="2">{{$data['price']['description']}}</td>
-                            <td></td>
+                            <td>{{$hsn}}</td>
                             <td>{{ $data['price']['unit'] }}</td>
                             <td colspan="2">{{ $data['price']['quantity'] }}</td>
                             <td>{{ $data['price']['unitwithoutgst'] }}</td>
@@ -202,7 +214,7 @@
                             <th>Amount</th>
                         </tr>
                         <tr>
-                            <td></td>
+                            <td>{{ $hsn }}</td>
                             <td>{{ $data['price']['totalamount']}}</td>
                             <td>{{ $data['cgst'] }}%</td>
                             <td>

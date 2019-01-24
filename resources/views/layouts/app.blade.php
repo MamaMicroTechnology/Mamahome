@@ -1382,9 +1382,6 @@ div#calendar{
       <a href="{{ URL::to('/projectDetailsForTL') }}">Project Search</a>
       <a href="{{ URL::to('/') }}/inputview">Add Enquiries</a>
     <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
-
-    <a href="{{ URL::to('/') }}/manuenquiry">Add Manufacturer  Enquiry</a>
-
       <a href="{{ URL::to('/getquotation') }}">Get Quotation</a>
     <!--  <a href="{{ URL::to('/mrenquirysheet') }}">Enquiry Sheet</a>  -->
       <!-- <a href="{{ URL::to('/') }}/projectsUpdate" id="updates" >Add Enquiry</a> -->
