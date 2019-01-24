@@ -14,6 +14,7 @@ use App\Department;
 use App\User;
 use Session;
 use App\Group;
+use App\WaradReport;
 use App\Builder;
 use App\ProjectUpdate;
 use App\AssignCategory;
@@ -428,8 +429,20 @@ class mamaController extends Controller
             $assignWard->status = 'Not Completed';
             $assignWard->save();
         }
-        $user = User::findOrFail($id);
-        $subward = SubWard::findOrFail($request->subward);
+        
+      $user = User::findOrFail($id);
+      $subward = SubWard::findOrFail($request->subward);
+       $data = new WaradReport;
+       $data->user_id = $id;
+       $data->sub_ward_id = $request->subward;
+       $data->tlid =Auth::user()->id;
+       $data->save();
+       
+       
+       
+       
+       
+       
         $activity = New ActivityLog;
         $activity->time = date('H:i:s A');
         $activity->employee_id = Auth::user()->employeeId;

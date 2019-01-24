@@ -26,6 +26,7 @@ use App\PaymentHistory;
 use DB;
 use Auth;
 use PDF;
+use App\Ledger;
 date_default_timezone_set("Asia/Kolkata");
 class FinanceDashboard extends Controller
 {
@@ -326,6 +327,29 @@ class FinanceDashboard extends Controller
     }
     public function savePaymentDetails(Request $request)
     {
+
+          if(count($request->branchname) > 0){
+             $f = $request->branchname;
+          }else{
+             $f = $request->accname;
+
+          }
+         $ledger = new Ledger;
+         $ledger->order_id = $request->id;
+         $ledger->amount = $request->totalamount;
+         $ledger->payment_mode = $request->method;
+         $ledger->debitcredit = "Cr";
+         $ledger->bank =$request->bankname;
+         $ledger->branch = $f;
+         $ledger->val_date = $request->date;
+         $ledger->remark = $request->notes;
+         $ledger->save();
+
+
+
+
+
+
         $totalRequests = count($request->payment_slip);
         $category =  Order::where('id',$request->id)->pluck('main_category')->first();
         $i = 0;

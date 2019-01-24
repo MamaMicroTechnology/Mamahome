@@ -67,7 +67,8 @@
                                 </form>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit</button>
+                                    <button class="btn btn-sm btn-primary" onclick="editcategory('{{ $category->id }}')">Edit </button>
+
                                 </td>
                                  @endif
                               @endif 
@@ -145,7 +146,7 @@
                             </tr>
                             @foreach($brands as $brand)
                             <tr id="currentb{{ $brand->id }}">
-                                <td>{{ $brand->category->category_name }}</td>
+                                <td>{{ $brand->category != null ? $brand->category->category_name:'' }}</td>
                                 <td>{{ $brand->brand }}</td>
                                 <td>
                                 <form method="POST" action="{{ URL::to('/') }}/deletebrand">

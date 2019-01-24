@@ -78,6 +78,8 @@ Route::get('/manudailyslot','AssignManufacturersController@manudailyslots');
 Route::get('/getprojectsize','HomeController@getProjectSize');
 Route::get('/manureport','AssignManufacturersController@manureport');
 Route::get('/projectandward','AssignManufacturersController@projectsize');
+Route::get('/wardreport','AssignManufacturersController@wardsreport');
+
 Route::post('/storeproject','AssignManufacturersController@storeproject');
 
 

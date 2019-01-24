@@ -112,9 +112,9 @@ public function testindex(request $request){
       
     // $path = base_path("public/ledger/".$imageName1);
 
-     $path ="/var/www/mamamicrotech/clients/MH/webapp/public/Ledger/".$imageName1; 
+    //  $path ="/var/www/mamamicrotech/clients/MH/webapp/public/Ledger/".$imageName1; 
 
-            // $path = "/var/www/html/mamaReu/public/Ledger/".$imageName1;
+            $path = "/var/www/html/mamaReu/public/Ledger/".$imageName1;
       chmod($path,0777);
 
      $rows = Excel::load($path, function($reader) { })->get()->toArray();

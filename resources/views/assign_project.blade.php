@@ -211,7 +211,7 @@
               <div class="col-sm-5">  
               <h4 style="background-color:#9e9e9e;width: 50%; color:white;border: 1px solid gray;padding:5px;border-radius: 5px;"> Assign UnUpdated Projects</h4>
               <h5 style="color:green;">It is Fectch Last 30days Projects From Your Selected Date</h5>
-              <input style="width:40%;" type="text" name="undate" class="form-control input-sm datepicker" placeholder="select date" >
+              <input style="width:40%;" type="date" name="undate" class="form-control input-sm datepicker" placeholder="select date" >
               </div>
             </div> <br>  
           <h4 style="background-color:#9e9e9e; color:white;border: 1px solid gray;width:25%; padding:5px;border-radius: 5px;">Project Type </h4>
