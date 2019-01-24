@@ -313,10 +313,9 @@
 					               @endforeach
 					            </select>
                           	</td>
-                          		
+                   		
                           	@endif
                           </tr>
-
 							<tr>
 								<td><label>Remarks : </label></td>
 								<td>

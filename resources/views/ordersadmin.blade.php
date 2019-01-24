@@ -149,7 +149,16 @@ function openCitytest(evt, cityName) {
                             {{$rec -> brand}}<br>
                         </td>
                         <td>{{$rec->quantity}} {{$rec->measurement_unit}}</td>
-                        <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#logistics{{$rec->orderid}}">Logistics</button></td>
+                        <td>
+                          <?php 
+                          $count = count($rec->ostatus);
+                          ?>
+                          @if($count == 1)
+                          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#logistics{{$rec->orderid}}">Logistics</button>
+                          @else
+                          <button disabled type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#logistics{{$rec->orderid}}">Logistics</button>
+                          @endif
+                        </td>
                         <td>{{ date('d-m-Y',strtotime($rec -> requirement_date)) }}</td>
                         <td class="text-center" id="paymenttd-{{$rec->orderid}}">
                             @if($rec->ostatus == "Payment Received")
@@ -714,6 +723,86 @@ Office Phone No : {{ $user->emp != null ? $user->emp->office_phone : '' }}"
                 <td>Cash Deposit Date :</td>
                 <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
               </tr>
+               @foreach($denoms as $denom)
+              @if($denom->order_id == $rec->orderid && $denom->multiple_pay == null)
+              <!-- denomination -->
+              <tr>
+                <td>Denomination :</td>
+                <td>
+                  <table class="table table-hover">
+                    <tr><td>Notes</td>
+                    <td>Count</td>
+                    <td>Total</td>
+                    </tr>
+                     
+                    <tr>
+                      @if($denom->x2000 != null)
+                      <td>x2000</td>
+                      <td>{{$denom->x2000}}</td>
+                      <td>{{2000 * $denom->x2000}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x500 != null)
+                      <td>x500</td><td>{{$denom->x500}}</td>
+                      <td>{{500 * $denom->x500}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x200 != null)
+                      <td>x200</td><td>{{$denom->x200}}</td>
+                      <td>{{200 * $denom->x200}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x100 != null)
+                      <td>x100</td><td>{{$denom->x100}}</td>
+                      <td>{{100 * $denom->x100}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x50 != null)
+                      <td>x50</td><td>{{$denom->x50}}</td>
+                      <td>{{50 * $denom->x50}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x20 != null)
+                      <td>x20</td><td>{{$denom->x20}}</td>
+                      <td>{{20 * $denom->x20}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x10 != null)
+                      <td>x10</td><td>{{$denom->x10}}</td>
+                      <td>{{10 * $denom->x10}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x5 != null)
+                      <td>x5</td><td>{{$denom->x5}}</td>
+                      <td>{{5 * $denom->x5}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x1 != null)
+                      <td>x1</td><td>{{$denom->x1}}</td>
+                      <td>{{1 * $denom->x1}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->total != null)
+                      <td>Total</td>
+                      <td></td>
+                      <td>{{$denom->total}}</td>
+                      @endif
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- end -->
+              @endif
+              @endforeach
               @endif
               @if($payment->payment_mode == "RTGS")
               <tr>
@@ -812,6 +901,86 @@ Office Phone No : {{ $user->emp != null ? $user->emp->office_phone : '' }}"
                 <td>Cash Deposit Date :</td>
                 <td>{{ date('d-m-Y',strtotime($payment->date))}}</td>
               </tr>
+              @foreach($denoms as $denom)
+              @if($denom->order_id == $rec->orderid && $denom->multiple_pay != null)
+              <!-- denomination -->
+              <tr>
+                <td>Denomination :</td>
+                <td>
+                  <table class="table table-hover">
+                    <tr>
+                      <td>Notes</td>
+                      <td>Count</td>
+                      <td>Total</td>
+                    </tr>
+                    <tr>
+                      @if($denom->x2000 != null)
+                      <td>x2000</td>
+                      <td>{{$denom->x2000}}</td>
+                      <td>{{2000 * $denom->x2000}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x500 != null)
+                      <td>x500</td><td>{{$denom->x500}}</td>
+                      <td>{{500 * $denom->x500}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x200 != null)
+                      <td>x200</td><td>{{$denom->x200}}</td>
+                      <td>{{200 * $denom->x200}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x100 != null)
+                      <td>x100</td><td>{{$denom->x100}}</td>
+                      <td>{{100 * $denom->x100}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x50 != null)
+                      <td>x50</td><td>{{$denom->x50}}</td>
+                      <td>{{50 * $denom->x50}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x20 != null)
+                      <td>x20</td><td>{{$denom->x20}}</td>
+                      <td>{{20 * $denom->x20}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x10 != null)
+                      <td>x10</td><td>{{$denom->x10}}</td>
+                      <td>{{10 * $denom->x10}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x5 != null)
+                      <td>x5</td><td>{{$denom->x5}}</td>
+                      <td>{{5 * $denom->x5}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->x1 != null)
+                      <td>x1</td><td>{{$denom->x1}}</td>
+                      <td>{{1 * $denom->x1}}</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      @if($denom->total != null)
+                      <td>Total</td>
+                      <td></td>
+                      <td>{{$denom->total}}</td>
+                      @endif
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- end -->
+              @endif
+              @endforeach
               @endif
               @if($payment->payment_mode == "RTGS")
               <tr>

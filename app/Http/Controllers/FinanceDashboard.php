@@ -23,6 +23,7 @@ use App\Category;
 use App\SupplierInvoice;
 use App\brand;
 use App\PaymentHistory;
+use App\Denomination;
 use DB;
 use Auth;
 use PDF;
@@ -321,6 +322,7 @@ class FinanceDashboard extends Controller
     }
     public function savePaymentDetails(Request $request)
     {
+       
         $totalRequests = count($request->payment_slip);
         $category =  Order::where('id',$request->id)->pluck('main_category')->first();
         $i = 0;
@@ -424,6 +426,22 @@ class FinanceDashboard extends Controller
                 $paymentDetails->manu_id = $request->mid;
                 $paymentDetails->save();
             }
+                    if($request->total != null){
+                       $denom = new Denomination;
+                       $denom->order_id = $request->id;
+                       $denom->x2000 = $request->INR2000;
+                       $denom->x500 = $request->INR500;
+                       $denom->x200 = $request->INR100;
+                       $denom->x50 = $request->INR50;
+                       $denom->x20 = $request->INR20;
+                       $denom->x10 = $request->INR10;
+                       $denom->x5 = $request->INR5;
+                       $denom->x2 = $request->INR2;
+                       $denom->x1 = $request->INR1;
+                       $denom->x2000 = $request->INR2000;
+                       $denom->total = $request->total;
+                       $denom->save();
+                    }
         }
         else{
         $payment = Order::where('id',$request->id)->pluck('payment_mode')->first();
@@ -490,6 +508,23 @@ class FinanceDashboard extends Controller
 
                 $paymentDetails->save();
             }
+            if($request->total != null){
+                       $denom = new Denomination;
+                       $denom->order_id = $request->id;
+                       $denom->multiple_pay = "yes";
+                       $denom->x2000 = $request->INR2000;
+                       $denom->x500 = $request->INR500;
+                       $denom->x200 = $request->INR100;
+                       $denom->x50 = $request->INR50;
+                       $denom->x20 = $request->INR20;
+                       $denom->x10 = $request->INR10;
+                       $denom->x5 = $request->INR5;
+                       $denom->x2 = $request->INR2;
+                       $denom->x1 = $request->INR1;
+                       $denom->x2000 = $request->INR2000;
+                       $denom->total = $request->total;
+                       $denom->save();
+                    }
         }
 
         return back()->with('Success','Payment Details Saved Successfully');

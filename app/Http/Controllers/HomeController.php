@@ -96,6 +96,7 @@ use App\Mprocurement_Details;
 use App\Gst;
 use App\SupplierInvoice;
 use App\PaymentHistory;
+use App\Denomination;
 use Spatie\Activitylog\Models\Activity;
 date_default_timezone_set("Asia/Kolkata");
 class HomeController extends Controller
@@ -3162,10 +3163,10 @@ date_default_timezone_set("Asia/Kolkata");
         $suppliers = SupplierDetails::get();
         $categories = Category::all();
         $invoice = SupplierInvoice::all();   
-      
+        $denoms = Denomination::all();
         return view('ordersadmin',[
             'view' => $view,
-            'suppliers'=>$suppliers,
+            'suppliers'=>$suppliers, 
             'users'=>$users,
             'req'=>$req,
             'paymentDetails'=>$paymentDetails,
@@ -3177,8 +3178,8 @@ date_default_timezone_set("Asia/Kolkata");
             'invoice'=>$invoice,
             'categories'=>$categories,
             'payhistory'=>$payhistory,
-            'manudetails'=>$manudetails
-           
+            'manudetails'=>$manudetails,
+            'denoms'=>$denoms
         ]);
     }
   public function amorders(Request $request)
@@ -3295,8 +3296,8 @@ date_default_timezone_set("Asia/Kolkata");
             $g2 = 9;
         }
         else{
-            $cgstval = "";
-            $sgstval = "";
+            $cgstval = 14;
+            $sgstval = 14;
             $percent = 1.28;
             $g1 = 14;
             $g2 = 14;

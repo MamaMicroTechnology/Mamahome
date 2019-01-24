@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container-fluid">
-  <div  class="col-md-3"  style="border: 2px solid gray;;height: 50%;">
+  <div  class="col-md-3"  style="border: 2px solid gray;height: 50%;">
     <center><label>Payment Details</label></center>
     Order Id : {{$id}}<br>
     Customer Total Amount : {{$total}}<br><br>
@@ -112,6 +113,79 @@ function ShowHideDiv1(){
                         <td><input required class="form-control" name="totalamount" type="text" placeholder="Enter Amount"></td>
                         </tr>
                         <tr>
+                          <td>Denomination :</td>
+                          <td>
+                            <!-- denomination -->
+<table class="table table-hover" border="1">
+<thead>
+<tr>
+<th class="text-left">Notes</th>
+<th  class="text-left">Count</th>
+<th  class="text-left">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="text-left" >2000X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x2000" name="INR2000"></td>
+<td class="grand" id="t2000" name="t2000">0</td> </tr>
+<tr>
+<td class="text-left" >500X</td>
+<td> <input style="width: 100%" type="text" class="noteCount" id="x500" name="INR500"></td>
+<td class="grand" id="t500" name="t500">0</td>
+</tr>
+<tr>
+<td class="text-left" >200X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x200" name="INR200"></td>
+<td class="grand" id="t200">0</td>
+</tr>
+<tr>
+<td class="text-left" >100X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x100" name="INR100"></td>
+<td class="grand" id="t100">0</td>
+</tr>
+<tr>
+<td class="text-left" >50X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x50" name="INR50"></td>
+<td class="grand" id="t50">0</td>
+</tr>
+<tr>
+<td class="text-left" >20X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x20" name="INR20"></td>
+<td class="grand" id="t20">0</td>
+</tr>
+<tr>
+<td class="text-left" >10X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x10" name="INR10"></td>
+<td class="grand" id="t10">0</td>
+</tr>
+<tr>
+<td class="text-left" >5X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x5" name="INR5"></td>
+<td class="grand" id="t5">0</td>
+</tr>
+<tr>
+<td class="text-left" >2X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x2" name="INR2"></td>
+<td class="grand" id="t2">0</td>
+</tr>
+<tr>
+<td class="text-left" >1X</td>
+<td><input style="width: 100%" type="text" class="noteCount" id="x1" name="INR1"></td>
+<td class="grand" id="t1">0</td>
+</tr>
+<tr>
+<td class="text-left"><label>Total</label></td>
+<td class="text-left"></td>
+<td ><input style="width: 50%" readonly class="text-left" contenteditable="false" id="grandTotal" name="total"></td>
+</tr>
+</tbody>
+</table>
+                            <!-- end -->
+
+                          </td>
+                        </tr>
+                        <tr>
                           <td>Delivery charges(Driver) :</td>
                           <td><input class="form-control" name="damount" type="text" placeholder="Enter Amount"></td>
                         </tr>
@@ -215,11 +289,11 @@ function ShowHideDiv1(){
                           <td><input required class="form-control" name="cheque_num" type="text" placeholder="Cheque Number"></td>
                         </tr>
                         <tr>
-                          <td>Cheque Date :</td>
+                          <td>Cheque Received Date :</td>
                         <td><input required class="form-control" name="date" type="date"></td>
                         </tr>
                         <tr>
-                          <td>Amount :</td>
+                          <td>Cheque Amount :</td>
                           <td><input required class="form-control" name="totalamount" type="text" placeholder="Enter Amount"></td>
                         </tr>
                         <tr>
@@ -250,4 +324,24 @@ function ShowHideDiv1(){
     swal("Success","{{ session('Success') }}","success");
 </script>
 @endif
+<script>
+$(document).ready(function(){
+$('.noteCount').change(function() {
+//alert("Content " +this.id);
+countId=this.id;
+denomination=countId.substring(1,countId.length);
+amountId="t"+denomination;
+amountEle=document.getElementById(amountId);
+x=parseFloat(this.value)*parseFloat(denomination);
+amountEle.innerHTML=x;
+refreshTotal();
+});
+function refreshTotal() {
+sum=0;
+$('.grand').each(function( index ) {sum+=parseFloat(this.innerHTML);});
+grandTotal=document.getElementById("grandTotal");
+grandTotal.value=sum;
+};
+});
+</script>
 @endsection

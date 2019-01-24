@@ -2589,13 +2589,27 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
     }
     public function getmap(request $request)
     {
+    $date = date('Y-m-d');
       $name = $request->name;
       $id = user::where('name',$name)->pluck('id');
       $login = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->get();
       $wardsAssigned = WardAssignment::where('user_id',$id)->where('status','Not Completed')->pluck('subward_id')->first();
       $subwards = SubWard::where('id',$wardsAssigned)->first();
       $projects = FieldLogin::where('user_id',$id)->where('logindate',date('Y-m-d'))->first();
-        // dd($projects);
+      $totalListing = ProjectDetails::where('listing_engineer_id',$id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();
+        $totalmanu = Manufacturer::where('listing_engineer_id',$id)
+                                                ->where('created_at','LIKE',$date.'%')
+                                                ->count();                              
+        $rmc = Manufacturer::where('listing_engineer_id',$id)
+                                ->where('created_at','LIKE',$date.'%')
+                                ->where('manufacturer_type',"RMC")
+                                ->count();
+        $blocks = Manufacturer::where('listing_engineer_id',$id)
+                                ->where('created_at','LIKE',$date.'%')
+                                ->where('manufacturer_type',"Blocks")
+                                ->count();
         if($subwards != null){
             $subwardMap = SubWardMap::where('sub_ward_id',$subwards->id)->first();
             
@@ -2658,9 +2672,8 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
                         ->where('date',date('Y-m-d'))
                         ->first();
         }
-      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads]);
+      return view('getmap',['name'=>$name,'ward'=>$ward,'subwards'=>$subwards,'projects'=>$projects,'subwardMap'=>$subwardMap,'login'=>$login,'storoads'=>$storoads,'totalListing'=>$totalListing,'totalmanu'=>$totalmanu,'rmc'=>$rmc,'blocks'=>$blocks]);
     }
-
     public function getaccmap(request $request)
     {
       $name = $request->name;
@@ -3290,7 +3303,6 @@ $room_types = $request->roomType[0]." (".$request->number[0].")";
         return view('seniorteam',['users'=>$users,'name'=>$name]);
     }
     public function hr(){
-
        $group = [14];
        $name = Group::where('id',14)->pluck('group_name')->first();
        $thiMonth = date('Y-m');
