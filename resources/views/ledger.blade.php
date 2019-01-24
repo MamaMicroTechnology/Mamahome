@@ -5,7 +5,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading" style="padding:10px;">
 
-  <button type="button" class="btn btn-warning btn-sm pull-left" data-toggle="modal" data-target="#myModal">Upload Exel File</button>
+ <!--  <button type="button" class="btn btn-warning btn-sm pull-left" data-toggle="modal" data-target="#myModal">Upload Exel File</button> -->
   <button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#myModal10">Add Account Head</button>
   <button type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#myModal11">Add Sub Account Head</button>
 
@@ -236,18 +236,20 @@
 </form>
 
 
-      <table class="table table-responsive table-striped table-hover">
+      <table class="table table-responsive table-striped table-hover" border="1">
       <thead>
         <tr>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Date</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Transaction Particulars</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Amount(INR)</th>
+        <th style="color:rgb(70, 141, 221);font-weight:bold;">Credit</th>
+        <th style="color:rgb(70, 141, 221);font-weight:bold;">Debit</th>
+
        <!--  <th style="color:rgb(70, 141, 221);font-weight:bold;">Type of Head</th> -->
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Bank Name</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Branch Name</th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Account Head </th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Sub Account Head </th>
-
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Remarks </th>
         <th style="color:rgb(70, 141, 221);font-weight:bold;">Action </th>
 
@@ -260,13 +262,27 @@
         <td> {{ date('d-m-Y', strtotime($led->val_date)) }}</td>
         <td>{{$led->Transaction}}</td>
         <td>
-          {{number_format(round($led->amount))}}</td>
-      <!--   <td>{!! $led->debitcredit !!}</td> -->
+          {{$led->amount}}</td>
+      
+
+       <?php $s = count($led->debitcredit); ?>
+       @if($s == 0)
+       <td> - </td>
+        @else
+       <td>{{$led->debitcredit}} </td>
+       @endif
+       <?php $m = count($led->credit); ?>
+     @if($m == 0)
+         <td> - </td>
+        @else
+       <td>{{$led->credit}}</td> 
+       @endif
         <td>{{$led->bank}}</td>
         <td>{{$led->branch}}</td>
         <td>{!! $led->acc != null ? $led->acc->name : '' !!}</td>
         <td>{!! $led->sub != null ? $led->sub->Subaccountheads : '' !!}</td>
-        <td>{{$led->remark}}</td>
+
+        <td>{{$led->order_id}}<br>{{$led->remark}}<br>{{$led->payment_mode}}</td>
         <td>
          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal15{{$led->id}}">Edit</button>
          <!-- Modal -->

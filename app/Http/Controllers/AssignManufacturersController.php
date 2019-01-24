@@ -36,7 +36,7 @@ use App\Noneed;
 use App\SubCategory;
 use App\CustomerProjectAssign;
 
-
+use App\WaradReport;
 use App\WardMap;
 class AssignManufacturersController extends Controller
 {
@@ -588,7 +588,7 @@ public function addcat(request $request){
         $totalRMCListing = array();
         $totalBlocksListing = array();
         $date = date('Y-m-d');
-        $grpid = [6,7,22,23,17.11];
+        $grpid = [6,7,22,23,17.11,6];
         $users = User::whereIn('group_id',$grpid)
                     ->where('users.department_id','!=',10)
                     ->leftjoin('ward_assignments','users.id','ward_assignments.user_id')
@@ -1496,6 +1496,52 @@ public function noneed(request $request ){
    
      return view('/projectandward',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
  }
+
+
+ public  function wardsreport(request $request)
+ {
+
+    $wards = Ward::all();
+  
+
+    if($request->ward == "All"){
+         $subward = Subward::all();
+
+    }else{
+        
+     $subward = SubWard::where('ward_id',$request->ward)->get();
+    }
+  $from = $request->from;
+  $to = $request->to;
+    
+    $projectscount =[];
+   
+
+    foreach ($subward as $sub) {
+       
+                if($request->from && $request->to && $request->ward){
+                    if($from == $to){
+                        $projectcount = WaradReport::where('sub_ward_id',$sub->id)
+                            ->where('created_at','LIKE',$from."%")->get()->toArray();
+                    }else{
+                    $projectcount = WaradReport::where('sub_ward_id',$sub->id)
+                            ->where('created_at','>',$from)
+                            ->where('created_at','<',$to)->get()->toArray();
+                        }
+                }
+        else{
+       $projectcount = WaradReport::where('sub_ward_id',$sub->id)->get()->toArray();
+       }
+       array_push($projectscount,['projectcount'=>$projectcount,'wardname'=>$sub->sub_ward_name]);
+   }
+   
+     return view('/wardreport',[ 'wards'=>$wards,'projectscount'=>$projectscount]);
+ }
+
+
+
+
+
 
 public  function manureport(request $request)
  {

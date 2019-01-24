@@ -1198,6 +1198,12 @@ div#calendar{
   <a href="{{ URL::to('/setprice') }}">Price setting based on designation</a>
   <!--  <a href="{{ URL::to('checkdetailes') }}">Cheque Details</a> -->
   <a href="{{ URL::to('/cashdeposit') }}">Cash Deposit Details</a>
+           <a href="{{ URL::to('/blocked_projects') }}">Blocked Projects</a>
+
+           <a href="{{ URL::to('/wardreport') }}">Ward Assigned Report</a>
+           <a href="{{ URL::to('/ledger') }}">Enter Ledger</a>
+           <a href="{{ URL::to('/gstinformation') }}">GST Report</a>
+
   
 
 </div>
@@ -1218,8 +1224,9 @@ div#calendar{
            <a href="{{ URL::to('/ledger') }}">Enter Ledger</a>
            <a href="{{ URL::to('/blocked_projects') }}">Blocked Projects</a>
 
+           <a href="{{ URL::to('/wardreport') }}">Ward Assigned Report</a>
            
-
+          
       <!-- <a href="{{ URL::to('/assigntl') }}"></a> -->
       <a href="#" data-toggle="collapse" data-target="#so"> Sales Officers &#x21F2;</a>
     <div id="so" class="collapse">
